@@ -73,8 +73,8 @@
 
 - 使用フォーマット
 
-  - 新たに書く記事は、基本的に Markdown or Latex
-  - 形式で迷ったら、[Markdown原稿](./org/md_en)や[Latex原稿](./org/tex_en)を参照
+  - 新たに書く原稿は、基本的に Markdown or Latex
+  - 形式で迷ったら、[Markdown原稿](./org/md_en/)や[Latex原稿](./org/tex_en/)を参照
   - Markdownで書く場合
     - エディタ上でリアルタイムにプレビューできる
     - [pandoc](https://pandoc.org/) を使って LaTeX に translate する → [Pandoc メモ](./pandoc.md)

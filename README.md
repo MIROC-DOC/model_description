@@ -12,9 +12,8 @@
 
 ### 年度末にどんな形でまとめるか決定
 - doi取得など、できるだけ実績としてオフィシャルなものになるよう先生方が検討してくださる。公開範囲と関連。
- 
+
 ### 既存資料の収集
-- ひとまず[Google Docs](https://docs.google.com/document/d/1aCOL8jx7PzUXyGGo1XPLKr8W7igDmY-lB5Z7tDSkJr4/edit#heading=h.4580oq1i8gdv)に集約中。GitHubが整備出来次第そちらにpushしてもらうように。
 
 ## 公開範囲
 
