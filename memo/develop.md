@@ -105,7 +105,7 @@
   - feature/MYFEATURE ブランチで執筆する
     - ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
-      - 変更箇所についてコメントと共にコミット`git commit -m “add hogehoge subsection”`
+      - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
       - コミット状況を確認`git status`
   - 執筆が完了したらプッシュする`git push origin feature/MYFEATURE`
   - [リポジトリ](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
