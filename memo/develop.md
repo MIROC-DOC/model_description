@@ -99,9 +99,8 @@
 
   - [issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
   - ローカルの資料を最新に `git pull`
-  - 執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)
-　　- `git checkout -b feature/MYFEATURE origin`
-　　- 今いるブランチを確認する。`git branch`
+  - 執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
+  - 今いるブランチを確認する。`git branch`
   - feature/MYFEATURE ブランチで執筆する
     - ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
