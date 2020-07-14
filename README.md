@@ -30,7 +30,7 @@
 
 - [develop.md](./memo/develop.md)
 -  ドキュメントの目次 [contesnts.md](./reference/contents.md)
-      (*[texファイルが存在する既存ドキュメント](./org/agcm5.4.zip)と[AGCM5.6-Tech.pdf](./org/AGCM5.6-Tech.pdf) がすでに異なるバージョンなので注意*)
+      (*texファイルが存在する既存ドキュメント(agcm5.4.zip;内部資料))と[AGCM5.6-Tech.pdf](./org/AGCM5.6-Tech.pdf) がすでに異なるバージョンなので注意*)
 
 
 ---
@@ -47,7 +47,7 @@
 [AGCM5.6-Tech.pdf](./org/AGCM5.6-Tech.pdf)
 [AGCM5.6-Using.pdf](./org/AGCM5.6_Using.pdf)
 及び、大元の tex ファイルを含む
-[agcm5.4.tar.bz2](./org/agcm5.4.tar.bz2)
+agcm5.4.zip(内部資料)
 を持ってくださっていた。この内容をアップデートしたい。
 
 ## 2020年度に限らない、長期目標
