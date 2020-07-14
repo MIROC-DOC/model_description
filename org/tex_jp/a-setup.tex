@@ -1,0 +1,99 @@
+﻿
+\subsection{基本的な設定}
+
+ここでは, モデルの基本的な設定を示す.
+
+\subsubsection{座標系}
+
+座標系は, 基本的に,
+経度 $\lambda$, 緯度 $\varphi$, 正規化気圧 $\sigma = p/p_S$ 
+($p_S(\lambda,\varphi)$ は地表気圧)
+を用い, それぞれは直交するとして扱う.
+ただし, 地中の鉛直座標は $z$ を用いる.
+
+経度は等間隔に離散化される \Module{ASETL}.
+\begin{equation}
+  \lambda_i = 2 \pi \frac{i-1}{I}  \;\;\; i = 1, \ldots I-1
+\end{equation}
+
+緯度は力学の項で述べる Gauss 緯度 $\varphi_j$ であり \Module{ASETL},
+Gauss-Legendre 積分公式から導かれる.
+これは, $\mu = \sin \varphi$ を引数とする
+J 次の Legendre 多項式の 0 点である \Module{GAUSS}. 
+
+J が大きい場合には, 近似的に,
+\begin{equation}
+  \varphi_j =  \pi ( \frac{1}{2}- \frac{j-1/2}{J} ) \;\;\; j = 1, \ldots J-1
+\end{equation}
+
+通常, 経度・緯度の格子間隔はほぼ等しく $J = I/2$ と取る. 
+これは, スペクトル法の三角形切断に基づく.
+
+正規化気圧 $\sigma$ は, 大気の鉛直構造を良く表現するように,
+不等間隔で適当に離散化される \Module{ASETS}.
+後で力学の項で述べるように, 層の境界の値
+$\sigma_{k-1/2}$ を $k = 1 \ldots K+1$ で定義してから,
+%
+\begin{equation}
+ \sigma_k = \left\{ \frac{1}{1+\kappa}
+                     \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
+                                  - \sigma^{\kappa +1}_{k+1/2}      }
+                                  { \sigma_{k-1/2} - \sigma_{k+1/2} }
+                     \right)
+              \right\}^{1/\kappa}
+\end{equation}
+によって層を代表する $\sigma$ を求める.
+図\ref{a-setup:level}に, 標準的に用いられる 20層のレベルを示す.
+
+\begin{figure}[hbtp]
+  \begin{center}
+    \epsfile{file=vert-cord.ps,width=80mm}
+  \end{center}
+  \caption{標準的に用いられるレベル}
+  \label{a-setup:level}
+\end{figure}
+
+各予報変数は全て, $(\lambda_i, \varphi_j, \sigma_k)$
+または $(\lambda_i, \varphi_j, z_l)$ の格子上で定義される.
+(地中のレベル $z_l$ については物理過程の項で述べる.)
+
+時間方向には, 等間隔 $\Delta t$ で離散化され,
+予報方程式の時間積分が行なわれる.
+ただし, 時間積分の安定性が損なわれるおそれのあるときには
+$\Delta t$ は変化しうる.
+
+\subsubsection{物理定数}
+
+基本的な物理定数を以下に示す \Module{APCON}.
+
+\begin{tabular}{llll}
+地球半径         & $a$         & m                    & 6.37 $\times 10^6$ \\
+重力加速度       & $g$         & ms$^-2$              & 9.8                \\
+大気定圧比熱     & $C_p$       & J kg$^{-1}$ K$^{-1}$ & 1004.6             \\
+大気気体定数     & $R$         & J kg$^{-1}$ K$^{-1}$ & 287.04             \\
+水の蒸発潜熱     & $L$         & J kg$^{-1}$          & 2.5 $\times 10^6$  \\
+水蒸気定圧比熱   & $C_v$       & J kg$^{-1}$ K$^{-1}$ & 1810.              \\
+水の気体定数     & $R_v$       & J kg$^{-1}$ K$^{-1}$ & 461.               \\
+液体水の密度     & $d_{H_2O}$  & J kg$^{-1}$ K$^{-1}$ & 1000.              \\
+0$^{\circ}$での
+飽和蒸気         & $e^*$(273K) & Pa                   & 611                \\
+Stefan Bolzman
+定数             & $\sigma_{SB}$  
+                               & W m$^{-2}$ K$^{-4}$  & 5.67 
+                                                          $\times 10^{-8}$ \\
+K\'{a}rman 定数  & $k$         &                      & 0.4                \\
+氷の融解潜熱     & $L_M$       & J kg$^{-1}$          & 3.4 $\times 10^5$  \\
+水の氷点         & $T_M$       & K                    & 273.15 \\
+水の定圧比熱     & $C_w$       & J kg$^{-1}$          & 4200.  \\
+海水の氷点       & $T_I$       & K                    & 271.35 \\
+氷の定圧比熱比   & $C_I  = C_w - L_M/T_M$
+                               &                      & 2397.              \\
+水蒸気分子量比   & $\epsilon  = R/R_v$
+                               &                      & 0.622              \\
+仮温度の係数     & $\epsilon_v = \epsilon^{-1} - 1$
+                               &                      & 0.606              \\
+比熱と気体定数の比
+                 & $\kappa = R/C_p$
+                               &                      & 0.286              \\
+\end{tabular}
+

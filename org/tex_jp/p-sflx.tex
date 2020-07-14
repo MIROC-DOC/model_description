@@ -1,0 +1,277 @@
+﻿
+\subsection{地表フラックス}
+
+\subsubsection{地表フラックススキームの概要}
+
+地表フラックススキームは, 
+接地境界層における乱流輸送による
+大気地表間の物理量のフラックスを評価する.
+主な入力データは, 風速 $u, v$, 気温 $T$, 比湿 $q$ であり,
+出力データは, 運動量, 熱, 水蒸気の鉛直フラックスと
+implicit 解を得るための微分値である.
+
+バルク係数は Louis(1979), Louis {\em et al.}(1982) に従って求める. 
+ただし, 運動量と熱に対する粗度の違いを考慮した補正を行なっている. 
+
+計算手順の概略は以下の通りである.
+\begin{enumerate}
+\item 大気の安定度として
+      Richardson 数を計算する.
+\item Richardson 数からバルク係数を計算する \Module{PSFCL}.
+\item バルク係数からフラックスとその微分を計算する.
+\item 必要であれば, 求められたフラックスを用いて
+      海面の粗度効果・自由対流の効果・風速補正を考慮した後に,
+      もう一度計算を行なう.
+\end{enumerate}
+
+\subsubsection{フラックス計算の基本式}
+
+地表フラックス$ Fu, Fv, F\theta, Fq$ は
+バルク係数 $C_M, C_H, C_E$ を用いて
+次のように表される.
+%
+\begin{equation}
+Fu  =  - \rho C_M |\Dvect{v}| u
+\end{equation}
+\begin{equation}
+Fv  =  - \rho C_M |\Dvect{v}| v
+\end{equation}
+\begin{equation}
+F\theta  = \rho c_p C_H |\Dvect{v}| ( \theta_g - \theta )
+\end{equation}
+\begin{equation}
+Fq^P =  \rho C_E |\Dvect{v}| ( q_g - q )
+\end{equation}
+%
+ただし, $Fq^P$ は可能蒸発量である.
+実蒸発量の計算は「地表過程」ならび
+「大気地表系の拡散型収支式の解法」の節で述べる.
+
+\subsubsection{Richardson 数}
+
+大気地表間の安定度の基準となる,
+バルクRichardson数 $R_{iB}$ は
+%
+\begin{equation}
+R_{iB} = \frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
+              { (u_1/z_1)^2                                  }
+       = \frac{g}{\theta_s} 
+         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T .
+\end{equation}
+ここで, 
+\begin{equation}
+f_T = (\theta_1 - \theta(z_0))/(\theta_1 - \theta_0)
+\end{equation}
+は補正ファクターで, 補正前のバルク Richardson数から近似的に求めるが, 
+ここでは計算方法は略す. 
+
+\subsubsection{バルク係数}
+
+バルク係数$C_M,C_H,C_E$は
+Louis(1979), Louis {\em et al.}(1982) に従って求める. 
+ただし, 運動量と熱に対する粗度の違いを考慮した補正を行なっている. 
+すなわち, 運動量, 熱, 水蒸気に対する粗度を
+それぞれ $z_{0M}, z_{0H}, z_{0E}$ とすると
+一般に $z_{0M} > z_{0H}, z_{0E}$ であるが, 熱, 水蒸気についても
+$z_{0M}$ の高さからのフラックスに対するバルク係数
+$\widetilde{C_H}$, $\widetilde{C_E}$をまず求め, その後に補正する. 
+%
+\begin{equation}
+C_M = \left\{ 
+      \begin{array}{lr}
+      C_{0M} [ 1 + (b_M/e_M) R_{iB} ]^{-e_M} 
+         & R_{iB} \geq 0 \\
+      C_{0M} \left[ 1 - b_M R_{iB} \left( 1+ d_M b_M C_{0M}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+         & R_{iB} < 0 \\
+      \end{array} \right.
+\end{equation}
+%
+\begin{equation}
+\widetilde{C_H} = \left\{ 
+      \begin{array}{lr}
+      \widetilde{C_{0H}} [ 1 + (b_H/e_H) R_{iB} ]^{-e_H} 
+         & R_{iB} \geq 0 \\
+      \widetilde{C_{0H}} \left[ 1 - b_H R_{iB} 
+                                  \left( 1+ d_H b_H \widetilde{C_{0H}}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+         & R_{iB} < 0 \\
+      \end{array} \right.
+\end{equation}
+\begin{equation}
+C_H = \widetilde{C_H} f_T 
+\end{equation}
+%
+\begin{equation}
+\widetilde{C_E} = \left\{ 
+      \begin{array}{lr}
+      \widetilde{C_{0E}} [ 1 + (b_E/e_E) R_{iB} ]^{-e_E} 
+         & R_{iB} \geq 0 \\
+      \widetilde{C_{0E}} \left[ 1 - b_E R_{iB} 
+                                  \left( 1+ d_E b_E \widetilde{C_{0E}}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+         & R_{iB} < 0 \\
+      \end{array} \right.
+\end{equation}
+\begin{equation}
+C_E = \widetilde{C_E} f_q 
+\end{equation}
+
+$C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ は
+中立時の($z_{0M}$からのフラックスに対する)バルク係数で,
+%
+\begin{equation}
+C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  = 
+       \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 } .
+\end{equation}
+
+補正ファクター $f_q$ は, 
+\begin{equation}
+  f_q = (q_1 - q(z_0))/(q_1 - q^{\ast}(\theta_0))
+\end{equation}
+であるが, 計算方法は略す. 
+係数は, $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 ), \;
+( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$ である. 
+
+バルク係数の $Ri_B$ 依存性を図示すると,
+図\ref{p-sflx:cm}, 図\ref{p-sflx:ch}のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=sflx-cm.ps,width=70mm}
+    \caption{運動量に対する粗度}
+    \label{p-sflx:cm}
+  \end{center}
+\end{figure}
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=sflx-ch.ps,width=70mm}
+    \caption{熱に対する粗度. $z_{0H}/z_{0M}=0.1$ の場合}
+    \label{p-sflx:ch}
+  \end{center}
+\end{figure}
+
+\subsubsection{フラックスの計算}
+
+これにより, フラックスが計算される.
+%
+\begin{equation}
+\hat{F}u_{1/2}  =  - \rho_{1/2} C_M |\Dvect{v}_1| u_1
+\end{equation}
+\begin{equation}
+\hat{F}v_{1/2}  =  - \rho_{1/2} C_M |\Dvect{v}_1| v_1
+\end{equation}
+\begin{equation}
+\hat{F}\theta_{1/2}  = \rho_{1/2} c_p C_H |\Dvect{v}_1| 
+                    \left( T_0 - \sigma_1^{-\kappa} T_1 \right)
+\end{equation}
+\begin{equation}
+\hat{F}q^P_{1/2}  =  \rho_{1/2} C_E |\Dvect{v}_1| 
+                    \left( q^*(T_0) - q_1 \right)
+\end{equation}
+
+微分項は, 以下のようになる.
+\begin{equation}
+\DP{Fu_{1/2}}{u_1} = \DP{Fv_{1/2}}{v_1} 
+= - \rho_{1/2} C_M |\Dvect{v}_1|
+\end{equation}
+\begin{equation}
+\DP{F\theta_{1/2}}{T_1} 
+= - \rho_{1/2} c_p C_H |\Dvect{v}_1| \sigma_1^{-\kappa}
+\end{equation}
+\begin{equation}
+\DP{F\theta_{1/2}}{T_0} 
+= \rho_{1/2} c_p C_H |\Dvect{v}_1|
+\end{equation}
+\begin{equation}
+\DP{Fq_{1/2}}{q_1} 
+ =  - \beta \rho_{1/2} C_E |\Dvect{v}_1| 
+\end{equation}
+\begin{equation}
+\DP{Fq^P_{1/2}}{T_0} 
+ =  \beta \rho_{1/2} C_E |\Dvect{v}_1| \left( \DD{q^*}{T} \right)_{1/2}
+\end{equation}
+
+ここで, 注意したいのは,
+$T_0$ はこの時点では求められていない量であることである.
+表皮温度は, 
+地表熱バランスの条件
+\begin{equation}
+   F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
+\end{equation}
+を満たすように決まる.
+この時点では, $T_0$ としては前の時間ステップにおけるものを使って評価する.
+地表バランスを満たす本当のフラックスの値は,
+地表過程と結合してこの式を解いてから定まる.
+その意味で, 上のフラックスに$\hat{\mbox{}}$をつけておいた.
+
+\subsubsection{海面における取扱い}
+
+海面では, Miller et al.(1992) に従い, 以下の2つの効果を考慮している.
+\begin{itemize}
+\item 風速が弱いときに自由対流運動が卓越すること
+\item 海面の粗度が風速によって変化すること
+\end{itemize}
+
+自由対流運動の効果は, 浮力フラックス$F_B$ を計算し,
+\begin{equation}
+  F_B = F\theta/c_p + \epsilon T_0 F_q^P
+\end{equation}
+$F_B >0$ のときに,
+\begin{equation}
+  w^* = ( H_{B} F_B )^{1/3}
+\end{equation}
+\begin{equation}
+  |\Dvect{v}_1| = \left( u_1^2 + v_1^2 + (w^*)^2 \right)^{1/2}
+\end{equation}
+とすることで考慮する.  $H_B$ は混合層の厚さのスケールに対応する.
+現在の標準値は $H_B=2000$m である.
+% この自由対流運動の効果は, 海面以外でも考慮している.
+
+海面の粗度変化は, 摩擦速度$u^*$
+\begin{equation}
+  u^* = \left( \sqrt{Fu^2 + Fv^2}/\rho \right)^{1/2}
+\end{equation}
+を用いて,
+\begin{eqnarray}
+  Z_{0M} & = & A_M + B_M (u^*)^2/g + C_M \nu/u^* \\
+  Z_{0H} & = & A_H + B_H (u^*)^2/g + C_H \nu/u^* \\
+  Z_{0E} & = & A_E + B_E (u^*)^2/g + C_E \nu/u^* 
+\end{eqnarray}
+のように評価する. $\nu=1.5\times10^{-5}$ m$^2$ s$^{-1}$ は
+大気の動粘性係数であり, 
+他の係数の標準値は
+$(A_M, B_M, C_M) = (0, 0.018, 0.11) $,
+$(A_H, B_H, C_H) = (1.4\times10^{-5}, 0, 0.4) $,
+$(A_E, B_E, C_E) = (1.3\times10^{-4}, 0, 0.62) $ である.
+
+以上の計算では, $Fu, Fv, F\theta, Fq$ が必要であるため,
+逐次近似計算を行なう.
+
+\subsubsection{風速の補正}
+
+一般に粗度の大きな地表では, 粗度の小さな地表に比べて
+運動量の下向き輸送が効率的であるためにその直上の風が弱く,
+粗度による $C_D$ の違いを風速の違いによって打ち消す効果が働く.
+
+モデルにおいて地表フラックス計算に渡される風速は
+力学過程の時間積分によって計算された値であり,
+スペクトル展開によって平滑化された値となっている.
+そのために, 海面と陸面など, 粗度の大きく違う地表が
+小さなスケールで混在している領域では, 
+この補償効果がうまく表現できない.
+そのため, 一度運動量フラックスを計算し,
+大気最下層の風速をそれによって補正してから
+もういちど運動量・熱・水のフラックスを計算しなおす.
+
+\subsubsection{風速の最小値}
+
+小規模運動の効果を考え,
+地表フラックスの算出の際の地表風速
+$|\Dvect{v}_1|$ の最小値を設定する.
+現在の標準値は, 各フラックスに共通で
+3m/s である.
+

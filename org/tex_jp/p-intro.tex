@@ -1,0 +1,292 @@
+﻿
+\section{物理過程}
+
+\subsection{物理過程の概要}
+
+物理過程として, 以下のような過程を考える
+\begin{itemize}
+\item 積雲対流過程
+\item 大規模凝結過程
+\item 放射過程
+\item 鉛直拡散過程
+\item 地表フラックス
+\item 地表面・地中過程
+\item 重力波抵抗
+\end{itemize}
+これらの過程による予報変数の時間変化項
+$F_x, F_y, Q, M, S$ を計算し, 時間積分を行なう.
+また, 大気・地表フラックスを評価するために
+地表面サブモデルを利用する.
+地表面サブモデルにおいては,
+地中温度 $T_g$, 地中水分 $W_g$, 積雪量 $W_y$ などを
+予報変数として用いている.
+
+
+\subsubsection{基本方程式}
+
+$\sigma$座標系の大気の運動方程式, 熱力学の式,
+水蒸気などの物質の連続の式を考える.
+運動量, 熱, 水蒸気等の鉛直方向のフラックスを考慮し,
+その収束による時間変化を求める.
+鉛直フラックスは全て上向きを正とする.
+
+\begin{enumerate}
+\item 運動方程式
+
+\begin{equation}
+  \rho \DD{u}{t} = \DP{Fu}{\sigma}
+\label{u-eq.orig}
+\end{equation}
+\begin{equation}
+  \rho \DD{v}{t} = \DP{Fv}{\sigma}
+\end{equation}
+
+$u, v$: 東西, 南北風; 
+$Fu, Fv$: それらの鉛直フラックス.
+
+\item 熱力学の式
+
+\begin{equation}
+  \rho \DD{c_p T}{t} = \frac{T}{\theta} \DP{F{\theta}}{\sigma} 
+                     + \DP{F{R}}{\sigma} 
+\end{equation}
+
+$T$: 温度; 
+$c_p$: 定圧比熱; 
+$\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: 温位;
+$F\theta$: 鉛直顕熱フラックス;
+$FR$: 鉛直放射フラックス.
+
+ここで, $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$ とおくと, これは,
+\begin{equation}
+  \rho \DD{c_p T}{t} = \sigma^\kappa \DP{F{\theta'}}{\sigma} 
+                     + \DP{F{R}}{\sigma} 
+\end{equation}
+
+鉛直1次元過程を考える限りにおいては,
+$\theta$の代わりに $\theta'$ を考えればよい.
+以下, 簡単のために, 混同のおそれがない限り,
+$\theta'$ を $\theta$ と書く.
+
+\item 水蒸気の連続の式
+
+\begin{equation}
+  \rho \DD{q}{t} = \DP{Fq}{\sigma} 
+\end{equation}
+
+$q$: 比湿; 
+$F{q}$: 鉛直水蒸気フラックス.
+
+\subsubsection{地中の基本方程式}
+
+下向きを正とした $z$ 座標で考える. 
+やはり鉛直フラックスは全て上向きを正とする.
+
+\item 熱の式
+
+\begin{equation}
+  \DP{C_g G}{t} = \DP{Fg}{z} + Sg
+\end{equation}
+
+$G$: 地中温度; $C_g$: 定圧比熱; 
+$F{g}$: 鉛直熱フラックス;
+$Sg$; 加熱項(相変化などによる).
+
+\item 地中水分の式
+
+\begin{equation}
+  C_w \DP{w}{t} = \DP{Fw}{z} + Sw
+\end{equation}
+
+$w$: 地中水分; 
+$F{w}$: 鉛直水フラックス;
+$Sw$; 水のソース(流出など).
+
+\item エネルギーの収支式
+
+地表表面で, エネルギーのバランスが成立する.
+
+\begin{equation}
+    F{\theta} + L F{q} + F{R} - F{g} = \Delta s \; \; (\sigma=1, z=0)
+\end{equation}
+
+$L$: 蒸発の潜熱;
+$\Delta s$: 地表エネルギーバランス(相変化などにともなう).
+
+\item 地表の水の収支
+
+\begin{equation}
+  Pg + Fw - Rg = 0
+\end{equation}
+
+$Pg$: 降水;
+$Rg$: 表面流出.
+
+\item 雪の収支
+
+\begin{equation}
+  \DP{Wy}{t} = Py - Fy - My
+\end{equation}
+
+$Wy$: 積雪量(kg/m$^2$);
+$Py$: 降雪;
+$Fy$: 昇華;
+$My$: 融雪.
+
+\end{enumerate}
+
+\subsubsection{物理過程の時間積分法}
+
+予報変数の時間積分の観点から物理過程を分類すると,
+実行順に以下の3つに分けることができる.
+\begin{enumerate}
+\item 積雲対流および大規模凝結
+\item 放射, 鉛直拡散, 接地境界層・地表過程       
+\item 重力波抵抗, 質量調節, 乾燥対流調節
+\end{enumerate}
+
+積雲対流および大規模凝結は,
+\begin{equation}
+  \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t} 
+                         +  2 \Delta t Q_{CUM}(\hat{T}^{t+\Delta t})
+\end{equation}
+\begin{equation}
+  \hat{T}^{t+\Delta t,(2)} = \hat{T}^{t+\Delta t,(1)} 
+                         +  2 \Delta t Q_{LSC}(\hat{T}^{t+\Delta t,(1)})
+\end{equation}
+のように, 通常の Euler 差分によって値を順次更新する.
+大規模凝結スキームには, 
+積雲対流スキームによって更新された値が受け渡されることに注意.
+実際には, 積雲対流や大規模凝結のルーチンでは加熱率等が出力され,
+時間積分はその直後の \Module{GDINTG} によって行なわれる.
+
+次のグループの放射, 鉛直拡散, 接地境界層・地表過程
+の計算は, 基本的には全てこの更新された値
+( $\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$ 等 )
+を用いて行なわれる.
+ただし, 一部の項を implicit 扱いで計算するために,
+これらの項を全て一括して加熱率等を計算して, 
+最後に時間積分を行なう.
+すなわち, シンボリックに書けば,
+\begin{equation}
+  \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)} 
+              + 2 \Delta t Q_{RAD,DIF,SFC}
+               (\hat{T}^{t+\Delta t,(2)},\hat{T}^{t+\Delta t,(3)})
+\end{equation}
+となる.
+
+重力波抵抗, 質量調節, 乾燥対流調節に関しては,
+積雲対流および大規模凝結と同様である.
+\begin{equation}
+  \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)} 
+              +  2 \Delta t Q_{ADJ}(\hat{T}^{t+\Delta t,(3)})
+\end{equation}
+
+
+
+\subsubsection{各種の物理量}
+
+予報変数から簡単な計算で求められる
+各種の物理量の定義を示す.
+このうちいくつかは, 
+\Module{PSETUP} で計算される.
+
+\begin{enumerate}
+\item 仮温度
+
+仮温度 $T_v$ は, 
+\begin{equation}
+  T_v = T ( 1 + \epsilon_v q - l )
+\end{equation}
+
+\item 大気密度
+
+大気密度$\rho$ は, 以下のように計算される.
+\begin{equation}
+  \rho = \frac{p}{RT_v}
+\end{equation}
+
+\item 高度
+
+高度 $z$ は, 力学過程での
+ジオポテンシャルの計算と同じ方式によって評価する.
+\begin{equation}
+  z = \frac{\Phi}{g} 
+\end{equation}
+\begin{equation}
+ \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1}
+\end{equation}
+%
+\begin{equation}
+ \Phi_k - \Phi_{k-1} 
+   =  C_{p}
+   \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
+          - 1 \right] T_{v,k} 
+       + C_{p}
+   \left[ 1- 
+         \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
+              \right] T_{v,k-1}
+\end{equation}
+
+
+\item 層の境界の温度
+
+層の境界の温度は, $\ln p$ すなわち $\ln \sigma$ に対する
+線形補間を行なって計算する.
+\begin{equation}
+  T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_k
+            + \frac{\ln \sigma_{k-1/2} - \ln \sigma_k}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_{k-1}
+\end{equation}
+
+\item 飽和比湿
+
+飽和比湿 $q^*(T,p)$
+は飽和蒸気圧$e^*(T)$ を用いて近似的に,
+%
+\begin{equation}
+q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
+\end{equation}
+%
+ここで, $\epsilon=0.622$ であり,
+%
+\begin{equation}
+\frac{1}{e^*_v} \DP{e^*_v}{T} = \frac{L}{R_v T^2}
+\label{e-sat}
+\end{equation}
+%
+よって, 蒸発の潜熱$L$, 水蒸気の気体定数 $R_v$ を一定とすれば,
+%
+\begin{equation}
+  e^*(T) = e^*(T=273\mbox{K}) 
+                      \exp \left[ \frac{L}{R_v} 
+                            \left( \frac{1}{273} - \frac{1}{T} \right)
+                       \right] ,
+\end{equation}
+%
+$e^*(T=273\mbox{K}) = 611$\ [Pa] である.
+
+(\ref{e-sat})より,
+%
+\begin{equation}
+\DP{q^*}{T} = \frac{L}{R_v T^2} q^*(T,p) .
+\end{equation}
+
+ここで, 温度が氷点 273.15K よりも低い場合には,
+潜熱 $L$ として昇華の潜熱 $L+L_M$ を用いる.
+
+\item 乾燥静的エネルギー, 湿潤静的エネルギー
+
+乾燥静的エネルギー $s$ は
+\begin{equation}
+  s = C_p T + g z \; ,
+\end{equation}
+%
+湿潤静的エネルギー $h$ は
+\begin{equation}
+  h = C_p T + g z + L q \; ,
+\end{equation}
+で定義される.
+
+\end{enumerate}

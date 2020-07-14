@@ -1,0 +1,43 @@
+﻿%
+%   dmath.sty
+%
+%  following commands are defined
+%
+%  \DD[n]{A}{x}
+%  \DP[n][y]{A}{x}
+%  \Dvect{v}
+%  \Dinv{A}
+%  \Dgrad{A}
+%  \Ddiv{A}
+%  \Drot{A}
+%  \Dnablagrad
+%  \Dchargrad
+%
+\def\DD{\@ifnextchar [{\D@D}{\D@D[]}}
+\def\D@D[#1]#2#3{\frac{d^{#1} #2}{d #3{}^{#1}}}
+\def\DP{\@ifnextchar [{\D@P}{\D@P[]}}
+\def\D@P[#1]{\@ifnextchar [{\D@Pi[#1]}{\D@PD[#1]}}
+\def\D@PD[#1]#2#3{\frac{\partial^{#1}#2}{\partial #3{}^{#1}}}
+\def\D@Pi[#1][#2]#3#4{\left( \frac{\partial^{#1}#3}{\partial #4{}^{#1}}
+                      \right)_{#2}}
+%
+\def\Dvect#1{\mbox{\boldmath $#1$}}
+\def\Dinv#1{\frac{1}{#1}}
+\def\Dlapla{\@ifnextchar [{\D@lapla} % ]
+           {\D@lapla[2]}}
+\def\D@lapla[#1]{\nabla^{#1}}
+\def\D@ngrad{\nabla}
+\def\D@ndiv{\nabla \cdot}
+\def\D@nrot{\nabla \times}
+\def\D@cgrad{\mbox{grad}}
+\def\D@cdiv{\mbox{div}}
+\def\D@crot{\mbox{rot}}
+\def\Dnablagrad{\let\Dgrad\D@ngrad \let\Ddiv\D@ndiv \let\Drot\D@nrot}
+\def\Dchargrad{\let\Dgrad\D@cgrad \let\Ddiv\D@cdiv \let\Drot\D@crot}
+%
+\def\Dd{\,d}
+\def\Ddint{\int\!\!\!\int}
+\def\Dtint{\int\!\!\!\int\!\!\!\int}
+\def\Ddsty{\displaystyle}
+%
+\Dnablagrad
