@@ -1,0 +1,65 @@
+﻿%
+%    dprog.sty ver. 1.0                   92/03/24
+%
+%  following environment is defined
+%
+%  \begin{\Dprogram}  \end{\Dprogram}
+%
+%  following commands are defined
+%
+%  \Dproginput{file_name}
+%  \Dproglineoff
+%  \Dproglineon
+%  \Dproglinestart
+%
+%  following commands can be redefined by \def or \renewcommand 
+%
+%  \Dprogsize
+%  \Dprogskip
+%  \Dprogline#1
+%  \Dproglinewidth
+%  \Dproglinesep
+%
+\def\Dprogsize{\small}                  % font size
+\def\Dprogskip{2ex}                     % vertical skip
+\def\Dprogline#1{\scriptsize\it #1}     % line number font
+\def\Dproglinewidth{3em}
+\def\Dproglinesep{1em}
+%
+\def\Dproglineon{\let\D@progline\Dprogline}
+\def\Dproglineoff{\def\D@progline##1{}}
+\def\Dproglinestart#1{\def\D@proglinestart{#1}}
+%
+\def\Dproglinebox{%
+   \makebox[\Dproglinewidth][r]{\D@progline{\theD@proglineno}}
+   \hskip\Dproglinesep}
+\Dproglineon \Dproglinestart{1}
+\newcounter{D@proglineno}
+%
+\def\Dproginput#1{
+  \begingroup\Dprogsize \baselineskip=\Dprogskip 
+  \par\bigskip\noindent\endgraf
+  \@verbatim \frenchspacing\@vobeyspaces
+  \setcounter{D@proglineno}{\D@proglinestart}
+  \def\par{\leavevmode\endgraf}\obeylines
+  \def\everypar{\Dproglinebox\stepcounter{D@proglineno}}
+  \input#1
+  \endgroup
+}
+%
+\begingroup \catcode `|=0 \catcode `[= 1
+  \catcode`]=2 \catcode `\{=12 \catcode `\}=12  \catcode`\\=12 
+  |gdef|@xDprogram#1\end{Dprogram}[|@gobble#1|end[Dprogram]]
+|endgroup
+%
+\def\Dprogram{
+  \Dprogsize \baselineskip=\Dprogskip 
+  \par\bigskip\noindent\endgraf
+  \@verbatim \frenchspacing\@vobeyspaces
+  \setcounter{D@proglineno}{\D@proglinestart}
+  \def\par{\leavevmode\endgraf}\obeylines
+  \def\everypar{\Dproglinebox\stepcounter{D@proglineno}}
+  \@xDprogram
+}
+%
+\def\endDprogram{\endtrivlist}

@@ -1,0 +1,217 @@
+﻿
+\subsection{鉛直拡散}
+
+\subsubsection{鉛直拡散スキームの概要}
+
+鉛直拡散スキームは,
+サブグリッドスケールの乱流拡散による
+物理量の鉛直フラックスを評価する.
+主な入力データは, 風速, $u, v$, 気温 $T$, 比湿 $q$, 雲水量 $l$, であり,
+出力データは, 運動量, 熱, 水蒸気, 雲水の鉛直フラックスと
+implicit 解を得るための微分値である.
+
+鉛直拡散係数の見積りには
+Mellor and Yamada(1974, 1982)の
+乱流クロージャーモデルの
+level 2 のパラメタリゼーションを用いる.
+
+計算手順の概略は以下の通りである.
+\begin{enumerate}
+\item 大気の安定度として
+      Richardson 数を計算する.
+\item Richardson 数から拡散係数を計算する \Module{VDFCOF}.
+\item 拡散係数からフラックスとその微分を計算する.
+\end{enumerate}
+
+\subsubsection{フラックス計算の基本式}
+
+大気中の鉛直拡散フラックスは, 
+拡散係数 $K$ を用いて, 以下のように評価される.
+
+\begin{equation}
+  F{u} = K_{M} \DP{u}{\sigma} 
+\end{equation}
+\begin{equation}
+  F{v} = K_M \DP{v}{\sigma} 
+\end{equation}
+\begin{equation}
+  F{\theta} = K_H \DP{\theta}{\sigma} 
+\end{equation}
+\begin{equation}
+  F{q} = K_q \DP{q}{\sigma} 
+\end{equation}
+
+\subsubsection{Richardson 数}
+
+大気の成層安定度の基準となる,
+バルクRichardson数 $R_{iB}$ は
+
+\begin{equation}
+R_{iB} = \frac{\displaystyle 
+               \frac{g}{\theta_s} \frac{\Delta \theta}{\Delta z} }
+              {\displaystyle
+                  \left( \frac{\Delta u}{\Delta z} \right)^2 
+                + \left( \frac{\Delta v}{\Delta z} \right)^2      }
+\end{equation}
+で定義される.
+ここで, $(\Delta A)_{k-1/2}$ は $A_{k} - A_{k-1}$ を表す.
+また, $(\Delta z)_{k-1/2}$ は, 静水圧の式より,
+\begin{equation}
+(\Delta z)_{k-1/2} = \frac{R Tv_{k}}{g} 
+                     \frac{(\Delta \sigma)_{k-1/2}}{\sigma_{k-1/2}}
+\end{equation}
+
+フラックスRicahrdson数 $R_{if}$ は,
+
+\begin{equation}
+R_{if} = \frac{1}{2 \beta_2}
+      \left[ \beta_1 + \beta_4 R_{iB}
+              - \sqrt{ ( \beta_1 + \beta_4 R_{iB} )^2 
+                       - 4 \beta_2 \beta_3 R_{iB} }
+              \right] ,
+\end{equation}
+ただし, 
+
+\begin{eqnarray}
+\alpha_1 & = & 3 A_2 \gamma_1  \\
+\alpha_2 & = & 3 A_2 (\gamma_1+\gamma_2) \\
+\beta_1  & = & A_1 B_1 ( \gamma_1 - C_1 ) \\
+\beta_2  & = & A_1 [ B_1 ( \gamma_1 - C_1 ) + 6 A_1 + 3 A_2 ] \\
+\beta_3  & = & A_2 B_1 \gamma_1 \\
+\beta_4  & = & A_2 [ B_1 ( \gamma_1 + \gamma_2 ) - 3 A_1 ] ,
+\end{eqnarray}
+\begin{equation}
+(A_1, B_1, A_2, B_2, C_1 ) = ( 0.92, 16.6, 0.74, 10.1, 0.08 ) ,
+\end{equation}
+
+\begin{equation}
+\gamma_1 = \frac{1}{3} - \frac{2 A_1}{B_1}\, , \, \, \, 
+\gamma_2 = \frac{B_2}{B_1} + 6\frac{A_1}{B_1} .
+\end{equation}
+
+$R_{iB}$ と $R_{if}$の関係を図示すると,
+図\ref{p-dif:rib-rif} のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=dif-rif.ps,width=70mm}
+    \caption{バルクRichardson数とフラックスRichadson数の関係}
+    \label{p-dif:rib-rif}
+  \end{center}
+\end{figure}
+
+\subsubsection{拡散係数}
+
+拡散係数は,
+各層の境界($k-1/2$レベル)ごとに,
+次のように与えられる.
+
+\begin{eqnarray}
+K_M       & = & l^2 \frac{\Delta |\Dvect{v}|}{\Delta z} S_M  \\
+K_H = K_q & = & l^2 \frac{\Delta |\Dvect{v}|}{\Delta z} S_H 
+\end{eqnarray}
+
+ここで, $S_M, S_H$ は,
+\begin{equation}
+\widetilde{S_H} = \frac{ \alpha_1-\alpha_2 R_{if} }{ 1-R_{if} }
+\end{equation}
+%
+\begin{equation}
+\widetilde{S_M} = \frac{ \beta_1-\beta_2 R_{if} }{ \beta_3-\beta_4 R_{if} } 
+                  \widetilde{S_H} ,
+\end{equation}
+を用いて,
+\begin{eqnarray}
+S_M & = & B_1^{1/2} ( 1- R_{if} )^{1/2} 
+          \widetilde{S_M}^{3/2} \\
+S_H & = & B_1^{1/2} ( 1- R_{if} )^{1/2} 
+          \widetilde{S_M}^{1/2} \widetilde{S_H} .
+\end{eqnarray} 
+
+$l$ は混合距離であり, Blakadar(1962)に従って,
+\begin{equation}
+l = \frac{kz}{1+kz/l_0}
+\end{equation}
+ととる. 
+$k$ は K\'{a}rman 定数である. 
+% 漸近混合距離$l_0$は, 
+% $R_{iB} > R_{iBC}$ となるような最大の$\sigma$ を
+% 境界層の上端$\sigma_B$と考え, それ以上と以下で異なる値を与える.
+% \begin{equation}
+% \sigma_B = max(\sigma; R_{iB} > R_{iBC})
+% \end{equation}
+%
+% \begin{equation}
+%  l_0 = \left\{
+%  \begin{array}{l}
+%    l_{0B} \; \; ( \sigma > \sigma_B ) \\
+%    l_{0F} \; \; ( \sigma \le \sigma_B ) \\
+%  \end{array} 
+%  \right.
+% \end{equation}
+% 
+% 現在の標準値は, 
+% $R_{iBC}=2, l_{0B}=1000\mbox{m}, l_{0F}=10\mbox{m}$ である.
+現在の標準値は, $l_0=200$m である.
+
+$S_H, S_M$ を$R_{if}$ の関数として示すと,
+図\ref{p-dif:smsh-rif} のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=dif-smsh.ps,width=70mm}
+    \caption{フラックスRichardson数と $S_M,S_H$ の関係}
+    \label{p-dif:smsh-rif}
+  \end{center}
+\end{figure}
+
+
+\subsubsection{フラックスの計算}
+
+以上を用い, フラックスおよびフラックス微分を計算する.
+
+\begin{equation}
+  Fu_{k-1/2} = K_{M,k-1/2}(u_{k-1}-u_{k})/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  Fv_{k-1/2} = K_{M,k-1/2}(v_{k-1}-v_{k})/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  F\theta_{k-1/2} 
+  = K_{H,k-1/2}(\theta_{k-1}-\theta_{k})/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  Fq_{k-1/2} = K_{q,k-1/2}(q_{k-1}-q_{k})/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+
+\begin{equation}
+     \DP{Fu_{k-1/2}}{u_{k-1}} =   \DP{Fv_{k-1/2}}{v_{k-1}} 
+  = -\DP{Fu_{k-1/2}}{u_{k}} = - \DP{Fv_{k-1/2}}{v_{k}}  
+  = K_{M,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  \DP{F\theta_{k-1/2}}{T_{k-1}}
+  = \sigma_{k-1}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  \DP{F\theta_{k-1/2}}{T_{k}}
+ = \sigma_{k}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+\begin{equation}
+  \DP{Fq_{k-1/2}}{u_{k-1}}
+ = - \DP{Fq_{k-1/2}}{u_{k}}
+ = K_{q,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+\end{equation}
+
+\subsubsection{拡散係数の最小値}
+
+非常に安定な場合に, 以上の見積りは拡散係数として 0 を与える.
+これをそのまま用いるとモデルの振舞いにさまざまな
+悪影響をもたらすので, 適当な最小値を置く.
+現在の標準値は, 全てのフラックスに共通で
+$K_{min}=$0.15m$^{2}$/s である.
+
+\subsubsection{その他の留意点}
+
+浅い積雲対流 \Module{SHLCOF} を呼んでいるが, 
+標準ではこれはダミーである.

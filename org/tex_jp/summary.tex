@@ -1,0 +1,38 @@
+﻿%\documentstyle[a4j,dennou]{jarticle}
+
+
+\section{モデルの概要}
+
+\subsection{CCSR/NIES AGCM の特徴}
+
+        AGCM5.4 は, 東京大学気候システム研究センター(CCSR)と
+        国立環境研究所(NIES)の共同研究によって作成された, 
+        全球3次元大気大循環モデルである. 
+        モデルの特徴を以下に示す.
+
+        \begin{center}
+        \begin{tabular}{ll}
+          方程式系     &  静水圧プリミティブ方程式系  \\
+          領域         &  全球3次元  \\
+          予報変数     &  水平風速, 温度, 地表気圧, 比湿, 雲水量,
+                          陸地表面温度, 土壌水分  \\
+          水平離散化   &  スペクトル変換法  \\
+          鉛直離散化   &  σ系(Arakawa and Suarez, 1983) \\
+          放射         &  2ストリーム DOM/adding 法 \\
+                       &  (Nakajima and Tanaka, 1986 に基づく) \\
+          大規模雲過程 &  総水混合比を予報変数とするスキーム \\
+                       &  (Le Treut and Li, 1991 に基づく) \\
+          積雲対流     &  簡易型 Arakawa-Schubert スキーム \\
+          鉛直拡散     &  Mellor and Yamada(1974) level2   \\
+          地表flux     &  Louis(1979) バルク式 \\
+                       &  (気孔抵抗, Miller et al. 1992 の対流効果を考慮) \\
+          地表面熱過程 &  多層熱伝導 \\
+          地表水文過程 &  バケツモデル \\
+                       &  (または, 新バケツモデル, 多層水輸送) \\
+          重力波抵抗   &  McFarlane(1987)に基づくスキーム \\
+          オプション   &  南北-鉛直および東西-鉛直2次元モデル. 
+                          鉛直1次元モデル. \\
+                       &  海洋混合層結合モデル
+         \end{tabular}
+        \end{center}
+

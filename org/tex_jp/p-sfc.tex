@@ -1,0 +1,997 @@
+﻿
+\subsection{地表過程}
+
+\subsubsection{地表過程の概要}
+
+地表過程は, 大気・地表間の運動量・熱・水の
+フラックスの交換を通して大気下端の境界条件を与える.
+地表過程は, 地中温度$T_g$, 地中水分$W_g$,
+積雪量$W_y$ などの独自の予報変数を扱い,
+地表面の熱慣性, 水の蓄積, 積雪の蓄積, 
+海氷の蓄積などを評価する.
+主な入力データは, 大気・地表間の物理量の拡散
+ならびに放射と降水によるフラックスである.
+出力データは, 地表面温度 $T_s$ ならびに,
+アルベド, 粗度などの種々の境界条件パラメータである.
+
+地表過程は, 以下のように分類される.
+\begin{enumerate}
+  \item 地中熱拡散過程 --- 地中温度構造等を決める
+  \item 地中水文過程   ---  地中水分構造, 流出等を決める
+  \item 積雪過程        ---  積雪・融雪など, 雪に関わる諸過程の表現
+  \item 海洋混合層過程 --- 海洋温度, 海氷厚を決める(オプション)
+\end{enumerate}
+      
+CCSR/NIES AGCM の地表過程の特徴を簡単に列挙する:
+\begin{enumerate}
+\item 地中において, 多層の熱伝導, 水拡散(オプション)を評価する.
+\item 表皮温度を用いて地表熱収支を評価する.
+\item 熱と水の拡散伝導はimplicit法で解く.
+\item 雪は独立した層としては扱わず, 地表第1層と共に評価する.
+\item 多層で海洋混合層と海氷を評価する(オプション)
+\end{enumerate}
+
+計算の流れに沿って, スキームの概略を説明する.
+[\ ] 内は対応するサブルーチン名および( ) 内はファイル名である.
+また, 括弧で囲まれた項目は他の節の説明を参照のこと.
+
+\begin{enumerate}
+  \item (地表フラックスを評価する \Module{SFCFLX(psfcm)}) \\
+            大気-地表間の熱・水(蒸発)・運動量のフラックスを
+            バルク式で見積もる.
+            ただし, 蒸発効率 $\beta$ は1として行なう.
+
+  \item 地表粗度を評価する \Module{GNDZ0(pgsfc)} \\
+            基本的にはファイルや地表タイプに依存して
+            外部から与えられるが, 
+            積雪量などによって変更を行なう.
+
+  \item 地表面内の熱フラックスと熱容量を評価する .
+        \Module{LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)} \\
+            陸と海の各層の熱容量を見積り,
+            各層境界の熱フラックスを熱伝導の式から見積もる.
+            また, 積雪がある場合熱容量とフラックスを変更する.
+
+  \item 陸面の水フラックスと容量を評価する \Module{LNDWFX(pglnd)} \\
+            陸の各層の水の容量を見積もり, 
+            各層境界の水フラックスを水拡散の式から見積もる
+
+  \item 蒸発効率を評価する \Module{GNDBET(pgsfc)} \\
+            陸面では, 土壌水分と気孔抵抗に依存して計算する. 
+
+  \item 地中熱伝導のimplicit解法を途中まで行なう \Module{GNDHT1(pggnd)} \\
+            地中の熱伝導による温度の変化を評価する.
+            ただし, 地表面温度の変化も組み入れて 
+            implicit で行なうため, ここで行なうのは, その第1段階のみである.
+
+  \item 地表熱バランスを解く \Module{SLVSFC(pgslv)} \\
+            地表面の熱バランスの式を解き, 地表面温度と
+            大気第1層の気温・比湿の時間変化を求める.
+            これを用いて, 大気地表間の熱・水(蒸発)のフラックス
+            および地表での熱伝導フラックスを補正する.
+            また, 積雪または氷があり, 地表温度が氷点を越える場合には,
+            地表温度を氷点として, 
+            残差のフラックスを融雪に用いられるフラックスとして評価する.
+
+  \item 地中熱伝導をimplicit解法で解く \Module{GNDHT2(pggnd)} \\
+            地表面温度の変化が求められたので, それを用いて
+            地中の熱伝導による地中温度の変化を解く.
+
+  \item 積雪の昇華による積雪減少を評価する \Module{SNWSUB(pgsnw)} \\
+            積雪条件のとき, 求められた蒸発(昇華)フラックスによって
+            積雪を減少させる.
+
+  \item 降雪による積雪増加を評価する \Module{SNWFLP(pgsnw)} \\
+            降雪と降雨を判別し, 降雪時には積雪を増加させる.
+
+  \item 融雪による積雪減少を評価する \Module{SNWMLP(pgsnw)} \\
+            積雪時に地表温度または第1層温度が氷点を越える場合には,
+            融雪が起こるとし, 温度を氷点以下に保ち,
+            積雪を減少させる. 
+
+  \item 地中水の拡散をimplicit解法で解く \Module{GNDWTR(pggnd)} \\
+            地中の水フラックスによる地中水分の変化を解く.
+            
+  \item 積雪による降水遮断を評価する \Module{SNWROF(pgsnw)} \\
+            積雪がある場合は, 土壌への降水の浸透は妨げられ,
+            降雨と融雪水(の一部)が流出となる. 
+
+  \item 地表の流出を評価する \Module{LNDROF(pglnd)} \\
+            降雨と融雪水の地表流出を計算する.
+            バケツモデル, 新バケツモデル,
+            浸透能を用いた流出評価の3通りの評価方法を選択できる.
+
+  \item 凍土過程を評価する \Module{LNDFRZ(pglnd)} \\
+            地中水分の凍結融解と
+            それにともなう潜熱放出による温度変化を計算する.
+            ただし, このルーチンはオプションであり, 
+            通常はスキップされる.
+
+  \item 海氷の成長を評価する \Module{SEAICE(pgsea)} \\
+            海洋混合層オプションを指定した場合,
+            熱伝導による海氷の厚さの増減を計算する.
+
+  \item 海氷の表面融解を評価する \Module{SEAMLT(pgsea)} \\
+            海氷の地表温度または第1層温度が氷点を越える場合には,
+            融解が起こるとし, 温度を氷点以下に保ち,
+            海氷の厚さを減少させる. 
+
+  \item 海洋温度のナッジングを行なう \Module{SEANDG(pgsea)} \\
+            海洋混合層オプションを指定した場合, 与えられた
+            温度に近付けるようなナッジングを
+            海面の温度に付け加えることができる.
+
+  \item 地表の風速変化を評価する \Module{SLVWND(pggnd)}  \\
+            大気第1層の風速の変化を解く.
+\end{enumerate}
+
+また, 上に出てきた中で, いくつかのルーチンは
+更に以下のように, 陸面・海面・雪面の評価のサブルーチンに
+分かれるものがある.
+
+\begin{enumerate}
+\item 境界条件の設定 \Module{GNDSFC(pgbnd)}
+      \begin{enumerate}
+      \item 地表面条件を読み込む \Module{GETIDX(pgbnd)}
+      \item 海面条件を読み込む \Module{GETSEA(pgbnd)}
+      \item 海面条件を設定する \Module{SEATMP(pgsea)}
+      \end{enumerate}
+\item 地表アルベドを評価する \Module{GNDALB(pgsfc)}
+      \begin{enumerate}
+      \item アルベドを読み込む \Module{GETALB(pgbnd)}
+      \item 陸面アルベドを変更する \Module{LNDALB(pglnd)}
+      \item 海面アルベドを変更する \Module{SEAALB(pgsea)}
+      \item 雪面アルベドを変更する \Module{SNWALB(pgsnw)}
+      \end{enumerate}
+\item 地表粗度を評価する \Module{GNDZ0(pgsfc)}
+      \begin{enumerate}
+      \item 粗度を読み込む \Module{GETZ0(pgbnd)}
+      \item 陸面粗度を変更する \Module{LNDZ0(pglnd)}
+      \item 海面粗度を変更する \Module{SEAZ0(pgsea)}
+      \item 雪面粗度を変更する \Module{SNWZ0(pgsnw)}
+      \end{enumerate}
+\item 地表湿潤度を評価する \Module{GNDBET(pgsfc)} \\
+      \begin{enumerate}
+      \item 湿潤度を読み込む \Module{GETBET(pgbnd)}
+      \item 陸面湿潤度を変更する \Module{LNDBET(pglnd)}
+      \item 海面湿潤度を変更する \Module{SEABET(pgsea)}
+      \item 雪面湿潤度を変更する \Module{SNWBET(pgsnw)}
+      \end{enumerate}
+\end{enumerate}
+
+\subsubsection{地表面の分類}
+
+地表面は, 外部から与えられる条件として, 
+地表面タイプ$m$によって, 以下のように分類される.
+\begin{center}
+\begin{tabular}{rl}
+m     & 条件 \\
+-2    & 混合層海洋 \\
+-1    & 海氷(外部から与えられたもの) \\
+0     & 海面(外部から温度を与える) \\
+1     & 陸氷 \\
+$\ge$ 2 & 陸面
+\end{tabular}
+\end{center}
+
+さらに, 内部的に変化しうる氷の状態によって, 
+以下のような地表面状態$n$をとる.
+\begin{center}
+\begin{tabular}{rl}
+n     & 状態 \\
+0     & 氷のない海面 \\
+1     & 海氷および陸氷 \\
+$\ge$ 2 & 陸面
+\end{tabular}
+\end{center}
+
+これらは, \Module{GNDSFC(pgsfc)} で定義される.
+
+\subsubsection{地表熱バランス}
+
+地表熱バランスの条件は,
+%
+\begin{equation}
+   F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
+   \label{p-sfc:sfc-balance}
+\end{equation}
+%
+である.
+$F\theta, Fq^P, FR, Fg$ は,
+地表過程を評価する前の大気・地中の予報変数と,
+を用いて評価するが, 
+その時に用いた$T_0$では, このバランスは一般には満たされない.
+
+この解き方にはいくつか方法がある.
+\begin{enumerate}
+\item $T_0$ のみを未知数と考える方法
+\item $T_0,T_1,q_1,G_1$ を未知数と考える方法
+\end{enumerate}
+CCSR/NIES AGCM では, 後者の方法を用いている.
+その際には, 大気・地面の全ての層の変数と結合して解く必要がある.
+詳しくは, 「大気地表系の拡散型収支式の解法」の節で述べる.
+
+また, 蒸発の項 $\beta Fq^P(T_0,q_1)$ の評価の仕方に2通りある.
+\begin{enumerate}
+\item $\beta=1$ として
+      (\ref{p-sfc:sfc-balance}) を解いて求めた $Fq^P$ 
+      (可能蒸発量) に  $\beta$ をかけたものを用いる.
+
+\item $\beta$ を用いて
+      (\ref{p-sfc:sfc-balance}) を直接解く.
+\end{enumerate}
+前者と後者では, $\beta Fq^P$ の項の計算に用いた温度が異なる.
+前者では, $\beta=1$ とした場合の温度,
+後者では, 実際の温度が使われていることになる.
+
+CCSR/NIES AGCM では, 標準的には前者の方法を用いる.
+雪面もしくは氷面で (\ref{p-sfc:sfc-balance}) を解いた結果の
+$T_0$ が氷点を越える場合, 
+または海面で $T_0$ が海水の氷結温度を割る場合(海洋混合層モデルの場合)
+には, $T_0$ を氷点に温度を固定して各フラックスを計算し,
+(\ref{p-sfc:sfc-balance}) の式の残差(エネルギー残差)が
+雪氷の凍結融解に使われるとする.
+
+\subsubsection{離散座標系の設定 \Module{SETGLV,SETWLV,SETSLV}}
+
+地中は, $z$座標系で離散化される.
+陸地温度は層$zg_l$, 水分は層 $zw_l$, 
+海洋温度は層$zs_l$ で定義される.
+上層から下層に$l$が増大する.
+フラックスは, 層の境界 $zg_{k-1/2}, zw_{k-1/2}$ で定義される.
+
+また, $z=0$に厚さ0の層を考え,
+表皮温度 $T_s$ を定義する.
+便宜的に$l=0$ で表し, $zg_{0} = zg_{1/2} = zg_{-1/2} = 0$ とする.
+
+\subsubsection{陸面の熱フラックスと熱容量の計算 \Module{LNDFLX}}
+
+地中の熱・水分フラックスなどの物理量および湿潤度など
+地表面特性の評価は, 地表面が海面か陸面か, また陸面の場合
+積雪があるか否かで場合を分けて行なう. 
+以下では, まず雪の無い陸面の場合についての評価方法を
+一通り記述する. 海面, 雪面の場合の相違点は後で述べる. 
+
+陸面の熱容量は,
+\begin{equation}
+  Cg_{l}  = \tilde{C}g_{l}(zg_{l+1/2} - zg_{l-1/2})
+          = \tilde{C}g_{l} \Delta zg_{l} \; .
+\end{equation}
+ここで, $\tilde{C}g_{l}$ は体積比熱である.
+
+陸面の熱フラックスは, 熱伝導係数を一定として取り扱う($l$には依存しうる).
+\begin{equation}
+  Fg_{l-1/2} = Kg_{l-1/2} (G_l - G_{l-1})(zg_l - zg_{l-1}) \; ,
+\end{equation}
+\begin{equation}
+  \DP{Fg_{l-1/2}}{G_l} = - \DP{Fg_{l-1/2}}{G_{l-1}}
+ = Kg_{l-1/2}/(zg_l - zg_{l-1}) \; .
+\end{equation}
+
+\subsubsection{陸面の水フラックスの計算 \Module{LNDWFX}}
+
+各層の水の容量$C_w$ は, 
+\begin{equation}
+  Cw_{l}  = \rho_w (zw_{l+1/2} - zw_{l-1/2}) 
+          = \rho_w \Delta zw_{l} \; .
+\end{equation}
+ただし, 実際にはこれだけ水を蓄えることができない.
+最大蓄え得る容量, すなわち飽和容量は, $ws$ を飽和含水率として,
+\begin{equation}
+  Cws_{l}  = ws_{l} \rho_w (zw_{l+1/2} - zw_{l-1/2})
+           = ws_{l} \rho_w \Delta zw_{l} \; .
+\end{equation}
+
+地中水フラックスの基本式は以下のように書ける. 
+\begin{equation}
+  F{w} = - K_{w} \left( \DP{w}{z} + g_w \right)
+ \label{basic-Fw}
+\end{equation}
+ここで, $g_w$ は重力による効果を表す. 
+
+陸面の地中水フラックスの評価方法としては, 2通りの方法を考える.
+\begin{enumerate}
+\item 固定した拡散係数による方法
+\item 含水率依存の拡散係数による方法 \Module{HYDFLX}
+\end{enumerate}
+
+固定拡散係数の方法では, 簡単に以下のように表現する.
+$K_w$ は拡散係数, $\rho_w$ は液体水の密度である.
+ここで, (\ref{basic-Fw}) における 重力ポテンシャル項$g_w$は
+無視している. 
+\begin{equation}
+  Fw_{l-1/2} = \rho_w Kw_{l-1/2} (w_l - w_{l-1})/(zw_l - zw_{l-1}) \; ,
+\end{equation}
+\begin{equation}
+  \DP{Fw_{l-1/2}}{w_l} = - \DP{Fw_{l-1/2}}{w_{l-1}}
+ = \rho_w Kw_{l-1/2}/(zw_l - zw_{l-1}) \; .
+\end{equation}
+
+一方, 含水率依存の拡散係数による方法では, 
+水理ポテンシャルを用いて以下のように求める.
+\begin{equation}
+  Fw_{l-1/2} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+             ( (\psi_{l} - \psi_{l-1})/(zw_{l} - zw_{l-1}) -1 ) \; ,
+\end{equation}
+\begin{eqnarray}
+  \DP{Fw_{l-1/2}}{w_l} &=& \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \DP{\psi_{l}}{w_l}/(zw_l - zw_{l-1}) \; ,\\
+- \DP{Fw_{l-1/2}}{w_{l-1}} &=& \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \DP{\psi_{l-1}}{w_{l-1}}/(zw_l - zw_{l-1}) \; .
+\end{eqnarray}
+ここで, $Kw$ は飽和透水係数, $W$ は飽和度, $\psi$は圧力ポテンシャルで, 
+以下のように与えられる. 
+\begin{equation}
+  W_l = w_l / ws_l \; , \;\;
+  W_{l-1/2} = (W_{l-1} + W_{l})/(Cw_{l-1} + Cw_{l}) \; ,
+\end{equation}
+\begin{equation}
+  \psi_l = \psi s_l (W_l)^{-B}\; , \;\;
+  \DP{\psi_l}{w_l} = -B \psi_l W_l / ws \; .
+\end{equation}
+$Kw$, $B$, $\psi s$ は定数で, 地表面タイプ$m$と$l$に依存しうる. 
+
+\subsubsection{陸面の流出の計算\Module{LNDROF}}
+
+流出の評価には以下の 3通りの方法を用いることができる. 
+\begin{enumerate}
+\item バケツモデル
+\item 新バケツモデル
+\item 浸透能を考慮した地表流出
+\end{enumerate}
+
+バケツモデルでは,
+\begin{equation}
+w_1^{m+1,*} = w_1^{m+1} +  \frac{P - E}{Cw_1} \Delta t
+\end{equation}
+を計算し, これが
+\begin{equation} 
+ w_1^{m+1,*} > w_s 
+\end{equation}
+であった場合には, 流出を $R_B$ として,
+\begin{eqnarray}
+  w_1^{m+1} & = & w_s \\
+  R_B  & = &  Cw_1 ( w_1^{m+1,*} - w_s )/\delta t
+\end{eqnarray}
+とするものである.
+それ以外では, 
+\begin{eqnarray}
+  w_1^{m+1} & = &  w_1^{m+1,*} \\
+  R_B       & = &  0                  \; .
+\end{eqnarray}
+
+新バケツモデル(近藤,1993) は, 表層土壌の種類と深さが空間的に
+一様でない場合の平均的な地中への浸透量を見積もるモデルである. 
+もともと日平均の流出を見積もるために開発されたが, 
+ここでは時間ステップ毎に用いるように変更した. 
+%
+新バケツモデルでは, 降水浸透, 流出後の土壌水分量を以下のように見積もる. 
+\begin{equation}
+w_1^{m+1} = w_1^m + ( ws_1 - w_1^m ) 
+\tanh\left( \frac{(P-E)\tau_B}{Cw_1(ws_1 - w_1^m)} \right) 
+\Delta t / \tau_B \; .
+\end{equation}
+ここで $\tau_B$ は時定数である(標準値 3600s). 
+%
+このとき流出量 $R_N$ は, 地表の水収支より
+\begin{eqnarray}
+     R_N & = & P - E - Cw_1 ( w_1^{m+1} - w_1^m ) / \Delta t \\
+         & = & (P - E) \left( 1 - \frac{\tanh x}{x} \right)
+\end{eqnarray}
+と見積もられる. 
+ただし,
+\begin{equation}
+  x = \frac{(P-E)\tau_B}{Cw_1(ws_1 - w_1^m)} \; .
+\end{equation}
+
+土壌の浸透能を考慮した地表流出 $R_I$ の評価は, 浸透能を $C_I$, 
+層雲性降雨の強度を $P_l$, 対流性降雨の強度を $P_c$ とすると, 
+以下で与えられる. 
+\begin{equation}
+  R_I = \left\{
+    \begin{array}{ll}
+       P_c \exp [ -(C_I-P_l) / (P_c/\kappa) ] & \;\; ( P_l \le C_I ) \\
+       P_l + P_c - C_I                        & \;\; ( P_l > C_I ) 
+    \end{array}
+  \right. \; .
+  \label{inf-exs}
+\end{equation}
+地表へ浸透する降水の入力量は以下のように修正される. 
+\begin{eqnarray}
+  \widetilde{P_c} &=& \left\{
+    \begin{array}{ll}
+      P_c - R_I & \;\; ( P_l \le C_I ) \\
+      0            & \;\; ( P_l > C_I )
+    \end{array}
+  \right. \; , \\
+  \widetilde{P_l} &=& \left\{
+    \begin{array}{ll}
+      P_l  & \;\; ( P_l \le C_I ) \\
+      C_I & \;\; ( P_l > C_I )
+    \end{array}
+  \right. \; .
+\end{eqnarray}
+式(\ref{inf-exs})の上の場合は, 対流性降雨の降水強度確率 $f(P_c)$ に
+指数分布を仮定した以下の式より導かれる. 
+\begin{equation}
+  f(P_c) = \frac{\kappa}{\overline{P_c}} 
+            \exp\left[-\frac{\kappa}{\overline{P_c}}P_c\right] \; ,
+\end{equation}
+\begin{equation}
+  \frac{R_I}{\kappa} = \int_{\widetilde{C_I}}^{\infty}
+                        (P_c-\widetilde{C_I})f(P_c) d(P_c) \; .
+\end{equation}
+ただし, 層雲性降雨が一様に浸透すると考えて有効な浸透能を
+$\widetilde{C_I} = C_I - P_l$ とした. 
+$\kappa$ は, 対流性降雨の降水域が全グリッド面積に占める割合で, 
+定数である(標準で 0.6). 
+
+多層の土壌水分移動を考える場合, 
+透水係数に比例した各層からの排水を考えることもできる. 
+
+\subsubsection{陸面でのアルベドの評価\Module{LNDALB}}
+
+アルベドの評価は, 基本的に外部から与えた一定値を用いる. 
+与え方は以下の 2通りである. 
+\begin{enumerate}
+    \item ファイルで分布を与える
+    \item 地表面タイプ$m$ごとの値を指定する
+\end{enumerate}
+
+波長帯ごとに, 可視域, 近赤外域の 2成分を与えることができる
+(標準では同じ値を用いている). 
+
+また, 地表湿潤度, 日射の天頂角の影響を以下のように考慮することも可能である
+(標準では考慮していない). 
+\begin{equation}
+  \alpha = \alpha - f_w \alpha w_1 \; ,
+\end{equation}
+\begin{equation}
+  \alpha = \alpha + \Delta f_{\zeta} (1 - \alpha)(1 - \cos^2 \zeta) \; .
+\end{equation}
+ここで, 湿潤度ファクター $f_w$, 天頂角ファクター $f_{\zeta}$ は定数である. 
+
+\subsubsection{陸面での粗度の評価\Module{LNDZ0}}
+
+粗度の評価は, 基本的に外部から与えた一定値を用いる. 
+与え方は以下の 2通りである. 
+\begin{enumerate}
+    \item ファイルで分布を与える
+    \item 地表面タイプ$m$ごとの値を指定する
+\end{enumerate}
+
+熱に対する粗度 $z_{0H}$ と水蒸気に対する粗度 $z_{0E}$ は, 
+特に与えない場合は運動量に対する粗度 $z_{0M}$ の定数倍とする. 
+(標準では $z_{0H} = z_{0E} = 0.1 z_{0M}$)
+
+\subsubsection{陸面での地表湿潤度の評価\Module{LNDBET}}
+
+陸氷面では, $\beta$は一定値 1 となる.
+氷でない陸面では, 以下のようないくつかの評価方法を用いることができる.
+\begin{enumerate}
+\item 外部から与えた一定値を用いる. 与え方として,
+      \begin{enumerate}
+      \item ファイルで分布を与える
+      \item 地表面タイプ$m$ごとの値を指定する
+      \end{enumerate}
+      という2通りがありえる.
+
+\item 土壌水分$w$の関数として計算する.
+
+       飽和度 $W \equiv w/w_s$ を定義し,
+       その関数として与える.
+
+      \begin{enumerate}
+      \item 関数タイプ1.
+            臨界飽和度$W_c$ を越えれば1, それ以下は線形に依存するもの.
+
+        \begin{equation}
+          \beta = \min \left( W/W_c, 1 \right)
+        \end{equation}
+
+      \item 関数タイプ2. $W$に非線形に依存するもの.
+
+        \begin{equation}
+          \beta = 1-\exp \left[-3(W/W_c)^{a} \right]
+        \end{equation}
+      \end{enumerate}
+
+\end{enumerate}
+
+  \begin{figure}[htbp]
+    \begin{center}
+      \leavevmode
+      \epsfile{file=beta.ps,width=70mm}      
+      \caption{$\beta$の関数形}
+    \end{center}
+  \end{figure}
+
+
+\bigskip
+以下では, 海面での, 陸面の場合と異なった取扱いを記述する.
+\bigskip
+
+\subsubsection{海面の熱フラックスと熱容量の計算 \Module{SEAFLX}}
+
+海面においては, 海氷の存在によって熱容量が異なる.
+海水の体積比熱$\tilde{C}_s$ と
+海氷の体積比熱$\tilde{C}_i$ とを用いて, $h_i$ を海氷の厚さとして,
+\begin{equation}
+  Cg_{l}  = \left\{ 
+    \begin{array}{ll}
+      \tilde{C}_s (zg_{l+1/2} - zg_{l-1/2})
+              & ( h_i \le zg_{l-1/2} )\\
+      \tilde{C}_s (zg_{l+1/2} - h_i)
+    + \tilde{C}_i ( h_i - zg_{l-1/2} )
+              & ( zg_{l-1/2} < h_i < zg_{l+1/2} )\\
+      \tilde{C}_i (zg_{l+1/2} - zg_{l-1/2})
+              & ( h_i \ge zg_{l+1/2} ) \\
+    \end{array} 
+    \right. \; .
+\end{equation}
+
+海面においても, 熱伝導係数を一定とする($l$には依存しうる).
+\begin{equation}
+  Fg_{l-1/2} = Ks_{l-1/2} (G_l - G_{l-1})/(zs_l - zs_{l-1}) \; ,
+\end{equation}
+\begin{equation}
+  \DP{Fg_{l-1/2}}{G_l} = - \DP{Fg_{l-1/2}}{G_l-1} 
+ = Ks_{l-1/2}/(zs_l - zs_{l-1}) \; .
+\end{equation}
+
+ただし, 海氷が存在する領域では, 
+海氷と海水の境界の温度を $T_i$($=$271.15K)とし,
+熱伝導係数を海氷の値とする.
+\begin{equation}
+  Fg_{l-1/2}  = \left\{ 
+    \begin{array}{ll}
+      Ks_{l-1/2} (G_l - G_{l-1})/(zs_l - zs_{l-1}) \;\; 
+              & (h_i < zg_{l-3/2} ) \\
+      Ks_{l-1/2} (G_l - T_i)/(zs_l - h_i) \;\; 
+              & ( zg_{l-3/2} \le h_i < zg_{l-1/2} )\\
+      K_i (T_i - G_{l-1})/(h_i - zs_{l-1}) \;\; 
+              & ( zg_{l-1/2} \le h_i < zg_{l+1/2} )\\
+      K_i (G_l - G_{l-1})(zs_l - zs_{l-1}) \;\; 
+              & (h_i \ge zg_{l+1/2} )
+    \end{array} 
+    \right. \; .
+\end{equation}
+
+海氷域以外の海洋の熱フラックスが意味を持つのは
+海洋混合層モデルを用いた場合のみである.
+
+\subsubsection{海面での地表湿潤度の評価\Module{SEABET}}
+
+蒸発の評価に用いる地表湿潤度$\beta$は,
+海面, 海氷面では, 一定値 1 となる.
+
+\subsubsection{海面でのアルベドと粗度}
+
+
+海氷に覆われない海面でのアルベドは, 放射ルーチンの中で,
+大気の光学的厚さと太陽入射角の関数として波長域ごとに計算する
+\Module{SSRFC} .
+
+海洋に覆われない海面の粗度は, 地表フラックスルーチンの中で,
+運動量フラックスの関数として計算する
+\Module{SEAZ0F} .
+
+海氷に覆われた海面のアルベドと粗度は
+一定値を与える.
+\Module{SEAALB, SEAZ0}.
+現在の標準値は, アルベド 0.7, 
+粗度は 1$\times10^{-3}$m である.
+
+\bigskip
+以下では, 雪面での, 陸面の場合と異なった取扱いを記述する.
+\bigskip
+
+\subsubsection{雪面熱フラックス補正 \Module{SNWFLX}}
+
+
+雪は熱的には, 地表面第1層と同じ層として取り扱う.
+すなわち, 第1層の熱容量および熱拡散係数が
+雪の存在によって変更される形となる.
+
+熱容量は, 単純な和で表され,
+$C_y$ を雪の質量当たりの比熱, $W_y$を雪の単位面積当たりの質量とすると,
+\begin{equation}
+  Cg_{l} = Cg'_{l} + C_y W_y \; .
+\end{equation}
+ただし, $Cg'_{l}$ は, 雪がない場合の熱容量である.
+
+熱フラックスは, 雪と土壌の境界の仮想的な温度を$G_I$とすると,
+\begin{equation}
+  Fg_{1/2} = K_y (G_I-T_0)/h_y = Kg_{1/2} (G_1 - G_I)(zg_1 - zg_0) \; .
+\end{equation}
+ただし, $h_y$ は, 積雪深であり, 
+$\rho_y$ を雪の密度とすると, $h_y = W_y/\rho_y$ である.
+上式から $G_I$を消去すると,
+\begin{eqnarray}
+  Fg_{1/2} & =& \left[ \left( K_y/h_y \right)^{-1} 
+                   +  \left( K_g /(zg_1 - zg_0) \right)^{-1} 
+              \right]^{-1} (G_1-T_0)
+                   \nonumber \\
+           & =& \left[ \left( K_y (G_1-T_0)/h_y \right)^{-1} 
+                    +  (Fg_{1/2})^{-1}
+                \right]^{-1} \; .
+\end{eqnarray}
+ただし, $Fg'_{1/2}$ は, 雪がない場合のフラックスである.
+従って, これが既に計算してあれば,
+それと雪のみのフラックスの調和平均を取ることによって,
+雪が存在する場合のフラックスが求められる.
+また, フラックスの温度微分係数 $\DP{Fg_{1/2}}{G_1}$, $\DP{Fg_{1/2}}{T_0}$
+も, 同様に温度微分係数の調和平均によって求められる.
+
+積雪がある程度以上多い場合には, 
+温度$G_1$は, 土壌の温度よりも, 積雪の温度とみなすべきであろう.
+このような場合も考慮するために, 実際には, 
+上式で, $h_y$ のかわりに$h_y/2$ を用い, 
+さらに, $F_{1/2}$だけでなく, $F_{3/2}$ も雪によって変化するという
+取り扱いをする.
+
+\begin{equation}
+  Fg_{1/2} = \left[ \left( K_y (G_1-T_0)/(h_y/2) \right)^{-1} 
+                    +  (Fg'_{1/2})^{-1}
+                \right]^{-1} \; ,
+\end{equation}
+\begin{equation}
+  Fg_{3/2} = \left[ \left( K_y (G_2-G_1)/(h_y/2) \right)^{-1} 
+                    +  (Fg'_{3/2})^{-1}
+                \right]^{-1} \; .
+\end{equation}
+
+\subsubsection{積雪の昇華の計算\Module{SNWSUB}}
+
+昇華フラックスの分だけ積雪量を減少させる. 
+\begin{equation}
+  \tilde{Wy} = Wy - Fq_1 \Delta t \; .
+\end{equation}
+
+積雪が昇華しきってしまうときには, 不足分の水分フラックスを土壌から蒸発させる. 
+このとき地表のエネルギーバランスは地表水分フラックスがすべて昇華したとして
+計算されてしまっているので, 土壌温度の補正を行なう必要がある. 
+\begin{equation}
+  \tilde{G}_1 = G_1 + L_M ( Fq_1 \Delta t - Wy ) / Cg_1 \; .
+\end{equation}
+
+\subsubsection{降雪の計算\Module{SNWFLP}}
+
+降水が地表に到達したときに固体(雪)であるか, 液体(雨)であるかの判定を行なう. 
+
+大気第一層の湿球温度 $Tw_1$ を
+\begin{equation}
+Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \DP{q^*}{T} )
+\end{equation}
+で評価し, $Tw_1$ が氷点 $Tm$ よりも低ければ雪, $Tm$ 以上ならば雨とする. 
+湿球温度を用いるのは, 地表に到達した降水の温度が
+降水の落下途中での蒸発の起こりやすさに依存する効果を取り入れるためである. 
+
+ここで, 降雪の場合はその分だけ積雪量を増加させる. 
+\begin{equation}
+\tilde{Wy} = Wy + Py \Delta t \; .
+\end{equation}
+$Py$ は降雪フラックスである. 
+
+\subsubsection{融雪の計算\Module{SNWMLP}}
+
+地表エネルギーバランスの計算の結果, 地表エネルギーバランス$\Delta s$が正の場合
+ and/or 積雪のある場所で土壌第一層(積雪を含む)
+の温度が氷点より高い場合, 融雪量を計算し, 融解の潜熱による土壌温度の
+補正を行なう. 
+
+補正前の土壌温度を $\hat{G_1}$ とすると, 
+エネルギーバランスを解消する分だけ融雪が起こったとしたときの
+融雪量 $\tilde{My} \Delta t$ と土壌温度 $\tilde{G_1}$は, 
+
+$\hat{G_1} \ge Tm$ のとき, 
+\begin{equation}
+\tilde{My} \Delta t = ( Cg_1 ( \hat{G_1} - Tm ) + \Delta s \Delta t ) / L_M \; ,
+\end{equation}
+\begin{equation}
+\tilde{G_1} = Tm \, .
+\end{equation}
+$\hat{G_1} < Tm$ のとき, 
+\begin{equation}
+\tilde{My} \Delta t = \Delta s \Delta t / ( L_M + Cp_I ( Tm - \hat{G_1} ) ) \; ,
+\end{equation}
+\begin{equation}
+\tilde{G_1} = \hat{G_1} \; .
+\end{equation}
+$\hat{G_1} < Tm$ のときは, エネルギーバランスで解ける雪以外の部分の温度は
+変化しないと仮定している. 
+$L_M$ は融解の潜熱, $Tm$ は氷点, $Cp_I$ は氷の比熱である. 
+
+実際の融雪量と土壌温度は, 現在の雪の量 $Wy$ が融けきる場合も考慮して, 
+\begin{equation}
+My \Delta t = \left\{
+   \begin{array}{ll}
+      \tilde{My} \Delta t & ( \tilde{My} \Delta t \le Wy ) \\
+      Wy                  & ( \tilde{My} \Delta t >   Wy ) \\
+   \end{array}
+\right. \; ,
+\end{equation}
+\begin{equation}
+G_1 = \left\{
+   \begin{array}{ll}
+      \tilde{G_1}  & ( \tilde{My} \Delta t \le Wy ) \\
+      \hat{G_1} + ( \Delta s \Delta t - L_M Wy - Cp_I Wy ( Tm - \hat{G_1} ) )
+                / ( Cg_1 - Cp_I Wy )
+                   & ( \tilde{My} \Delta t >   Wy ) \\
+   \end{array}
+\right. \; .
+\end{equation}
+
+\subsubsection{積雪面の流出の計算\Module{SNWROF}}
+ 
+積雪$Wy$がある場合, 陸面の流出の計算に先立って
+積雪の影響による流出$R_S$を以下のように評価して, 
+地表への水分入力から除いておく. 
+また, 融雪水$My$をここで地表への水分入力に加える. 
+\begin{equation}
+  Is = \left\{
+    \begin{array}{ll}
+      1 - Wy / Wy_{Ci} & \;\; ( Wy < Wy_{Ci} ) \\
+      0                & \;\; ( Wy \ge Wy_{Ci} )
+    \end{array}
+  \right. \; ,
+\end{equation}
+\begin{eqnarray}
+  \widetilde{P_c} &=& Is P_c \; ,\\
+  \widetilde{P_l} &=& Is ( P_c + My ) \; ,\\
+  R_S        &=& ( 1 - Is )( P_c + P_l + My ) \; .
+\end{eqnarray}
+ここで, $Is$ は積雪の影響による地表の浸透率である. 
+浸透に関する臨界積雪量 $Wy_{Ci}$ の標準値は 200 kg/m$^2$ である. 
+
+\subsubsection{積雪面でのアルベドの評価\Module{SNWALB}}
+
+積雪$Wy$がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+アルベドは積雪の平方根に比例して雪の値$\alpha s$に近づく
+(臨界値$Wy_C$は, 標準で 200kg/m$^2$).
+%
+\begin{equation}
+  \alpha = \left\{ 
+  \begin{array}{ll}
+    \alpha' + (\alpha s-\alpha')\sqrt{Wy/Wy_{C}} \;\; &  (Wy < Wy_{C}) \\
+    \alpha s                                          &  (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{equation}
+
+また, 融解が起こって積雪が湿っているとき雪のアルベドが
+小さくなる効果を以下のように考慮している. 
+\begin{equation}
+  \alpha s = \left\{
+    \begin{array}{ll}
+      \alpha s_d                        & \;\; (T_0 \le Td) \\
+      \alpha s_d - (\alpha s_m -\alpha s_d)
+                   (T_0 - Td)/(Td - Tm) & \;\; (Td < T_0 \le Tm) \\
+      \alpha s_m                        & \;\; (T_0 > Tm)
+    \end{array}
+  \right. \; .
+\end{equation}
+ここで $T_0$ は地表温度である. 
+乾いた雪のアルベド$\alpha s_d$, 湿った雪のアルベド$\alpha s_m$
+の標準値はそれぞれ 0.7, 0.5. 
+臨界温度 $Td$, $Tm$ はそれぞれ 258.15, 273.15 である. 
+
+さらに雪の無い場合と同様に日射の天頂角依存性の効果を考慮できる
+(標準では考慮しない). 
+
+\subsubsection{積雪面での地表粗度の評価\Module{SNWZ0}}
+
+積雪$Wy$がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+地表粗度は積雪の平方根に比例して雪の粗度に近づく
+(臨界値$Wy_C$は, 標準で 200kg/m$^2$).
+%
+\begin{equation}
+  z_0 = \left\{ 
+  \begin{array}{ll}
+    z_0' + (z_0s-z_0')\sqrt{Wy/Wy_{C}}  \;\; &  (Wy < Wy_{C}) \\
+    z_0s                                     &  (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{equation}
+%
+雪の粗度の標準値は, 運動量, 温度, 水蒸気に対してそれぞれ
+10$^{-2}$, 10$^{-3}$, 10$^{-3}$ である. 
+
+\subsubsection{積雪面での地表湿潤度の評価\Module{SNWBET}}
+
+積雪$Wy$がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+地表湿潤度は積雪の平方根に比例して雪の湿潤度 1 に近づく
+(臨界値$Wy_C$は, 標準で 200kg/m$^2$).
+%
+\begin{equation}
+  \beta = \left\{ 
+  \begin{array}{ll}
+    \beta' + (1-\beta')\sqrt{Wy/Wy_{C}}  \;\; &  (Wy < Wy_{C}) \\
+    1                                         &  (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{equation}
+
+\bigskip
+以下では, オプション的の地表過程について記述する.
+\bigskip
+
+\subsubsection{凍土過程の計算\Module{LNDFRZ}}
+
+このオプションを使うためには, 温度と水分に関する
+地中の鉛直層数と各層のレベルが等しいことが必要である. 
+
+熱拡散による地中温度の計算の後, 
+\begin{itemize}
+  \item 地中温度が氷点より低く, 液体の水分が存在すれば水分の凍結を
+  \item 地中温度が氷点より高く, 固体の水分が存在すれば水分の融解を
+\end{itemize}
+計算する. 
+
+第 $l$ 層の含氷率を $w_{Fl}$ とすると, 凍結する水分 $\Delta w_{Fl}$ は, 
+\begin{equation}
+  \Delta w_{Fl} = \left\{
+    \begin{array}{ll}
+      - w_{Fl}
+        & \;\; ( \Delta_0 w_{Fl} \le - w_{Fl} ) \\
+      \Delta_0 w_{Fl}
+        & \;\; ( - w_{Fl} < \Delta_0 w_{Fl} \le w_l - w_{Fl} ) \\
+      w_l - w_{Fl}
+        & \;\; ( \Delta_0 w_{Fl} >  w_{Fl} )
+    \end{array}
+  \right. \; .
+\end{equation}
+ただし, 負の $\Delta w_{Fl}$ は融解する水分を表す. 
+$\Delta_0 w_{Fl}$ は土壌温度が氷点になるまで凍結/融解が
+起こったとしたときの $\Delta w_{Fl}$ の値であり, 以下で与えられる. 
+\begin{equation}
+  \Delta_0 w_{Fl} = Cg_l (Tm - G_l)/(L_M Cw_l) \; .
+\end{equation}
+$Tm$ は氷点 273.16K である. 
+
+土壌水分の相変化の潜熱による土壌温度の変化は以下で与えられる. 
+\begin{equation}
+  \tilde{G}_l = G_l + L_M Cw_l \Delta w_{Fl} / Cg_l \; .
+\end{equation}
+
+\subsubsection{海洋混合層モデル \Module{SEAFRZ}}
+
+海洋混合層モデルでは,
+海洋の熱収支を解くことにより, 海洋の温度と
+海氷の厚さの時間変化を求める.
+
+多層モデルも可能であるが,
+ここでは 厚さ $D$ の1層モデルを例にとり解説する.
+予報変数は, 温度 $G$ と海氷厚さ $h_I$ である.
+
+\begin{enumerate}
+\item  まず海洋の熱容量と表面のフラックスを求める
+       \Module{SEAFLX}
+海洋の熱容量は,
+水の比熱$C_w$, 氷の比熱$C_I$, 水と氷の密度を$\rho_w$として,
+\begin{equation}
+  C_s  = C_I \rho_w h_I +   C_w \rho_w (D - h_I)
+\end{equation}
+
+海氷がない場合, 熱伝導フラックスは,
+\begin{equation}
+  Fs_{1/2} = K_s \frac{ G - T_0 }{d/2}
+\end{equation}
+一方, 海氷がある場合は,
+\begin{equation}
+ Fs_{1/2} = K_I \frac{ T_I - T_0 }{h_I}
+\end{equation}
+となる. ここで, $T_I$ は海氷の氷結温度で, 271.35K である.
+
+$z=D$ での熱フラックス$Fs_{1+1/2}$ は通常 0 であるが,
+外部から与えることができる.
+これは, 海洋熱輸送を考えた flux correction をする場合に用いる.
+
+\item この熱フラックスと熱容量を用いて
+      陸面と同様に温度 $G$ の変化を求める.
+
+\item 海氷表層の融解は, 雪と同様に扱う.
+       \Module{SEAFLX}
+
+まず 融解量 $\tilde{M_I}$ を  \\
+$G \ge T_I$ のとき, 
+\begin{equation}
+  M_I
+  =  \frac{C_s ( G - T_I ) + \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) T_I }
+\end{equation}
+$G < T_I$ のとき, 
+\begin{equation}
+  M_I
+  =  \frac{\Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) G}
+\end{equation}
+で見積もり,
+ただし, 融けきった場合は, $M_I=h_I$ とし, その分の熱を補正する.
+\begin{equation}
+  G \leftarrow G + \frac{ \Delta s \Delta t 
+                          - \rho_w ( C_w - C_I ) h_I G  }
+                        { C_w + \rho_w ( C_w - C_I ) h_I}
+\end{equation}
+氷の厚さを変化させ,
+\begin{equation}
+  h_I \leftarrow h_I - M_I 
+\end{equation}
+次に, それに見合うだけ熱容量を変化させる.
+\begin{equation}
+  C_s = C_s + \rho_w ( C_w - C_I ) h_I
+\end{equation}
+
+\item 次に, 海氷の底からの成長過程を考慮する.
+
+\begin{enumerate}
+\item 海氷が存在しないとき($h_I=0$)
+
+$G <  T_I$ のとき, 
+\begin{equation}
+  \tilde{f_I}
+  =  \frac{C_s ( T_I - G ) - \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) T_I }
+\end{equation}
+$G \ge T_I$ のとき, 
+\begin{equation}
+  \tilde{f_I}
+  =  \frac{- \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) G}
+\end{equation}
+で見積もる.
+これが正のときには, 海氷が生成される.
+ここで,  $\Delta s$ は, $T_0$ が $T_I=271.35$K以下
+となるときに正となることに注意.
+\begin{eqnarray}
+  h_I & \leftarrow & f_I \\
+  C_s & \leftarrow & C_s - \rho_w ( C_w - C_I ) f_I \\
+  G   & \leftarrow & \max( G, T_I )
+\end{eqnarray}
+
+\item 海氷が既に存在するとき($h_I>0$)
+
+海氷の下の海水から海氷の底面までの熱フラックスを
+\begin{equation}
+  F_b = K_s \frac{ G - T_I }{ D/2 - h_I }
+\end{equation}
+で見積もる.
+$F_b$ と 海洋から上への熱フラックス $Fs_{1/2}$ との差が
+海氷の成長または融解に使用される.
+\begin{equation}
+  f_I = \frac{ Fs_{1/2} - F_b }
+             { \rho_w ( C_w - C_I ) G } \Delta t
+\end{equation}
+よって,
+\begin{eqnarray}
+  h_I & \leftarrow & h_I + f_I \\
+  G   & \leftarrow & G \frac{C_s}{C_s - \rho_w ( C_w - C_I ) f_I} \\
+  C_s & \leftarrow & C_s - \rho_w ( C_w - C_I ) f_I
+\end{eqnarray}
+\end{enumerate}
+
+\item 外部から参照温度$G_{ref}$を与えて,
+      それに nudging をかけることができる.
+%      
+      \begin{equation}
+        G \leftarrow G + \frac{G_{ref} - G}{\tau} \Delta t
+      \end{equation}
+%
+      これは熱フラックス 
+      \begin{equation}
+        F_n = C_s \frac{G_{ref} - G}{\tau}
+      \end{equation}
+      を与えたことに相当する.
+
+      flux correction をするには,
+      適当な $\tau$ を与えて nudging を行ない,
+      $F_n$ を記憶しておいて,
+      それを $Fs_{1+1/2}$ として与えればよい.
+
+\end{enumerate}
+
+
+
