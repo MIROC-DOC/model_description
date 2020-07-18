@@ -1,0 +1,767 @@
+﻿
+\subsection{大気・地表系の拡散型収支式の解法}
+
+\subsubsection{基本的な解法}
+
+放射, 鉛直拡散, 接地境界層・地表過程は
+一括して一部の項を implicit 扱いで
+時間変化項を計算し, 最後に時間積分を行なう.
+ベクトル量 {\boldmath q} の時間変化項として,
+Euler 法で扱う項 ${\cal A}$ と implicit 法で扱う項 ${\cal B}$ とに分けて考える.
+%
+\begin{equation}
+  \mbox{\boldmath q}^+ 
+      = \mbox{\boldmath q} + 2 \Delta t {\cal A}( \mbox{\boldmath q}   )
+                           + 2 \Delta t {\cal B}( \mbox{\boldmath q}^+ ) \; . 
+\end{equation}
+%
+一般の場合にこれを解くことは困難であるが,
+近似的に $B$ を線形化することにより解くことが可能となる.
+\begin{equation}
+  {\cal B}( \mbox{\boldmath q}^+ ) 
+                           \simeq {\cal B}( \mbox{\boldmath q} ) 
+                            + B( \mbox{\boldmath q}^+ - \mbox{\boldmath q} )
+\end{equation}
+のように行列$B$を用いて線形化する.
+ここで,
+\begin{equation}
+  B_{ij} = \DP{{\cal B}_i}{q_j}
+\end{equation}
+である. 
+すると, 
+$\Delta \mbox{\boldmath q} \equiv \mbox{\boldmath q}^+ - \mbox{\boldmath q}$
+と書けば,
+\begin{equation}
+  ( I - 2 \Delta t B ) \Delta \mbox{\boldmath q} 
+      = 2 \Delta t \left(  {\cal A}( \mbox{\boldmath q} )
+                         + {\cal B}( \mbox{\boldmath q} ) \right) \; . 
+\end{equation}
+%
+これは, 行列演算で原理的には簡単に解くことができる.
+
+\subsubsection{基本方程式}
+
+放射, 鉛直拡散, 接地境界層・地表過程の
+方程式は, 基本的に以下のように表わされる.
+%
+\begin{eqnarray}
+     \DP{u}{t}  & = &  - g \DP{}{p} F_u \; , \\
+     \DP{v}{t}  & = &  - g \DP{}{p} F_v \; , \\
+ c_p \DP{T}{t}  & = &  - g \DP{}{p} ( F_T + F_R ) \; , \\
+     \DP{q}{t}  & = &  - g \DP{}{p} F_q \; , \\
+ C_g \DP{G}{t}  & = &  -   \DP{}{z} F_g \; .
+\end{eqnarray}
+%
+ここで, $F_u, F_v, F_T, F_q$は
+鉛直拡散による, それぞれ$u, v, c_p T, q$
+の鉛直上向きフラックス密度である.
+また, $F_R$ は放射による
+鉛直上向きエネルギーフラックス密度である.
+
+大気は, $\sigma=p/p_S$ を座標系で離散化される.
+風速, 気温等は層 $\sigma_k$ で定義される.
+フラックスは, 層の境界 $\sigma_{k-1/2}$ で定義される.
+下層から上層に$k$が増大する.
+また, $\sigma_{1/2} = 1$, 
+$\sigma_{k} \simeq (\sigma_{k-1/2} + \sigma_{k+1/2})/2$ である.
+$\sigma$ 座標は, 鉛直1次元過程を考えている限りは, 
+定数($p_S$)倍の違いを除いては $p$ 座標と同じであると考えてよい.
+ここで,
+\begin{equation}
+  \Delta \sigma_{k} = \sigma_{k-1/2} - \sigma_{k+1/2} \; , 
+\end{equation}
+\begin{equation}
+  \Delta m_{k} = \frac{1}{g} \Delta p_k  
+   = \frac{p_S}{g} ( \sigma_{k-1/2} - \sigma_{k+1/2} )
+\end{equation}
+と書く.
+
+\subsubsection{implicit時間差分}
+
+鉛直拡散項などの線形化できる項に関しては, implicit法を用いる.
+拡散係数なども予報変数に依存するが,
+その係数は最初に求めるだけで, 反復的に解くことはしない.
+ただし, 安定性の向上のために時間ステップの扱いを工夫している(後述). 
+
+例えば, 離散化した$u$の方程式(\ref{u-eq.orig})は,
+%
+\begin{equation}
+  (u_k^{m+1} - u_k^{m})/\Delta t 
+    = (Fu^{m+1}_{k-1/2}-Fu^{m+1}_{k+1/2})/\Delta m_k
+\end{equation}
+ここで, $m$ は時間ステップである.
+$Fu_{k-1/2}$等は, $u_k$ の関数であるから, その依存性を線形化して,
+%
+\begin{equation}
+   Fu^{m+1}_{k-1/2} 
+  =  Fu^{m}_{k-1/2} 
+  +  \sum_{k'=1}^{K} 
+     \DP{Fu^{m}_{k-1/2}}{u_{k'}} (u^{m+1}_{k'}-u^{m}_{k'})
+  \label{u-flux.next}
+\end{equation}
+
+従って, $\delta u_k \equiv (u^{m+1}_{k}-u^{m}_{k})/\Delta t$ と置くと,
+%
+\begin{equation}
+  \Delta m_k \delta u_k
+  =   \left( Fu^{m}_{k-1/2}
+         +  \sum_{k'=1}^{K} 
+            \DP{Fu^{m}_{k-1/2}}{u_{k'}} \Delta t \delta u_{k'}
+         -   Fu^{m}_{k+1/2}
+         -  \sum_{k'=1}^{K}
+            \DP{Fu^{m}_{k+1/2}}{u_{k'}} \Delta t \delta u_{k'}
+      \right) 
+\end{equation}
+%
+すなわち,
+\begin{equation}
+  \Delta m_k \delta u_k
+  -  \sum_{k'=1}^{K} \left(  \DP{Fu^{m}_{k-1/2}}{u_{k'}} 
+                       - \DP{Fu^{m}_{k+1/2}}{u_{k'}} \right)
+                 \Delta t\delta u_{k'}
+  = Fu^{m}_{k-1/2} - Fu^{m}_{k+1/2}
+\end{equation}
+
+これは, 以下のような行列形式で書くことができる.
+%
+\begin{equation}
+  \sum_{k'=1}^{K} M^u_{k,k'} \delta u_k' = Fu^{m}_{k-1/2} - Fu^{m}_{k+1/2}
+\end{equation}
+%
+\begin{equation}
+M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
+          -  \left(  \DP{Fu^{m}_{k-1/2}}{u_{k'}} 
+                   - \DP{Fu^{m}_{k+1/2}}{u_{k'}} \right) \Delta t
+   \label{u-matrix}
+\end{equation}
+%
+これを LU 分解などの方法で解けば良い.
+通常は, $M^u_{k,k'}$ は3重対角となるので, 簡単に解ける.
+解いた後は, (\ref{u-flux.next})を用いて
+この方法にコンシステントなフラックスを計算しておく.
+$v$ についても全く同様である.
+
+\subsubsection{implicit時間差分の結合}
+
+気温, 比湿, 地中温度については, 前節のように簡単にはいかない.
+%
+\begin{eqnarray}
+  c_p \Delta m_k \delta T_k
+  & - & \sum_{k'=0}^{K}
+                 \left(  \DP{F\theta^{m}_{k-1/2}}{T_{k'}} 
+                       - \DP{F\theta^{m}_{k+1/2}}{T_{k'}} \right)
+                 \Delta t\delta T_{k'}
+  - \sum_{k'=0}^{K}
+                 \left(  \DP{FR^{m}_{k-1/2}}{T_{k'}} 
+                       - \DP{FR^{m}_{k+1/2}}{T_{k'}} \right)
+                 \Delta t\delta T_{k'} \nonumber \\
+ & = &  ( F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2} )
+  + ( FR^{m}_{k-1/2} - FR^{m}_{k+1/2} )
+\label{deq-theta}
+\end{eqnarray}
+%
+\begin{equation}
+  \Delta m_k \delta q_k
+  -  \sum_{k'=0}^{K} \left(  \DP{Fq^{m}_{k-1/2}}{q_{k'}} 
+                            - \DP{Fq^{m}_{k+1/2}}{q_{k'}} \right)
+                 \Delta t\delta q_{k'}
+  = ( Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2} )
+\label{deq-q}
+\end{equation}
+%
+\begin{equation}
+  Cg_l \Delta z_l \delta G_l
+  +  \sum_{l'=0}^{L} \left(  \DP{Fg^{m}_{l-1/2}}{G_{l'}} 
+                            - \DP{Fg^{m}_{l+1/2}}{G_{l'}} \right)
+                 \Delta t\delta T_{k'}
+  = - ( Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2} )
+\label{deq-g}
+\end{equation}
+%
+ここで, 上記の式における $\sum_{k'}$, $\sum_{l'}$ は
+$k'=0$, $l'=0$ から取っていることに注意. なぜならば,
+地表でのフラックスは, 以下のようになるからである.
+\begin{equation}
+  F\theta_{1/2} =  c_p C_H |\Dvect{v}_{1/2}| (\theta_0 - \theta_1)
+\end{equation}
+\begin{equation}
+  Fq_{1/2} =  \beta C_E |\Dvect{v}_{1/2}| (q_0 - q_1)
+\end{equation}
+\begin{equation}
+  Fg_{1/2} =  K_g (G_1 - G_0)/z_1
+\end{equation}
+ここで, 地表面表皮温度を $T_0$ とすると,
+$\theta_0 = T_0$, $q_0 = q^*(T_0)$ (飽和比湿), $G_0 = T_0$ である.
+これらは, 全て, $T_0$ に依存する.
+また, $FR_{k}$ は, 全ての$k$での値が $T_0$ に依存する. 
+
+(\ref{u-matrix}) と同様に, 行列 $M^{\theta}, M^q, M^g$ を用いて
+(\ref{deq-theta}), (\ref{deq-q}), (\ref{deq-g}) を書き直すと, 
+%
+ $k \ge 2$ ($\theta, q$について) または $l \ge 1$ ($G$について) のとき, 
+%
+  \begin{eqnarray}
+    \sum_{k'=1}^{K}  M^\theta_{k,k'} \delta T_{k'}
+       & = & (F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2}) 
+        + (FR^{m}_{k-1/2} - FR^{m}_{k+1/2})  \nonumber \\
+& + & \left(\DP{FR^{m}_{k-1/2}}{T_0} - \DP{FR^{m}_{k+1/2}}{T_0} \right)
+     \Delta t\delta T_0 \; ,
+  \label{comb-theta2}
+  \end{eqnarray}
+
+\begin{equation}
+ \sum_{k'=1}^{K}  M^q_{k,k'} \delta q_{k'}
+         = (Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2}) \; ,
+  \label{comb-q2}
+\end{equation}
+
+\begin{equation}
+  \sum_{l'=0}^{L} M^g_{l,l'} \delta G_{l'}
+         = - (Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2}) \; .
+  \label{comb-g2}
+\end{equation}
+%
+ただし, 
+\begin{equation}
+M^{\theta}_{k,k'} \equiv c_p \Delta m_k \delta_{k,k'}
+          -  \left(  \DP{F\theta^{m}_{k-1/2}}{T_{k'}} 
+                   - \DP{F\theta^{m}_{k+1/2}}{T_{k'}} \right) \Delta t
+          -  \left(  \DP{FR^{m}_{k-1/2}}{T_{k'}} 
+                   - \DP{FR^{m}_{k+1/2}}{T_{k'}} \right) \Delta t \; , 
+\end{equation}
+\begin{equation}
+M^{q}_{k,k'} \equiv \Delta m_k \delta_{k,k'}
+          -  \left(  \DP{Fq^{m}_{k-1/2}}{q_{k'}} 
+                   - \DP{Fq^{m}_{k+1/2}}{q_{k'}} \right) \Delta t \; ,
+\end{equation}
+\begin{equation}
+M^{g}_{l,l'} \equiv Cg_l \Delta z_l \delta_{l,l'}
+          -  \left(  \DP{Fg^{m}_{l-1/2}}{G_{l'}} 
+                   - \DP{Fg^{m}_{l+1/2}}{G_{l'}} \right) \Delta t \; .
+\end{equation}
+
+ $k=1$ ($\theta, q$について) または $l=0$ ($G$について) のとき, 
+%
+  \begin{eqnarray}
+    \sum_{k'=1}^{K}  M^\theta_{1,k'} \delta T_{k'}
+  +  \DP{F\theta^{m}_{1/2}}{T_1} \Delta t\delta T_1
+       & = & (F\theta^{m}_{1/2} - F\theta^{m}_{3/2}) 
+        + (FR^{m}_{1/2} - FR^{m}_{3/2})  \nonumber \\
+& + &  \DP{F\theta^{m}_{1/2}}{T_0} \Delta t\delta T_0 
+     \nonumber \\
+& + & \left(\DP{FR^{m}_{1/2}}{T_0} - \DP{FR^{m}_{3/2}}{T_0} \right)
+     \Delta t\delta T_0 \; ,
+  \label{comb-theta}
+  \end{eqnarray}
+%
+\begin{equation}
+ \sum_{k'=1}^{K}  M^q_{1,k'} \delta q_{k'}
+         - \DP{Fq^{m}_{1/2}}{q_1} \Delta t\delta q_1
+         = (Fq^{m}_{1/2} - Fq^{m}_{3/2}) 
+         + \DP{Fq^{m}_{1/2}}{T_0} \Delta t\delta T_0 \; ,
+  \label{comb-q}
+\end{equation}
+%
+\begin{eqnarray}
+  \lefteqn{\sum_{l'=1}^{L} M^g_{0,l'} \delta G_{l'}
+           +  \left(    \DP{F\theta^{m}_{1/2}}{T_0}
+           +  L \DP{Fq^{m}_{1/2}}{T_0} 
+           +    \DP{FR^{m}_{1/2}}{T_0}
+           -  \DP{Fg^{m}_{1/2}}{T_0} \right) \Delta t\delta T_0  }
+        \nonumber \\
+       & & =  - F\theta^{m} - L Fq^{m} - FR^{m} +  Fg^{m}_{1/2} \nonumber \\
+       & & -    \DP{F\theta^{m}_{1/2}}{T_1} \Delta t\delta T_1
+           -  L \DP{Fq^{m}_{1/2}}{q_1} \Delta t\delta q_1
+           -    \DP{FR^{m}_{1/2}}{T_1} \Delta t\delta T_1
+           +    \DP{Fg^{m}_{1/2}}{G_1} \Delta t\delta G_1  
+  \label{comb-g}
+\end{eqnarray}
+%
+ただし, 
+\begin{equation}
+M^{\theta}_{1,k'} \equiv c_p \Delta m_1 \delta_{1,k'}
+          -  \left(
+                   - \DP{F\theta^{m}_{3/2}}{T_{k'}} \right) \Delta t
+          -  \left( \DP{FR^{m}_{1/2}}{T_{k'}} 
+                   - \DP{FR^{m}_{3/2}}{T_{k'}} \right) \Delta t \; , 
+\end{equation}
+\begin{equation}
+M^{q}_{1,k'} \equiv \Delta m_1 \delta_{1,k'}
+          -  \left(
+                   - \DP{Fq^{m}_{3/2}}{q_{k'}} \right) \Delta t \; ,
+\end{equation}
+\begin{equation}
+M^{g}_{0,l'} \equiv
+             \left(
+                   - \DP{Fg^{m}_{1/2}}{G_{l'}} \right) \Delta t \; .
+\end{equation}
+%
+ただし, (\ref{comb-g})は, 地表面のバランスの条件
+\begin{equation}
+   F\theta^{m+1} + L Fq^{m+1} + FR^{m+1} - Fg^{m+1} = 0
+\end{equation}
+を, 土壌温度の式の $l=0$ の場合として扱ったもので, 
+(\ref{deq-g})の表式には含まれていないことに注意. 
+
+これら,
+(\ref{comb-theta2}), (\ref{comb-q2}), (\ref{comb-g2}), 
+(\ref{comb-theta}), (\ref{comb-q}), (\ref{comb-g})
+を連立すると, $2K+L+1$ 個の未知変数に関して, 
+同数の方程式があるので, 解くことができる.
+実際の解法としては, LU分解を用いて行なうことができる.
+
+解いた後は, 
+(\ref{u-flux.next}) と同様に,
+コンシステントなフラックスを求めておく.
+
+\subsubsection{時間差分の結合式の解法}
+
+(\ref{comb-theta}) などは, 以下のように書ける.
+%
+\begin{equation}
+  \sum_{k'=1}^{K} ( M_{k,k'} + \delta_{1,k} \delta_{1,k'} \alpha)
+    = F_k + \delta_{1,k} ( F_s + \gamma T_0 )
+\end{equation}
+ここで, $F_s, \alpha, \gamma$
+の項は地表フラックスに伴う項,
+その他は鉛直拡散に伴う項である.
+%
+ここで, 上下を逆にして行列で表現すると, 以下のようになる.
+%
+\begin{equation}
+  \left( \begin{array}{lll} M_{KK} & \cdots & M_{K1} \\ \vdots & &
+  \vdots \\ M_{1K} & \cdots & M_{11} + \alpha \\
+\end{array}  \right)
+\left( \begin{array}{l} T_K \\ \vdots \\ T_1 \\
+\end{array}  \right)
+= \left( \begin{array}{l} F_K \\ \vdots \\ F_1 + F_s + \gamma T_{0} \\
+\end{array} \right)
+\end{equation}
+
+いま, 表記の簡単のために, $K=3$とする.  以後の議論は, これによって一般性
+を失うことはない.
+%
+\begin{equation}
+  \left( \begin{array}{lll} M_{33} & M_{32} & M_{31} \\ M_{23} &
+  M_{22} & M_{21} \\ M_{13} & M_{12} & M_{11} + \alpha \\
+\end{array} \right)
+\left( \begin{array}{l} T_3 \\ T_2 \\ T_1 \\
+\end{array} \right)
+= \left( \begin{array}{l} F_3 \\ F_2 \\ F_1 + F_s + \gamma T_{0} \\
+\end{array} \right)
+\end{equation}
+%
+ここで,
+$F_s = 0, \alpha=0, \gamma=0$ としたときの式,
+(地表でのフラックス交換を考えない場合にあたる)
+を LU 分解で解くことを考える.
+%
+\begin{equation}
+  \left( \begin{array}{lll} M_{33} & M_{32} & M_{31} \\ M_{23} &
+  M_{22} & M_{21} \\ M_{13} & M_{12} & M_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+  \label{solve-0}
+\end{equation}
+
+LU 分解すると,
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         1      & 0      & 0      \\
+         L_{23} & 1      & 0      \\
+         L_{13} & L_{12} & 1      \\
+         \end{array} \right)
+  \left( \begin{array}{lll}
+         U_{33} & U_{32} & U_{31} \\
+         0      & U_{22} & U_{21} \\
+         0      & 0      & U_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+\end{equation}
+%
+これから, 
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         1      & 0      & 0      \\
+         L_{23} & 1      & 0      \\
+         L_{13} & L_{12} & 1      \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         f'_3 \\ f'_2 \\ f'_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+ \label{solve-z}
+\end{equation}
+%
+を$f'$について解き($f'_3=F_3$から出発すれば, 簡単に解ける), 
+それから,
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         U_{33} & U_{32} & U_{31} \\
+         0      & U_{22} & U_{21} \\
+         0      & 0      & U_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          f'_3 \\ f'_2 \\ f'_1 \\
+          \end{array} \right)
+\end{equation}
+%
+を, $f'$について, $x'_1=z'_1/U_{11}$ から出発して順に解くことができる.
+
+$\alpha \neq 0, \gamma \neq 0$ だと, LU 分解は, 
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         1      & 0      & 0      \\
+         L_{23} & 1      & 0      \\
+         L_{13} & L_{12} & 1      \\
+         \end{array} \right)
+  \left( \begin{array}{lll}
+         U_{33} & U_{32} & U_{31} \\
+         0      & U_{22} & U_{21} \\
+         0      & 0      & U_{11}+\alpha \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T_3 \\ T_2 \\ T_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
+          \end{array} \right)
+\end{equation}
+%
+これから, 
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         1      & 0      & 0      \\
+         L_{23} & 1      & 0      \\
+         L_{13} & L_{12} & 1      \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         f_3 \\ f_2 \\ f_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
+          \end{array} \right)
+\end{equation}
+%
+だが, これと, (\ref{solve-z}) を見比べると, 以下の関係があることがわかる.
+%
+\begin{equation}
+  \left( \begin{array}{l}
+         f_3 \\ f_2 \\ f_1 \\
+         \end{array} \right)
+ = 
+  \left( \begin{array}{l}
+         f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma T_0 \\
+         \end{array} \right)
+\end{equation}
+%
+これを用いると,
+%
+\begin{equation}
+  \left( \begin{array}{lll}
+         U_{33} & U_{32} & U_{31} \\
+         0      & U_{22} & U_{21} \\
+         0      & 0      & U_{11} + \alpha \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T_3 \\ T_2 \\ T_1 \\
+         \end{array} \right)
+  = 
+  \left(  \begin{array}{l}
+          f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma x_0 \\
+          \end{array} \right)
+ \label{solve-x}
+\end{equation}
+%
+となる. すなわち,
+%
+\begin{equation}
+  ( U_{11} +  \alpha  ) T_1 = f'_1 + F_s + \gamma T_0 
+  \label{solve-1}
+\end{equation}
+%
+ここで, $U_{k,k'}$ および, $f'_k$ は,
+$\alpha=\gamma=0$ とおいた式(\ref{solve-0}),
+すなわち, 地表フラックスの項を考慮しない式で
+LU分解を行なうことによって得られることに注意したい.
+これらの項の物理的な意味としては,
+地表面とのフラックス交換過程において,
+大気全体が, 熱容量$U_{11}$を持ち, 
+上からフラックス $f'_1$ が
+供給される1つの層とみなすことができることを示す.
+
+(\ref{comb-theta2})および(\ref{comb-theta}), 
+(\ref{comb-q2})および(\ref{comb-q}), 
+(\ref{comb-g2})および(\ref{comb-g})  のそれぞれにおいて
+(\ref{solve-1}) に対応する式が得られ, 以下のようになる.
+
+\begin{equation}
+  ( U^{T}_{11} +  \alpha^{T}  ) \delta T_1 - \gamma^{T} \delta T_0 
+      = f^{T}_1 + F\theta_{1/2}
+\end{equation}
+\begin{equation}
+  ( U^{q}_{11} +  \alpha^{q}  ) \delta q_1 - \gamma^{q} \delta T_0
+      = f^{q}_1 + Fq^P_{1/2}
+\end{equation}
+\begin{equation}
+  ( U^{g}_{00} +  \alpha^{g}  ) \delta T_0 - \gamma^{g1} \delta T_1
+                                           - \gamma^{g2} \delta q_1
+      = f^{g}_0 - F\theta_{1/2} - L Fq_{1/2}
+\end{equation}
+
+従って, 上の3式を連立させれば,
+未知変数 $\delta T_1, \delta q_1, \delta T_0$ を解くことができる.
+これらが解ければ, 後は
+(\ref{solve-x}) を順次$x_2,x_3$と解くことができる.
+%
+その後, 得られた温度にコンシステントなフラックスを
+\begin{eqnarray}
+  F\theta_c & = & F\theta_{1/2} 
+                   + \gamma^{T} \delta T_0 -\alpha^{T} \delta T_1 \\
+  Fq^P_c & = & Fq^P_{1/2} 
+                   + \gamma^{q} \delta T_0 -\alpha^{q} \delta q_1
+\end{eqnarray}
+として計算する.
+%
+ここでは, $M$ が一般行列の場合を示したが,
+実際には3重対角行列となるので, さらに簡単である.
+
+プログラム中においては,
+\Module{VFTND1(pimtx.F)} で大気部分について,
+\Module{GNDHT1(pggnd.F)} で地中部分について, LU分解解法の前半
+($f'_k$を求めるところ)を行ない, 
+\Module{SLVSFC(pgslv.F)} において, $3\times 3$の方程式を解き,
+$\delta q_1, \delta G_1, \delta T_0$ を求めている.
+その後, \Module{GNDHT2(pggnd.F)} において
+LU分解解法の後半を行ない, 地中について温度変化率を解き, 
+収支が合うようにフラックスを補正する.
+また, \Module{VFTND2(pimtx.F)} において大気中について
+温度変化率を解き, 
+\Module{FLXCOR(pimtx.F)} でフラックスを補正している.
+
+\subsubsection{時間差分の結合式}
+
+$\delta T_1, \delta q_1, \delta T_0$ を求める結合式は, 
+以下の様に条件を変えながら 3回解く. 
+\begin{enumerate}
+\item 地表湿潤度 $\beta$ を 1 として解く. 地表温度は変数. 
+\item \Module{GNDBET} で得られた地表湿潤度で解く. 
+      地表温度は変数.
+\item \Module{GNDBET} で得られた地表湿潤度で解く. 
+      融雪等の場合, 地表温度は氷点に固定. 
+\end{enumerate}
+
+1 回目の計算は, 可能蒸発量 $Fq^P$ を見積もるために行なわれる.
+(地表湿潤度が小さいときに, モデルのエネルギーバランスから
+得られた $Fq$ を用いて, 可能蒸発量を
+$\widetilde{Fq^P} = Fq / \beta$
+として診断すると, 非現実的な大きな値になってしまう.)
+可能蒸発量は,
+\begin{eqnarray}
+  Fq^P_c = Fq^P_{1/2}
+       + \DP{Fq^P_{1/2}}{q_1} \delta q_1 2 \Delta t 
+       + \DP{Fq^P_{1/2}}{T_0} \delta T_0 2 \Delta t 
+\end{eqnarray}
+となる.
+添字 $c$ は, 補正後の意味で, 
+これが得られた温度等にコンシステントなフラックスである.
+    
+2 回目以降の計算では, 
+\begin{enumerate}
+\item 1回めの計算で求めた可能蒸発量に
+      地表湿潤度(蒸発効率) $\beta$ を
+      かけたものを蒸発量 $Fq_1$ とする.
+      \begin{equation}
+        Fq = \beta Fq^P
+      \end{equation}
+
+\item 蒸発量$Fq_1$ は
+      \begin{equation}
+        \beta \rho C_E |\Dvect{v}| ( q_*(T_0) - q )
+      \end{equation}
+      で求められるものとして, 
+      改めてエネルギーバランスを解き直す.
+\end{enumerate}
+の2通りの蒸発量の計算方法を用いることができる
+(標準では1.の方法を用いる).
+3 回目の計算は, 融雪, 融氷のときや, 混合層海洋で海氷が生成するときに
+地表温度を氷点などに固定してエネルギーバランスを解くために行なう. 
+このとき, 融雪などの水の相変化に使われるエネルギー量が診断的に求まり, 
+後で融雪量などを計算する際に用いられる. 
+
+結合式の具体的な形は以下の様である. 
+%
+\begin{eqnarray}
+  \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{ccc}
+      U_{11}^T - \DP{F\theta_{1/2}}{T_1} 2 \Delta t &
+      0 &
+      - \left( \DP{F\theta_{1/2}}{T_0} 
+                         + \DP{FR_{1/2}}{T_0}\right) 2 \Delta t \\
+      0 &
+      U_{11}^q - \beta \DP{Fq^P_{1/2}}{q_1} \Delta t &
+      - \beta \DP{Fq^P_{1/2}}{T_0} \Delta t \\
+        \DP{F\theta_{1/2}}{T_1} \Delta t &
+      L \beta \DP{Fq_{1/2}}{q_1} \Delta t &
+      U_{00}^g + \left(\DP{F\theta_{1/2}}{T_0}
+                + L \beta \DP{Fq_{1/2}}{T_0}
+                + \DP{FR_{1/2}}{T_0} \right) 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\ \delta T_0 \\
+  \end{array} \right)  \nonumber \\
+=  \left( \begin{array}{l}
+      f_1^T + F\theta_{1/2} \\  
+      f_1^q + \beta Fq^P_{1/2} \\  
+      f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} \\  
+  \end{array} \right) \; .
+  \label{combin-eq}
+\end{eqnarray}
+%
+ここで, $U_{11}^T, U_{11}^q, U_{00}^g$ および $f_1^T, f_1^q, f_0^g$ は, 
+LU分解解法の前半を行なって得られる, 行列およびベクトルの成分である. 
+地表面が雪または氷に覆われているときには, 潜熱 $L$ の代わりに
+昇華の潜熱 $Ls = L + L_M$ を用いる. $L_M$ は水の融解の潜熱である. 
+%
+ただし, 第2回めの計算で, 
+蒸発の見積もりとして第一の方法を用いた場合は, 以下のようになる.
+\begin{eqnarray}
+ \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{ccc}
+      U_{11}^T - \DP{F\theta_{1/2}}{T_1} 2 \Delta t &
+      0 &
+      - \left( \DP{F\theta_{1/2}}{T_0} 
+                         + \DP{FR_{1/2}}{T_0}\right) 2 \Delta t \\
+      0 &
+      U_{11}^q - \beta \DP{Fq^P_{1/2}}{q_1} \Delta t & \\
+        \DP{F\theta_{1/2}}{T_1} \Delta t & 
+                                         &
+      U_{00}^g + \left(\DP{F\theta_{1/2}}{T_0}
+                + \DP{FR_{1/2}}{T_0} \right) 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\ \delta T_0 \\
+  \end{array} \right)  \nonumber \\
+=
+  \left( \begin{array}{l}
+      f_1^T + F\theta_{1/2} \\  
+      f_1^q + \beta Fq^P_c \\  
+      f_0^g - F\theta_{1/2} - L \beta Fq^P0_c \\  
+  \end{array} \right) \; .
+\end{eqnarray}
+
+3 回目の計算で, 地表温度を固定した場合の結合式は, 
+\begin{eqnarray}
+ \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{cc}
+      U_{11}^T - \DP{F\theta_{1/2}}{T_1} 2 \Delta t &
+      0 \\
+      0 &
+      U_{11}^q - \DP{Fq_{1/2}}{q_1} 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\
+  \end{array} \right) \nonumber \\
+=
+  \left( \begin{array}{l}
+      f_1^T + + F\theta_{1/2}
+      + \left( \DP{F\theta_{1/2}}{T_0} 
+                    + \DP{FR_{1/2}}{T_0} \right) \delta_0 T_0 2 \Delta t \\
+      f_1^q +  \beta Fq^P_{1/2} 
+      + \DP{Fq_{1/2}}{T_0} \delta_0 T_0 2 \Delta t \\
+  \end{array} \right) \; .
+  \label{combin-eq3}
+\end{eqnarray}
+ここで, $\delta_0 T_0$ は固定する温度までの変化率で, 
+\begin{equation}
+   \delta_0 T_0 = ( T_0^{fix} - T_0 ) / \Delta t \; .
+\end{equation}
+$T_0^{fix}$ は, 融雪, 融氷の場合は 273.15K, 
+海氷の生成の場合は 271.15K である. 
+また, 蒸発計算の第2の方法を用いる場合には,
+同様に$Fq^P_{1/2}$ のかわりに $Fq^P_c$ を用い,
+$F_q$ の微分項を 0 として計算する.
+このとき, 
+\begin{eqnarray}
+\Delta s & = & f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} - U_{00}^g
+          -  \left(\DP{F\theta_{1/2}}{T_0}
+                + L \beta \DP{Fq_{1/2}}{T_0}
+                + \DP{FR_{1/2}}{T_0} \right) \delta_0 T_0 \Delta t 
+                \nonumber \\
+         & - & \DP{F\theta_{1/2}}{T_1} \delta T_1 \Delta t
+                - L \beta \DP{Fq^P_{1/2}}{q_1} \delta q_1 \Delta t \; .
+\end{eqnarray}
+で計算される $\Delta s$ は地表エネルギーバランスで, 
+水の相変化に使われる分のエネルギーである. 
+
+\subsubsection{implicit 時間差分における時間ステップの扱い}
+
+鉛直拡散項の時間差分には implicit 法を用いているが, 
+一般に拡散係数が非線形であり, この係数を explicit に評価している
+ことにより, 数値不安定の問題が生じ得る. 
+安定性の向上のために, Kalnay and Kanamitsu (19??) にならって
+時間ステップの扱いを工夫している. 
+
+簡単化のために以下の常微分方程式を例に取って説明する. 
+\begin{equation}
+  \DP{X}{t} = - K(X) X
+\end{equation}
+係数 $K(X)$ が非線形性を表す. 
+係数のみ explicit に評価して素直に implicit 差分化すると次式のようになる. 
+\begin{equation}
+  \frac{X^{m+1} - X^m}{\Delta t} = - K( X^m ) X^{m+1}
+  \label{normal-fd}
+\end{equation}
+ところが, ここでは 2ステップ先の $X$ の値 $X^{\ast}$ を考えて, 
+\begin{equation}
+  \frac{X^{\ast} - X^m}{2\Delta t} = - K ( X^m ) X^{\ast}
+  \label{modify-fd1}
+\end{equation}
+\begin{equation}
+  X^{m+1} = \frac{X^{\ast} + X^m}2
+  \label{modify-fd2}
+\end{equation}
+とする. 
+一般に, (\ref{modify-fd1}), (\ref{modify-fd2}) のようにする方が
+(\ref{normal-fd})よりも安定性が良いことが知られている. 
+
+(\ref{modify-fd1}), (\ref{modify-fd2}) を, 時間変化率を求める
+形に書き直すと以下を得る. 
+\begin{equation}
+  \left(\frac{\Delta X}{\Delta t}\right)^{\ast} = 
+     - K( X^m ) \left( X^m + 
+        \left(\frac{\Delta X}{\Delta t}\right)^{\ast} 
+        2 \Delta t \right)
+\end{equation}
+\begin{equation}
+  X^{m+1} = X^m + \left(\frac{\Delta X}{\Delta t}\right)^{\ast} \Delta t
+\end{equation}
+すなわち, 時間変化率を求める際の時間ステップには, 
+時間積分のステップの 2 倍を用いる. 
+

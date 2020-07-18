@@ -1,0 +1,19 @@
+﻿%
+% dselect.sty                       ver.1.0     92/03/24
+%
+%
+% the following command is difined
+%
+%  \Dnewselect{select-name}   
+%
+%      \newselect{J} -> \DonJ \DoffJ \DselJ{text-a}{text-b}
+%
+\def\Dnewselect#1{
+  \global\expandafter\def\csname Don#1\endcsname{%
+      \global\expandafter\def\csname D@sel#1\endcsname{\iftrue}}
+  \global\expandafter\def\csname Doff#1\endcsname{%
+      \global\expandafter\def\csname D@sel#1\endcsname{\iffalse}}
+  \global\long\expandafter\def\csname Dsel#1\endcsname##1##2{%
+      \csname D@sel#1\endcsname##1\else##2\fi}
+  \global\expandafter\def\csname D@sel#1\endcsname{\iftrue}
+}

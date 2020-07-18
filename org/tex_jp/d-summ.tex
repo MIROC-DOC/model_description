@@ -1,0 +1,601 @@
+﻿
+\subsection{力学部分のまとめ}
+
+ここでは, これまでの記述と重複するが,
+力学過程部で行なわれる計算を列挙する.
+
+\subsubsection{力学部分の計算の概要}
+
+力学過程は, 以下のような順序で計算が行なわれる.
+
+\begin{enumerate}
+\item 水平風の渦度・発散への変換   \Module{UV2VDG(dvect)}
+\item 仮温度の計算              \Module{VIRTMD(dvtmp)}
+\item 気圧傾度項の計算           \Module{HGRAD(dvect)}
+\item 鉛直流の診断的計算         \Module{GRDDYN/PSDOT(dgdyn)}
+\item 移流による時間変化項 \Module{GRDDYN(dgdyn)}
+\item 予報変数のスペクトルへの変換 \Module{GD2WD(dg2wd)}
+\item 時間変化項のスペクトルへの変換 \Module{TENG2W(dg2wd)}
+\item スペクトル値時間積分 \Module{TINTGR(dintg)}
+\item 予報変数の格子点値への変換 \Module{GENGD(dgeng)}
+\item 疑似等$p$面拡散補正   \Module{CORDIF(ddifc)}
+\item 拡散による摩擦熱の考慮    \Module{CORFRC(ddifc)}
+\item 質量の保存の補正          \Module{MASFIX(dmfix)}
+\item (物理過程)             \Module{PHYSCS(padmn)}
+\item (時間フィルター)        \Module{TFILT(aadvn)}
+\end{enumerate}
+
+\subsubsection{水平風の渦度・発散への変換}
+
+水平風の格子点値$u_{ij}, v_{ij}$ 
+から渦度・発散の格子点値$\zeta_{ij}, D_{ij}$ を求める.
+まず, 渦度・発散のスペクトル
+$\zeta_n^m, D_n^m$ を求める,
+\begin{eqnarray}
+\zeta_n^m & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+                  im v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
+                \frac{w_j}{a(1-\mu_j^{2})} 
+                \nonumber \\
+          & + &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+                     u_{ij} \cos\varphi_j (1-\mu_j^2) 
+                  \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
+                 \frac{w_j}{a(1-\mu_j^{2})} \; ,
+\label{d-summ:uv-zeta}                 
+\end{eqnarray}
+\begin{eqnarray}
+    D_n^m & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+                  im u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
+                \frac{w_j}{a(1-\mu_j^{2})} 
+                \nonumber \\
+          & - &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+                  v_{ij} \cos\varphi_j  (1-\mu_j^2) 
+                  \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
+                 \frac{w_j}{a(1-\mu_j^{2})} ; .
+\label{d-summ:uv-D}                 
+\end{eqnarray}
+それをさらに, 
+\begin{equation}
+  \zeta_{ij} 
+   =  {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+      \zeta_n^m  {Y_n^m}_{ij} \; ,
+\end{equation}
+等を用いて格子点値に変換する.
+
+\subsubsection{仮温度の計算}
+
+仮温度$T_v$ は, 
+\begin{eqnarray}
+  T_v = T ( 1 + \epsilon_v q - l ) \; ,
+\end{eqnarray}
+ただし, $\epsilon_v = R_v/R - 1$ であり, 
+$R_v$ は水蒸気の気体定数
+(461Jkg$^{-1}$K$^{-1}$)
+$R$ は空気の気体定数
+(287.04Jkg$^{-1}$K$^{-1}$)
+である.
+
+\subsubsection{気圧傾度項の計算}
+
+気圧傾度項 $\nabla \pi = \frac{1}{p_S} \nabla p_S$ は,
+まず, $\pi_n^m$ を
+\begin{equation}
+  \pi_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+               (\ln {p_S})_{ij} {Y_n^{m *}}_{ij}  w_j \; ,
+\end{equation}
+でスペクトル表現に直してから,
+\begin{equation}
+   \frac{1}{a \cos \varphi} 
+   \left( \frac{\partial \pi}{\partial \lambda} \right)_{ij}
+     = 
+   \frac{1}{a \cos \varphi} 
+        {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       im \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
+\end{equation}
+\begin{equation}
+   \frac{1}{a}
+   \left( \frac{\partial \pi}{\partial \varphi} \right)_{ij}
+     =  
+   \frac{1}{a \cos \varphi} 
+       {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       \pi_n^m 
+       ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
+\end{equation}
+
+\subsubsection{鉛直流の診断的計算}
+
+気圧変化項, および鉛直流,
+\begin{equation}
+  \frac{\partial \pi}{\partial t}
+ = - \sum_{k=1}^{K} ( D_k + \Dvect{v}_k \cdot \nabla \pi ) 
+       \Delta  \sigma_k
+\end{equation}
+%
+\begin{equation}
+  \dot{\sigma}_{k-1/2}
+ = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
+   - \sum_{l=k}^{K} ( D_l + \Dvect{v}_l \cdot \nabla \pi )          
+       \Delta  \sigma_l
+\end{equation}
+%
+ならびにその非重力波成分を計算する.
+%
+\begin{equation}
+  \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+   =   - \sum_{k=1}^{K} \Dvect{v}_{k} \cdot \nabla \pi  
+       \Delta  \sigma_{k} \nonumber \\
+\end{equation}
+%
+\begin{equation}
+  \dot{\sigma}^{NG}_{k-1/2}
+ = - \sigma_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+   - \sum_{l=k}^{K} \Dvect{v}_{l} \cdot \nabla \pi
+       \Delta  \sigma_{l}
+\end{equation}
+
+\subsubsection{移流による時間変化項}
+
+運動量移流項:
+\begin{eqnarray}
+  (A_u)_k 
+   & = & ( \zeta_k + f ) v_k 
+             - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( u_{k-1} - u_k   )
+               + \dot{\sigma}_{k+1/2} ( u_k   - u_{k+1} ) ]
+           \nonumber \\
+   &   &     - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
+\end{eqnarray}
+%
+\begin{eqnarray}
+  (A_v)_k 
+   & = & - ( \zeta_k + f ) u_k 
+             - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( v_{k-1} - v_k   )
+               + \dot{\sigma}_{k+1/2} ( v_k   - v_{k+1} ) ]
+           \nonumber \\
+   &   &     - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a} 
+             \frac{\partial \pi}{\partial \varphi} 
+\end{eqnarray}
+\begin{equation}
+ \hat{E}_k    
+  = \frac{1}{2} ( u^2 + v^2 ) 
+    +  \sum_{k'=1}^{k} \left[  C_p \alpha_k ( T_v - T )_{k'}
+                              + C_p \beta_k ( T_v - T )_{k'-1} \right]
+\end{equation}
+
+温度移流項:
+\begin{equation}
+ (u T')_k  = u_k (T_k - \bar{T} )
+\end{equation}
+\begin{equation}
+ (v T')_k  = v_k (T_k - \bar{T} )
+\end{equation}
+%
+\begin{eqnarray}
+ \hat{H}_k & = & T_{k}^{\prime} D_{k} \nonumber \\
+     &   & - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
+                                         - T^{\prime}_{k}   )
+               + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
+                                         - \hat{T^{\prime}}_{k+1/2} ) ]
+               \nonumber \\
+     &   & - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
+                                         - \bar{T}_{k}   )
+               + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
+                                         - \hat{\bar{T}}_{k+1/2} ) ]
+               \nonumber \\
+     &   & + \hat{\kappa}_{k} T_{v,k} \Dvect{v}_{k} \cdot \nabla \pi
+               \nonumber \\
+     &   & - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
+             \sum_{l=k}^{K} \Dvect{v}_{l} \cdot \nabla \pi 
+               \Delta \sigma_{l}
+           - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
+             \sum_{l=k+1}^{K} \Dvect{v}_{l} \cdot \nabla \pi 
+               \Delta \sigma_{l}
+               \nonumber \\
+     &   & - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
+             \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
+           - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
+             \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
+\end{eqnarray}
+
+水蒸気移流項:
+\begin{equation}
+ (u q)_k  = u_k q_k
+\end{equation}
+\begin{equation}
+ (v q)_k  = v_k q_k
+\end{equation}
+%
+\begin{equation}
+R_k  =  q_k D_k 
+       - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
+               + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
+\end{equation}
+
+\subsubsection{予報変数のスペクトルへの変換}
+
+(\ref{d-summ:uv-zeta}) および
+(\ref{d-summ:uv-D}) を用いて
+
+$u_{ij}^{t-\Delta t}, v_{ij}^{t-\Delta t}$ を
+渦度・発散のスペクトル表現
+$\zeta_n^m, D_n^m$ に変換する.
+さらに,
+温度$T^{t-\Delta t}$, 比湿$q^{t-\Delta t}$, 
+$\pi = \ln p_S^{t-\Delta t}$ を
+\begin{equation}
+  X_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+               X_{ij} {Y_n^{m *}}_{ij}  w_j \; ,
+\end{equation}
+でスペクトル表現に変換する.
+
+\subsubsection{時間変化項のスペクトルへの変換}
+
+渦度の時間変化項
+\begin{eqnarray}
+  \DP{\zeta_n^m}{t} 
+  & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (A_v)_{ij} \cos \varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & + &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (A_u)_{ij} \cos \varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\ 
+\end{eqnarray}
+%
+発散の時間変化項の非重力波成分
+\begin{eqnarray}
+  \left( \DP{D_n^m}{t} \right)^{NG}
+  & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (A_u)_{ij} \cos \varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & - &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (A_v)_{ij} \cos \varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & - &  \frac{n(n+1)}{a^{2}} 
+         \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \hat{E}_{ij}  {Y_n^{m *}}_{ij} w_j
+         \nonumber \\ 
+\end{eqnarray}
+%
+温度の時間変化項の非重力波成分
+\begin{eqnarray}
+  \left( \DP{T_n^m}{t} \right)^{NG}
+  & = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (u T')_{ij} \cos \varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (v T')_{ij} \cos \varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \hat{H}_{ij} 
+          {Y_n^{m *}}_{ij} w_j
+\end{eqnarray}
+%
+水蒸気の時間変化項
+\begin{eqnarray}
+  \DP{q_n^m}{t}
+  & = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (uq)_{ij} \cos \varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (vq)_{ij} \cos \varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          R_{ij} 
+          {Y_n^{m *}}_{ij} w_j
+\end{eqnarray}
+
+\subsubsection{スペクトル値時間積分}
+
+行列形式の方程式
+\begin{eqnarray}
+&   &   \left\{ ( 1+2\Delta t {\cal D}_H )( 1+2\Delta t {\cal D}_M )
+           \underline{I}  
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
+           + (1+2\Delta t {\cal D}_M)
+             \Dvect{G} \Dvect{C}^{T} ) \nabla^{2}_{\sigma}
+  \right\}
+      \overline{ \Dvect{D} }^{t} 
+      \nonumber \\
+& & = ( 1+2\Delta t {\cal D}_H )( 1-\Delta t {\cal D}_M ) 
+       \Dvect{D}^{t-\Delta t}
+  + \Delta t 
+         \left( \frac{\partial \Dvect{D}}{\partial t} \right)_{NG}  
+ \nonumber \\
+& & -  \Delta t \nabla^{2}_{\sigma}     
+                   \left\{  ( 1+2\Delta t {\cal D}_H ) \Dvect{\Phi}_{S} 
+                          + \underline{W} 
+                            \left[ ( 1-2\Delta t {\cal D}_H ) 
+                                    \Dvect{T}^{t-\Delta t}
+                                  + \Delta t 
+                                      \left( \frac{\partial \Dvect{T}}
+                                                  {\partial t}     
+                                      \right)_{NG} \right]
+                   \right.
+ \nonumber \\
+  &  &             \left.  \hspace*{20mm} 
+                          + ( 1+2\Delta t {\cal D}_H ) \Dvect{G} 
+                            \left[ \pi^{t-\Delta t} 
+                                  + \Delta t
+                                     \left( \frac{\partial \pi}
+                                                 {\partial t} 
+                                     \right)_{NG}  \right]
+                   \right\} . 
+\end{eqnarray}
+%
+を LU 分解を用いて解くことによって 
+$\bar{D}$ を求め,
+%
+\begin{equation}
+  \frac{\partial \Dvect{T}}{\partial t} 
+      =   \left( \frac{\partial \Dvect{T}}
+                        {\partial t}       \right)_{NG}  
+         - \underline{h} \Dvect{D}
+\end{equation}
+%
+\begin{equation}
+  \frac{\partial \pi}{\partial t} 
+      =   \left( \frac{\partial \pi}
+                        {\partial t}       \right)_{NG}  
+         - \Dvect{C} \cdot \Dvect{D}
+\end{equation}
+
+%
+によって
+$\partial \Dvect{T}/\partial t$,
+$\partial \pi/\partial t$ 
+を求めて, $t+\Delta t$ におけるスペクトルの値を計算する.
+\begin{eqnarray}
+  \zeta^{t+\Delta t} & = & \left( \zeta^{t-\Delta t}
+                                +   2 \Delta t \DP{\zeta}{t} \right)
+                          ( 1 + 2 \Delta t {\cal D}_M )^{-1} \\
+  D^{t+\Delta t} & = & 2 \bar{D} - D^{t-\Delta t}\\
+  T^{t+\Delta t} & = & \left( T^{t-\Delta t}
+                                +  2 \Delta t  \DP{T}{t} \right)
+                          ( 1 + 2 \Delta t {\cal D}_H )^{-1} \\
+  q^{t+\Delta t} & = & \left( q^{t-\Delta t}
+                                +  2 \Delta t \DP{q}{t} \right)
+                          ( 1 + 2 \Delta t {\cal D}_E )^{-1} \\
+\pi^{t+\Delta t} & = & \pi^{t-\Delta t}
+                                +  2 \Delta t \DP{\pi}{t}
+\end{eqnarray}
+
+\subsubsection{予報変数の格子点値への変換}
+
+
+渦度・発散のスペクトル値 $\zeta_n^m, D_n^m$ から
+水平風速の格子点値 $u_{ij}, v_{ij}$ を求める.
+\begin{equation}
+  u_{ij}
+  =  \frac{1}{\cos \varphi_j}
+     {\cal R}\Dvect{e} \sum_{m=-N}^{N} 
+                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
+    \left\{
+             \frac{a}{n(n+1)} \zeta_n^m 
+            (1-\mu^{2}) \DP{}{\mu} {Y_n^m}_{ij}
+          -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
+    \right\}
+\end{equation}
+%
+\begin{equation}
+  v_{ij}
+  =  \frac{1}{\cos \varphi_j}
+     {\cal R}\Dvect{e} \sum_{m=-N}^{N}
+                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
+    \left\{
+          -  \frac{im a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
+          -  \frac{a}{n(n+1)} \tilde{D}_n^m 
+            (1-\mu^{2}) \DP{}{\mu} {Y_n^m}_{ij}
+    \right\}
+\end{equation}
+
+さらに,
+\begin{equation}
+  T_{ij} 
+   =  {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+      T_n^m  {Y_n^m}_{ij} \; ,
+\end{equation}
+などによって, $T_{ij}, \pi_{ij}, q_{ij}$ を求め,
+\begin{eqnarray}
+  {p_S}_{ij} = \exp \pi_{ij} 
+\end{eqnarray}
+を計算する.
+
+\subsubsection{疑似等$p$面拡散補正}
+
+水平拡散は 等 $\sigma$ 面上で適用されるが,
+山岳の傾斜の大きな領域では, 山を上る方向に水蒸気が輸送され,
+山頂部での偽の降水をもたらすなどの問題を起こす.
+それを緩和するために, 等 $p$ 面の拡散に近くなるような
+補正を$T,q,l$について入れる.
+
+\begin{eqnarray}
+  {\cal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
+               & \simeq & (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
+                      - \DP{\sigma}{p} 
+                      (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} p
+                      \cdot \DP{T}{\sigma}                  \nonumber \\
+               & =  &    (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
+                    -  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} \pi
+                          \cdot \sigma \DP{T}{\sigma} \nonumber \\
+               & = &   {\cal D} (T) 
+                    -  {\cal D} (\pi) 
+                       \sigma \DP{T}{\sigma}
+\end{eqnarray}
+%
+であるから,
+\begin{equation}
+  T_k \leftarrow  T_k 
+       -  2 \Delta t
+        \sigma_{k} \frac{T_{k+1}-T_{k-1}}{\sigma_{k+1} - \sigma_{k-1}}
+        {\cal D}(\pi)
+\end{equation}
+などととする.
+${\cal D}(\pi)$ は, $pi$ のスペクトル値 $\pi_n^m$ に
+拡散係数のスペクトル表現をかけたものを
+格子の値に変換して用いる.
+
+\subsubsection{拡散による摩擦熱の考慮}
+
+拡散による摩擦熱は,
+\begin{equation}
+  Q_{DIF} = - \left( u_{ij} {\cal D}(u)_{ij} 
+                   + v_{ij} {\cal D}(v)_{ij} \right)
+\end{equation}
+と見積もられる.
+したがって,
+\begin{equation}
+  T_k \leftarrow  T_k 
+       -  \frac{2 \Delta t}{C_p}
+           \left( u_{ij} {\cal D}(u)_{ij} 
+                 + v_{ij} {\cal D}(v)_{ij} \right)
+\end{equation}
+
+\subsubsection{質量の保存の補正}
+
+スペクトル法による取扱いは,
+$\pi = \ln p_S$ の全球積分は丸め誤差を除いて保存するが,
+質量, すなわち $p_S$ の全球積分の保存は保証されない.
+また, スペクトルの波数打ちきりにともない,
+水蒸気の格子点値に負の値が出ることがある.
+これらの事情から, 
+乾燥大気の質量と水蒸気, 雲水の質量を保存させ,
+さらに負の水蒸気量となる領域を除去するための補正を行なう.
+
+まず, 力学の計算の最初に \Module{FIXMAS},
+水蒸気, 雲水の各成分の全球積分値 $M_q, M_l$ を計算しておく.
+\begin{eqnarray}
+  M_q^0 & = & \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
+  M_l^0 & = & \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k 
+\end{eqnarray}
+また, 計算の最初のステップで
+乾燥質量 $M_d$ を計算し, 記憶する.
+\begin{eqnarray}
+  M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k 
+\end{eqnarray}
+
+力学計算の終りには \Module{MASFIX},
+以下のような手順で補正を行なう.
+\begin{enumerate}
+\item まず, 負の水蒸気量となる格子点について,
+      直下の格子点から水蒸気を分配して,
+      負の水蒸気を除去する.
+      $q_k < 0 $であるとすると,
+      \begin{eqnarray}
+        q_k'     & = & 0          \\
+        q_{k-1}' & = & q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
+      \end{eqnarray}
+      ただし, これは $q_{k-1}' \ge 0 $ となる場合にのみ行なう.
+
+\item 次に上の手続きで除去されなかった格子点について値を 0 とする.
+
+\item 全球積分値 $M_q$ を計算し,
+      これが $M_q^0$ と一致するように,
+      全球の水蒸気量に一定割合をかける.
+
+      \begin{equation}
+        q'' = \frac{M_q^0}{M_q} q' 
+      \end{equation}
+      
+\item 乾燥空気質量の補正を行なう.
+      同様に$M_d$を計算し,
+
+      \begin{equation}
+        p_S'' = \frac{M_d^0}{M_d} p_S
+      \end{equation}
+
+\end{enumerate}
+
+\subsubsection{水平拡散とレーリー摩擦}
+
+水平拡散の係数をスペクトル表現すると,
+
+\begin{equation}
+ {{\cal D}_M}_n^m = K_M 
+                      \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
+                                - \left( \frac{2}{a^2} \right)^{N_D/2} 
+                      \right]
+                  + K_R
+\end{equation}
+%
+\begin{equation}
+  {{\cal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
+\end{equation}
+%
+\begin{equation}
+  {{\cal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
+\end{equation}
+
+$K_R$ は レーリー摩擦係数である.
+レーリー摩擦係数は
+\begin{equation}
+  K_R = K_R^0 \left[ 1+\tanh \left( \frac{z-z_R}{H_R} \right) \right]
+\end{equation}
+のようなプロファイルで与える.
+ただし,
+\begin{equation}
+  z = - H \ln \sigma 
+\end{equation}
+と近似する.
+標準値は, $K_R^0 = \mbox{(30day)}^{-1}$,
+$z_R = -H \ln \sigma_{top}$ ($\sigma_{top}$ : モデルの最上レベル),
+$H = 8000$m,
+$H_R = 7000$m である.
+
+\subsubsection{時間フィルター}
+
+
+leap frog における計算モードの除去のために 
+Asselin(1972) の時間フィルターを毎ステップ適用する.
+%
+\begin{equation}
+  \bar{T}^{t}
+    = ( 1-2 \epsilon_f ) T^{t}
+    +  \epsilon_f 
+        \left( \bar{T}^{t-\Delta t} + T^{t+\Delta t} \right)
+\end{equation}
+%
+と$\bar{T}$を求める.
+次のステップの力学過程で用いる $T^{t-\Delta t}$ としては,
+この$\bar{T}^t$ を用いる.
+$\epsilon_f$ としては標準的に 0.05 を使用する. 
+
+実際には
+まず, 予報変数の格子点値への変換 \Module{GENGD} の箇所で,
+\begin{equation}
+  \bar{T}^{t*}
+    = ( 1 -\epsilon_f )^{-1} 
+     \left[ ( 1-2 \epsilon_f ) T^{t} + \epsilon_f \bar{T}^{t-\Delta t}
+     \right]
+\end{equation}
+を求めておき, 物理過程の処理が終わり
+$T^{t+\Delta t}$ の値が確定した後で \Module{TFILT} で,
+\begin{equation}
+ \bar{T}^{t}
+    = ( 1 -\epsilon_f ) \bar{T}^{t*}  
+       +  \epsilon_f \bar{T}^{t+\Delta t}
+\end{equation}
+とする.

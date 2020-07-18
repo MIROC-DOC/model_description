@@ -1,0 +1,458 @@
+﻿\subsection{時間積分}
+
+時間差分スキームは基本的に leap frog である.
+ただし, 拡散項および物理過程の項は後方差分もしくは前方差分とする.
+計算モードを抑えるために時間フィルター(Asselin, 1972)を用いる.
+さらに$\Delta t$ を大きくとるために,
+重力波の項に semi-implicit の手法を適用する(Bourke, 1988).
+
+\subsubsection{leap frog による時間積分と時間フィルター}
+
+移流項等の時間積分スキームとして leap frog を用いる.
+水平拡散項には $2 \Delta t$ の後方差分を使用する.
+また, 拡散項の疑似$p$面補正と水平拡散による摩擦熱の項とは
+補正として扱い, $2 \Delta t$ の前方差分となる.
+物理過程の項(${\cal F}_\lambda, {\cal F}_\varphi, Q, S_q$)は,
+やはり $2 \Delta t$ の前方差分を使用する.
+(ただし, 鉛直拡散の時間変化項の計算に関しては後方差分的な取扱いをする.
+詳しくは物理過程の章を参照のこと.)
+
+各予報変数を代表して ${X}$ と表すと,
+%
+\begin{equation}
+  \hat{X}^{t+\Delta t} 
+    =  \bar{X}^{t-\Delta t}
+    + 2 \Delta t 
+      \dot{X}_{adv}\left( {X}^{t} \right)
+    + 2 \Delta t 
+      \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right)
+\end{equation}
+%
+$ \dot{X}_{adv} $ は移流項等,
+$ \dot{X}_{dif} $ は水平拡散項である.
+
+$ \hat{X}^{t+\Delta t} $ には, 
+疑似等$p$面拡散と水平拡散による摩擦熱($ \dot{X}_{dis} $)の補正
+および物理過程($ \dot{X}_{phy} $)の項が加えられ,
+$ {X}^{t+\Delta t} $ となる.
+%
+\begin{equation}
+  {X}^{t+\Delta t} 
+    =  \hat{X}^{t+\Delta t}
+    + 2 \Delta t 
+      \dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
+    + 2 \Delta t 
+      \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)
+\end{equation}
+
+leap frog における計算モードの除去のために 
+Asselin(1972) の時間フィルターを毎ステップ適用する.
+すなわち, 
+%
+\begin{equation}
+  \bar{X}^{t}
+    = ( 1-2 \epsilon_f ) {X}^{t}
+    +  \epsilon_f 
+        \left( \bar{X}^{t-\Delta t} + {X}^{t+\Delta t} \right)
+\end{equation}
+%
+と$\bar{X}$を求める.
+$\epsilon_f$ としては標準的に 0.05 を使用する. 
+
+\subsubsection{semi-implicit 時間積分}
+
+力学の計算では, 基本的に leap frog を用いるが,
+一部の項を implicit 扱いで計算する.
+ここで, implicit は, 台形 implicit を考える.
+ベクトル量 $\mbox{\boldmath q}$ に関して,
+$t$ での値を $\mbox{\boldmath q}$,
+$t+\Delta t$ での値を $\mbox{\boldmath q}^+$,
+$t-\Delta t$ での値を $\mbox{\boldmath q}^-$ と書くと,
+台形 implicit とは,
+$(\mbox{\boldmath q}^+ +  \mbox{\boldmath q}^- )/2$ を
+用いて評価した時間変化項をを用いて解くことにあたる.
+%
+今, {\boldmath q} の時間変化項として,
+leap forg 法で扱う項 A と 台形 implicit 法で扱う項 B とに分けて考える.
+A は {\boldmath q} に対して非線形であるが, B は線形であるとする.
+すなわち,
+%
+\begin{equation}
+  \mbox{\boldmath q}^+ 
+      = \mbox{\boldmath q}^- 
+      + 2 \Delta t {\cal A}( \mbox{\boldmath q}  )
+      + 2 \Delta t B (   \mbox{\boldmath q}^+ 
+                       + \mbox{\boldmath q}^-   )/2
+\end{equation}
+%
+ただし, $B$ は正方行列である. すると,
+$\Delta \mbox{\boldmath q} \equiv \mbox{\boldmath q}^+ - \mbox{\boldmath q}$
+と書けば,
+\begin{equation}
+  ( I - \Delta t B ) \Delta \mbox{\boldmath q} 
+      = 2 \Delta t \left( {\cal A}(\mbox{\boldmath q})
+                         + B \mbox{\boldmath q} \right) 
+\end{equation}
+%
+これは, 行列演算で簡単に解くことができる.
+
+\subsubsection{semi-implicit 時間積分の適用}
+
+そこで, この方法を適用し, 線形重力波の項を implicit 扱いする.
+これにより, 時間ステップ $\Delta t$ を小さくとることができる.
+
+方程式系において, $T=\bar{T}_k$ であるような静止場を基本場とする
+線型重力波項とそれ以外の項(添字$NG$を付ける)に分離する.
+鉛直方向のベクトル表現
+$\Dvect{D}=\{ D_{k} \}$, $\Dvect{T}=\{ T_{k} \}$ を用いて,
+%
+\begin{equation}
+   \frac{\partial \pi}{\partial t} =　
+          \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
+     - \Dvect{C} \cdot \Dvect{D}  ,
+\end{equation}
+%
+\begin{equation}
+  \frac{\partial \Dvect{D}}{\partial t} = 
+          \left( \frac{\partial \Dvect{D}}{\partial t} \right)_{NG}  
+          - \nabla^{2}_{\sigma} ( \Dvect{\Phi}_{S} 
+                                  + \underline{W} \Dvect{T}
+                                  + \Dvect{G} \pi )  
+          - {\cal D}_M \Dvect{D} ,
+\end{equation}
+%
+\begin{eqnarray}
+  \frac{\partial \Dvect{T}}{\partial t} 
+     & = &  \left( \frac{\partial \Dvect{T}}
+                        {\partial t}       \right)_{NG}  
+         - \underline{h} \Dvect{D}
+         - {\cal D}_H \Dvect{T} ,
+\end{eqnarray}
+
+ここで, 非重力波項は,
+%
+\begin{equation}
+  \label{Z項}
+  \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+   =   - \sum_{k=1}^{K} \Dvect{v}_{k} \cdot \nabla \pi  
+       \Delta  \sigma_{k} \nonumber \\
+   =   Z_{k}
+\end{equation}
+%
+\begin{equation}
+  \dot{\sigma}^{NG}_{k-1/2}
+ = - \sigma_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+   - \sum_{l=k}^{K} \Dvect{v}_{l} \cdot \nabla \pi
+       \Delta  \sigma_{l}
+\end{equation}
+%
+\begin{equation}
+  \left( \frac{\partial D}{\partial t} \right)^{NG}
+       =   \frac{1}{a\cos\varphi}
+            \frac{\partial (A_u)_{k}}{\partial \lambda}
+          + \frac{1}{a\cos\varphi}
+            \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
+          - \nabla^{2}_{\sigma} \hat{E}_{k} 
+          - {\cal D}(D_{k}) 
+\end{equation}
+%
+\begin{equation}
+  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG} 
+      =   - \frac{1}{a\cos\varphi} 
+               \frac{\partial u_k T'_k}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
+          + \hat{H}_{k} 
+          - {\cal D}(T_{k}) 
+\end{equation}
+%
+\begin{eqnarray}
+ \hat{H}_k & = & T_{k}^{\prime} D_{k} \nonumber \\
+     &   & - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
+                                         - T^{\prime}_{k}   )
+               + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
+                                         - \hat{T^{\prime}}_{k+1/2} ) ]
+               \nonumber \\
+     &   & - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
+                                         - \bar{T}_{k}   )
+               + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
+                                         - \hat{\bar{T}}_{k+1/2} ) ]
+               \nonumber \\
+     &   & + \hat{\kappa}_{k} T_{v,k} \Dvect{v}_{k} \cdot \nabla \pi
+               \nonumber \\
+     &   & - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
+             \sum_{l=k}^{K} \Dvect{v}_{l} \cdot \nabla \pi 
+               \Delta \sigma_{l}
+           - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
+             \sum_{l=k+1}^{K} \Dvect{v}_{l} \cdot \nabla \pi 
+               \Delta \sigma_{l}
+               \nonumber \\
+     &   & - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
+             \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
+           - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
+             \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
+               \nonumber \\
+     &   & + \frac{Q_k + (Q_{diff})_k}{C_p}
+\end{eqnarray}
+\begin{equation}
+  \hat{E}_k = E_{k} 
+            + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} )
+\end{equation}
+
+ここで, 重力波項のベクトルおよび行列(下線で表示)は,
+%
+\begin{equation}
+  \label{係数C}
+  C_{k} = \Delta \sigma_{k}
+\end{equation}
+%
+\begin{equation}
+  W_{kl} = C_{p} \alpha_{l} \delta_{k \geq l}
+         + C_{p} \beta_{l} \delta_{k-1 \geq l}
+\end{equation}
+%
+\begin{equation}
+  G_{k} = \hat{\kappa}_{k} C_{p} \bar{T}_{k}
+\end{equation}
+%
+\begin{equation}
+\underline{h} = \underline{Q}\underline{S} - \underline{R}
+\end{equation}
+%
+\begin{equation}
+  Q_{kl} = \frac{1}{\Delta \sigma_{k}} 
+             ( \hat{\bar{T}}_{k-1/2} - \bar{T}_{k} ) \delta_{k=l} 
+         + \frac{1}{\Delta \sigma_{k}} 
+             ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l} 
+\end{equation}
+%
+\begin{equation}
+  S_{kl} = \sigma_{k-1/2} \Delta \sigma_{l} 
+           - \Delta \sigma_{l} \delta_{k \leq l } 
+\end{equation}
+%
+\begin{equation}
+  \label{係数R}
+  R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} } 
+                     \Delta \sigma_{l} \delta_{k \leq l} 
+                   + \frac{ \beta_{k} }{ \Delta \sigma_{k} } 
+                     \Delta \sigma_{l} \delta_{k+1 \leq l}  
+             \right) \bar{T}_{k} .
+\end{equation}
+%
+ここで, 例えば $\delta_{k \leq l}$ は,
+$ k \leq l$ が成り立つとき 1, そうでないとき 0 となる関数である.
+
+次のような表現を使用して,
+%
+\begin{equation}
+  \label{せみいんぷ}
+  \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
+        \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
+\end{equation}
+%
+\begin{eqnarray}
+    \overline{X}^{t}
+  & \equiv & \frac{1}{2} \left( {X}^{t+\Delta t} 
+                              + {X}^{t-\Delta t} \right)
+        \nonumber \\ 
+  & = & {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
+\end{eqnarray}
+%
+方程式系に semi-implicit 法を適用すると,
+%
+\begin{equation}
+  \label{semi-imp pi}
+  \delta_{t} \pi =
+          \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
+     - \Dvect{C} \cdot \overline{ \Dvect{D} }^{t}
+\end{equation}
+%
+\begin{equation}
+  \label{semi-imp D}
+  \delta_{t} \Dvect{D} =
+          \left( \frac{\partial \Dvect{D}}{\partial t} \right)_{NG}  
+          - \nabla^{2}_{\sigma} ( \Dvect{\Phi}_{S} 
+                                  + \underline{W} 
+                                     \overline{ \Dvect{T} }^{t}
+                                  + \Dvect{G}
+                                  \overline{\pi}^{t} ) 
+          - {\cal D}_M ( \Dvect{D}^{t-\Delta t} 
+                         + 2 \Delta t \delta_{t} \Dvect{D} )
+\end{equation}
+%
+\begin{equation}
+  \label{semi-imp T}
+  \delta_{t} \Dvect{T} =
+        \left( \frac{\partial \Dvect{T}}{\partial t} \right)_{NG}  
+         - \underline{h} \overline{ \Dvect{D} }^{t} 
+         - {\cal D}_H ( \Dvect{T}^{t-\Delta t}
+                        + 2 \Delta t \delta_{t} \Dvect{T} )
+\end{equation}
+
+
+すると, 
+%
+\begin{eqnarray}
+  \label{semi-imp barD}
+&   &   \left\{ ( 1+2\Delta t {\cal D}_H )( 1+2\Delta t {\cal D}_M )
+           \underline{I}  
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
+           + (1+2\Delta t {\cal D}_M)
+             \Dvect{G} \Dvect{C}^{T} ) \nabla^{2}_{\sigma}
+  \right\}
+      \overline{ \Dvect{D} }^{t} 
+      \nonumber \\
+& & = ( 1+2\Delta t {\cal D}_H )( 1+\Delta t {\cal D}_M ) 
+       \Dvect{D}^{t-\Delta t}
+  + \Delta t 
+     \left( \frac{\partial \Dvect{D}}{\partial t} \right)_{NG}  
+ \nonumber \\
+& & -  \Delta t \nabla^{2}_{\sigma}     
+                   \left\{  ( 1+2\Delta t {\cal D}_H ) \Dvect{\Phi}_{S} 
+                          + \underline{W} 
+                            \left[ ( 1-2\Delta t {\cal D}_H ) 
+                                    \Dvect{T}^{t-\Delta t}
+                                  + \Delta t 
+                                      \left( \frac{\partial \Dvect{T}}
+                                                  {\partial t}     
+                                      \right)_{NG} \right]
+                   \right.
+ \nonumber \\
+  &  &             \left.  \hspace*{20mm} 
+                          + ( 1+2\Delta t {\cal D}_H ) \Dvect{G} 
+                            \left[ \pi^{t-\Delta t} 
+                                  + \Delta t
+                                     \left( \frac{\partial \pi}
+                                                 {\partial t} 
+                                     \right)_{NG}  \right]
+                   \right\} . 
+\end{eqnarray}
+
+球面調和関数展開を用いているので,
+\[
+    \nabla^{2}_{\sigma} = - \frac{n(n+1)}{a^{2}}
+\]
+であり上式を$\overline{ \Dvect{D}_n^m }^{t}$ について解くことができる.
+%
+その後,
+%
+\begin{equation}
+   D^{t+\Delta t} = 2\overline{ \Dvect{D} }^{t} - D^{t-\Delta t}
+\end{equation}
+%
+および, (\ref{semi-imp pi}), (\ref{semi-imp T})
+により$t+\Delta t$ における値$\hat{X}^{t+\Delta t}$
+が求められる.
+
+\subsubsection{時間スキームの特性と時間ステップの見積り}
+
+移流型方程式 
+\begin{equation}
+  \DP{X}{t} = c \DP{X}{x}
+\end{equation}
+において,  leap frog で離散化した場合の安定性を考える.
+今, 
+\begin{displaymath}
+  X = X_0 \exp(ikx)
+\end{displaymath}
+と置き差分化すると, 上式は,
+\begin{equation}
+  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n
+\end{equation}
+となる.
+ここで,
+\begin{displaymath}
+  \lambda = X^{n+1}/X^n = X^n/X^{n-1} 
+\end{displaymath}
+とすると,
+\begin{equation}
+  \lambda^2 = 1 + 2 i kc \Delta t \lambda \; .
+\end{equation}
+この解は $kc \Delta t = p$ とおいて,
+\begin{equation}
+ \lambda = -i p \pm \sqrt{1-p^2}
+\end{equation}
+
+この絶対値は
+\begin{equation}
+  |\lambda| = \left\{ 
+             \begin{array}{ll}
+               1                     & |p| \le 1 \\
+               p \pm \sqrt{p^2-1} \;\;   & |p| > 1
+             \end{array}
+             \right.
+\end{equation}
+であり, $|p|>1$ の場合には, $|\lambda| > 1$ となり,
+時間とともに絶対値が指数的に大きくなる解となる.
+これは計算が不安定であることを示す.
+
+一方, $|p| \le 1$ の場合は $|\lambda| = 1$ であるため,
+計算は中立である.
+ただし, $\lambda$の値として2つの解があり,
+そのうち一方は, $\Delta t \rightarrow 1$ としたときに
+$\lambda \rightarrow 1$ であるが, 
+他方は $\lambda \rightarrow -1$ となる.
+これは, 時間的に大きく振動する解を示す.
+このモードは計算モードと呼ばれ, 
+leap frog 法の問題点の一つである.
+このモードは時間フィルターを施すことによって
+減衰させることができる.
+
+$|p|=kc \Delta t \le 1$ の条件は,
+水平離散化の格子間隔 $\Delta x$ が与えられている場合には
+それによって $k$ の最大値が
+\begin{displaymath}
+  \max k = \frac{\pi}{\Delta x}
+\end{displaymath}
+となることより,
+\begin{equation}
+   \Delta t \le \frac{\Delta x}{\pi c}
+\end{equation}
+となる.
+スペクトルモデルの場合は, 最大波数 $N$ により,
+地球半径を $a$ として,
+\begin{equation}
+   \Delta t \le \frac{a}{N c}  
+\end{equation}
+これが安定性の条件である.
+
+積分の安定性を保証するには,
+$c$ としては, もっとも速い移流・伝播の速度をとり,
+それによって決まる $\Delta t$ よりも小さな時間ステップを用いればよい.
+semi-implicit を用いない場合には, 重力波の伝播速度
+($c \sim 300m/s$) が安定性の基準となるが,
+semi-implicit を用いた場合には, 通常, 東西風による移流が
+制限要因となる.
+従って, $\Delta t$ は $U_{max}$ を東西風の最大値として,
+\begin{equation}
+   \Delta t \le \frac{a}{N U_{max}}  
+\end{equation}
+を満たすようにとる.
+実際にはこれに安全のための係数をかけたものを用いる.
+
+\subsubsection{時間積分の開始における取扱い}
+
+AGCM で計算されたものではない, 
+適当な初期値から始める場合には, モデルに整合的な
+$t$ および $t-\Delta t$ の2つの時刻の物理量を与えることはできない.
+しかし, $t-\Delta t$ の値として不整合な値を与えると,
+大きな計算モードが発生する.
+
+そこで, まず$X^{\Delta t/4} = X^0$ として, $1/4$の時間ステップで
+\begin{displaymath}
+  X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
+                 = X^0 + \Delta t/2 \dot{X}^0
+\end{displaymath}
+を求め, さらに, $1/2$の時間ステップで,
+\begin{displaymath}
+  X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}
+\end{displaymath}
+そして, 本来の時間ステップで,
+\begin{displaymath}
+  X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}
+\end{displaymath}
+として, 以後普通に leap frog で計算を行なうようにすると,
+計算モードの発生が抑えられる.
