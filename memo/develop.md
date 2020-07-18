@@ -97,26 +97,28 @@
 
 - 開発フロー
 
-  1. [issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
-  1. ローカルの資料を最新に `git pull`
-  1. 執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
+  - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
+  - 2)ローカルの資料を最新に `git pull`
+  - 3)執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
   - 今いるブランチを確認する。`git branch`
-  1. feature/MYFEATURE ブランチで執筆する。abcの手順で共同編集者でファイルをやり取りする。
-    1. ファイル変更が一段落するたびに、コミットする
+  - 4)feature/MYFEATURE ブランチで執筆する。abcの手順で共同編集者でファイルをやり取りする。
+    - a)ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
       - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
       - コミット状況を確認`git status`
-    2. ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する  そのブランチにおける初めてのpush。リモートにbranchを作成する`git push -u origin feature/MYFEATURE`  ２回目以降のpush`git push origin feature/MYFEATURE`
-    3. 共同編集者が最新のfeature/MYFEATURE ブランチをローカルに反映する。feature/MYFEATURE ブランチにて`git pull`
-  1. 執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
+    - b)ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する  そのブランチにおける初めてのpush。リモートにbranchを作成する`git push -u origin feature/MYFEATURE`  ２回目以降のpush`git push origin feature/MYFEATURE`
+    - c)共同編集者が最新のfeature/MYFEATURE ブランチをローカルに反映する。feature/MYFEATURE ブランチにて`git pull`
+  - 5)執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
   - review が行われ、問題があれば執筆者が再度修正する
     - プルリクエストの一覧は[ここ](https://github.com/pulls)から見れる
   - review で問題が無ければ管理者がマージする
     - コンフリクトが発生している場合、管理者が解消する
   - feature ブランチを削除する。issueをcloseする。
 
-[作業フロー](../assets/memo_develop_GitHub_flow.png)
 ローカルのファイル削除などしない限り、Gitの操作は大体取り返しがつく。
+
+<img src="../assets/memo_develop_GitHub_flow.png" width=600x>
+
 
 ## 関連項目
 
