@@ -36,7 +36,7 @@
   - `git clone https://github.com/MIROC-DOC/model_description.git`
 
 - 練習用のリポジトリは何しても大丈夫です
-　- `git clone https://github.com/MIROC-DOC/SandBox.git`
+  - `git clone https://github.com/MIROC-DOC/SandBox.git`
 
 ## テキストエディタのインストール
 
@@ -82,7 +82,7 @@
 
 - 使用言語
 
-　- 最終的には英語で原稿を揃えるが、日本語で原稿を作成してOK。
+  - 最終的には英語で原稿を揃えるが、日本語で原稿を作成してOK。
   - DeepL Proの力を借りて英訳する。
 
 - ディレクトリ構成
@@ -93,7 +93,7 @@
   - pdf/ 変換された PDF を置く
   - memo/ 主に Markdown で書かれたプロジェクトに関するメモ書き
   - org/ CCSR/NIES AGCMマニュアルやその英訳
-　- reference/ 公開しても問題ない、既存の参考資料 
+  - reference/ 公開しても問題ない、既存の参考資料
 
 - 開発フロー
 
