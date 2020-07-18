@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# model_description
-MIROC6 agcm docの作業場。公開予定。
-=======
 **このリポジトリ内の資料は全て公開予定です(ライセンス検討中)**
 
 # プロジェクトの目標
@@ -80,4 +76,3 @@ agcm5.4.zip(内部資料)
 moved from GitLab to GitHub on 20200521
 
 Startup by kanonkino (kanon@aori.u-tokyo.ac.jp) on 20200416
->>>>>>> e073274... Update README.md

@@ -1,0 +1,275 @@
+﻿
+\subsection{鉛直離散化}
+
+Arakawa and Suarez(1983) に従って, 
+基礎方程式を鉛直方向に差分によって離散化する.
+このスキームは次のような特徴をもつ.
+%
+\begin{itemize}
+\item 全領域積分した質量を保存
+\item 全領域積分したエネルギーを保存
+\item 全領域積分の角運動量を保存
+\item 全質量積分した温位を保存
+\item 静水圧の式がlocalにきまる(下層の高度が上層の温度に依存しない)
+\item 水平方向に一定の, ある特定の温度分布について,
+      静水圧の式が正確になり, 気圧傾度力が0になる.
+\item 等温位大気はいつまでも等温位に留まる
+\end{itemize}      
+
+\subsubsection{レベルのとりかた}
+
+下の層から上へと層の番号をつける.
+$\zeta,D,T,q$の物理量は整数レベル(layer)で定義されるとする.
+一方, $\dot{\sigma}$ は半整数レベル(level)で定義される.
+%
+まず, 半整数レベルでの$\sigma$の値
+$\sigma_{k-1/2}, (k=1,2,\ldots K)$
+を定義する.
+%
+ただし, レベル$\frac{1}{2}$は下端($\sigma=1$),
+レベル$K+\frac{1}{2}$は上端($\sigma=0$)とする.
+
+整数レベルの$\sigma$の値
+$\sigma_k, (k=1,2,\ldots K)$
+は次の式から求められる.
+%
+\begin{equation}
+ \label{しぐま定義}
+ \sigma_k = \left\{ \frac{1}{1+\kappa}
+                     \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
+                                  - \sigma^{\kappa +1}_{k+1/2}      }
+                                  { \sigma_{k-1/2} - \sigma_{k+1/2} }
+                     \right)
+              \right\}^{1/\kappa}
+\end{equation}
+%
+さらに,
+\begin{equation}
+  \label{しぐま厚さ}
+  \Delta \sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2}
+\end{equation}
+を定義しておく.
+
+\subsubsection{鉛直離散化表現}
+
+各方程式の離散化表現は次のようになる.
+
+\begin{enumerate}
+\item 連続の式, 鉛直速度
+
+\begin{equation}
+  \frac{\partial \pi}{\partial t}
+ = - \sum_{k=1}^{K} ( D_k + \Dvect{v}_k \cdot \nabla \pi ) 
+       \Delta  \sigma_k
+\end{equation}
+%
+\begin{equation}
+  \dot{\sigma}_{k-1/2}
+ = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
+   - \sum_{l=k}^{K} ( D_l + \Dvect{v}_l \cdot \nabla \pi )          
+       \Delta  \sigma_l
+\end{equation}
+%
+\begin{equation}
+  \dot{\sigma}_{1/2} = \dot{\sigma}_{K+1/2} = 0
+\end{equation}
+   
+\item 静水圧の式
+
+\begin{eqnarray}
+ \Phi_{1} & = & \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
+          & = & \Phi_{s} + C_{p} \alpha_{1} T_{v,1} \nonumber
+\end{eqnarray}
+%
+\begin{eqnarray}
+ \Phi_k - \Phi_{k-1} 
+  & = & C_{p}
+   \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
+          - 1 \right] T_{v,k} 
+       + C_{p}
+   \left[ 1- 
+         \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
+              \right] T_{v,k-1} \\
+  & =  &  C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
+               \nonumber
+\end{eqnarray}
+%
+ここで,
+%
+\begin{eqnarray}
+ \label{静水圧係数}
+ \alpha_k  & = & \left( \frac{ \sigma_{k-1/2} }
+                               { \sigma_k } \right)^{\kappa} -1 \\
+ \beta_k   & = & 1- \left( \frac{ \sigma_{k+1/2} }
+                               { \sigma_k } \right)^{\kappa} .
+\end{eqnarray}
+
+\item 運動方程式
+
+\begin{equation}
+  \label{渦度結局}
+  \frac{\partial \zeta_k}{\partial t} 
+        =   \frac{1}{a\cos\varphi} 
+            \frac{\partial (A_v)_k}{\partial \lambda}
+          - \frac{1}{a\cos\varphi} 
+            \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
+          - {\cal D}(\zeta_k) 
+\end{equation}
+%
+\begin{equation}
+  \frac{\partial D}{\partial t} 
+        =   \frac{1}{a\cos\varphi} 
+            \frac{\partial (A_u)_k}{\partial \lambda}
+          + \frac{1}{a\cos\varphi} 
+            \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
+          - \nabla^{2}_{\sigma}
+           ( \Phi_k + C_{p} \hat{\kappa}_k \bar{T}_k \pi 
+             + (\mbox{\sl KE})_k )
+          - {\cal D}(D_k) 
+\end{equation}
+%
+ここで,
+%
+\begin{eqnarray}
+  (A_u)_k
+   & = & ( \zeta_k + f ) v_k 
+             - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( u_{k-1} - u_k   )
+               + \dot{\sigma}_{k+1/2} ( u_k   - u_{k+1} ) ]
+           \nonumber \\
+   &   &     - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a\cos\varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
+             + {\cal F}_x
+\end{eqnarray}
+%
+\begin{eqnarray}
+  (A_v)_k
+   & = & - ( \zeta_k + f ) u_k 
+             - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( v_{k-1} - v_k   )
+               + \dot{\sigma}_{k+1/2} ( v_k   - v_{k+1} ) ]
+           \nonumber \\
+   &   &     - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a} 
+               \frac{\partial \pi}{\partial \varphi} 
+             + {\cal F}_y
+\end{eqnarray}
+%
+\begin{eqnarray}
+   \label{はっとかっぱ}
+   \hat{\kappa}_k 
+ &   =  &     \frac{  \sigma_{k-1/2}(   \sigma^{\kappa}_{k-1/2} 
+                                    - \sigma^{\kappa}_k      ) 
+                  + \sigma_{k+1/2}(   \sigma^{\kappa}_k 
+                                    - \sigma^{\kappa}_{k+1/2}  ) }
+                 { \sigma^{\kappa}_k
+                     ( \sigma_{k-1/2} - \sigma_{k+1/2} )         } 
+         \nonumber   \\
+ & = & \frac{ \sigma_{k-1/2} \alpha_k + \sigma_{k+1/2} \beta_k }
+            { \Delta \sigma_k                                  } 
+\end{eqnarray}
+
+\begin{equation}
+T'_{v,k} = T_{v,k} - \bar{T}_k
+\end{equation}
+
+\item 熱力学の式
+
+\begin{eqnarray}
+  \frac{\partial T_k}{\partial t}
+    & = & - \frac{1}{a\cos\varphi}
+               \frac{\partial u_k T'_k}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
+          + H_k \nonumber \\
+    &   & + \frac{Q_k}{C_{p}}
+          + \frac{(Q_{diff})_k}{C_p} 
+          - {\cal D}(T_k) \nonumber \\
+\end{eqnarray}
+%
+ここで,
+\begin{eqnarray}
+   H_k 
+    & \equiv & T_k' D_k
+              - \frac{1}{\Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T}_{k-1/2} - T_k   )
+               + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
+               \nonumber \\
+    &   & + \left\{ \alpha_k
+                    \left[ \sigma_{k-1/2} \Dvect{v}_k \cdot \nabla \pi
+                          - \sum_{l=k}^{K} 
+                           ( D_l + \Dvect{v}_l \cdot \nabla \pi )
+                            \Delta  \sigma_l
+                    \right]
+             \right.   \nonumber \\
+    &   &   + \left. \beta_k
+                     \left[ \sigma_{k+1/2} \Dvect{v}_k \cdot \nabla \pi
+                          - \sum_{l=k+1}^{K} 
+                           ( D_l + \Dvect{v}_l \cdot \nabla \pi )
+                            \Delta  \sigma_l
+                    \right]
+              \right\} 
+              \frac{1}{\Delta \sigma_k} T_{v,k}  \nonumber \\
+%
+    & = & T_k' D_k 
+          - \frac{1}{\Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T}_{k-1/2} - T_k   )
+               + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
+               \nonumber \\
+    &   & + \hat{\kappa}_k \Dvect{v}_k \cdot \nabla \pi T_{v,k} 
+               \nonumber \\
+    &   & - \alpha_k \sum_{l=k}^{K} 
+                           ( D_l + \Dvect{v}_l \cdot \nabla \pi )
+                            \Delta  \sigma_l 
+                            \frac{T_{v,k}}{\Delta \sigma_k} 
+               \nonumber \\
+    &   & - \beta_k \sum_{l=k+1}^{K} 
+                           ( D_l + \Dvect{v}_l \cdot \nabla \pi )
+                            \Delta  \sigma_l 
+                            \frac{T_{v,k}}{\Delta \sigma_k} 
+\end{eqnarray}
+%
+\begin{eqnarray} 
+  \hat{T}_{k-1/2}
+ &  = & \frac{ \left[ \left( \frac{ \sigma_{k-1/2} }
+                               { \sigma_k } \right)^{\kappa}
+                  - 1 \right] \sigma_{k-1}^{\kappa} T_k 
+          + \left[ 1- 
+                   \left( \frac{ \sigma_{k-1/2} }
+                               { \sigma_{k-1} } \right)^{\kappa}
+                      \right] \sigma_k^{\kappa} T_{k-1}         }
+          { \sigma_{k-1}^{\kappa} - \sigma_k^{\kappa}           } \\
+ &  = & a_k T_k + b_{k-1} T_{k-1}
+\end{eqnarray}
+%
+\begin{eqnarray}
+  \label{温度補間係数}
+  a_k & = & \alpha_k 
+              \left[ 1- \left( \frac{ \sigma_k }{ \sigma_{k-1} }
+                        \right)^{\kappa} \right]^{-1}   \\
+  b_k & = & \beta_k 
+              \left[ \left( \frac{ \sigma_k }{ \sigma_{k+1} } 
+                     \right)^{\kappa} - 1 \right]^{-1} .  
+\end{eqnarray}
+
+\item 水蒸気の式
+
+\begin{equation}
+  \label{q結局}
+  \frac{\partial q_k}{\partial t}
+      =   - \frac{1}{a\cos\varphi} 
+               \frac{\partial u_k q_k}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} ( v_k q_k\cos\varphi)
+          + R_k 
+          + S_{q,k}
+          - {\cal D}(q_k) 
+\end{equation}
+%
+\begin{equation}
+R_k  =  q_k D_k 
+       - \frac{1}{2 \Delta \sigma_k} 
+             [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
+               + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
+\end{equation}
+
+\end{enumerate}

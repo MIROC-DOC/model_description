@@ -1,0 +1,235 @@
+﻿
+\subsection{大規模凝結}
+
+\subsubsection{大規模凝結スキームの概要}
+
+大規模凝結スキームは,
+積雲対流以外の雲にかかわる凝結過程を表現し,
+潜熱の放出と水蒸気の減少, 降水を計算する.
+また, 放射に関与する雲水量と雲の被覆率を計算する.
+主な入力データは, 気温 $T$, 比湿 $q$, 雲水量 $l$, であり,
+出力データは気温・比湿・雲水量の時間変化率,
+$\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$,
+雲量 $C$ である.
+
+CCSR/NIES AGCM では, 水蒸気混合比 (比湿 $q$) に加えて
+雲水量 ($l$) もモデルの予報変数となっている.
+実際には, この大規模凝結のルーチンの中で
+まずその和である総水量 ($q^t = q+l$) を計算し, 
+それを再び雲水と水蒸気に分けることを行なっているので,
+事実上は予報変数は総水量 ($q^t$) 一つである.
+格子内の $q^t$ の変動の分布を仮定することにより,
+各格子内での雲量(雲の水平被覆率)と雲水量を診断する.
+また, 雲水の降水への変換と降水の落下途中の蒸発を考慮する.
+
+計算手順の概略は以下の通りである.
+%
+\begin{enumerate}
+\item 水蒸気量 $q$ 雲水量 $l$ とを加え,
+      総水量 $q^t$ とする.
+      気温は雲水を蒸発させた, 
+      liquid water temperature  $T_l$ とする.
+\item $q^t$ の変動の分布を仮定し,
+      雲量を求め, 雲水と水蒸気に再び分離する.
+\item 凝結による温度の変化を考慮し,
+      逐次近似によって
+      雲量, 雲水量, 水蒸気の配分を決定する.
+\item 雲水量の降水への変換を評価する.
+\item 氷の落下を評価する.
+\item 降水と落下氷の蒸発を評価する.
+\end{enumerate}
+
+\subsubsection{雲水量の診断}
+
+格子平均の総水量 $\bar{q}^t = \bar{q} + \bar{l}$ が与えられたとき,
+総水量 $q^t$ の格子内での分布を,
+$(1-b)\bar{q}^t$ から $(1+b)\bar{q}^t$ の間の
+一様分布であると仮定する. すなわち確率密度関数は,
+\begin{equation}
+  F(q^t) = \left\{ 
+           \begin{array}{ll}
+             (2b\bar{q}^t)^{-1} \; \; &
+                 (1-b)\bar{q}^t < q^t <  (1+b)\bar{q}^t \\
+             0                        & その他
+           \end{array}
+           \right. \; .
+\end{equation}
+この分布は, 水平方向の分布であると考える.
+一方, 飽和比湿は格子平均の値 $\bar{q}^*$ を用いる.
+
+格子点の中で,
+$q^t > q^*$ である領域に雲が存在すると考える(図\ref{lsc:fig-cloud}).
+
+\begin{figure}[hbtp]
+  \begin{center}
+  \epsfile{file=p-lsc-cld.ps,width=50mm}    
+  \end{center}
+  \caption{総水量の分布, 飽和比湿の分布と雲量}
+  \label{lsc:fig-cloud}
+\end{figure}
+
+
+すると, 図の陰影で示すような,
+総水量が飽和を越える部分の水平方向の比率 $C$ は,
+\begin{equation}
+  C = \left\{ 
+           \begin{array}{ll}
+             0 \; \; & (1+b)\bar{q}^t \leq \bar{q}^* \\
+             \displaystyle
+             \frac{(1+b)\bar{q}^t - \bar{q}^*}
+                  {2b\bar{q}^t}                    
+               \; \; & (1-b)\bar{q}^t < \bar{q}^* < (1+b)\bar{q}^t \\
+             1 \; \; & (1-b)\bar{q}^t \leq \bar{q}^*
+           \end{array}
+        \right.
+\end{equation}
+となり, これが雲量(水平雲被覆率)である.
+
+また, 雲水量$l$は, $q^t > q^*$ である領域で
+$q^t - q^*$ を積分したもので,
+\begin{equation}
+  l = \left\{ 
+           \begin{array}{ll} \displaystyle
+             0 \; \; & (1+b)\bar{q}^t \leq \bar{q}^* \\
+            \displaystyle
+             \frac{\left[(1+b)\bar{q}^t - \bar{q}^*\right]^2}
+                  {4b\bar{q}^t}
+               \; \; & (1-b)\bar{q}^t \leq \bar{q}^* \leq (1+b)\bar{q}^t  \\
+            \displaystyle
+             \bar{q}^t - \bar{q}^*
+                \; \; & (1-b)\bar{q}^t \geq \bar{q}^*
+           \end{array}
+        \right. 
+  \label{p-lsc:l}
+\end{equation}
+
+\subsubsection{逐次近似による決定}
+
+まず, 水蒸気 $q$ と 雲水 $l$ 温度 $T$ から,
+総水量$q^t$ と liquid water temperature $T_l$ を求める.
+\begin{eqnarray}
+  q^t  & = & q + l \; , \\
+  T_l  & = & T - \frac{L}{C_P} l \; .
+\end{eqnarray}
+$T_l$ は, 雲水を全て蒸発させたときの温度に対応する.
+$T^{(0)} = T_l$, $l^{(0)} = 0$ と置く.
+
+温度 $T_l$ に対する飽和比湿によって, 
+前述の方法で評価した雲水量を $l^{(1)}$ とすると,
+それによって温度が変わり,
+\begin{equation}
+  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
+  \label{p-lsc:itereate1}
+\end{equation}
+この温度に対する飽和比湿によって, 評価した雲水量を $l^{(2)}$,
+それによって変化した温度を $T^{(2)}$ \ldots として逐次近似で解く.
+この逐次収束を速めるために, Newton 法の取扱いを行なう.
+すなわち, (\ref{p-lsc:itereate1})の代わりに
+\begin{equation}
+  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
+                   \left( 1 - \frac{L}{C_P} \frac{dl}{dT} \right)^{-1}
+\end{equation}
+とする.
+$dl/dT$ は, (\ref{p-lsc:l}) を用いて解析的に求めることができる.
+
+\subsubsection{降水過程}
+
+降水は診断された雲水量に依存して起こる.
+降水率(単位1/s)を $P$ とすると,
+\begin{equation}
+  P = l / \tau_P \; .
+\end{equation}
+
+$\tau_P$ は降水の時間スケールであり,
+\begin{equation}
+  \tau_P  = \tau_0 \left\{ 1 - \exp\left[ - \left(\frac{l}{l_C}\right)^2  
+                                   \right]  \right\}^{-1} \; .
+\end{equation}
+ここで, $l_C$ は臨界雲水量であり,
+Bergeron-Findeisen 効果を考慮して,
+\begin{equation}
+  l_C = \left\{ 
+        \begin{array}{ll}
+          l_C^0 \; \; & T \ge T_0 \\
+          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right] 
+                \right\}^{-1}\; \; 
+                      & T_0 > T >  T_c \\
+          l_C^0 ( 1+\alpha )^{-1}
+                      & T \le T_c
+        \end{array}
+        \right. \; .
+\end{equation}
+$l_C^0=10^{-4}$, $\alpha=50$, $\beta=0.03$, 
+$T_0=273.15$K, $T_c=258.15$K である.
+
+降水は $l$ の減少をもたらす.
+\begin{eqnarray}
+  P         & = & l / \tau_P \; , \\
+  \DP{l}{t} & = & -P \; .
+\end{eqnarray}
+これを$\Delta t$の間積分すると,
+\begin{equation}
+  P \Delta t  =  \left\{ 1- \exp(- \Delta t/\tau_P) \right\} l \; .
+\end{equation}
+
+ある高さ $p$ での降水フラックス
+(単位kg m$^{-2}$ s$^{-1}$)を$F_P$とすると,
+\begin{equation}
+  F_P(p) = \int_0^p P \frac{dp}{g} \; .
+\end{equation}
+
+\subsubsection{氷の落下過程}
+
+雲水は, 温度に応じて氷雲, 水雲に分かれる.
+氷雲の比率は
+\begin{equation}
+   f_I = \frac{ T_0 - T }{ T_0 - T_1 }
+\end{equation}
+(ただし, 最大値1, 最小値0) である. また,
+$T_0 = 273.15\mbox{K}, T_1 = 258.15\mbox{K}$.
+氷雲は, ゆっくりとした速度で降下するとして, 
+その効果を考える. 降下速度$V_S$は,
+\begin{equation}
+  V_S = V_S^0 ( \rho_a f_I l )^\gamma \; .
+\end{equation}
+ただし, $V_S^0=3$m/s, $\gamma=0.17$.
+すると, 
+\begin{equation}
+  \tau_S = \frac{\Delta p}{\rho g V_S} 
+\end{equation}
+として, 降水と同様に処理できる.
+
+\subsubsection{降水の蒸発過程}
+
+降水の蒸発 $E$ は, 次のように見積もる.
+
+\begin{equation}
+E = k_E (q^w - q) \frac{F_P}{V_T} \; .
+\end{equation}
+ただし, $q^w < q$ のときは 0 とする.
+$q_w$ は湿球温度に対応する飽和比湿で,
+\begin{equation}
+  q^w = q + \frac{q^* - q}{1+ \frac{L}{C_P}\DP{q^*}{T}} \; .
+\end{equation}
+%
+これにより, 降水は
+\begin{equation}
+  F_P(p) = \int_0^p (P - E) \frac{dp}{g}
+\end{equation}
+となる. また, 蒸発による温度の下降を見積もる.
+\begin{equation}
+  \DP{T}{t} = - \frac{L}{C_P} E \; .
+\end{equation}
+
+\subsubsection{その他の留意点}
+
+\begin{enumerate}
+\item 計算は最上層から下に向かって行なう.
+      便宜上, 計算はその上の層起源の降水の
+      その層での蒸発を評価するところからはじめる.
+\item 落下した氷はすぐ下の層で
+      その層に既に存在する雲水と同じ扱いとなり,
+      総水量に組み入れられる.
+\end{enumerate}
+
+

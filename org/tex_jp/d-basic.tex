@@ -1,0 +1,205 @@
+﻿
+\section{力学過程}
+
+\subsection{基礎方程式}
+
+\subsubsection{基礎方程式}
+
+基礎方程式は,
+球面($\lambda,\varphi$), $\sigma$座標におけるプリミティブ方程式系であり,
+以下のように与えられる( Haltiner and Williams , 1980 ).
+
+
+\begin{enumerate}
+\item 連続の式
+
+\begin{equation}
+  \label{質量}
+  \frac{\partial \pi}{\partial t} 
+    + \Dvect{v}_{H} \cdot \nabla_{\sigma} \pi
+     =  - \nabla_{\sigma} \cdot \Dvect{v}_{H} 
+          - \frac{\partial \dot{\sigma}}{\partial \sigma}
+\end{equation}
+
+\item 静水圧の式
+
+\begin{equation}
+\label{静水圧}
+  \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
+\end{equation}
+
+
+\item 運動方程式
+
+\begin{equation}
+  \label{渦度}
+  \frac{\partial \zeta}{\partial t} 
+     =   \frac{1}{a\cos\varphi}
+            \frac{\partial A_v}{\partial \lambda}
+          - \frac{1}{a\cos \varphi}
+            \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
+          - {\cal D}(\zeta) 
+\end{equation}
+\begin{equation}
+  \label{発散}
+  \frac{\partial D}{\partial t} 
+     =    \frac{1}{a\cos\varphi}
+            \frac{\partial A_u}{\partial \lambda}
+          + \frac{1}{a\cos\varphi}
+            \frac{\partial }{\partial \varphi} ( A_v \cos\varphi )
+          - \nabla^{2}_{\sigma}
+           ( \Phi + R \bar{T} \pi + E ) 
+          - {\cal D}(D) 
+\end{equation}
+
+
+\item 熱力学の式
+
+\begin{eqnarray}
+\label{熱力}
+  \frac{\partial T}{\partial t}
+    & = & - \frac{1}{a\cos\varphi}
+               \frac{\partial uT'}{\partial \lambda}
+          - \frac{1}{a}
+               \frac{\partial }{\partial \varphi} ( vT' \cos\varphi )
+          + T' D \nonumber \\
+    &   & - \dot{\sigma} 
+              \frac{\partial T }{\partial \sigma}
+          + \kappa T \left( \frac{\partial \pi}{\partial t}
+                            + \Dvect{v}_{H} \cdot \nabla_{\sigma} \pi 
+                            + \frac{ \dot{\sigma} }{ \sigma } 
+                     \right)
+          + \frac{Q}{C_{p}}
+          + \frac{Q_{diff}}{C_{p}}
+          - {\cal D}(T) 
+\end{eqnarray}
+
+
+\item 水蒸気の式
+
+\begin{eqnarray}
+\label{水蒸気}
+  \frac{\partial q}{\partial t}
+  & = & - \frac{1}{a\cos\varphi}
+               \frac{\partial uq}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} (vq \cos\varphi)
+          + q D \nonumber \\
+    &   & - \dot{\sigma} \frac{\partial q }{\partial \sigma}
+          + S_{q}
+          - {\cal D}(q) 
+\end{eqnarray}
+
+\end{enumerate}
+
+ここで,
+%
+\begin{eqnarray}
+\theta & \equiv & T \left( p/p_{0} \right)^{-\kappa} \\
+\kappa & \equiv & R/C_{p} \\
+  \Phi & \equiv & gz \\
+   \pi & \equiv & \ln p_{S} \\
+%
+ \dot{\sigma} & \equiv &  \frac{d \sigma}{d t} \\
+%
+     T_v & \equiv & T ( 1+\epsilon_v q ) \\
+     T & \equiv &  \bar{T}(\sigma) + T^{\prime} \\
+%
+\label{渦度定義}
+ \zeta & \equiv & \frac{1}{a \cos\varphi }
+                    \frac{\partial v}{\partial \lambda} 
+             -    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( u \cos\varphi ) \\
+%
+\label{発散定義}
+     D & \equiv & \frac{1}{a \cos\varphi }
+                    \frac{\partial u}{\partial \lambda} 
+             +    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( v \cos\varphi ) \\
+%
+\label{B項}
+    A_u & \equiv &  ( \zeta + f ) v
+             - \dot{\sigma} \frac{\partial u}{\partial \sigma} 
+             - \frac{RT^{\prime}}{a\cos\varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
+             + {\cal F}_x \\
+%
+\label{A項}
+    A_v & \equiv & - ( \zeta + f ) u
+             - \dot{\sigma} \frac{\partial v}{\partial \sigma} 
+             - \frac{RT^{\prime}}{a}
+                  \frac{\partial \pi}{\partial \varphi} 
+             + {\cal F}_y \\
+%
+\label{E項}
+     E & \equiv &  \frac{u^{2}+v^{2}}{2} \\
+%
+ \Dvect{v}_{H} \cdot \nabla
+       & \equiv & \frac{u}{a \cos \varphi} 
+         \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
+     + \frac{v}{a}
+         \left( \frac{\partial }{\partial \varphi} \right)_{\sigma} 
+           \nonumber \\
+  \nabla^{2}_{\sigma}  
+       & \equiv & 
+               \frac{1}{a^{2}\cos^2\varphi} 
+                 \frac{\partial^{2} }{\partial \lambda^{2}} 
+             + \frac{1}{a^{2}\cos\varphi} 
+                 \frac{\partial }{\partial \varphi}
+                 \left[ \cos\varphi
+                       \frac{\partial }{\partial \varphi} \right]  .
+\end{eqnarray}
+
+${\cal D}(\zeta), {\cal D}(D), {\cal D}(T), {\cal D}(q)$
+は水平拡散項,
+${\cal F}_\lambda, {\cal F}_\varphi$
+は小規模運動過程(`物理過程'として扱う)による力,
+$Q$ は放射, 凝結, 小規模運動過程等の`物理過程'による
+加熱・温度変化,
+$S_q$は凝結, 小規模運動過程等の`物理過程'による
+水蒸気ソース項である.
+また, $Q_{diff}$ は摩擦熱であり,
+%
+\begin{equation}
+  Q_{diff}
+ = - \Dvect{v} \cdot  ( \frac{\partial \Dvect{v}}{\partial t} )_{diff} .
+\end{equation}
+%
+$( \frac{\partial \Dvect{v}}{\partial t} )_{diff} $ は,
+水平および鉛直の拡散による $u,v$ の時間変化項である.
+
+\subsubsection{境界条件}
+
+鉛直流に関する境界条件は
+%
+\begin{equation}
+  \dot{\sigma} = 0  \ \ \ at \ \ \sigma = 0 , \ 1 .
+\end{equation}
+%
+である. よって(\ref{質量}) から,
+地表気圧の時間変化式と
+$\sigma$系での鉛直速度$\dot{\sigma}$を求める診断式
+%
+\begin{equation}
+   \label{気圧傾向}
+   \frac{\partial \pi}{\partial t}
+   = - \int_{0}^{1} \Dvect{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma
+     - \int_{0}^{1} D  d \sigma ,
+\end{equation}
+%
+\begin{equation}
+   \label{鉛直速度}
+   \dot{\sigma} 
+   = - \sigma 
+     \frac{\partial \pi}{\partial t}
+     - \int_{0}^{\sigma} D d \sigma
+     - \int_{0}^{\sigma} 
+         \Dvect{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
+\end{equation}
+%
+が導かれる.
+
+
+

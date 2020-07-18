@@ -1,0 +1,321 @@
+﻿\subsection{水平離散化}
+
+水平方向の離散化は
+スペクトル変換法を用いる(Bourke, 1988).
+経度, 緯度に関する微分の項は直交関数展開によって評価し,
+一方, 非線型項は格子点上で計算する.
+
+\subsubsection{スペクトル展開}
+
+展開関数系としては球面上の Laplacianの固有関数系である
+球面調和関数 $Y_n^m(\lambda,\mu)$ を用いる.
+ただし, $\mu \equiv \sin\varphi$ である.
+$Y_n^m$は次のような方程式を満たし,
+%
+\begin{equation} 
+\nabla^{2}_{\sigma} Y_n^m(\lambda,\mu) 
+= - \frac{n(n+1)}{a^{2}} Y_n^m(\lambda,\mu) 
+\end{equation}
+%
+Legendre 陪関数 $P_n^m$ を用いて次のように書き表される.
+%
+\begin{equation}
+Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{im \lambda}
+\end{equation}
+%
+ただし, $ n \geq | m | $ である.
+
+球面調和関数による展開は \footnotemark ,
+\begin{equation}
+   {Y_n^m}_{ij} \equiv Y_n^m ( \lambda_i, \mu_j )
+\end{equation}
+と書くと,
+%
+\footnotetext{ここでは三角形切断を用いている.
+              平行四辺形切断の場合には, 
+              $\sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+               \rightarrow
+               \sum_{m=-N}^{N} \sum_{n=|m|}^{N+|m|}$
+              と置き換えること.}
+%
+\begin{equation}
+  \label{球面展開}
+  X_{ij} \equiv X ( \lambda_i, \mu_j )
+  =  {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+        X_n^m {Y_n^m}_{ij} ,
+\end{equation}
+%
+その逆変換は,
+\begin{eqnarray}
+  X_n^m 
+        & = & \frac{1}{4 \pi} 
+             \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
+               X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \\
+        & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+               X_{ij} {Y_n^{m*}}_{ij} w_j 
+\label{展開係数}
+\end{eqnarray}
+%
+のように表される.
+%
+積分を和に置き換えて評価する際には,
+$\lambda$ 積分については Gauss の台形公式を,
+$\mu$ 積分については Gauss-Legendre 積分公式を用いる.
+$\mu_j$ は Gauss 緯度, $w_j$は Gauss 荷重である.
+また, $\lambda_i$ は等間隔の格子である.
+
+スペクトル展開を用いれば,
+微分を含む項の格子点値は次のように求められる.
+%
+\begin{equation}
+   \label{気圧x}
+        \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
+     =  
+        {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       im X_n^m {Y_n^m}_{ij}
+\end{equation}
+%
+\begin{equation}
+   \label{気圧y}
+   \left( \cos\varphi \frac{\partial X}{\partial \varphi} \right)_{ij}
+     =  {\cal R}\Dvect{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       X_n^m 
+       ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
+\end{equation}
+%
+さらに,
+$\zeta$, $D$ のスペクトル成分から, 
+$u,v$の格子点値が以下のように得られる.
+%
+\begin{equation}
+  \label{Uを求める}
+  u_{ij}
+  = \frac{1}{\cos\varphi}
+     {\cal R}\Dvect{e} \sum_{m=-N}^{N} 
+                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
+    \left\{
+             \frac{a}{n(n+1)} \zeta_n^m 
+            (1-\mu^{2}) \DP{}{\mu} {Y_n^m}_{ij}
+          -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
+    \right\}
+\end{equation}
+%
+\begin{equation}
+  \label{Vを求める}
+  v_{ij}
+  = \frac{1}{\cos\varphi}
+   {\cal R}\Dvect{e} \sum_{m=-N}^{N}
+                     \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
+    \left\{
+          -  \frac{im a}{n(n+1)} \zeta_n^m {Y_n^m}_{ij}
+          -  \frac{a}{n(n+1)} D_n^m 
+            (1-\mu^{2}) \DP{}{\mu} {Y_n^m}_{ij}
+    \right\}
+\end{equation}
+
+方程式の移流項に現れる微分は,
+次のように求められる.
+%
+\begin{eqnarray}
+  \label{A積分}
+  \left( \frac{1}{a\cos\varphi} \DP{A}{\lambda} \right)_n^m 
+  & = & \frac{1}{4 \pi} 
+        \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
+          \frac{1}{a\cos\varphi} \DP{A}{\lambda} Y_n^{m *} \nonumber\\
+  & = & \frac{1}{4 \pi} 
+        \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda \,
+          im A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \nonumber\\
+  & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im A_{ij} \cos\varphi_j
+          {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
+\end{eqnarray}
+%
+\begin{eqnarray}
+  \label{B積分}
+  \left( \frac{1}{a\cos\varphi} 
+         \DP{}{\varphi} (A\cos\varphi) \right)_n^m 
+   & = & \frac{1}{4 \pi a} 
+         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
+           \DP{}{\mu} (A\cos\varphi) Y_n^{m *} \nonumber \\
+   & = & - \frac{1}{4 \pi a} 
+         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
+           A \cos\varphi \frac{\partial }{\partial \mu} Y_n^{m *}
+           \nonumber \\
+  & = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          A_{ij}  \cos\varphi_j
+          (1-\mu_j^2)  \frac{\partial }{\partial \mu} 
+          {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
+\end{eqnarray}
+%
+さらに,
+\begin{equation}
+     \left( \nabla^{2}_{\sigma} X \right)_n^m
+       =  - \frac{n(n+1)}{a^{2}} X_n^m
+\end{equation}
+を$\nabla^2$の項の評価のために用いる.
+
+\subsubsection{水平拡散項}
+
+水平拡散項は, 次のように$\nabla^{N_D}$の形で入れる.
+%
+\begin{equation}
+  \label{水平拡散}
+  {\cal D}(\zeta) = K_{MH} 
+                      \left[ (-1)^{N_D/2} \nabla^{N_D}
+                              - \left( \frac{2}{a^2} \right)^{N_D/2} 
+                      \right]
+                    \zeta ,
+\end{equation}
+%
+\begin{equation}
+     {\cal D}(D) = K_{MH} 
+                      \left[ (-1)^{N_D/2} \nabla^{N_D}
+                              - \left( \frac{2}{a^2} \right)^{N_D/2} 
+                      \right]
+                    D ,
+\end{equation}
+%
+\begin{equation}
+    {\cal D}(T) = (-1)^{N_D/2} K_{HH} \nabla^{N_D} T ,
+\end{equation}
+%
+\begin{equation}
+    {\cal D}(q) = (-1)^{N_D/2} K_{EH} \nabla^{N_D} q .
+\end{equation}
+%
+この水平拡散項は計算の安定化のための意味合いが強い.
+小さなスケールに選択的な水平拡散を表すため,
+$N_D$としては, 4$\sim$16を用いる.
+ここで, 渦度および発散の拡散についている余分な項は,
+$n=1$の剛体回転の項が減衰しないことを表したものである.
+
+\subsubsection{方程式のスペクトル表現}
+
+
+\begin{enumerate}
+\item 連続の式
+
+\begin{eqnarray}
+  \DP{\pi_m^m}{t}
+ & = & - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k \nonumber \\
+ &   & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+               Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
+\end{eqnarray}
+%
+ここで,
+\begin{equation}
+Z \equiv - \sum_{k=1}^{K} \Dvect{v}_k \cdot \nabla \pi .
+\end{equation}
+
+\item 運動方程式
+
+\begin{eqnarray}
+  \DP{\zeta_n^m}{t} 
+  & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (A_v)_{ij} \cos\varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & + &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (A_u)_{ij} \cos\varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\ 
+  & - &  ({\cal D}_M)_n^m \zeta_n^m  \; ,
+\end{eqnarray}
+%
+\begin{eqnarray}
+  \DP{\tilde{D}_n^m}{t} 
+  & = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im (A_u)_{ij} \cos\varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & - &   \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          (A_v)_{ij} \cos\varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  & - &  \frac{n(n+1)}{a^{2}} 
+         \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          E_{ij} {Y_n^{m *}}_{ij} w_j
+         \nonumber \\ 
+  & + &  \frac{n(n+1)}{a^{2}} 
+          ( \Phi_n^m + C_{p} \hat{\kappa}_k \bar{T}_k \pi_n^m ) 
+          -  ({\cal D}_M)_n^m D_n^m  ,
+\end{eqnarray}
+%
+ただし,
+%
+\begin{equation}
+({\cal D}_M)_n^m = K_{MH} \left[ 
+                            \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2}
+                            - \left( \frac{2}{a^2} \right)^{N_D/2}
+                            \right]  .
+\end{equation}
+
+\item 熱力学の式
+
+\begin{eqnarray}
+  \DP{T_n^m}{t}
+  & = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im u_{ij} T'_{ij} \cos\varphi_j
+          {Y_n^{m *}}_{ij}
+         \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          v_{ij} T'_{ij} \cos\varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \left( H_{ij} + \frac{Q_{ij}+Q_{diff}}{C_{p}} \right)
+          {Y_n^{m *}}_{ij} w_j
+         \nonumber \\ 
+  &  & - (\tilde{\cal D}_H)_n^m T_n^m \; ,
+\end{eqnarray}
+%
+ただし,
+%
+\begin{equation}
+({\cal D}_H)_n^m 
+   =  K_{HH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
+\end{equation}
+
+
+
+\item 水蒸気の式
+
+\begin{eqnarray}
+  \DP{q_n^m}{t}
+  & = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          im u_{ij} q_{ij} \cos\varphi_j
+          {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          v_{ij} q_{ij} \cos\varphi_j
+          (1-\mu_j^2) 
+          \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
+          \frac{w_j}{a(1-\mu_j^{2})} 
+         \nonumber \\
+  &  & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \left( \hat{R}_{ij} + S_{q,ij} \right)
+          {Y_n^{m *}}_{ij} w_j
+         \nonumber \\ 
+  &  & + ({\cal D}_H)_n^m q_n^m
+\end{eqnarray}
+
+ただし,
+%
+\begin{equation}
+({\cal D}_E)_n^m 
+   =  K_{EH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
+\end{equation}
+
+
+
+\end{enumerate}
+

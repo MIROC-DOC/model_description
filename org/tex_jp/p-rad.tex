@@ -1,0 +1,717 @@
+﻿\subsection{放射フラックス}
+
+\subsubsection{放射フラックス計算の概要}
+
+CCSR/NIES AGCM の放射計算スキームは, 
+Discrete Ordinate Method および 
+k-Distribution Method に基づいて作成されたものである.
+気体および雲・エアロゾルによる
+太陽放射および地球放射の吸収・射出・散乱過程を考慮し,
+放射フラックスの各レベルでの値を計算する.
+主な入力データは, 気温 $T$, 比湿 $q$, 雲水量 $l$, 雲量 $C$ であり,
+出力データは, 上向きおよび下向きの放射フラックス, $F^-, F^+$,
+および上向き放射フラックスの地表温度に対する微分係数
+$dF^-/dT_g$ である.
+
+計算は複数の波長域に分けて行なわれる.
+各波長域は k-distribution 法に基づき,
+さらに複数のサブチャネルに分かれる.
+気体吸収としては, 
+H$_2$O, CO$_2$, O$_3$, N$_2$O, CH$_4$ のバンド吸収と,
+H$_2$O, O$_2$, O$_3$ の連続吸収
+およびCFCの吸収を取り入れている.
+また, 散乱としては, 気体のレーリー散乱と
+雲・エアロゾル粒子による散乱を取り入れている.
+
+計算手順の概略は以下の通りである(括弧内はサブルーチン名).
+%
+\begin{enumerate}
+\item 大気温度からプランク関数を計算する \Module{PLANKS}.
+\item 各サブチャネルにおける,
+      気体吸収による光学的厚さを計算する \Module{PTFIT}.
+\item 連続吸収およびCFCの吸収による
+      光学的厚さを計算する \Module{CNTCFC}.
+\item レーリー散乱および粒子散乱の
+      光学的厚さと散乱モーメントを計算する \Module{SCATMM}.
+\item 散乱の光学的厚さと太陽天頂角から, 
+      海面のアルベドを求める \Module{SSRFC}.
+\item 各サブチャネルごとに,
+      プランク関数を光学的厚さで展開する \Module{PLKEXP}.
+\item 各サブチャネルごとに,
+      各層の透過係数, 反射係数, 放射源関数を計算する \Module{TWST}
+\item adding 法によって, 各層の境界での
+      放射フラックスを計算する \Module{ADDING}
+\end{enumerate}
+
+雲の partial の被覆率を考慮するために,
+各層の透過係数, 反射係数, 放射源関数は
+雲に覆われた場合と雲がない場合とを別々に計算し,
+雲量の重みをかけて平均をとる.
+また, 積雲の雲量の考慮も行なっている.
+さらに, adding も複数回行ない, 晴天放射フラックスを計算する.
+
+\subsubsection{波長域とサブチャネル}
+
+放射フラックス計算の基本は,
+Beer-Lambert の法則
+\begin{equation}
+  F^\lambda(z) = F^\lambda(0) exp (-k^\lambda z)
+\end{equation}
+に表される. $F^\lambda$ は波長 $\lambda$ の放射フラックス密度であり.
+$k^\lambda$ は吸収係数である.
+加熱率にかかわる放射フラックスを計算するためには,
+波長に対する積分操作が必要である.
+%
+\begin{equation}
+  F(z) = \int F^\lambda(z) d \lambda 
+ = \int F^\lambda(0) exp (-k^\lambda z) d \lambda
+ \label{p-rad:beer}
+\end{equation}
+%
+しかし, 気体分子による放射の吸収・射出は,
+分子の吸収線構造により, 非常に複雑な波長依存性を持つため,
+この積分を精密に評価することは容易ではない.
+その比較的精密な計算を容易に行なうために考案された方法が
+k-distribution 法である.
+ある波長域の中で, 吸収係数 $k$ の,
+$\lambda$ に関する密度関数 $F(k)$ を考え,
+(\ref{p-rad:beer}) を
+\begin{equation}
+ \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
+ \simeq \int \bar{F}^k(0) exp (-k z) F(k) dk
+\end{equation}
+で近似する. ここで, $bar{F}^k(0)$ は
+$z=0$ における, この波長域で吸収係数 $k$ をもつ
+波長で平均したフラックスである.
+この式は, $\bar{F}_k, F(k)$ が$k$の
+比較的滑らかな関数であれば, 
+\begin{equation}
+ \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
+ \simeq \sum \bar{F}^i(0) exp (-k^i z) F^i
+ \label{p-rad:beer-kd}
+\end{equation}
+のように, 指数関数項の有限個(サブチャネル)の足しあわせで
+比較的精密に計算可能である.
+この方法はさらに,
+吸収と散乱を同時に考慮することが容易であるという利点を持つ.
+
+CCSR/NIES AGCM では,
+放射パラメータデータを変えることにより
+いろいろな波長分割数で計算を行なうことができる.
+現在標準で用いられるものでは,
+波長域は18に分割されている.
+さらに各波長域は1から6個のサブチャネル(上式の$i$に対応)に分割され,
+全体で37チャネルとなる.
+波長域は, 波数(cm$^{-1}$)で
+50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
+2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
+で分割されている.
+
+\subsubsection{プランク関数の計算 \Module{PLANKS}}
+
+各波長域で積分したプランク関数 $\overline{B}^w(T)$ は,
+以下の式で評価する.
+
+\begin{equation}
+  \overline{B}^w(T) 
+   = \lambda^{-2} T \exp \left\{ \sum_{n=0}{4} B^w_n (\bar{\lambda}^w T)^{-n}
+                         \right\}
+\end{equation}
+
+$\bar{\lambda}^w$ は波長域の平均波長,
+$B^w_n$ は function fitting によって定められたパラメータである.
+これは, 各層の大気温度$T_l$, 各層の境界の大気温度$T_{l+1/2}$
+と地表面温度$T_g$に対し計算する.
+
+以下, 波長域に関する添字 $w$ は基本的に省略する.
+
+\subsubsection{気体吸収による光学的厚さの計算 \Module{PTFIT}}
+
+気体吸収による光学的厚さは, 添字 $m$ を分子の種類として,
+以下のようになる. 
+
+\begin{equation}
+  \tau^g = \sum_{m=1}{N_m} k^{(m)} C^{(m)}
+\end{equation}
+
+ここで, $k^{(m)}$ は分子$m$の吸収係数であり, サブチャネルごとに異なる.
+
+\begin{equation}
+ k^{(m)} = \exp\left\{ \sum_{i=0}{N_i} \sum_{j=0}{N_j} A^{(m)}_{ij}
+                   (\ln p)^{i} (T-T_{STD})^{j}
+               \right\}
+\end{equation}
+
+という形で, 温度$T$(K), 気圧$p$(hPa) の関数として与えられる.
+$C^{(m)}$ は, mol cm$^{-2}$ で表した層の中の気体の量であり,
+体積混合比$r$(単位ppmv)から,
+\begin{equation}
+  C = 1\times 10^{-5} \frac{p}{R_u T} \Delta z \cdot r
+\end{equation}
+と計算できる. 
+ただし, $R_u$ はモルあたりの気体定数(8.31 J mol$_{-1}$ K$^{-1}$)であり,
+気層の厚さ $\Delta z$ の単位は km である.
+また, ppmv での体積混合比$r$は, 
+質量混合比$q$から, 
+\begin{equation}
+  r = 10^6 R^{(m)}/R^{(air)} q = 10^6 M^{(air)}/M^{(m)}
+\end{equation}
+によって換算できる.
+$R^{(m)},R^{(air)}$ は
+それぞれ対象分子と大気の質量あたりの気体定数,
+$M^{(m)},M^{(air)}$ は
+それぞれ対象分子と大気の平均分子量である.
+
+この計算は, サブチャネルごと, 各層ごとに行なう.
+
+\subsubsection{連続吸収およびCFCの吸収による光学的厚さ \Module{CNTCFC}}
+
+H$_2$O の連続吸収による光学的厚さ$\tau^{H_2O}$は,
+ダイマーによるものを考え, 
+基本的に水蒸気の体積混合比の二乗に比例した形で評価する.
+\begin{equation}
+\tau^{H_2O} = ( A^{H_2O} + f(T) \hat{A}^{H_2O} ) (r^{H_2O})^2 \rho \Delta z
+\end{equation}
+
+$\hat{A}$ の項にかかる $f(T)$ は, 
+ダイマーの吸収の温度依存性を表す.
+さらに, 通常の気体吸収を無視する波長帯においては,
+水蒸気の体積混合比の一乗に比例する寄与を取り入れる.
+
+O$_2$ の連続吸収は, 混合比一定と仮定して,
+\begin{equation}
+\tau^{O_2} = A^{O_2} \rho \Delta z
+\end{equation}
+としている.
+
+O$_3$の連続吸収は, 混合比$r^{O_3}$を用い, 温度依存性を取り入れて,
+\begin{equation}
+\tau^{O_3} = \sum_{n=0}{2} A^{O_3}_n r^{O_3} \frac{T}{T_{STD}}^n \rho \Delta z
+\end{equation}
+
+CFCの吸収は, $N_m$ 種類の CFC を考えて,
+\begin{equation}
+\tau^{CFC} = \sum_{m=1}{N_m} A^{CFC}_m r^{(m)} \rho \Delta z
+\end{equation}
+
+これらの光学的厚さの総和を$\tau^{CON}$ とする.
+\begin{equation}
+ \tau^{CON} =  \tau^{H_2O} + \tau^{O_2} + \tau^{O_3} + \tau^{CFC} 
+\end{equation}
+
+この計算は各波長域ごと, 各層ごとに行なう.
+
+\subsubsection{散乱の光学的厚さと散乱モーメント \Module{SCATMM}}
+
+レーリー散乱および粒子消散の(散乱と吸収を含めた)光学的厚さは
+\begin{equation}
+\tau^{s} 
+ = \left( e^R + \sum_{p=1}{N_p} e^{(p)}_m r^{(p)}\right) \rho \Delta z
+\end{equation}
+ここで, $e^R$ はレーリー散乱の消散係数,
+$e^{(p)}$ は粒子$p$の消散係数,
+$r^{(p)}$ は標準状態に換算した
+粒子$p$の体積混合比である.
+
+ここで, 雲水の質量混合比 $l$ から
+雲粒の標準状態換体積混合比(ppmv)への換算は以下のようになる.
+\begin{equation}
+  r = 10^6 \frac{p_{STD}}{R T_{STD}}/\rho_w
+\end{equation}
+ただし, $\rho_w$ は雲粒の密度である.
+
+一方, 光学的厚さのうち散乱に起因する部分 $\tau_s^s$ は,
+\begin{equation}
+\tau_s^{s} 
+ = \left( s^R + \sum_{p=1}{N_p} s^{(p)}_m r^{(p)}\right) \rho \Delta z
+\end{equation}
+ここで, $s^R$ はレーリー散乱の散乱係数,
+$s^{(p)}$ は粒子$p$の散乱係数である.
+
+また, 規格化された散乱のモーメント 
+$g$ (非対称因子) および $f$ (前方散乱因子)は,
+\begin{equation}
+g = \frac{1}{\tau_s} \left[
+    \left( g^R + \sum_{p=1}{N_p} g^{(p)}_m r^{(p)}\right) \rho \Delta z
+    \right]
+\end{equation}
+\begin{equation}
+f = \frac{1}{\tau_s} \left[ 
+    \left( f^R + \sum_{p=1}{N_p} f^{(p)}_m r^{(p)}\right) \rho \Delta z
+    \right]
+\end{equation}
+ここで, $g^R, f^R$ はレーリー散乱の散乱モーメント,
+$g^{(p)}, f^{(p)}$ は粒子$p$の散乱モーメントである.
+
+この計算は各波長域ごと, 各層ごとに行なう.
+
+\subsubsection{海面のアルベド \Module{SSRFC}}
+
+海面のアルベド $\alpha_s$ は散乱の光学的厚さを鉛直に足し合わせたもの
+$<\tau^{s}>$ および太陽入射角ファクタ $\mu_0$ を用いて,
+\begin{equation}
+  \alpha_s = \exp\left\{ \sum_{i,j} C_{ij} {\cal T}^j {\mu_0}^j \right\}
+\end{equation}
+のように表される.
+ただし,
+\begin{equation}
+ {\cal T} = ( 4 <\tau^{s}>/\mu )^{-1}
+\end{equation}
+である.
+
+この計算は各波長域ごとに行なう.
+
+\subsubsection{光学的厚さの総計}
+
+気体バンド吸収, 連続吸収, レーリー散乱, 粒子散乱・吸収を
+全て考慮した光学的厚さは, 
+%
+\begin{equation}
+  \tau = \tau^g + \tau^{CON} + \tau^{s}
+\end{equation}
+%
+となる. ここで, $\tau^g$ はサブチャネルごとに異なるため,
+サブチャネルごと, 各層ごとに計算を行なう.
+
+\subsubsection{プランク関数の展開 \Module{PLKEXP}}
+
+各層の中で, プランク関数 $B$ を
+\begin{equation}
+  B(\tau') = b_0 + b_1 \tau' + b_2 \left(\tau'\right)^2
+\end{equation}
+のように展開して表現し, 展開係数 $b_0, b_1, b,2$ を求める.
+ここで, $B(0)$ として
+各層の上端(上の層との境界)での$B$を,
+$B(\tau)$として, 各層の下端(下の層との境界)での$B$を,
+$B(\tau/2)$として, 各層の代表レベルでの$B$を用いる.
+\begin{eqnarray}
+  b_0 & = & B(0) \nonumber \\
+  b_1 & = & ( 4B(\tau/2) - B(\tau) - 3B(0) )/\tau  \\
+  b_2 & = & 2 ( B(\tau) + B(0) - 2B(\tau/2) )/\tau^2  \nonumber
+\end{eqnarray}
+
+この計算は, サブチャネルごと, 各層ごとに行なう.
+
+\subsubsection{各層の透過・反射係数, 放射源関数 \Module{TWST}}
+
+これまで求められた, 光学的厚さ$\tau$, 散乱の光学的厚さ$\tau^s$,
+散乱モーメント$g, f$, プランク関数の展開係数$b_0, b_1, b_2$,
+太陽入射角ファクタ $\mu_0$ を用いて,
+均一な層を仮定し, 2ストリーム近似で
+透過係数$R$, 反射係数$T$, 下方向への放射源関数$\epsilon^+$,
+上方向への放射源関数$\epsilon^-$を求める.
+
+単一散乱アルベド$\omega$は,
+\begin{equation}
+  \omega = \tau_s^s/\tau
+\end{equation}
+前方散乱因子 $f$ による寄与を
+補正した光学的厚さ$\tau^*$,
+単一散乱アルベド$\omega^*$, 非対称因子$g^*$ は,
+\begin{eqnarray}
+  \tau^* & = & \frac{\tau}{1-\omega f} \\
+  \omega^* & = & \frac{(1-f)\omega}{1-\omega f}   \\
+  g^* & = & \frac{g-f}{1-f}  
+\end{eqnarray}
+
+これから, 規格化された散乱の位相関数として,
+\begin{eqnarray}
+  \hat{P}^\pm   & = & \omega^* {W^-}^2 \left( 1 \pm 3g^* \mu \right)/2 \\
+  \hat{S}_s^\pm & = & \omega^* W^-     \left( 1 \pm 3g^* \mu \mu_0 \right)/2
+\end{eqnarray}
+ただし, $\mu$ は2ストリームの方向余弦であり,
+\begin{equation}
+  \mu \equiv \left\{ \begin{array}{ll}
+                   1/\sqrt{3} \; \; \; & 可視・近赤外域 \\
+                   1/1.66     \; \; \; & 赤外域
+                    \end{array}
+             \right.
+\end{equation}
+\begin{equation}
+  W^- \equiv \mu^{-1/2}
+\end{equation}
+
+さらに,
+\begin{eqnarray}
+  X & = & \mu^{-1} - (\hat{P}^+ - \hat{P}^- ) \\
+  Y & = & \mu^{-1} - (\hat{P}^+ + \hat{P}^- ) \\
+  \hat{\sigma}_s^{\pm} & = & \hat{S}_s^+ \pm \hat{S}_s^- \\
+  \lambda & = & \sqrt{XY}
+\end{eqnarray}
+を用いると, 反射率$R$および透過率$T$は以下のようになる.
+\begin{eqnarray}
+ \frac{A^+{\tau^*}}{A^-{\tau^*}}
+  & = & \frac{X (1+e^{-\lambda\tau^*}) - \lambda (1-e^{-\lambda\tau^*})}
+             {X (1+e^{-\lambda\tau^*}) + \lambda (1-e^{-\lambda\tau^*})} \\
+ \frac{B^+{\tau^*}}{B^-{\tau^*}}
+  & = & \frac{X (1-e^{-\lambda\tau^*}) - \lambda (1+e^{-\lambda\tau^*})}
+             {X (1-e^{-\lambda\tau^*}) + \lambda (1+e^{-\lambda\tau^*})}
+\end{eqnarray}
+\begin{eqnarray}
+  R & = &  \frac{1}{2} \left(  \frac{A^+{\tau^*}}{A^-{\tau^*}} 
+                             + \frac{B^+{\tau^*}}{B^-{\tau^*}} \right) \\
+  T & = &  \frac{1}{2} \left(  \frac{A^+{\tau^*}}{A^-{\tau^*}} 
+                             - \frac{B^+{\tau^*}}{B^-{\tau^*}} \right)
+\end{eqnarray}
+
+次にまず, プランク関数起源の放射源関数を求める.
+\begin{equation}
+  \hat{b}_n = 2 \pi (1-\omega^*) W^- b_n \; \; \; n=0,1,2 
+\end{equation}
+から, 放射源関数の展開係数が求められ,
+\begin{eqnarray}
+  D_2^\pm & = & \frac{\hat{b}_2}{Y} \\
+  D_1^\pm & = & \frac{\hat{b}_1}{Y} \mp  \frac{2 \hat{b}_2}{XY} \\
+  D_0^\pm & = & \frac{\hat{b}_0}{Y} + \frac{2 \hat{b}_2}{XY^2} 
+                \mp  \frac{\hat{b}_1}{XY} \\
+\end{eqnarray}
+\begin{eqnarray}
+  D^\pm(0)      & = & D_0^pm \\
+  D^\pm(\tau^*) & = & D_0^pm + D_1^pm \tau^* + D_2^pm {\tau^*}^2
+\end{eqnarray}
+によりプランク関数起源の放射源関数 $\hat{\epsilon}_A^\pm$ は,
+\begin{eqnarray}
+  \hat{\epsilon}_A^- & = & D^-(0) - R D^+(0) - T D^-(\tau^*) \\
+  \hat{\epsilon}_A^+ & = & D^+(0) - T D^+(0) - R D^-(\tau^*)
+\end{eqnarray}
+
+一方,  太陽入射起源の放射源関数は,
+\begin{equation}
+  Q\gamma = \frac{X\hat{\sigma}_s^+ + \mu_0^{-1} \hat{\sigma}_s^-}
+                 {\lambda^2 - \mu_0^{-2} }
+\end{equation}
+より,
+\begin{equation}
+  V_s^\pm = \frac{1}{2} \left[
+             Q\gamma \pm \left( \frac{Q\gamma}{\mu X} 
+                                + \frac{\hat{\sigma}_s^-}{X} \right)
+                        \right]
+\end{equation}
+を用いることにより, 以下の様になる.
+\begin{eqnarray}
+  \hat{\epsilon}_S^- & = & V_s^- - R V_s^+ - T V_s^- e^{-\tau^*/\mu_0} \\
+  \hat{\epsilon}_S^+ & = & V_s^+ - T V_s^+ - R V_s^- e^{-\tau^*/\mu_0}
+\end{eqnarray}
+
+この計算は, サブチャネルごと, 各層ごとに行なう.
+
+\subsubsection{各層の放射源関数の組み合わせ}
+
+プランク関数起源と太陽入射起源の
+両者を合わせた放射源関数は
+\begin{equation}
+  \epsilon^\pm  = 
+  \epsilon_A^\pm + \hat{\epsilon}_S^\pm e^{-<\tau^*>/\mu_0} F_0 \\
+\end{equation}
+となる. ただし, $<\tau^*>$ は大気上端から
+いま考慮している層の上端までの
+$\tau^*$ を合計した光学的厚さであり, 
+$F_0$ はいま考慮している波長域における入射フラックスである.
+すなわち, $e^{-<\tau^*>/\mu_0} F_0$ は
+いま考慮している層の上端での入射フラックスである.
+%
+この計算は実際には, 
+\begin{equation}
+  e^{-<\tau^*>/\mu_0} = \Pi' e^{-\tau^*/\mu_0}
+\end{equation}
+のように行なう. $\Pi'$ は大気最上層から
+今考えている層の1つ上の層までの積を表す.
+
+この計算は, サブチャネルごと, 各層ごとに行なう.
+
+\subsubsection{各層境界での放射フラックス \Module{ADDING}}
+
+各層の透過係数$R_l$, 反射係数$T_l$, 放射源関数$\epsilon^\pm_l$
+が全ての層$l$で求められると,
+adding 法を用いて各層境界での放射フラックスを求めることができる.
+これは, 2つの層の$R,T,\epsilon$ がわかっていると,
+2つの層を合成した層全体の$R,T,\epsilon$ が簡単な計算により
+求められることを利用したものである.
+均質な層では, 上から入射した場合の反射率, 透過率と
+下から入射した場合の反射率, 透過率とは同じであるが,
+複数の層を合成した不均質な層では異なるため,
+上から入射した場合の反射率, 透過率 $R^+, T^+$ と
+下から入射した場合の反射率, 透過率 $R^-, T^-$ とを区別する.
+今, 上の層1 と 下の層2 でこれら
+$R^\pm_1, T\pm_1, \epsilon^\pm_1,
+ R^\pm_2, T\pm_2, \epsilon^\pm_2$ が既知であると,
+合成した層での値
+$R^\pm_{1,2}, T\pm_{1,2}, \epsilon^\pm_{1,2}$ は
+以下のようになる.
+\begin{eqnarray}
+  R^+_{1,2} & = & R^+_1 + T^-_1 ( 1- R^+_2 R^-_1 )^{-1} R^+_2 T^+_1 \\
+  R^-_{1,2} & = & R^-_2 + T^+_2 ( 1- R^+_1 R^-_2 )^{-1} R^-_1 T^-_2 \\
+  T^+_{1,2} & = & T^+_2 ( 1- R^+_1 R^-_2 )^{-1} T^+_1 \\
+  T^-_{1,2} & = & T^-_1 ( 1- R^+_1 R^-_2 )^{-1} T^-_2 \\
+  \epsilon^+_{1,2} & = & \epsilon^+_2 
+    + T^+_2 ( 1- R^+_2 R^-_1 )^{-1} ( R^-_1 \epsilon^-_2 + \epsilon^+_1 ) \\
+  \epsilon^-_{1,2} & = & \epsilon^-_1 
+    + T^-_1 ( 1- R^+_2 R^-_1 )^{-1} ( R^+_2 \epsilon^+_1 + \epsilon^-_2 ) 
+\end{eqnarray}
+
+上から1, 2, \ldots $N$ 層まであるとする. 
+ただし, 地表を一つの層と考え, 第$N$層とする.
+第$n$層から$N$層までを1つの層と考えたときの反射率, 放射源関数
+$R^+_{n,N}, \epsilon^-_{n,N}$ を考えると,
+\begin{eqnarray}
+  R^+_{n,N} & = & R^+_n 
+      + T^-_n ( 1- R^+_{n+1,N} R^-_n )^{-1} R^+_{n+1,N} T^+_n \\
+  \epsilon^-_{n,N} & = & \epsilon^-_n
+    + T^-_n ( 1- R^+_{n,N} R^-_n )^{-1} 
+      ( R^+_{n,N} \epsilon^+_n + \epsilon^-_{n,N} ) 
+\end{eqnarray}
+これは, 地表での値
+\begin{eqnarray}
+  R^+_{N,N} & = &  R^+_N = 2 {W^+}^2 \alpha_s \\
+  \epsilon^-_{N,N} & = &  \epsilon^-_N 
+    = W^+ \left( 2 \alpha_s \mu_0 e^{-<\tau^*>/\mu_0} F_0 
+                 + 2 \pi (1-\alpha_s) B_N 
+          \right)
+\end{eqnarray}
+から出発して, 順次 $n=N-1, \ldots 1$ で解くことができる.
+ただし,
+\begin{equation}
+  W^+ \equiv \mu^{1/2}
+\end{equation}
+
+
+次に, 第1層から第$n$ 層までを1つの層と考えたときの反射率, 放射源関数
+$R^-_{1,n}, \epsilon^+_{1,n}$ を考えると,
+\begin{eqnarray}
+  R^-_{1,n} & = & R^-_n 
+      + T^+_n ( 1- R^+_{1,n-1} R^-_n )^{-1} R^-_{1,n-1} T^-_n \\
+  \epsilon^+_{1,n} & = & \epsilon^+_n
+    + T^+_n ( 1- R^+_{1,n-1} R^-_n )^{-1} 
+      ( R^-_{1,n-1} \epsilon^-_n + \epsilon^+_{1,n-1} ) 
+\end{eqnarray}
+となり, これも $R^-_{1,1} = R^-_1, \epsilon^+_{1,1} = \epsilon^+_1$
+から出発して順次 $n=2, \ldots N$ で解くことができる.
+
+これらを用いると,
+層$n$と$n+1$の境界における下向きのフラックス $u^+_{n,n+1}$
+および上向きのフラックス $u^-_{n,n+1}$ は,
+$1\sim n$ 層を組み合わせた層と
+$n+1\sim N$ 層を組み合わせた層の2つの層の間の問題に還元され,
+\begin{eqnarray}
+ u^+_{n+1/2} = (1-R^-_{1,n} R^+_{n+1,N})^{-1}
+    (\epsilon^+_{1,n} + R^-_{1,n} \epsilon^-_{n+1,N} ) \\
+ u^-_{n+1/2} = R^+_{n+1,N}  u^+_{n,n+1} + \epsilon^-_{n+1,N}
+\end{eqnarray}
+と書き表すことができる.
+ただし, 大気上端でのフラックスは,
+\begin{eqnarray}
+ u^+_{1/2} & = & 0 \\
+ u^-_{1/2} & = & \epsilon^-_{1,N}
+\end{eqnarray}
+
+最後にこのフラックスはスケールされたものであるので,
+再スケーリングを行ない, さらに直達太陽入射を加えて
+放射フラックスを求める.
+
+\begin{eqnarray}
+  F^+_{n+1/2} & = & \frac{W^+}{\bar{W}} u^+_{n+1/2} 
+                + \mu_0 e^{-<\tau^*>_{1,n}/\mu_0} F_0 \\\\
+  F^-_{n+1/2} & = & \frac{W^+}{\bar{W}} u^-_{n+1/2} \\
+\end{eqnarray}
+
+この計算は, サブチャネルごとに行なう.
+
+\subsubsection{フラックスの足し込み}
+
+各層のサブチャネルごとの放射フラックス$F^\pm_c$が求められると,
+それをサブチャネルの代表する波長幅に対応する
+重み$w_c$をかけて足し合わせることにより,
+波長積分のフラックスが求められる.
+
+\begin{equation}
+  \bar{F}^\pm = \sum_c w_c F^\pm
+\end{equation}
+
+実際には, 短波長域(太陽光領域), 
+長波長域(地球放射領域)に分けて足し合わせる.
+また, 短波長域の一部(波長$0.7\mu$より短い領域)の
+地表での下向きフラックスを PAR (光合成活性放射)として得る.
+
+\subsubsection{フラックスの温度微分}
+
+地表面温度を implicit で解くために,
+上向きフラックスの地表面温度に対する微分項
+$dF^-/dT_g$ を計算する.
+そのために, $T_g$より1K高い温度に対する値 
+$\overline{B}^w(T_g+1)$ も求め, それを用いて
+adding 法によるフラックスの計算をやりなおし,
+元の値との差を $dF^-/dT_g$ とする.
+これは長波長域(地球放射領域)のみ意味のある値となる.
+
+\subsubsection{雲量の取扱い}
+
+CCSR/NIES AGCM では,
+1つの格子の中での雲の水平方向の被覆率を考慮している.
+雲は以下の2種類である.
+\begin{enumerate}
+\item 層雲. 大規模凝結スキーム \Module{LSCOND} で診断される.
+      各層($n$)ごとに格子平均の雲水量 $l^l_n$ と
+      水平被覆率(雲量) $C^l_n$ が定義される.      
+\item 積雲. 積雲対流スキーム \Module{CUMLUS} で診断される.
+      各層($n$)ごとに格子平均の雲水量 $l^c_n$ が定義されるが,
+      水平被覆率(雲量) $C^c$ は鉛直に一定とする.
+\end{enumerate}
+これらの取扱いにおいて, 層雲は鉛直にランダムに重なり合うと仮定し,
+積雲は上下層で常に同じ領域を占めると仮定する
+(その領域の中に限れば雲量は0もしくは1であるとする).
+そのために, 以下のように計算を行なう.
+
+\begin{enumerate}
+\item レーリーおよび粒子散乱・吸収の光学的厚さ等
+      $\tau^s, \tau_s^s, g, f$ を,
+      \begin{enumerate}
+      \item 雲水量$l^l_n/C^l_n$の雲が存在する場合(層雲)
+      \item 雲の全くない場合
+      \item 雲水量$l^c_n/C^c$の雲が存在する場合(積雲)
+      \end{enumerate}
+      について計算する.
+
+\item 各層の反射係数, 透過係数, 
+      放射源関数(プランク関数起源, 日射起源)を
+      上の3つの場合についてそれぞれ計算する.
+      雲なしの場合の値を
+      $R^\circ$, 層雲のある場合を$R^l$, 積雲のある場合を
+      $R^c$ などとする.
+
+\item 各層の反射係数, 透過係数, 
+      放射源関数を, 層雲の雲量の重み$C^l$をつけて平均する.
+      平均したものを $\bar{}$をつけて表すと,
+      \begin{eqnarray}
+        \bar{R} & = & ( 1 - C^l ) R^\circ + C^l R^l \\
+        \bar{T} & = & ( 1 - C^l ) T^\circ + C^l T^l \\
+        \bar{\epsilon} & = & 
+            ( 1 - C^l ) \epsilon_A^\circ + C^l \epsilon_A^l \\        
+          & + & 
+            \left[ ( 1 - C^l ) \epsilon_S^\circ + C^l \epsilon_S^l \right] 
+            e^{-\overline{<\tau^*>}/\mu_0} F_0 
+      \end{eqnarray}
+      とする. ただし,
+      \begin{equation}
+        e^{-\overline{<\tau^*>}/\mu_0} 
+        = \Pi' \left[ ( 1 - C^l ) e^{-\tau^{*\circ}/\mu_0} 
+                       + C_l e^{-\tau^{*l}/\mu_0} \right]
+      \end{equation}
+      である. 
+      また,
+      \begin{eqnarray}
+        \epsilon^\circ & = & \epsilon_A^\circ +
+                             \epsilon_S^\circ 
+                              e^{-<\tau^{*\circ}>/\mu_0} F_0 \\
+        \epsilon^c     & = & \epsilon_A^c +
+                             \epsilon_S^c 
+                              e^{-<\tau^{*c}>/\mu_0} F_0        
+      \end{eqnarray}
+      も求める.
+
+\item 平均の特性値($\bar{R}$など)を用いた場合,
+      雲なしの特性値($R^\circ$など)を用いた場合,
+      積雲の特性値($R^c$など)を用いた場合について,
+      それぞれadding によってフラックス
+      $\bar{F}, F^\circ, F^c$ を求める.
+      
+\item 最終的に求めるフラックスは
+      \begin{equation}
+        F = ( 1 - C^c ) \bar{F} + C^c F^c
+      \end{equation}
+      ($F^\circ$ は cloud radiative forcing の見積りのために
+       計算している)
+
+\end{enumerate}
+
+\subsubsection{入射フラックスと入射角 \Module{SHTINS}}
+
+入射フラックス $F_0$ は,
+太陽定数を $F_{00}$, 
+太陽地球間の距離の, 
+その時間平均値との比を $r_s$ とすると.
+%
+\begin{equation}
+F_0 = F_00 r_s^-2 
+\end{equation}
+ここで, $r_s$ は以下のように求める.
+%
+\begin{equation}
+  M \equiv 2 \pi ( d - d_0 ) 
+\end{equation}
+として,
+\begin{equation}
+  r_s = a_0 - a_1 \cos M - a_2 \cos 2M - a_3 \cos 3M
+\end{equation}
+ただし, $d$ は年初から日単位で表した時刻である.
+
+また,入射角は以下のように求める.
+太陽の角度位置 $\omega_s$ を
+\begin{equation}
+  \omega_s = M + b_1 \sin M + b_2 \sin 2M + b_3 \sin 3M
+\end{equation}
+として,  太陽の赤緯 $\delta_s$ は,
+\begin{equation}
+  \sin \delta_s = \sin \epsilon \sin ( \omega_s - \omega_0 ) 
+\end{equation}
+%
+すると, 入射角ファクタ $\mu = \cos \zeta$ ($\zeta$ は天頂角)は,
+\begin{equation}
+\mu = \cos \zeta = \cos \varphi \cos \delta_s \cos h
+                 + \sin \varphi \sin \delta_s
+\end{equation}
+$\varphi$ は緯度,
+$h$は時角(地方時から $\pi$ を引いたもの)である.
+
+以上において, 地球軌道の離心率を$e$とすると(Katayama, 1974),
+\begin{eqnarray}
+   a_0 & = &  1 + e^2 \\
+   a_1 & = &  e - 3/8 e^3 - 5/32 e^5 \\
+   a_2 & = &  1/2 e^2 - 1/3e^4 \\
+   a_3 & = &  3/8 e^3 - 135/64^5 \\
+   b_1 & = & 2e - 1/4 e^3 + 5/96 e^5 \\
+   b_2 & = & 5/4 e^2 - 11/24 e^4 \\
+   b_3 & = & 13/12 e^3 - 645/940 e^5 \\
+\end{eqnarray}
+
+年平均日射を与えることも可能である.
+この場合, 年平均入射量および年平均入射角は, 
+近似的に次のようになる.
+%
+\begin{equation}
+\overline{F} = F_{00}/\pi
+\end{equation}
+%
+\begin{equation}
+\overline{\mu} \simeq 0.410 + 0.590 \cos^2 \varphi .
+\end{equation}
+
+\subsubsection{その他の留意点}
+
+\begin{enumerate}
+\item 放射の計算は通常, 毎ステップ行なうわけではない.
+      そのために, 放射フラックスをセーブしておき, 
+      放射計算をしない時刻にはそれを用いる.
+      その際, 短波放射に関しては,
+      次回の計算時刻との間の可照時間($\mu_0>0$である時間)の割合$f$と
+      可照時間内で平均した太陽入射角ファクタ $\bar{\mu_0}$を用いて
+      フラックス $\bar{F}$ を求め,
+      \begin{equation}
+        F =  f \frac{\mu_0}{\bar{\mu_0}} \bar{F}
+      \end{equation}
+      とする.
+
+
+\item 雲水は, 温度に依存して, 
+      水雲粒および氷雲粒として扱われる.
+      氷雲として扱われる割合$f_I$は,
+      \begin{equation}
+        f_I = \frac{ T_0 - T }{ T_0 - T_1 }
+      \end{equation}
+      (ただし, 最大値1, 最小値0) である. また,
+      $T_0 = 273.15\mbox{K}, T_1 = 258.15\mbox{K}$ とする.
+
+\end{enumerate}
+
+
+
+
