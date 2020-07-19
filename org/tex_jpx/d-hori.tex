@@ -1,0 +1,223 @@
+﻿\subsection{水平離散化}
+
+水平方向の離散化は
+スペクトル変換法を用いる(Bourke, 1988).
+経度, 緯度に関する微分の項は直交関数展開によって評価し,
+一方, 非線型項は格子点上で計算する.
+
+\subsubsection{スペクトル展開}
+
+展開関数系としては球面上の Laplacianの固有関数系である
+球面調和関数 TERM00000,TERM00000 を用いる.
+ただし, TERM00001 である.
+TERM00002 は次のような方程式を満たし,
+%
+\begin{quote}
+EQ=00000.
+\end{quote}
+%
+Legendre 陪関数 TERM00003 を用いて次のように書き表される.
+%
+\begin{quote}
+EQ=00001.
+\end{quote}
+%
+ただし, TERM00004 である.
+
+球面調和関数による展開は \footnotemark ,
+\begin{quote}
+EQ=00002.
+\end{quote}
+と書くと,
+%
+\footnotetext{ここでは三角形切断を用いている.
+              平行四辺形切断の場合には, 
+              TERM00005
+              と置き換えること.}
+%
+\begin{quote}
+EQ=00003.
+\label{球面展開}
+\end{quote}
+%
+その逆変換は,
+\begin{quote}
+EQ=00017.\\
+\label{展開係数}
+EQ=00017.
+\end{quote}
+%
+のように表される.
+%
+積分を和に置き換えて評価する際には,
+TERM00006 積分については Gauss の台形公式を,
+TERM00007 積分については Gauss-Legendre 積分公式を用いる.
+TERM00008 は Gauss 緯度, TERM00009 は Gauss 荷重である.
+また, TERM00010 は等間隔の格子である.
+
+スペクトル展開を用いれば,
+微分を含む項の格子点値は次のように求められる.
+%
+\begin{quote}
+EQ=00004.
+\label{気圧x}
+\end{quote}
+%
+\begin{quote}
+EQ=00005.
+\label{気圧y}
+\end{quote}
+%
+さらに,
+TERM00011, TERM00012 のスペクトル成分から, 
+TERM00013,TERM00013 の格子点値が以下のように得られる.
+%
+\begin{quote}
+EQ=00006.
+\label{Uを求める}
+\end{quote}
+%
+\begin{quote}
+EQ=00007.
+\label{Vを求める}
+\end{quote}
+
+方程式の移流項に現れる微分は,
+次のように求められる.
+%
+\begin{quote}
+\label{A積分}
+\nonumber
+EQ=00018.\\
+\nonumber
+EQ=00018.\\
+EQ=00018.
+\end{quote}
+%
+\begin{quote}
+\label{B積分}
+\nonumber
+EQ=00019.\\
+\nonumber
+EQ=00019.\\
+EQ=00019.
+\end{quote}
+%
+さらに,
+\begin{quote}
+EQ=00008.
+\end{quote}
+を TERM00014 の項の評価のために用いる.
+
+\subsubsection{水平拡散項}
+
+水平拡散項は, 次のように TERM00015 の形で入れる.
+%
+\begin{quote}
+EQ=00009.
+\label{水平拡散}
+\end{quote}
+%
+\begin{quote}
+EQ=00010.
+\end{quote}
+%
+\begin{quote}
+EQ=00011.
+\end{quote}
+%
+\begin{quote}
+EQ=00012.
+\end{quote}
+%
+この水平拡散項は計算の安定化のための意味合いが強い.
+小さなスケールに選択的な水平拡散を表すため,
+TERM00016 としては, 4 TERM00017 16を用いる.
+ここで, 渦度および発散の拡散についている余分な項は,
+TERM00018 の剛体回転の項が減衰しないことを表したものである.
+
+\subsubsection{方程式のスペクトル表現}
+
+
+\begin{enumerate}
+\item 連続の式
+
+\begin{quote}
+\nonumber
+EQ=00020.\\
+EQ=00020.
+\end{quote}
+%
+ここで,
+\begin{quote}
+EQ=00013.
+\end{quote}
+
+\item 運動方程式
+
+\begin{quote}
+\nonumber
+EQ=00021.\\
+\nonumber
+EQ=00021.\\
+EQ=00021.
+\end{quote}
+%
+\begin{quote}
+\nonumber
+EQ=00022.\\
+\nonumber
+EQ=00022.\\
+\nonumber
+EQ=00022.\\
+EQ=00022.
+\end{quote}
+%
+ただし,
+%
+\begin{quote}
+EQ=00014.
+\end{quote}
+
+\item 熱力学の式
+
+\begin{quote}
+\nonumber
+EQ=00023.\\
+\nonumber
+EQ=00023.\\
+\nonumber
+EQ=00023.\\
+EQ=00023.
+\end{quote}
+%
+ただし,
+%
+\begin{quote}
+EQ=00015.
+\end{quote}
+
+
+
+\item 水蒸気の式
+
+\begin{quote}
+\nonumber
+EQ=00024.\\
+\nonumber
+EQ=00024.\\
+\nonumber
+EQ=00024.\\
+EQ=00024.
+\end{quote}
+
+ただし,
+%
+\begin{quote}
+EQ=00016.
+\end{quote}
+
+
+
+\end{enumerate}
+

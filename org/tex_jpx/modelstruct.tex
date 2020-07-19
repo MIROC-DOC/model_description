@@ -1,0 +1,373 @@
+﻿%\documentstyle[a4j,dennou]{jarticle}
+
+\section{モデルの構成}
+
+\subsection{構成の概略}
+
+AGCM のプログラム本体は, 階層化された構造を持っており,
+複数のディレクトリに, それぞれ複数のファイルに分けられて管理されている.
+一つのファイル(パッケージ)には, 
+さらにいくつかのプログラムモジュール(サブルーチン,関数)が入っており,
+場合によっては, 一つのモジュールに複数のエントリーが存在する.
+
+例: 
+\begin{tabbing}
+{\bf ディレクトリ}\= {\bf dynamics:\ } \\
+ \> {\bf ファイル}\= {\bf dadmn.F:\ } 
+                       * PACKAGE DADMN \\
+ \>               \> : \\          
+ \> {\bf ファイル} \= {\bf dshpe.F:\ } 
+                       * PACKAGE DSPHE \\
+ \>\> {\bf モジュール DSETNM:\ } \=  \kill
+ \>\> {\bf モジュール W2G} 
+                      \> SUBROUTINE W2G \\
+ \>\>                 \> ENTRY      G2W \\
+ \>\>                 \> ENTRY      SPSTUP \\
+ \>\> {\bf モジュール DSETNM:} \>  SUBROUTINE DSETNM  \\
+\end{tabbing}
+
+\・現在, ディレクトリは以下の10個である. 
+\begin{center}
+\begin{description}
+\item[TAB00000:0.0] admin
+\item[TAB00000:0.1] モデル全体の構成(座標・時刻・定数等)に関わるモジュール
+\item[TAB00000:1.0] dynamics
+\item[TAB00000:1.1] 力学過程に関わるモジュール
+\item[TAB00000:2.0] physics
+\item[TAB00000:2.1] 物理過程に関わるモジュール
+\item[TAB00000:3.0] io
+\item[TAB00000:3.1] データ入出力関係のモジュール
+\item[TAB00000:4.0] util
+\item[TAB00000:4.1] 汎用演算ライブラリ類
+\item[TAB00000:5.0] sysdep
+\item[TAB00000:5.1] システム依存モジュール
+\item[TAB00000:6.0] include
+\item[TAB00000:6.1] {\tt \#include}によって取り込まれるヘッダ類
+\item[TAB00000:7.0] nonstd
+\item[TAB00000:7.1] 非標準プラグイン・モジュール
+\item[TAB00000:8.0] special
+\item[TAB00000:8.1] テストモジュール
+\item[TAB00000:9.0] shalo
+\item[TAB00000:9.1] 1層バロトロピック浅水モデル用モジュール(テスト中)
+\end{description}
+\end{center}
+なお, メインルーチンを含むファイルは {\tt src/} 直下に存在する.
+
+\・これらの依存関係は, 以下のようになっている. 
+\begin{center}
+\begin{description}
+\item[TAB00001:0.0] MAIN
+\item[TAB00001:0.1] - admin
+\item[TAB00001:0.2] 
+\item[TAB00001:1.0] 
+\item[TAB00001:1.1] - dynamics
+\item[TAB00001:1.2] 
+\item[TAB00001:2.0] 
+\item[TAB00001:2.1] - physics
+\item[TAB00001:2.2] 
+\item[TAB00001:3.0] 
+\item[TAB00001:3.1] 
+\item[TAB00001:3.2] - io
+\item[TAB00001:3.3] 
+\item[TAB00001:4.0] 
+\item[TAB00001:4.1] 
+\item[TAB00001:4.2] 
+\item[TAB00001:4.3] - util
+\item[TAB00001:4.4] 
+\item[TAB00001:5.0] 
+\item[TAB00001:5.1] 
+\item[TAB00001:5.2] 
+\item[TAB00001:5.3] 
+\item[TAB00001:5.4] - sysdep
+\end{description}
+\end{center}
+すなわち, 同列に並ぶものはそれぞれ独立であり,
+左に位置するものは右に位置するものを呼んで用いるが, 逆は許していない.
+
+\・関係の深い複数のルーチンが1つのファイル(パッケージ)に入っている.
+特に物理過程においては, 1つまたは少数のファイルの差し替えによって
+パラメタリゼーションの使い替えが可能となっている.
+
+\subsection{プログラムにおける特記事項}
+
+\・ENTRY 文を用いて複数エントリを持たせたモジュールがいくつか存在する.
+その主な目的は, データのローカルな保持である.
+例えば, 上にあげたモジュール W2G の場合, PNM, DPNM といった変数が
+このモジュールのローカル変数として保持され,
+W2G, G2W, SPSTUP において共通に用いられる.
+W2G, G2W はいろいろなところで用いられるが, この構造をとったことにより,
+PNM, DPNM を引数として用いなけらばならない煩雑さを避けることができる.
+通常このような場合には COMMON 変数を用いることが多い.
+ここでは, COMMON 変数は管理やデバッグにおいて不都合があるために
+できる限り避けており, その代わり, このようなカプセル化構造を用いている.
+
+\・COMMON は 2つだけ使用されている.
+\begin{center}
+  \begin{description}
+\item[TAB00002:0.0] COMMON /COMCON/
+\item[TAB00002:0.1] 標準物理定数(地球半径,気体定数など)
+\item[TAB00002:1.0] COMMON /COMWRK/
+\item[TAB00002:1.1] ワーク領域
+\end{description}
+\end{center}
+COMCON は, 標準的に用いられる物理定数を含んだものである.
+この COMMON 定義は {\tt include/zccom.F} に入っており,
+必要に応じて include して用いる. 
+値のセットは,  サブルーチン PCONST ({\tt admin/apcon.F})を呼び出して行なう.
+%
+COMWRK は, 多くのモジュールからワーク領域として用いられる.
+全体のメモリ消費を少なくするために用いており, 
+該当する COMMON文を全て削除しても問題ない 
+\footnote{このCOMMONは実は文法違反である. 
+          COMMON文による共通ブロックの大きさは
+          同じでなければいけないはず
+          (無名共通ブロックなら可).
+          このあたりは近いうちに変える予定.}.
+
+\・include によるファイルの取り込みおよび条件つきコンパイルのために
+Cプリプロセッサ命令を用いている. 
+そのため, ファイル名が{\tt *.f} でなく, {\tt *.F} となっている.
+条件つきコンパイルとしては, 
+{\tt \#ifdef} および {\tt \#ifndef} による選択を用いている.
+ファイルの取り込みは {\tt inlcude} ディレクトリから行なっており,
+以下のようなものである. 
+\begin{center}
+  \begin{description}
+\item[TAB00003:0.0] 配列の大きさに関わるパラメータ文
+\item[TAB00003:0.1] zcdim.F
+\item[TAB00003:1.0] 
+\item[TAB00003:1.1] zpdim.F
+\item[TAB00003:2.0] 
+\item[TAB00003:2.1] zidim.F
+\item[TAB00003:3.0] 
+\item[TAB00003:3.1] zsdim.F
+\item[TAB00003:4.0] 
+\item[TAB00003:4.1] zhdim.F
+\item[TAB00003:5.0] 
+\item[TAB00003:5.1] zradim.F
+\item[TAB00003:6.0] 
+\item[TAB00003:6.1] zwdim.F
+\item[TAB00003:7.0] COMMON 定義(物理定数)
+\item[TAB00003:7.1] zccom.F
+\item[TAB00003:8.0] 文関数定義 (飽和比湿)
+\item[TAB00003:8.1] zqsat.F
+\end{description}
+\end{center}
+
+\・FORTRAN 77 規格外の仕様として,
+  NAMELIST による読み込みを使用しているが,
+  多くの処理系で問題無く使用可能であると思われる.
+  NAMELIST の仕様については, 各処理系のマニュアルを参照のこと.
+
+\subsection{プログラム書法}
+
+\・各種説明に行末コメントを用いている. 
+  \verb+!"+ 以下行末までがコメントである 
+  \footnote{ここで,  \verb+!+ だけでなく, 2文字を用いている理由は, 
+            別の行末コメント形式を用いるシステム(HITAC VOS3など)
+            のための置換を確実にするため, および,
+            \verb+!+ だけだと Sun の CPP が誤動作するためである.}.
+
+\・変数は全て宣言している. 
+  IMPLICIT NONE (例えばSun の場合 {\tt -u} オプション)を
+  利用することが前提である.
+
+\・各エントリーの引数は, 継続行の欄を用いて機能の説明を加えている. 
+\begin{center}
+    \begin{description}
+\item[TAB00004:0.0] 記号
+\item[TAB00004:0.1] 意味
+\item[TAB00004:0.2] 入力
+\item[TAB00004:0.3] 出力
+\item[TAB00004:0.4] 機能
+\item[TAB00004:1.0] O
+\item[TAB00004:1.1] output
+\item[TAB00004:1.2] ×
+\item[TAB00004:1.3] ○
+\item[TAB00004:1.4] 値を生成
+\item[TAB00004:2.0] M
+\item[TAB00004:2.1] modify
+\item[TAB00004:2.2] ○
+\item[TAB00004:2.3] ○
+\item[TAB00004:2.4] 入力値を加工して出力
+\item[TAB00004:3.0] I
+\item[TAB00004:3.1] input
+\item[TAB00004:3.2] ○
+\item[TAB00004:3.3] −
+\item[TAB00004:3.4] 入力値(`変数')
+\item[TAB00004:4.0] C
+\item[TAB00004:4.1] constant
+\item[TAB00004:4.2] ○
+\item[TAB00004:4.3] −
+\item[TAB00004:4.4] 入力値(`定数')
+\item[TAB00004:5.0] D
+\item[TAB00004:5.1] dimension
+\item[TAB00004:5.2] ○
+\item[TAB00004:5.3] −
+\item[TAB00004:5.4] 整合配列の大きさを決める変数
+\item[TAB00004:6.0] W
+\item[TAB00004:6.1] work
+\item[TAB00004:6.2] ×
+\item[TAB00004:6.3] ×
+\item[TAB00004:6.4] 作業領域
+\item[TAB00004:7.0] U
+\item[TAB00004:7.1] undefined
+\item[TAB00004:7.2] ×
+\item[TAB00004:7.3] ×
+\item[TAB00004:7.4] ダミー
+\end{description}
+
+ここで, 入力, 出力の欄の意味は, 以下の通り.
+\[
+    入力 \left\{
+    \begin{array}{ll}   
+      ○ &  中で値が参照される可能性がある \\
+      × &  中に何が入っているかは問わない
+    \end{array}  
+     \right.
+\]
+\[
+    出力 \left\{
+    \begin{array}{ll}   
+      ○ &  中で値が変更される可能性がある \\
+      − &  値は変更されない \\
+      × &  何がでてくるかは保証しない
+    \end{array}  
+     \right.
+\]
+ここで, 重要なのは M,O,I であり, C,D は I の一種である.
+C,D,I の使い分けはあまりきちんとしていない.
+\end{center}
+
+\・各ファイルの内容は以下のようになっている. 
+\begin{tabbing}
+\verb+*" PACKAGE PSAVE データのセーブ/ロード(実メモリ版) + \\
+\hspace*{15mm}  \=  : パッケージ名      \\
+\verb+*"  [HIS] 93/11/10(numaguti) AGCM5.3+ \\
+                \>  : 変更ログ \\
+\verb+      SUBROUTINE PGSAVE    !" 内部データセーブ+ \\
+                \>  : モジュール宣言 \\
+\verb+*   [PARAM]+ \\
+                \>  : 以下, パラメータ文が(includeされて)続く \\
+\verb+*   [MODIFY] + \\
+                \>  : 以下, 入出力両用変数の宣言 \\
+\verb+*   [OUTPUT] + \\
+                \>  : 以下, 出力変数の宣言 \\
+\verb+*   [INPUT] + \\
+                \>  : 以下, 入力変数の宣言 \\
+\verb+*   [ENTRY OUTPUT] + \\
+                \>  : 以下, エントリーでの出力変数の宣言\ldots \\
+\verb+*   [INTERNAL WORK] + \\
+                \>  : 以下, 内部ワーク変数の宣言 \\
+\verb+*   [INTERNAL SAVE]+ \\
+                \>  : 以下, 内部変数(RETURN後も保持すべきもの)の宣言\\
+\verb+*   [INTERNAL PARAM]+ \\
+                \>  : 以下, 内部パラメタ(NAMELIST等で読み込む)の宣言\\
+\verb+*   [ONCE]+ \\
+                \>  : 以下, 最初の呼びだし時に一回のみ行なう部分 \\
+\end{tabbing}
+
+\・文番号は, ブロック毎に千番台の番号を割り当て,
+  なるべく構造的に当てている.
+
+\subsection{命名規則}
+
+\・変数, エントリー名などの名称は6文字以下としている.
+
+\・変数名と型の対応 
+\begin{center}
+\begin{description}
+\item[TAB00005:0.0] A--G,P-Z
+\item[TAB00005:0.1] 浮動小数点数 ({\tt REAL*8})
+\item[TAB00005:1.0] H
+\item[TAB00005:1.1] 文字列 ({\tt CHARACTER})
+\item[TAB00005:2.0] I--N
+\item[TAB00005:2.1] 整数   ({\tt INTEGER})
+\item[TAB00005:3.0] O
+\item[TAB00005:3.1] 論理型 ({\tt LOGICAL})
+\end{description}
+\end{center}
+ただし, NAMELIST によって読み込まれる変数においては, 
+これを満たしていない場合がある.
+
+\pagebreak
+\・変数名等と内容の対応についての慣例 
+\begin{center} 
+\begin{description}
+\item[TAB00006:0.0] 接頭子:
+\item[TAB00006:0.1] GA
+\item[TAB00006:0.2] 格子点状態量(TERM00000)
+\item[TAB00006:1.0] 
+\item[TAB00006:1.1] GB
+\item[TAB00006:1.2] 格子点状態量(TERM00001)
+\item[TAB00006:2.0] 
+\item[TAB00006:2.1] GD
+\item[TAB00006:2.2] 格子点状態量(共通に用いる場合)
+\item[TAB00006:3.0] 
+\item[TAB00006:3.1] GT
+\item[TAB00006:3.2] 格子点状態量の時間微分項
+\item[TAB00006:4.0] 
+\item[TAB00006:4.1] WD
+\item[TAB00006:4.2] 状態量のスペクトル表現
+\item[TAB00006:5.0] 
+\item[TAB00006:5.1] WT
+\item[TAB00006:5.2] 状態量の時間微分項のスペクトル表現
+\item[TAB00006:6.0] 
+\item[TAB00006:6.1] I
+\item[TAB00006:6.2] 経度を示すインデックス
+\item[TAB00006:7.0] 
+\item[TAB00006:7.1] J
+\item[TAB00006:7.2] 緯度を示すインデックス
+\item[TAB00006:8.0] 
+\item[TAB00006:8.1] K
+\item[TAB00006:8.2] 鉛直レベルを示すインデックス
+\item[TAB00006:9.0] 
+\item[TAB00006:9.1] IJ
+\item[TAB00006:9.2] 経緯度をひとまとめにしたインデックス
+\item[TAB00006:10.0] 
+\item[TAB00006:10.1] NM
+\item[TAB00006:10.2] スペクトルのインデックス
+\item[TAB00006:11.0] 
+\item[TAB00006:11.1] NM
+\item[TAB00006:11.2] NAMELIST 名
+\item[TAB00006:12.0] 
+\item[TAB00006:12.1] COM
+\item[TAB00006:12.2] COMMON 名
+\item[TAB00006:13.0] 接尾子:
+\item[TAB00006:13.1] U
+\item[TAB00006:13.2] 東西風
+\item[TAB00006:14.0] 
+\item[TAB00006:14.1] V
+\item[TAB00006:14.2] 南北風
+\item[TAB00006:15.0] 
+\item[TAB00006:15.1] T
+\item[TAB00006:15.2] 温度
+\item[TAB00006:16.0] 
+\item[TAB00006:16.1] PS
+\item[TAB00006:16.2] 地表気圧
+\item[TAB00006:17.0] 
+\item[TAB00006:17.1] Q
+\item[TAB00006:17.2] 比湿, 各種トレーサ−
+\item[TAB00006:18.0] 
+\item[TAB00006:18.1] QL
+\item[TAB00006:18.2] 雲水量
+\item[TAB00006:19.0] 
+\item[TAB00006:19.1] FLX,FLUX
+\item[TAB00006:19.2] フラックス密度
+\item[TAB00006:20.0] 
+\item[TAB00006:20.1] MTX
+\item[TAB00006:20.2] 陰解法で解くための行列
+\item[TAB00006:21.0] 
+\item[TAB00006:21.1] MAX
+\item[TAB00006:21.2] データの長さ
+\item[TAB00006:22.0] 
+\item[TAB00006:22.1] DIM
+\item[TAB00006:22.2] 配列領域の大きさ
+\end{description}
+\end{center}
+
+\・ファイル名については, 
+  1文字めはディレクトリの頭文字に統一している
+  (ただし, {\tt include} は {\tt z}).
+  また, {\tt -admn\/}(administer)はその中の主モジュールを示す.
+

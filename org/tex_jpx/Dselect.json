@@ -1,0 +1,325 @@
+{
+ "emath": {},
+ "imath": {},
+ "orig": [
+  "﻿",
+  "%\n",
+  "% dselect.sty                       ver.1.0     92/03/24\n",
+  "%\n",
+  "%\n",
+  "% the following command is difined\n",
+  "%\n",
+  "%  \\Dnewselect{select-name}   \n",
+  "%\n",
+  "%      \\newselect{J} -> \\DonJ \\DoffJ \\DselJ{text-a}{text-b}\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dnewselect",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " Don",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "%\n",
+        "      ",
+        "\\global",
+        "\\expandafter",
+        [
+         "\\def",
+         "\\csname",
+         [
+          " D@sel",
+          "#1",
+          "\\endcsname"
+         ],
+         [
+          "",
+          [
+           "{",
+           "\\iftrue",
+           "}"
+          ]
+         ]
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " Doff",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "%\n",
+        "      ",
+        "\\global",
+        "\\expandafter",
+        [
+         "\\def",
+         "\\csname",
+         [
+          " D@sel",
+          "#1",
+          "\\endcsname"
+         ],
+         [
+          "",
+          [
+           "{",
+           "\\iffalse",
+           "}"
+          ]
+         ]
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\long",
+     "\\expandafter",
+     "\\def",
+     "\\csname",
+     " Dsel",
+     "#1",
+     "\\endcsname",
+     "##1",
+     "##2",
+     [
+      "{",
+      "%\n",
+      "      ",
+      "\\csname",
+      " D@sel",
+      "#1",
+      "\\endcsname",
+      "##1",
+      "\\else",
+      "##2",
+      "\\fi",
+      "}"
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " D@sel",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\iftrue",
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n"
+ ],
+ "tabular": {},
+ "tree": [
+  "﻿",
+  "%\n",
+  "% dselect.sty                       ver.1.0     92/03/24\n",
+  "%\n",
+  "%\n",
+  "% the following command is difined\n",
+  "%\n",
+  "%  \\Dnewselect{select-name}   \n",
+  "%\n",
+  "%      \\newselect{J} -> \\DonJ \\DoffJ \\DselJ{text-a}{text-b}\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dnewselect",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " Don",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "%\n",
+        "      ",
+        "\\global",
+        "\\expandafter",
+        [
+         "\\def",
+         "\\csname",
+         [
+          " D@sel",
+          "#1",
+          "\\endcsname"
+         ],
+         [
+          "",
+          [
+           "{",
+           "\\iftrue",
+           "}"
+          ]
+         ]
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " Doff",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "%\n",
+        "      ",
+        "\\global",
+        "\\expandafter",
+        [
+         "\\def",
+         "\\csname",
+         [
+          " D@sel",
+          "#1",
+          "\\endcsname"
+         ],
+         [
+          "",
+          [
+           "{",
+           "\\iffalse",
+           "}"
+          ]
+         ]
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\long",
+     "\\expandafter",
+     "\\def",
+     "\\csname",
+     " Dsel",
+     "#1",
+     "\\endcsname",
+     "##1",
+     "##2",
+     [
+      "{",
+      "%\n",
+      "      ",
+      "\\csname",
+      " D@sel",
+      "#1",
+      "\\endcsname",
+      "##1",
+      "\\else",
+      "##2",
+      "\\fi",
+      "}"
+     ],
+     "\n",
+     "  ",
+     "\\global",
+     "\\expandafter",
+     [
+      "\\def",
+      "\\csname",
+      [
+       " D@sel",
+       "#1",
+       "\\endcsname"
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\iftrue",
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n"
+ ]
+}

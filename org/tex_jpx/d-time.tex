@@ -1,0 +1,338 @@
+﻿\subsection{時間積分}
+
+時間差分スキームは基本的に leap frog である.
+ただし, 拡散項および物理過程の項は後方差分もしくは前方差分とする.
+計算モードを抑えるために時間フィルター(Asselin, 1972)を用いる.
+さらに TERM00000 を大きくとるために,
+重力波の項に semi-implicit の手法を適用する(Bourke, 1988).
+
+\subsubsection{leap frog による時間積分と時間フィルター}
+
+移流項等の時間積分スキームとして leap frog を用いる.
+水平拡散項には TERM00001 の後方差分を使用する.
+また, 拡散項の疑似 TERM00002 面補正と水平拡散による摩擦熱の項とは
+補正として扱い, TERM00003 の前方差分となる.
+物理過程の項(TERM00004,TERM00004)は,
+やはり TERM00005 の前方差分を使用する.
+(ただし, 鉛直拡散の時間変化項の計算に関しては後方差分的な取扱いをする.
+詳しくは物理過程の章を参照のこと.)
+
+各予報変数を代表して TERM00006 と表すと,
+%
+\begin{quote}
+EQ=00000.
+\end{quote}
+%
+TERM00007 は移流項等,
+TERM00008 は水平拡散項である.
+
+TERM00009 には, 
+疑似等 TERM00010 面拡散と水平拡散による摩擦熱(TERM00011)の補正
+および物理過程(TERM00012)の項が加えられ,
+TERM00013 となる.
+%
+\begin{quote}
+EQ=00001.
+\end{quote}
+
+leap frog における計算モードの除去のために 
+Asselin(1972) の時間フィルターを毎ステップ適用する.
+すなわち, 
+%
+\begin{quote}
+EQ=00002.
+\end{quote}
+%
+と TERM00014 を求める.
+TERM00015 としては標準的に 0.05 を使用する. 
+
+\subsubsection{semi-implicit 時間積分}
+
+力学の計算では, 基本的に leap frog を用いるが,
+一部の項を implicit 扱いで計算する.
+ここで, implicit は, 台形 implicit を考える.
+ベクトル量 TERM00016 に関して,
+TERM00017 での値を TERM00018,
+TERM00019 での値を TERM00020,
+TERM00021 での値を TERM00022 と書くと,
+台形 implicit とは,
+TERM00023 を
+用いて評価した時間変化項をを用いて解くことにあたる.
+%
+今, {\boldmath q} の時間変化項として,
+leap forg 法で扱う項 A と 台形 implicit 法で扱う項 B とに分けて考える.
+A は {\boldmath q} に対して非線形であるが, B は線形であるとする.
+すなわち,
+%
+\begin{quote}
+EQ=00003.
+\end{quote}
+%
+ただし, TERM00024 は正方行列である. すると,
+TERM00025
+と書けば,
+\begin{quote}
+EQ=00004.
+\end{quote}
+%
+これは, 行列演算で簡単に解くことができる.
+
+\subsubsection{semi-implicit 時間積分の適用}
+
+そこで, この方法を適用し, 線形重力波の項を implicit 扱いする.
+これにより, 時間ステップ TERM00026 を小さくとることができる.
+
+方程式系において, TERM00027 であるような静止場を基本場とする
+線型重力波項とそれ以外の項(添字 TERM00028 を付ける)に分離する.
+鉛直方向のベクトル表現
+TERM00029, TERM00030 を用いて,
+%
+\begin{quote}
+EQ=00005.
+\end{quote}
+%
+\begin{quote}
+EQ=00006.
+\end{quote}
+%
+\begin{quote}
+EQ=00032.
+\end{quote}
+
+ここで, 非重力波項は,
+%
+\begin{quote}
+EQ=00007.
+\label{Z項}
+\end{quote}
+%
+\begin{quote}
+EQ=00008.
+\end{quote}
+%
+\begin{quote}
+EQ=00009.
+\end{quote}
+%
+\begin{quote}
+EQ=00010.
+\end{quote}
+%
+\begin{quote}
+\nonumber
+EQ=00033.\\
+\nonumber
+EQ=00033.\\
+\nonumber
+EQ=00033.\\
+\nonumber
+EQ=00033.\\
+\nonumber
+EQ=00033.\\
+\nonumber
+EQ=00033.\\
+EQ=00033.
+\end{quote}
+\begin{quote}
+EQ=00011.
+\end{quote}
+
+ここで, 重力波項のベクトルおよび行列(下線で表示)は,
+%
+\begin{quote}
+EQ=00012.
+\label{係数C}
+\end{quote}
+%
+\begin{quote}
+EQ=00013.
+\end{quote}
+%
+\begin{quote}
+EQ=00014.
+\end{quote}
+%
+\begin{quote}
+EQ=00015.
+\end{quote}
+%
+\begin{quote}
+EQ=00016.
+\end{quote}
+%
+\begin{quote}
+EQ=00017.
+\end{quote}
+%
+\begin{quote}
+EQ=00018.
+\label{係数R}
+\end{quote}
+%
+ここで, 例えば TERM00031 は,
+TERM00032 が成り立つとき 1, そうでないとき 0 となる関数である.
+
+次のような表現を使用して,
+%
+\begin{quote}
+EQ=00019.
+\label{せみいんぷ}
+\end{quote}
+%
+\begin{quote}
+\nonumber
+EQ=00034.\\
+EQ=00034.
+\end{quote}
+%
+方程式系に semi-implicit 法を適用すると,
+%
+\begin{quote}
+EQ=00020.
+\label{semi-imp pi}
+\end{quote}
+%
+\begin{quote}
+EQ=00021.
+\label{semi-imp D}
+\end{quote}
+%
+\begin{quote}
+EQ=00022.
+\label{semi-imp T}
+\end{quote}
+
+
+すると, 
+%
+\begin{quote}
+\label{semi-imp barD}
+\nonumber
+EQ=00035.\\
+\nonumber
+EQ=00035.\\
+\nonumber
+EQ=00035.\\
+EQ=00035.
+\end{quote}
+
+球面調和関数展開を用いているので,
+\[
+EQ=00036.
+\]
+であり上式を TERM00033 について解くことができる.
+%
+その後,
+%
+\begin{quote}
+EQ=00023.
+\end{quote}
+%
+および, (\ref{semi-imp pi}), (\ref{semi-imp T})
+により TERM00034 における値 TERM00035
+が求められる.
+
+\subsubsection{時間スキームの特性と時間ステップの見積り}
+
+移流型方程式 
+\begin{quote}
+EQ=00024.
+\end{quote}
+において,  leap frog で離散化した場合の安定性を考える.
+今, 
+\begin{displaymath}
+  X = X_0 \exp(ikx)
+\end{displaymath}
+と置き差分化すると, 上式は,
+\begin{quote}
+EQ=00025.
+\end{quote}
+となる.
+ここで,
+\begin{displaymath}
+  \lambda = X^{n+1}/X^n = X^n/X^{n-1} 
+\end{displaymath}
+とすると,
+\begin{quote}
+EQ=00026.
+\end{quote}
+この解は TERM00036 とおいて,
+\begin{quote}
+EQ=00027.
+\end{quote}
+
+この絶対値は
+\begin{quote}
+EQ=00028.
+\end{quote}
+であり, TERM00037 の場合には, TERM00038 となり,
+時間とともに絶対値が指数的に大きくなる解となる.
+これは計算が不安定であることを示す.
+
+一方, TERM00039 の場合は TERM00040 であるため,
+計算は中立である.
+ただし, TERM00041 の値として2つの解があり,
+そのうち一方は, TERM00042 としたときに
+TERM00043 であるが, 
+他方は TERM00044 となる.
+これは, 時間的に大きく振動する解を示す.
+このモードは計算モードと呼ばれ, 
+leap frog 法の問題点の一つである.
+このモードは時間フィルターを施すことによって
+減衰させることができる.
+
+TERM00045 の条件は,
+水平離散化の格子間隔 TERM00046 が与えられている場合には
+それによって TERM00047 の最大値が
+\begin{displaymath}
+  \max k = \frac{\pi}{\Delta x}
+\end{displaymath}
+となることより,
+\begin{quote}
+EQ=00029.
+\end{quote}
+となる.
+スペクトルモデルの場合は, 最大波数 TERM00048 により,
+地球半径を TERM00049 として,
+\begin{quote}
+EQ=00030.
+\end{quote}
+これが安定性の条件である.
+
+積分の安定性を保証するには,
+TERM00050 としては, もっとも速い移流・伝播の速度をとり,
+それによって決まる TERM00051 よりも小さな時間ステップを用いればよい.
+semi-implicit を用いない場合には, 重力波の伝播速度
+(TERM00052) が安定性の基準となるが,
+semi-implicit を用いた場合には, 通常, 東西風による移流が
+制限要因となる.
+従って, TERM00053 は TERM00054 を東西風の最大値として,
+\begin{quote}
+EQ=00031.
+\end{quote}
+を満たすようにとる.
+実際にはこれに安全のための係数をかけたものを用いる.
+
+\subsubsection{時間積分の開始における取扱い}
+
+AGCM で計算されたものではない, 
+適当な初期値から始める場合には, モデルに整合的な
+TERM00055 および TERM00056 の2つの時刻の物理量を与えることはできない.
+しかし, TERM00057 の値として不整合な値を与えると,
+大きな計算モードが発生する.
+
+そこで, まず TERM00058 として, TERM00059 の時間ステップで
+\begin{displaymath}
+  X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
+                 = X^0 + \Delta t/2 \dot{X}^0
+\end{displaymath}
+を求め, さらに, TERM00060 の時間ステップで,
+\begin{displaymath}
+  X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}
+\end{displaymath}
+そして, 本来の時間ステップで,
+\begin{displaymath}
+  X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}
+\end{displaymath}
+として, 以後普通に leap frog で計算を行なうようにすると,
+計算モードの発生が抑えられる.
