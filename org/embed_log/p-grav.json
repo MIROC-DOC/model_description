@@ -1,0 +1,14 @@
+{
+    "imath": {
+        "TERM00023": {
+            "count": 0,
+            "text": "$\\tau_{k-1/2}$"
+        },
+        "TERM00028": {
+            "count": 0,
+            "text": "$k$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}
