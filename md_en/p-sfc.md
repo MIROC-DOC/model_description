@@ -325,7 +325,7 @@ $$
 
 
 $$
-  \DP{Fg_{l-1/2}}{G_l} = - \DP{Fg_{l-1/2}}{G_{l-1}}
+  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_{l-1}}
  = Kg_{l-1/2}/(zg_l - zg_{l-1}) \; .
 $$
 
@@ -352,7 +352,7 @@ $$
 The basic formula for the groundwater flux can be written as follows.
 
 $$
-  F{w} = - K_{w} \left( \DP{w}{z} + g_w \right)
+  F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
  \label{basic-Fw}
 $$
 
@@ -377,7 +377,7 @@ $$
 
 
 $$
-  \DP{Fw_{l-1/2}}{w_l} = - \DP{Fw_{l-1/2}}{w_{l-1}}
+  \frac{\partial Fw_{l-1/2}}{\partial w_l} = - \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}}
  = \rho_w Kw_{l-1/2}/(zw_l - zw_{l-1}) \; .
 $$
 
@@ -392,10 +392,10 @@ $$
 
 
 $$
-  \DP{Fw_{l-1/2}}{w_l} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
-                     \DP{\psi_{l}}{w_l}/(zw_l - zw_{l-1}) \; ,\\
-- \DP{Fw_{l-1/2}}{w_{l-1}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
-                     \DP{\psi_{l-1}}{w_{l-1}}/(zw_l - zw_{l-1}) \; .
+  \frac{\partial Fw_{l-1/2}}{\partial w_l} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial \psi_{l}}{\partial w_l}/(zw_l - zw_{l-1}) \; ,\\
+- \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial \psi_{l-1}}{\partial w_{l-1}}/(zw_l - zw_{l-1}) \; .
 $$
 
 
@@ -411,7 +411,7 @@ $$
 
 $$
   \psi_l = \psi s_l (W_l)^{-B}\; , \;\;
-  \DP{\psi_l}{w_l} = -B \psi_l W_l / ws \; .
+  \frac{\partial \psi_l}{\partial w_l} = -B \psi_l W_l / ws \; .
 $$
 
 
@@ -653,7 +653,7 @@ $$
 
 
 $$
-  \DP{Fg_{l-1/2}}{G_l} = - \DP{Fg_{l-1/2}}{G_l-1} 
+  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_l-1} 
  = Ks_{l-1/2}/(zs_l - zs_{l-1}) \; .
 $$
 
@@ -747,7 +747,7 @@ However, the $Fg'_{1/2}$ is the flux when there is no snow.
 Therefore, if this has already been calculated,
 By taking the harmonic mean of that and the snow only flux,
 Fluxes are required in the presence of snow.
-Also, the temperature differential coefficient of the fluxes $\DP{Fg_{1/2}}{G_1}$ and $\DP{Fg_{1/2}}{T_0}$
+Also, the temperature differential coefficient of the fluxes $\frac{\partial Fg_{1/2}}{\partial G_1}$ and $\frac{\partial Fg_{1/2}}{\partial T_0}$
 is similarly obtained by the harmonic mean of the temperature differential coefficients.
 
 If there is more than a certain amount of snowfall ,
@@ -796,7 +796,7 @@ When precipitation arrives at the ground surface, it is judged whether it is sol
 Atmosphere First Layer Wet Bulb Temperature $Tw_1$
 
 $$
-Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \DP{q^*}{T} )
+Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T} )
 $$
 
 
