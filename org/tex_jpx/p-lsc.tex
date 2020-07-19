@@ -1,0 +1,198 @@
+﻿
+\subsection{大規模凝結}
+
+\subsubsection{大規模凝結スキームの概要}
+
+大規模凝結スキームは,
+積雲対流以外の雲にかかわる凝結過程を表現し,
+潜熱の放出と水蒸気の減少, 降水を計算する.
+また, 放射に関与する雲水量と雲の被覆率を計算する.
+主な入力データは, 気温 TERM00000, 比湿 TERM00001, 雲水量 TERM00002, であり,
+出力データは気温・比湿・雲水量の時間変化率,
+TERM00003,TERM00003,
+雲量 TERM00004 である.
+
+CCSR/NIES AGCM では, 水蒸気混合比 (比湿 TERM00005) に加えて
+雲水量 (TERM00006) もモデルの予報変数となっている.
+実際には, この大規模凝結のルーチンの中で
+まずその和である総水量 (TERM00007) を計算し, 
+それを再び雲水と水蒸気に分けることを行なっているので,
+事実上は予報変数は総水量 (TERM00008) 一つである.
+格子内の TERM00009 の変動の分布を仮定することにより,
+各格子内での雲量(雲の水平被覆率)と雲水量を診断する.
+また, 雲水の降水への変換と降水の落下途中の蒸発を考慮する.
+
+計算手順の概略は以下の通りである.
+%
+\begin{enumerate}
+\item 水蒸気量 TERM00010 雲水量 TERM00011 とを加え,
+      総水量 TERM00012 とする.
+      気温は雲水を蒸発させた, 
+      liquid water temperature  TERM00013 とする.
+\item TERM00014 の変動の分布を仮定し,
+      雲量を求め, 雲水と水蒸気に再び分離する.
+\item 凝結による温度の変化を考慮し,
+      逐次近似によって
+      雲量, 雲水量, 水蒸気の配分を決定する.
+\item 雲水量の降水への変換を評価する.
+\item 氷の落下を評価する.
+\item 降水と落下氷の蒸発を評価する.
+\end{enumerate}
+
+\subsubsection{雲水量の診断}
+
+格子平均の総水量 TERM00015 が与えられたとき,
+総水量 TERM00016 の格子内での分布を,
+TERM00017 から TERM00018 の間の
+一様分布であると仮定する. すなわち確率密度関数は,
+\begin{quote}
+EQ=00000.
+\end{quote}
+この分布は, 水平方向の分布であると考える.
+一方, 飽和比湿は格子平均の値 TERM00019 を用いる.
+
+格子点の中で,
+TERM00020 である領域に雲が存在すると考える(図\ref{lsc:fig-cloud}).
+
+\begin{figure}[hbtp]
+  \begin{center}
+  \epsfile{file=p-lsc-cld.ps,width=50mm}    
+  \end{center}
+  \caption{総水量の分布, 飽和比湿の分布と雲量}
+  \label{lsc:fig-cloud}
+\end{figure}
+
+
+すると, 図の陰影で示すような,
+総水量が飽和を越える部分の水平方向の比率 TERM00021 は,
+\begin{quote}
+EQ=00001.
+\end{quote}
+となり, これが雲量(水平雲被覆率)である.
+
+また, 雲水量 TERM00022 は, TERM00023 である領域で
+TERM00024 を積分したもので,
+\begin{quote}
+EQ=00002.
+\label{p-lsc:l}
+\end{quote}
+
+\subsubsection{逐次近似による決定}
+
+まず, 水蒸気 TERM00025 と 雲水 TERM00026 温度 TERM00027 から,
+総水量 TERM00028 と liquid water temperature TERM00029 を求める.
+\begin{quote}
+EQ=00017.\\
+EQ=00017.
+\end{quote}
+TERM00030 は, 雲水を全て蒸発させたときの温度に対応する.
+TERM00031, TERM00032 と置く.
+
+温度 TERM00033 に対する飽和比湿によって, 
+前述の方法で評価した雲水量を TERM00034 とすると,
+それによって温度が変わり,
+\begin{quote}
+EQ=00003.
+\label{p-lsc:itereate1}
+\end{quote}
+この温度に対する飽和比湿によって, 評価した雲水量を TERM00035,
+それによって変化した温度を TERM00036 \ldots として逐次近似で解く.
+この逐次収束を速めるために, Newton 法の取扱いを行なう.
+すなわち, (\ref{p-lsc:itereate1})の代わりに
+\begin{quote}
+EQ=00004.
+\end{quote}
+とする.
+TERM00037 は, (\ref{p-lsc:l}) を用いて解析的に求めることができる.
+
+\subsubsection{降水過程}
+
+降水は診断された雲水量に依存して起こる.
+降水率(単位1/s)を TERM00038 とすると,
+\begin{quote}
+EQ=00005.
+\end{quote}
+
+TERM00039 は降水の時間スケールであり,
+\begin{quote}
+EQ=00006.
+\end{quote}
+ここで, TERM00040 は臨界雲水量であり,
+Bergeron-Findeisen 効果を考慮して,
+\begin{quote}
+EQ=00007.
+\end{quote}
+TERM00041, TERM00042, TERM00043, 
+TERM00044 K, TERM00045 K である.
+
+降水は TERM00046 の減少をもたらす.
+\begin{quote}
+EQ=00018.\\
+EQ=00018.
+\end{quote}
+これを TERM00047 の間積分すると,
+\begin{quote}
+EQ=00008.
+\end{quote}
+
+ある高さ TERM00048 での降水フラックス
+(単位kg TERM00049 TERM00050)を TERM00051 とすると,
+\begin{quote}
+EQ=00009.
+\end{quote}
+
+\subsubsection{氷の落下過程}
+
+雲水は, 温度に応じて氷雲, 水雲に分かれる.
+氷雲の比率は
+\begin{quote}
+EQ=00010.
+\end{quote}
+(ただし, 最大値1, 最小値0) である. また,
+TERM00052,TERM00052.
+氷雲は, ゆっくりとした速度で降下するとして, 
+その効果を考える. 降下速度 TERM00053 は,
+\begin{quote}
+EQ=00011.
+\end{quote}
+ただし, TERM00054 m/s, TERM00055.
+すると, 
+\begin{quote}
+EQ=00012.
+\end{quote}
+として, 降水と同様に処理できる.
+
+\subsubsection{降水の蒸発過程}
+
+降水の蒸発 TERM00056 は, 次のように見積もる.
+
+\begin{quote}
+EQ=00013.
+\end{quote}
+ただし, TERM00057 のときは 0 とする.
+TERM00058 は湿球温度に対応する飽和比湿で,
+\begin{quote}
+EQ=00014.
+\end{quote}
+%
+これにより, 降水は
+\begin{quote}
+EQ=00015.
+\end{quote}
+となる. また, 蒸発による温度の下降を見積もる.
+\begin{quote}
+EQ=00016.
+\end{quote}
+
+\subsubsection{その他の留意点}
+
+\begin{enumerate}
+\item 計算は最上層から下に向かって行なう.
+      便宜上, 計算はその上の層起源の降水の
+      その層での蒸発を評価するところからはじめる.
+\item 落下した氷はすぐ下の層で
+      その層に既に存在する雲水と同じ扱いとなり,
+      総水量に組み入れられる.
+\end{enumerate}
+
+

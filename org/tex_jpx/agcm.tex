@@ -1,0 +1,79 @@
+﻿\documentstyle[a4j,12pt,dennou]{jarticle}
+%
+\Dtitle{CCSR/NIES AGCM Document}
+\Dpath{/}
+\Ddate{1995/01/19}
+% \Dnofoot
+\def\Module#1{{[\tt #1]}}
+% \Dparindent
+
+% \includeonly{p-lsc}
+% \includeonly{dynamics}
+% \includeonly{physics}
+%
+%\makeindex
+\begin{document}
+%
+\pagenumbering{roman}
+\title{\Huge CCSR/NIES AGCM の解説}
+\author{}
+\date{1995年1月19日}
+\maketitle 
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+%
+% ccsr/nies agcm の特徴の list
+\Dinclude{summary}
+% agcm の概念と構造
+\Dinclude{a-intro}
+% 基本設定
+\Dinclude{a-setup}
+% 基本方程式
+\Dinclude{d-basic}
+% 力学:鉛直離散化
+\Dinclude{d-vert}
+% 力学:水平離散化
+\Dinclude{d-hori}
+% 力学:時間離散化
+\Dinclude{d-time}
+% 力学:拡散項等
+%\Dinclude{d-diff}
+% 力学:まとめ
+\Dinclude{d-summ}
+% 物理過程:イントロ
+\Dinclude{p-intro}
+% 物理過程:積雲対流
+\Dinclude{p-cum}
+% 物理過程:大規模凝結
+\Dinclude{p-lsc}
+% 物理過程:放射
+\Dinclude{p-rad}
+% 物理過程:拡散フラックス
+\Dinclude{p-dif}
+% 物理過程:地表フラックス
+\Dinclude{p-sflx}
+% 物理過程:地表モデル
+\Dinclude{p-sfc}
+% 物理過程:implicit 解法
+\Dinclude{p-solv}
+% 物理過程:重力波抵抗
+\Dinclude{p-grav}
+% 物理過程:対流調節
+\Dinclude{p-adj}
+% コードの解説: プログラムの読み方
+\Dinclude{c-intro}
+% コードの解説: ルーチンのリスト
+%\Dinclude{c-list}
+% コードの解説: データ入出力
+%\Dinclude{c-io}
+% コードの解説: JCL
+%\Dinclude{c-jcl}
+% コードの解説: 開発のためのメモ
+%\Dinclude{c-dvlp}
+% 参考文献
+\Dinclude{referenc}
+%
+%\Dinclude{index}
+
+\end{document}
