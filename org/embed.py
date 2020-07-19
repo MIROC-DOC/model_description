@@ -41,7 +41,7 @@ def replace_imath(doc, dic, log):
     doc = re.sub(r"(TERM) (\d{5})", r"\1\2", doc)
 
     for key, value in dic["imath"].items():
-        text = imath2str(value[0])
+        text = math2str(value[0])
 
         # "TERM00000 and TERM00000" と "TERM00000,TERM00000" を置換
         pattern = key + r"(,|\sand\s)" + key
@@ -64,15 +64,9 @@ def replace_imath(doc, dic, log):
     return doc
 
 
-def imath2str(v):
-    if isinstance(v, str):
-        return v
-    return "".join([imath2str(value) for value in v])
-
-
 def replace_emath(doc, dic, log):
     for key, value in dic["emath"].items():
-        text = f"$${emath2str(value)}$$\n"
+        text = f"$${math2str(value)}$$\n"
         pattern = r".*?" + key + r".*?"
         count = len(re.findall(pattern, doc))
         if count == 0:
@@ -84,12 +78,21 @@ def replace_emath(doc, dic, log):
     return doc
 
 
-def emath2str(v):
+def math2str(v):
     if isinstance(v, str):
         if v == "&":  # 単体の&があるとエラーになるので空白に置き換える
             return ""
+        if v == r"\cal":
+            return r"\mathcal"
         return v
-    return "".join([emath2str(value) for value in v])
+    for index, value in enumerate(v):
+        if value == r"\DP":
+            print(v[index], v[index+1], v[index+2])
+            v[index] = r"\frac"
+            v[index + 1].insert(1, r"\partial ")
+            v[index + 2].insert(1, r"\partial ")
+
+    return "".join([math2str(value) for value in v])
 
 
 def escape(text):
