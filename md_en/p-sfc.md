@@ -245,7 +245,7 @@ The conditions of the surface heat balance are ,
 
 $$
    F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
-   \label{p-sfc:sfc-balance}
+   
 $$
 
 > <span id="p-sfc:sfc-balance" label="p- sfc:sfc-balance">[p-sfc:sfc-balance\[p-sfc:sfc-balance]& lt;/span>
@@ -353,7 +353,7 @@ The basic formula for the groundwater flux can be written as follows.
 
 $$
   F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
- \label{basic-Fw}
+ 
 $$
 
 > <span id="basic-Fw" label="basic-Fw"& gt;gt;\\braham\[basic-Fw]< /span>
@@ -502,7 +502,7 @@ $$
        P_l + P_c - C_I                         \;\; ( P_l > C_I ) 
     \end{array}
   \right. \; .
-  \label{inf-exs}
+  
 $$
 
 > <span id="inf-exs" label="inf-exs"&gt ;inf-exs]< /span>
@@ -735,7 +735,7 @@ $$
   Fg_{1/2}  = \left[ \left( K_y/h_y \right)^{-1} 
                    +  \left( K_g /(zg_1 - zg_0) \right)^{-1} 
               \right]^{-1} (G_1-T_0)
-                   \nonumber \\
+                    \\
             = \left[ \left( K_y (G_1-T_0)/h_y \right)^{-1} 
                     +  (Fg_{1/2})^{-1}
                 \right]^{-1} \; .

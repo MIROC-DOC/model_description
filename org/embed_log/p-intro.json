@@ -1,0 +1,14 @@
+{
+    "imath": {
+        "TERM00000": {
+            "count": 2,
+            "text": "$F_x, F_y, Q, M, S$"
+        },
+        "TERM00036": {
+            "count": 2,
+            "text": "$\\hat{T}^{t+\\Delta t,(1)}, \\hat{q}^{t+\\Delta t,(2)}$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}
