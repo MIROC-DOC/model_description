@@ -1,0 +1,26 @@
+{
+    "imath": {
+        "TERM00009": {
+            "count": 2,
+            "text": "$F\\theta, Fq^P, FR, Fg$"
+        },
+        "TERM00073": {
+            "count": 0,
+            "text": "$\\beta$"
+        },
+        "TERM00101": {
+            "count": 0,
+            "text": "$Tm$"
+        },
+        "TERM00115": {
+            "count": 0,
+            "text": "$R_S$"
+        },
+        "TERM00151": {
+            "count": 2,
+            "text": "$T_I$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}
