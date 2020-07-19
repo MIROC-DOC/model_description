@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/14 14:29:37 fuyuki parser.py>'
+# 'Time-stamp: <2020/07/19 17:12:47 fuyuki evacuate.py>'
 
-import psitex.lexer as psi
+# import psitex as psi
+import psitex
 import sys
 import getopt
 import os.path
@@ -12,38 +13,18 @@ import copy
 import pprint as ppr
 
 
-class ParserBase(psi.LexerBase):
-    """Simple class for LaTeX parser."""
-
-    def post_parse(self, *args, **kw):
-        """Batch replacement of special macros."""
-        super().post_parse(*args, **kw)
-        self.tree = self.orig.copy()
-        self.cache['orig'] = self.cache['tree']
-        self.cache['tree'] = self.tree
-
-    def write(self, file=None, tree=None):
-        """Write results to file."""
-        file = file or sys.stdout
-        if tree is None:
-            tree = self.tree
-        elif tree is False:
-            tree = self.orig
-        file.write(''.join(self.flatten(tree)))
-
-
-class ParserMirocDoc(ParserBase, psi.LexerStd):
+class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
     """Simple class for MIROC document replacement."""
 
     def __init__(self, eenv=None, etab=None, **kw):
         """Initialize MIROC-Doc replacement."""
-        super().__init__(macros={'label':  1,
-                                 'ref':    1,
-                                 'Module': 1,},
-                         **kw)
+        macros = { 'Module': 1 }
+
+        super().__init__(macros=macros, **kw)
 
         self.tbl_imath = {}
         self.tbl_emath = {}
+        self.tabular = {}
         self.fmt_imath = 'TERM%05d'
         self.fmt_emath = 'EQ=%05d.'
         self.fmt_tabular = 'TAB%05d:'
@@ -82,17 +63,9 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
         r"""Replace \Module macros."""
         tree = tree or self.tree
         for m in self.search(tree, r'\Module'):
-            # print(type(m), m)
-            args = m[-1]
-            a = args[0][-1]
-            if isinstance(a, str):
-                sys.stderr.write(r'Cannot parse %s\n' % self.unparse(m))
-                continue
-            else:
-                a = a[1:-1]
-                arep = [r'MODULE:[', *a, ']']
-                m[-1][0][-1][1:-1] = arep
-                m[0] = r'\texttt'
+            a = m.P['#1']['C']
+            arep = [r'MODULE:[', *a, ']']
+            self.modify_macro(m, macro=r'\texttt', args=[(1, arep)])
 
     def rep_imath(self, tree=None, fmt=None, lev=0):
         """Replace inline maths."""
@@ -170,18 +143,19 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
         """Replace equation environement."""
         fmt = fmt or self.fmt_emath
         tree = tree or self.tree
-        for m in self.search_env(tree, r'equation', r'equation*'):
+        for m in self.search_env(tree, r'equation', r'equation*',
+                                 r'displaymath', ):
             lbl = self.search(m, r'\label')
             txt = fmt % len(self.tbl_emath)
-            src = m.contents.copy()
+            src = m.B.copy()
             self.tbl_emath[txt] = src
-            rep = ['\n', txt, '\n']
+            rep = [txt, '\n']
             if len(lbl) == 1:
                 rep.extend([lbl, '\n'])
             elif len(lbl) > 1:
                 ll = [''.join(psi.flatten(li)) for li in lbl]
                 sys.stderr.write('Multiple labels {%s}\n' % ' '.join(ll))
-            self.modify_env(m, contents=rep)
+            self.modify_env(m, body=rep)
             if self.eenv:
                 self.modify_env(m, name=self.eenv)
 
@@ -191,10 +165,10 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
         tree = tree or self.tree
         for m in self.search_env(tree, r'eqnarray', r'eqnarray*'):
             txt = fmt % len(self.tbl_emath)
-            src = m.contents.copy()
+            src = m.B.copy()
             self.tbl_emath[txt] = src
-            rep = ['\n']
-            for a in m.contents:
+            rep = []
+            for a in m.B.asList():
                 if a == '\\\\':
                     rep.extend([txt, a, '\n'])
                 elif a == '':
@@ -206,7 +180,7 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
                     rep.append(a)
                     rep.append('\n')
             rep.extend([txt, '\n'])
-            self.modify_env(m, contents=rep)
+            self.modify_env(m, body=rep)
             if self.eenv:
                 self.modify_env(m, name=self.eenv)
 
@@ -240,24 +214,23 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
             return
 
         fmt = fmt or self.fmt_tabular
-        self.tabular = {}
         self.cache['tabular'] = self.tabular
 
         tree = tree or self.tree
         for m in self.search_env(tree, 'tabular'):
             txt = fmt % len(self.tabular)
-            src = m.contents.copy()
+            src = m.B.copy()
             self.tabular[txt] = src
 
             tab = [[]]
-            for line in m.contents:
+            for line in m.B.asList():
                 for e in line:
-                    if e == r'&':
-                        pass
-                    elif e == '\\\\':
+                    if e == '\\\\':
                         tab.append([])
                         pass
                     else:
+                        if e[-1] == r'&':
+                            e.pop(-1)
                         e = self.strip(e)
                         tab[-1].append(e)
             row, col = 0, 0
@@ -269,13 +242,15 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
                         label = txt + ('%d.%d' % (row, col))
                         rep.append([r'\item',
                                     ['[', label, ']'], ' '] + e + ['\n'])
-            self.modify_env(m, contents=rep, name=self.etab, args=None)
+            self.modify_env(m, body=rep, name=self.etab, args=None)
             # m[2] = []
 
-    def diag(self):
+    def diag(self, *args, **kw):
         """Diagnostic."""
-        super().diag()
+        super().diag(*args, **kw)
         self.diag_imath()
+        self.diag_emath()
+        self.diag_tabular()
 
     def diag_imath(self):
         """Diagnose inline maths."""
@@ -284,6 +259,24 @@ class ParserMirocDoc(ParserBase, psi.LexerStd):
                 src, head, foot = self.tbl_imath[term]
                 src = self.unparse(src).replace('\n', ' ')
                 print('%s: %s  %s %s' % (term, src, head, foot))
+            else:
+                print('%s: (null)')
+
+    def diag_emath(self):
+        """Diagnose equations."""
+        for term, src in sorted(self.tbl_emath.items()):
+            if src:
+                src = self.unparse(src).replace('\n', ' ')
+                print('%s: %s' % (term, src))
+            else:
+                print('%s: (null)')
+
+    def diag_tabular(self):
+        """Diagnose equations."""
+        for term, src in sorted(self.tabular.items()):
+            if src:
+                src = self.unparse(src).replace('\n', ' ')
+                print('%s: %s' % (term, src))
             else:
                 print('%s: (null)')
 
@@ -388,7 +381,7 @@ def main(args, run):
             cf.close()
 
         if vlev > 0:
-            lb.diag()
+            lb.diag(dump=(vlev > 1))
     pass
 
 
