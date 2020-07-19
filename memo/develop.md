@@ -36,7 +36,11 @@
   - `git clone https://github.com/MIROC-DOC/model_description.git`
 
 - 練習用のリポジトリは何しても大丈夫です
+<<<<<<< HEAD
 　- `git clone https://github.com/MIROC-DOC/SandBox.git`
+=======
+  - `git clone https://github.com/MIROC-DOC/SandBox.git`
+>>>>>>> 52df82cbeeac6fa0a95204d18ce9d989bc06ae67
 
 ## テキストエディタのインストール
 
@@ -82,7 +86,11 @@
 
 - 使用言語
 
+<<<<<<< HEAD
 　- 最終的には英語で原稿を揃えるが、日本語で原稿を作成してOK。
+=======
+  - 最終的には英語で原稿を揃えるが、日本語で原稿を作成してOK。
+>>>>>>> 52df82cbeeac6fa0a95204d18ce9d989bc06ae67
   - DeepL Proの力を借りて英訳する。
 
 - ディレクトリ構成
@@ -93,7 +101,11 @@
   - pdf/ 変換された PDF を置く
   - memo/ 主に Markdown で書かれたプロジェクトに関するメモ書き
   - org/ CCSR/NIES AGCMマニュアルやその英訳
+<<<<<<< HEAD
 　- reference/ 公開しても問題ない、既存の参考資料 
+=======
+  - reference/ 公開しても問題ない、既存の参考資料
+>>>>>>> 52df82cbeeac6fa0a95204d18ce9d989bc06ae67
 
 - 開発フロー
 
@@ -101,6 +113,7 @@
   - ローカルの資料を最新に `git pull`
   - 執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
   - 今いるブランチを確認する。`git branch`
+<<<<<<< HEAD
   - feature/MYFEATURE ブランチで執筆する
     - ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
@@ -108,6 +121,16 @@
       - コミット状況を確認`git status`
   - 執筆が完了したらプッシュする`git push origin feature/MYFEATURE`
   - [リポジトリ](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
+=======
+  - feature/MYFEATURE ブランチで執筆する。abcの手順で共同編集者でファイルをやり取りする。
+    1. ファイル変更が一段落するたびに、コミットする
+      - コミットするファイルを選択（ステージング）`git add hogehoge`
+      - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
+      - コミット状況を確認`git status`
+    2. ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する  そのブランチにおける初めてのpush。リモートにbranchを作成する`git push -u origin feature/MYFEATURE`  ２回目以降のpush`git push origin feature/MYFEATURE`
+    3. 共同編集者が最新のfeature/MYFEATURE ブランチをローカルに反映する。feature/MYFEATURE ブランチにて`git pull`
+  - 執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
+>>>>>>> 52df82cbeeac6fa0a95204d18ce9d989bc06ae67
   - review が行われ、問題があれば執筆者が再度修正する
     - プルリクエストの一覧は[ここ](https://github.com/pulls)から見れる
   - review で問題が無ければ管理者がマージする
