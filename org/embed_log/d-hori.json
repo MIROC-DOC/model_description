@@ -1,0 +1,10 @@
+{
+    "imath": {
+        "TERM00005": {
+            "count": 0,
+            "text": "$\\sum_{m=-N}^{N} \\sum_{n=|m|}^{N} \n               \\rightarrow\n               \\sum_{m=-N}^{N} \\sum_{n=|m|}^{N+|m|}$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}
