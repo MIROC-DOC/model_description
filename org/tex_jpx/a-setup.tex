@@ -1,0 +1,145 @@
+﻿
+\subsection{基本的な設定}
+
+ここでは, モデルの基本的な設定を示す.
+
+\subsubsection{座標系}
+
+座標系は, 基本的に,
+経度 TERM00000, 緯度 TERM00001, 正規化気圧 TERM00002 
+(TERM00003,TERM00003 は地表気圧)
+を用い, それぞれは直交するとして扱う.
+ただし, 地中の鉛直座標は TERM00004 を用いる.
+
+経度は等間隔に離散化される \texttt{MODULE:[ASETL]}.
+\begin{quote}
+EQ=00000.
+\end{quote}
+
+緯度は力学の項で述べる Gauss 緯度 TERM00005 であり \texttt{MODULE:[ASETL]},
+Gauss-Legendre 積分公式から導かれる.
+これは, TERM00006 を引数とする
+J 次の Legendre 多項式の 0 点である \texttt{MODULE:[GAUSS]}. 
+
+J が大きい場合には, 近似的に,
+\begin{quote}
+EQ=00001.
+\end{quote}
+
+通常, 経度・緯度の格子間隔はほぼ等しく TERM00007 と取る. 
+これは, スペクトル法の三角形切断に基づく.
+
+正規化気圧 TERM00008 は, 大気の鉛直構造を良く表現するように,
+不等間隔で適当に離散化される \texttt{MODULE:[ASETS]}.
+後で力学の項で述べるように, 層の境界の値
+TERM00009 を TERM00010 で定義してから,
+%
+\begin{quote}
+EQ=00002.
+\end{quote}
+によって層を代表する TERM00011 を求める.
+図\ref{a-setup:level}に, 標準的に用いられる 20層のレベルを示す.
+
+\begin{figure}[hbtp]
+  \begin{center}
+    \epsfile{file=vert-cord.ps,width=80mm}
+  \end{center}
+  \caption{標準的に用いられるレベル}
+  \label{a-setup:level}
+\end{figure}
+
+各予報変数は全て, TERM00012,TERM00012
+または TERM00013,TERM00013 の格子上で定義される.
+(地中のレベル TERM00014 については物理過程の項で述べる.)
+
+時間方向には, 等間隔 TERM00015 で離散化され,
+予報方程式の時間積分が行なわれる.
+ただし, 時間積分の安定性が損なわれるおそれのあるときには
+TERM00016 は変化しうる.
+
+\subsubsection{物理定数}
+
+基本的な物理定数を以下に示す \texttt{MODULE:[APCON]}.
+
+\begin{description}
+\item[TAB00000:0.0] 地球半径
+\item[TAB00000:0.1] TERM00017
+\item[TAB00000:0.2] m
+\item[TAB00000:0.3] 6.37 TERM00018
+\item[TAB00000:1.0] 重力加速度
+\item[TAB00000:1.1] TERM00019
+\item[TAB00000:1.2] TERM00020
+\item[TAB00000:1.3] 9.8
+\item[TAB00000:2.0] 大気定圧比熱
+\item[TAB00000:2.1] TERM00021
+\item[TAB00000:2.2] J TERM00022 TERM00023
+\item[TAB00000:2.3] 1004.6
+\item[TAB00000:3.0] 大気気体定数
+\item[TAB00000:3.1] TERM00024
+\item[TAB00000:3.2] J TERM00025 TERM00026
+\item[TAB00000:3.3] 287.04
+\item[TAB00000:4.0] 水の蒸発潜熱
+\item[TAB00000:4.1] TERM00027
+\item[TAB00000:4.2] J TERM00028
+\item[TAB00000:4.3] 2.5 TERM00029
+\item[TAB00000:5.0] 水蒸気定圧比熱
+\item[TAB00000:5.1] TERM00030
+\item[TAB00000:5.2] J TERM00031 TERM00032
+\item[TAB00000:5.3] 1810.
+\item[TAB00000:6.0] 水の気体定数
+\item[TAB00000:6.1] TERM00033
+\item[TAB00000:6.2] J TERM00034 TERM00035
+\item[TAB00000:6.3] 461.
+\item[TAB00000:7.0] 液体水の密度
+\item[TAB00000:7.1] TERM00036
+\item[TAB00000:7.2] J TERM00037 TERM00038
+\item[TAB00000:7.3] 1000.
+\item[TAB00000:8.0] 0 TERM00039 での
+飽和蒸気
+\item[TAB00000:8.1] TERM00040(273K)
+\item[TAB00000:8.2] Pa
+\item[TAB00000:8.3] 611
+\item[TAB00000:9.0] Stefan Bolzman
+定数
+\item[TAB00000:9.1] TERM00041
+\item[TAB00000:9.2] W TERM00042 TERM00043
+\item[TAB00000:9.3] 5.67 
+                                                          TERM00044
+\item[TAB00000:10.0] K\'{a}rman 定数
+\item[TAB00000:10.1] TERM00045
+\item[TAB00000:10.2] 
+\item[TAB00000:10.3] 0.4
+\item[TAB00000:11.0] 氷の融解潜熱
+\item[TAB00000:11.1] TERM00046
+\item[TAB00000:11.2] J TERM00047
+\item[TAB00000:11.3] 3.4 TERM00048
+\item[TAB00000:12.0] 水の氷点
+\item[TAB00000:12.1] TERM00049
+\item[TAB00000:12.2] K
+\item[TAB00000:12.3] 273.15
+\item[TAB00000:13.0] 水の定圧比熱
+\item[TAB00000:13.1] TERM00050
+\item[TAB00000:13.2] J TERM00051
+\item[TAB00000:13.3] 4200.
+\item[TAB00000:14.0] 海水の氷点
+\item[TAB00000:14.1] TERM00052
+\item[TAB00000:14.2] K
+\item[TAB00000:14.3] 271.35
+\item[TAB00000:15.0] 氷の定圧比熱比
+\item[TAB00000:15.1] TERM00053
+\item[TAB00000:15.2] 
+\item[TAB00000:15.3] 2397.
+\item[TAB00000:16.0] 水蒸気分子量比
+\item[TAB00000:16.1] TERM00054
+\item[TAB00000:16.2] 
+\item[TAB00000:16.3] 0.622
+\item[TAB00000:17.0] 仮温度の係数
+\item[TAB00000:17.1] TERM00055
+\item[TAB00000:17.2] 
+\item[TAB00000:17.3] 0.606
+\item[TAB00000:18.0] 比熱と気体定数の比
+\item[TAB00000:18.1] TERM00056
+\item[TAB00000:18.2] 
+\item[TAB00000:18.3] 0.286
+\end{description}
+

@@ -1,0 +1,174 @@
+﻿
+\subsection{鉛直離散化}
+
+Arakawa and Suarez(1983) に従って, 
+基礎方程式を鉛直方向に差分によって離散化する.
+このスキームは次のような特徴をもつ.
+%
+\begin{itemize}
+\item 全領域積分した質量を保存
+\item 全領域積分したエネルギーを保存
+\item 全領域積分の角運動量を保存
+\item 全質量積分した温位を保存
+\item 静水圧の式がlocalにきまる(下層の高度が上層の温度に依存しない)
+\item 水平方向に一定の, ある特定の温度分布について,
+      静水圧の式が正確になり, 気圧傾度力が0になる.
+\item 等温位大気はいつまでも等温位に留まる
+\end{itemize}      
+
+\subsubsection{レベルのとりかた}
+
+下の層から上へと層の番号をつける.
+TERM00000,TERM00000 の物理量は整数レベル(layer)で定義されるとする.
+一方, TERM00001 は半整数レベル(level)で定義される.
+%
+まず, 半整数レベルでの TERM00002 の値
+TERM00003,TERM00003
+を定義する.
+%
+ただし, レベル TERM00004 は下端(TERM00005),
+レベル TERM00006 は上端(TERM00007)とする.
+
+整数レベルの TERM00008 の値
+TERM00009,TERM00009
+は次の式から求められる.
+%
+\begin{quote}
+EQ=00000.
+\label{しぐま定義}
+\end{quote}
+%
+さらに,
+\begin{quote}
+EQ=00001.
+\label{しぐま厚さ}
+\end{quote}
+を定義しておく.
+
+\subsubsection{鉛直離散化表現}
+
+各方程式の離散化表現は次のようになる.
+
+\begin{enumerate}
+\item 連続の式, 鉛直速度
+
+\begin{quote}
+EQ=00002.
+\end{quote}
+%
+\begin{quote}
+EQ=00003.
+\end{quote}
+%
+\begin{quote}
+EQ=00004.
+\end{quote}
+   
+\item 静水圧の式
+
+\begin{quote}
+EQ=00010.\\
+\nonumber
+EQ=00010.
+\end{quote}
+%
+\begin{quote}
+EQ=00011.\\
+\nonumber
+EQ=00011.
+\end{quote}
+%
+ここで,
+%
+\begin{quote}
+\label{静水圧係数}
+EQ=00012.\\
+EQ=00012.
+\end{quote}
+
+\item 運動方程式
+
+\begin{quote}
+EQ=00005.
+\label{渦度結局}
+\end{quote}
+%
+\begin{quote}
+EQ=00006.
+\end{quote}
+%
+ここで,
+%
+\begin{quote}
+\nonumber
+EQ=00013.\\
+EQ=00013.
+\end{quote}
+%
+\begin{quote}
+\nonumber
+EQ=00014.\\
+EQ=00014.
+\end{quote}
+%
+\begin{quote}
+\label{はっとかっぱ}
+\nonumber
+EQ=00015.\\
+EQ=00015.
+\end{quote}
+
+\begin{quote}
+EQ=00007.
+\end{quote}
+
+\item 熱力学の式
+
+\begin{quote}
+\nonumber
+EQ=00016.\\
+\nonumber
+EQ=00016.\\
+EQ=00016.
+\end{quote}
+%
+ここで,
+\begin{quote}
+\nonumber
+EQ=00017.\\
+\nonumber
+EQ=00017.\\
+\nonumber
+EQ=00017.\\
+\nonumber
+EQ=00017.\\
+\nonumber
+EQ=00017.\\
+\nonumber
+EQ=00017.\\
+EQ=00017.
+\end{quote}
+%
+\begin{quote}
+EQ=00018.\\
+EQ=00018.
+\end{quote}
+%
+\begin{quote}
+\label{温度補間係数}
+EQ=00019.\\
+EQ=00019.
+\end{quote}
+
+\item 水蒸気の式
+
+\begin{quote}
+EQ=00008.
+\label{q結局}
+\end{quote}
+%
+\begin{quote}
+EQ=00009.
+\end{quote}
+
+\end{enumerate}

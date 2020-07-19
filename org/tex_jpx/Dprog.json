@@ -1,0 +1,1017 @@
+{
+ "emath": {},
+ "imath": {},
+ "orig": [
+  "﻿",
+  "%\n",
+  "%    dprog.sty ver. 1.0                   92/03/24\n",
+  "%\n",
+  "%  following environment is defined\n",
+  "%\n",
+  "%  \\begin{\\Dprogram}  \\end{\\Dprogram}\n",
+  "%\n",
+  "%  following commands are defined\n",
+  "%\n",
+  "%  \\Dproginput{file_name}\n",
+  "%  \\Dproglineoff\n",
+  "%  \\Dproglineon\n",
+  "%  \\Dproglinestart\n",
+  "%\n",
+  "%  following commands can be redefined by \\def or \\renewcommand \n",
+  "%\n",
+  "%  \\Dprogsize\n",
+  "%  \\Dprogskip\n",
+  "%  \\Dprogline#1\n",
+  "%  \\Dproglinewidth\n",
+  "%  \\Dproglinesep\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dprogsize",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\small",
+     "}"
+    ]
+   ]
+  ],
+  "                  ",
+  "% font size\n",
+  [
+   "\\def",
+   "\\Dprogskip",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "2ex",
+     "}"
+    ]
+   ]
+  ],
+  "                     ",
+  "% vertical skip\n",
+  [
+   "\\def",
+   "\\Dprogline",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\scriptsize",
+     "\\it",
+     " ",
+     "#1",
+     "}"
+    ]
+   ]
+  ],
+  "     ",
+  "% line number font\n",
+  [
+   "\\def",
+   "\\Dproglinewidth",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "3em",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglinesep",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "1em",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproglineon",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\let",
+     "\\D",
+     "@progline",
+     "\\Dprogline",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglineoff",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\def",
+     "\\D",
+     "@progline",
+     "##1",
+     [
+      "{",
+      "}"
+     ],
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglinestart",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     [
+      "\\def",
+      "\\D",
+      [
+       "@proglinestart"
+      ],
+      [
+       "",
+       [
+        "{",
+        "#1",
+        "}"
+       ]
+      ]
+     ],
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproglinebox",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "%\n",
+     "   ",
+     "\\makebox",
+     "[",
+     "\\Dproglinewidth",
+     "]",
+     "[",
+     "r",
+     "]",
+     [
+      "{",
+      "\\D",
+      "@progline",
+      [
+       "{",
+       "\\theD",
+       "@proglineno",
+       "}"
+      ],
+      "}"
+     ],
+     "\n",
+     "   ",
+     "\\hskip",
+     "\\Dproglinesep",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "\\Dproglineon",
+  " ",
+  "\\Dproglinestart",
+  [
+   "{",
+   "1",
+   "}"
+  ],
+  "\n",
+  "\\newcounter",
+  [
+   "{",
+   "D@proglineno",
+   "}"
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproginput",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\begingroup",
+     "\\Dprogsize",
+     " ",
+     "\\baselineskip",
+     "=",
+     "\\Dprogskip",
+     " \n",
+     "  ",
+     "\\par",
+     "\\bigskip",
+     "\\noindent",
+     "\\endgraf",
+     "\n",
+     "  ",
+     "\\@",
+     "verbatim ",
+     "\\frenchspacing",
+     "\\@",
+     "vobeyspaces\n",
+     "  ",
+     "\\setcounter",
+     [
+      "{",
+      "D@proglineno",
+      "}"
+     ],
+     [
+      "{",
+      "\\D",
+      "@proglinestart",
+      "}"
+     ],
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\par",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\leavevmode",
+        "\\endgraf",
+        "}"
+       ]
+      ]
+     ],
+     "\\obeylines",
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\everypar",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\Dproglinebox",
+        "\\stepcounter",
+        [
+         "{",
+         "D@proglineno",
+         "}"
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\input",
+     "#1",
+     "\n",
+     "  ",
+     "\\endgroup",
+     "\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  "\\begingroup",
+  " ",
+  "\\catcode",
+  " `|=0 ",
+  "\\catcode",
+  " `",
+  "[",
+  "= 1\n",
+  "  ",
+  "\\catcode",
+  "`",
+  "]",
+  "=2 ",
+  "\\catcode",
+  " `",
+  "\\{",
+  "=12 ",
+  "\\catcode",
+  " `",
+  "\\}",
+  "=12  ",
+  "\\catcode",
+  "`",
+  "\\\\",
+  "=12 \n",
+  "  |gdef|@xDprogram",
+  "#1",
+  [
+   "\\end",
+   [
+    "",
+    "{",
+    "Dprogram",
+    "}"
+   ]
+  ],
+  "[",
+  "|@gobble",
+  "#1",
+  "|end",
+  "[",
+  "Dprogram",
+  "]",
+  "]",
+  "\n",
+  "|endgroup\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dprogram",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\Dprogsize",
+     " ",
+     "\\baselineskip",
+     "=",
+     "\\Dprogskip",
+     " \n",
+     "  ",
+     "\\par",
+     "\\bigskip",
+     "\\noindent",
+     "\\endgraf",
+     "\n",
+     "  ",
+     "\\@",
+     "verbatim ",
+     "\\frenchspacing",
+     "\\@",
+     "vobeyspaces\n",
+     "  ",
+     "\\setcounter",
+     [
+      "{",
+      "D@proglineno",
+      "}"
+     ],
+     [
+      "{",
+      "\\D",
+      "@proglinestart",
+      "}"
+     ],
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\par",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\leavevmode",
+        "\\endgraf",
+        "}"
+       ]
+      ]
+     ],
+     "\\obeylines",
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\everypar",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\Dproglinebox",
+        "\\stepcounter",
+        [
+         "{",
+         "D@proglineno",
+         "}"
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\@",
+     "xDprogram\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\endDprogram",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\endtrivlist",
+     "}"
+    ]
+   ]
+  ],
+  "\n"
+ ],
+ "tabular": {},
+ "tree": [
+  "﻿",
+  "%\n",
+  "%    dprog.sty ver. 1.0                   92/03/24\n",
+  "%\n",
+  "%  following environment is defined\n",
+  "%\n",
+  "%  \\begin{\\Dprogram}  \\end{\\Dprogram}\n",
+  "%\n",
+  "%  following commands are defined\n",
+  "%\n",
+  "%  \\Dproginput{file_name}\n",
+  "%  \\Dproglineoff\n",
+  "%  \\Dproglineon\n",
+  "%  \\Dproglinestart\n",
+  "%\n",
+  "%  following commands can be redefined by \\def or \\renewcommand \n",
+  "%\n",
+  "%  \\Dprogsize\n",
+  "%  \\Dprogskip\n",
+  "%  \\Dprogline#1\n",
+  "%  \\Dproglinewidth\n",
+  "%  \\Dproglinesep\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dprogsize",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\small",
+     "}"
+    ]
+   ]
+  ],
+  "                  ",
+  "% font size\n",
+  [
+   "\\def",
+   "\\Dprogskip",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "2ex",
+     "}"
+    ]
+   ]
+  ],
+  "                     ",
+  "% vertical skip\n",
+  [
+   "\\def",
+   "\\Dprogline",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\scriptsize",
+     "\\it",
+     " ",
+     "#1",
+     "}"
+    ]
+   ]
+  ],
+  "     ",
+  "% line number font\n",
+  [
+   "\\def",
+   "\\Dproglinewidth",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "3em",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglinesep",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "1em",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproglineon",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\let",
+     "\\D",
+     "@progline",
+     "\\Dprogline",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglineoff",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\def",
+     "\\D",
+     "@progline",
+     "##1",
+     [
+      "{",
+      "}"
+     ],
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  [
+   "\\def",
+   "\\Dproglinestart",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     [
+      "\\def",
+      "\\D",
+      [
+       "@proglinestart"
+      ],
+      [
+       "",
+       [
+        "{",
+        "#1",
+        "}"
+       ]
+      ]
+     ],
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproglinebox",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "%\n",
+     "   ",
+     "\\makebox",
+     "[",
+     "\\Dproglinewidth",
+     "]",
+     "[",
+     "r",
+     "]",
+     [
+      "{",
+      "\\D",
+      "@progline",
+      [
+       "{",
+       "\\theD",
+       "@proglineno",
+       "}"
+      ],
+      "}"
+     ],
+     "\n",
+     "   ",
+     "\\hskip",
+     "\\Dproglinesep",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "\\Dproglineon",
+  " ",
+  "\\Dproglinestart",
+  [
+   "{",
+   "1",
+   "}"
+  ],
+  "\n",
+  "\\newcounter",
+  [
+   "{",
+   "D@proglineno",
+   "}"
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dproginput",
+   [
+    "",
+    "#1",
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\begingroup",
+     "\\Dprogsize",
+     " ",
+     "\\baselineskip",
+     "=",
+     "\\Dprogskip",
+     " \n",
+     "  ",
+     "\\par",
+     "\\bigskip",
+     "\\noindent",
+     "\\endgraf",
+     "\n",
+     "  ",
+     "\\@",
+     "verbatim ",
+     "\\frenchspacing",
+     "\\@",
+     "vobeyspaces\n",
+     "  ",
+     "\\setcounter",
+     [
+      "{",
+      "D@proglineno",
+      "}"
+     ],
+     [
+      "{",
+      "\\D",
+      "@proglinestart",
+      "}"
+     ],
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\par",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\leavevmode",
+        "\\endgraf",
+        "}"
+       ]
+      ]
+     ],
+     "\\obeylines",
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\everypar",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\Dproglinebox",
+        "\\stepcounter",
+        [
+         "{",
+         "D@proglineno",
+         "}"
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\input",
+     "#1",
+     "\n",
+     "  ",
+     "\\endgroup",
+     "\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  "\\begingroup",
+  " ",
+  "\\catcode",
+  " `|=0 ",
+  "\\catcode",
+  " `",
+  "[",
+  "= 1\n",
+  "  ",
+  "\\catcode",
+  "`",
+  "]",
+  "=2 ",
+  "\\catcode",
+  " `",
+  "\\{",
+  "=12 ",
+  "\\catcode",
+  " `",
+  "\\}",
+  "=12  ",
+  "\\catcode",
+  "`",
+  "\\\\",
+  "=12 \n",
+  "  |gdef|@xDprogram",
+  "#1",
+  [
+   "\\end",
+   [
+    "",
+    "{",
+    "Dprogram",
+    "}"
+   ]
+  ],
+  "[",
+  "|@gobble",
+  "#1",
+  "|end",
+  "[",
+  "Dprogram",
+  "]",
+  "]",
+  "\n",
+  "|endgroup\n",
+  "%\n",
+  [
+   "\\def",
+   "\\Dprogram",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\n",
+     "  ",
+     "\\Dprogsize",
+     " ",
+     "\\baselineskip",
+     "=",
+     "\\Dprogskip",
+     " \n",
+     "  ",
+     "\\par",
+     "\\bigskip",
+     "\\noindent",
+     "\\endgraf",
+     "\n",
+     "  ",
+     "\\@",
+     "verbatim ",
+     "\\frenchspacing",
+     "\\@",
+     "vobeyspaces\n",
+     "  ",
+     "\\setcounter",
+     [
+      "{",
+      "D@proglineno",
+      "}"
+     ],
+     [
+      "{",
+      "\\D",
+      "@proglinestart",
+      "}"
+     ],
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\par",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\leavevmode",
+        "\\endgraf",
+        "}"
+       ]
+      ]
+     ],
+     "\\obeylines",
+     "\n",
+     "  ",
+     [
+      "\\def",
+      "\\everypar",
+      [
+       ""
+      ],
+      [
+       "",
+       [
+        "{",
+        "\\Dproglinebox",
+        "\\stepcounter",
+        [
+         "{",
+         "D@proglineno",
+         "}"
+        ],
+        "}"
+       ]
+      ]
+     ],
+     "\n",
+     "  ",
+     "\\@",
+     "xDprogram\n",
+     "}"
+    ]
+   ]
+  ],
+  "\n",
+  "%\n",
+  [
+   "\\def",
+   "\\endDprogram",
+   [
+    ""
+   ],
+   [
+    "",
+    [
+     "{",
+     "\\endtrivlist",
+     "}"
+    ]
+   ]
+  ],
+  "\n"
+ ]
+}
