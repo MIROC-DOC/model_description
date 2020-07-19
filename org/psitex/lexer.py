@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/14 09:41:01 fuyuki lexer.py>'
+# 'Time-stamp: <2020/07/19 23:23:11 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -8,34 +8,42 @@ import collections.abc
 import json
 import string
 import getopt
+import os.path
+import itertools
 
 import pyparsing as pp
 # pp.ParserElement.enablePackrat()   # does not help, even worse
 
 
 class LexerBase:
-    """Core lexer class for LaTeX document."""
+    """Core lexer/parser class for LaTeX document."""
 
     def __init__(self,
                  macros=None, envs=None,
+                 arrays=None,
                  atletter=False,
-                 debug=False, **kw):
+                 debug=False, *args, **kw):
         """Initialize pyparsing definition."""
         default_whites = pp.ParserElement.DEFAULT_WHITE_CHARS
         pp.ParserElement.setDefaultWhitespaceChars('')
 
+        self.file = None
         macros = macros or {}
         envs = envs or {}
+        arrays = arrays or {}
         self.debug = debug
         self.report = {}
 
         self.cache = {}
 
+        self.pe_macros = {}           # ParserElement of macros
+        self.pe_envs = {}           # ParserElement of environments
+
         uc_whites = [chr(12288)]
         # 12288: 2 byte white space [　]
         uc_puncts = []
 
-        ctl = '\\'              # catcode 0
+        esc = '\\'              # catcode 0
         lbr = r'{'              # catcode 1
         rbr = r'}'              # catcode 2
         com = r'%'              # catcode 14
@@ -46,21 +54,22 @@ class LexerBase:
         rbs = r']'
         par = r'#'              # catcode 6
 
-        excl = [com, ctl, lbr, rbr, mxp, amp, lbs, rbs, par]
+        excl = [com, esc, lbr, rbr, mxp, amp, lbs, rbs, par]
 
         # (a part of) TeX special charcters % \ { } $ #&~_^
 
         self.com = pp.Literal(com)
-        self.ctl = pp.Literal(ctl)
+        self.esc = pp.Literal(esc)
         self.lbr = pp.Literal(lbr)
         self.rbr = pp.Literal(rbr)
         self.mxp = pp.Literal(mxp)
 
         # symbols
         self.amp = pp.Literal(amp)
+        self.par = pp.Literal(par)
         self.lbs = pp.Literal(lbs)
         self.rbs = pp.Literal(rbs)
-        self.par = pp.Literal(par)
+
         # single-char symbols
         self.ssym = pp.MatchFirst([self.amp, self.lbs, self.rbs])
 
@@ -70,16 +79,17 @@ class LexerBase:
         self.ws = pp.White()
         # comment line
         self.cline = pp.Combine(self.com + pp.restOfLine() + self.nl)
+        # self.cline = cline.setResultsName('%')
 
         # letters
         self.letters = pp.Forward()
         # cseq
-        self.cseq = pp.Combine(self.ctl + self.letters)
+        self.cseq = pp.Combine(self.esc + self.letters)
 
-        self.atletter = pp.Group(pp.Combine(self.ctl
-                                            + pp.Literal('makeatletter')))
-        self.atother = pp.Group(pp.Combine(self.ctl
-                                           + pp.Literal('makeatother')))
+        self.atletter = pp.Combine(self.esc
+                                   + pp.Literal('makeatletter'))
+        self.atother = pp.Combine(self.esc
+                                  + pp.Literal('makeatother'))
 
         # letters (catcode 11)
         def action_atletter(toks):
@@ -97,20 +107,22 @@ class LexerBase:
         self.posp = pp.Combine(pp.OneOrMore(self.par) + pp.Char('123456789'))
 
         # escaped symbols
+        self.cr = pp.Literal(esc + esc)
         # string.punctuation
-        self.esym = pp.MatchFirst([pp.Combine(pp.Literal(ctl + ch))
+        self.esym = pp.MatchFirst([pp.Combine(pp.Literal(esc + ch))
                                    for ch in string.punctuation + ' '
                                    if ch not in [lbs, rbs]])
 
-        self.usym = pp.MatchFirst([pp.Combine(pp.Literal(ctl + ch))
+        self.usym = pp.MatchFirst([pp.Combine(pp.Literal(esc + ch))
                                    for ch in uc_puncts])
 
         # special whitespace
         self.uws = pp.oneOf(uc_whites)
 
         # normal
+        xch = ''.join(excl)
         self.atext = pp.Combine(pp.Word(pp.printables + ' ',
-                                        excludeChars=''.join(excl))
+                                        excludeChars=xch)
                                 + pp.Optional('\n'))
 
         self.utext = pp.CharsNotIn(pp.printables
@@ -129,43 +141,41 @@ class LexerBase:
         self.blanks = pp.Combine(pp.OneOrMore(self.cline | self.ws | self.nl)
                                  | pp.Empty())
 
-        # \begin \end
-        self.benv = pp.Group(self.lex_begin() + pp.Group(pp.Empty()))
-        self.eenv = pp.Group(self.lex_end())
+        # single \begin \end
+        single_begin = self.lex_begin()
+        single_begin.setParseAction(self.action_unmatched)
+        self.benv = pp.Group(single_begin)
 
-        self.benv.setParseAction(self.action_unmatched)
-        self.eenv.setParseAction(self.action_unmatched)
+        single_end = self.lex_end()
+        single_end.setParseAction(self.action_unmatched)
+        self.eenv = pp.Group(single_end)
 
         # \verb
-        verb_head = (pp.Combine(self.ctl + pp.Literal(r'verb'))
-                     + (pp.Char(string.punctuation)
-                        | pp.Literal(' ') | pp.Literal('\n')))
+        verb_sep = (pp.Char(string.punctuation)
+                    | pp.Literal(' ') | pp.Literal('\n'))
+        verb_head = (pp.Combine(self.esc + pp.Literal(r'verb')('M'))
+                     + verb_sep('L'))
         verb_foot = pp.Forward()
 
         def action_endverb(toks):
             r"""Emulate \verb."""
-            right = pp.Literal(toks[-1])
-            term = right.copy()
-            term.setParseAction(action_term)
+            right = pp.Literal(toks.L)
             e = (right | pp.StringEnd())
-            ee = (term | pp.StringEnd())
-            verb_foot << pp.Combine(pp.Optional(self.ws) + pp.SkipTo(e) + ee)
+            ee = (right('R') | pp.StringEnd())
+            c = pp.SkipTo(e)
+            verb_foot << pp.Combine(c('C') + ee)
 
         verb_head.setParseAction(action_endverb)
         vlex = verb_head + verb_foot
 
         def adj_verb(s, loc, toks):
             r"""Adjust verbatim string."""
-            if 'closed' in toks:
-                e = toks[-1][-1]
+            if 'R' in toks:
                 toks[-1] = toks[-1][:-1]
-                toks.append(e)
+                toks.append(toks.R)
+                toks['A'] = [toks.L, toks.C, toks.R]
             else:
-                ln = pp.lineno(loc, s)
-                cn = pp.col(loc, s)
-                line = pp.line(loc, s)
-                self.report[loc] = ('Unclosed %s at %d:%d %s'
-                                    % (toks[0], ln, cn, line))
+                self.append_report('unclosed', s, loc, toks)
             return(toks)
 
         vlex.setParseAction(adj_verb)
@@ -174,91 +184,96 @@ class LexerBase:
         vsp2 = pp.Literal(r'\verb  ') | pp.Literal(r'\verb\n\n')
         vnl2 = pp.Combine(pp.Literal(r'\verb') + pp.LineEnd() + pp.LineEnd())
 
-        self.verb = pp.Group(vsp2 | vnl2 | vlex)
+        # need to encapsulate
+        self.verb = pp.Group(vsp2('T') | vnl2('T') | vlex('T'))
 
         # def
-        self.def_def = self.lex_def(r'def')
+        self.defs = self.lex_def([r'def', r'gdef', r'xdef', r'edef'])
 
         # macros
-        self.macros = [self.atletter, self.atother, self.def_def]
-        for m, a in macros.items():
-            self.macros.append(self.lex_macro(m, a))
+        self.pe_macros = {'makeatletter': self.atletter,
+                          'makeatother': self.atother,
+                          'def': self.defs}
 
-        self.mlex = pp.MatchFirst(self.macros)
+        for m, a in macros.items():
+            self.pe_macros[m] = self.lex_macro(m, a)
+
+        self.mlex = pp.MatchFirst([pp.Group(e)
+                                   for e in self.pe_macros.values()])
+
+        # caution
+        # set_parse_action failed if pe_envs is [pp.Group(envgroup)]
+        # Due to unknown reason, pe_envs must be [envgroup]
+
+        # array type environments
+        eall = []
+        for e, a in arrays.items():
+            lp = self.lex_env_group(e, a, True)
+            self.pe_envs[e] = lp
+            # lp.setParseAction(self.action_dummy)
+            eall.append(lp)
 
         # environments
-        envs.setdefault('tabular',  [2, 1])  # [ ]{2}
-        envs.setdefault('tabular*', [3, 2])  # {1}[ ]{3}
-
-        # self.envs = {ENV: (LEXER, PROP)}
-        eall = []
-        self.envs = {}
-        for e, a in envs.items():
+        for e, a in itertools.chain(envs.items(), [(None, None)]):
             lp = self.lex_env_group(e, a)
-            self.envs[e] = (lp, a)
+            self.pe_envs[e] = lp
             eall.append(lp)
-            if debug:
-                lp.setDebug()
-        # default environment
-        lp = self.lex_env_group(None)
-        if self.debug:
-            lp.setDebug()
-        self.envs[None] = (lp, None)
-        eall.append(lp)
 
-        self.elex = pp.MatchFirst(eall)
+        self.elex = pp.MatchFirst([pp.Group(e)
+                                   for e in self.pe_envs.values()])
+        # print(self.pe_envs)
+        # for e in self.pe_envs.values():
+        #     e.setParseAction(self.action_dummy)
+        # ppr.pprint([(e, id(p), id(p.parseAction),p.parseAction) for e, p in self.pe_envs.items()])
+        # self.elex = pp.MatchFirst([self.pe_envs[e]
+        #                            for e in itertools.chain(arrays.keys(),
+        #                                                     envs.keys(),
+        #                                                     [None])])
 
         # fallback
-        self.fallback = pp.Combine(self.ctl + pp.Regex('.')) | pp.Regex('.')
+        self.fallback = pp.Combine(self.esc + pp.Regex('.')) | pp.Regex('.')
         self.fallback.setParseAction(self.action_fallback)
 
         # expr
-        self.expr = (self.normal
-                     | self.mlex
-                     | self.verb
-                     | self.elex
-                     | self.benv | self.eenv
-                     | self.cseq | self.esym | self.ssym
-                     | self.imath | self.dmath | self.xmath
-                     | self.group
-                     | self.nl | self.ws
-                     | self.cline
-                     | self.posp
-                     | self.uws | self.usym
-                     | self.fallback)
+        contents = (self.normal
+                    | self.mlex
+                    | self.verb
+                    | self.elex
+                    | self.benv | self.eenv
+                    | self.cseq | self.esym | self.ssym
+                    | self.xmath | self.imath | self.dmath
+                    | self.group
+                    | self.nl | self.ws
+                    | self.posp
+                    | self.uws | self.usym)
+        skip = (self.cline)
+        fb = (self.fallback)
 
-        def action_term(toks):
-            """Mark correct closing."""
-            toks['closed'] = ''
-            return(toks)
+        self.expr = (contents.setResultsName('N', True)
+                     | skip.setResultsName('%', True)
+                     | fb.setResultsName('N', True))
 
-        def gen_group(left, right=None):
-            """Generate grouped token wtih LEFT RIGHT delimiters."""
-            right = (right or left).copy()
-            term = right.copy()
-            term.setParseAction(action_term)
-            g = (left
-                 + pp.ZeroOrMore(~right + self.expr)
-                 + (term | pp.StringEnd()))
-            g.setParseAction(self.action_group)
-            return(pp.Group(g))
+        # # column
+        # cr = pp.Literal(esc + esc)
+        # sep = cr | self.amp
+        # self.column = (sep | pp.Group(pp.ZeroOrMore(~sep + self.expr)))
 
         # group { }
-        self.group << gen_group(self.lbr, self.rbr)
+        self.group << self.gen_group(self.lbr, self.rbr)
         # opt [ ]
-        self.opt << gen_group(self.lbs, self.rbs)
+        self.opt << self.gen_group(self.lbs, self.rbs)
         # inline math $ $
-        self.imath << gen_group(self.mxp)
+        self.imath << self.gen_group(self.mxp)
         # display math $$ $$
         self.dmx = pp.Literal(mxp + mxp)
-        self.xmath << gen_group(self.dmx)
+        self.xmath << self.gen_group(self.dmx)
         # display math \[ \]
-        self.ldm = pp.Literal(ctl + lbs)
-        self.rdm = pp.Literal(ctl + rbs)
+        self.ldm = pp.Literal(esc + lbs)
+        self.rdm = pp.Literal(esc + rbs)
 
-        self.dmath << gen_group(self.ldm, self.rdm)
+        self.dmath << self.gen_group(self.ldm, self.rdm)
 
-        # Important: self.letters must be defined after def_def.
+        # Important: self.letters must be defined after defs
         if atletter:
             action_atletter(None)
         else:
@@ -272,48 +287,58 @@ class LexerBase:
             lp = getattr(self, k)
             if isinstance(lp, pp.ParserElement):
                 lp.setName(k.upper())
-                if debug:
+                if self.debug:
                     lp.setDebug()
+
         #
         pp.ParserElement.setDefaultWhitespaceChars(default_whites)
         return
 
+    def gen_group(self, left, right=None, c=None, pfx=None):
+        """Generate grouped token wtih LEFT RIGHT delimiters."""
+        right = right or left
+        if c is None:
+            c = pp.ZeroOrMore(~right + self.expr)
+            c = c.setResultsName('C')
+        g = (left('L') + c + (right('R') | pp.StringEnd()))
+        g.setParseAction(self.action_group)
+        g = g.setResultsName('A')
+        if pfx:
+            g = pfx + g
+        return(pp.Group(g))
+
     def action_fallback(self, s, loc, toks):
         """Remember fallback token."""
-        ln = pp.lineno(loc, s)
-        cn = pp.col(loc, s)
-        line = pp.line(loc, s)
-        self.report[loc] = ('Fallback [%s] at %d:%d %s'
-                            % (toks[0], ln, cn, line))
+        self.append_report('fallback', s, loc, toks)
+
         return
 
     def action_group(self, s, loc, toks):
         """Check if closed."""
-        if 'closed' in toks:
+        if 'R' in toks:
             pass
         else:
-            ln = pp.lineno(loc, s)
-            cn = pp.col(loc, s)
-            line = pp.line(loc, s)
-            self.report[loc] = ('Unclosed %s at %d:%d %s'
-                                % (toks[0], ln, cn, line))
+            self.append_report('unclosed', s, loc, toks)
         return
 
     def action_unmatched(self, s, loc, toks):
         """Remember unmatched token."""
-        ln = pp.lineno(loc, s)
-        cn = pp.col(loc, s)
-        self.report[loc] = ('Unmatched %s{%s} at %d:%d'
-                            % (toks[0][0], toks[0].env.name, ln, cn))
+        # t = self.unparse(toks.T)
+        self.append_report('unmatched', s, loc, toks)
         return
 
-    def lex_def(self, name, macro=None, args=None):
+    def lex_def(self, macro=None, args=None):
         r"""Define lexer for \def\macro...{content}."""
         macro = macro or r'def'
+        if isinstance(macro, str):
+            macro = pp.Literal(macro)
+        elif self.is_iterable(macro):
+            macro = pp.MatchFirst([pp.Literal(j) for j in macro])
+
         args = args or 1
 
-        cs = pp.Combine(self.ctl + pp.Literal(macro))
-        name = pp.Combine(self.ctl + self.letters)
+        cs = pp.Combine(self.esc + macro)
+        name = pp.Combine(self.esc + self.letters)
         pl = [pp.Combine(self.par + pp.Literal('%d' % j))
               for j in range(1, 10)]
         sep = pp.SkipTo((self.lbr | self.par))
@@ -321,38 +346,14 @@ class LexerBase:
         for j in reversed(pl[:-1]):
             par = pp.Optional(j + sep + par)
         ptm = pp.Combine(self.par + pp.FollowedBy(self.lbr))
+        lex = (cs + name
+               + pp.Group(sep + pp.Optional(par) + pp.Optional(ptm)))
         alex = self.gen_aset(args)
-        lex = pp.Group(cs + name
-                       + pp.Group(sep + pp.Optional(par) + pp.Optional(ptm))
-                       + alex)
+        if alex:
+            lex = lex + alex
         return(lex)
 
-    def lex_begin(self, name=None):
-        r"""Define lexer for \begin{NAME} starter."""
-        begin = pp.Combine(self.ctl + pp.Literal(r'begin'))
-        if isinstance(name, str):
-            name = pp.Literal(name)
-        elif name is None:
-            name = pp.Word(pp.alphas + '*')
-        earg = (self.blanks
-                + self.lbr + name.setResultsName('name') + self.rbr)
-
-        lex = begin + pp.Group(earg).setResultsName('env')
-        return(lex.setResultsName('begin'))
-
-    def lex_end(self, name=None):
-        r"""Define lexer for \end{NAME}."""
-        end = pp.Combine(self.ctl + pp.Literal(r'end'))
-        if isinstance(name, str):
-            name = pp.Literal(name)
-        elif name is None:
-            name = pp.Word(pp.alphas + '*')
-        earg = (self.blanks
-                + self.lbr + name.setResultsName('name') + self.rbr)
-        lex = end + pp.Group(earg).setResultsName('env')
-        return(lex.setResultsName('end'))
-
-    def lex_env_group(self, name, args=None):
+    def lex_env_group(self, name, args=None, array=False):
         r"""Define lexer for tex typical \begin{ENV} with arguments.
 
         ARGS: a number or list to control the argument list.
@@ -372,46 +373,91 @@ class LexerBase:
         """
         envgroup = pp.Forward()
 
-        if name is None:
-            envgroup.setName('ENV')
-        else:
-            envgroup.setName('ENV/%s' % name)
-
-        open_env = self.lex_begin(name)
+        open_env = self.lex_begin(name, args)
+        open_env.setName('BEGIN')
+        if self.debug:
+            open_env.setDebug()
         close_env = pp.Forward()
 
         def gen_close(toks):
             """Close environemnt."""
-            e = toks.env.name
-            c = pp.Group(self.lex_end(e))
-            contents = pp.ZeroOrMore(~c + self.expr).setResultsName('contents')
-            close_env << (contents + c.setResultsName('end'))
+            # print(repr(toks.E.C))
+            env = toks.E.C
+            end = self.lex_end(env)
+            if array:
+                # todo: grouping by lines
+                sep = self.cr | self.amp
+                # item = pp.Group(pp.ZeroOrMore(~sep + ~end + self.expr)
+                #                 + pp.Optional(sep('S')))
+                # item = item.setResultsName('I', True)
+                col = pp.Group(pp.ZeroOrMore(~sep + ~end + self.expr)
+                               + pp.Optional(self.amp('S')))
+                line = pp.Group(pp.ZeroOrMore(~self.cr + ~end
+                                              + col.setResultsName('I', True))
+                                + pp.Optional(self.cr('R')))
+                item = line
+            else:
+                item = self.expr
+            body = pp.ZeroOrMore(~end + item)
+            close_env << (body.setResultsName('B')
+                          + pp.Group(end).setResultsName('Z'))
+            return
 
         open_env.setParseAction(gen_close)
-
-        alex = self.gen_aset(args)
-
-        # [r'\begin', [ENV], [ARG], CONTENT..., [r'\end', [ENV]]]
-        envgroup << pp.Group(open_env.setResultsName('begin')
-                             + pp.Group(alex).setResultsName('args')
-                             + close_env)
+        # envgroup << pp.Group(open_env + close_env)
+        envgroup << open_env + close_env
+        if self.debug:
+            envgroup.setDebug()
+        if name:
+            name = 'ENV/%s' % name
+        else:
+            name = 'ENV'
+        envgroup.setName(name)
+        # envgroup.setParseAction(self.action_dummy)
         return(envgroup)
 
-    def lex_macro(self, macro, args=None):
+    def lex_begin(self, name=None, args=None, macro=None):
+        r"""Define lexer for \begin{NAME} starter."""
+        if name is None:
+            name = pp.Word(pp.alphas + '*')
+        elif isinstance(name, str):
+            name = pp.Literal(name)
+        earg = self.gen_group(self.lbr, self.rbr,
+                              name('C'), pfx=pp.Optional(self.blanks))
+        earg = earg('E')
+
+        macro = macro or r'begin'
+        lex = self.lex_macro(macro, args, ins=earg)
+
+        return(lex)
+
+    def lex_end(self, name=None):
+        r"""Define lexer for \end{NAME}."""
+        lex = self.lex_begin(name, macro=r'end')
+        return(lex)
+
+    def lex_macro(self, macro, args=None, ins=None):
         r"""Define lexer for tex typical macro with arguments.
 
         Todo: * is not treated.
               ungrouped arguments are not treated.
+        INS is insert after \MACRO (e.g, used for \begin{ENV})
 
         """
-        cs = pp.Combine(self.ctl + pp.Literal(macro) + ~self.letters)
+        name = pp.Literal(macro)('M') + ~self.letters
+        cs = pp.Combine(self.esc + name)
 
         alex = self.gen_aset(args)
 
-        lex = pp.Group(cs + pp.Group(alex))
+        lex = cs
+        if ins:
+            lex = lex + ins
+        if alex:
+            lex = lex + pp.Group(alex).setResultsName('P')
+
         lex.setName('MACRO/%s' % macro)
-        # ['MACRO', [[ARG], [ARG], ...]]
-        return(lex)
+        # 'MACRO', [[ARG], [ARG], ...]
+        return(lex('T'))
 
     def gen_aset(self, args=None):
         """Generate option/parameter list."""
@@ -419,25 +465,29 @@ class LexerBase:
         # Todo: xparse type arguments list
         # (e.g., frame in beamer class)
         # True: {mandatory}   False: [optional]
-        if args is None:
-            args = [0]
-        elif isinstance(args, int):
+        args = args or 0
+        if args == 0:
+            return None
+        if isinstance(args, int):
             args = [args]
+        if args[0] == 0:
+            return None
+
         # None is sentry (start=1)
         aset = [None] + [True] * args[0]
         for a in args[1:]:
             aset[a] = False
 
         alex = []
-        for a in aset[1:]:
+        for j, a in enumerate(aset[1:], start=1):
+            n = '#%d' % j
             if a:
-                alex.append(pp.Group(self.blanks + self.group))
+                e = self.group
             else:
-                alex.append(pp.Group(pp.Optional(self.blanks + self.opt)))
-        if alex:
-            alex = pp.And(alex)
-        else:
-            alex = pp.Empty()
+                e = pp.Optional(self.opt)
+            ap = pp.Optional(self.blanks) + e(n)
+            alex.append(ap)
+        alex = pp.And(alex)
 
         return(alex)
 
@@ -451,14 +501,10 @@ class LexerBase:
         r = []
         for t in tree:
             if self.is_iterable(t) and len(t) > 0:
-                # ppr.pprint(t, compact=True, indent=2)
+                r.extend(self.search(t, *macros))
                 if t[0] in macros:
                     r.append(t)
-                r[-1:-1] = self.search(t, *macros)
-                # r.extend(self.search_env(t, *envs))
             else:
-                # if t in macros:
-                #     r.append(t)
                 pass
         return(r)
 
@@ -466,25 +512,40 @@ class LexerBase:
         """Search all the ENVS environment occurence in TREE."""
         tree = tree or self.orig
         r = []
-        # [\begin [WS { ENV }] ... ]
         for t in tree:
             if self.is_iterable(t) and len(t) > 0:
-                # ppr.pprint(t, compact=True, indent=2)
-                if 'begin' in t:
-                    if t.env.name in envs:
-                        r.append(t)
-                # r[-1:-1] = self.search_env(t, *envs)
                 r.extend(self.search_env(t, *envs))
+                try:
+                    if t.get('M') == 'begin':
+                        if t.E.C in envs:
+                            r.append(t)
+                except AttributeError:
+                    pass
             else:
                 pass
         return(r)
 
+    def modify_macro(self, tree,
+                     args=False, macro=False):
+        """Modify macro call."""
+        if macro is not False:
+            tree[0] = macro
+        if args is not False:
+            if isinstance(args, list):
+                for j in args:
+                    self.modify_macro(tree, args=j)
+            else:
+                j, rep = args
+                tree[j][-1][1:-1] = rep
+
     def modify_env(self, tree,
-                   contents=False, args=False, name=False):
+                   body=False, args=False, name=False):
         """Modify environement elements.
 
-        CONTENTS, ARGS, NAME are removed if None,
+        BODY, ARGS, NAME are removed if None,
         skipped if False, otherwise replaced.
+
+        CAUTION: Modification of ParseResults is not fully functional.
         """
         pos_b = 0
         pos_n = 1
@@ -492,34 +553,48 @@ class LexerBase:
         pos_c = 3
         pos_e = -1
 
-        if contents is False:
-            pass
-        else:
-            contents = contents or []
-            rep = pp.ParseResults(toklist=contents)
+        if body is not False:
+            body = body or []
+            rep = pp.ParseResults(toklist=body)
             tree[pos_c:pos_e] = rep
-            tree.contents = rep
+            tree['B'] = rep
+            # NOT WORKS:  tree.B = rep
 
-        if name is False:
-            pass
-        elif name:
+        if name is not False:
             rep = pp.ParseResults(toklist=name)
             tree[pos_n][-2] = rep
             tree[pos_e][1][-2] = rep
             # print(tree.begin)
             # print(tree.end)
         else:
-            print(tree[pos_b], tree[pos_e])
+            # print(tree[pos_b], tree[pos_e])
             pass
 
-        if args is False:
-            pass
-        else:
+        if args is not False:
             rep = pp.ParseResults(toklist=args)
             tree.args = rep
             tree[pos_a] = rep
 
         return
+
+    def get_parameter(self, tree, j, content=True, unparse=False):
+        """Get j-th macro parameter from TREE."""
+        r = None
+        if j > 0:
+            p = r'#%d' % j
+            r = tree.P.get(p, None)
+            if r:
+                if content:
+                    r = r.C
+                else:
+                    r = r.A
+            # args = tree[1]
+            # r = args[j-1][-1]
+            # if content:
+            #     r = r[1:-1]
+        if unparse and not isinstance(r, str):
+            r = self.unparse(r)
+        return(r)
 
     def parse_string(self, string, *args, **kw):
         """Run parseString() and adjust tree."""
@@ -528,8 +603,32 @@ class LexerBase:
 
     def parse_file(self, file, *args, **kw):
         """Run parseFile() and adjust tree."""
+        self.file = file
         self.orig = self.lex.parseFile(file, *args, **kw)
         self.post_parse()
+
+    def set_parse_action(self, m, *args):
+        """Run setParseAction() on macro M."""
+        if self.is_iterable(m):
+            for a in m:
+                print(a)
+                self.set_parse_action(a, *args)
+        if m in self.pe_macros:
+            self.pe_macros[m].setParseAction(*args)
+        elif m in self.pe_envs:
+            # print(m, self.pe_envs[m])
+            self.pe_envs[m].setParseAction(*args)
+        else:
+            sys.stderr.write('Unregistered macro %s\n' % m)
+            sys.exit(1)
+
+    def append_report(self, msg, s, loc, toks):
+        """Append a report line."""
+        lno = pp.lineno(loc, s)
+        cno = pp.col(loc, s)
+        line = pp.line(loc, s)
+        self.report[loc] = "[%d:%d] %s: %s" % (lno, cno, msg, line)
+        return
 
     def post_parse(self, orig=None):
         """Postproccess after parser."""
@@ -609,35 +708,50 @@ class LexerBase:
                   default=self.dump_result,
                   sort_keys=True, indent=1, ensure_ascii=False)
 
-    def diag(self, tree=None, aslist=True, *args, **kw):
+    def diag(self, tree=None, dump=False, *args, **kw):
         """Diagnose original structure."""
         tree = tree or self.orig
-        if aslist:
-            t = tree.asList()
-        else:
-            t = tree
-        ppr.pprint(t, indent=2)
+        if dump:
+            print('### dump %s', self.file)
+            print(tree.dump())
+        print('### tree %s', self.file)
+        ppr.pprint(tree.asList(), indent=2)
 
 
-class LexerStd(LexerBase):
-    """Basic lexer class for LaTeX document."""
+class ParserStd(LexerBase):
+    """Basic parser class for LaTeX document."""
 
     def __init__(self,
-                 macros=None, envs=None, **kw):
+                 include=False,
+                 macros=None, envs=None, arrays=None, *args, **kw):
         """Initialize pyparsing definition."""
         envs = envs or {}
         macros = macros or {}
+        arrays = arrays or {}
 
         # standard macros
         macros.setdefault('documentclass', [2, 1])
         macros.setdefault('usepackage', [2, 1])
         macros.setdefault('label', 1)
+        macros.setdefault('caption', [2, 1])
         macros.setdefault('ref', 1)
+        macros.setdefault('input', 1)
+        macros.setdefault('cite', [2, 1])
+        macros.setdefault('include', 1)
+        macros.setdefault('includeonly', 1)
         macros.setdefault('newcommand', [4, 2, 3])
         macros.setdefault('newenvironment', [5, 2, 3])
-        envs.setdefault('tabular',  [2, 1])  # [ ]{2}
-        envs.setdefault('tabular*', [3, 2])  # {1}[ ]{3}
 
+        arrays.setdefault('tabular',  [2, 1])  # [ ]{2}
+        arrays.setdefault('tabular*', [3, 2])  # {1}[ ]{3}
+
+        envs.setdefault('figure',   [1, 1])  # [ ]
+        envs.setdefault('figure*',  [1, 1])  # [ ]
+        envs.setdefault('table',   [1, 1])  # [ ]
+        envs.setdefault('table*',  [1, 1])  # [ ]
+
+        macros.setdefault('bibliographystyle', 1)
+        macros.setdefault('bibliography', 1)
         # natbib
         macros.setdefault('citet', [2, 1])
         macros.setdefault('citep', [3, 1, 2])
@@ -649,13 +763,30 @@ class LexerStd(LexerBase):
         macros.setdefault('newcommandx', [4, 2, 3])
         macros.setdefault('newenvironmentx', [5, 2, 3])
 
-        super().__init__(macros=macros, envs=envs, **kw)
+        if include is True:
+            include = [r'input']
+        if include:
+            self.set_parse_action(include, self.action_include)
 
-    def post_parse(self, orig=None):
-        """Postproccess after parser."""
-        orig = orig or self.orig
-        super().post_parse(orig=orig)
-        self.adj_tabular()
+        super().__init__(macros=macros, envs=envs, arrays=arrays,
+                         *args, **kw)
+
+        # self.set_parse_action('tabular', self.action_dummy)
+
+    def action_include(self, s, loc, toks):
+        r"""Perform \include FILE."""
+        print(toks.dump())
+        return None
+
+    def action_dummy(self, s, loc, toks):
+        """Perform dummy action."""
+        print('DUMMY', loc)
+        print(toks.dump())
+    # def post_parse(self, orig=None):
+    #     """Postproccess after parser."""
+    #     orig = orig or self.orig
+    #     super().post_parse(orig=orig)
+    #     # self.adj_tabular()
 
     def adj_tabular(self, orig=None):
         r"""Adjust tabular environement structure.
@@ -669,42 +800,93 @@ class LexerStd(LexerBase):
         orig = orig or self.orig
         for env in ['tabular']:
             for tenv in self.search_env(orig, env):
-                # ppr.pprint(list(tenv.items()))
-                # ppr.pprint(tenv.asList())
                 tbl = []
                 row = []
                 cell = []
-                for tj in tenv.contents:
+                for tj in tenv.B:
                     if tj == r'&':
+                        cell = pp.ParseResults(toklist=cell)
                         row.extend([cell, tj])
                         cell = []
                     elif tj == '\\\\':
                         if cell:
+                            cell = pp.ParseResults(toklist=cell)
                             row.extend([cell, tj])
                             cell = []
+                        row = pp.ParseResults(toklist=row)
                         tbl.append(row)
                         row = []
                         pass
                     else:
-                        # print(type(tj), tj)
                         cell.append(tj)
                 if cell:
+                    cell = pp.ParseResults(toklist=cell)
                     row.append(cell)
                 if row:
+                    row = pp.ParseResults(toklist=row)
                     tbl.append(row)
-                self.modify_env(tenv, contents=tbl)
+                self.modify_env(tenv, body=pp.ParseResults(toklist=tbl))
+
+
+class ParserAux(ParserStd):
+    """Basic parser class for LaTeX .aux file."""
+
+    def __init__(self, macros=None, envs=None, arrays=None, *args, **kw):
+        """Initialize pyparsing definition."""
+        envs = envs or {}
+        macros = macros or {}
+        arrays = arrays or {}
+
+        macros.setdefault('newlabel', 2)
+
+        super().__init__(macros=macros, envs=envs, arrays=arrays,
+                         *args, **kw)
+
+        self.set_parse_action('newlabel', self.action_newlabel)
+
+        self.labels = {}
+
+    def action_newlabel(self, s, loc, toks):
+        r"""\newlabel parser."""
+        lab = self.get_parameter(toks, 1, unparse=True)
+        np = self.get_parameter(toks, 2)
+        # print(lab)
+        if np:
+            nums = self.unparse(np[0].get('C', ''))
+            page = self.unparse(np[1].get('C', ''))
+        else:
+            nums, page = None, None
+        self.labels[lab] = (nums, page)
+
+        return None
+
+    def diag(self, *args, **kw):
+        """Diagnose labels."""
+        super().diag(*args, **kw)
+        print("## Labels""")
+        ppr.pprint(self.labels, indent=2)
 
 
 def main(args, run):
     """Test lexer."""
     try:
-        opts, args = getopt.getopt(args, 'vq',
-                                   ['verbose', 'quiet', 'debug'])
+        opts, args = getopt.getopt(args, 'vqc:i',
+                                   ['debug',
+                                    'verbose', 'quiet',
+                                    'include',
+                                    'class=', ])
     except getopt.GetoptError as err:
         print(err)
         raise
     debug = False
     vlev = 0
+    inc = False
+    ctbl = {'b': (LexerBase, False),
+            't': (ParserStd, False),
+            's': (ParserStd, True),
+            'a': (ParserAux, True), }
+
+    ckey = True                 # auto
     for o, a in opts:
         if o in ['-v', '--verbose']:
             vlev = max(0, vlev) + 1
@@ -712,11 +894,29 @@ def main(args, run):
             vlev = min(0, vlev) - 1
         elif o in ['--debug']:
             debug = True
+        elif o in ['-i', '--include']:
+            inc = True
+        elif o in ['-c', '--class']:
+            if a not in ctbl:
+                sys.stderr.write('Unknown class type [%s]\n' % a)
+                sys.exit(1)
+            ckey = a
 
     for f in args:
         print("# %s" % (f))
-        lb = LexerStd(debug=debug,
-                      macros={'label': 1, })
+        k = ckey
+        if k is True:
+            e = os.path.splitext(f)[1]
+            k = None
+            if e in ['.aux']:
+                k = 'a'
+            elif e in ['.sty', '.cls']:
+                k = 's'
+            elif e in ['.tex']:
+                k = 't'
+        clex, atsw = ctbl[k]
+
+        lb = clex(atletter=atsw, include=inc, debug=debug)
         try:
             lb.parse_file(f, parseAll=True)
         except Exception as e:
@@ -726,7 +926,6 @@ def main(args, run):
         if vlev > 0:
             lb.diag()
         lb.write()
-        # lb.diag(aslist=False)
     pass
 
 
