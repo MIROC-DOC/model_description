@@ -389,7 +389,6 @@ A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
       + \bar{T} \left\{ \epsilon (q^c - \bar{q} ) 
                      - l^c                 \right\}
        \right] \eta dz \; .
-       
 $$
 
 > <span id="p-cum:cwf" label="p-cum:cwf "> >P-Cum[p-cum:cwff\\]</span>

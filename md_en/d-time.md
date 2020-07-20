@@ -140,7 +140,6 @@ $$
 Here, the non-gravitational wave term is
 
 $$
-  
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
    =   - \sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi  
        \Delta  \sigma_{k}  \\
@@ -226,7 +225,6 @@ $$
 where the vector and matrix of the gravitational wave term (underlined) are
 
 $$
-  
   C_{k} = \Delta \sigma_{k}
 $$
 
@@ -263,7 +261,6 @@ $$
 
 
 $$
-  
   R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} } 
                      \Delta \sigma_{l} \delta_{k \leq l} 
                    + \frac{ \beta_{k} }{ \Delta \sigma_{k} } 
@@ -279,7 +276,6 @@ A function that is 1 if the $ k \leq l$ is valid and 0 otherwise.
 Using the following expression ,
 
 $$
-  
   \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
 $$
@@ -299,7 +295,6 @@ $$
 If we apply the semi-implicit method to the system of equations,
 
 $$
-  
   \delta_{t} \pi =
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
      - \mathbf{C} \cdot \overline{ \mathbf{D} }^{t}
@@ -308,7 +303,6 @@ $$
 > <span id="semi-imp pi" label="semi-imp 
 
 $$
-  
   \delta_{t} \mathbf{D} =
           \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
           - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S} 
@@ -323,7 +317,6 @@ $$
 > <span id="semi-imp D" label="semi-imp D ">\\brahammer[semi-imp D\\\]</span>
 
 $$
-  
   \delta_{t} \mathbf{T} =
         \left( \frac{\partial \mathbf{T}}{\partial t} \right)_{NG}  
          - \underline{h} \overline{ \mathbf{D} }^{t} 
@@ -337,7 +330,6 @@ So..,
 
 > <span id="semi-imp barD" label="semi- imp barD">\blank\[semi-imp barD\blank]</span></a
 $$
-  
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
       - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
