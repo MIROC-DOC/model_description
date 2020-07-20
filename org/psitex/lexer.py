@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/19 23:23:11 fuyuki lexer.py>'
+# 'Time-stamp: <2020/07/20 09:09:40 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -598,8 +598,9 @@ class LexerBase:
 
     def parse_string(self, string, *args, **kw):
         """Run parseString() and adjust tree."""
-        self.orig = self.lex.parseString(string, *args, **kw)
-        self.post_parse()
+        return(self.lex.parseString(string, *args, **kw))
+        # self.orig =
+        # self.post_parse()
 
     def parse_file(self, file, *args, **kw):
         """Run parseFile() and adjust tree."""
