@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/20 09:09:53 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/07/20 09:47:21 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -18,7 +18,8 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
     """Simple class for MIROC document replacement."""
 
     def __init__(self, macros=None,
-                 eenv=None, etab=None, dennou=False, **kw):
+                 eenv=None, etab=None,
+                 math=False, label=False, dennou=False, **kw):
         """Initialize MIROC-Doc replacement."""
         macros = macros or {}
         macros['Module'] = 1
@@ -29,15 +30,23 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         super().__init__(macros=macros, **kw)
 
         self.dennou = dennou
+        self.label = label
+        self.math = math
+        self.tbl_label = {}
+        self.tbl_ref = {}
         self.tbl_imath = {}
         self.tbl_emath = {}
         self.tabular = {}
         self.fmt_imath = 'TERM%05d'
         self.fmt_emath = 'EQ=%05d.'
         self.fmt_tabular = 'TAB%05d:'
+        self.fmt_label = 'L%05d'
+        self.fmt_ref = 'R%05d'
 
         self.cache.update(imath=self.tbl_imath,
-                          emath=self.tbl_emath)
+                          emath=self.tbl_emath,
+                          label=self.tbl_label,
+                          ref=self.tbl_ref)
         if eenv == 'q':
             eenv = 'quote'
         elif eenv in ['qn', 'qq']:
@@ -59,7 +68,28 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
             self.set_parse_action(r'DD', self.action_DD)
             self.set_parse_action(r'Dvect', self.action_Dvect)
 
+        self.set_parse_action(r'Module', self.action_module)
+        if self.label:
+            self.set_parse_action(r'label', self.action_label)
+            self.set_parse_action(r'ref', self.action_ref)
+
         pass
+
+    def action_label(self, s, loc, toks):
+        r"""Store label tags."""
+        tag = self.unparse(toks.P['#1'].C)
+        fmt = self.fmt_label
+        txt = fmt % len(self.tbl_label)
+        self.tbl_label[txt] = tag
+        return(toks)
+
+    def action_ref(self, s, loc, toks):
+        r"""Store ref tags."""
+        tag = self.unparse(toks.P['#1'].C)
+        fmt = self.fmt_ref
+        txt = fmt % len(self.tbl_ref)
+        self.tbl_ref[txt] = tag
+        return(toks)
 
     def action_DP(self, s, loc, toks):
         r"""Replace \DP expansion on-the-fly."""
@@ -108,23 +138,24 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         toks = self.parse_string(tmpl)
         return(toks)
 
+    def action_module(self, s, loc, toks):
+        r"""Replace \Module macros."""
+        a = toks.P['#1']['C']
+        arep = [r'MODULE:[', *a, ']']
+        self.modify_macro(toks, macro=r'\texttt', args=[(1, arep)])
+        return(toks)
+
     def post_parse(self, *args, **kw):
         """Batch replacement of special macros."""
         super().post_parse(*args, **kw)
-        self.rep_module()
-        self.rep_imath()
-        self.rep_enveq()
-        self.rep_envar()
-        self.rep_dispm()
+        if self.math:
+            self.rep_imath()
+            self.rep_enveq()
+            self.rep_envar()
+            self.rep_dispm()
         self.rep_tabular()
-
-    def rep_module(self, tree=None):
-        r"""Replace \Module macros."""
-        tree = tree or self.tree
-        for m in self.search(tree, r'\Module'):
-            a = m.P['#1']['C']
-            arep = [r'MODULE:[', *a, ']']
-            self.modify_macro(m, macro=r'\texttt', args=[(1, arep)])
+        if self.label:
+            self.rep_ref()
 
     def rep_imath(self, tree=None, fmt=None, lev=0):
         """Replace inline maths."""
@@ -304,6 +335,10 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
             self.modify_env(m, body=rep, name=self.etab, args=None)
             # m[2] = []
 
+    def rep_ref(self, tree=None):
+        """Replace equation environement."""
+        pass
+
     def diag(self, *args, **kw):
         """Diagnostic."""
         super().diag(*args, **kw)
@@ -343,11 +378,13 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
 def main(args, run):
     """Main."""
     try:
-        opts, args = getopt.getopt(args, 'vqfc:o:d:E:T:D',
+        opts, args = getopt.getopt(args, 'vqfc:o:d:E:T:DLM',
                                    ['verbose', 'quiet', 'debug',
                                     'force',
                                     'cache=', 'output=','outdir=',
+                                    'math',
                                     'dennou',
+                                    'label',
                                     'equation=', ])
     except getopt.GetoptError as err:
         print(err)
@@ -361,6 +398,8 @@ def main(args, run):
     eenv = None
     etab = None
     dennou = None
+    label = None
+    math = None
     for o, a in opts:
         if o in ['-c', '--cache']:
             cachedir = a
@@ -380,6 +419,10 @@ def main(args, run):
             etab = a
         elif o in ['-D', '--dennou']:
             dennou = True
+        elif o in ['-L', '--label']:
+            label = True
+        elif o in ['-M', '--math']:
+            math = True
         elif o in ['--debug']:
             debug = True
     if len(args) > 1 and outf:
@@ -429,6 +472,7 @@ def main(args, run):
 
         print("# %s > %s [%s]" % (f, tex, cache))
         lb = ParserMirocDoc(eenv=eenv, etab=etab,
+                            label=label, math=math,
                             dennou=dennou, debug=debug)
         try:
             lb.parse_file(f)
