@@ -30,20 +30,21 @@ To be more specific ,
 The model is basically a solution to the following equation (the prediction equation).
 
 > <span id="struct:u-eq-1" label="struct :u-eq-1">\\[struct:u-eq-1]</span>
+
 $$
-  \frac{\partial u}{\partial t}  =  \left( {\mathcal F}_x \right)_D + \left( {\mathcal F}_x \right)_P 
+  \frac{\partial u}{\partial t}  =  \left( {\mathcal F}_x \right)_D + \left( {\mathcal F}_x \right)_P
    \\
   \frac{\partial v}{\partial t}  =  \left( {\mathcal F}_y \right)_D + \left( {\mathcal F}_y \right)_P \\
   \frac{\partial T}{\partial t}  =  \left( Q \right)_D + \left( Q \right)_P \\
   \frac{\partial p_S}{\partial t}  =  \left( M \right)_D + \left( M \right)_P \\
   \frac{\partial q}{\partial t}  =  \left( S \right)_D + \left( S \right)_P \\
-  \frac{\partial T_g}{\partial t}  =  \left( Q_g \right)_D + \left( Q_g \right)_P 
+  \frac{\partial T_g}{\partial t}  =  \left( Q_g \right)_D + \left( Q_g \right)_P
 $$
+
+
+
  
- 
- 
- 
- 
+
 
 
 Where, $u,v,T,p_S,q,T_g$, $u,v,T,p_S,q,T_g$ is,
@@ -78,7 +79,7 @@ $$
 By making ,
 
 $$
-  q^{t+\Delta t} = q^{t} 
+  q^{t+\Delta t} = q^{t}
        + \Delta t \left[ \left( S \right)_D + \left( S \right)_P  \right]
 $$
 
@@ -146,94 +147,94 @@ Parentheses are the coordinate system and $\lambda,\varphi,\sigma, z$ are the co
 Longitude, latitude, dimensionless pressure $\sigma$, indicating vertical depth.
 \The entries in the list are in units.
 
- - TAB00000:0.0 
+ - TAB00000:0.0
  east-west wind speed
 
- - TAB00000:0.1 
+ - TAB00000:0.1
      $u$ ($\lambda,\varphi,\sigma$)
 
- - TAB00000:0.2 
+ - TAB00000:0.2
      \The "m/score
 
- - TAB00000:1.0 
+ - TAB00000:1.0
  north-south wind speed
 
- - TAB00000:1.1 
+ - TAB00000:1.1
      $v$ ($\lambda,\varphi,\sigma$)
 
- - TAB00000:1.2 
+ - TAB00000:1.2
      \The "m/score
 
- - TAB00000:2.0 
+ - TAB00000:2.0
  atmospheric temperature
 
- - TAB00000:2.1 
+ - TAB00000:2.1
      $T$ ($\lambda,\varphi,\sigma$)
 
- - TAB00000:2.2 
+ - TAB00000:2.2
      \K.L.A.[K.R.I.E.D.]
 
- - TAB00000:3.0 
+ - TAB00000:3.0
  surface pressure
 
- - TAB00000:3.1 
+ - TAB00000:3.1
      $p_S$ ($\lambda,\varphi$)
 
- - TAB00000:3.2 
+ - TAB00000:3.2
      The "hPa\\
 
- - TAB00000:4.0 
+ - TAB00000:4.0
  specific humidity
 
- - TAB00000:4.1 
+ - TAB00000:4.1
      $q$ ($\lambda,\varphi,\sigma$)
 
- - TAB00000:4.2 
+ - TAB00000:4.2
      [kg/kg\\]
 
- - TAB00000:5.0 
+ - TAB00000:5.0
  Cloud water mixing ratio
 
- - TAB00000:5.1 
+ - TAB00000:5.1
      $l$ ($\lambda,\varphi,\sigma$)
 
- - TAB00000:5.2 
+ - TAB00000:5.2
      [kg/kg\\]
 
- - TAB00000:6.0 
+ - TAB00000:6.0
  underground temperature
 
- - TAB00000:6.1 
+ - TAB00000:6.1
      $T_g$ ($\lambda,\varphi,z$)
 
- - TAB00000:6.2 
+ - TAB00000:6.2
      \K.L.A.[K.R.I.E.D.]
 
- - TAB00000:7.0 
+ - TAB00000:7.0
  subterranean moisture
 
- - TAB00000:7.1 
+ - TAB00000:7.1
      $W_g$ ($\lambda,\varphi,z$)
 
- - TAB00000:7.2 
+ - TAB00000:7.2
      \The "m/m\
 
- - TAB00000: 8.0 
+ - TAB00000: 8.0
  amount of snowfall
 
- - TAB00000:8.1 
+ - TAB00000:8.1
      $W_y$ ($\lambda,\varphi$)
 
- - TAB00000:8.2 
- 
+ - TAB00000:8.2
 
- - TAB00000:9.0 
+
+ - TAB00000:9.0
  sea-ice thickness
 
- - TAB00000:9.1 
+ - TAB00000:9.1
      $h_I$ ($\lambda,\varphi$)
 
- - TAB00000:9.2 
+ - TAB00000:9.2
      \\0.25\\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.00}.
 
 However, the sea ice thickness is usually only a predictor in the mixed-layer coupled model.
@@ -261,35 +262,35 @@ It is managed by the subroutine `MODULE:[PHYSCS]`, which is a subroutine for phy
 We briefly summarize the flow of the model, focusing on the time evolution of the predictor variables.
 
 1. read the initial value `MODULE:[RDSTRT,PRSTRT]`
-     
+
  Initially, the quantities $u, v, T, p_S, q, l$ related to the atmosphere are essentially
  Two sets of quantities in     $t$ and $t-\Delta t$ must be prepared.
  This can be prepared if you are starting from the output results of the previous model, but the
  It is not possible to prepare for a departure from normal observations and climate values.
  In that case, we start from the same value as the value of the two time steps,
  Launch the calculation using the fine $\Delta t$ (see below for details).
-     
+
  The initial values for the atmospheric quantities $u, v, T, p_S, q, l$ are read from ,
  This is done with `MODULE:[RDSTRT]`, called by the main routine.
  On the other hand, the initial values of the surface and underground quantities $T_g, W_g, W_y, h_I$ are read from
  In `MODULE:[PRSTRT]`,     called by `MODULE:[PHYSCS]`, the This is done.
 
 2. start the time step `MODULE:[TIMSTP]`
-     
- Forecast variables at time $t$ (and partly in $t-\Delta t$) 
+
+ Forecast variables at time $t$ (and partly in $t-\Delta t$)
      $u^{t}, u^{t-\Delta t}, v^{t}, v^{t-\Delta t},
 T^{t}, T^{t-\Delta t}, p_S^{t}, p_S^{t-\Delta t},
 q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t},
-T_g^{t}, W_g^{t}, W_y^{t}$ 
+T_g^{t}, W_g^{t}, W_y^{t}$
  shall be complete.
-     
+
      $\Delta t$ is essentially an externally given parameter,
  At regular intervals, the stability of the calculation is evaluated,
  If there is a risk of calculation instability
  reduce the size of     the $\Delta t$ `MODULE:[TIMSTP]`.
 
 Set the output of the predictor variable `MODULE:[AHSTIN]`
-     
+
  In the atmospheric forecast variables, the output is usually
  The value of time $t$ at this stage
      $u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$
@@ -298,20 +299,20 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  The timing, which is sent to the buffer here, is
 
 4. mechanical processes `MODULE:[DYNMCS]`
-     
+
  Solving for the time variation of the predicted variables due to dynamical processes.
      $u^{t}, u^{t-\Delta t}, v^{t}, v^{t-\Delta t},
 T^{t}, T^{t-\Delta t}, p_S^{t}, p_S^{t-\Delta t},
-q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$ 
+q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$
  Based on ,
- Value of the forecast variable in $t+\Delta t$ considering only mechanical processes 
-     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t}, 
-\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t}, 
-\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$ 
+ Value of the forecast variable in $t+\Delta t$ considering only mechanical processes
+     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t},
+\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t},
+\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$
  Ask for .
-     
+
      1. convert to vorticity and divergence `MODULE:[UV2VDG, VIRTMD, HGRAD]`
-         
+
  Atmospheric forecast parameters of $u, v, T, p_S, q, l$
  In order to estimate the change term due to mechanical processes, we first need to estimate
          $u^{t}, v^{t}$ as the grid point values for vorticity and divergence $\zeta^{t},D^{t}$, Convert to $\zeta^{t},D^{t}$.
@@ -319,13 +320,13 @@ q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$
  This transformation involves a spatial derivative,
  This can be done precisely by using the spherical harmonic function expansion
          `MODULE:[UV2VDG]`.
-         
+
  Furthermore, calculate the pseudotemperature $T_v^{t}$, and then set `MODULE:[VIRTMD]`,
  I still use the spherical harmonic function expansion.
  Calculates the horizontal differential of surface pressure $\nabla \ln p_S$ `MODULE:[HGRAD]`.
-     
+
      2. calculation of the time-varying term by advection `MODULE:[GRDDYN]`
-         
+
  Using the values         in $t$ of $u, v, T, p_S, q, l$,
  Due to horizontal and vertical advection,
  Compute some of the time-varying terms for each atmospheric variable.
@@ -333,32 +334,32 @@ q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$
  To find the time variation term         of $p_S$ diagnostically,
  Using it, calculate the vertical advection term for $u, v, T, q, l$.
  Furthermore, the horizontal advection fluxes of $u, v, T, q, l$ are calculated.
-     
+
      3. convert to a spectrum `MODULE:[GD2WD, TENG2W]`
-         
+
  Value of grid points in $t-\Delta t$ for atmospheric forecast parameters
          From $u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$,
  Values in Spectral Space in Spherical Harmonic Function Expansion
-         (However, the vorticity is changed to divergence) 
-         $\tilde{\zeta}^{t}, \tilde{D}^{t}, \tilde{T}^{t}, 
-\tilde{\pi}^{t}, \tilde{q}^{t}, \tilde{l}^{t}$ 
+         (However, the vorticity is changed to divergence)
+         $\tilde{\zeta}^{t}, \tilde{D}^{t}, \tilde{T}^{t},
+\tilde{\pi}^{t}, \tilde{q}^{t}, \tilde{l}^{t}$
  (but, $\pi \equiv \ln p_S$) `MODULE:[GD2WD]`.
-         
+
  In addition, the vertical advection of $u, v, T, p_S, q, l$
  Expand the time-varying term into a spectrum.
  Also, by using the derivative in spectral space,
  Convergence of the horizontal advection flux is calculated,
  MODULE:[TENG2W]` to add to the spectral representation of the time change term.
-         
+
  This allows the $\zeta, D, T, \pi, q, l$
  Most terms in the time-varying term are obtained as spectral values.
  However, among the time-varying terms in $\zeta, D, T, \pi$,
  The term that depends linearly on horizontal divergence $D$ is
  To do time integration by the         semi-implicit method,
  It is not included in the time-varying term at this point.
-     
+
      4. time integration `MODULE:[TINTGR]`
-         
+
  Among the time-varying terms         in $\zeta, D, T, \pi$ ,
  We have added a linearly dependent term (the gravitational wave term) to the horizontally diverging $D$
  Treat in the         semi-implicit method,
@@ -366,39 +367,39 @@ q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$
          By implicitly incorporating the
  Perform time integration of the mechanical process part.
  This allows for the
- Spectral representation of forecast values 
-         $\tilde{\zeta}^{t+\Delta t}, \tilde{D}^{t+\Delta t}, 
-\tilde{T}^{t+\Delta t}, \tilde{\pi}^{t+\Delta t}, 
-\tilde{q}^{t+\Delta t}, \tilde{l}^{t+\Delta t}$ 
+ Spectral representation of forecast values
+         $\tilde{\zeta}^{t+\Delta t}, \tilde{D}^{t+\Delta t},
+\tilde{T}^{t+\Delta t}, \tilde{\pi}^{t+\Delta t},
+\tilde{q}^{t+\Delta t}, \tilde{l}^{t+\Delta t}$
  is required.
-     
+
      5. conversion to grid values `MODULE:[GENGD]`
-         
+
  From the forecast variables in the spectral representation ,
          $u, v, T, p_S, q, l$,
  of $t+\Delta t$ considering only mechanical processes
- Grid point values for forecast values 
-         $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t}, 
-\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t}, 
-\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$ 
+ Grid point values for forecast values
+         $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t},
+\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t},
+\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$
  .
-     
+
      6. diffusion correction `MODULE:[CORDIF, CORFRC]`
-         
+
  Horizontal diffusion is applied on the surface of $\sigma$ and so on,
  In large areas of mountain slopes, water vapor is transported uphill,
  Causing problems such as bringing false precipitation at the top of the mountain.
  To mitigate that, etc. such that the diffusion of the $p$ surface is close to
  Insert corrections for $T,q,l$ `MODULE:[ CORDIF]`. CORDIF]`.
-         
+
  Also, heat from friction is added to $\hat{T}$ `MODULE:[CORFRC]`
-     
+
      7. mass conservation correction `MODULE:[MASFIX]`
-         
+
  Saving of the global integral values of         $q$ and $l$ is satisfied,
  and make corrections so that there will be no negative values in $q$.
  In addition, the correction is made so that the mass of the dry air is constant.
-     
+
  When I left     DYNMCS ,
  The value of the forecast parameter     in $t-\Delta t$ has been discarded,
  Overwritten by the value of the forecast variable     in $t$.
@@ -407,25 +408,25 @@ q^{t}, q^{t-\Delta t}, l^{t}, l^{t-\Delta t}$
  The value of the forecast parameter     in $t+\Delta t$ is entered.
 
 5. physical process `MODULE:[PHYSCS]`
-     
- Value of the predicted variables in $t+\Delta t$ considering only mechanical processes 
-     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t}, 
-\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t}, 
-\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$ 
+
+ Value of the predicted variables in $t+\Delta t$ considering only mechanical processes
+     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t},
+\hat{T}^{t+\Delta t}, \hat{p_S}^{t+\Delta t},
+\hat{q}^{t+\Delta t}, \hat{l}^{t+\Delta t}$
  and by adding a time-varying term from physical processes to
- The value of the forecast parameter     in $t+\Delta t$ 
-     $u^{t+\Delta t}, v^{t+\Delta t}, 
-T^{t+\Delta t}, p_S^{t+\Delta t}, 
-q^{t+\Delta t}, l^{t+\Delta t}$ 
+ The value of the forecast parameter     in $t+\Delta t$
+     $u^{t+\Delta t}, v^{t+\Delta t},
+T^{t+\Delta t}, p_S^{t+\Delta t},
+q^{t+\Delta t}, l^{t+\Delta t}$
  Ask for .
-     
+
      Calculation of the basic diagnostic variables `MODULE:[PSETUP]`
-         
+
  The basic
  Find the diagnostic variables.
-     
+
      2. cumulus convection, large-scale condensation `MODULE:[CUMLUS, LSCOND]`
-         
+
  The time-varying terms of $T, q, l$ due to cumulus convection are found, and `MODULE :[CUMLUS]`
  Perform time integration with `MODULE:[GDINTG]` just for that term.
  In addition, the time-varying terms of $T, q, l$ due to large-scale condensation and ` MODULE:[LSCOND]`,
@@ -434,19 +435,19 @@ q^{t+\Delta t}, l^{t+\Delta t}$
  Cloud cover ($C_c, C_l$, $C_c, C_l$, etc.) is required.
  This makes $T, q, l$
  Adjusted value for convective condensation process
-         $\hat{T}^{t+\Delta t,a}, 
+         $\hat{T}^{t+\Delta t,a},
 \hat{q}^{t+\Delta t,a}, \hat{l}^{t+\Delta t,a}$
  That would be.
-     
+
      3. set the surface boundary condition `MODULE:[GNDSFC, GNDALB]`
-         
+
  Set up the surface conditions with given data.
  The ground state index, sea surface temperature, etc. are set to `MODULE:[GNDSFC]`.
  Also, the surface albedo is set to be other than sea level `MODULE:[GNDALB]`.
          (The calculation of sea-surface albedo has been incorporated into the radiative flux calculation routine.)
-     
+
      4. calculation of the radiation flux `MODULE:[RADCON, RADFLX]`
-         
+
  Set the atmospheric data for radiation flux calculation `MODULE:[RADCON]`.
  Normally, ozone is read from a file.
  Cloud water and cloud cover are obtained by convection and large-scale condensation,
@@ -454,18 +455,18 @@ q^{t+\Delta t}, l^{t+\Delta t}$
  Using these and $\hat{T}^{t+\Delta t,a}, \hat{q}^{t+\Delta t,a}$
  Shortwave and longwave radiation flux $F_R$, and
  Calculates the differential coefficient of surface temperature used for         implicit calculation `MODULE:[ RADFLX]`. RADFLX]`.
-     
+
      5. calculation of the vertical diffuse flux `MODULE:[VDFFLX, VFTND1]`
-         
-         $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t}, 
+
+         $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t},
 \hat{T}^{t+\Delta t,a}, \hat{q}^{t+\Delta t,a}, \hat{l}^{t+\Delta t,a}$
  with ,
  Fluxes in $u, v, T, q, l$ by vertical diffusion and
  Calculate the differential coefficient for         implicit calculation `MODULE:[VDFFLX]`.
  In addition, the implicit solution is computed in the middle with the LU decomposition of `MODULE:[ VFTND1]`. VFTND1]`.
-     
+
      6. calculation of surface processes and time integration of underground variables `MODULE:[SURFCE]`
-         
+
  Calculate the fluxes of $u, v, T, q $ between the earth's surface and atmosphere,
  Considering the conduction of heat in the ground, the energy balance at the surface is
  Solve with an         implicit solution.
@@ -475,64 +476,64 @@ q^{t+\Delta t}, l^{t+\Delta t}$
  is required.
  In addition, the rate of change of the predicted variables for the first layer of the atmosphere
          Find $F_{x,1}, F_{y,1}, Q_1, S_1$.
-         
+
  Snow accumulation and snowmelt processes are taken into account,
  The value of the snowpack in $t+\Delta t$ is determined by $W_y^{t+\Delta t}$,
  Taking into account the movement of water in the ground
  Ground moisture $W_g^{t+\Delta t}$ is required.
-         
+
  In the case of the oceanic mixed layer model, the
  Ocean temperature and sea ice thickness
  The value         in $t+\Delta t$ is found by time integration.
-     
+
      7. evaluation of time variation due to radiative and vertical diffusion `MODULE:[VFTND2, RADTND, FLXCOR]`
-         
+
  Combined radiative flux and vertical diffusion
- The rate of change of each forecast variable of the atmosphere over time. 
+ The rate of change of each forecast variable of the atmosphere over time.
          Seek ${\mathcal F}_x, {\mathcal F}_y, Q, S$ `MODULE:[VFTND2]`.
  In addition, isolate the contribution of the radiation from them `MODULE:[RADTND]`.
  This is not directly used in the model, but ,
  For the convenience of the data output.
-         
+
  Because we use the implicit method in these calculations,
  due to changes in surface temperature and atmospheric forecast variables.
  We are taking into account changes in flux.
  We'll account for that and the fluxes that break even.
          Calculate with `MODULE:[FLXCOR]`.
  This is also for the convenience of data output.
-     
+
      8. evaluation of gravitational wave resistance `MODULE:[GRAVTY]`
-         
+
  Calculating the change in atmospheric momentum due to gravitational waves originating from the terrain,
  Time Dependence of $u, v$ by Vertical Diffusion
          Add to ${\mathcal F}_x, {\mathcal F}_y$.
-     
+
      9. evaluation of the atmospheric pressure change term
-         
+
  Considering the changes in pressure due to precipitation and evaporation,
  Find the atmospheric pressure change term $M$.
-     
+
      10. time integration of physical processes `MODULE:[GDINTG]`
-         
+
  due to radiation, vertical diffusion, surface processes, gravitational wave resistance, etc.
  The rate of change of each forecast variable of the atmosphere over time.
          Using ${\mathcal F}_x, {\mathcal F}_y, Q, M, S$,
  Find the value of         $t+\Delta t$ by time integration.
-     
+
      11. drying convection adjustment `MODULE:[DADJST]`
-         
+
  If the calculated $T, q, l$ are unstable for dry convection
  Drying convection adjustment.
-     
+
  By the above procedure,
- Value of the forecast parameters     in $t+\Delta t$ 
-     $u^{t+\Delta t}, v^{t+\Delta t}, 
-T^{t+\Delta t}, p_S^{t+\Delta t}, 
-q^{t+\Delta t}, l^{t+\Delta t}$ 
+ Value of the forecast parameters     in $t+\Delta t$
+     $u^{t+\Delta t}, v^{t+\Delta t},
+T^{t+\Delta t}, p_S^{t+\Delta t},
+q^{t+\Delta t}, l^{t+\Delta t}$
  is required.
 
 6. time filter `MODULE:[TFILT]`
-     
+
  In order to prevent the     leap frog from causing a calculation mode,
  Apply a time filter.
      $u^{t-\Delta t}, u^{t}, u^{t+\Delta t}$
@@ -542,4 +543,3 @@ q^{t+\Delta t}, l^{t+\Delta t}$
  Since the information     on $u^{t-\Delta t}$ has been erased,
  This operation is a two-step process.
  The first stage of operation is done in the mechanical process.)
-
