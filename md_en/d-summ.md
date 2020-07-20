@@ -51,7 +51,6 @@ $$
                      u_{ij} \cos\varphi_j (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
-                 
 $$
  
 > <span id="d-summ:uv-zeta" label="d- summ:uv-zeta">[d-summ:uv-zeta]</ span>
@@ -66,7 +65,6 @@ $$
                   v_{ij} \cos\varphi_j  (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} ; .
-                 
 $$
  
 > <span id="d-summ:uv-D" label="d-summ: uv-D">\\[d-summ:uv-D\]</span>
@@ -624,7 +622,7 @@ First, we discuss the grid points with negative water vapor content,
 $$
         q_k'      =  0          \\
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
-      $$
+$$
  
 
      
@@ -638,7 +636,7 @@ Next, set the value to zero for the grid points not removed by the above procedu
      
 $$
         q'' = \frac{M_q^0}{M_q} q' 
-      $$
+$$
 
 
 4. perform dry air mass correction.
@@ -646,7 +644,7 @@ $$
      
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
-      $$
+$$
 
 
 ### Horizontal Diffusion and Rayleigh Friction

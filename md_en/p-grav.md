@@ -35,7 +35,6 @@ $$
    F_L = \left(
             \frac{\tau N}{E_f \rho U^3}
            \right)^{1/2} \; ,
-  
 $$
 
 > <span id="p-grav:tau-fl" label="p-grav :tau-fl">\\fl.com[p-grav:tau-fl]</span>
@@ -50,7 +49,6 @@ Now..,
 
 $$
   \tau = \frac{E_f F_L^2 \rho U^3}{N}
-
 $$
 
 > <span id="p-grav:fl-tau" label="p-grav :fl-tau">fl-tau\[p-grav:fl-tau]</span>

@@ -100,7 +100,6 @@ $$
                 \; \;  (1-b)\bar{q}^t \geq \bar{q}^*
            \end{array}
         \right. 
-  
 $$
 
 > <span id="p-lsc:l" label="p-lsc:l"&gt ;p-lsc:l\\.com;</span>
@@ -126,7 +125,6 @@ It changes the temperature,
 
 $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
-  
 $$
 
 > <span id="p-lsc:itereate1" label="p- lsc:itereate1">[p-lsc:itereate1\[p-lsc:itereate1]</ span>
