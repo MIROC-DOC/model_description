@@ -34,6 +34,7 @@
 
 - リポジトリを clone する(リモートからローカルへ資料を引っ張ってくる)
   - `git clone https://github.com/MIROC-DOC/model_description.git`
+  - Gitの操作はmodel_descriptionディレクトリで
 
 - 練習用のリポジトリは何しても大丈夫です
   - `git clone https://github.com/MIROC-DOC/SandBox.git`
@@ -99,16 +100,16 @@
 
   - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
   - 2)ローカルの資料を最新に `git pull`
-  - 3)執筆担当の人は issue に基づいて master ブランチを元に feature/MYFEATURE(章の名前など、各自で特徴的な名前を設定) ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
+  - 3)執筆担当の人は issue に基づいて master ブランチを元に feature/MYFEATURE(章の名前など、各自で特徴的な名前を設定) ブランチを作成する(./git.md)`git checkout -b feature/MYFEATURE master`。すでにあるリモートブランチから作成する場合、`git checkout -b feature/MYFEATURE feature/MYFEATURE`
   - 今いるブランチを確認する。`git branch`
   - 4)feature/MYFEATURE ブランチで執筆する。abcの手順で共同編集者でファイルをやり取りする。
     - a)ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
       - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
       - コミット状況を確認`git status`
-    - b)ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する  そのブランチにおける初めてのpush。リモートにbranchを作成する`git push -u origin feature/MYFEATURE`  ２回目以降のpush`git push origin feature/MYFEATURE`
-    - c)共同編集者が最新のfeature/MYFEATURE ブランチをローカルに反映する。feature/MYFEATURE ブランチにて`git pull`
-  - 5)執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
+    - b)ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する `git push origin feature/MYFEATURE`
+    - c)共同編集者が最新のfeature/MYFEATURE ブランチをローカルに反映する。`git pull origin feature/MYFEATURE`
+  - 5)執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からmasterブランチへプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
   - review が行われ、問題があれば執筆者が再度修正する
     - プルリクエストの一覧は[ここ](https://github.com/pulls)から見れる
   - review で問題が無ければ管理者がマージする
