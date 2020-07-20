@@ -245,7 +245,6 @@ The conditions of the surface heat balance are ,
 
 $$
    F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
-   
 $$
 
 > <span id="p-sfc:sfc-balance" label="p- sfc:sfc-balance">[p-sfc:sfc-balance\[p-sfc:sfc-balance]& lt;/span>
@@ -353,7 +352,6 @@ The basic formula for the groundwater flux can be written as follows.
 
 $$
   F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
- 
 $$
 
 > <span id="basic-Fw" label="basic-Fw"& gt;gt;\\braham\[basic-Fw]< /span>
@@ -436,7 +434,7 @@ $$
 
 and this is
 
-$$ 
+$$
  w_1^{m+1,*} > w_s 
 $$
 
@@ -502,7 +500,6 @@ $$
        P_l + P_c - C_I                         \;\; ( P_l > C_I ) 
     \end{array}
   \right. \; .
-  
 $$
 
 > <span id="inf-exs" label="inf-exs"&gt ;inf-exs]< /span>
@@ -612,14 +609,14 @@ For non-icy land surfaces, we can use several evaluation methods as follows.
 
 $$
           \beta = \min \left( W/W_c, 1 \right)
-        $$
+$$
 
 
      2. that depend nonlinearly on function type 2. $W$.
 
 $$
           \beta = 1-\exp \left[-3(W/W_c)^{a} \right]
-        $$
+$$
 
 
 In the following, we describe the different treatment of the sea surface from that of the land surface.
@@ -1191,14 +1188,14 @@ $$
 
 $$
         G \leftarrow G + \frac{G_{ref} - G}{\tau} \Delta t
-      $$
+$$
 
 
  This is a heat flux
 
 $$
         F_n = C_s \frac{G_{ref} - G}{\tau}
-      $$
+$$
 
 
  The equivalent of giving a .

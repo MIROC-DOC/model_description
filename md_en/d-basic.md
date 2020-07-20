@@ -11,7 +11,6 @@ It is given as follows ( Haltiner and Williams , 1980 ).
 1. a series of equations
      
 $$
-  
   \frac{\partial \pi}{\partial t} 
     + \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi
      =  - \nabla_{\sigma} \cdot \mathbf{v}_{H} 
@@ -23,7 +22,6 @@ $$
 2. hydrostatic pressure formula
      
 $$
-
   \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
 $$
 
@@ -32,7 +30,6 @@ $$
 3. equation of motion
      
 $$
-  
   \frac{\partial \zeta}{\partial t} 
      =   \frac{1}{a\cos\varphi}
             \frac{\partial A_v}{\partial \lambda}
@@ -44,7 +41,6 @@ $$
      > <span id="Vorticity" label="Vorticity">\centric\centric\centric\centric\centric\centric\lopen}&lt ;/span>
      
 $$
-  
   \frac{\partial D}{\partial t} 
      =    \frac{1}{a\cos\varphi}
             \frac{\partial A_u}{\partial \lambda}
@@ -61,7 +57,6 @@ $$
      
      > <span id="Heat Power" label="Heat Power">\blaze[Heat Power]&lt ;/span>
 $$
-
   \frac{\partial T}{\partial t}
      =  - \frac{1}{a\cos\varphi}
                \frac{\partial uT'}{\partial \lambda}
@@ -85,7 +80,6 @@ $$
      
      > <span id="Water Vapor" label="Water Vapor">\blazer\blazer.com > <span id="Water Vapor" label="Water Vapor\cleaner\cleaner\.com lt;/span>
 $$
-
   \frac{\partial q}{\partial t}
    =  - \frac{1}{a\cos\varphi}
                \frac{\partial uq}{\partial \lambda}
@@ -112,35 +106,30 @@ $$
      T_v  \equiv  T ( 1+\epsilon_v q ) \\
      T  \equiv   \bar{T}(\sigma) + T^{\prime} \\
 %
-
  \zeta  \equiv  \frac{1}{a \cos\varphi }
                     \frac{\partial v}{\partial \lambda} 
              -    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
                     ( u \cos\varphi ) \\
 %
-
      D  \equiv  \frac{1}{a \cos\varphi }
                     \frac{\partial u}{\partial \lambda} 
              +    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
                     ( v \cos\varphi ) \\
 %
-
     A_u  \equiv   ( \zeta + f ) v
              - \dot{\sigma} \frac{\partial u}{\partial \sigma} 
              - \frac{RT^{\prime}}{a\cos\varphi} 
                   \frac{\partial \pi}{\partial \lambda} 
              + {\mathcal F}_x \\
 %
-
     A_v  \equiv  - ( \zeta + f ) u
              - \dot{\sigma} \frac{\partial v}{\partial \sigma} 
              - \frac{RT^{\prime}}{a}
                   \frac{\partial \pi}{\partial \varphi} 
              + {\mathcal F}_y \\
 %
-
      E  \equiv   \frac{u^{2}+v^{2}}{2} \\
 %
  \mathbf{v}_{H} \cdot \nabla
@@ -211,7 +200,6 @@ The time-varying surface pressure equation and
 Diagnostic Formula for determining the vertical velocity ($\dot{\sigma}$) in the $\sigma$ system
 
 $$
-   
    \frac{\partial \pi}{\partial t}
    = - \int_{0}^{1} \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma
      - \int_{0}^{1} D  d \sigma ,
@@ -220,7 +208,6 @@ $$
 > <span id="barometric pressure trend" label="barometric trend">\blindness </span>.
 
 $$
-   
    \dot{\sigma} 
    = - \sigma 
      \frac{\partial \pi}{\partial t}
