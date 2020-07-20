@@ -1,0 +1,14 @@
+{
+    "imath": {
+        "TERM00000": {
+            "count": 2,
+            "text": "$u, v$"
+        },
+        "TERM00019": {
+            "count": 0,
+            "text": "$S_M,S_H$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}
