@@ -28,12 +28,12 @@ $$
       \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right)
 $$
 
-
-$ \dot{X}_{adv} $ is an advection term etc,
-$ \dot{X}_{dif} $ is a horizontal diffusion term.
+$\dot{X}_{adv}$ is an advection term etc,
+$\dot{X}_{dif}$ 
+is a horizontal diffusion term.
 
 $ \hat{X}^{t+\Delta t} $ has a ,
-Pseudo, etc. $p$ Correction of frictional heat ($ \dot{X}_{dis} $) by surface and horizontal diffusion
+Pseudo, etc. $p$ Correction of frictional heat ($\dot{X}_{dis}$) by surface and horizontal diffusion
 and physical processes ($ \dot{X}_{phy} $) have been added,
 $ {X}^{t+\Delta t} $.
 
