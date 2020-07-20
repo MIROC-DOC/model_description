@@ -35,7 +35,6 @@ $\sigma_k, (k=1,2,\ldots K)$
 is obtained from the following equation.
 
 $$
- 
  \sigma_k = \left\{ \frac{1}{1+\kappa}
                      \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
                                   - \sigma^{\kappa +1}_{k+1/2}      }
@@ -49,7 +48,6 @@ $$
 Furthermore,
 
 $$
-  
   \Delta \sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2}
 $$
 
@@ -102,7 +100,6 @@ $$
          \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
               \right] T_{v,k-1} \\
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
-               
 $$
  
 
@@ -111,7 +108,6 @@ $$
      
      > <span id="Hydrostatic pressure coefficient" label="Hydrostatic pressure coefficient">Drum pressure coefficient Hydraulic Pressure CoefficientPointPoint.com
 $$
- 
  \alpha_k   =  \left( \frac{ \sigma_{k-1/2} }
                                { \sigma_k } \right)^{\kappa} -1 \\
  \beta_k    =  1- \left( \frac{ \sigma_{k+1/2} }
@@ -123,7 +119,6 @@ $$
 3. equation of motion
      
 $$
-  
   \frac{\partial \zeta_k}{\partial t} 
         =   \frac{1}{a\cos\varphi} 
             \frac{\partial (A_v)_k}{\partial \lambda}
@@ -179,7 +174,6 @@ $$
      
   First Kpa\\cleaner\cleaner\cleaner.com
 $$
-   
    \hat{\kappa}_k 
     =       \frac{  \sigma_{k-1/2}(   \sigma^{\kappa}_{k-1/2} 
                                     - \sigma^{\kappa}_k      ) 
@@ -266,7 +260,7 @@ $$
  
 
      
-$$ 
+$$
   \hat{T}_{k-1/2}
    =  \frac{ \left[ \left( \frac{ \sigma_{k-1/2} }
                                { \sigma_k } \right)^{\kappa}
@@ -283,7 +277,6 @@ $$
      
      > <span id="Temperature Interpolation Factor" label="Temperature Interpolation Factor">\blaze> <span id="Temperature Interpolation Factor Temperature interpolation coefficient\en.com
 $$
-  
   a_k  =  \alpha_k 
               \left[ 1- \left( \frac{ \sigma_k }{ \sigma_{k-1} }
                         \right)^{\kappa} \right]^{-1}   \\
@@ -297,7 +290,6 @@ $$
 5. water vapor formula
      
 $$
-  
   \frac{\partial q_k}{\partial t}
       =   - \frac{1}{a\cos\varphi} 
                \frac{\partial u_k q_k}{\partial \lambda}

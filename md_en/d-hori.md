@@ -12,7 +12,7 @@ Using the spherical harmonic functions $Y_n^m(\lambda,\mu)$.
 However, it is $\mu \equiv \sin\varphi$.
 $Y_n^m$ satisfies the following equation,
 
-$$ 
+$$
 \nabla^{2}_{\sigma} Y_n^m(\lambda,\mu) 
 = - \frac{n(n+1)}{a^{2}} Y_n^m(\lambda,\mu) 
 $$
@@ -37,7 +37,6 @@ $$
 When I write ,
 
 $$
-  
   X_{ij} \equiv X ( \lambda_i, \mu_j )
   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
         X_n^m {Y_n^m}_{ij} ,
@@ -54,7 +53,6 @@ $$
                X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \\
          =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m*}}_{ij} w_j 
-
 $$
  
 > <span id="Deployment factor" label="Deployment factor">\blendon[Deployment factor </span>.
@@ -71,7 +69,6 @@ Using spectral expansion,
 The grid point values for the terms containing the derivatives are found as follows.
 
 $$
-   
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
      =  
         {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
@@ -81,7 +78,6 @@ $$
 > <span id="barometric pressure x" label="barometric pressure x">\blazer.com[barometric pressure x]& lt;/span>
 
 $$
-   
    \left( \cos\varphi \frac{\partial X}{\partial \varphi} \right)_{ij}
      =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        X_n^m 
@@ -95,7 +91,6 @@ From the spectral components of $\zeta$ and $D$,
 The grid point values for $u,v$ are obtained as follows.
 
 $$
-  
   u_{ij}
   = \frac{1}{\cos\varphi}
      {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} 
@@ -110,7 +105,6 @@ $$
 > <span id="Seeking U" label="Seeking U" >\blaze[U Seeking a seat
 
 $$
-  
   v_{ij}
   = \frac{1}{\cos\varphi}
    {\mathcal R}\mathbf{e} \sum_{m=-N}^{N}
@@ -129,7 +123,6 @@ The following is required.
 
 > <span id="A integral" label="A integral" label="A integral">A Integral\[A integral]& lt;/span>
 $$
-  
   \left( \frac{1}{a\cos\varphi} \frac{\partial A}{\partial \lambda} \right)_n^m 
    =  \frac{1}{4 \pi} 
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
@@ -147,7 +140,6 @@ $$
 
 > <span id="BIntegral" label="BIntegral">\blazer[BIntegral\.com]& lt;/span>
 $$
-  
   \left( \frac{1}{a\cos\varphi} 
          \frac{\partial }{\partial \varphi} (A\cos\varphi) \right)_n^m 
     =  \frac{1}{4 \pi a} 
@@ -181,7 +173,6 @@ to be used for the evaluation of the $\nabla^2$ section.
 The horizontal diffusion term is entered in the form $\nabla^{N_D}$ as follows.
 
 $$
-  
   {\mathcal D}(\zeta) = K_{MH} 
                       \left[ (-1)^{N_D/2} \nabla^{N_D}
                               - \left( \frac{2}{a^2} \right)^{N_D/2} 

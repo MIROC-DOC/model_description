@@ -38,7 +38,6 @@ All vertical fluxes are positive upward.
 
 $$
   \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
-
 $$
 
      > <span id="u-eq.orig" label="u-eq.orig ">\\braham.org</span>
@@ -286,7 +285,6 @@ $$
 
 $$
 \frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
-
 $$
 
      > <span id="e-sat" label="e-sat">\blazer[e-sat satrap]< /span>

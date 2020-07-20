@@ -36,7 +36,6 @@ $$
          {\Delta p_{k-1} + \Delta p_{k}} 
        (p_{k-1} - p_{k})
    > 0 
-  
 $$
 
 > <span id="p-adj:cond" label="p-adj: > cond">p-adj[p-adj:cond\en]</span>.

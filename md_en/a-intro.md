@@ -80,7 +80,6 @@ By making ,
 $$
   q^{t+\Delta t} = q^{t} 
        + \Delta t \left[ \left( S \right)_D + \left( S \right)_P  \right]
-  
 $$
 
 > <span id="struct:sabun" label="struct: sabun">\brahammer[struct:sabun\]</span>.

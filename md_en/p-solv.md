@@ -117,7 +117,6 @@ $$
   =  Fu^{m}_{k-1/2} 
   +  \sum_{k'=1}^{K} 
      \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} (u^{m+1}_{k'}-u^{m}_{k'})
-  
 $$
 
 > <span id="u-flux.next" label="u-flux. next">[u-flux.next]</span>.
@@ -158,7 +157,6 @@ $$
 M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
           -  \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} 
                    - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right) \Delta t
-   
 $$
 
 > <span id="u-matrix" label="u-matrix"& gt;gt;u-matrix[u-matrix]</span>
@@ -185,7 +183,6 @@ $$
                  \Delta t\delta T_{k'}  \\
   =   ( F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2} )
   + ( FR^{m}_{k-1/2} - FR^{m}_{k+1/2} )
-
 $$
 
 > <span id="deq-theta" label="deq-theta "> >Daily, we're going to have to go through a lot of stuff to get to the top.
@@ -197,7 +194,6 @@ $$
                             - \frac{\partial Fq^{m}_{k+1/2}}{\partial q_{k'}} \right)
                  \Delta t\delta q_{k'}
   = ( Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2} )
-
 $$
 
 > <span id="deq-q" label="deq-q">\blaze> <span id="deq-q deq-q\\\blind\blind\blind\.com
@@ -208,7 +204,6 @@ $$
                             - \frac{\partial Fg^{m}_{l+1/2}}{\partial G_{l'}} \right)
                  \Delta t\delta T_{k'}
   = - ( Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2} )
-
 $$
 
 > <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g deq-g\\\blur>.
@@ -247,8 +242,7 @@ $$
         + (FR^{m}_{k-1/2} - FR^{m}_{k+1/2})   \\
  +  \left(\frac{\partial FR^{m}_{k-1/2}}{\partial T_0} - \frac{\partial FR^{m}_{k+1/2}}{\partial T_0} \right)
      \Delta t\delta T_0 \; ,
-  
-  $$
+$$
 
 > <span id="comb-theta2" label="comb- </span> > theta2">theta2\[combo-theta2\\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\bladz.
 
@@ -256,7 +250,6 @@ $$
 $$
  \sum_{k'=1}^{K}  M^q_{k,k'} \delta q_{k'}
          = (Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2}) \; ,
-  
 $$
 
 > <span id="comb-q2" label="comb-q2"&gt ;combo-q2\\blazer.com;</span>
@@ -264,7 +257,6 @@ $$
 $$
   \sum_{l'=0}^{L} M^g_{l,l'} \delta G_{l'}
          = - (Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2}) \; .
-  
 $$
 
 > <span id="comb-g2" label="comb-g2"&gt ;combo-g2\blazer.com;</span>
@@ -305,8 +297,7 @@ $$
       \\
  +  \left(\frac{\partial FR^{m}_{1/2}}{\partial T_0} - \frac{\partial FR^{m}_{3/2}}{\partial T_0} \right)
      \Delta t\delta T_0 \; ,
-  
-  $$
+$$
 
 
 > <span id="comb-theta" label="comb- Theta">theta[comb-theta]</span>.
@@ -317,7 +308,6 @@ $$
          - \frac{\partial Fq^{m}_{1/2}}{\partial q_1} \Delta t\delta q_1
          = (Fq^{m}_{1/2} - Fq^{m}_{3/2}) 
          + \frac{\partial Fq^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0 \; ,
-  
 $$
 
 > <span id="combo-q" label="combo-q">\blazin' comb-q\\brai]</span>.
@@ -334,7 +324,6 @@ $$
            -  L \frac{\partial Fq^{m}_{1/2}}{\partial q_1} \Delta t\delta q_1
            -    \frac{\partial FR^{m}_{1/2}}{\partial T_1} \Delta t\delta T_1
            +    \frac{\partial Fg^{m}_{1/2}}{\partial G_1} \Delta t\delta G_1  
-  
 $$
 
 
@@ -443,7 +432,6 @@ $$
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 \\
           \end{array} \right)
-  
 $$
 
 > <span id="solve-0" label="solve-0" &gt ;</span>.
@@ -486,7 +474,6 @@ $$
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 \\
           \end{array} \right)
- 
 $$
 
 > <span id="solve-z" label="solve-z"&gt
@@ -581,7 +568,6 @@ $$
   \left(  \begin{array}{l}
           f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma x_0 \\
           \end{array} \right)
- 
 $$
 
 > <span id="solve-x" label="solve-x"&gt ;</span>
@@ -590,7 +576,6 @@ The result is That is, ,
 
 $$
   ( U_{11} +  \alpha  ) T_1 = f'_1 + F_s + \gamma T_0 
-  
 $$
 
 > <span id="solve-1" label="solve-1"&gt
@@ -700,14 +685,14 @@ In the second and subsequent calculations ,
 
 $$
         Fq = \beta Fq^P
-      $$
+$$
 
 
 2. evaporation quantity $Fq_1$ is
 
 $$
         \beta \rho C_E |\mathbf{v}| ( q_*(T_0) - q )
-      $$
+$$
 
 
  As required by ,
@@ -746,7 +731,6 @@ $$
       f_1^q + \beta Fq^P_{1/2} \\  
       f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} \\  
   \end{array} \right) \; .
-  
 $$
 
 > <span id="combin-eq" label="combin-eq "> >combin[combin-eq\]</span>.
@@ -769,7 +753,6 @@ $$
       0 
       U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t  \\
         \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t  
-                                         
       U_{00}^g + \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
                 + \frac{\partial FR_{1/2}}{\partial T_0} \right) 2 \Delta t \\
   \end{array} \right)
@@ -807,7 +790,6 @@ $$
       f_1^q +  \beta Fq^P_{1/2} 
       + \frac{\partial Fq_{1/2}}{\partial T_0} \delta_0 T_0 2 \Delta t \\
   \end{array} \right) \; .
-  
 $$
 
 > <span id="combin-eq3" label="combin-eq 3">\cleaner.com[combin-eq3]</span>
@@ -862,7 +844,6 @@ If we evaluate only the coefficients explicitly and make them implicitly differe
 
 $$
   \frac{X^{m+1} - X^m}{\Delta t} = - K( X^m ) X^{m+1}
-  
 $$
 
 > <span id="normal-fd" label="normal-fd "> > > normal-fd\\.com[normal-fd]</span>
@@ -871,14 +852,12 @@ However, consider the value of $X$ two steps ahead, $X^{\ast}$,
 
 $$
   \frac{X^{\ast} - X^m}{2\Delta t} = - K ( X^m ) X^{\ast}
-  
 $$
 
 > <span id="modify-fd1" label="modify-fd
 
 $$
   X^{m+1} = \frac{X^{\ast} + X^m}2
-  
 $$
 
 > <span id="modify-fd2" label="modify-fd 2">\clean up in the streets.
