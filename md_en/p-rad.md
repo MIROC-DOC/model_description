@@ -73,7 +73,6 @@ An integration operation with respect to the wavelength is required.
 $$
   F(z) = \int F^\lambda(z) d \lambda 
  = \int F^\lambda(0) exp (-k^\lambda z) d \lambda
- 
 $$
 
 > <span id="p-rad:beer" label="p-rad: > beer">beer[p-rad:beer\]</span>.
@@ -102,7 +101,6 @@ If you have a relatively smooth function,
 $$
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
  \simeq \sum \bar{F}^i(0) exp (-k^i z) F^i
- 
 $$
 
 > <span id="p-rad:beer-kd" label="p-rad: beer-kd">\\blazer[p-rad:beer-kd\]</span>
@@ -745,7 +743,7 @@ $$
            +  
             \left[ ( 1 - C^l ) \epsilon_S^\circ + C^l \epsilon_S^l \right] 
             e^{-\overline{<\tau^*>}/\mu_0} F_0 
-      $$
+$$
 
 
 
@@ -757,7 +755,7 @@ $$
         e^{-\overline{<\tau^*>}/\mu_0} 
         = \Pi' \left[ ( 1 - C^l ) e^{-\tau^{*\circ}/\mu_0} 
                        + C_l e^{-\tau^{*l}/\mu_0} \right]
-      $$
+$$
 
 
  It is.
@@ -770,7 +768,7 @@ $$
         \epsilon^c      =  \epsilon_A^c +
                              \epsilon_S^c 
                               e^{-<\tau^{*c}>/\mu_0} F_0        
-      $$
+$$
 
 
 
@@ -786,7 +784,7 @@ $$
 
 $$
         F = ( 1 - C^c ) \bar{F} + C^c F^c
-      $$
+$$
 
 
      ($F^\circ$ is used to estimate cloud radiative forcing
@@ -892,7 +890,7 @@ The calculation of the radiation is usually not done at every step.
 
 $$
         F =  f \frac{\mu_0}{\bar{\mu_0}} \bar{F}
-      $$
+$$
 
 
  .
@@ -903,7 +901,7 @@ $$
 
 $$
         f_I = \frac{ T_0 - T }{ T_0 - T_1 }
-      $$
+$$
 
 
      (but with a maximum value of 1 and a minimum value of 0). Also,

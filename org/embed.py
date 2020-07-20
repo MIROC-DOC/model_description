@@ -76,7 +76,7 @@ def replace_imath(doc, dic, log):
 
 def replace_emath(doc, dic, log):
     for key, value in dic["emath"].items():
-        text = f"$${math2str(value)}$$\n"
+        text = f"$$\n{math2str(value)}\n$$\n"
         pattern = r".*?" + key + r".*?"
         count = len(re.findall(pattern, doc))
         if count == 0:
@@ -90,6 +90,12 @@ def replace_emath(doc, dic, log):
 
 
 def math2str(v):
+    text = math2str_sub(v)
+    # 空行削除
+    return "\n".join([line for line in text.split('\n') if line.strip() != ''])
+
+
+def math2str_sub(v):
     if isinstance(v, str):
         if v == "&":  # 単体の&があるとエラーになるので空白に置き換える
             return ""
@@ -124,7 +130,7 @@ def math2str(v):
             v[index] = ""
             v[index + 1] = ""
 
-    return "".join([math2str(value) for value in v])
+    return "".join([math2str_sub(value) for value in v])
 
 
 def escape(text):
