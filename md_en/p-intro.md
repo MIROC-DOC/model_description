@@ -53,8 +53,8 @@ $$
 2. thermodynamic equation
 
 $$
-  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma} 
-                     + \frac{\partial F{R}}{\partial \sigma} 
+  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma}
+                     + \frac{\partial F{R}}{\partial \sigma}
 $$
 
 
@@ -67,8 +67,8 @@ $$
  If we write $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, then this is
 
 $$
-  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma} 
-                     + \frac{\partial F{R}}{\partial \sigma} 
+  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma}
+                     + \frac{\partial F{R}}{\partial \sigma}
 $$
 
 
@@ -80,7 +80,7 @@ $$
 3. water vapor continuity formula
 
 $$
-  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma} 
+  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma}
 $$
 
 
@@ -162,13 +162,13 @@ The order of execution can be divided into the following three categories.
 Cumulus convection and large-scale condensation,
 
 $$
-  \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t} 
+  \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t}
                          +  2 \Delta t Q_{CUM}(\hat{T}^{t+\Delta t})
 $$
 
 
 $$
-  \hat{T}^{t+\Delta t,(2)} = \hat{T}^{t+\Delta t,(1)} 
+  \hat{T}^{t+\Delta t,(2)} = \hat{T}^{t+\Delta t,(1)}
                          +  2 \Delta t Q_{LSC}(\hat{T}^{t+\Delta t,(1)})
 $$
 
@@ -189,7 +189,7 @@ Finally, we do time integration.
 In other words, symbolically,
 
 $$
-  \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)} 
+  \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)}
               + 2 \Delta t Q_{RAD,DIF,SFC}
                (\hat{T}^{t+\Delta t,(2)},\hat{T}^{t+\Delta t,(3)})
 $$
@@ -201,7 +201,7 @@ As for gravitational wave resistance, mass regulation and dry convection regulat
 It is similar to cumulus convection and large-scale condensation.
 
 $$
-  \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)} 
+  \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}
               +  2 \Delta t Q_{ADJ}(\hat{T}^{t+\Delta t,(3)})
 $$
 
@@ -237,7 +237,7 @@ $$
  The same method is used to calculate the geopotential.
 
 $$
-  z = \frac{\Phi}{g} 
+  z = \frac{\Phi}{g}
 $$
 
 
@@ -247,12 +247,12 @@ $$
 
 
 $$
- \Phi_k - \Phi_{k-1} 
+ \Phi_k - \Phi_{k-1}
    =  C_{p}
    \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
-          - 1 \right] T_{v,k} 
+          - 1 \right] T_{v,k}
        + C_{p}
-   \left[ 1- 
+   \left[ 1-
          \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
               \right] T_{v,k-1}
 $$
@@ -292,17 +292,16 @@ $$
  Therefore, if the latent heat of evaporation ($L$) and the gas constant ($R_v$) of water vapor are held constant .
 
 $$
-  e^*(T) = e^*(T=273{K}) 
-                      \exp \left[ \frac{L}{R_v} 
+e^*(T) = e^*(T=273{K})
+                      \exp \left[ \frac{L}{R_v}
                             \left( \frac{1}{273} - \frac{1}{T} \right)
-                       \right] ,
+                       \right] ,\\
+e^*(T=273{K}) = 611
 $$
 
-
-     $e^*(T=273{K}) = 611$ is a \\blank\blank\blank\blank\.com.
+ is a \\blank\blank\blank\blank\.com.
 
      (From [\\\[e-sat\]] (#e-sat)),
-
 $$
 \frac{\partial q^*}{\partial T} = \frac{L}{R_v T^2} q^*(T,p) .
 $$
