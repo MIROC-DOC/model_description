@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/19 17:12:47 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/07/20 09:09:53 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -11,17 +11,24 @@ import string
 import re
 import copy
 import pprint as ppr
+import pyparsing as pp
 
 
 class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
     """Simple class for MIROC document replacement."""
 
-    def __init__(self, eenv=None, etab=None, **kw):
+    def __init__(self, macros=None,
+                 eenv=None, etab=None, dennou=False, **kw):
         """Initialize MIROC-Doc replacement."""
-        macros = { 'Module': 1 }
+        macros = macros or {}
+        macros['Module'] = 1
+        macros['Dvect'] = 1
+        macros['DP'] = (4, 1, 2)
+        macros['DD'] = (3, 1)
 
         super().__init__(macros=macros, **kw)
 
+        self.dennou = dennou
         self.tbl_imath = {}
         self.tbl_emath = {}
         self.tabular = {}
@@ -47,7 +54,59 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
             sys.exit(1)
         self.etab = etab
 
+        if self.dennou:
+            self.set_parse_action(r'DP', self.action_DP)
+            self.set_parse_action(r'DD', self.action_DD)
+            self.set_parse_action(r'Dvect', self.action_Dvect)
+
         pass
+
+    def action_DP(self, s, loc, toks):
+        r"""Replace \DP expansion on-the-fly."""
+        a = [''] * 5
+        for n in range(1, 5):
+            c = toks.P.get(f'#{n}')
+            if c:
+                a[n] = self.unparse(c.A)
+
+        if a[2]:
+            tmpl = (r'\left(\frac{{\partial^{1}{3}}}'
+                    + r'{{\partial {4}{{}}^{1}}}\right)_{2}').format(*a)
+        elif a[1]:
+            tmpl = (r'\frac{{\partial^{1}{3}}}'
+                    + r'{{\partial {4}{{}}^{1}}}').format(*a)
+        else:
+            tmpl = r'\frac{{\partial{3}}}{{\partial {4}}}'.format(*a)
+        tmpl = pp.ParseResults(tmpl)
+        toks.T = tmpl
+        toks[:] = tmpl
+        return(toks)
+
+    def action_DD(self, s, loc, toks):
+        r"""Replace \DD expansion on-the-fly."""
+        a = [''] * 4
+        for n in range(1, 4):
+            c = toks.P.get(f'#{n}')
+            if c:
+                a[n] = self.unparse(c.A)
+
+        if a[1]:
+            tmpl = r'\frac{{d^{1}{2}}}{{d {3}{{}}^{1}}}'.format(*a)
+        else:
+            tmpl = r'\frac{{d {2}}}{{d {3}}}'.format(*a)
+        tmpl = pp.ParseResults(tmpl)
+        toks.T = tmpl
+        toks[:] = tmpl
+        return(toks)
+
+    def action_Dvect(self, s, loc, toks):
+        r"""Replace \Dvect expansion on-the-fly."""
+        # \def\Dvect#1{\mbox{\boldmath $#1$}}
+        a = toks.P.get('#1')
+        a = self.unparse(a)
+        tmpl = r'\mbox{{\boldmath ${}$}}'.format(a)
+        toks = self.parse_string(tmpl)
+        return(toks)
 
     def post_parse(self, *args, **kw):
         """Batch replacement of special macros."""
@@ -284,10 +343,11 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
 def main(args, run):
     """Main."""
     try:
-        opts, args = getopt.getopt(args, 'vqfc:o:d:E:T:',
+        opts, args = getopt.getopt(args, 'vqfc:o:d:E:T:D',
                                    ['verbose', 'quiet', 'debug',
                                     'force',
                                     'cache=', 'output=','outdir=',
+                                    'dennou',
                                     'equation=', ])
     except getopt.GetoptError as err:
         print(err)
@@ -300,6 +360,7 @@ def main(args, run):
     vlev = 0
     eenv = None
     etab = None
+    dennou = None
     for o, a in opts:
         if o in ['-c', '--cache']:
             cachedir = a
@@ -317,6 +378,8 @@ def main(args, run):
             eenv = a
         elif o in ['-T', '--tabular']:
             etab = a
+        elif o in ['-D', '--dennou']:
+            dennou = True
         elif o in ['--debug']:
             debug = True
     if len(args) > 1 and outf:
@@ -365,7 +428,8 @@ def main(args, run):
             cf = open(cache, 'w')
 
         print("# %s > %s [%s]" % (f, tex, cache))
-        lb = ParserMirocDoc(eenv=eenv, etab=etab, debug=debug)
+        lb = ParserMirocDoc(eenv=eenv, etab=etab,
+                            dennou=dennou, debug=debug)
         try:
             lb.parse_file(f)
         except Exception as e:
