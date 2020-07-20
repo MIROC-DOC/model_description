@@ -95,11 +95,11 @@
   - org/ CCSR/NIES AGCMマニュアルやその英訳
   - reference/ 公開しても問題ない、既存の参考資料
 
-- 開発フロー
+- 開発フロー("GitHub flow"にならう)
 
   - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
   - 2)ローカルの資料を最新に `git pull`
-  - 3)執筆担当の人は issue に基づき master ブランチを元に feature/MYFEATURE ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
+  - 3)執筆担当の人は issue に基づいて master ブランチを元に feature/MYFEATURE(章の名前など、各自で特徴的な名前を設定) ブランチを切る(./git.md)`git checkout -b feature/MYFEATURE origin`
   - 今いるブランチを確認する。`git branch`
   - 4)feature/MYFEATURE ブランチで執筆する。abcの手順で共同編集者でファイルをやり取りする。
     - a)ファイル変更が一段落するたびに、コミットする
