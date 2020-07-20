@@ -9,9 +9,9 @@ As a time-varying term for the vector quantity <span>q</span>,
 The term ${\mathcal A}$ for the Euler method and the term ${\mathcal B}$ for the implicit method Divided into .
 
 $$
-  {\mathbf q}^+ 
+  {\mathbf q}^+
       = {\mathbf q} + 2 \Delta t {\mathcal A}( {\mathbf q}   )
-                           + 2 \Delta t {\mathcal B}( {\mathbf q}^+ ) \; . 
+                           + 2 \Delta t {\mathcal B}( {\mathbf q}^+ ) \; .
 $$
 
 
@@ -19,8 +19,8 @@ It is difficult to solve this in the general case, but,
 It can be solved by linearizing $B$ in an approximate manner.
 
 $$
-  {\mathcal B}( {\mathbf q}^+ ) 
-                           \simeq {\mathcal B}( {\mathbf q} ) 
+  {\mathcal B}( {\mathbf q}^+ )
+                           \simeq {\mathcal B}( {\mathbf q} )
                             + B( {\mathbf q}^+ - {\mathbf q} )
 $$
 
@@ -39,9 +39,9 @@ $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
 And then you can write,
 
 $$
-  ( I - 2 \Delta t B ) \Delta {\mathbf q} 
+  ( I - 2 \Delta t B ) \Delta {\mathbf q}
       = 2 \Delta t \left(  {\mathcal A}( {\mathbf q} )
-                         + {\mathcal B}( {\mathbf q} ) \right) \; . 
+                         + {\mathcal B}( {\mathbf q} ) \right) \; .
 $$
 
 
@@ -82,7 +82,7 @@ It is considered to be the same as the $p$ coordinates except for the difference
 Here,
 
 $$
-  \Delta \sigma_{k} = \sigma_{k-1/2} - \sigma_{k+1/2} \; , 
+  \Delta \sigma_{k} = \sigma_{k-1/2} - \sigma_{k+1/2} \; ,
 $$
 
 
@@ -104,7 +104,7 @@ However, the treatment of the time step is devised to improve the stability (see
 For example, the equation of the discretized $u$ ([\[u-eq.\origorig]](#u- eq.orig)) is ,
 
 $$
-  (u_k^{m+1} - u_k^{m})/\Delta t 
+  (u_k^{m+1} - u_k^{m})/\Delta t
     = (Fu^{m+1}_{k-1/2}-Fu^{m+1}_{k+1/2})/\Delta m_k
 $$
 
@@ -113,9 +113,9 @@ Here, $m$ is a time step.
 Since $Fu_{k-1/2}$ etc. is a function of $u_k$, its dependency is linearized and the
 
 $$
-   Fu^{m+1}_{k-1/2} 
-  =  Fu^{m}_{k-1/2} 
-  +  \sum_{k'=1}^{K} 
+   Fu^{m+1}_{k-1/2}
+  =  Fu^{m}_{k-1/2}
+  +  \sum_{k'=1}^{K}
      \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} (u^{m+1}_{k'}-u^{m}_{k'})
 $$
 
@@ -126,12 +126,12 @@ Thus, if you put $\delta u_k \equiv (u^{m+1}_{k}-u^{m}_{k})/\Delta t$,
 $$
   \Delta m_k \delta u_k
   =   \left( Fu^{m}_{k-1/2}
-         +  \sum_{k'=1}^{K} 
+         +  \sum_{k'=1}^{K}
             \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} \Delta t \delta u_{k'}
          -   Fu^{m}_{k+1/2}
          -  \sum_{k'=1}^{K}
             \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \Delta t \delta u_{k'}
-      \right) 
+      \right)
 $$
 
 
@@ -139,7 +139,7 @@ Namely,
 
 $$
   \Delta m_k \delta u_k
-  -  \sum_{k'=1}^{K} \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} 
+  -  \sum_{k'=1}^{K} \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}}
                        - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right)
                  \Delta t\delta u_{k'}
   = Fu^{m}_{k-1/2} - Fu^{m}_{k+1/2}
@@ -155,7 +155,7 @@ $$
 
 $$
 M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
-          -  \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} 
+          -  \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}}
                    - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right) \Delta t
 $$
 
@@ -174,23 +174,25 @@ Temperature, specific humidity, and ground temperature are not as simple as thos
 $$
   c_p \Delta m_k \delta T_k
    -  \sum_{k'=0}^{K}
-                 \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}} 
+                 \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}}
                        - \frac{\partial F\theta^{m}_{k+1/2}}{\partial T_{k'}} \right)
                  \Delta t\delta T_{k'}
   - \sum_{k'=0}^{K}
-                 \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}} 
+                 \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}}
                        - \frac{\partial FR^{m}_{k+1/2}}{\partial T_{k'}} \right)
                  \Delta t\delta T_{k'}  \\
   =   ( F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2} )
   + ( FR^{m}_{k-1/2} - FR^{m}_{k+1/2} )
 $$
 
-> <span id="deq-theta" label="deq-theta "> >Daily, we're going to have to go through a lot of stuff to get to the top.
+> <span id="deq-theta" label="deq-theta ">
+
+Daily, we're going to have to go through a lot of stuff to get to the top.
 
 
 $$
   \Delta m_k \delta q_k
-  -  \sum_{k'=0}^{K} \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}} 
+  -  \sum_{k'=0}^{K} \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}}
                             - \frac{\partial Fq^{m}_{k+1/2}}{\partial q_{k'}} \right)
                  \Delta t\delta q_{k'}
   = ( Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2} )
@@ -200,7 +202,7 @@ $$
 
 $$
   Cg_l \Delta z_l \delta G_l
-  +  \sum_{l'=0}^{L} \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}} 
+  +  \sum_{l'=0}^{L} \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}}
                             - \frac{\partial Fg^{m}_{l+1/2}}{\partial G_{l'}} \right)
                  \Delta t\delta T_{k'}
   = - ( Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2} )
@@ -238,7 +240,7 @@ $k \ge 2$ (about $\theta, q$) or TERM At 00039 (for $G$),
 
 $$
     \sum_{k'=1}^{K}  M^\theta_{k,k'} \delta T_{k'}
-        =  (F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2}) 
+        =  (F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2})
         + (FR^{m}_{k-1/2} - FR^{m}_{k+1/2})   \\
  +  \left(\frac{\partial FR^{m}_{k-1/2}}{\partial T_0} - \frac{\partial FR^{m}_{k+1/2}}{\partial T_0} \right)
      \Delta t\delta T_0 \; ,
@@ -265,23 +267,23 @@ However,
 
 $$
 M^{\theta}_{k,k'} \equiv c_p \Delta m_k \delta_{k,k'}
-          -  \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}} 
+          -  \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}}
                    - \frac{\partial F\theta^{m}_{k+1/2}}{\partial T_{k'}} \right) \Delta t
-          -  \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}} 
-                   - \frac{\partial FR^{m}_{k+1/2}}{\partial T_{k'}} \right) \Delta t \; , 
+          -  \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}}
+                   - \frac{\partial FR^{m}_{k+1/2}}{\partial T_{k'}} \right) \Delta t \; ,
 $$
 
 
 $$
 M^{q}_{k,k'} \equiv \Delta m_k \delta_{k,k'}
-          -  \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}} 
+          -  \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}}
                    - \frac{\partial Fq^{m}_{k+1/2}}{\partial q_{k'}} \right) \Delta t \; ,
 $$
 
 
 $$
 M^{g}_{l,l'} \equiv Cg_l \Delta z_l \delta_{l,l'}
-          -  \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}} 
+          -  \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}}
                    - \frac{\partial Fg^{m}_{l+1/2}}{\partial G_{l'}} \right) \Delta t \; .
 $$
 
@@ -291,9 +293,9 @@ $k=1$ (about $\theta, q$) or $l=0$ (for $G$),
 $$
     \sum_{k'=1}^{K}  M^\theta_{1,k'} \delta T_{k'}
   +  \frac{\partial F\theta^{m}_{1/2}}{\partial T_1} \Delta t\delta T_1
-        =  (F\theta^{m}_{1/2} - F\theta^{m}_{3/2}) 
+        =  (F\theta^{m}_{1/2} - F\theta^{m}_{3/2})
         + (FR^{m}_{1/2} - FR^{m}_{3/2})   \\
- +   \frac{\partial F\theta^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0 
+ +   \frac{\partial F\theta^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0
       \\
  +  \left(\frac{\partial FR^{m}_{1/2}}{\partial T_0} - \frac{\partial FR^{m}_{3/2}}{\partial T_0} \right)
      \Delta t\delta T_0 \; ,
@@ -306,7 +308,7 @@ $$
 $$
  \sum_{k'=1}^{K}  M^q_{1,k'} \delta q_{k'}
          - \frac{\partial Fq^{m}_{1/2}}{\partial q_1} \Delta t\delta q_1
-         = (Fq^{m}_{1/2} - Fq^{m}_{3/2}) 
+         = (Fq^{m}_{1/2} - Fq^{m}_{3/2})
          + \frac{\partial Fq^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0 \; ,
 $$
 
@@ -315,7 +317,7 @@ $$
 $$
   {\sum_{l'=1}^{L} M^g_{0,l'} \delta G_{l'}
            +  \left(    \frac{\partial F\theta^{m}_{1/2}}{\partial T_0}
-           +  L \frac{\partial Fq^{m}_{1/2}}{\partial T_0} 
+           +  L \frac{\partial Fq^{m}_{1/2}}{\partial T_0}
            +    \frac{\partial FR^{m}_{1/2}}{\partial T_0}
            -  \frac{\partial Fg^{m}_{1/2}}{\partial T_0} \right) \Delta t\delta T_0  }
          \\
@@ -336,8 +338,8 @@ $$
 M^{\theta}_{1,k'} \equiv c_p \Delta m_1 \delta_{1,k'}
           -  \left(
                    - \frac{\partial F\theta^{m}_{3/2}}{\partial T_{k'}} \right) \Delta t
-          -  \left( \frac{\partial FR^{m}_{1/2}}{\partial T_{k'}} 
-                   - \frac{\partial FR^{m}_{3/2}}{\partial T_{k'}} \right) \Delta t \; , 
+          -  \left( \frac{\partial FR^{m}_{1/2}}{\partial T_{k'}}
+                   - \frac{\partial FR^{m}_{3/2}}{\partial T_{k'}} \right) \Delta t \; ,
 $$
 
 
@@ -406,7 +408,7 @@ For the sake of brevity, we shall now refer to this document as $K=3$. For the s
 You can't lose the.
 
 $$
-  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23} 
+  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23}
   M_{22}  M_{21} \\ M_{13}  M_{12}  M_{11} + \alpha \\
 \end{array} \right)
 \left( \begin{array}{l} T_3 \\ T_2 \\ T_1 \\
@@ -422,13 +424,13 @@ The expression for $F_s = 0, \alpha=0, \gamma=0$,
 by LU decomposition.
 
 $$
-  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23} 
+  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23}
   M_{22}  M_{21} \\ M_{13}  M_{12}  M_{11} \\
          \end{array} \right)
   \left( \begin{array}{l}
          T'_3 \\ T'_2 \\ T'_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 \\
           \end{array} \right)
@@ -452,7 +454,7 @@ $$
   \left( \begin{array}{l}
          T'_3 \\ T'_2 \\ T'_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 \\
           \end{array} \right)
@@ -470,7 +472,7 @@ $$
   \left( \begin{array}{l}
          f'_3 \\ f'_2 \\ f'_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 \\
           \end{array} \right)
@@ -490,7 +492,7 @@ $$
   \left( \begin{array}{l}
          T'_3 \\ T'_2 \\ T'_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           f'_3 \\ f'_2 \\ f'_1 \\
           \end{array} \right)
@@ -515,7 +517,7 @@ $$
   \left( \begin{array}{l}
          T_3 \\ T_2 \\ T_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
           \end{array} \right)
@@ -533,7 +535,7 @@ $$
   \left( \begin{array}{l}
          f_3 \\ f_2 \\ f_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
           \end{array} \right)
@@ -546,7 +548,7 @@ $$
   \left( \begin{array}{l}
          f_3 \\ f_2 \\ f_1 \\
          \end{array} \right)
- = 
+ =
   \left( \begin{array}{l}
          f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma T_0 \\
          \end{array} \right)
@@ -564,7 +566,7 @@ $$
   \left( \begin{array}{l}
          T_3 \\ T_2 \\ T_1 \\
          \end{array} \right)
-  = 
+  =
   \left(  \begin{array}{l}
           f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma x_0 \\
           \end{array} \right)
@@ -575,7 +577,7 @@ $$
 The result is That is, ,
 
 $$
-  ( U_{11} +  \alpha  ) T_1 = f'_1 + F_s + \gamma T_0 
+  ( U_{11} +  \alpha  ) T_1 = f'_1 + F_s + \gamma T_0
 $$
 
 > <span id="solve-1" label="solve-1"&gt
@@ -596,7 +598,7 @@ Indicates that it can be regarded as one layer to be supplied.
 (the expression corresponding to [\ltra[solve-1\]](#solve-1)) is obtained, as follows Yes.
 
 $$
-  ( U^{T}_{11} +  \alpha^{T}  ) \delta T_1 - \gamma^{T} \delta T_0 
+  ( U^{T}_{11} +  \alpha^{T}  ) \delta T_1 - \gamma^{T} \delta T_0
       = f^{T}_1 + F\theta_{1/2}
 $$
 
@@ -621,9 +623,9 @@ If we can solve these problems, we can then
 Afterwards, the consistuous flux is applied to the obtained temperature
 
 $$
-  F\theta_c  =  F\theta_{1/2} 
+  F\theta_c  =  F\theta_{1/2}
                    + \gamma^{T} \delta T_0 -\alpha^{T} \delta T_1 \\
-  Fq^P_c  =  Fq^P_{1/2} 
+  Fq^P_c  =  Fq^P_{1/2}
                    + \gamma^{q} \delta T_0 -\alpha^{q} \delta q_1
 $$
 
@@ -635,7 +637,7 @@ It is even simpler since it is actually a triple diagonal matrix.
 
 During the program,
 For atmospheric parts in `MODULE:[VFTND1(pimtx.F)]`,
-MODULE:[GNDHT1(pggnd.F)]` for the underground part of the LU decomposition method first half of the year
+`MODULE:[GNDHT1(pggnd.F)]` for the underground part of the LU decomposition method first half of the year
 (where $f'_k$ is obtained),
 In `MODULE:[SLVSFC(pgslv.F)]`, the $3\times 3$ Solve the equation,
 Seeking $\delta q_1, \delta G_1, \delta T_0$.
@@ -668,8 +670,8 @@ Possible evaporation rate is ,
 
 $$
   Fq^P_c = Fq^P_{1/2}
-       + \frac{\partial Fq^P_{1/2}}{\partial q_1} \delta q_1 2 \Delta t 
-       + \frac{\partial Fq^P_{1/2}}{\partial T_0} \delta T_0 2 \Delta t 
+       + \frac{\partial Fq^P_{1/2}}{\partial q_1} \delta q_1 2 \Delta t
+       + \frac{\partial Fq^P_{1/2}}{\partial T_0} \delta T_0 2 \Delta t
 $$
 
 
@@ -710,15 +712,15 @@ The concrete form of the coupling formula is as follows.
 $$
   \renewcommand{\arraystretch}{1.5}
   \left( \begin{array}{ccc}
-      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t 
-      0 
-      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0} 
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
+      0
+      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
                          + \frac{\partial FR_{1/2}}{\partial T_0}\right) 2 \Delta t \\
-      0 
-      U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t 
+      0
+      U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t
       - \beta \frac{\partial Fq^P_{1/2}}{\partial T_0} \Delta t \\
-        \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t 
-      L \beta \frac{\partial Fq_{1/2}}{\partial q_1} \Delta t 
+        \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t
+      L \beta \frac{\partial Fq_{1/2}}{\partial q_1} \Delta t
       U_{00}^g + \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
                 + L \beta \frac{\partial Fq_{1/2}}{\partial T_0}
                 + \frac{\partial FR_{1/2}}{\partial T_0} \right) 2 \Delta t \\
@@ -746,11 +748,11 @@ If the first method is used as an estimate of evaporation, we get the following.
 $$
  \renewcommand{\arraystretch}{1.5}
   \left( \begin{array}{ccc}
-      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t 
-      0 
-      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0} 
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
+      0
+      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
                          + \frac{\partial FR_{1/2}}{\partial T_0}\right) 2 \Delta t \\
-      0 
+      0
       U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t  \\
         \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t  
       U_{00}^g + \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
@@ -774,9 +776,9 @@ In the third calculation, the concatenation equation for a fixed surface tempera
 $$
  \renewcommand{\arraystretch}{1.5}
   \left( \begin{array}{cc}
-      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t 
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
       0 \\
-      0 
+      0
       U_{11}^q - \frac{\partial Fq_{1/2}}{\partial q_1} 2 \Delta t \\
   \end{array} \right)
   \left( \begin{array}{l}
@@ -785,9 +787,9 @@ $$
 =
   \left( \begin{array}{l}
       f_1^T + + F\theta_{1/2}
-      + \left( \frac{\partial F\theta_{1/2}}{\partial T_0} 
+      + \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
                     + \frac{\partial FR_{1/2}}{\partial T_0} \right) \delta_0 T_0 2 \Delta t \\
-      f_1^q +  \beta Fq^P_{1/2} 
+      f_1^q +  \beta Fq^P_{1/2}
       + \frac{\partial Fq_{1/2}}{\partial T_0} \delta_0 T_0 2 \Delta t \\
   \end{array} \right) \; .
 $$
@@ -813,7 +815,7 @@ $$
 \Delta s  =  f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} - U_{00}^g
           -  \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
                 + L \beta \frac{\partial Fq_{1/2}}{\partial T_0}
-                + \frac{\partial FR_{1/2}}{\partial T_0} \right) \delta_0 T_0 \Delta t 
+                + \frac{\partial FR_{1/2}}{\partial T_0} \right) \delta_0 T_0 \Delta t
                  \\
           -  \frac{\partial F\theta_{1/2}}{\partial T_1} \delta T_1 \Delta t
                 - L \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \delta q_1 \Delta t \; .
@@ -870,9 +872,9 @@ In general, ([\[modify-fd1\]](#modify-fd1)), ([\\0.25}](#modify-fd1) modify-fd2\
 Rewriting it into a form yields the following.
 
 $$
-  \left(\frac{\Delta X}{\Delta t}\right)^{\ast} = 
-     - K( X^m ) \left( X^m + 
-        \left(\frac{\Delta X}{\Delta t}\right)^{\ast} 
+  \left(\frac{\Delta X}{\Delta t}\right)^{\ast} =
+     - K( X^m ) \left( X^m +
+        \left(\frac{\Delta X}{\Delta t}\right)^{\ast}
         2 \Delta t \right)
 $$
 
