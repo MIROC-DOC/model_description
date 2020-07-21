@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/20 09:09:40 fuyuki lexer.py>'
+# 'Time-stamp: <2020/07/22 07:58:16 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -15,6 +15,44 @@ import pyparsing as pp
 # pp.ParserElement.enablePackrat()   # does not help, even worse
 
 
+class FileTree:
+    """File tree for LaTeX document."""
+
+    def __init__(self, file, parent=None):
+        """Store FILE binding to LEX."""
+        if isinstance(file, str):
+            self.file = file
+        else:
+            self.file = file.name
+
+        self.parent = parent
+        self.children = []
+        self.lex = None
+        if parent:
+            self.root = parent.root
+        else:
+            self.root = self
+
+    def add(self, file):
+        """Add child."""
+        ch = FileTree(file, self)
+        self.children.append(ch)
+        return(ch)
+
+    def aslist(self):
+        """Return file tree as list."""
+        if self.children:
+            return({self.file: [ch.aslist() for ch in self.children]})
+        else:
+            return({self.file: None})
+
+    def __iter__(self):
+        """Iterate through tree."""
+        yield self
+        for ch in self.children or []:
+            yield from ch
+
+
 class LexerBase:
     """Core lexer/parser class for LaTeX document."""
 
@@ -22,12 +60,15 @@ class LexerBase:
                  macros=None, envs=None,
                  arrays=None,
                  atletter=False,
+                 verbose=None,
                  debug=False, *args, **kw):
         """Initialize pyparsing definition."""
         default_whites = pp.ParserElement.DEFAULT_WHITE_CHARS
         pp.ParserElement.setDefaultWhitespaceChars('')
 
-        self.file = None
+        self.verbose = verbose or 0
+
+        self.ftree = None
         macros = macros or {}
         envs = envs or {}
         arrays = arrays or {}
@@ -111,7 +152,7 @@ class LexerBase:
         # string.punctuation
         self.esym = pp.MatchFirst([pp.Combine(pp.Literal(esc + ch))
                                    for ch in string.punctuation + ' '
-                                   if ch not in [lbs, rbs]])
+                                   if ch not in [lbs, rbs, esc]])
 
         self.usym = pp.MatchFirst([pp.Combine(pp.Literal(esc + ch))
                                    for ch in uc_puncts])
@@ -190,6 +231,9 @@ class LexerBase:
         # def
         self.defs = self.lex_def([r'def', r'gdef', r'xdef', r'edef'])
 
+        # macros (on-the-fly)
+        self.motf = pp.Forward()
+
         # macros
         self.pe_macros = {'makeatletter': self.atletter,
                           'makeatother': self.atother,
@@ -205,6 +249,7 @@ class LexerBase:
         # set_parse_action failed if pe_envs is [pp.Group(envgroup)]
         # Due to unknown reason, pe_envs must be [envgroup]
 
+        self.cenv = [True]
         # array type environments
         eall = []
         for e, a in arrays.items():
@@ -221,14 +266,6 @@ class LexerBase:
 
         self.elex = pp.MatchFirst([pp.Group(e)
                                    for e in self.pe_envs.values()])
-        # print(self.pe_envs)
-        # for e in self.pe_envs.values():
-        #     e.setParseAction(self.action_dummy)
-        # ppr.pprint([(e, id(p), id(p.parseAction),p.parseAction) for e, p in self.pe_envs.items()])
-        # self.elex = pp.MatchFirst([self.pe_envs[e]
-        #                            for e in itertools.chain(arrays.keys(),
-        #                                                     envs.keys(),
-        #                                                     [None])])
 
         # fallback
         self.fallback = pp.Combine(self.esc + pp.Regex('.')) | pp.Regex('.')
@@ -236,16 +273,19 @@ class LexerBase:
 
         # expr
         contents = (self.normal
+                    | self.motf
                     | self.mlex
                     | self.verb
                     | self.elex
                     | self.benv | self.eenv
-                    | self.cseq | self.esym | self.ssym
+                    | self.cseq | self.cr | self.esym | self.ssym
                     | self.xmath | self.imath | self.dmath
                     | self.group
                     | self.nl | self.ws
                     | self.posp
                     | self.uws | self.usym)
+        # if self.debug:
+        #     contents.setDebug()
         skip = (self.cline)
         fb = (self.fallback)
 
@@ -392,18 +432,23 @@ class LexerBase:
                 # item = item.setResultsName('I', True)
                 col = pp.Group(pp.ZeroOrMore(~sep + ~end + self.expr)
                                + pp.Optional(self.amp('S')))
-                line = pp.Group(pp.ZeroOrMore(~self.cr + ~end
-                                              + col.setResultsName('I', True))
-                                + pp.Optional(self.cr('R')))
-                item = line
+                line = (pp.ZeroOrMore(~self.cr + ~end
+                                      + col.setResultsName('I', True))
+                        + pp.Optional(self.cr('R')))
+                line.setParseAction(self.action_array_row)
+                item = pp.Group(line)
             else:
-                item = self.expr
+                # need to separate self.cr
+                # otherwise CR is not detected  (strange...)
+                item = self.cr | self.expr
             body = pp.ZeroOrMore(~end + item)
             close_env << (body.setResultsName('B')
                           + pp.Group(end).setResultsName('Z'))
             return
 
         open_env.setParseAction(gen_close)
+        open_env.addParseAction(self.tree_env_push)
+
         # envgroup << pp.Group(open_env + close_env)
         envgroup << open_env + close_env
         if self.debug:
@@ -413,8 +458,18 @@ class LexerBase:
         else:
             name = 'ENV'
         envgroup.setName(name)
-        # envgroup.setParseAction(self.action_dummy)
+        envgroup.setParseAction(self.tree_env_pop)
         return(envgroup)
+
+    def tree_env_push(self, s, loc, toks):
+        """Generate environment tree."""
+        self.cenv.append(toks.E.C)
+        return(None)
+
+    def tree_env_pop(self, s, loc, toks):
+        """Generate environment tree."""
+        self.cenv.pop(-1)
+        return(None)
 
     def lex_begin(self, name=None, args=None, macro=None):
         r"""Define lexer for \begin{NAME} starter."""
@@ -454,6 +509,11 @@ class LexerBase:
             lex = lex + ins
         if alex:
             lex = lex + pp.Group(alex).setResultsName('P')
+        # if alex:
+        #     alex = pp.Group(alex)
+        # else:
+        #     alex = pp.Group(pp.Empty())
+        # lex = lex + alex.setResultsName('P')
 
         lex.setName('MACRO/%s' % macro)
         # 'MACRO', [[ARG], [ARG], ...]
@@ -491,13 +551,28 @@ class LexerBase:
 
         return(alex)
 
+    def action_section(self, s, loc, toks):
+        """Update section."""
+        k = 'sec'
+        m = toks.M
+        j = self.sects.index(m)
+        c = self.counters[k]
+        if isinstance(c, int):
+            c = (c, )
+        if len(c) <= j:
+            c = c + (0, ) * (j - len(c)) + (1, )
+        else:
+            c = c[:j] + (c[j] + 1, )
+        self.counters[k] = c
+        return(None)
+
     def search(self, tree=None, *macros):
         """Search all the MACROS occurence in TREE.
 
         Macro in MACROS must be defined in LexerBase if with arguments.
         Only registered macros can be searched.
         """
-        tree = tree or self.orig
+        tree = tree or self.ftree.lex
         r = []
         for t in tree:
             if self.is_iterable(t) and len(t) > 0:
@@ -510,7 +585,7 @@ class LexerBase:
 
     def search_env(self, tree=None, *envs):
         """Search all the ENVS environment occurence in TREE."""
-        tree = tree or self.orig
+        tree = tree or self.ftree.lex
         r = []
         for t in tree:
             if self.is_iterable(t) and len(t) > 0:
@@ -547,17 +622,26 @@ class LexerBase:
 
         CAUTION: Modification of ParseResults is not fully functional.
         """
-        pos_b = 0
+
         pos_n = 1
-        pos_a = 2
-        pos_c = 3
+        # pos_a = 2
+        # pos_c = 3
         pos_e = -1
+        if 'P' in tree:
+            pos_a = 2
+            pos_c = 3
+        else:
+            pos_a = None
+            pos_c = 2
 
         if body is not False:
+            # for j in range(4):
+            #     print((j, tree[j]))
             body = body or []
             rep = pp.ParseResults(toklist=body)
             tree[pos_c:pos_e] = rep
             tree['B'] = rep
+            # print(tree)
             # NOT WORKS:  tree.B = rep
 
         if name is not False:
@@ -574,7 +658,8 @@ class LexerBase:
             rep = pp.ParseResults(toklist=args)
             tree.args = rep
             tree[pos_a] = rep
-
+        # tree[:] = ntree
+        # print(self.unparse(ntree))
         return
 
     def get_parameter(self, tree, j, content=True, unparse=False):
@@ -588,10 +673,6 @@ class LexerBase:
                     r = r.C
                 else:
                     r = r.A
-            # args = tree[1]
-            # r = args[j-1][-1]
-            # if content:
-            #     r = r[1:-1]
         if unparse and not isinstance(r, str):
             r = self.unparse(r)
         return(r)
@@ -604,24 +685,49 @@ class LexerBase:
 
     def parse_file(self, file, *args, **kw):
         """Run parseFile() and adjust tree."""
-        self.file = file
-        self.orig = self.lex.parseFile(file, *args, **kw)
-        self.post_parse()
+        if self.ftree is None:
+            self.ftree = FileTree(file)
+        else:
+            # print('before', self.ftree.file)
+            self.ftree = self.ftree.add(file)
+            # print('after', self.ftree.file)
+
+        cf = self.ftree
+        results = self.lex.parseFile(file, *args, **kw)
+        cf.lex = results
+        # print('PARSE:', file, cf.file)
+        if cf.parent:
+            self.ftree = cf.parent
+        # print(cf.aslist())
+        # print(cf.lex)
+        self.post_parse(orig=cf.lex)
+
+        return(results)
+
+    def add_parse_action(self, m, *args):
+        """Run addParseAction() on macro M or env E."""
+        for pe in self.get_pe(m):
+            pe.addParseAction(*args)
 
     def set_parse_action(self, m, *args):
-        """Run setParseAction() on macro M."""
+        """Run setParseAction() on macro M or env E."""
+        for pe in self.get_pe(m):
+            pe.setParseAction(*args)
+
+    def get_pe(self, m):
+        """Search ParserElement table."""
+        r = []
         if self.is_iterable(m):
             for a in m:
-                print(a)
-                self.set_parse_action(a, *args)
-        if m in self.pe_macros:
-            self.pe_macros[m].setParseAction(*args)
+                r.extend(self.get_pe(a))
+        elif m in self.pe_macros:
+            r.append(self.pe_macros[m])
         elif m in self.pe_envs:
-            # print(m, self.pe_envs[m])
-            self.pe_envs[m].setParseAction(*args)
+            r.append(self.pe_envs[m])
         else:
             sys.stderr.write('Unregistered macro %s\n' % m)
             sys.exit(1)
+        return(r)
 
     def append_report(self, msg, s, loc, toks):
         """Append a report line."""
@@ -633,18 +739,24 @@ class LexerBase:
 
     def post_parse(self, orig=None):
         """Postproccess after parser."""
-        orig = orig or self.orig
-        self.cache['tree'] = orig.asList()
+        # orig = orig or self.ftree.lex
+        # self.cache['tree'] = orig.asList()
 
         for k in sorted(self.report.keys()):
             sys.stderr.write('%s\n' % self.report[k])
 
-    def write(self, file=None, tree=None):
+    def write(self, file=None, all=None, tree=None):
         """Write results to file."""
         file = file or sys.stdout
-        tree = tree or self.orig
-
-        file.write(''.join(self.flatten(tree)))
+        if all:
+            for f in self.ftree.root:
+                print(f'%%%%% {f.file}')
+                tree = f.lex
+                file.write(''.join(self.flatten(tree)))
+        else:
+            f = self.ftree.root
+            tree = f.lex
+            file.write(''.join(self.flatten(tree)))
 
     def strip(self, items, elem=None):
         """Strip all the blanks."""
@@ -672,12 +784,20 @@ class LexerBase:
                 # print("O: ", r)
                 return(r)
 
-    def unparse(self, items):
+    def unparse(self, items, compact=False, sfx=None):
         """Unparse lex trees to string."""
         if self.is_iterable(items):
-            return(''.join([str(s) for s in self.flatten(items)]))
+            r = ''.join(str(s) for s in self.flatten(items))
         else:
-            return(str(items))
+            r = items
+        if compact:
+            r = str(r).replace('\n', '  ')
+            if isinstance(compact, int):
+                if len(r) > compact:
+                    r = r[:compact] + (sfx or '')
+            return(r)
+        else:
+            return(str(r))
 
     def flatten(self, items):
         """Flatten input list but string."""
@@ -709,21 +829,29 @@ class LexerBase:
                   default=self.dump_result,
                   sort_keys=True, indent=1, ensure_ascii=False)
 
-    def diag(self, tree=None, dump=False, *args, **kw):
+    def diag(self, dump=False, tree=False, *args, **kw):
         """Diagnose original structure."""
-        tree = tree or self.orig
+        print('%%% files')
+        ppr.pprint(self.ftree.root.aslist())
+
         if dump:
-            print('### dump %s', self.file)
-            print(tree.dump())
-        print('### tree %s', self.file)
-        ppr.pprint(tree.asList(), indent=2)
+            print('%%% dump')
+            for f in self.ftree.root:
+                print(f'%% {f.file}')
+                print(f.lex.dump())
+        # print('### tree %s', self.file)
+        if tree:
+            print('%%% tree')
+            for f in self.ftree.root:
+                print(f'%% {f.file}')
+                ppr.pprint(f.lex.asList(), indent=2)
 
 
 class ParserStd(LexerBase):
     """Basic parser class for LaTeX document."""
 
     def __init__(self,
-                 include=False,
+                 include=False, expand=False,
                  macros=None, envs=None, arrays=None, *args, **kw):
         """Initialize pyparsing definition."""
         envs = envs or {}
@@ -734,6 +862,7 @@ class ParserStd(LexerBase):
         macros.setdefault('documentclass', [2, 1])
         macros.setdefault('usepackage', [2, 1])
         macros.setdefault('label', 1)
+        macros.setdefault('nonumber', 0)
         macros.setdefault('caption', [2, 1])
         macros.setdefault('ref', 1)
         macros.setdefault('input', 1)
@@ -746,10 +875,26 @@ class ParserStd(LexerBase):
         arrays.setdefault('tabular',  [2, 1])  # [ ]{2}
         arrays.setdefault('tabular*', [3, 2])  # {1}[ ]{3}
 
-        envs.setdefault('figure',   [1, 1])  # [ ]
-        envs.setdefault('figure*',  [1, 1])  # [ ]
-        envs.setdefault('table',   [1, 1])  # [ ]
-        envs.setdefault('table*',  [1, 1])  # [ ]
+        self.figs = ['figure', 'figure*']
+        for m in self.figs:
+            envs.setdefault(m,   [1, 1])  # [ ]
+
+        self.tabs = ['table', 'table*']
+        for m in self.tabs:
+            envs.setdefault(m,   [1, 1])  # [ ]
+
+        self.matharrays = ['eqnarray',
+                           'split', 'align', 'gather', ]
+        self.eqs = ['equation'] + self.matharrays
+
+        for m in self.matharrays:
+            arrays.setdefault(m,  0)
+            arrays.setdefault(m + '*',  0)
+        for m in self.eqs:
+            if m in self.matharrays:
+                continue
+            envs.setdefault(m,  0)
+            envs.setdefault(m + '*',  0)
 
         macros.setdefault('bibliographystyle', 1)
         macros.setdefault('bibliography', 1)
@@ -764,20 +909,207 @@ class ParserStd(LexerBase):
         macros.setdefault('newcommandx', [4, 2, 3])
         macros.setdefault('newenvironmentx', [5, 2, 3])
 
-        if include is True:
-            include = [r'input']
-        if include:
-            self.set_parse_action(include, self.action_include)
+        # section macros
+        self.elevels = [True]
+        self.sects = [r'chapter', r'section', r'subsection',
+                      r'subsubsection', ]
+        for m in self.sects:
+            macros.setdefault(m, [2, 1])
+
+        # counters
+        self.ckey = {}
+        for m in self.sects:
+            self.ckey[m] = 'sec'
+        for m in self.eqs:
+            self.ckey[m] = 'eq'
+        for m in self.tabs:
+            self.ckey[m] = 'tab'
+        for m in self.figs:
+            self.ckey[m] = 'fig'
+
+        self.counters = {'sec': 0,
+                         'eq': 0,
+                         'fig': 0,
+                         'tab': 0, }
+        self.tbl_labels = {}
 
         super().__init__(macros=macros, envs=envs, arrays=arrays,
                          *args, **kw)
 
+        for m in self.sects:
+            self.add_parse_action(m, self.action_section)
+
+        self.add_parse_action('label', self.action_label)
+
+        for m in itertools.chain(self.eqs, self.tabs, self.figs):
+            self.add_parse_action(m, self.action_counter)
+
+        # include None or 0:    skip
+        #         1:            parse only
+        #         2:            parse and comment out
+        #         3:            parse and insert
+        self.include = include or 0
+        if self.include > 0:
+            self.set_parse_action([r'input', r'include'],
+                                  self.action_include)
+        if expand:
+            self.set_parse_action('newcommand', self.action_newcommand)
+            self.pe_motf = []
+            self.motf_defn = {}
+
+        self.cr.addParseAction(self.action_cr)
+
         # self.set_parse_action('tabular', self.action_dummy)
+
+    def action_label(self, s, loc, toks):
+        r"""Control \label."""
+        lab = toks.P.get('#1')
+        if lab:
+            lab = self.unparse(lab.get('C'))
+        if lab not in self.tbl_labels:
+            e = self.cenv[-1]
+            k = self.ckey.get(e)
+            if k:
+                c = self.counters[k] + 1
+            else:
+                c = False
+            if self.verbose > 1:
+                print('label[%s]: %d' % (lab, c))
+            if lab:
+                self.tbl_labels[lab] = (k, c)
+        # ppr.pprint(self.counters)
+
+    def action_counter(self, s, loc, toks):
+        r"""Increase counters."""
+        e = toks.E.C
+        if e in self.matharrays:
+            pass
+        else:
+            k = self.ckey.get(e)
+            if k:
+                self.counters[k] = self.counters[k] + 1
+                if self.verbose > 1:
+                    print(k, self.counters[k],
+                          self.unparse(toks.B, compact=30, sfx='...'))
+
+    def action_array_row(self, s, loc, toks):
+        r"""Control row in array-like environment."""
+        e = self.cenv[-1]
+        if e in self.matharrays:
+            k = self.ckey.get(e)
+            lab = self.search(r'\label')
+            if lab:
+                lab = toks.P.get('#1')
+            if lab:
+                lab = self.unparse(lab.get('C'))
+            if not self.search(toks, r'\nonumber'):
+                self.counters[k] = self.counters[k] + 1
+                c = self.counters[k]
+                if lab:
+                    self.tbl_labels[lab] = (k, c)
+            else:
+                c = None
+            if self.verbose > 1:
+                print(k, c, self.unparse(toks, compact=30, sfx='...'))
+
+    def action_cr(self, s, loc, toks):
+        r"""Control \\ in some environemnts."""
+        # e = self.cenv[-1]
+        # if e in self.matharrays:
+        #     k = self.ckey.get(e)
+        #     self.counters[k] = self.counters[k] + 1
 
     def action_include(self, s, loc, toks):
         r"""Perform \include FILE."""
-        print(toks.dump())
-        return None
+        # print(toks.dump())
+        incf = self.unparse(toks.P['#1']['C'])
+        if not os.path.exists(incf):
+            parent = os.path.dirname(self.ftree.file)
+            incf = os.path.join(parent, os.path.basename(incf))
+        if self.verbose > 0 or True:
+            print('Read %s' % incf)
+        ilex = self.parse_file(incf)
+        if self.include == 1:
+            return(None)
+        else:
+            mark = '% ' + self.unparse(toks) + '\n'
+            mark = self.parse_string(mark)
+            if self.include == 2:
+                return(mark)
+            else:
+                toks = pp.ParseResults(toklist=[mark, ilex])
+                return(toks)
+
+    def action_newcommand(self, s, loc, toks):
+        r"""Perform newcommand on the fly."""
+        # print(toks.dump())
+        m = self.unparse(toks.P['#1']['C'])
+        m = m[1:]
+        npar = toks.P.get('#2')
+        if npar:
+            npar = int(self.unparse(npar['C']))
+        else:
+            npar = 0
+        opt = toks.P.get('#3')
+        if opt:
+            odef = opt.get('C')
+            if odef:
+                odef = self.unparse(odef)
+            else:
+                odef = ''
+        else:
+            odef = None
+        if opt:
+            args = [npar, 1]
+        else:
+            args = npar
+        defn = toks.P.get('#4')
+        if defn:
+            defn = defn.get('C')
+        defn = defn or ''
+        # print(m, npar, opt, odef, defn)
+        lex = self.lex_macro(m, args)
+        lex.setParseAction(self.action_expansion)
+        self.pe_motf.append(lex)
+        self.motf_defn[m] = (odef, defn)
+
+        self.motf << pp.MatchFirst([pp.Group(e)
+                                    for e in self.pe_motf])
+
+        return(None)
+
+    def action_expansion(self, s, loc, toks):
+        r"""Perform expansion on the fly."""
+        m = toks.M
+        if (m or '') == '':
+            m = toks.T.M
+        if m:
+            args = {}
+            odef, defn = self.motf_defn[m]
+            if toks.P:
+                for k in toks.P.keys():
+                    # print(toks.P[k][0].dump())
+                    args[k] = toks.P[k][0].get('C', '')
+                if odef is None:
+                    pass
+                else:
+                    args['#1'] = args.get('#1') or odef
+            for k in args:
+                args[k] = self.unparse(args[k])
+            rep = []
+            for e in self.flatten(defn):
+                if e in args.keys():
+                    e = args[e]
+                rep.append(e)
+            # print(m, defn, args, rep)
+            rep = self.unparse(rep)
+            toks = self.parse_string(rep)
+            pass
+            # print(m, self.motf_defn[m])
+        else:
+            pass
+            # print(m, toks.dump())
+        return(toks)
 
     def action_dummy(self, s, loc, toks):
         """Perform dummy action."""
@@ -798,7 +1130,7 @@ class ParserStd(LexerBase):
 
         todo: \hline, \multicolumn, \multirow.
         """
-        orig = orig or self.orig
+        orig = orig or self.ftree.lex
         for env in ['tabular']:
             for tenv in self.search_env(orig, env):
                 tbl = []
@@ -871,23 +1203,25 @@ class ParserAux(ParserStd):
 def main(args, run):
     """Test lexer."""
     try:
-        opts, args = getopt.getopt(args, 'vqc:i',
+        opts, args = getopt.getopt(args, 'vqc:ixa',
                                    ['debug',
                                     'verbose', 'quiet',
-                                    'include',
+                                    'include', 'expand', 'all',
                                     'class=', ])
     except getopt.GetoptError as err:
         print(err)
         raise
     debug = False
     vlev = 0
-    inc = False
+    inc = None
+    expn = False
     ctbl = {'b': (LexerBase, False),
             't': (ParserStd, False),
             's': (ParserStd, True),
             'a': (ParserAux, True), }
 
     ckey = True                 # auto
+    out_all = False
     for o, a in opts:
         if o in ['-v', '--verbose']:
             vlev = max(0, vlev) + 1
@@ -896,7 +1230,11 @@ def main(args, run):
         elif o in ['--debug']:
             debug = True
         elif o in ['-i', '--include']:
-            inc = True
+            inc = (inc or 0) + 1
+        elif o in ['-a', '--all']:
+            out_all = True
+        elif o in ['-x', '--expand']:
+            expn = True
         elif o in ['-c', '--class']:
             if a not in ctbl:
                 sys.stderr.write('Unknown class type [%s]\n' % a)
@@ -904,7 +1242,6 @@ def main(args, run):
             ckey = a
 
     for f in args:
-        print("# %s" % (f))
         k = ckey
         if k is True:
             e = os.path.splitext(f)[1]
@@ -917,16 +1254,17 @@ def main(args, run):
                 k = 't'
         clex, atsw = ctbl[k]
 
-        lb = clex(atletter=atsw, include=inc, debug=debug)
+        lb = clex(atletter=atsw, include=inc, expand=expn,
+                  debug=debug)
         try:
             lb.parse_file(f, parseAll=True)
         except Exception as e:
             sys.stderr.write('Panic in %s [%s]\n' % (f, e.args))
             raise
 
-        if vlev > 0:
+        if vlev > 1:
             lb.diag()
-        lb.write()
+        lb.write(all=out_all)
     pass
 
 

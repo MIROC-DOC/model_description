@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/20 09:47:21 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/07/22 08:25:58 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -9,7 +9,6 @@ import getopt
 import os.path
 import string
 import re
-import copy
 import pprint as ppr
 import pyparsing as pp
 
@@ -26,13 +25,14 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         macros['Dvect'] = 1
         macros['DP'] = (4, 1, 2)
         macros['DD'] = (3, 1)
+        macros['Dinclude'] = 1
+        macros['EQN'] = 1
 
         super().__init__(macros=macros, **kw)
 
         self.dennou = dennou
         self.label = label
         self.math = math
-        self.tbl_label = {}
         self.tbl_ref = {}
         self.tbl_imath = {}
         self.tbl_emath = {}
@@ -45,7 +45,7 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
 
         self.cache.update(imath=self.tbl_imath,
                           emath=self.tbl_emath,
-                          label=self.tbl_label,
+                          label=self.tbl_labels,
                           ref=self.tbl_ref)
         if eenv == 'q':
             eenv = 'quote'
@@ -67,29 +67,53 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
             self.set_parse_action(r'DP', self.action_DP)
             self.set_parse_action(r'DD', self.action_DD)
             self.set_parse_action(r'Dvect', self.action_Dvect)
+            self.set_parse_action(r'Dinclude', self.action_Dinclude)
 
         self.set_parse_action(r'Module', self.action_module)
-        if self.label:
-            self.set_parse_action(r'label', self.action_label)
-            self.set_parse_action(r'ref', self.action_ref)
+        # if self.label:
+        #     self.add_parse_action(r'label', self.action_label)
+        #     self.add_parse_action(r'ref', self.action_ref)
 
         pass
 
-    def action_label(self, s, loc, toks):
-        r"""Store label tags."""
-        tag = self.unparse(toks.P['#1'].C)
-        fmt = self.fmt_label
-        txt = fmt % len(self.tbl_label)
-        self.tbl_label[txt] = tag
+    def action_counter(self, s, loc, toks):
+        r"""Increase counters."""
+        super().action_counter(s, loc, toks)
+        if self.label:
+            e = toks.E.C
+            if e in self.matharrays:
+                pass
+            else:
+                k = self.ckey.get(e)
+                if k in ['eq']:
+                    rep = (self.unparse(toks.B)
+                           + (r' \EQN{%d}' % self.counters[k]))
+                    rep = self.parse_string(rep)
+                    self.modify_env(toks, body=rep)
+            return(toks)
+
+    def action_array_row(self, s, loc, toks):
+        super().action_array_row(s, loc, toks)
+        if self.label:
+            e = self.cenv[-1]
+            if e in self.matharrays:
+                k = self.ckey.get(e)
+                if not self.search(toks, r'\nonumber'):
+                    c = self.counters[k]
+                    rep = self.unparse(toks)
+                    eqn = r' \EQN{%d}' % c
+                    if rep.endswith('\\\\'):
+                        rep = rep[:-2] + eqn + rep[-2:]
+                    else:
+                        rep = rep + eqn
+                    toks = self.parse_string(rep)
         return(toks)
 
-    def action_ref(self, s, loc, toks):
-        r"""Store ref tags."""
-        tag = self.unparse(toks.P['#1'].C)
-        fmt = self.fmt_ref
-        txt = fmt % len(self.tbl_ref)
-        self.tbl_ref[txt] = tag
-        return(toks)
+    def action_Dinclude(self, s, loc, toks):
+        r"""Replace \Dinclude expansion."""
+        f = self.get_parameter(toks, 1, unparse=True) + r'.tex'
+        rep = r'\include{%s}' % f
+        return(self.parse_string(rep))
 
     def action_DP(self, s, loc, toks):
         r"""Replace \DP expansion on-the-fly."""
@@ -134,7 +158,8 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         # \def\Dvect#1{\mbox{\boldmath $#1$}}
         a = toks.P.get('#1')
         a = self.unparse(a)
-        tmpl = r'\mbox{{\boldmath ${}$}}'.format(a)
+        # tmpl = r'\mbox{{\boldmath ${}$}}'.format(a)
+        tmpl = r'\mbox{$\mathbf%s$}' % a
         toks = self.parse_string(tmpl)
         return(toks)
 
@@ -145,31 +170,38 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         self.modify_macro(toks, macro=r'\texttt', args=[(1, arep)])
         return(toks)
 
-    def post_parse(self, *args, **kw):
+    def post_parse(self, orig=None, *args, **kw):
         """Batch replacement of special macros."""
-        super().post_parse(*args, **kw)
+        super().post_parse(orig=orig, *args, **kw)
         if self.math:
-            self.rep_imath()
-            self.rep_enveq()
-            self.rep_envar()
-            self.rep_dispm()
-        self.rep_tabular()
+            self.rep_imath(tree=orig)
+            self.rep_enveq(tree=orig)
+            self.rep_envar(tree=orig)
+            self.rep_dispm(tree=orig)
+        self.rep_tabular(tree=orig)
+
+    def post_parse_root(self, *args, **kw):
+        """Batch replacement of special macros (for root source)."""
         if self.label:
-            self.rep_ref()
+            for f in self.ftree.root:
+                print('###', f.file)
+                self.rep_ref(tree=f.lex)
 
     def rep_imath(self, tree=None, fmt=None, lev=0):
         """Replace inline maths."""
         strsep = string.punctuation + string.whitespace
 
-        tree = tree or self.tree
+        tree = tree or self.ftree.lex
         fmt = fmt or self.fmt_imath
         math = False
         rsfx = re.compile('[a-zA-Z]+$')
         rpfx = re.compile(r'^[a-zA-Z]+')
 
+        # ppr.pprint(tree.asList())
         for j, a in enumerate(tree):
             if math:
                 p, m = tree[j-2:j]
+                # print(p, m, a, len(self.tbl_imath))
                 src = m.copy()
                 txt = fmt % len(self.tbl_imath)
                 rep = [txt]
@@ -232,18 +264,20 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
     def rep_enveq(self, tree=None, fmt=None):
         """Replace equation environement."""
         fmt = fmt or self.fmt_emath
-        tree = tree or self.tree
+        tree = tree or self.ftree.lex
         for m in self.search_env(tree, r'equation', r'equation*',
                                  r'displaymath', ):
             lbl = self.search(m, r'\label')
+            eqn = self.get_eqn(m)
+            # print(eqn)
             txt = fmt % len(self.tbl_emath)
             src = m.B.copy()
             self.tbl_emath[txt] = src
-            rep = [txt, '\n']
+            rep = ['\n', txt, eqn, '\n']
             if len(lbl) == 1:
                 rep.extend([lbl, '\n'])
             elif len(lbl) > 1:
-                ll = [''.join(psi.flatten(li)) for li in lbl]
+                ll = [''.join(self.flatten(li)) for li in lbl]
                 sys.stderr.write('Multiple labels {%s}\n' % ' '.join(ll))
             self.modify_env(m, body=rep)
             if self.eenv:
@@ -252,32 +286,32 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
     def rep_envar(self, tree=None, fmt=None):
         """Replace eqnarray environement."""
         fmt = fmt or self.fmt_emath
-        tree = tree or self.tree
+        tree = tree or self.ftree.lex
         for m in self.search_env(tree, r'eqnarray', r'eqnarray*'):
             txt = fmt % len(self.tbl_emath)
             src = m.B.copy()
             self.tbl_emath[txt] = src
-            rep = []
-            for a in m.B.asList():
-                if a == '\\\\':
-                    rep.extend([txt, a, '\n'])
-                elif a == '':
-                    pass
-                elif a[0] == r'\label':
-                    rep.append(a)
-                    rep.append('\n')
-                elif a == r'\nonumber':
-                    rep.append(a)
-                    rep.append('\n')
-            rep.extend([txt, '\n'])
+            rep = ['\n']
+            for a in m.B:
+                eqn = self.get_eqn(a)
+                rep.extend([txt, eqn, '\n'])
             self.modify_env(m, body=rep)
             if self.eenv:
                 self.modify_env(m, name=self.eenv)
 
+    def get_eqn(self, tree):
+        r"""Search \EQN and return its replacement."""
+        eqn = self.search(tree, r'\EQN')
+        if eqn:
+            eqn = self.get_parameter(eqn[0], 1, unparse=True)
+        if eqn:
+            eqn = f'    --- ({eqn})'
+        return(eqn or '')
+
     def rep_dispm(self, tree=None, fmt=None):
         r"""Replace displaymath (\[\])."""
         fmt = fmt or self.fmt_emath
-        tree = tree or self.tree
+        tree = tree or self.ftree.lex
 
         def is_ascii(s):
             return all(ord(c) < 128 for c in s)
@@ -306,7 +340,7 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         fmt = fmt or self.fmt_tabular
         self.cache['tabular'] = self.tabular
 
-        tree = tree or self.tree
+        tree = tree or self.ftree.lex
         for m in self.search_env(tree, 'tabular'):
             txt = fmt % len(self.tabular)
             src = m.B.copy()
@@ -337,14 +371,55 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
 
     def rep_ref(self, tree=None):
         """Replace equation environement."""
+        tree = tree or self.ftree.lex
+        for m in self.search(tree, r'\ref'):
+            tag = self.get_parameter(m, 1, unparse=True)
+            k, n = self.tbl_labels.get(tag, (None, None))
+            if k in ['eq']:
+                m[:] = [str(n)]
+                if self.verbose > 2:
+                    print(f'% Reference embedded {tag}[{k}]=={n})')
+            elif self.verbose > 1:
+                print(f'% skipped {tag}[{k}]=={n})')
+
         pass
 
-    def diag(self, *args, **kw):
+    def write(self, outdir, outf, over=False, *args, **kw):
+        """Write all the results."""
+        # super().write(*args, **kw)
+        for f in self.ftree.root:
+            src = f.file
+            tree = f.lex
+            of = sys.stdout
+            if outdir is False:
+                of = sys.stdout
+                dest = 'stdout'
+            else:
+                if not outf:
+                    outf = os.path.basename(src)
+                dest = os.path.join(outdir, outf)
+                if os.path.exists(dest):
+                    if os.path.samefile(src, dest):
+                        sys.stderr.write('Output file is identical %s.\n'
+                                         % dest)
+                        sys.exit(1)
+                    if not over:
+                        sys.stderr.write('Exists output file %s.\n' % dest)
+                        sys.exit(1)
+                of = open(dest, 'w')
+            print(f'% Convert {f.file} > {dest}')
+            of.write(''.join(self.flatten(tree)))
+            if outdir:
+                of.close()
+            outf = None         # clear for included files
+
+    def diag(self, tables=False, *args, **kw):
         """Diagnostic."""
         super().diag(*args, **kw)
-        self.diag_imath()
-        self.diag_emath()
-        self.diag_tabular()
+        if tables:
+            self.diag_imath()
+            self.diag_emath()
+            self.diag_tabular()
 
     def diag_imath(self):
         """Diagnose inline maths."""
@@ -375,22 +450,57 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
                 print('%s: (null)')
 
 
+def show_usage(run=None):
+    """Show usage."""
+    run = run or ''
+    print(f"Usage: {run} [OPTIONS]... [FILES]....")
+    print("""MIROC document parser for the pushmi-pullyu project.
+
+Input files are parsed and output to same basenames under output
+directory (default `.').  If subfile-mode is enabled (-S) all
+the included files are also parsed and output to their same
+basenames under same output directory.
+Replacement properties are output to rootname.json.
+
+Parameters
+    FILE                 source file
+
+General options
+    -h, --help           show this usage
+    -v, --verbose        be more verbose
+    -q, --quiet          be more silent
+    --debug              enable to print debug information
+    -f, --force          force overwrite if exists
+    -o, --output=FILE    set output filename as FILE
+    -d, --outdir=PATH    set PATH as output directory (must exist)
+Replacement controls
+    -M, --math           replace inline maths and math environements
+    -D, --dennou         replace dennou macros
+    -L, --label          embed labels and their references
+    -S, --subfiles       also parse included files
+    -E, --equation=SW    replace equation-like environments as SW
+                         SW: q=quote, qq=quotation
+    -T, --tabular=SW     replace tabular-like environments as SW
+                         SW: d=description
+
+Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>.
+This system is part of MIROC-DOC project and psiTeX project.""")
+    pass
+
+
 def main(args, run):
     """Main."""
     try:
-        opts, args = getopt.getopt(args, 'vqfc:o:d:E:T:DLM',
-                                   ['verbose', 'quiet', 'debug',
+        opts, args = getopt.getopt(args, 'hvqfo:d:MDLSE:T:',
+                                   ['help', 'verbose', 'quiet', 'debug',
                                     'force',
-                                    'cache=', 'output=','outdir=',
-                                    'math',
-                                    'dennou',
-                                    'label',
-                                    'equation=', ])
+                                    'output=', 'outdir=',
+                                    'math', 'dennou', 'label', 'subfiles',
+                                    'equation=', 'tabular=', ])
     except getopt.GetoptError as err:
         print(err)
         raise
     debug = False
-    cachedir = None
     outdir = None
     outf = None
     overw = False
@@ -400,9 +510,11 @@ def main(args, run):
     dennou = None
     label = None
     math = None
+    inc = 0
     for o, a in opts:
-        if o in ['-c', '--cache']:
-            cachedir = a
+        if o in ['-h', '--help']:
+            show_usage(run)
+            sys.exit(0)
         elif o in ['-d', '--outdir']:
             outdir = a
         elif o in ['-o', '--output']:
@@ -419,77 +531,59 @@ def main(args, run):
             etab = a
         elif o in ['-D', '--dennou']:
             dennou = True
+        elif o in ['-S', '--subfiles']:
+            inc = 1
         elif o in ['-L', '--label']:
             label = True
         elif o in ['-M', '--math']:
             math = True
         elif o in ['--debug']:
             debug = True
-    if len(args) > 1 and outf:
-        if outf == '-':
-            pass
-        elif os.path.isdir(outf):
-            outdir = outf
-            outf = None
         else:
-            sys.stderr.write("Need output directory, not a file name %s\n"
-                             % outf)
-            sys.exit(1)
-    if len(args) > 1:
+            assert False, "Unhandled option %s" % o
+
+    if len(args) == 0:
+        show_usage(run=run)
+        sys.exit(0)
+
+    if not outf and not outdir:
+        outdir = '-'
+
+    if outf == '-' or outdir == '-':
+        outf = False
+        outdir = False
+    else:
         outdir = outdir or '.'
-        if outf and outf != '-':
-            sys.stderr.write("Cannot apply file name %s\n" % outf)
-            sys.exit(1)
-    elif len(args) == 1:
-        if outf and outf != '-':
-            if os.path.isdir(outf):
-                outdir = outdir or outf
-                outf = None
-        else:
-            outdir = outdir or '.'
 
-    cachedir = cachedir or outdir or '.'
     for f in args:
-        # tree, imath, emath, envs = gen_tree(r.asList())
-        base = os.path.basename(f)
-        root, ext = os.path.splitext(base)
-        if outdir == '-' or outf == '-':
-            tex = 'stdout'
-            of = None
-        else:
-            tex = outf or os.path.join(outdir, base)
-            if os.path.exists(tex) and not overw:
-                sys.stderr.write('Exists %s, skipped.\n' % tex)
-                continue
-            of = open(tex, 'w')
-        if cachedir == '-':
-            cache = 'stdout'
-            cf = None
-        else:
-            cache = root + '.json'
-            cache = os.path.join(cachedir, cache)
-            cf = open(cache, 'w')
-
-        print("# %s > %s [%s]" % (f, tex, cache))
+        print(f"% Parse {f}")
         lb = ParserMirocDoc(eenv=eenv, etab=etab,
                             label=label, math=math,
-                            dennou=dennou, debug=debug)
+                            include=inc,
+                            dennou=dennou,
+                            verbose=vlev, debug=debug)
         try:
             lb.parse_file(f)
+            lb.post_parse_root()
         except Exception as e:
             sys.stderr.write('Panic in %s [%s]\n' % (f, e.args))
             raise
 
-        lb.write(of)
-        lb.dump(cf)
-
-        if of:
-            of.close()
-        if cf:
+        lb.write(outdir, outf, over=overw)
+        if outdir:
+            base = os.path.basename(f)
+            root, ext = os.path.splitext(base)
+            cache = root + '.json'
+            cache = os.path.join(outdir, cache)
+            cf = open(cache, 'w')
+            print(f'% Create cache {cache}')
+            lb.dump(cf)
             cf.close()
 
         if vlev > 0:
-            lb.diag(dump=(vlev > 1))
+            lb.diag(dump=(vlev > 2),
+                    tree=(vlev > 3),
+                    tables=(vlev > 1))
     pass
 
 
