@@ -174,68 +174,24 @@ There's a split.
 The ground surface is a condition given by the outside world,
 According to the surface type $m$, they are classified as follows.
 
- - TAB00000:0.0
-     m
-
- - TAB00000:0.1
- requirement
-
- - TAB00000:1.0
-     \-I can't even begin to tell you what to do.
-
- - TAB00000:1.1
- mixed-layered ocean
-
- - TAB00000:2.0
-     \-I can't tell you how many times I've been in a row.
-
- - TAB00000:2.1
- Sea Ice (given from outside)
-
- - TAB00000:3.0
-     0
-
- - TAB00000:3.1
- Sea level (providing temperature from outside)
-
- - TAB00000:4.0
-     1
-
- - TAB00000:4.1
- land ice
-
- - TAB00000:5.0
-     $\ge$ 2
-
- - TAB00000:5.1
- land surface
+| Header0 | Header1 |
+| ------- | ------- |
+| m | requirement |
+| \-I can't even begin to tell you what to do. | mixed-layered ocean |
+| \-I can't tell you how many times I've been in a row. | Sea Ice (given from outside) |
+| 0 | Sea level (providing temperature from outside) |
+| 1 | land ice |
+| $\ge$ 2 | land surface |
 
 Furthermore, depending on the possible internal changes in the ice conditions,
 Take the following ground surface conditions $n$.
 
- - TAB00001:0.0
-     n
-
- - TAB00001:0.1
- state
-
- - TAB00001:1.0
-     0
-
- - TAB00001:1.1
- Sea surface without ice
-
- - TAB00001:2.0
-     1
-
- - TAB00001:2.1
- Sea Ice and Land Ice
-
- - TAB00001:3.0
-     $\ge$ 2
-
- - TAB00001:3.1
- land surface
+| Header0 | Header1 |
+| ------- | ------- |
+| n | state |
+| 0 | Sea surface without ice |
+| 1 | Sea Ice and Land Ice |
+| $\ge$ 2 | land surface |
 
 These are defined in `MODULE:[GNDSFC(pgsfc)]`.
 
@@ -1204,3 +1160,4 @@ $$
  Provide the appropriate $\tau$ and perform nudging,
  Remember     the $F_n$,
  You can give it to me as $Fs_{1+1/2}$.
+
