@@ -3,6 +3,7 @@ import re
 import sys
 import json
 import glob
+import pprint
 
 
 def main():
@@ -38,6 +39,7 @@ def embed(input_path, json_path, output_path, log_path):
     log = {"imath": {}, "emath": {}, "tabular": {}}
     doc = replace_imath(doc, dic, log["imath"])
     doc = replace_emath(doc, dic, log["emath"])
+    doc = process_table(doc, log["tabular"])
 
     with open(output_path, "w") as fo:
         fo.write(doc)
@@ -137,6 +139,80 @@ def escape(text):
     a = repr(text)[1:-1]
     # print(a)
     return a
+
+
+def process_table(doc, log):
+    output_flag = []
+    insert_flag = []
+    table_cache = {}
+    in_table = False
+    lines = doc.split("\n")
+    for line in lines:
+        m = re.search(r"TAB\d{5}:\d+.\d+", line)
+        if m is not None:
+            mstr = m.group()
+            table_id = int(mstr[3:8])
+            row, column = [int(s) for s in mstr[9:].split(".")]
+            output_flag.append(False)
+            in_table = True
+            if row == 0 and column == 0:
+                insert_flag.append(table_id)
+            else:
+                insert_flag.append(None)
+                for i in range(len(output_flag) - 2, -1, -1):
+                    if not output_flag[i]:
+                        break
+                    output_flag[i] = False
+        else:
+            output_flag.append(not in_table)
+            insert_flag.append(None)
+            if in_table and line.strip() != "":
+                if not table_id in table_cache:
+                    table_cache[table_id] = {}
+                    table_cache[table_id]["max_row"] = 0
+                    table_cache[table_id]["max_column"] = 0
+                if not row in table_cache[table_id]:
+                    table_cache[table_id][row] = {}
+                table_cache[table_id][row][column] = line.strip()
+                table_cache[table_id]["max_row"] = max(
+                    table_cache[table_id]["max_row"], row)
+                table_cache[table_id]["max_column"] = max(
+                    table_cache[table_id]["max_column"], column)
+                in_table = False
+                for i in range(len(output_flag) - 2, -1, -1):
+                    if not output_flag[i]:
+                        break
+                    output_flag[i] = False
+    output = ""
+    for lineno, line in enumerate(lines):
+        if output_flag[lineno]:
+            output += f"{line}\n"
+        if insert_flag[lineno] is not None:
+            table_id = insert_flag[lineno]
+            table_dic = table_cache[table_id]
+            output += format_table(table_id, table_dic, log)
+    return output
+
+
+def format_table(table_id, table_dic, log):
+    output = ""
+    max_row = table_dic["max_row"]
+    max_column = table_dic["max_column"]
+    header1 = [f"Header{column}" for column in range(0, max_column+1)]
+    header2 = ["-------" for column in range(0, max_column+1)]
+    output += f"| {' | '.join(header1)} |\n"
+    output += f"| {' | '.join(header2)} |\n"
+    log[table_id] = []
+    for row in range(0, max_row+1):
+        columns = []
+        for column in range(0, max_column+1):
+            if row in table_dic and column in table_dic[row]:
+                columns.append(table_dic[row][column])
+            else:
+                columns.append("")
+                log[table_id].append(f"{row}.{column}")
+        output += f"| {' | '.join(columns)} |\n"
+    return output
 
 
 if __name__ == "__main__":

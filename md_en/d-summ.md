@@ -45,36 +45,36 @@ Ask for $\zeta_n^m, D_n^m$,
 $$
 \zeta_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
-                \frac{w_j}{a(1-\mu_j^{2})}
+                \frac{w_j}{a(1-\mu_j^{2})} 
                  \\
            +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                     u_{ij} \cos\varphi_j (1-\mu_j^2)
+                     u_{ij} \cos\varphi_j (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
 $$
-
+ 
 > <span id="d-summ:uv-zeta" label="d- summ:uv-zeta">[d-summ:uv-zeta]</ span>
 
 
 $$
     D_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
-                \frac{w_j}{a(1-\mu_j^{2})}
+                \frac{w_j}{a(1-\mu_j^{2})} 
                  \\
            -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                  v_{ij} \cos\varphi_j  (1-\mu_j^2)
+                  v_{ij} \cos\varphi_j  (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} ; .
 $$
-
+ 
 > <span id="d-summ:uv-D" label="d-summ: uv-D">\\[d-summ:uv-D\]</span>
 
 
 I'll take that further,
 
 $$
-  \zeta_{ij}
-   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+  \zeta_{ij} 
+   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       \zeta_n^m  {Y_n^m}_{ij} \; ,
 $$
 
@@ -111,11 +111,11 @@ $$
 to a spectral representation and then ,
 
 $$
-   \frac{1}{a \cos \varphi}
+   \frac{1}{a \cos \varphi} 
    \left( \frac{\partial \pi}{\partial \lambda} \right)_{ij}
-     =
-   \frac{1}{a \cos \varphi}
-        {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+     = 
+   \frac{1}{a \cos \varphi} 
+        {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        im \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
 $$
 
@@ -124,9 +124,9 @@ $$
    \frac{1}{a}
    \left( \frac{\partial \pi}{\partial \varphi} \right)_{ij}
      =  
-   \frac{1}{a \cos \varphi}
-       {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
-       \pi_n^m
+   \frac{1}{a \cos \varphi} 
+       {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       \pi_n^m 
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 $$
 
@@ -137,7 +137,7 @@ Barometric pressure change term, and lead DC,
 
 $$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi )
+ = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi ) 
        \Delta  \sigma_k
 $$
 
@@ -172,34 +172,34 @@ $$
 Momentum advection term:
 
 $$
-  (A_u)_k
-    =  ( \zeta_k + f ) v_k
-             - \frac{1}{2 \Delta \sigma_k}
+  (A_u)_k 
+    =  ( \zeta_k + f ) v_k 
+             - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( u_{k-1} - u_k   )
                + \dot{\sigma}_{k+1/2} ( u_k   - u_{k+1} ) ]
             \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi}
-                  \frac{\partial \pi}{\partial \lambda}
+           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
 $$
-
+ 
 
 
 $$
-  (A_v)_k
-    =  - ( \zeta_k + f ) u_k
-             - \frac{1}{2 \Delta \sigma_k}
+  (A_v)_k 
+    =  - ( \zeta_k + f ) u_k 
+             - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( v_{k-1} - v_k   )
                + \dot{\sigma}_{k+1/2} ( v_k   - v_{k+1} ) ]
             \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a}
-             \frac{\partial \pi}{\partial \varphi}
+           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a} 
+             \frac{\partial \pi}{\partial \varphi} 
 $$
-
+ 
 
 
 $$
  \hat{E}_k    
-  = \frac{1}{2} ( u^2 + v^2 )
+  = \frac{1}{2} ( u^2 + v^2 ) 
     +  \sum_{k'=1}^{k} \left[  C_p \alpha_k ( T_v - T )_{k'}
                               + C_p \beta_k ( T_v - T )_{k'-1} \right]
 $$
@@ -219,14 +219,14 @@ $$
 
 $$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
                                          - T^{\prime}_{k}   )
                + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
                                          - \hat{T^{\prime}}_{k+1/2} ) ]
                 \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
                                          - \bar{T}_{k}   )
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
@@ -234,10 +234,10 @@ $$
          + \hat{\kappa}_{k} T_{v,k} \mathbf{v}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -245,11 +245,11 @@ $$
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
 $$
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
 
 
 Water vapor advection term:
@@ -265,8 +265,8 @@ $$
 
 
 $$
-R_k  =  q_k D_k
-       - \frac{1}{2 \Delta \sigma_k}
+R_k  =  q_k D_k 
+       - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
                + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
 $$
@@ -297,21 +297,21 @@ to a spectral representation.
 Time Variation Term of Vorticity
 
 $$
-  \frac{\partial \zeta_n^m}{\partial t}
+  \frac{\partial \zeta_n^m}{\partial t} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_v)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
    +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_u)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \frac{w_j}{a(1-\mu_j^{2})} 
+          \\ 
 $$
-
-
+ 
+ 
 
 
 The non-gravity wave component of the time-varying term of the divergence
@@ -321,22 +321,22 @@ $$
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_u)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
    -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_v)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
-   -   \frac{n(n+1)}{a^{2}}
+   -   \frac{n(n+1)}{a^{2}} 
          \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \hat{E}_{ij}  {Y_n^{m *}}_{ij} w_j
-          \\
+          \\ 
 $$
-
-
-
+ 
+ 
+ 
 
 
 The non-gravity wave component of the time-varying term of temperature
@@ -346,20 +346,20 @@ $$
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (u T')_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (v T')_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          \hat{H}_{ij}
+          \hat{H}_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$
-
-
+ 
+ 
 
 
 Time-varying term of water vapor
@@ -369,20 +369,20 @@ $$
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (uq)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (vq)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          R_{ij}
+          R_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$
-
-
+ 
+ 
 
 
 ### Spectral value time integration
@@ -392,47 +392,47 @@ Equations in matrix form
 $$
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
            + (1+2\Delta t {\mathcal D}_M)
              \mathbf{G} \mathbf{C}^{T} ) \nabla^{2}_{\sigma}
   \right\}
-      \overline{ \mathbf{D} }^{t}
+      \overline{ \mathbf{D} }^{t} 
        \\
-  = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M )
+  = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M ) 
        \mathbf{D}^{t-\Delta t}
-  + \Delta t
+  + \Delta t 
          \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
   \\
   -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S}
-                          + \underline{W}
-                            \left[ ( 1-2\Delta t {\mathcal D}_H )
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S} 
+                          + \underline{W} 
+                            \left[ ( 1-2\Delta t {\mathcal D}_H ) 
                                     \mathbf{T}^{t-\Delta t}
-                                  + \Delta t
+                                  + \Delta t 
                                       \left( \frac{\partial \mathbf{T}}
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
   \\
-                 \left.  
-                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G}
-                            \left[ \pi^{t-\Delta t}
+                 \left.  \hspace*{20mm} 
+                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G} 
+                            \left[ \pi^{t-\Delta t} 
                                   + \Delta t
                                      \left( \frac{\partial \pi}
-                                                 {\partial t}
+                                                 {\partial t} 
                                      \right)_{NG}  \right]
-                   \right\} .
+                   \right\} . 
 $$
-
-
-
+ 
+ 
+ 
 
 
 by using LU decomposition to solve for
 Ask for $\bar{D}$,
 
 $$
-  \frac{\partial \mathbf{T}}{\partial t}
+  \frac{\partial \mathbf{T}}{\partial t} 
       =   \left( \frac{\partial \mathbf{T}}
                         {\partial t}       \right)_{NG}  
          - \underline{h} \mathbf{D}
@@ -440,7 +440,7 @@ $$
 
 
 $$
-  \frac{\partial \pi}{\partial t}
+  \frac{\partial \pi}{\partial t} 
       =   \left( \frac{\partial \pi}
                         {\partial t}       \right)_{NG}  
          - \mathbf{C} \cdot \mathbf{D}
@@ -466,10 +466,10 @@ $$
 \pi^{t+\Delta t}  =  \pi^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial \pi}{\partial t}
 $$
-
-
-
-
+ 
+ 
+ 
+ 
 
 
 ### Conversion of Predictive Variables to Grid Values
@@ -480,10 +480,10 @@ Find the grid values of the horizontal wind speed $u_{ij}, v_{ij}$.
 $$
   u_{ij}
   =  \frac{1}{\cos \varphi_j}
-     {\mathcal R}\mathbf{e} \sum_{m=-N}^{N}
-                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
+     {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} 
+                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
     \left\{
-             \frac{a}{n(n+1)} \zeta_n^m
+             \frac{a}{n(n+1)} \zeta_n^m 
             (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
           -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
@@ -497,7 +497,7 @@ $$
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
           -  \frac{im a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
-          -  \frac{a}{n(n+1)} \tilde{D}_n^m
+          -  \frac{a}{n(n+1)} \tilde{D}_n^m 
             (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
     \right\}
 $$
@@ -506,8 +506,8 @@ $$
 Furthermore,
 
 $$
-  T_{ij}
-   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+  T_{ij} 
+   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       T_n^m  {Y_n^m}_{ij} \; ,
 $$
 
@@ -515,7 +515,7 @@ $$
 $T_{ij}, \pi_{ij}, q_{ij}$ is obtained by such methods as
 
 $$
-  {p_S}_{ij} = \exp \pi_{ij}
+  {p_S}_{ij} = \exp \pi_{ij} 
 $$
 
 
@@ -532,24 +532,24 @@ Insert corrections for $T,q,l$.
 $$
   {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
                 \simeq  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
-                      - \frac{\partial \sigma}{\partial p}
+                      - \frac{\partial \sigma}{\partial p} 
                       (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} p
                       \cdot \frac{\partial T}{\partial \sigma}                   \\
                 =      (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
                     -  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} \pi
                           \cdot \sigma \frac{\partial T}{\partial \sigma}  \\
-                =    {\mathcal D} (T)
-                    -  {\mathcal D} (\pi)
+                =    {\mathcal D} (T) 
+                    -  {\mathcal D} (\pi) 
                        \sigma \frac{\partial T}{\partial \sigma}
 $$
-
-
+ 
+ 
 
 
 So,
 
 $$
-  T_k \leftarrow  T_k
+  T_k \leftarrow  T_k 
        -  2 \Delta t
         \sigma_{k} \frac{T_{k+1}-T_{k-1}}{\sigma_{k+1} - \sigma_{k-1}}
         {\mathcal D}(\pi)
@@ -566,7 +566,7 @@ It is used to convert to a grid value.
 Frictional heat from diffusion is ,
 
 $$
-  Q_{DIF} = - \left( u_{ij} {\mathcal D}(u)_{ij}
+  Q_{DIF} = - \left( u_{ij} {\mathcal D}(u)_{ij} 
                    + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$
 
@@ -575,9 +575,9 @@ It is estimated that .
 Therefore,
 
 $$
-  T_k \leftarrow  T_k
+  T_k \leftarrow  T_k 
        -  \frac{2 \Delta t}{C_p}
-           \left( u_{ij} {\mathcal D}(u)_{ij}
+           \left( u_{ij} {\mathcal D}(u)_{ij} 
                  + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$
 
@@ -598,16 +598,16 @@ Calculate global integrals $M_q, M_l$ for each component of water vapor and clou
 
 $$
   M_q^0  =  \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
-  M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k
+  M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k 
 $$
-
+ 
 
 
 Also, in the first step of the calculation
 Calculate and memorize dry mass $M_d$.
 
 $$
-  M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k
+  M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k 
 $$
 
 
@@ -618,14 +618,14 @@ First, we discuss the grid points with negative water vapor content,
  The water vapor is distributed from the grid points directly below,
  Remove the negative water vapor.
  If it is     $q_k < 0 $,
-
+     
 $$
         q_k'      =  0          \\
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
 $$
+ 
 
-
-
+     
  However, this should only be done if this is $q_{k-1}' \ge 0 $.
 
 Next, set the value to zero for the grid points not removed by the above procedure.
@@ -633,15 +633,15 @@ Next, set the value to zero for the grid points not removed by the above procedu
 3. calculate the global integration value $M_q$
  Make sure this matches the $M_q^0$,
  Multiply the global water vapor content by a certain percentage.
-
+     
 $$
-        q'' = \frac{M_q^0}{M_q} q'
+        q'' = \frac{M_q^0}{M_q} q' 
 $$
 
 
 4. perform dry air mass correction.
  Similarly, calculate $M_d$,
-
+     
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
 $$
@@ -652,21 +652,21 @@ $$
 The coefficients of horizontal diffusion can be expressed spectrally,
 
 $$
- {{\mathcal D}_M}_n^m = K_M
-                      \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
-                                - \left( \frac{2}{a^2} \right)^{N_D/2}
+ {{\mathcal D}_M}_n^m = K_M 
+                      \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
+                                - \left( \frac{2}{a^2} \right)^{N_D/2} 
                       \right]
                   + K_R
 $$
 
 
 $$
-  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
+  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$
 
 
 $$
-  {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
+  {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$
 
 
@@ -682,7 +682,7 @@ given in profiles like
 However,
 
 $$
-  z = - H \ln \sigma
+  z = - H \ln \sigma 
 $$
 
 
@@ -700,7 +700,7 @@ Apply the time filter of Asselin (1972) at every step.
 $$
   \bar{T}^{t}
     = ( 1-2 \epsilon_f ) T^{t}
-    +  \epsilon_f
+    +  \epsilon_f 
         \left( \bar{T}^{t-\Delta t} + T^{t+\Delta t} \right)
 $$
 
@@ -715,7 +715,7 @@ First, in the `MODULE:[GENGD]` conversion of the predictor to a grid of values, 
 
 $$
   \bar{T}^{t*}
-    = ( 1 -\epsilon_f )^{-1}
+    = ( 1 -\epsilon_f )^{-1} 
      \left[ ( 1-2 \epsilon_f ) T^{t} + \epsilon_f \bar{T}^{t-\Delta t}
      \right]
 $$
@@ -732,3 +732,5 @@ $$
 
 
 .
+
+

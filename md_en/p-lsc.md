@@ -49,11 +49,11 @@ Between $(1-b)\bar{q}^t$ and $(1+b)\bar{q}^t$
 It is assumed to be uniformly distributed. That is, the probability density function is ,
 
 $$
-  F(q^t) = \left\{
+  F(q^t) = \left\{ 
            \begin{array}{ll}
-             (2b\bar{q}^t)^{-1} \; \;
+             (2b\bar{q}^t)^{-1} \; \; 
                  (1-b)\bar{q}^t < q^t <  (1+b)\bar{q}^t \\
-             0                         (その他)
+             0                         その他
            \end{array}
            \right. \; .
 $$
@@ -69,7 +69,7 @@ Then, as shown by the shading in the figure, the
 The horizontal ratio of the portion of the total water volume exceeding saturation $C$ is ,
 
 $$
-  C = \left\{
+  C = \left\{ 
            \begin{array}{ll}
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
              \displaystyle
@@ -88,7 +88,7 @@ In addition, the cloud cover of $l$ is in the region of $q^t > q^*$
 This is an integral of $q^t - q^*$,
 
 $$
-  l = \left\{
+  l = \left\{ 
            \begin{array}{ll} \displaystyle
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
             \displaystyle
@@ -99,7 +99,7 @@ $$
              \bar{q}^t - \bar{q}^*
                 \; \;  (1-b)\bar{q}^t \geq \bar{q}^*
            \end{array}
-        \right.
+        \right. 
 $$
 
 > <span id="p-lsc:l" label="p-lsc:l"&gt ;p-lsc:l\\.com;</span>
@@ -135,7 +135,7 @@ In order to speed up this sequential convergence, we use the Newton method.
 I.e., ([\[p-lsc:itereate1\]](#p-lsc:itereate 1))) instead of
 
 $$
-  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)}
+  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
                    \left( 1 - \frac{L}{C_P} \frac{dl}{dT} \right)^{-1}
 $$
 
@@ -165,11 +165,11 @@ where $l_C$ is the critical cloud water content,
 In view of the Bergeron-Findeisen effect ,
 
 $$
-  l_C = \left\{
+  l_C = \left\{ 
         \begin{array}{ll}
           l_C^0 \; \;  T \ge T_0 \\
-          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right]
-                \right\}^{-1}\; \;
+          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right] 
+                \right\}^{-1}\; \; 
                        T_0 > T >  T_c \\
           l_C^0 ( 1+\alpha )^{-1}
                        T \le T_c
@@ -229,7 +229,7 @@ However, $V_S^0=3$ m/s, $\gamma=0.17$.
 So..,
 
 $$
-  \tau_S = \frac{\Delta p}{\rho g V_S}
+  \tau_S = \frac{\Delta p}{\rho g V_S} 
 $$
 
 
@@ -275,3 +275,4 @@ Calculations are made from the topmost layer down.
 2. fallen ice in the layer just below.
  It will be treated the same as the cloud water that already exists in that layer,
  incorporated into the total water volume.
+
