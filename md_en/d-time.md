@@ -20,29 +20,29 @@ See the chapter on physical processes for details.)
 Expressed as ${X}$ on behalf of each forecast variable,
 
 $$
-  \hat{X}^{t+\Delta t}
+  \hat{X}^{t+\Delta t} 
     =  \bar{X}^{t-\Delta t}
-    + 2 \Delta t
+    + 2 \Delta t 
       \dot{X}_{adv}\left( {X}^{t} \right)
-    + 2 \Delta t
+    + 2 \Delta t 
       \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right)
 $$
 
-$\dot{X}_{adv}$ is an advection term etc,
-$\dot{X}_{dif}$ 
-is a horizontal diffusion term.
+
+$ \dot{X}_{adv} $ is an advection term etc,
+$ \dot{X}_{dif} $ is a horizontal diffusion term.
 
 $ \hat{X}^{t+\Delta t} $ has a ,
-Pseudo, etc. $p$ Correction of frictional heat ($\dot{X}_{dis}$) by surface and horizontal diffusion
+Pseudo, etc. $p$ Correction of frictional heat ($ \dot{X}_{dis} $) by surface and horizontal diffusion
 and physical processes ($ \dot{X}_{phy} $) have been added,
 $ {X}^{t+\Delta t} $.
 
 $$
-  {X}^{t+\Delta t}
+  {X}^{t+\Delta t} 
     =  \hat{X}^{t+\Delta t}
-    + 2 \Delta t
+    + 2 \Delta t 
       \dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
-    + 2 \Delta t
+    + 2 \Delta t 
       \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)
 $$
 
@@ -54,7 +54,7 @@ Namely,
 $$
   \bar{X}^{t}
     = ( 1-2 \epsilon_f ) {X}^{t}
-    +  \epsilon_f
+    +  \epsilon_f 
         \left( \bar{X}^{t-\Delta t} + {X}^{t+\Delta t} \right)
 $$
 
@@ -80,10 +80,10 @@ A is nonlinear with respect to <span>q</span>, while B is Suppose it is linear.
 Namely,
 
 $$
-  {\mathbf q}^+
-      = {\mathbf q}^-
+  {\mathbf q}^+ 
+      = {\mathbf q}^- 
       + 2 \Delta t {\mathcal A}( {\mathbf q}  )
-      + 2 \Delta t B (   {\mathbf q}^+
+      + 2 \Delta t B (   {\mathbf q}^+ 
                        + {\mathbf q}^-   )/2
 $$
 
@@ -93,9 +93,9 @@ $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
 And then you can write,
 
 $$
-  ( I - \Delta t B ) \Delta {\mathbf q}
+  ( I - \Delta t B ) \Delta {\mathbf q} 
       = 2 \Delta t \left( {\mathcal A}({\mathbf q})
-                         + B {\mathbf q} \right)
+                         + B {\mathbf q} \right) 
 $$
 
 
@@ -112,16 +112,16 @@ Vertical Vector Representation
 Using $\mathbf{D}=\{ D_{k} \}$, $\mathbf{T}=\{ T_{k} \}$,
 
 $$
-   \frac{\partial \pi}{\partial t} =
+   \frac{\partial \pi}{\partial t} = 
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
      - \mathbf{C} \cdot \mathbf{D}  ,
 $$
 
 
 $$
-  \frac{\partial \mathbf{D}}{\partial t} =
+  \frac{\partial \mathbf{D}}{\partial t} = 
           \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S}
+          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S} 
                                   + \underline{W} \mathbf{T}
                                   + \mathbf{G} \pi )  
           - {\mathcal D}_M \mathbf{D} ,
@@ -129,7 +129,7 @@ $$
 
 
 $$
-  \frac{\partial \mathbf{T}}{\partial t}
+  \frac{\partial \mathbf{T}}{\partial t} 
       =   \left( \frac{\partial \mathbf{T}}
                         {\partial t}       \right)_{NG}  
          - \underline{h} \mathbf{D}
@@ -162,32 +162,32 @@ $$
             \frac{\partial (A_u)_{k}}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
-          - \nabla^{2}_{\sigma} \hat{E}_{k}
-          - {\mathcal D}(D_{k})
+          - \nabla^{2}_{\sigma} \hat{E}_{k} 
+          - {\mathcal D}(D_{k}) 
 $$
 
 
 $$
-  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG}
-      =   - \frac{1}{a\cos\varphi}
+  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG} 
+      =   - \frac{1}{a\cos\varphi} 
                \frac{\partial u_k T'_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
-          + \hat{H}_{k}
-          - {\mathcal D}(T_{k})
+          + \hat{H}_{k} 
+          - {\mathcal D}(T_{k}) 
 $$
 
 
 $$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
                                          - T^{\prime}_{k}   )
                + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
                                          - \hat{T^{\prime}}_{k+1/2} ) ]
                 \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
                                          - \bar{T}_{k}   )
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
@@ -195,10 +195,10 @@ $$
          + \hat{\kappa}_{k} T_{v,k} \mathbf{v}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -208,16 +208,16 @@ $$
                 \\
          + \frac{Q_k + (Q_{diff})_k}{C_p}
 $$
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 $$
-  \hat{E}_k = E_{k}
+  \hat{E}_k = E_{k} 
             + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} )
 $$
 
@@ -247,23 +247,23 @@ $$
 
 
 $$
-  Q_{kl} = \frac{1}{\Delta \sigma_{k}}
-             ( \hat{\bar{T}}_{k-1/2} - \bar{T}_{k} ) \delta_{k=l}
-         + \frac{1}{\Delta \sigma_{k}}
-             ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l}
+  Q_{kl} = \frac{1}{\Delta \sigma_{k}} 
+             ( \hat{\bar{T}}_{k-1/2} - \bar{T}_{k} ) \delta_{k=l} 
+         + \frac{1}{\Delta \sigma_{k}} 
+             ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l} 
 $$
 
 
 $$
-  S_{kl} = \sigma_{k-1/2} \Delta \sigma_{l}
-           - \Delta \sigma_{l} \delta_{k \leq l }
+  S_{kl} = \sigma_{k-1/2} \Delta \sigma_{l} 
+           - \Delta \sigma_{l} \delta_{k \leq l } 
 $$
 
 
 $$
-  R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} }
-                     \Delta \sigma_{l} \delta_{k \leq l}
-                   + \frac{ \beta_{k} }{ \Delta \sigma_{k} }
+  R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} } 
+                     \Delta \sigma_{l} \delta_{k \leq l} 
+                   + \frac{ \beta_{k} }{ \Delta \sigma_{k} } 
                      \Delta \sigma_{l} \delta_{k+1 \leq l}  
              \right) \bar{T}_{k} .
 $$
@@ -276,7 +276,7 @@ A function that is 1 if the $ k \leq l$ is valid and 0 otherwise.
 Using the following expression ,
 
 $$
-  \delta_{t} {X} \equiv \frac{1}{2 \Delta t}
+  \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
 $$
 
@@ -284,12 +284,12 @@ $$
 
 $$
     \overline{X}^{t}
-   \equiv  \frac{1}{2} \left( {X}^{t+\Delta t}
+   \equiv  \frac{1}{2} \left( {X}^{t+\Delta t} 
                               + {X}^{t-\Delta t} \right)
-         \\
+         \\ 
    =  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
 $$
-
+ 
 
 
 If we apply the semi-implicit method to the system of equations,
@@ -300,17 +300,17 @@ $$
      - \mathbf{C} \cdot \overline{ \mathbf{D} }^{t}
 $$
 
-> <span id="semi-imp pi" label="semi-imp
+> <span id="semi-imp pi" label="semi-imp 
 
 $$
   \delta_{t} \mathbf{D} =
           \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S}
-                                  + \underline{W}
+          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S} 
+                                  + \underline{W} 
                                      \overline{ \mathbf{T} }^{t}
                                   + \mathbf{G}
-                                  \overline{\pi}^{t} )
-          - {\mathcal D}_M ( \mathbf{D}^{t-\Delta t}
+                                  \overline{\pi}^{t} ) 
+          - {\mathcal D}_M ( \mathbf{D}^{t-\Delta t} 
                          + 2 \Delta t \delta_{t} \mathbf{D} )
 $$
 
@@ -319,7 +319,7 @@ $$
 $$
   \delta_{t} \mathbf{T} =
         \left( \frac{\partial \mathbf{T}}{\partial t} \right)_{NG}  
-         - \underline{h} \overline{ \mathbf{D} }^{t}
+         - \underline{h} \overline{ \mathbf{D} }^{t} 
          - {\mathcal D}_H ( \mathbf{T}^{t-\Delta t}
                         + 2 \Delta t \delta_{t} \mathbf{T} )
 $$
@@ -329,45 +329,43 @@ $$
 So..,
 
 > <span id="semi-imp barD" label="semi- imp barD">\blank\[semi-imp barD\blank]</span></a
-
-
 $$
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
            + (1+2\Delta t {\mathcal D}_M)
              \mathbf{G} \mathbf{C}^{T} ) \nabla^{2}_{\sigma}
   \right\}
-      \overline{ \mathbf{D} }^{t}
+      \overline{ \mathbf{D} }^{t} 
        \\
-  = ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
+  = ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M ) 
        \mathbf{D}^{t-\Delta t}
-  + \Delta t
+  + \Delta t 
      \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
   \\
   -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S}
-                          + \underline{W}
-                            \left[ ( 1-2\Delta t {\mathcal D}_H )
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S} 
+                          + \underline{W} 
+                            \left[ ( 1-2\Delta t {\mathcal D}_H ) 
                                     \mathbf{T}^{t-\Delta t}
-                                  + \Delta t
+                                  + \Delta t 
                                       \left( \frac{\partial \mathbf{T}}
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
   \\
-                 \left.   
-                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G}
-                            \left[ \pi^{t-\Delta t}
+                 \left.  \hspace*{20mm} 
+                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G} 
+                            \left[ \pi^{t-\Delta t} 
                                   + \Delta t
                                      \left( \frac{\partial \pi}
-                                                 {\partial t}
+                                                 {\partial t} 
                                      \right)_{NG}  \right]
-                   \right\} .
+                   \right\} . 
 $$
-
-
-
+ 
+ 
+ 
 
 
 Since the spherical harmonic expansion is used,
@@ -426,7 +424,7 @@ $$
 This absolute value is
 
 $$
-  |\lambda| = \left\{
+  |\lambda| = \left\{ 
              \begin{array}{ll}
                1                      |p| \le 1 \\
                p \pm \sqrt{p^2-1} \;\;    |p| > 1
@@ -499,22 +497,13 @@ However, if you give an inconsistent value for $t-\Delta t$
 A large calculation mode occurs.
 
 So, first, as $X^{\Delta t/4} = X^0$, in the time step of $1/4$
-
-$$
-X^{\frac{\Delta t}{2}} = X^0 + \frac{\Delta t}{2}\dot{X}^{ \frac{\Delta t}{4}}  = X^0 + \frac{\Delta t}{2}\dot{X}^0
-$$
-
- and furthermore, in the time step of $1/2$,
-
- $$
- X^{\Delta t} = X^0 + \Delta t \dot{X}^{\frac{\Delta t}{2}}
- $$
-
+\{X^{X}^{D}t/2} = X^0 + X^0 + {{X}^{D}^{X}^^{\\\finger}}. Delta t/4}
+                  = X^0 + t/2 \\Dentro{X}^0\0}]
+and furthermore, in the time step of $1/2$,
+\\\\ltraL\Delta t} = X^0 +    X^0+\l\Delta t/2 }]
 And, in the original time step,
-
-$$
- X^{2\Delta t} = X^0 + 2\Delta t \dot{X}^{\Delta t}
- $$
-
+\\blossom[X^{2\Delta t} = X^0 + 2\blossomDot{X}^{2\blossomDelta t} = X^0 + 2\blossomDelta t    }]
 and then perform the calculation with leap frog as usual,
 The occurrence of computation mo
+
+
