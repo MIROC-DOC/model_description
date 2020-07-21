@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC c-intro</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC c-intro</h1>
+</header>
+<h1 id="description-of-the-program-code">Description of the program code</h1>
+<h2 id="the-basics-of-reading-programs.">The Basics of Reading Programs.</h2>
+<h3 id="configuration-overview.">Configuration Overview.</h3>
+<p>The AGCM program body has a hierarchical structure, The files are maintained in multiple directories, each of which is divided into multiple files. A single file (package) can contain , In addition, there are several program modules (subroutines and functions) in the package, In some cases, there may be multiple entries in a module.</p>
+<p>Example:</p>
+<p><span>** Directory<strong></span></strong> dynamics: <strong> <span><strong>File</strong></span> </strong>dadmn.F: <strong>dadmn.F: Package DADMN . <span><strong>File</strong></span> </strong>dshpe.F: <strong> Package DSPHE <span></strong> Module DSETNM: <strong></span>̄ <span><strong>Module W2G</strong></span> SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP <span></strong> Module DSETNM:**</span> SUBROUTINE DSETNM.</p>
+<h3 id="directory-structure.">Directory Structure.</h3>
+<p>Currently, there are 9 directories as follows</p>
+<ul>
+<li><p>TAB00000:0.0 admin</p></li>
+<li><p>TAB00000:0.1 Modules related to the structure of the entire model (coordinates, time, constants, etc.)</p></li>
+<li><p>TAB00000:1.0 dynamics</p></li>
+<li><p>TAB00000:1.1 Modules related to mechanical processes</p></li>
+<li><p>TAB00000:2.0 physics</p></li>
+<li><p>TAB00000:2.1 Modules involved in physical processes</p></li>
+<li><p>TAB00000:3.0 io</p></li>
+<li><p>TAB00000:3.1 Modules for data input/output</p></li>
+<li><p>TAB00000:4.0 util</p></li>
+<li><p>TAB00000:4.1 General-purpose operation libraries</p></li>
+<li><p>TAB00000:5.0 sysdep</p></li>
+<li><p>TAB00000:5.1 system dependent module</p></li>
+<li><p>TAB00000:6.0 include</p></li>
+<li><p>TAB00000:6.1 <span>Included by <code>#include</code></span> header types</p></li>
+<li><p>TAB00000:7.0 nonstd</p></li>
+<li><p>TAB00000:7.1 Non-standard plug-in modules</p></li>
+<li><p>TAB00000: 8.0 special</p></li>
+<li><p>TAB00000:8.1 test module</p></li>
+</ul>
+<p>Note that the files containing the main routines are <span><code>src/</code></span>and immediately below.</p>
+<p>These dependencies are as follows.</p>
+<ul>
+<li><p>TAB00001:0.0 MAIN</p></li>
+<li><p>TAB00001:0.1 - Replica Hermes Handbags</p></li>
+<li><p>TAB00001:0.2</p></li>
+<li><p>TAB00001:1.0</p></li>
+<li><p>TAB00001:1.1 - Dynamics</p></li>
+<li><p>TAB00001:1.2</p></li>
+<li><p>TAB00001:2.0</p></li>
+<li><p>TAB00001:2.1 - Physical properties</p></li>
+<li><p>TAB00001:2.2</p></li>
+<li><p>TAB00001:3.0</p></li>
+<li><p>TAB00001:3.1</p></li>
+<li><p>TAB00001:3.2 - I’m not sure how to describe it.</p></li>
+<li><p>TAB00001:3.3</p></li>
+<li><p>TAB00001:4.0</p></li>
+<li><p>TAB00001:4.1</p></li>
+<li><p>TAB00001:4.2</p></li>
+<li><p>TAB00001:4.3 - You can’t even tell me how to do it.</p></li>
+<li><p>TAB00001:4.4</p></li>
+<li><p>TAB00001:5.0</p></li>
+<li><p>TAB00001:5.1</p></li>
+<li><p>TAB00001:5.2</p></li>
+<li><p>TAB00001:5.3</p></li>
+<li><p>TAB00001:5.4 - I’m sure you’ll be able to find out more about it in the next few days.</p></li>
+</ul>
+<p>That is, each of them is independent of the others in the same row, The one on the left is used to call the one on the right, but the reverse is not allowed.</p>
+<p>Several closely related routines in one file (package). Particularly in the physical process, the replacement of one or a few files with The use of parameterization is possible.</p>
+<h3 id="special-notes-on-the-program.">Special Notes on the Program.</h3>
+<p>There are several modules that have multiple entries using the ENTRY statement. Its main purpose is the local storage of data. For example, in the case of the module W2G above, the variables PNM and DPNM are It is stored as a local variable in this module, Commonly used in W2G, G2W and SPSTUP. W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways, This avoids the complexity of having to use PNM and DPNM as arguments. The COMMON variable is usually used in such cases. Here, the COMMON variable is used as an inconvenience for management and debugging. We avoid this type of encapsulation structure as much as possible and instead use such an encapsulation structure.</p>
+<p>Only two COMMONs are in use.</p>
+<pre><code>   - TAB00002:0.0 
+     COMMON /COMCON/
+ 
+   - TAB00002:0.1 </code></pre>
+<p>Standard physical constants (earth radius, gas constant, etc.)</p>
+<pre><code>   - TAB00002:1.0 </code></pre>
+<p>Anonymous COMMON</p>
+<pre><code>   - TAB00002:1.1 </code></pre>
+<p>work area</p>
+<pre><code> COMCON contains the standard physical constants.</code></pre>
+<p>This COMMON definition is <span><code>include/zccom.F</code>&amp;lt It is in ;/span&gt;, It is used to include as necessary. A set of values can be set by the subroutine PCONST (<span><code>admin/ apcon.F</code></span>). An unnamed COMMON block is used as a work area from many modules. It is used to reduce the overall memory consumption. Deleting all the relevant COMMON statements does not have a problem as it only affects the amount of memory.</p>
+<p>For include file inclusion and conditional compilation It uses the C preprocessor instruction. So, instead of the file being named <span><code>.f</code></span>, it is named , <span><code>.F</code></span>. As a conditional compilation, <span><code>#ifdef</code></span> and &lt; span&gt;<code>#ifndef</code></span> selection. Importing files is <span><code>inlcude</code>&lt;/span&amp;gt ; I’m doing this from the directory, It is as follows.</p>
+<pre><code>   - TAB00003:0.0 </code></pre>
+<p>Array size parameter statements</p>
+<pre><code>   - TAB00003:0.1 
+     zcdim.F
+ 
+   - TAB00003:1.0
+ 
+   - TAB00003:1.1 
+     zpdim.F
+ 
+   - TAB00003:2.0
+ 
+   - TAB00003:2.1 
+     zidim.F
+ 
+   - TAB00003:3.0
+ 
+   - TAB00003:3.1 
+     zsdim.F
+ 
+   - TAB00003:4.0
+ 
+   - TAB00003:4.1 
+     zhdim.F
+ 
+   - TAB00003:5.0
+ 
+   - TAB00003:5.1 
+     zradim.F
+ 
+   - TAB00003:6.0
+ 
+   - TAB00003:6.1 
+     zwdim.F
+ 
+   - TAB00003:7.0 
+     COMMON definition (physical constants)
+ 
+   - TAB00003:7.1 
+     zccom.F
+ 
+   - TAB00003:8.0 </code></pre>
+<p>Statement function definition (saturation ratio humidity)</p>
+<pre><code>   - TAB00003:8.1 
+     zqsat.F</code></pre>
+<p>FORTRAN 77 As a non-standard specification , I’m using NAMELIST reading, It seems to be able to be used in many processing systems without any problem. For the specifications of NAMELIST, please refer to the manual of each system.</p>
+<h3 id="program-writing.">Program Writing.</h3>
+<ol type="1">
+<li>end-of-line comments are used in various explanations. <code>!"</code> The end of the line below is a comment \0.1[1].</li>
+</ol>
+<p>All variables are declared. 2. IMPLICIT NONE (e.g. Sun’s <span><code>-u</code></span> option) to It is a prerequisite for use.</p>
+<p>Each entry’s argument is accompanied by a continuation line column to explain the function.</p>
+<pre><code>   - TAB00004:0.0 </code></pre>
+<p>symbol</p>
+<pre><code>   - TAB00004:0.1 </code></pre>
+<p>meaning</p>
+<pre><code>   - TAB00004:0.2 </code></pre>
+<p>input</p>
+<pre><code>   - TAB00004:0.3 </code></pre>
+<p>Outputs</p>
+<pre><code>   - TAB00004:0.4 </code></pre>
+<p>function</p>
+<pre><code>   - TAB00004:1.0 
+     O
+ 
+   - TAB00004:1.1 
+     output
+ 
+   - TAB00004:1.2 
+     ×impossibility
+ 
+   - TAB00004:1.3 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:1.4 </code></pre>
+<p>Generate values</p>
+<pre><code>   - TAB00004:2.0 
+     M
+ 
+   - TAB00004:2.1 
+     modify
+ 
+   - TAB00004:2.2 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:2.3 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:2.4 </code></pre>
+<p>Processing the input values and outputting them</p>
+<pre><code>   - TAB00004:3.0 
+     I
+ 
+   - TAB00004:3.1 
+     input
+ 
+   - TAB00004:3.2 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:3.3 
+     -
+ 
+   - TAB00004:3.4 </code></pre>
+<p>Input value (‘variable’)</p>
+<pre><code>   - TAB00004:4.0 
+     C
+ 
+   - TAB00004:4.1 
+     constant
+ 
+   - TAB00004:4.2 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:4.3 
+     -
+ 
+   - TAB00004:4.4 </code></pre>
+<p>Input value (‘constant’)</p>
+<pre><code>   - TAB00004:5.0 
+     D
+ 
+   - TAB00004:5.1 
+     dimension
+ 
+   - TAB00004:5.2 </code></pre>
+<p>circle (e.g. of friends)</p>
+<pre><code>   - TAB00004:5.3 
+     -
+ 
+   - TAB00004:5.4 </code></pre>
+<p>Variables that determine the size of the matching array</p>
+<pre><code>   - TAB00004:6.0 
+     W
+ 
+   - TAB00004:6.1 
+     work
+ 
+   - TAB00004:6.2 
+     ×impossibility
+ 
+   - TAB00004:6.3 
+     ×impossibility
+ 
+   - TAB00004:6.4 </code></pre>
+<p>work area</p>
+<pre><code>   - TAB00004:7.0 
+     U
+ 
+   - TAB00004:7.1 
+     undefined
+ 
+   - TAB00004:7.2 
+     ×impossibility
+ 
+   - TAB00004:7.3 
+     ×impossibility
+ 
+   - TAB00004:7.4 </code></pre>
+<p>dummy</p>
+<p>Here, the meaning of the input and output columns is as follows the meantime, I’m going to be in a position to take a look at some of the things I’ve done in the past. \begin{array}{ll}</p>
+<p>× x &amp; whatever is in it {array}</p>
+<pre><code>     \begin{array}{ll}   </code></pre>
+<p>O O &amp; may be subject to change in the course of the event - &amp; the value will not change × x &amp; I can’t guarantee what you’ll find {array}</p>
+<p>The important ones are M,O,I, where M,O and I are important, and C,D are a type of I. The use of C, D, and I is not so neat.</p>
+<p>The contents of each file are as follows.</p>
+<pre><code> ` *&quot; PACKAGE PSAVE save/load data (real memory version) ` 
+ :̄ Package Name 
+ `*&quot; [HIS] 93/11/10(numaguti) AGCM5.3` 
+ Change log 
+ `        SUBROUTINE PGSAVE     !&quot; Internal Data Save ` 
+ : Module Declaration 
+ `*    [PARAM]` 
+ The following, parameter statements are (included) followed by 
+ `    * [MODIFY] ` 
+ : Declarations of input and output variables 
+ `    * [OUTPUT] ` 
+ : the following, output variable declarations 
+ `    * [INPUT] ` 
+ : The following, Declarations of Input Variables 
+ `    * [ENTRY OUTPUT] ` 
+ : Declare output variables in the entry... 
+ `    * [INTERNAL WORK] ` 
+ : Declarations of internal work variables 
+ `*    [INTERNAL SAVE]` 
+ Declarations of internal variables (which should be kept after RETURN) 
+ `*    [INTERNAL PARAM]` 
+ Declarations of internal parameters (to be read by NAMELIST, etc.) 
+ `*    [ONCE]` </code></pre>
+<p>The following is the part to be done only once on the first call</p>
+<p>Sentence numbers are assigned to each block in the thousands, I’m guessing as structurally as possible.</p>
+<h3 id="naming-conventions.">Naming Conventions.</h3>
+<p>The names of variables, entry names, etc. must be six characters or less.</p>
+<ol start="2" type="1">
+<li><p>variable name and type mapping</p>
+<pre><code>- TAB00005:0.0 
+  A-G, P-Z
+
+- TAB00005:0.1 </code></pre>
+<p>Floating point number (<span><code>REAL*8</code></span>)</p>
+<pre><code>- TAB00005:1.0 
+  H
+
+- TAB00005:1.1 </code></pre>
+<p>String (<span><code>CHARACTER</code></span>)</p>
+<pre><code>- TAB00005:2.0 
+  I-N.
+
+- TAB00005:2.1 </code></pre>
+<p>Integer (<span><code>INTEGER</code></span>)</p>
+<pre><code>- TAB00005:3.0 
+  O
+
+- TAB00005:3.1 </code></pre>
+<p>Logical type (<span><code>LOGICAL</code></span>)</p></li>
+</ol>
+<p>However, in the variables read by NAMELIST, This may not be met.</p>
+<p>Conventions on the correspondence between variable names and contents</p>
+<pre><code>   - TAB00006:0.0 </code></pre>
+<p>Prefix:</p>
+<pre><code>   - TAB00006:0.1 
+     GA
+ 
+   - TAB00006:0.2 </code></pre>
+<p>The grid point state quantity (<span class="math inline"><em>t</em></span>)</p>
+<pre><code>   - TAB00006:1.0
+ 
+   - TAB00006:1.1 
+     GB
+ 
+   - TAB00006:1.2 </code></pre>
+<p>Grid point state quantity (<span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>)</p>
+<pre><code>   - TAB00006:2.0
+ 
+   - TAB00006:2.1 
+     GD
+ 
+   - TAB00006:2.2 </code></pre>
+<p>Grid State Quantity (for common use)</p>
+<pre><code>   - TAB00006:3.0
+ 
+   - TAB00006:3.1 
+     GT
+ 
+   - TAB00006:3.2 </code></pre>
+<p>Time differential term of the grid state quantity</p>
+<pre><code>   - TAB00006:4.0
+ 
+   - TAB00006:4.1 
+     WD
+ 
+   - TAB00006:4.2 </code></pre>
+<p>Spectral representation of state quantities</p>
+<pre><code>   - TAB00006:5.0
+ 
+   - TAB00006:5.1 
+     WT
+ 
+   - TAB00006:5.2 </code></pre>
+<p>Spectral representation of the time differential term of the state quantity</p>
+<pre><code>   - TAB00006:6.0
+ 
+   - TAB00006:6.1 
+     I
+ 
+   - TAB00006:6.2 </code></pre>
+<p>Longitude index</p>
+<pre><code>   - TAB00006:7.0
+ 
+   - TAB00006:7.1 
+     J
+ 
+   - TAB00006:7.2 </code></pre>
+<p>Index of latitude</p>
+<pre><code>   - TAB00006:8.0
+ 
+   - TAB00006:8.1 
+     K
+ 
+   - TAB00006:8.2 </code></pre>
+<p>Index for vertical level</p>
+<pre><code>   - TAB00006:9.0
+ 
+   - TAB00006:9.1 
+     IJ
+ 
+   - TAB00006:9.2 </code></pre>
+<p>An index of all the latitudes and longitudes in one place</p>
+<pre><code>   - TAB00006:10.0
+ 
+   - TAB00006:10.1 
+     NM.
+ 
+   - TAB00006:10.2 </code></pre>
+<p>Index of the spectrum</p>
+<pre><code>   - TAB00006:11.0
+ 
+   - TAB00006:11.1 
+     NM.
+ 
+   - TAB00006:11.2 
+     NAMELIST Name
+ 
+   - TAB00006:12.0
+ 
+   - TAB00006:12.1 
+     COM
+ 
+   - TAB00006:12.2 
+     COMMON Name
+ 
+   - TAB00006:13.0 </code></pre>
+<p>Tangent:</p>
+<pre><code>   - TAB00006:13.1 
+     U
+ 
+   - TAB00006:13.2 </code></pre>
+<p>east-west wind</p>
+<pre><code>   - TAB00006:14.0
+ 
+   - TAB00006:14.1 
+     V
+ 
+   - TAB00006:14.2 </code></pre>
+<p>north-south wind</p>
+<pre><code>   - TAB00006:15.0
+ 
+   - TAB00006:15.1 
+     T
+ 
+   - TAB00006:15.2 </code></pre>
+<p>temperature</p>
+<pre><code>   - TAB00006:16.0
+ 
+   - TAB00006:16.1 
+     PS
+ 
+   - TAB00006:16.2 </code></pre>
+<p>surface pressure</p>
+<pre><code>   - TAB00006:17.0
+ 
+   - TAB00006:17.1 
+     Q
+ 
+   - TAB00006:17.2 </code></pre>
+<p>Specific humidity, various tracers</p>
+<pre><code>   - TAB00006:18.0
+ 
+   - TAB00006:18.1 
+     QL
+ 
+   - TAB00006:18.2 </code></pre>
+<p>cloud liquidity</p>
+<pre><code>   - TAB00006:19.0
+ 
+   - TAB00006:19.1 
+     FLX,FLUX
+ 
+   - TAB00006:19.2 </code></pre>
+<p>flux density</p>
+<pre><code>   - TAB00006:20.0
+ 
+   - TAB00006:20.1 
+     MTX
+ 
+   - TAB00006:20.2 </code></pre>
+<p>Matrices for implicit solutions</p>
+<pre><code>   - TAB00006:21.0
+ 
+   - TAB00006:21.1 
+     MAX
+ 
+   - TAB00006:21.2 </code></pre>
+<p>data length</p>
+<pre><code>   - TAB00006:22.0
+ 
+   - TAB00006:22.1 
+     DIM
+ 
+   - TAB00006:22.2 </code></pre>
+<p>Size of the array region</p>
+<p>For file names, The first letter is unified to the first letter of the directory. (However, <span><code>include</code></span> can be used in &amp;lt ;span&gt;<code>z</code></span>). Also, <span><code>-admn</code></span> ( administer) indicates the main module in it.</p>
+<p>&lt;! – end list –&gt;!</p>
+<p>The reason for the use of two characters here, not just <code>! I use two letters as well as</code>! Systems that use other end-of-line comment formats (e.g. HITAC VOS3) to ensure substitution for, and The reason for this is that Sun’s CPP will malfunction if you use only <code>! is because Sun's CPP will malfunction if there is only</code>!</p>
+</body>
+</html>
