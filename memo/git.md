@@ -57,16 +57,22 @@ $ git checkout feature/MYFEATURE
 # ローカルのブランチ情報をみる
 $ git branch
 
+# リモートを含めてブランチ情報をみる
+$ git branch -a
+
 # ファイル変更など、作業
 
 # 変更したファイル名を確認
 $ git diff --name-only
 
-# コミットするファイルを選択
+# コミットするファイルを選択(ステージング)
 $ git add hogehoge
 
 # コミット
 $ git commit -m "commit message"
+
+# ステージング・コミットの状況を確認する
+$ git status
 
 # プッシュ
 $ git push origin feature/MYFEATURE
