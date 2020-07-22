@@ -46,150 +46,286 @@
 <h2 id="composition-overview.">Composition Overview.</h2>
 <p>The AGCM program body has a hierarchical structure, The files are maintained in multiple directories, each of which is divided into multiple files. A single file (package) can contain , In addition, there are several program modules (subroutines and functions) in the package, In some cases, there may be multiple entries in a module.</p>
 <p>Example:</p>
-<p><span>** Directory<strong></span></strong> dynamics: <strong> <span><strong>File</strong></span> </strong>dadmn.F: <strong>dadmn.F: Package DADMN . <span><strong>File</strong></span> </strong>dshpe.F: <strong> Package DSPHE <span></strong> Module DSETNM: <strong></span>̄ <span><strong>Module W2G</strong></span> SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP <span></strong> Module DSETNM:**</span> SUBROUTINE DSETNM.</p>
+<p><span><strong>directory</strong></span><strong>dynamics: </strong> <span><strong>File</strong></span> <strong>dadmn.F: </strong> Package DADMN . <span><strong>File</strong></span> <strong>dshpe.F: </strong> Package DSPHE <span>** Module DSETNM: <strong></span>̄ <span><strong>Module W2G</strong></span> SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP <span></strong> Module DSETNM:**</span> SUBROUTINE DSETNM</p>
 <p>Currently, there are 10 directories as follows</p>
-<ul>
-<li><p>TAB00000:0.0 admin</p></li>
-<li><p>TAB00000:0.1 Modules related to the structure of the entire model (coordinates, time, constants, etc.)</p></li>
-<li><p>TAB00000:1.0 dynamics</p></li>
-<li><p>TAB00000:1.1 Modules related to mechanical processes</p></li>
-<li><p>TAB00000:2.0 physics</p></li>
-<li><p>TAB00000:2.1 Modules involved in physical processes</p></li>
-<li><p>TAB00000:3.0 io</p></li>
-<li><p>TAB00000:3.1 Modules for data input/output</p></li>
-<li><p>TAB00000:4.0 util</p></li>
-<li><p>TAB00000:4.1 General-purpose operation libraries</p></li>
-<li><p>TAB00000:5.0 sysdep</p></li>
-<li><p>TAB00000:5.1 system dependent module</p></li>
-<li><p>TAB00000:6.0 include</p></li>
-<li><p>TAB00000:6.1 <span>Included by <code>#include</code></span> header types</p></li>
-<li><p>TAB00000:7.0 nonstd</p></li>
-<li><p>TAB00000:7.1 Non-standard plug-in modules</p></li>
-<li><p>TAB00000: 8.0 special</p></li>
-<li><p>TAB00000:8.1 test module</p></li>
-<li><p>TAB00000:9.0 shalo</p></li>
-<li><p>TAB00000:9.1 Module for single layer barotropic shallow water models (under test)</p></li>
-</ul>
-<p>Note that the files containing the main routines are <span><code>src/</code></span>and immediately below.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>admin</td>
+<td>Modules related to the structure of the entire model (coordinates, time, constants, etc.)</td>
+</tr>
+<tr class="even">
+<td>dynamics</td>
+<td>Modules related to mechanical processes</td>
+</tr>
+<tr class="odd">
+<td>physics</td>
+<td>Modules involved in physical processes</td>
+</tr>
+<tr class="even">
+<td>io</td>
+<td>Modules for data input/output</td>
+</tr>
+<tr class="odd">
+<td>util</td>
+<td>General-purpose operation libraries</td>
+</tr>
+<tr class="even">
+<td>sysdep</td>
+<td>system dependent module</td>
+</tr>
+<tr class="odd">
+<td>include</td>
+<td>Headers included by <span><code>#include</code></span></td>
+</tr>
+<tr class="even">
+<td>nonstd</td>
+<td>Non-standard plug-in modules</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>test module</td>
+</tr>
+<tr class="even">
+<td>shalo</td>
+<td>Module for single layer barotropic shallow water models (under test)</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the files containing the main routines are located directly under <span><code>src/</code></span>.</p>
 <p>These dependencies are as follows.</p>
-<ul>
-<li><p>TAB00001:0.0 MAIN</p></li>
-<li><p>TAB00001:0.1 - Replica Hermes Handbags</p></li>
-<li><p>TAB00001:0.2</p></li>
-<li><p>TAB00001:1.0</p></li>
-<li><p>TAB00001:1.1 - Dynamics</p></li>
-<li><p>TAB00001:1.2</p></li>
-<li><p>TAB00001:2.0</p></li>
-<li><p>TAB00001:2.1 - Physical properties</p></li>
-<li><p>TAB00001:2.2</p></li>
-<li><p>TAB00001:3.0</p></li>
-<li><p>TAB00001:3.1</p></li>
-<li><p>TAB00001:3.2 - I’m not sure how to describe it.</p></li>
-<li><p>TAB00001:3.3</p></li>
-<li><p>TAB00001:4.0</p></li>
-<li><p>TAB00001:4.1</p></li>
-<li><p>TAB00001:4.2</p></li>
-<li><p>TAB00001:4.3 - You can’t even tell me how to do it.</p></li>
-<li><p>TAB00001:4.4</p></li>
-<li><p>TAB00001:5.0</p></li>
-<li><p>TAB00001:5.1</p></li>
-<li><p>TAB00001:5.2</p></li>
-<li><p>TAB00001:5.3</p></li>
-<li><p>TAB00001:5.4 - I’m sure you’ll be able to find out more about it in the next few days.</p></li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+<th>Header4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MAIN</td>
+<td>- Replica Hermes Handbags</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>- Dynamics</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>- Physical properties</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>- I’m not sure how to describe it.</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td>- You can’t even tell me how to do it.</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>- I’m sure you’ll be able to find out more about it in the next few days.</td>
+</tr>
+</tbody>
+</table>
 <p>That is, each of them is independent of the others in the same row, The one on the left is used to call the one on the right, but the reverse is not allowed.</p>
 <p>Several closely related routines in one file (package). Particularly in the physical process, the replacement of one or a few files with The use of parameterization is possible.</p>
 <h2 id="special-note-on-the-program.">Special note on the program.</h2>
-<p>There are several modules with multiple entries using the ENTRY statement. Its main purpose is the local storage of data. For example, in the case of the module W2G above, the variables PNM and DPNM are It is stored as a local variable in this module, Commonly used in W2G, G2W and SPSTUP. W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways, This avoids the complexity of having to use PNM and DPNM as arguments. The COMMON variable is usually used in such cases. Here, the COMMON variable is used as an inconvenience for management and debugging. We avoid this type of encapsulation structure as much as possible and instead use such an encapsulated structure.</p>
+<p>There are several modules with multiple entries using the ENTRY statement. Its main purpose is the local storage of data. For example, in the case of the module W2G above, the variables PNM and DPNM are It is stored as a local variable in this module, Commonly used in W2G, G2W and SPSTUP. W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways, This avoids the complexity of having to use PNM and DPNM as arguments. The COMMON variable is usually used in such cases. Here, the COMMON variable is used as an inconvenience for management and debugging. We avoid this type of encapsulation structure as much as possible and instead use such an encapsulation structure.</p>
 <p>Only two COMMONs are in use.</p>
-<ul>
-<li><p>TAB00002:0.0 COMMON /COMCON/</p></li>
-<li><p>TAB00002:0.1 Standard physical constants (earth radius, gas constant, etc.)</p></li>
-<li><p>TAB00002:1.0 COMMON /COMWRK/</p></li>
-<li><p>TAB00002:1.1 work area</p></li>
-</ul>
-<p>COMCON contains the standard physical constants. This COMMON definition is <span><code>include/zccom.F</code>&amp;lt It is in ;/span&gt;, It is used to include as necessary. A set of values can be set by the subroutine PCONST (<span><code>admin/ apcon.F</code></span>). COMWRK is used as a work area by many modules. It is used to reduce the overall memory consumption, It doesn’t matter if you delete all applicable COMMON statements. \0.1[1].</p>
-<p>For include file inclusion and conditional compilation It uses the C preprocessor instruction. So, instead of the file being named <span><code>.f</code></span>, it is named , <span><code>.F</code></span>. As a conditional compilation, <span><code>#ifdef</code></span> and &lt; span&gt;<code>#ifndef</code></span> selection. Importing files is <span><code>inlcude</code>&lt;/span&amp;gt ; I’m doing this from the directory, It is as follows.</p>
-<ul>
-<li><p>TAB00003:0.0 Array size parameter statements</p></li>
-<li><p>TAB00003:0.1 zcdim.F</p></li>
-<li><p>TAB00003:1.0</p></li>
-<li><p>TAB00003:1.1 zpdim.F</p></li>
-<li><p>TAB00003:2.0</p></li>
-<li><p>TAB00003:2.1 zidim.F</p></li>
-<li><p>TAB00003:3.0</p></li>
-<li><p>TAB00003:3.1 zsdim.F</p></li>
-<li><p>TAB00003:4.0</p></li>
-<li><p>TAB00003:4.1 zhdim.F</p></li>
-<li><p>TAB00003:5.0</p></li>
-<li><p>TAB00003:5.1 zradim.F</p></li>
-<li><p>TAB00003:6.0</p></li>
-<li><p>TAB00003:6.1 zwdim.F</p></li>
-<li><p>TAB00003:7.0 COMMON definition (physical constants)</p></li>
-<li><p>TAB00003:7.1 zccom.F</p></li>
-<li><p>TAB00003:8.0 Statement function definition (saturation ratio humidity)</p></li>
-<li><p>TAB00003:8.1 zqsat.F</p></li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>COMMON /COMCON/</td>
+<td>Standard physical constants (earth radius, gas constant, etc.)</td>
+</tr>
+<tr class="even">
+<td>COMMON /COMWRK/</td>
+<td>work area</td>
+</tr>
+</tbody>
+</table>
+<p>COMCON contains the standard physical constants. This COMMON definition is in <span><code>include/zccom.F</code></span>, It is used to include as necessary. The value is set by calling the subroutine PCONST (<span><code>admin/apcon.F</code></span>). COMWRK is used as a work area by many modules. It is used to reduce the overall memory consumption, It doesn’t matter if you delete all applicable COMMON statements. \0.1[1].</p>
+<p>For include file inclusion and conditional compilation It uses the C preprocessor instruction. F<code>&lt;/span&gt; instead of &lt;span&gt;</code>.f<code>&lt;/span&gt;, so the file name is &lt;span&gt;</code>. As a conditional compilation, Using selection by <span><code>#ifdef</code></span> and <span><code>#ifndef</code></span>. Files are imported from the <span><code>inlcude</code></span> directory, It is as follows.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Array size parameter statements</td>
+<td>zcdim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zpdim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zidim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zsdim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zhdim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zradim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zwdim.F</td>
+</tr>
+<tr class="even">
+<td>COMMON definition (physical constants)</td>
+<td>zccom.F</td>
+</tr>
+<tr class="odd">
+<td>Statement function definition (saturation ratio humidity)</td>
+<td>zqsat.F</td>
+</tr>
+</tbody>
+</table>
 <p>FORTRAN 77 As a non-standard specification , I’m using NAMELIST reading, It seems to be able to be used in many processing systems without any problem. For the specifications of NAMELIST, please refer to the manual of each system.</p>
 <h2 id="program-writing.">Program Writing.</h2>
 <p>End-of-line comments are used in various explanations. <code>!"</code> The end of the line below is a comment \0.2[2].</p>
-<p>The variables are all declared. IMPLICIT NONE (e.g. Sun’s <span><code>-u</code></span> option) to It is a prerequisite for use.</p>
+<p>The variables are all declared. IMPLICIT NONE (e.g., the <span><code>u</code></span> option for Sun) is set to It is a prerequisite for use.</p>
 <p>Each entry’s argument is accompanied by a continuation line column to explain the function.</p>
-<ul>
-<li><p>TAB00004:0.0 symbol</p></li>
-<li><p>TAB00004:0.1 meaning</p></li>
-<li><p>TAB00004:0.2 input</p></li>
-<li><p>TAB00004:0.3 Outputs</p></li>
-<li><p>TAB00004:0.4 function</p></li>
-<li><p>TAB00004:1.0 O</p></li>
-<li><p>TAB00004:1.1 output</p></li>
-<li><p>TAB00004:1.2 ×impossibility</p></li>
-<li><p>TAB00004:1.3 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:1.4 Generate values</p></li>
-<li><p>TAB00004:2.0 M</p></li>
-<li><p>TAB00004:2.1 modify</p></li>
-<li><p>TAB00004:2.2 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:2.3 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:2.4 Processing the input values and outputting them</p></li>
-<li><p>TAB00004:3.0 I</p></li>
-<li><p>TAB00004:3.1 input</p></li>
-<li><p>TAB00004:3.2 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:3.3</p>
-<ul>
-<li></li>
-</ul></li>
-<li><p>TAB00004:3.4 Input value (‘variable’)</p></li>
-<li><p>TAB00004:4.0 C</p></li>
-<li><p>TAB00004:4.1 constant</p></li>
-<li><p>TAB00004:4.2 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:4.3</p>
-<ul>
-<li></li>
-</ul></li>
-<li><p>TAB00004:4.4 Input value (‘constant’)</p></li>
-<li><p>TAB00004:5.0 D</p></li>
-<li><p>TAB00004:5.1 dimension</p></li>
-<li><p>TAB00004:5.2 circle (e.g. of friends)</p></li>
-<li><p>TAB00004:5.3</p>
-<ul>
-<li></li>
-</ul></li>
-<li><p>TAB00004:5.4 Variables that determine the size of the matching array</p></li>
-<li><p>TAB00004:6.0 W</p></li>
-<li><p>TAB00004:6.1 work</p></li>
-<li><p>TAB00004:6.2 ×impossibility</p></li>
-<li><p>TAB00004:6.3 ×impossibility</p></li>
-<li><p>TAB00004:6.4 work area</p></li>
-<li><p>TAB00004:7.0 U</p></li>
-<li><p>TAB00004:7.1 undefined</p></li>
-<li><p>TAB00004:7.2 ×impossibility</p></li>
-<li><p>TAB00004:7.3 ×impossibility</p></li>
-<li><p>TAB00004:7.4 dummy</p></li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+<th>Header4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>symbol</td>
+<td>meaning</td>
+<td>input</td>
+<td>Outputs</td>
+<td>function</td>
+</tr>
+<tr class="even">
+<td>O</td>
+<td>output</td>
+<td>×impossibility</td>
+<td>circle (e.g. of friends)</td>
+<td>Generate values</td>
+</tr>
+<tr class="odd">
+<td>M</td>
+<td>modify</td>
+<td>circle (e.g. of friends)</td>
+<td>circle (e.g. of friends)</td>
+<td>Processing the input values and outputting them</td>
+</tr>
+<tr class="even">
+<td>I</td>
+<td>input</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Input value (‘variable’)</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>constant</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Input value (‘constant’)</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>dimension</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Variables that determine the size of the matching array</td>
+</tr>
+<tr class="odd">
+<td>W</td>
+<td>work</td>
+<td>×impossibility</td>
+<td>×impossibility</td>
+<td>work area</td>
+</tr>
+<tr class="even">
+<td>U</td>
+<td>undefined</td>
+<td>×impossibility</td>
+<td>×impossibility</td>
+<td>dummy</td>
+</tr>
+</tbody>
+</table>
 <p>Here, the meaning of the input and output columns is as follows the meantime, I’m going to be in a position to take a look at some of the things I’ve done in the past. \begin{array}{ll}</p>
 <p>× x &amp; whatever is in it {array}</p>
-<p>output is a lot more than just a\lopenopenPointPointPoint.com \begin{array}{ll}<br />
-O O &amp; may be subject to change in the course of the event - &amp; the value will not change × x &amp; I can’t guarantee what you’ll find {array}</p>
+<pre><code> \begin{array}{ll}   </code></pre>
+<p>O O &amp; may be subject to change in the course of the event - &amp; the value will not change × x &amp; I can’t guarantee what you’ll find {array}</p>
 <p>The important ones are M,O,I, where M,O and I are important, and C,D are a type of I. The use of C, D, and I is not so neat.</p>
 <p>The contents of each file are as follows.</p>
 <p><code>*" PACKAGE PSAVE save/load data (real memory version)</code> :̄ Package Name <code>*" [HIS] 93/11/10(numaguti) AGCM5.3</code> Change log <code>SUBROUTINE PGSAVE     !" Internal Data Save</code> : Module Declaration <code>*    [PARAM]</code> The following, parameter statements are (included) followed by <code>* [MODIFY]</code> : Declarations of input and output variables <code>* [OUTPUT]</code> : the following, output variable declarations <code>* [INPUT]</code> : The following, Declarations of Input Variables <code>* [ENTRY OUTPUT]</code> : Declare output variables in the entry… <code>* [INTERNAL WORK]</code> : Declarations of internal work variables <code>*    [INTERNAL SAVE]</code> Declarations of internal variables (which should be kept after RETURN) <code>*    [INTERNAL PARAM]</code> Declarations of internal parameters (to be read by NAMELIST, etc.) <code>*    [ONCE]</code> The following is the part to be done only once on the first call</p>
@@ -197,90 +333,166 @@ O O &amp; may be subject to change in the course of the event - &amp; the value 
 <h2 id="naming-rules.">Naming Rules.</h2>
 <p>The names of variables, entry names, etc. must be six characters or less.</p>
 <p>Variable name and type mapping</p>
-<ul>
-<li><p>TAB00005:0.0 A-G, P-Z</p></li>
-<li><p>TAB00005:0.1 Floating point number (<span><code>REAL*8</code></span>)</p></li>
-<li><p>TAB00005:1.0 H</p></li>
-<li><p>TAB00005:1.1 String (<span><code>CHARACTER</code></span>)</p></li>
-<li><p>TAB00005:2.0 I-N.</p></li>
-<li><p>TAB00005:2.1 Integer (<span><code>INTEGER</code></span>)</p></li>
-<li><p>TAB00005:3.0 O</p></li>
-<li><p>TAB00005:3.1 Logical type (<span><code>LOGICAL</code></span>)</p></li>
-</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A-G, P-Z</td>
+<td>Floating point number (<span><code>REAL*8</code></span>)</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>String (<span><code>CHARACTER</code></span>)</td>
+</tr>
+<tr class="odd">
+<td>I-N.</td>
+<td>Integer (<span><code>INTEGER</code></span>)</td>
+</tr>
+<tr class="even">
+<td>O</td>
+<td>Logical type (<span><code>LOGICAL</code></span>)</td>
+</tr>
+</tbody>
+</table>
 <p>However, in the variables read by NAMELIST, This may not be met.</p>
 <p>Conventions on the Correspondence between Variable Names and Contents</p>
-<ul>
-<li><p>TAB00006:0.0 Prefix:</p></li>
-<li><p>TAB00006:0.1 GA</p></li>
-<li><p>TAB00006:0.2 The grid point state quantity (<span class="math inline"><em>t</em></span>)</p></li>
-<li><p>TAB00006:1.0</p></li>
-<li><p>TAB00006:1.1 GB</p></li>
-<li><p>TAB00006:1.2 Grid point state quantity (<span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>)</p></li>
-<li><p>TAB00006:2.0</p></li>
-<li><p>TAB00006:2.1 GD</p></li>
-<li><p>TAB00006:2.2 Grid State Quantity (for common use)</p></li>
-<li><p>TAB00006:3.0</p></li>
-<li><p>TAB00006:3.1 GT</p></li>
-<li><p>TAB00006:3.2 Time differential term of the grid state quantity</p></li>
-<li><p>TAB00006:4.0</p></li>
-<li><p>TAB00006:4.1 WD</p></li>
-<li><p>TAB00006:4.2 Spectral representation of state quantities</p></li>
-<li><p>TAB00006:5.0</p></li>
-<li><p>TAB00006:5.1 WT</p></li>
-<li><p>TAB00006:5.2 Spectral representation of the time differential term of the state quantity</p></li>
-<li><p>TAB00006:6.0</p></li>
-<li><p>TAB00006:6.1 I</p></li>
-<li><p>TAB00006:6.2 Longitude index</p></li>
-<li><p>TAB00006:7.0</p></li>
-<li><p>TAB00006:7.1 J</p></li>
-<li><p>TAB00006:7.2 Index of latitude</p></li>
-<li><p>TAB00006:8.0</p></li>
-<li><p>TAB00006:8.1 K</p></li>
-<li><p>TAB00006:8.2 Index for vertical level</p></li>
-<li><p>TAB00006:9.0</p></li>
-<li><p>TAB00006:9.1 IJ</p></li>
-<li><p>TAB00006:9.2 An index of all the latitudes and longitudes in one place</p></li>
-<li><p>TAB00006:10.0</p></li>
-<li><p>TAB00006:10.1 NM.</p></li>
-<li><p>TAB00006:10.2 Index of the spectrum</p></li>
-<li><p>TAB00006:11.0</p></li>
-<li><p>TAB00006:11.1 NM.</p></li>
-<li><p>TAB00006:11.2 NAMELIST Name</p></li>
-<li><p>TAB00006:12.0</p></li>
-<li><p>TAB00006:12.1 COM</p></li>
-<li><p>TAB00006:12.2 COMMON Name</p></li>
-<li><p>TAB00006:13.0 Tangent:</p></li>
-<li><p>TAB00006:13.1 U</p></li>
-<li><p>TAB00006:13.2 east-west wind</p></li>
-<li><p>TAB00006:14.0</p></li>
-<li><p>TAB00006:14.1 V</p></li>
-<li><p>TAB00006:14.2 north-south wind</p></li>
-<li><p>TAB00006:15.0</p></li>
-<li><p>TAB00006:15.1 T</p></li>
-<li><p>TAB00006:15.2 temperature</p></li>
-<li><p>TAB00006:16.0</p></li>
-<li><p>TAB00006:16.1 PS</p></li>
-<li><p>TAB00006:16.2 surface pressure</p></li>
-<li><p>TAB00006:17.0</p></li>
-<li><p>TAB00006:17.1 Q</p></li>
-<li><p>TAB00006:17.2 Specific humidity, various tracers</p></li>
-<li><p>TAB00006:18.0</p></li>
-<li><p>TAB00006:18.1 QL</p></li>
-<li><p>TAB00006:18.2 cloud liquidity</p></li>
-<li><p>TAB00006:19.0</p></li>
-<li><p>TAB00006:19.1 FLX,FLUX</p></li>
-<li><p>TAB00006:19.2 flux density</p></li>
-<li><p>TAB00006:20.0</p></li>
-<li><p>TAB00006:20.1 MTX</p></li>
-<li><p>TAB00006:20.2 Matrices for implicit solutions</p></li>
-<li><p>TAB00006:21.0</p></li>
-<li><p>TAB00006:21.1 MAX</p></li>
-<li><p>TAB00006:21.2 data length</p></li>
-<li><p>TAB00006:22.0</p></li>
-<li><p>TAB00006:22.1 DIM</p></li>
-<li><p>TAB00006:22.2 Size of the array region</p></li>
-</ul>
-<p>For file names, see , The first letter is unified to the first letter of the directory. (However, <span><code>include</code></span> can be used in &amp;lt ;span&gt;<code>z</code></span>). Also, <span><code>-admn</code></span> ( administer) indicates the main module in it.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prefix:</td>
+<td>GA</td>
+<td>The grid point state quantity (<span class="math inline"><em>t</em></span>)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>GB</td>
+<td>Grid point state quantity (<span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>GD</td>
+<td>Grid State Quantity (for common use)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>GT</td>
+<td>Time differential term of the grid state quantity</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>WD</td>
+<td>Spectral representation of state quantities</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>WT</td>
+<td>Spectral representation of the time differential term of the state quantity</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>I</td>
+<td>Longitude index</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>J</td>
+<td>Index of latitude</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>K</td>
+<td>Index for vertical level</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>IJ</td>
+<td>An index of all the latitudes and longitudes in one place</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>NM.</td>
+<td>Index of the spectrum</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>NM.</td>
+<td>NAMELIST Name</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>COM</td>
+<td>COMMON Name</td>
+</tr>
+<tr class="even">
+<td>Tangent:</td>
+<td>U</td>
+<td>east-west wind</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>V</td>
+<td>north-south wind</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>T</td>
+<td>temperature</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>PS</td>
+<td>surface pressure</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Q</td>
+<td>Specific humidity, various tracers</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>QL</td>
+<td>cloud liquidity</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>FLX,FLUX</td>
+<td>flux density</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>MTX</td>
+<td>Matrices for implicit solutions</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>MAX</td>
+<td>data length</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>DIM</td>
+<td>Size of the array region</td>
+</tr>
+</tbody>
+</table>
+<p>For file names, see , The first letter is unified to the first letter of the directory. (However, <span><code>include</code></span> is <span><code>z</code></span>.) Also, <span><code>-admn</code></span>(admin) indicates the main module in it.</p>
 <ol type="1">
 <li>this COMMON is actually a grammatical violation. The size of the common block due to the COMMON statement is It has to be the same. (An unnamed common block is acceptable.) . This area will be changed in the near future.</li>
 </ol>

@@ -44,8 +44,8 @@
 </header>
 <h2 id="surface-flux.">Surface Flux.</h2>
 <h3 id="overview-of-the-surface-flux-scheme">Overview of the Surface Flux Scheme</h3>
-<p>The surface flux scheme is , due to turbulent transport in the ground boundary layer. Assessing the flux of physical quantities between atmospheric surfaces. The main input data are wind speed <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, and temperature <span class="math inline"><em>T</em></span>, Specific humidity is the <span class="math inline"><em>q</em></span>, The output data are the vertical fluxes of momentum, heat, water vapor and It is the differential value for obtaining an implicit solution.</p>
-<p>Bulk coefficients are obtained according to Louis(1979), Louis <span><em>et al.</em>&amp; lt;/span&gt;(1982). However, we take into account the difference between the momentum and heat roughness in the correction.</p>
+<p>The surface flux scheme is , due to turbulent transport in the ground boundary layer. Assessing the flux of physical quantities between atmospheric surfaces. The main input data are wind speed <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, temperature <span class="math inline"><em>T</em></span>, and specific humidity <span class="math inline"><em>q</em></span>, The output data are the vertical fluxes of momentum, heat, water vapor and It is the differential value for obtaining an implicit solution.</p>
+<p>Bulk coefficients are obtained according to Louis(1979), Louis <span><em>et al.</em></span>(1982). However, we take into account the difference between the momentum and heat roughness in the correction.</p>
 <p>The outline of the calculation procedure is as follows.</p>
 <ol type="1">
 <li><p>as the stability of the atmosphere. Richardson numbers.</p></li>
@@ -122,7 +122,7 @@ $$</span><br /></p>
 <p>Correction Factor <span class="math inline"><em>f</em><sub><em>q</em></sub></span> is ,</p>
 <p><br /><span class="math display"><em>f</em><sub><em>q</em></sub> = (<em>q</em><sub>1</sub> − <em>q</em>(<em>z</em><sub>0</sub>))/(<em>q</em><sub>1</sub> − <em>q</em><sup>*</sup>(<em>θ</em><sub>0</sub>))</span><br /></p>
 <p>but the method of calculation is abbreviated. The coefficient is <span class="math inline">(<em>b</em><sub><em>M</em></sub>, <em>d</em><sub><em>M</em></sub>, <em>e</em><sub><em>M</em></sub>) = (9.4, 7.4, 2.0), (<em>b</em><sub><em>H</em></sub>, <em>d</em><sub><em>H</em></sub>, <em>e</em><sub><em>H</em></sub>) = (<em>b</em><sub><em>E</em></sub>, <em>d</em><sub><em>E</em></sub>, <em>e</em><sub><em>E</em></sub>) = (9.4, 5.3, 2.0)</span>.</p>
-<p>The dependence of the bulk coefficients on <span class="math inline"><em>R</em><em>i</em><sub><em>B</em></sub></span> is illustrated in Fig, Figure [p-sflx:cm]] (#p-sflx:cm), Figure <a href="#p-sflx:ch">p-sflx:ch [\\]</a>, Figure <a href="#p-sflx:ch">p-sflx:ch</a>.</p>
+<p>The dependence of the bulk coefficients on <span class="math inline"><em>R</em><em>i</em><sub><em>B</em></sub></span> is illustrated in Fig, Figure [p-sflx:cm] (#p-sflx:cm), Figure [p-sflx:ch] (#p-sflx:ch).</p>
 <h3 id="calculating-flux.">Calculating Flux.</h3>
 <p>This will calculate the flux.</p>
 <p><br /><span class="math display"><em>F̂</em><em>u</em><sub>1/2</sub> =  − <em>ρ</em><sub>1/2</sub><em>C</em><sub><em>M</em></sub>|<strong>v</strong><sub>1</sub>|<em>u</em><sub>1</sub></span><br /></p>

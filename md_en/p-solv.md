@@ -6,7 +6,7 @@ Radiative, vertical diffusion, ground boundary layer and surface processes are
 Some terms are treated as implicit in the
 Compute the time-varying term and do time integration at the end.
 As a time-varying term for the vector quantity <span>q</span>,
-The term ${\mathcal A}$ for the Euler method and the term ${\mathcal B}$ for the implicit method Divided into .
+The term ${\mathcal A}$ for the Euler method and the term ${\mathcal B}$ for the implicit method are considered separately.
 
 $$
   {\mathbf q}^+ 
@@ -78,7 +78,7 @@ $k$ increases from lower to higher levels.
 Also, $\sigma_{1/2} = 1$,
 This is the $\sigma_{k} \simeq (\sigma_{k-1/2} + \sigma_{k+1/2})/2$.
 $\sigma$ The coordinates are only available when we consider a one-dimensional vertical process,
-It is considered to be the same as the $p$ coordinates except for the difference in the constant ($p_S$) times Good.
+It can be considered to be the same as $p$ coordinates except for the difference in the constant ($p_S$) times.
 Here,
 
 $$
@@ -101,7 +101,7 @@ Diffusion coefficients and other factors also depend on the forecast variables,
 The coefficients are only calculated first, not iteratively.
 However, the treatment of the time step is devised to improve the stability (see below).
 
-For example, the equation of the discretized $u$ ([\[u-eq.\origorig]](#u- eq.orig)) is ,
+For example, the discretized equation of $u$ ([\[u-eq.orig]](#u-eq.orig)) is
 
 $$
   (u_k^{m+1} - u_k^{m})/\Delta t 
@@ -119,7 +119,7 @@ $$
      \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} (u^{m+1}_{k'}-u^{m}_{k'})
 $$
 
-> <span id="u-flux.next" label="u-flux. next">[u-flux.next]</span>.
+> <span id="u-flux.next" label="u-flux.next" label="u-flux.next">\\\[u-flux.next\]</span>
 
 Thus, if you put $\delta u_k \equiv (u^{m+1}_{k}-u^{m}_{k})/\Delta t$,
 
@@ -159,7 +159,7 @@ M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
                    - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right) \Delta t
 $$
 
-> <span id="u-matrix" label="u-matrix"& gt;gt;u-matrix[u-matrix]</span>
+> <span id="u-matrix" label="u-matrix">\blazer[u-matrix]</span>
 
 This can be solved by LU decomposition or some other method.
 Normally, $M^u_{k,k'}$ is easy to solve since it is a triple diagonal.
@@ -185,7 +185,7 @@ $$
   + ( FR^{m}_{k-1/2} - FR^{m}_{k+1/2} )
 $$
 
-> <span id="deq-theta" label="deq-theta "> >Daily, we're going to have to go through a lot of stuff to get to the top.
+> <span id="deq-theta" label="deq-theta">\[deq-theta]</span>
 
 
 $$
@@ -196,7 +196,7 @@ $$
   = ( Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2} )
 $$
 
-> <span id="deq-q" label="deq-q">\blaze> <span id="deq-q deq-q\\\blind\blind\blind\.com
+> <span id="deq-q" label="deq-q">\blazer[deq-q]</span>
 
 $$
   Cg_l \Delta z_l \delta G_l
@@ -206,7 +206,7 @@ $$
   = - ( Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2} )
 $$
 
-> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> </span> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g">\blaze> <span id="deq-g" label="deq-g deq-g\\\blur>.
+> <span id="deq-g" label="deq-g">\blazer[deq-g]</span>
 
 Here, $\sum_{k'}$ and $\sum_{l'}$ in the above equations are
 Note that I took this from $k'=0$, $l'=0$. because,
@@ -230,11 +230,11 @@ $$
 Where the surface skin temperature is set to $T_0$,
 $\theta_0 = T_0$, $q_0 = q^*(T_0)$ (saturated specific humidity), $G_0 = T_0$.
 They all depend on the $T_0$.
-Also, for $FR_{k}$, all values in $k$ depend on $T_0$ I do.
+Also, the value of the $FR_{k}$ depends on the $T_0$ for all $k$ values.
 
-(as well as [\\0.25}(#u-matrix)](#u-matrix), matrix $M^{\theta}, M^q, M^g$ ,Using $M^{\theta}, M^q, M^g$
-([deq-theta\]](#deq-theta)), ([deq-q [\\brazer]](#deq-q)), ([\brazer[deq-g\]](#deq-g)), if you rewrite it,
-$k \ge 2$ (about $\theta, q$) or TERM At 00039 (for $G$),
+(as with [\[u-matrix]](#u-matrix)), using the matrices $M^{\theta}, M^q, M^g$
+([deq-theta\] (#deq-theta)), ([deq-q\] (#deq-q)), ([deq-g\\] (#deq-g)), and ([deq-g\\] (#deq-g)) are rewritten,
+For $k \ge 2$ (for $\theta, q$) or $l \ge 1$ (for $G$),
 
 $$
     \sum_{k'=1}^{K}  M^\theta_{k,k'} \delta T_{k'}
@@ -244,7 +244,7 @@ $$
      \Delta t\delta T_0 \; ,
 $$
 
-> <span id="comb-theta2" label="comb- </span> > theta2">theta2\[combo-theta2\\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\blind\bladz.
+> <span id="combo-theta2" label="combo-theta2">\\[combo-theta2\\blazer]</span>
 
 
 $$
@@ -252,14 +252,14 @@ $$
          = (Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2}) \; ,
 $$
 
-> <span id="comb-q2" label="comb-q2"&gt ;combo-q2\\blazer.com;</span>
+> <span id="combo-q2" label="combo-q2">\blazer[combo-q2]</span>
 
 $$
   \sum_{l'=0}^{L} M^g_{l,l'} \delta G_{l'}
          = - (Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2}) \; .
 $$
 
-> <span id="comb-g2" label="comb-g2"&gt ;combo-g2\blazer.com;</span>
+> <span id="combo-g2" label="combo-g2">\blazer[combo-g2]</span>
 
 However,
 
@@ -286,7 +286,7 @@ M^{g}_{l,l'} \equiv Cg_l \Delta z_l \delta_{l,l'}
 $$
 
 
-$k=1$ (about $\theta, q$) or $l=0$ (for $G$),
+In case of $k=1$ (for $\theta, q$) or $l=0$ (for $G$),
 
 $$
     \sum_{k'=1}^{K}  M^\theta_{1,k'} \delta T_{k'}
@@ -300,7 +300,7 @@ $$
 $$
 
 
-> <span id="comb-theta" label="comb- Theta">theta[comb-theta]</span>.
+> <span id="comb-theta" label="comb-theta" label="comb-theta">\centric[comb-theta]</span>
 
 
 $$
@@ -310,7 +310,7 @@ $$
          + \frac{\partial Fq^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0 \; ,
 $$
 
-> <span id="combo-q" label="combo-q">\blazin' comb-q\\brai]</span>.
+> <span id="combo-q" label="combo-q">\\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\centric\fadabraz</c>.
 
 $$
   {\sum_{l'=1}^{L} M^g_{0,l'} \delta G_{l'}
@@ -327,7 +327,7 @@ $$
 $$
 
 
-> <span id="combo-g" label="combo-g">\blaze> <span id="combo-g" label="combo-g">\blade>.
+> <span id="combo-g" label="combo-g">\cleaner[combo-g]</span>
 
 
 However,
@@ -366,8 +366,8 @@ as the case of $l=0$ in the soil temperature equation,
 (Note that it is not included in the formula of [deq-g](#deq-g)].
 
 These,
-([comb-theta2\]](#comb-theta2)), ([comb- [q2\] (#comb-q2)), ([\\\centric[comb-g2\]] (#comb-g2)),
-([comb-theta]](#comb-theta)), ([comb-q \[i.e., [comb-q]](#comb-q)), ([i.e., [i.e., [comb-g]](#comb-g))
+([comb-theta2\] (#comb-theta2)), ([comb-q2\] (#comb-q2)), ([comb-g2\] (#comb-g2)),
+([comb-theta\](#comb-theta)), ([comb-q](#comb-q)), ([comb-g\\lopen[comb-g\]](#comb-g))
 for the $2K+L+1$ unknowns,
 There are equations of equality that can be solved.
 In practice, the LU decomposition can be used to solve the problem.
@@ -378,7 +378,7 @@ Consistent flux should be sought.
 
 ### Solving the Coupling Formula for Time Difference
 
-([comb-theta]](#comb-theta)), etc. I can write.
+([comb-theta]](#comb-theta)), etc., can be written as follows.
 
 $$
   \sum_{k'=1}^{K} ( M_{k,k'} + \delta_{1,k} \delta_{1,k'} \alpha)
@@ -434,7 +434,7 @@ $$
           \end{array} \right)
 $$
 
-> <span id="solve-0" label="solve-0" &gt ;</span>.
+> <span id="summe-0" label="summe-0">\blazer[summe-0]</span>
 
 LU. Take it apart,
 
@@ -476,7 +476,7 @@ $$
           \end{array} \right)
 $$
 
-> <span id="solve-z" label="solve-z"&gt
+> <span id="solve-z" label="solve-z">\blazer[solve-z]</span>
 
 for $f'$ (which can be easily solved by starting from $f'_3=F_3$),
 And then..,
@@ -540,7 +540,7 @@ $$
 $$
 
 
-But if you compare this with the following It turns out there is a connection.
+However, comparing this with ([\ltra[solve-z]](#solve-z)), we see the following relationship.
 
 $$
   \left( \begin{array}{l}
@@ -570,7 +570,7 @@ $$
           \end{array} \right)
 $$
 
-> <span id="solve-x" label="solve-x"&gt ;</span>
+> <span id="solve-x" label="solve-x">\blazer[solve-x]</span>
 
 The result is That is, ,
 
@@ -578,10 +578,10 @@ $$
   ( U_{11} +  \alpha  ) T_1 = f'_1 + F_s + \gamma T_0 
 $$
 
-> <span id="solve-1" label="solve-1"&gt
+> <span id="solve-1" label="solve-1">\blazer[solve-1\blazer]</span>
 
 where, $U_{k,k'}$ and, $f'_k$ are,
-The expression $\alpha=\gamma=0$ ([\\0\0\0.0\0.0\0.0}](#solve-0)),
+
 In other words, without considering the surface flux term
 Note that this can be obtained by performing LU decomposition.
 The physical meaning of these terms is ,
@@ -590,10 +590,10 @@ The entire atmosphere has a heat capacity of $U_{11}$,
 Flux ($f'_1$) from the top
 Indicates that it can be regarded as one layer to be supplied.
 
-([combo-theta2\]](#comb-theta2)) and ([combo-theta2\]) and ([combe[ comb-theta\]](#comb-theta)),
-([combo-q2\](#comb-q2)) and ([combo-q2\](#comb-q2)). comb-q))),
-([combo-g2\](#comb-g2)) and ([combo-g2\](#comb-g2)). comb-g))) in each of the
-(the expression corresponding to [\ltra[solve-1\]](#solve-1)) is obtained, as follows Yes.
+([comb-theta2]](#comb-theta2)) and ([comb-theta\]](#comb-theta)),
+([combo-q2\](#comb-q2)) and ([combo-q\\\\clean}](#comb-q)),
+([comb-g2\](#comb-g2)) and ([comb-g](#comb-g))
+(the formula corresponding to [\ltra[solve-1\]](#solve-1)) is obtained and is as follows
 
 $$
   ( U^{T}_{11} +  \alpha^{T}  ) \delta T_1 - \gamma^{T} \delta T_0 
@@ -617,7 +617,7 @@ $$
 Therefore, if we concatenate the three equations above, we get
 We can solve for the unknown variables $\delta T_1, \delta q_1, \delta T_0$.
 If we can solve these problems, we can then
-([\\0.25}](#solve-x)) in sequence $x_2,x_3$,TERM Can be solved with 00061.
+([\[solve-x]](#solve-x)) can be solved sequentially as $x_2,x_3$.
 Afterwards, the consistuous flux is applied to the obtained temperature
 
 $$
@@ -635,9 +635,9 @@ It is even simpler since it is actually a triple diagonal matrix.
 
 During the program,
 For atmospheric parts in `MODULE:[VFTND1(pimtx.F)]`,
-MODULE:[GNDHT1(pggnd.F)]` for the underground part of the LU decomposition method first half of the year
+MODULE:[GNDHT1(pggnd.F)]` for the underground part, the first half of the LU decomposition method.
 (where $f'_k$ is obtained),
-In `MODULE:[SLVSFC(pgslv.F)]`, the $3\times 3$ Solve the equation,
+In `MODULE:[SLVSFC(pgslv.F)]`, solve the equation of $3\times 3$,
 Seeking $\delta q_1, \delta G_1, \delta T_0$.
 Then, in `MODULE:[GNDHT2(pggnd.F)]`
 The second half of the LU decomposition method is performed and the rate of change of temperature in the ground is solved,
@@ -733,10 +733,10 @@ $$
   \end{array} \right) \; .
 $$
 
-> <span id="combin-eq" label="combin-eq "> >combin[combin-eq\]</span>.
+> <span id="combin-eq" label="combin-eq">\\brain[combin-eq]</span>
 
 
-Where, $U_{11}^T, U_{11}^q, U_{00}^g$ and $f_1^T, f_1^q, f_0^g$ is ,
+Here, $U_{11}^T, U_{11}^q, U_{00}^g$, $U_{11}^T, U_{11}^q, U_{00}^g$ and $f_1^T, f_1^q, f_0^g$, $f_1^T, f_1^q, f_0^g$ are,
 The components of the matrices and vectors obtained by doing the first half of the LU decomposition method.
 When the ground is covered with snow or ice, instead of the latent heat $L$
 Using the Latent Heat of Sublimation $Ls = L + L_M$ $L_M$ is the latent heat of melting of water.
@@ -792,7 +792,7 @@ $$
   \end{array} \right) \; .
 $$
 
-> <span id="combin-eq3" label="combin-eq 3">\cleaner.com[combin-eq3]</span>
+> <span id="combin-eq3" label="combin-eq3">\brain[combin-eq3]</span>
 
 
 Here, $\delta_0 T_0$ is the rate of change to the temperature to be fixed,
@@ -846,7 +846,7 @@ $$
   \frac{X^{m+1} - X^m}{\Delta t} = - K( X^m ) X^{m+1}
 $$
 
-> <span id="normal-fd" label="normal-fd "> > > normal-fd\\.com[normal-fd]</span>
+> <span id="normal-fd" label="normal-fd">\centric[normal-fd]</span>
 
 However, consider the value of $X$ two steps ahead, $X^{\ast}$,
 
@@ -854,19 +854,19 @@ $$
   \frac{X^{\ast} - X^m}{2\Delta t} = - K ( X^m ) X^{\ast}
 $$
 
-> <span id="modify-fd1" label="modify-fd
+> <span id="modify-fd1" label="modify-fd1">\[modify-fd1\\blade]</span>
 
 $$
   X^{m+1} = \frac{X^{\ast} + X^m}2
 $$
 
-> <span id="modify-fd2" label="modify-fd 2">\clean up in the streets.
+> <span id="modify-fd2" label="modify-fd2">\[modify-fd2\Backlash]</span>
 
 .
-In general, ([\[modify-fd1\]](#modify-fd1)), ([\\0.25}](#modify-fd1) modify-fd2\]](#modify-fd2)) is better than
-(known to be more stable than [normal-fd\] (#normal-fd)) It is.
+Generally, ([modify-fd1\]](#modify-fd1)), ([modify-fd2\](#modify-fd2)) is better
+([normal-fd]](#normal-fd)) is known to be more stable than [normal-fd]).
 
-([modify-fd1\]](#modify-fd1)), ([\\brachio[modify- fd2\]](#modify-fd2)), to find the rate of change over time
+([modifie-fd1\](#modifie-fd1)), ([modifie-fd2\lenses](#modifie-fd2)) to find the rate of change in time
 Rewriting it into a form yields the following.
 
 $$
