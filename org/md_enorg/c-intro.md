@@ -12,8 +12,8 @@ In some cases, there may be multiple entries in a module.
 
 Example:
 
-<span>** Directory**</span>** dynamics: **
-<span>**File**</span> **dadmn.F: **dadmn.F:
+<span>**directory**</span>**dynamics: ** 
+<span>**File**</span> **dadmn.F: **
 \blanket* Package DADMN 
 . 
 <span>**File**</span> **dshpe.F: **
@@ -23,7 +23,7 @@ Example:
 SUBROUTINE W2G 
 ENTRY G2W 
 ENTRY SPSTUP 
-<span>** Module DSETNM:**</span> SUBROUTINE DSETNM.
+<span>** Module DSETNM:**</span> SUBROUTINE DSETNM 
 
 ### Directory Structure.
 
@@ -69,7 +69,7 @@ Currently, there are 9 directories as follows
      include
 
  - TAB00000:6.1 
-     <span>Included by `#include`</span> header types
+ Headers included     by <span>`#include`</span>
 
  - TAB00000:7.0 
      nonstd
@@ -83,7 +83,7 @@ Currently, there are 9 directories as follows
  - TAB00000:8.1 
  test module
 
-Note that the files containing the main routines are <span>`src/`</span span>and immediately below.
+Note that the files containing the main routines are located directly under <span>`src/`</span>.
 
 These dependencies are as follows.
 
@@ -153,7 +153,7 @@ There are several modules that have multiple entries using the ENTRY statement.
  Its main purpose is the local storage of data.
  For example, in the case of the module W2G above, the variables PNM and DPNM are
  It is stored as a local variable in this module,
-     Commonly used in W2G, G2W and SPSTUP.
+ Commonly used in     W2G, G2W and SPSTUP.
      W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways,
  This avoids the complexity of having to use     PNM and DPNM as arguments.
  The COMMON variable is usually used in such cases.
@@ -175,19 +175,19 @@ Only two COMMONs are in use.
  work area
      
      COMCON contains the standard physical constants.
- This COMMON definition is <span>`include/zccom.F`&lt It is in ;/span>,
+ This COMMON definition is in <span>`include/zccom.F`</span>,
  It is used to include as necessary.
- A set of values can be set by the subroutine PCONST (<span>`admin/ apcon.F`</span>).
+ The value is set by calling the subroutine PCONST (<span>`admin/apcon.F`</span>).
  An unnamed COMMON block is used as a work area from many modules.
  It is used to reduce the overall memory consumption.
  Deleting all the relevant COMMON statements does not have a problem as it only affects the amount of memory.
 
 For include file inclusion and conditional compilation
  It uses the     C preprocessor instruction.
- So, instead of the file being named <span>`.f`</span>, it is named , <span>`.F`</span>.
+ F`</span> instead of <span>`.f`</span>, so the file name is <span>`.
  As a conditional compilation,
-     <span>`#ifdef`</span> and < span>`#ifndef`</span> selection.
- Importing files is <span>`inlcude`</span&gt ; I'm doing this from the directory,
+ Using selection by     <span>`#ifdef`</span> and <span>`#ifndef`</span>.
+ Files are imported from the <span>`inlcude`</span> directory,
  It is as follows.
      
        - TAB00003:0.0 
@@ -250,7 +250,7 @@ FORTRAN 77 As a non-standard specification ,
      \0.1[1\].
 
 All variables are declared. 2.
-     IMPLICIT NONE (e.g. Sun's <span>`-u`</span span> option) to
+     IMPLICIT NONE (e.g., the <span>`u`</span> option for Sun) is set to
  It is a prerequisite for use.
 
 Each entry's argument is accompanied by a continuation line column to explain the function.
@@ -390,7 +390,7 @@ Each entry's argument is accompanied by a continuation line column to explain th
          \{array} 
  
  The important ones are M,O,I, where M,O and I are important, and C,D are a type of I.
- The     use of C, D, and I is not so neat.
+ The use of     C, D, and I is not so neat.
 
 The contents of each file are as follows.
      
@@ -645,8 +645,8 @@ Conventions on the correspondence between variable names and contents
 
 For file names,
  The     first letter is unified to the first letter of the directory.
-     (However, <span>`include`</span> can be used in &lt ;span>`z`</span>).
- Also, <span>`-admn`</span> ( administer) indicates the main module in it.
+     (However, <span>`include`</span> is <span>`z`</span>.)
+ Also, <span>`-admn`</span>(admin) indicates the main module in it.
 
 <! -- end list -->!
 
@@ -654,4 +654,3 @@ The reason for the use of two characters here, not just `! I use two letters as 
  Systems that use other end-of-line comment formats (e.g. HITAC VOS3)
  to ensure substitution for, and
      The reason for this is that Sun's CPP will malfunction if you use only `! is because Sun's CPP will malfunction if there is only `!
-
