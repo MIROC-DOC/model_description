@@ -12,113 +12,167 @@ In some cases, there may be multiple entries in a module.
 
 Example:
 
-** Directory\textbf{} dynamics: \textbf{ {\textbf{File}} }dadmn.F:
-\textbf{dadmn.F: \blanket* Package DADMN . {\textbf{File}} }dshpe.F:
-\textbf{ \blanket* Package DSPHE } Module DSETNM: \textbf{̄
-{\textbf{Module W2G}} SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP } Module
-DSETNM:** SUBROUTINE DSETNM.
+{\textbf{directory}}\textbf{dynamics: } {\textbf{File}} \textbf{dadmn.F:
+} \blanket* Package DADMN . {\textbf{File}} \textbf{dshpe.F: }
+\blanket* Package DSPHE ** Module DSETNM: \textbf{̄ {\textbf{Module
+W2G}} SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP } Module DSETNM:**
+SUBROUTINE DSETNM
 
 Currently, there are 10 directories as follows
 
-\begin{itemize}
-\item
-  TAB00000:0.0 admin
-\item
-  TAB00000:0.1 Modules related to the structure of the entire model
-  (coordinates, time, constants, etc.)
-\item
-  TAB00000:1.0 dynamics
-\item
-  TAB00000:1.1 Modules related to mechanical processes
-\item
-  TAB00000:2.0 physics
-\item
-  TAB00000:2.1 Modules involved in physical processes
-\item
-  TAB00000:3.0 io
-\item
-  TAB00000:3.1 Modules for data input/output
-\item
-  TAB00000:4.0 util
-\item
-  TAB00000:4.1 General-purpose operation libraries
-\item
-  TAB00000:5.0 sysdep
-\item
-  TAB00000:5.1 system dependent module
-\item
-  TAB00000:6.0 include
-\item
-  TAB00000:6.1 {Included by \texttt{\#include}} header types
-\item
-  TAB00000:7.0 nonstd
-\item
-  TAB00000:7.1 Non-standard plug-in modules
-\item
-  TAB00000: 8.0 special
-\item
-  TAB00000:8.1 test module
-\item
-  TAB00000:9.0 shalo
-\item
-  TAB00000:9.1 Module for single layer barotropic shallow water models
-  (under test)
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+admin\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules related to the structure of the entire model (coordinates, time,
+constants, etc.)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+dynamics\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules related to mechanical processes\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+physics\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules involved in physical processes\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+io\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules for data input/output\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+util\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+General-purpose operation libraries\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+sysdep\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+system dependent module\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+include\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Headers included by {\texttt{\#include}}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+nonstd\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Non-standard plug-in modules\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+test module\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+shalo\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Module for single layer barotropic shallow water models (under
+test)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
-Note that the files containing the main routines are {\texttt{src/}}and
-immediately below.
+Note that the files containing the main routines are located directly
+under {\texttt{src/}}.
 
 These dependencies are as follows.
 
-\begin{itemize}
-\item
-  TAB00001:0.0 MAIN
-\item
-  TAB00001:0.1 - Replica Hermes Handbags
-\item
-  TAB00001:0.2
-\item
-  TAB00001:1.0
-\item
-  TAB00001:1.1 - Dynamics
-\item
-  TAB00001:1.2
-\item
-  TAB00001:2.0
-\item
-  TAB00001:2.1 - Physical properties
-\item
-  TAB00001:2.2
-\item
-  TAB00001:3.0
-\item
-  TAB00001:3.1
-\item
-  TAB00001:3.2 - I'm not sure how to describe it.
-\item
-  TAB00001:3.3
-\item
-  TAB00001:4.0
-\item
-  TAB00001:4.1
-\item
-  TAB00001:4.2
-\item
-  TAB00001:4.3 - You can't even tell me how to do it.
-\item
-  TAB00001:4.4
-\item
-  TAB00001:5.0
-\item
-  TAB00001:5.1
-\item
-  TAB00001:5.2
-\item
-  TAB00001:5.3
-\item
-  TAB00001:5.4 - I'm sure you'll be able to find out more about it in
-  the next few days.
-\end{itemize}
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header3\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+MAIN\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Replica Hermes Handbags\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Dynamics\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Physical properties\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- I'm not sure how to describe it.\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- You can't even tell me how to do it.\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- I'm sure you'll be able to find out more about it in the next few
+days.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 That is, each of them is independent of the others in the same row, The
 one on the left is used to call the one on the right, but the reverse is
@@ -142,76 +196,64 @@ complexity of having to use PNM and DPNM as arguments. The COMMON
 variable is usually used in such cases. Here, the COMMON variable is
 used as an inconvenience for management and debugging. We avoid this
 type of encapsulation structure as much as possible and instead use such
-an encapsulated structure.
+an encapsulation structure.
 
 Only two COMMONs are in use.
 
-\begin{itemize}
-\item
-  TAB00002:0.0 COMMON /COMCON/
-\item
-  TAB00002:0.1 Standard physical constants (earth radius, gas constant,
-  etc.)
-\item
-  TAB00002:1.0 COMMON /COMWRK/
-\item
-  TAB00002:1.1 work area
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+COMMON /COMCON/\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Standard physical constants (earth radius, gas constant, etc.)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+COMMON /COMWRK/\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+work area\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 COMCON contains the standard physical constants. This COMMON definition
-is \texttt{include/zccom.F}\&lt It is in ;/span\textgreater, It is used
-to include as necessary. A set of values can be set by the subroutine
-PCONST ({\texttt{admin/\ apcon.F}}). COMWRK is used as a work area by
-many modules. It is used to reduce the overall memory consumption, It
-doesn't matter if you delete all applicable COMMON statements.
+is in {\texttt{include/zccom.F}}, It is used to include as necessary.
+The value is set by calling the subroutine PCONST
+({\texttt{admin/apcon.F}}). COMWRK is used as a work area by many
+modules. It is used to reduce the overall memory consumption, It doesn't
+matter if you delete all applicable COMMON statements.
 \textbackslash0.1{[}1{]}.
 
 For include file inclusion and conditional compilation It uses the C
-preprocessor instruction. So, instead of the file being named
-{\texttt{.f}}, it is named , {\texttt{.F}}. As a conditional
-compilation, {\texttt{\#ifdef}} and \textless{}
-span\textgreater{}\texttt{\#ifndef} selection. Importing files is
-\texttt{inlcude}\textless/span\&gt ; I'm doing this from the directory,
-It is as follows.
+preprocessor instruction.
+F\texttt{\textless{}/span\textgreater{}\ instead\ of\ \textless{}span\textgreater{}}.f\texttt{\textless{}/span\textgreater{},\ so\ the\ file\ name\ is\ \textless{}span\textgreater{}}.
+As a conditional compilation, Using selection by {\texttt{\#ifdef}} and
+{\texttt{\#ifndef}}. Files are imported from the {\texttt{inlcude}}
+directory, It is as follows.
 
-\begin{itemize}
-\item
-  TAB00003:0.0 Array size parameter statements
-\item
-  TAB00003:0.1 zcdim.F
-\item
-  TAB00003:1.0
-\item
-  TAB00003:1.1 zpdim.F
-\item
-  TAB00003:2.0
-\item
-  TAB00003:2.1 zidim.F
-\item
-  TAB00003:3.0
-\item
-  TAB00003:3.1 zsdim.F
-\item
-  TAB00003:4.0
-\item
-  TAB00003:4.1 zhdim.F
-\item
-  TAB00003:5.0
-\item
-  TAB00003:5.1 zradim.F
-\item
-  TAB00003:6.0
-\item
-  TAB00003:6.1 zwdim.F
-\item
-  TAB00003:7.0 COMMON definition (physical constants)
-\item
-  TAB00003:7.1 zccom.F
-\item
-  TAB00003:8.0 Statement function definition (saturation ratio humidity)
-\item
-  TAB00003:8.1 zqsat.F
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+Array size parameter statements & zcdim.F\tabularnewline
+& zpdim.F\tabularnewline
+& zidim.F\tabularnewline
+& zsdim.F\tabularnewline
+& zhdim.F\tabularnewline
+& zradim.F\tabularnewline
+& zwdim.F\tabularnewline
+COMMON definition (physical constants) & zccom.F\tabularnewline
+Statement function definition (saturation ratio humidity) &
+zqsat.F\tabularnewline
+\bottomrule
+\end{longtable}
 
 FORTRAN 77 As a non-standard specification , I'm using NAMELIST reading,
 It seems to be able to be used in many processing systems without any
@@ -224,109 +266,117 @@ of each system.
 End-of-line comments are used in various explanations. \texttt{!"} The
 end of the line below is a comment \textbackslash0.2{[}2{]}.
 
-The variables are all declared. IMPLICIT NONE (e.g.~Sun's {\texttt{-u}}
-option) to It is a prerequisite for use.
+The variables are all declared. IMPLICIT NONE (e.g., the {\texttt{u}}
+option for Sun) is set to It is a prerequisite for use.
 
 Each entry's argument is accompanied by a continuation line column to
 explain the function.
 
-\begin{itemize}
-\item
-  TAB00004:0.0 symbol
-\item
-  TAB00004:0.1 meaning
-\item
-  TAB00004:0.2 input
-\item
-  TAB00004:0.3 Outputs
-\item
-  TAB00004:0.4 function
-\item
-  TAB00004:1.0 O
-\item
-  TAB00004:1.1 output
-\item
-  TAB00004:1.2 ×impossibility
-\item
-  TAB00004:1.3 circle (e.g.~of friends)
-\item
-  TAB00004:1.4 Generate values
-\item
-  TAB00004:2.0 M
-\item
-  TAB00004:2.1 modify
-\item
-  TAB00004:2.2 circle (e.g.~of friends)
-\item
-  TAB00004:2.3 circle (e.g.~of friends)
-\item
-  TAB00004:2.4 Processing the input values and outputting them
-\item
-  TAB00004:3.0 I
-\item
-  TAB00004:3.1 input
-\item
-  TAB00004:3.2 circle (e.g.~of friends)
-\item
-  TAB00004:3.3
-
-  \begin{itemize}
-  \tightlist
-  \item
-  \end{itemize}
-\item
-  TAB00004:3.4 Input value (`variable')
-\item
-  TAB00004:4.0 C
-\item
-  TAB00004:4.1 constant
-\item
-  TAB00004:4.2 circle (e.g.~of friends)
-\item
-  TAB00004:4.3
-
-  \begin{itemize}
-  \tightlist
-  \item
-  \end{itemize}
-\item
-  TAB00004:4.4 Input value (`constant')
-\item
-  TAB00004:5.0 D
-\item
-  TAB00004:5.1 dimension
-\item
-  TAB00004:5.2 circle (e.g.~of friends)
-\item
-  TAB00004:5.3
-
-  \begin{itemize}
-  \tightlist
-  \item
-  \end{itemize}
-\item
-  TAB00004:5.4 Variables that determine the size of the matching array
-\item
-  TAB00004:6.0 W
-\item
-  TAB00004:6.1 work
-\item
-  TAB00004:6.2 ×impossibility
-\item
-  TAB00004:6.3 ×impossibility
-\item
-  TAB00004:6.4 work area
-\item
-  TAB00004:7.0 U
-\item
-  TAB00004:7.1 undefined
-\item
-  TAB00004:7.2 ×impossibility
-\item
-  TAB00004:7.3 ×impossibility
-\item
-  TAB00004:7.4 dummy
-\end{itemize}
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header3\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+meaning\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+input\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Outputs\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+function\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+O\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+output\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Generate values\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+M\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+modify\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Processing the input values and outputting them\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+I\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+input\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Input value (`variable')\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+C\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+constant\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Input value (`constant')\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+D\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+dimension\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Variables that determine the size of the matching array\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+W\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+work\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+work area\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+U\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+undefined\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+dummy\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 Here, the meaning of the input and output columns is as follows \In the
 meantime, I'm going to be in a position to take a look at some of the
@@ -334,9 +384,10 @@ things I've done in the past. \textbackslash begin\{array\}\{ll\}
 
 × x \& whatever is in it \{array\}
 
-\The output is a lot more than just
-a\textbackslash lopenopenPointPointPoint.com
-\textbackslash begin\{array\}\{ll\}\\
+\begin{verbatim}
+ \begin{array}{ll}   
+\end{verbatim}
+
 O O \& may be subject to change in the course of the event - \& the
 value will not change × x \& I can't guarantee what you'll find
 \{array\}
@@ -373,175 +424,201 @@ less.
 
 Variable name and type mapping
 
-\begin{itemize}
-\item
-  TAB00005:0.0 A-G, P-Z
-\item
-  TAB00005:0.1 Floating point number ({\texttt{REAL*8}})
-\item
-  TAB00005:1.0 H
-\item
-  TAB00005:1.1 String ({\texttt{CHARACTER}})
-\item
-  TAB00005:2.0 I-N.
-\item
-  TAB00005:2.1 Integer ({\texttt{INTEGER}})
-\item
-  TAB00005:3.0 O
-\item
-  TAB00005:3.1 Logical type ({\texttt{LOGICAL}})
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+A-G, P-Z & Floating point number ({\texttt{REAL*8}})\tabularnewline
+H & String ({\texttt{CHARACTER}})\tabularnewline
+I-N. & Integer ({\texttt{INTEGER}})\tabularnewline
+O & Logical type ({\texttt{LOGICAL}})\tabularnewline
+\bottomrule
+\end{longtable}
 
 However, in the variables read by NAMELIST, This may not be met.
 
 Conventions on the Correspondence between Variable Names and Contents
 
-\begin{itemize}
-\item
-  TAB00006:0.0 Prefix:
-\item
-  TAB00006:0.1 GA
-\item
-  TAB00006:0.2 The grid point state quantity (\(t\))
-\item
-  TAB00006:1.0
-\item
-  TAB00006:1.1 GB
-\item
-  TAB00006:1.2 Grid point state quantity (\(t-\Delta t\))
-\item
-  TAB00006:2.0
-\item
-  TAB00006:2.1 GD
-\item
-  TAB00006:2.2 Grid State Quantity (for common use)
-\item
-  TAB00006:3.0
-\item
-  TAB00006:3.1 GT
-\item
-  TAB00006:3.2 Time differential term of the grid state quantity
-\item
-  TAB00006:4.0
-\item
-  TAB00006:4.1 WD
-\item
-  TAB00006:4.2 Spectral representation of state quantities
-\item
-  TAB00006:5.0
-\item
-  TAB00006:5.1 WT
-\item
-  TAB00006:5.2 Spectral representation of the time differential term of
-  the state quantity
-\item
-  TAB00006:6.0
-\item
-  TAB00006:6.1 I
-\item
-  TAB00006:6.2 Longitude index
-\item
-  TAB00006:7.0
-\item
-  TAB00006:7.1 J
-\item
-  TAB00006:7.2 Index of latitude
-\item
-  TAB00006:8.0
-\item
-  TAB00006:8.1 K
-\item
-  TAB00006:8.2 Index for vertical level
-\item
-  TAB00006:9.0
-\item
-  TAB00006:9.1 IJ
-\item
-  TAB00006:9.2 An index of all the latitudes and longitudes in one place
-\item
-  TAB00006:10.0
-\item
-  TAB00006:10.1 NM.
-\item
-  TAB00006:10.2 Index of the spectrum
-\item
-  TAB00006:11.0
-\item
-  TAB00006:11.1 NM.
-\item
-  TAB00006:11.2 NAMELIST Name
-\item
-  TAB00006:12.0
-\item
-  TAB00006:12.1 COM
-\item
-  TAB00006:12.2 COMMON Name
-\item
-  TAB00006:13.0 Tangent:
-\item
-  TAB00006:13.1 U
-\item
-  TAB00006:13.2 east-west wind
-\item
-  TAB00006:14.0
-\item
-  TAB00006:14.1 V
-\item
-  TAB00006:14.2 north-south wind
-\item
-  TAB00006:15.0
-\item
-  TAB00006:15.1 T
-\item
-  TAB00006:15.2 temperature
-\item
-  TAB00006:16.0
-\item
-  TAB00006:16.1 PS
-\item
-  TAB00006:16.2 surface pressure
-\item
-  TAB00006:17.0
-\item
-  TAB00006:17.1 Q
-\item
-  TAB00006:17.2 Specific humidity, various tracers
-\item
-  TAB00006:18.0
-\item
-  TAB00006:18.1 QL
-\item
-  TAB00006:18.2 cloud liquidity
-\item
-  TAB00006:19.0
-\item
-  TAB00006:19.1 FLX,FLUX
-\item
-  TAB00006:19.2 flux density
-\item
-  TAB00006:20.0
-\item
-  TAB00006:20.1 MTX
-\item
-  TAB00006:20.2 Matrices for implicit solutions
-\item
-  TAB00006:21.0
-\item
-  TAB00006:21.1 MAX
-\item
-  TAB00006:21.2 data length
-\item
-  TAB00006:22.0
-\item
-  TAB00006:22.1 DIM
-\item
-  TAB00006:22.2 Size of the array region
-\end{itemize}
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header2\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Prefix:\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GA\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The grid point state quantity (\(t\))\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GB\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Grid point state quantity (\(t-\Delta t\))\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GD\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Grid State Quantity (for common use)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GT\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Time differential term of the grid state quantity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+WD\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Spectral representation of state quantities\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+WT\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Spectral representation of the time differential term of the state
+quantity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+I\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Longitude index\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+J\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index of latitude\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index for vertical level\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+IJ\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+An index of all the latitudes and longitudes in one place\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NM.\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index of the spectrum\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NM.\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NAMELIST Name\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+COM\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+COMMON Name\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Tangent:\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+U\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+east-west wind\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+V\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+north-south wind\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+T\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+temperature\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+PS\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+surface pressure\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Q\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Specific humidity, various tracers\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+QL\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+cloud liquidity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+FLX,FLUX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+flux density\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+MTX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Matrices for implicit solutions\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+MAX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+data length\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+DIM\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Size of the array region\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 For file names, see , The first letter is unified to the first letter of
-the directory. (However, {\texttt{include}} can be used in \&lt
-;span\textgreater{}\texttt{z}). Also, {\texttt{-admn}} ( administer)
-indicates the main module in it.
+the directory. (However, {\texttt{include}} is {\texttt{z}}.) Also,
+{\texttt{-admn}}(admin) indicates the main module in it.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}

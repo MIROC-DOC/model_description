@@ -47,7 +47,7 @@
 <p>The surface processes are the processes of momentum, heat, and water between the atmosphere and the earth’s surface Giving boundary conditions at the lower end of the atmosphere through flux exchange. Surface processes are described in the Ground Temperature <span class="math inline"><em>T</em><sub><em>g</em></sub></span>, Ground Moisture <span class="math inline"><em>W</em><sub><em>g</em></sub></span>, Handle your own forecast variables, such as snow cover <span class="math inline"><em>W</em><sub><em>y</em></sub></span>, Thermal inertia of the ground surface, water accumulation, snow accumulation, Evaluate the accumulation of sea ice and other factors. The main input data are the diffusion of geophysical quantities between the atmosphere and the surface and the fluxes due to radiation and precipitation. The output data are the surface temperature (<span class="math inline"><em>T</em><sub><em>s</em></sub></span>) and Various boundary condition parameters such as albedo and roughness.</p>
 <p>Surface processes are classified as follows.</p>
 <ol type="1">
-<li><p>geothermal diffusion processes - Determining the geothermal structure</p></li>
+<li><p>geothermal diffusion processes - Determining the geothermal temperature structure</p></li>
 <li><p>geological and hydrological processes - Determining the structure of underground water, runoff, etc.</p></li>
 <li><p>snow accumulation process - snow accumulation, snowmelt, etc., expression of snow-related processes</p></li>
 <li><p>oceanic mixed layer processes - determining ocean temperature and sea ice thickness (optional)</p></li>
@@ -66,16 +66,16 @@
 <ol type="1">
 <li><p>(Evaluate surface fluxes <code>MODULE:[SFCFLX(psfcm)]</code>) The heat, water (evaporation), and momentum fluxes between the atmosphere and the surface are Estimate in bulk. However, the evaporation efficiency (<span class="math inline"><em>β</em></span>) is set to 1.</p></li>
 <li><p>evaluate the surface roughness <code>MODULE:[GNDZ0(pgsfc)]</code> Basically, it depends on the file and the surface type. I can get it from the outside, Change according to snowfall and other factors.</p></li>
-<li><p>evaluate the heat flux and heat capacity within the ground surface . <code>MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX (pgsnw)]</code> Estimate the heat capacity of each layer of land and sea, The heat flux at each layer boundary is estimated from the heat transfer equation. If there is snowfall, change the heat capacity and flux.</p></li>
+<li><p>evaluate the heat flux and heat capacity within the ground surface . <code>MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)]</code> Estimate the heat capacity of each layer of land and sea, The heat flux at each layer boundary is estimated from the heat transfer equation. If there is snowfall, change the heat capacity and flux.</p></li>
 <li><p>evaluate the water flux and capacity of the land surface <code>MODULE:[LNDWFX(pglnd)]</code> Estimate the capacity of each layer of water on land, Estimate the water flux at each layer boundary from the water diffusion equation</p></li>
 <li><p>evaluate the evaporation efficiency <code>MODULE:[GNDBET(pgsfc)]</code> For the land surface, the calculation depends on soil moisture and stomatal resistance.</p></li>
-<li><p>perform an implicit solution of geothermal conduction up to the middle <code>MODULE:[GNDHT1( pggnd)]</code> Evaluate the temperature change due to heat conduction in the ground. However, taking into account the surface temperature changes Since it is done implicitly, only the first step is done here.</p></li>
+<li><p>implicit solution of geo-thermal conduction up to the middle <code>MODULE:[GNDHT1(pggnd)]</code> Evaluate the temperature change due to heat conduction in the ground. However, taking into account the surface temperature changes Since it is done implicitly, only the first step is done here.</p></li>
 <li><p>solving the surface heat balance <code>MODULE:[SLVSFC(pgslv)]</code> Solving the equation for the heat balance between the surface temperature and Time variation of temperature and specific humidity in the first layer of the atmosphere. Using this, the heat/water (evaporation) flux between the atmosphere and the ground surface and compensate for the heat transfer flux at the surface. If there is snow or ice and the surface temperature is above the freezing point, With the surface temperature as the freezing point, Evaluate the residual flux as the flux used for snowmelt.</p></li>
-<li><p>implicit solution for geothermal conduction <code>MODULE:[GNDHT2(pggnd )]</code> Since the change in surface temperature was obtained, we used it to determine Solving for changes in ground temperature due to heat conduction in the ground.</p></li>
+<li><p>implicit solution for geothermal conduction <code>MODULE:[GNDHT2(pggnd)]</code> Since the change in surface temperature was obtained, we used it to determine Solving for changes in ground temperature due to heat conduction in the ground.</p></li>
 <li><p>evaluate snow reduction by snow sublimation <code>MODULE:[SNWSUB(pgsnw)]</code> For snow cover conditions, the calculated evaporation (sublimation) fluxes allow Decrease the snowpack.</p></li>
 <li><p>assessing the increase in snow cover due to snowfall <code>MODULE:[SNWFLP(pgsnw)]</code> It discriminates between snowfall and rainfall and increases the snowpack when it falls.</p></li>
 <li><p>assessing snowfall reduction due to snowmelt <code>MODULE:[SNWMLP(pgsnw)]</code> If the surface temperature or first layer temperature exceeds the freezing point during snowfall , If the snow melts, it will keep the temperature below the freezing point, Decrease the snowpack.</p></li>
-<li><p>solves the diffusion of groundwater by implicit method <code>MODULE:[GNDWTR( pggnd)]</code> Solving changes in subsurface moisture due to subsurface water fluxes.</p></li>
+<li><p>implicit solution for groundwater diffusion <code>MODULE:[GNDWTR(pggnd)]</code> Solving changes in subsurface moisture due to subsurface water fluxes.</p></li>
 <li><p>evaluate precipitation interception by snowpack <code>MODULE:[SNWROF(pgsnw)]</code> Snowfall prevents precipitation infiltration into the soil, Rainfall and snowmelt water (part of it) will be runoff.</p></li>
 <li><p>assessing surface runoff <code>MODULE:[LNDROF(pglnd)]</code> Calculating surface runoff of rainfall and snowmelt water. Bucket Model, New Bucket Model, There are 3 evaluation methods to choose from, including runoff evaluation using permeability.</p></li>
 <li><p>evaluate the freezing process <code>MODULE:[LNDFRZ(pglnd)]</code> Freezing and thawing of groundwater and Calculate the temperature change due to the latent heat release associated with it. However, this routine is optional, Usually skipped.</p></li>
@@ -116,37 +116,77 @@
 </ol>
 <h3 id="classification-of-the-ground-surface.">classification of the ground surface.</h3>
 <p>The ground surface is a condition given by the outside world, According to the surface type <span class="math inline"><em>m</em></span>, they are classified as follows.</p>
-<ul>
-<li><p>TAB00000:0.0 m</p></li>
-<li><p>TAB00000:0.1 requirement</p></li>
-<li><p>TAB00000:1.0 -I can’t even begin to tell you what to do.</p></li>
-<li><p>TAB00000:1.1 mixed-layered ocean</p></li>
-<li><p>TAB00000:2.0 -I can’t tell you how many times I’ve been in a row.</p></li>
-<li><p>TAB00000:2.1 Sea Ice (given from outside)</p></li>
-<li><p>TAB00000:3.0 0</p></li>
-<li><p>TAB00000:3.1 Sea level (providing temperature from outside)</p></li>
-<li><p>TAB00000:4.0 1</p></li>
-<li><p>TAB00000:4.1 land ice</p></li>
-<li><p>TAB00000:5.0 <span class="math inline">≥</span> 2</p></li>
-<li><p>TAB00000:5.1 land surface</p></li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>m</td>
+<td>requirement</td>
+</tr>
+<tr class="even">
+<td>-I can’t even begin to tell you what to do.</td>
+<td>mixed-layered ocean</td>
+</tr>
+<tr class="odd">
+<td>-I can’t tell you how many times I’ve been in a row.</td>
+<td>Sea Ice (given from outside)</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>Sea level (providing temperature from outside)</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>land ice</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">≥</span> 2</td>
+<td>land surface</td>
+</tr>
+</tbody>
+</table>
 <p>Furthermore, depending on the possible internal changes in the ice conditions, Take the following ground surface conditions <span class="math inline"><em>n</em></span>.</p>
-<ul>
-<li><p>TAB00001:0.0 n</p></li>
-<li><p>TAB00001:0.1 state</p></li>
-<li><p>TAB00001:1.0 0</p></li>
-<li><p>TAB00001:1.1 Sea surface without ice</p></li>
-<li><p>TAB00001:2.0 1</p></li>
-<li><p>TAB00001:2.1 Sea Ice and Land Ice</p></li>
-<li><p>TAB00001:3.0 <span class="math inline">≥</span> 2</p></li>
-<li><p>TAB00001:3.1 land surface</p></li>
-</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n</td>
+<td>state</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>Sea surface without ice</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>Sea Ice and Land Ice</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">≥</span> 2</td>
+<td>land surface</td>
+</tr>
+</tbody>
+</table>
 <p>These are defined in <code>MODULE:[GNDSFC(pgsfc)]</code>.</p>
 <h3 id="surface-heat-balance.">Surface Heat Balance.</h3>
 <p>The conditions of the surface heat balance are ,</p>
 <p><br /><span class="math display"><em>F</em><em>θ</em>(<em>T</em><sub>0</sub>, <em>T</em><sub>1</sub>) + <em>L</em><em>β</em><em>F</em><em>q</em><sup><em>P</em></sup>(<em>T</em><sub>0</sub>, <em>q</em><sub>1</sub>) + <em>F</em><em>R</em>(<em>T</em><sub>0</sub>) − <em>F</em><em>g</em>(<em>T</em><sub>0</sub>, <em>G</em><sub>1</sub>) = 0</span><br /></p>
 <blockquote>
-<p><span id="p-sfc:sfc-balance" label="p- sfc:sfc-balance">[p-sfc:sfc-balance[p-sfc:sfc-balance]&amp; lt;/span&gt;</p>
+<p><span id="p-sfc:sfc-balance" label="p-sfc:sfc-balance" label="p-sfc:sfc-balance"></span>.</p>
 </blockquote>
 <p>It is. <span class="math inline"><em>F</em><em>θ</em>, <em>F</em><em>q</em><sup><em>P</em></sup>, <em>F</em><em>R</em>, <em>F</em><em>g</em></span>, <span class="math inline"><em>F</em><em>θ</em>, <em>F</em><em>q</em><sup><em>P</em></sup>, <em>F</em><em>R</em>, <em>F</em><em>g</em></span> is , Atmospheric and subsurface forecast variables before evaluating surface processes and , The evaluation is performed using the In the <span class="math inline"><em>T</em><sub>0</sub></span> used at that time, this balance is generally not met.</p>
 <p>There are several ways to solve this problem.</p>
@@ -157,20 +197,20 @@
 <p>The CCSR/NIES AGCM uses the latter method. In doing so, it is necessary to combine and solve for all the variables of the atmospheric and ground layers. The details are described in the section “Solving the Diffusion-Based Budget Equations for Atmospheric Surface Systems”.</p>
 <p>There are two ways to evaluate the evaporation terms <span class="math inline"><em>β</em><em>F</em><em>q</em><sup><em>P</em></sup>(<em>T</em><sub>0</sub>, <em>q</em><sub>1</sub>)</span>.</p>
 <ol type="1">
-<li><p>as a <span class="math inline"><em>β</em> = 1</span> ([p-sfc:sfc-balance]](#p-sfc:sfc-balance <span class="math inline"><em>F</em><em>q</em><sup><em>P</em></sup></span>, obtained by solving for (1) (possible evaporation amount) multiplied by <span class="math inline"><em>β</em></span>.</p></li>
-<li><p>using <span class="math inline"><em>β</em></span>. (<a href="#p-sfc:sfc-balance">p-sfc:sfc-balance]</a>) directly.</p></li>
+<li><p>as a <span class="math inline"><em>β</em> = 1</span> Solved for ([\p-sfc:sfc-balance](#p-sfc:sfc-balance)) <span class="math inline"><em>F</em><em>q</em><sup><em>P</em></sup></span> (possible evaporation amount) multiplied by <span class="math inline"><em>β</em></span>.</p></li>
+<li><p>using <span class="math inline"><em>β</em></span>. (<a href="#p-sfc:sfc-balance">p-sfc:sfc-balance]</a>) directly solve.</p></li>
 </ol>
 <p>The temperatures used in the calculations in <span class="math inline"><em>β</em><em>F</em><em>q</em><sup><em>P</em></sup></span> are different between the former and the latter. In the former case, the temperature in the case of <span class="math inline"><em>β</em> = 1</span>, In the latter case, the actual temperature is used.</p>
-<p>The CCSR/NIES AGCM uses the former method as standard. On a snow or ice surface ([p-sfc<a href="#p-sfc:%20sfc-balance">p-sfc:sfc-balance]</a>) of the result of solving If the <span class="math inline"><em>T</em><sub>0</sub></span> exceeds the freezing point, Or, when <span class="math inline"><em>T</em><sub>0</sub></span> divides the freezing temperature of seawater at the sea surface (in the case of oceanic mixed-layer model) by fixing the temperature of the <span class="math inline"><em>T</em><sub>0</sub></span> at the freezing point and calculating each flux, (<a href="#p-sfc:sfc-balance">p-sfc:sfc-balance]</a>), and the residuals (energy residuals) of the formula Suppose it is used for freezing and thawing snow and ice.</p>
+<p>The CCSR/NIES AGCM uses the former method as standard. The result of solving (with a <a href="#p-sfc:sfc-balance">}(#p-sfc:sfc-balance)</a> on a snow or ice surface If the <span class="math inline"><em>T</em><sub>0</sub></span> exceeds the freezing point, Or, when <span class="math inline"><em>T</em><sub>0</sub></span> divides the freezing temperature of seawater at the sea surface (in the case of oceanic mixed-layer model) by fixing the temperature of the <span class="math inline"><em>T</em><sub>0</sub></span> at the freezing point and calculating each flux, (<a href="#p-sfc:sfc-balance">p-sfc:sfc-balance]</a>) and the residuals (energy residuals) of the formula Suppose it is used for freezing and thawing snow and ice.</p>
 <h3 id="set-the-discrete-coordinate-system-modulesetglvsetwlvsetslv">Set the discrete coordinate system <code>MODULE:[SETGLV,SETWLV,SETSLV]</code></h3>
 <p>The ground is discretized with the <span class="math inline"><em>z</em></span> coordinate system. Land temperature is layer <span class="math inline"><em>z</em><em>g</em><sub><em>l</em></sub></span>, water content is layer <span class="math inline"><em>z</em><em>w</em><sub><em>l</em></sub></span>, Ocean temperature is defined in layer <span class="math inline"><em>z</em><em>s</em><sub><em>l</em></sub></span>. The <span class="math inline"><em>l</em></span> increases from the top to the bottom. The flux is defined by the layer boundary <span class="math inline"><em>z</em><em>g</em><sub><em>k</em> − 1/2</sub>, <em>z</em><em>w</em><sub><em>k</em> − 1/2</sub></span>.</p>
 <p>Also, consider a layer of zero thickness on the <span class="math inline"><em>z</em> = 0</span>, Define skin temperature <span class="math inline"><em>T</em><sub><em>s</em></sub></span>. For convenience, it is represented by <span class="math inline"><em>l</em> = 0</span> and <span class="math inline"><em>z</em><em>g</em><sub>0</sub> = <em>z</em><em>g</em><sub>1/2</sub> = <em>z</em><em>g</em><sub> − 1/2</sub> = 0</span>.</p>
 <h3 id="calculating-land-heat-flux-and-heat-capacity-modulelndflx">Calculating land heat flux and heat capacity <code>MODULE:[LNDFLX]</code></h3>
-<p>Physical quantities, such as heat and moisture fluxes in the ground, and wetness The evaluation of surface characteristics is based on whether the surface is sea or land, and in the case of land surface This is done separately if there is snowfall or not. In the following section, we will first evaluate the evaluation method for the land surface case without snow. We shall describe in brief. We will describe the difference between the case of sea level and snow surface in detail later.</p>
+<p>Physical quantities, such as heat and moisture fluxes in the ground, and wetness The evaluation of surface characteristics is based on whether the surface is sea or land, and in the case of land surface This is done separately if there is snowfall or not. In the following, we will first evaluate the evaluation method for the land surface case without snow. We shall describe in brief. We will describe the difference between the case of sea level and snow surface in detail later.</p>
 <p>The heat capacity of the land surface is ,</p>
 <p><br /><span class="math display"><em>C</em><em>g</em><sub><em>l</em></sub> = <em>C̃</em><em>g</em><sub><em>l</em></sub>(<em>z</em><em>g</em><sub><em>l</em> + 1/2</sub> − <em>z</em><em>g</em><sub><em>l</em> − 1/2</sub>) = <em>C̃</em><em>g</em><sub><em>l</em></sub><em>Δ</em><em>z</em><em>g</em><sub><em>l</em></sub> .</span><br /></p>
 <p>where <span class="math inline"><em>C̃</em><em>g</em><sub><em>l</em></sub></span> is the volume specific heat.</p>
-<p>The heat flux of the land surface is treated as a constant heat conduction coefficient (which may depend on <span class="math inline"><em>l</em></span>). ).</p>
+<p>The land heat flux is treated as a constant heat transfer coefficient (which may depend on <span class="math inline"><em>l</em></span>).</p>
 <p><br /><span class="math display"><em>F</em><em>g</em><sub><em>l</em> − 1/2</sub> = <em>K</em><em>g</em><sub><em>l</em> − 1/2</sub>(<em>G</em><sub><em>l</em></sub> − <em>G</em><sub><em>l</em> − 1</sub>)(<em>z</em><em>g</em><sub><em>l</em></sub> − <em>z</em><em>g</em><sub><em>l</em> − 1</sub>) ,</span><br /></p>
 <p><br /><span class="math display">$$
   \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_{l-1}}
@@ -186,7 +226,7 @@ $$</span><br /></p>
   F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
 $$</span><br /></p>
 <blockquote>
-<p>&lt;span id=“basic-Fw” label=“basic-Fw”&amp; gt;gt;\braham[basic-Fw]&lt; /span&gt;</p>
+<p><span id="basic-Fw" label="basic-Fw">\[basic-Fw]</span></p>
 </blockquote>
 <p>Here, <span class="math inline"><em>g</em><sub><em>w</em></sub></span> represents the effect of gravity.</p>
 <p>There are two ways to evaluate the groundwater flux on land.</p>
@@ -194,7 +234,7 @@ $$</span><br /></p>
 <li><p>fixed diffusion coefficient method</p></li>
 <li><p>moisture content dependent diffusion coefficient method <code>MODULE:[HYDFLX]</code></p></li>
 </ol>
-<p>In the method of fixed diffusion coefficients, we simply express it as follows. <span class="math inline"><em>K</em><sub><em>w</em></sub></span> is the diffusion coefficient and <span class="math inline"><em>ρ</em><sub><em>w</em></sub></span> is the density of liquid water. where the gravitational potential in (<a href="#basic-Fw">basic-Fw]</a>) The term <span class="math inline"><em>g</em><sub><em>w</em></sub></span> is Ignore it.</p>
+<p>In the method of fixed diffusion coefficients, we simply express it as follows. <span class="math inline"><em>K</em><sub><em>w</em></sub></span> is the diffusion coefficient and <span class="math inline"><em>ρ</em><sub><em>w</em></sub></span> is the density of liquid water. where the gravitational potential term <span class="math inline"><em>g</em><sub><em>w</em></sub></span> in (<a href="#basic-Fw">basic-Fw]</a>) is Ignore it.</p>
 <p><br /><span class="math display"><em>F</em><em>w</em><sub><em>l</em> − 1/2</sub> = <em>ρ</em><sub><em>w</em></sub><em>K</em><em>w</em><sub><em>l</em> − 1/2</sub>(<em>w</em><sub><em>l</em></sub> − <em>w</em><sub><em>l</em> − 1</sub>)/(<em>z</em><em>w</em><sub><em>l</em></sub> − <em>z</em><em>w</em><sub><em>l</em> − 1</sub>) ,</span><br /></p>
 <p><br /><span class="math display">$$
   \frac{\partial Fw_{l-1/2}}{\partial w_l} = - \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}}
@@ -208,13 +248,13 @@ $$</span><br /></p>
 - \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
                      \frac{\partial \psi_{l-1}}{\partial w_{l-1}}/(zw_l - zw_{l-1}) \; .
 $$</span><br /></p>
-<p>where <span class="math inline"><em>K</em><em>w</em></span> is the saturated hydraulic conductivity, <span class="math inline"><em>W</em></span> is the saturation degree, <span class="math inline"><em>ψ</em></span> is the pressure potential, It is given as follows.</p>
+<p>where <span class="math inline"><em>K</em><em>w</em></span> is the saturated hydraulic conductivity, <span class="math inline"><em>W</em></span> is the saturation degree, and <span class="math inline"><em>ψ</em></span> is the pressure potential, It is given as follows.</p>
 <p><br /><span class="math display"><em>W</em><sub><em>l</em></sub> = <em>w</em><sub><em>l</em></sub>/<em>w</em><em>s</em><sub><em>l</em></sub> ,  <em>W</em><sub><em>l</em> − 1/2</sub> = (<em>W</em><sub><em>l</em> − 1</sub> + <em>W</em><sub><em>l</em></sub>)/(<em>C</em><em>w</em><sub><em>l</em> − 1</sub> + <em>C</em><em>w</em><sub><em>l</em></sub>) ,</span><br /></p>
 <p><br /><span class="math display">$$
   \psi_l = \psi s_l (W_l)^{-B}\; , \;\;
   \frac{\partial \psi_l}{\partial w_l} = -B \psi_l W_l / ws \; .
 $$</span><br /></p>
-<p><span class="math inline"><em>K</em><em>w</em></span>, <span class="math inline"><em>B</em></span>, and <span class="math inline"><em>ψ</em><em>s</em></span> are constants, surface type May depend on <span class="math inline"><em>m</em></span> and <span class="math inline"><em>l</em></span>.</p>
+<p><span class="math inline"><em>K</em><em>w</em></span>, <span class="math inline"><em>B</em></span>, and <span class="math inline"><em>ψ</em><em>s</em></span> are constants and may depend on the ground surface types <span class="math inline"><em>m</em></span> and <span class="math inline"><em>l</em></span>.</p>
 <h3 id="calculating-land-surface-spillmodulelndrof">Calculating land surface spill<code>MODULE:[LNDROF]</code></h3>
 <p>The following three methods can be used to evaluate runoff.</p>
 <ol type="1">
@@ -263,7 +303,7 @@ $$</span><br /></p>
   \right. \; .
 $$</span><br /></p>
 <blockquote>
-<p>&lt;span id=“inf-exs” label=“inf-exs”&amp;gt ;inf-exs]&lt; /span&gt;</p>
+<p><span id="inf-exs" label="inf-exs"></span></p>
 </blockquote>
 <p>The amount of precipitation input percolating to the ground surface is modified as follows.</p>
 <p><br /><span class="math display">$$
@@ -280,7 +320,7 @@ $$</span><br /></p>
     \end{array}
   \right. \; .
 $$</span><br /></p>
-<p>On the formula ([index<a href="#inf-exs">inf-exs]</a>), convective rainfall intensity To probability <span class="math inline"><em>f</em>(<em>P</em><sub><em>c</em></sub>)</span> It is derived from the following equation, which assumes an exponential distribution.</p>
+<p>On the formula (<a href="#inf-exs">index[inf-exs]</a>), convective rainfall intensity probability <span class="math inline"><em>f</em>(<em>P</em><sub><em>c</em></sub>)</span> It is derived from the following equation, which assumes an exponential distribution.</p>
 <p><br /><span class="math display">$$
   f(P_c) = \frac{\kappa}{\overline{P_c}} 
             \exp\left[-\frac{\kappa}{\overline{P_c}}P_c\right] \; ,
@@ -301,7 +341,7 @@ $$</span><br /></p>
 <p>We can also consider the effects of surface wetness and solar radiation zenith angle as follows (Not considered in the standard).</p>
 <p><br /><span class="math display"><em>α</em> = <em>α</em> − <em>f</em><sub><em>w</em></sub><em>α</em><em>w</em><sub>1</sub> ,</span><br /></p>
 <p><br /><span class="math display"><em>α</em> = <em>α</em> + <em>Δ</em><em>f</em><sub><em>ζ</em></sub>(1 − <em>α</em>)(1 − cos<sup>2</sup><em>ζ</em>) .</span><br /></p>
-<p>where the wetness factor (<span class="math inline"><em>f</em><sub><em>w</em></sub></span>) and the zenith angle factor (<span class="math inline"><em>f</em><sub><em>ζ</em></sub></span>) are constants Yes.</p>
+<p>Here, the wetness factor (<span class="math inline"><em>f</em><sub><em>w</em></sub></span>) and the zenith angle factor (<span class="math inline"><em>f</em><sub><em>ζ</em></sub></span>) are constants.</p>
 <h3 id="evaluating-roughness-on-land-surfacemodulelndz0">Evaluating roughness on land surface<code>MODULE:[LNDZ0]</code></h3>
 <p>The evaluation of roughness is basically based on a constant value given by an external source. There are two ways to give it.</p>
 <ol type="1">
@@ -375,7 +415,7 @@ $$</span><br /></p>
 <p>In the following, we describe the different treatment of the snow surface from that of the land surface.</p>
 <h3 id="snow-heat-flux-correction-modulesnwflx">Snow Heat Flux Correction <code>MODULE:[SNWFLX]</code></h3>
 <p>The snow is treated thermally as the same layer as the first layer of the ground surface. That is, the heat capacity and thermal diffusivity of the first layer are The shape will be changed by the presence of snow.</p>
-<p>The heat capacity is expressed as a simple sum of <span class="math inline"><em>C</em><sub><em>y</em></sub></span> as the specific heat per mass of snow, <span class="math inline"><em>W</em><sub><em>y</em></sub></span> as the mass per unit area of snow So,</p>
+<p>The heat capacity is expressed as a simple sum of Let <span class="math inline"><em>C</em><sub><em>y</em></sub></span> be the specific heat per mass of snow and <span class="math inline"><em>W</em><sub><em>y</em></sub></span> be the mass per unit area of snow,</p>
 <p><br /><span class="math display"><em>C</em><em>g</em><sub><em>l</em></sub> = <em>C</em><em>g</em>′<sub><em>l</em></sub> + <em>C</em><sub><em>y</em></sub><em>W</em><sub><em>y</em></sub> .</span><br /></p>
 <p>However, <span class="math inline"><em>C</em><em>g</em>′<sub><em>l</em></sub></span> is the heat capacity in the absence of snow.</p>
 <p>The heat flux is defined as the hypothetical temperature at the snow-soil interface, which is set to <span class="math inline"><em>G</em><sub><em>I</em></sub></span>,</p>
@@ -407,7 +447,7 @@ $$</span><br /></p>
 <p><br /><span class="math display">$$
 Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T} )
 $$</span><br /></p>
-<p>and if the <span class="math inline"><em>T</em><em>w</em><sub>1</sub></span> is lower than the freezing point <span class="math inline"><em>T</em><em>m</em></span>, snow, TERM If it’s over 00101, it shall be considered rain. The reason why the wet-ball temperature is used is that the temperature of precipitation reaching the surface is This is to incorporate effects that depend on the likelihood of evaporation during the fall of precipitation.</p>
+<p>If the freezing point (<span class="math inline"><em>T</em><em>w</em><sub>1</sub></span>) is lower than the freezing point (<span class="math inline"><em>T</em><em>m</em></span>), it is assumed to be snow, and if it is higher than the freezing point (<span class="math inline"><em>T</em><em>m</em></span>), it is assumed to be rain. The reason why the wet-ball temperature is used is that the temperature of precipitation reaching the surface is This is to incorporate effects that depend on the likelihood of evaporation during the fall of precipitation.</p>
 <p>In the case of snowfall, the snowpack is increased by the amount of snowfall.</p>
 <p><br /><span class="math display">$$
 \tilde{Wy} = Wy + Py \Delta t \; .
@@ -430,7 +470,7 @@ $$</span><br /></p>
 <p><br /><span class="math display">$$
 \tilde{G_1} = \hat{G_1} \; .
 $$</span><br /></p>
-<p>In the case of <span class="math inline">$\hat{G_1} &lt; Tm$</span>, the temperature of the part of the snow that melts in the energy balance except for the snow is I’m assuming it doesn’t change. <span class="math inline"><em>L</em><sub><em>M</em></sub></span> is the latent heat of melting, <span class="math inline"><em>T</em><em>m</em></span> is the freezing point, <span class="math inline"><em>C</em><em>p</em><sub><em>I</em></sub></span> is the specific heat of ice It is.</p>
+<p>In the case of <span class="math inline">$\hat{G_1} &lt; Tm$</span>, the temperature of the part of the snow that melts in the energy balance except for the snow is I’m assuming it doesn’t change. <span class="math inline"><em>L</em><sub><em>M</em></sub></span> is the latent heat of melting, <span class="math inline"><em>T</em><em>m</em></span> is the freezing point, and <span class="math inline"><em>C</em><em>p</em><sub><em>I</em></sub></span> is the specific heat of ice.</p>
 <p>The actual snowmelt and soil temperature are based on the current amount of snow and soil temperature in the case of full melting of the <span class="math inline"><em>W</em><em>y</em></span>,</p>
 <p><br /><span class="math display">$$
 My \Delta t = \left\{
@@ -465,7 +505,7 @@ $$</span><br /></p>
   \widetilde{P_l} = Is ( P_c + My ) \; ,\\
   R_S        = ( 1 - Is )( P_c + P_l + My ) \; .
 $$</span><br /></p>
-<p>where <span class="math inline"><em>I</em><em>s</em></span> is the surface infiltration rate due to snow cover. The standard value of critical snowpack for infiltration for <span class="math inline"><em>W</em><em>y</em><sub><em>C</em><em>i</em></sub></span> is 200 kg/m<span class="math inline"><em></em><sup>2</sup></span> .</p>
+<p>where <span class="math inline"><em>I</em><em>s</em></span> is the surface infiltration rate due to snow cover. The standard value of critical snowpack for infiltration, <span class="math inline"><em>W</em><em>y</em><sub><em>C</em><em>i</em></sub></span>, is 200 kg/m<span class="math inline"><em></em><sup>2</sup></span>.</p>
 <h3 id="evaluating-albedo-on-snow-covered-surfacesmodulesnwalb">Evaluating albedo on snow-covered surfaces<code>MODULE:[SNWALB]</code></h3>
 <p>If you have a snow <span class="math inline"><em>W</em><em>y</em></span> , The ratio of snow cover is considered to be proportional to the square root of the snowpack, Albedo approaches the snow value <span class="math inline"><em>α</em><em>s</em></span> in proportion to the square root of the snowpack (The critical value of <span class="math inline"><em>W</em><em>y</em><sub><em>C</em></sub></span> is 200 kg/m<span class="math inline"><em></em><sup>2</sup></span> in standard).</p>
 <p><br /><span class="math display">$$
@@ -487,7 +527,7 @@ $$</span><br /></p>
     \end{array}
   \right. \; .
 $$</span><br /></p>
-<p>where <span class="math inline"><em>T</em><sub>0</sub></span> is the surface temperature. Dry Snow Albedo <span class="math inline"><em>α</em><em>s</em><sub><em>d</em></sub></span>, Wet Snow Albedo <span class="math inline"><em>α</em><em>s</em><sub><em>m</em></sub></span> The standard values for Critical temperature (<span class="math inline"><em>T</em><em>d</em></span> and <span class="math inline"><em>T</em><em>m</em></span>) was 258.15 and 273.15, respectively Yes.</p>
+<p>where <span class="math inline"><em>T</em><sub>0</sub></span> is the surface temperature. Dry Snow Albedo <span class="math inline"><em>α</em><em>s</em><sub><em>d</em></sub></span>, Wet Snow Albedo <span class="math inline"><em>α</em><em>s</em><sub><em>m</em></sub></span> The standard values for The critical temperatures (<span class="math inline"><em>T</em><em>d</em></span> and <span class="math inline"><em>T</em><em>m</em></span>) are 258.15 and 273.15, respectively.</p>
 <p>Furthermore, as in the absence of snow, we can take into account the effect of the zenith angle dependence of solar radiation (Not considered in the standard).</p>
 <h3 id="evaluating-surface-roughness-on-snow-covered-surfacesmodulesnwz0">Evaluating Surface Roughness on Snow Covered Surfaces<code>MODULE:[SNWZ0]</code></h3>
 <p>If you have a snow <span class="math inline"><em>W</em><em>y</em></span> , The ratio of snow cover is considered to be proportional to the square root of the snowpack, Surface roughness approaches snow roughness in proportion to the square root of the snowpack. (The critical value, <span class="math inline"><em>W</em><em>y</em><sub><em>C</em></sub></span>, is 200 kg/m<span class="math inline"><em></em><sup>2</sup></span> in standard).</p>
@@ -519,7 +559,7 @@ $$</span><br /></p>
 <li><p>If the ground temperature is higher than the freezing point and solid moisture is present, the water will melt.</p></li>
 </ul>
 <p>Calculate.</p>
-<p>If the icing ratio of the <span class="math inline"><em>l</em></span> layer is set to <span class="math inline"><em>w</em><sub><em>F</em><em>l</em></sub></span>, the freezing water in the <span class="math inline"><em>Δ</em><em>w</em><sub><em>F</em><em>l</em></sub></span> is,</p>
+<p>Assuming that the ice content of the <span class="math inline"><em>l</em></span> layer is <span class="math inline"><em>w</em><sub><em>F</em><em>l</em></sub></span>, the freezing water (<span class="math inline"><em>Δ</em><em>w</em><sub><em>F</em><em>l</em></sub></span>) is</p>
 <p><br /><span class="math display">$$
   \Delta w_{Fl} = \left\{
     \begin{array}{ll}
@@ -540,7 +580,7 @@ $$</span><br /></p>
 <h3 id="oceanic-mixed-layer-model-moduleseafrz">oceanic mixed layer model <code>MODULE:[SEAFRZ]</code></h3>
 <p>In the oceanic mixed layer model , By solving for the heat balance of the oceans, the temperature of the oceans and Determine the time variation of sea ice thickness.</p>
 <p>Multi-layered models are possible, but, Here we will take a single layer model of thickness <span class="math inline"><em>D</em></span> as an example. The predictor variables are temperature (<span class="math inline"><em>G</em></span>) and sea ice thickness (<span class="math inline"><em>h</em><sub><em>I</em></sub></span>).</p>
-<p>First, determine the heat capacity and surface flux of the ocean. <code>MODULE:[SEAFLX]</code> The heat capacity of the oceans is , Specific Heat of Water <span class="math inline"><em>C</em><sub><em>w</em></sub></span>, Specific Heat of Ice <span class="math inline"><em>C</em><sub><em>I</em></sub></span>, Density of Water and Ice <span class="math inline"><em>ρ</em><sub><em>w</em></sub></span> as ,</p>
+<p>First, determine the heat capacity and surface flux of the ocean. <code>MODULE:[SEAFLX]</code> The heat capacity of the oceans is , The specific heat of water <span class="math inline"><em>C</em><sub><em>w</em></sub></span>, the specific heat of ice <span class="math inline"><em>C</em><sub><em>I</em></sub></span>, and the density of water and ice as <span class="math inline"><em>ρ</em><sub><em>w</em></sub></span>,</p>
 <p><br /><span class="math display"><em>C</em><sub><em>s</em></sub> = <em>C</em><sub><em>I</em></sub><em>ρ</em><sub><em>w</em></sub><em>h</em><sub><em>I</em></sub> + <em>C</em><sub><em>w</em></sub><em>ρ</em><sub><em>w</em></sub>(<em>D</em> − <em>h</em><sub><em>I</em></sub>)</span><br /></p>
 <p>In the absence of sea ice, the heat transfer flux is</p>
 <p><br /><span class="math display">$$
@@ -551,7 +591,7 @@ $$</span><br /></p>
  Fs_{1/2} = K_I \frac{ T_I - T_0 }{h_I}
 $$</span><br /></p>
 <p>where <span class="math inline"><em>T</em><sub><em>I</em></sub></span> is the freezing temperature of sea ice at 271.35 K. where <span class="math inline"><em>T</em><sub><em>I</em></sub></span> is the freezing temperature of sea ice at 271.35 K.</p>
-<p>Heat flux in the <span class="math inline"><em>z</em> = <em>D</em></span> is usually zero while the <span class="math inline"><em>F</em><em>s</em><sub>1 + 1/2</sub></span> is usually zero, It can be given from the outside. It is used in the case of flux correction for oceanic heat transport.</p>
+<p>Heat flux in the <span class="math inline"><em>z</em> = <em>D</em></span> is usually zero while the <span class="math inline"><em>F</em><em>s</em><sub>1 + 1/2</sub></span> is usually zero, It can be given from the outside. It is used in the case of flux correction considering oceanic heat transport.</p>
 <ol start="2" type="1">
 <li>using this heat flux and heat capacity As with the land surface, determine the change in temperature (<span class="math inline"><em>G</em></span>).</li>
 </ol>
@@ -625,7 +665,6 @@ $$</span><br /></p>
         F_n = C_s \frac{G_{ref} - G}{\tau}
 $$</span><br /></p>
 <p>The equivalent of giving a .</p>
-<pre><code> To do flux correction,</code></pre>
-<p>Provide the appropriate <span class="math inline"><em>τ</em></span> and perform nudging, Remember the <span class="math inline"><em>F</em><sub><em>n</em></sub></span>, You can give it to me as <span class="math inline"><em>F</em><em>s</em><sub>1 + 1/2</sub></span>.</p>
+<p>To do flux correction, Provide the appropriate <span class="math inline"><em>τ</em></span> and perform nudging, Remember the <span class="math inline"><em>F</em><sub><em>n</em></sub></span>, You can give it to me as <span class="math inline"><em>F</em><em>s</em><sub>1 + 1/2</sub></span>.</p>
 </body>
 </html>

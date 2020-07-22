@@ -43,19 +43,19 @@
 <h1 class="title">MIROC-DOC d-vert</h1>
 </header>
 <h2 id="vertical-discretization">Vertical discretization</h2>
-<p>According to Arakawa and Suarez (1983), Discretize the basic equations vertically by differences. The scheme has the following characteristics.</p>
+<p>According to Arakawa and Suarez (1983), The basic equations are discretized vertically by differences. This scheme has the following features.</p>
 <ul>
-<li><p>Save the total integrated mass</p></li>
+<li><p>Conservation of the total domain-integrated mass</p></li>
 <li><p>Save the total integrated energy</p></li>
 <li><p>Preserving angular momentum for global integration</p></li>
 <li><p>Conservation of total mass-integrated potential temperature</p></li>
 <li><p>The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)</p></li>
 <li><p>Constant in the horizontal direction, for a given temperature distribution, The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.</p></li>
-<li><p>Isothermal atmosphere stays isothermal forever</p></li>
+<li><p>The isothermal atmosphere stays at the isothermal level indefinitely</p></li>
 </ul>
 <h3 id="how-to-take-a-level.">How to take a level.</h3>
-<p>Number the layers from bottom to top. If the physical quantity of <span class="math inline"><em>ζ</em>, <em>D</em>, <em>T</em>, <em>q</em></span>, <span class="math inline"><em>ζ</em>, <em>D</em>, <em>T</em>, <em>q</em></span> is defined at the integer level (layer) I do. On the other hand, <span class="math inline"><em>σ̇</em></span> is defined at the half-integer level. First, the value of <span class="math inline"><em>σ</em></span> at a half-integer level <span class="math inline"><em>σ</em><sub><em>k</em> − 1/2</sub>, (<em>k</em> = 1, 2, …<em>K</em>)</span> Define the . However, level <span class="math inline">$\frac{1}{2}$</span> is the lower end (<span class="math inline"><em>σ</em> = 1</span>), Level <span class="math inline">$K+\frac{1}{2}$</span> should be the upper end (<span class="math inline"><em>σ</em> = 0</span>).</p>
-<p>Value of <span class="math inline"><em>σ</em></span> in integer level <span class="math inline"><em>σ</em><sub><em>k</em></sub>, (<em>k</em> = 1, 2, …<em>K</em>)</span> is obtained from the following equation.</p>
+<p>Number the layers from the bottom to the top. Assume that the physical quantity of <span class="math inline"><em>ζ</em>, <em>D</em>, <em>T</em>, <em>q</em></span> is defined in terms of integer levels (layers). On the other hand, <span class="math inline"><em>σ̇</em></span> is defined by the half-integer level (level). First, let the value of <span class="math inline"><em>σ</em></span> at the half-integer level be <span class="math inline"><em>σ</em><sub><em>k</em> − 1/2</sub>, (<em>k</em> = 1, 2, …<em>K</em>)</span> is defined. except that level <span class="math inline">$\frac{1}{2}$</span> is the lower end (<span class="math inline"><em>σ</em> = 1</span>), Level <span class="math inline">$K+\frac{1}{2}$</span> should be the uppermost (<span class="math inline"><em>σ</em> = 0</span>).</p>
+<p>The value of <span class="math inline"><em>σ</em></span> for an integer level <span class="math inline"><em>σ</em><sub><em>k</em></sub>, (<em>k</em> = 1, 2, …<em>K</em>)</span> is found by the following formula.</p>
 <p><br /><span class="math display">$$
  \sigma_k = \left\{ \frac{1}{1+\kappa}
                      \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
@@ -65,19 +65,17 @@
               \right\}^{1/\kappa}
 $$</span><br /></p>
 <blockquote>
-<p><span id="Bear definition" label="Bear definition">Are you sure? GumaDinformation.com]</span></p>
+<p><span id="Bear definition" label="Bear definition">.0000</p>
 </blockquote>
 <p>Furthermore,</p>
 <p><br /><span class="math display"><em>Δ</em><em>σ</em><sub><em>k</em></sub> ≡ <em>σ</em><sub><em>k</em> − 1/2</sub> − <em>σ</em><sub><em>k</em> + 1/2</sub></span><br /></p>
 <blockquote>
-<p><span id="sigma thickness" label="sigma thickness">Are you sure? Bear thickness </span></p>
+<p><span id="sigma thickness" label="sigma thickness">Sigma thickness[sigma thickness]</span></p>
 </blockquote>
 <p>.</p>
-<h3 id="vertical-discretization-representation.">Vertical discretization representation.</h3>
+<h3 id="vertical-discretization-representation.">vertical discretization representation.</h3>
 <p>The discretized representation of each equation is as follows.</p>
-<ol type="1">
-<li>continuity formula, vertical velocity</li>
-</ol>
+<p>The equation of continuity, vertical velocity</p>
 <p><br /><span class="math display">$$
   \frac{\partial \pi}{\partial t}
  = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi ) 
@@ -91,7 +89,7 @@ $$</span><br /></p>
 $$</span><br /></p>
 <p><br /><span class="math display"><em>σ̇</em><sub>1/2</sub> = <em>σ̇</em><sub><em>K</em> + 1/2</sub> = 0</span><br /></p>
 <ol start="2" type="1">
-<li>hydrostatic pressure formula</li>
+<li>hydrostatic pressure equation</li>
 </ol>
 <p><br /><span class="math display">$$
  \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
@@ -108,8 +106,9 @@ $$</span><br /></p>
               \right] T_{v,k-1} \\
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 $$</span><br /></p>
-<p>Here,</p>
-<pre><code> &gt; &lt;span id=&quot;Hydrostatic pressure coefficient&quot; label=&quot;Hydrostatic pressure coefficient&quot;&gt;Drum pressure coefficient Hydraulic Pressure CoefficientPointPoint.com</code></pre>
+<pre><code>Here ,
+
+&gt; &lt;span id=&quot;Hydrostatic pressure coefficient&quot; label=&quot;Hydrostatic pressure coefficient&quot;&gt;Are you sure you can&#39;t take a look at it?</code></pre>
 <p><br /><span class="math display">$$
  \alpha_k   =  \left( \frac{ \sigma_{k-1/2} }
                                { \sigma_k } \right)^{\kappa} -1 \\
@@ -127,8 +126,7 @@ $$</span><br /></p>
             \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
           - {\mathcal D}(\zeta_k) 
 $$</span><br /></p>
-<pre><code> &gt; &lt;span id=&quot;Vorticity After All&quot; label=&quot;Vorticity After All&quot;&gt;\bout_Vorticity After All &lt;/span&gt;.
- </code></pre>
+<pre><code>&gt; &lt;span id=&quot;Vorticity After All&quot; label=&quot;Vorticity After All&quot;&gt;\\\.com\.} &lt;/span&gt;.</code></pre>
 <p><br /><span class="math display">$$
   \frac{\partial D}{\partial t} 
         =   \frac{1}{a\cos\varphi} 
@@ -140,7 +138,7 @@ $$</span><br /></p>
              + ({\mathit KE})_k )
           - {\mathcal D}(D_k) 
 $$</span><br /></p>
-<p>Here,</p>
+<pre><code>Here,</code></pre>
 <p><br /><span class="math display">$$
   (A_u)_k
     =  ( \zeta_k + f ) v_k 
@@ -163,7 +161,8 @@ $$</span><br /></p>
                \frac{\partial \pi}{\partial \varphi} 
              + {\mathcal F}_y
 $$</span><br /></p>
-<p>First Kpa\cleaner.com <br /><span class="math display">$$
+<pre><code>&gt; &lt;span id=&quot;Hatchetkappa&quot; label=&quot;Hatchetkappa&quot;&gt;\\blade\.com\blade\bladeCoCoCoCo.} &lt;/span&gt;.</code></pre>
+<p><br /><span class="math display">$$
    \hat{\kappa}_k 
     =       \frac{  \sigma_{k-1/2}(   \sigma^{\kappa}_{k-1/2} 
                                     - \sigma^{\kappa}_k      ) 
@@ -190,7 +189,7 @@ $$</span><br /></p>
           + \frac{(Q_{diff})_k}{C_p} 
           - {\mathcal D}(T_k)  \\
 $$</span><br /></p>
-<p>Here,</p>
+<pre><code>Where ,</code></pre>
 <p><br /><span class="math display">$$
    H_k 
      \equiv  T_k' D_k
@@ -243,7 +242,7 @@ $$</span><br /></p>
           { \sigma_{k-1}^{\kappa} - \sigma_k^{\kappa}           } \\
    =  a_k T_k + b_{k-1} T_{k-1}
 $$</span><br /></p>
-<pre><code> &gt; &lt;span id=&quot;Temperature Interpolation Factor&quot; label=&quot;Temperature Interpolation Factor&quot;&gt;\blaze&gt; &lt;span id=&quot;Temperature Interpolation Factor Temperature interpolation coefficient\en.com</code></pre>
+<pre><code>&gt; &lt;span id=&quot;Temperature Interpolation Factor&quot; label=&quot;Temperature Interpolation Factor&quot;&gt;\\BackBackBacklash\.com</code></pre>
 <p><br /><span class="math display">$$
   a_k  =  \alpha_k 
               \left[ 1- \left( \frac{ \sigma_k }{ \sigma_{k-1} }
@@ -265,7 +264,7 @@ $$</span><br /></p>
           + S_{q,k}
           - {\mathcal D}(q_k) 
 $$</span><br /></p>
-<p>lt;/span&gt;</p>
+<pre><code>&gt; &lt;span id=&quot;q eventually&quot; label=&quot;q eventually&quot; label=&quot;q eventually&quot;&gt;\\blana[q eventually]&lt;/span&gt;</code></pre>
 <p><br /><span class="math display">$$
 R_k  =  q_k D_k 
        - \frac{1}{2 \Delta \sigma_k} 

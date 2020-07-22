@@ -1,8 +1,8 @@
 {
     "imath": {
-        "TERM00000": {
+        "TERM00006": {
             "count": 2,
-            "text": "$\\lambda,\\varphi$"
+            "text": "$Q_{diff}$"
         }
     },
     "emath": {},

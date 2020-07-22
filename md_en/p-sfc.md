@@ -15,7 +15,7 @@ Various boundary condition parameters such as albedo and roughness.
 
 Surface processes are classified as follows.
 
-1. geothermal diffusion processes - Determining the geothermal structure
+1. geothermal diffusion processes - Determining the geothermal temperature structure
 
 2. geological and hydrological processes - Determining the structure of underground water, runoff, etc.
 
@@ -50,7 +50,7 @@ The entries enclosed in parentheses refer to the descriptions in other sections.
  Change according to snowfall and other factors.
 
 3. evaluate the heat flux and heat capacity within the ground surface .
-     `MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX (pgsnw)]`
+     `MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)]`
  Estimate the heat capacity of each layer of land and sea,
  The heat flux at each layer boundary is estimated from the heat transfer equation.
  If there is snowfall, change the heat capacity and flux.
@@ -62,7 +62,7 @@ The entries enclosed in parentheses refer to the descriptions in other sections.
 5. evaluate the evaporation efficiency `MODULE:[GNDBET(pgsfc)]`
  For the land surface, the calculation depends on soil moisture and stomatal resistance.
 
-6. perform an implicit solution of geothermal conduction up to the middle `MODULE:[GNDHT1( pggnd)]`
+6. implicit solution of geo-thermal conduction up to the middle `MODULE:[GNDHT1(pggnd)]`
  Evaluate the temperature change due to heat conduction in the ground.
  However, taking into account the surface temperature changes
  Since it is done     implicitly, only the first step is done here.
@@ -76,7 +76,7 @@ The entries enclosed in parentheses refer to the descriptions in other sections.
  With the surface temperature as the freezing point,
  Evaluate the residual flux as the flux used for snowmelt.
 
-8. implicit solution for geothermal conduction `MODULE:[GNDHT2(pggnd )]`
+8. implicit solution for geothermal conduction `MODULE:[GNDHT2(pggnd)]`
  Since the change in surface temperature was obtained, we used it to determine
  Solving for changes in ground temperature due to heat conduction in the ground.
 
@@ -92,7 +92,7 @@ The entries enclosed in parentheses refer to the descriptions in other sections.
  If the snow melts, it will keep the temperature below the freezing point,
  Decrease the snowpack.
 
-12. solves the diffusion of groundwater by implicit method `MODULE:[GNDWTR( pggnd)]`
+12. implicit solution for groundwater diffusion `MODULE:[GNDWTR(pggnd)]`
  Solving changes in subsurface moisture due to subsurface water fluxes.
 
 13. evaluate precipitation interception by snowpack `MODULE:[SNWROF(pgsnw)]`
@@ -203,7 +203,7 @@ $$
    F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
 $$
 
-> <span id="p-sfc:sfc-balance" label="p- sfc:sfc-balance">[p-sfc:sfc-balance\[p-sfc:sfc-balance]& lt;/span>
+> <span id="p-sfc:sfc-balance" label="p-sfc:sfc-balance" label="p-sfc:sfc-balance">\blazer[p-sfc:sfc-balance]</span>.
 
 It is.
 $F\theta, Fq^P, FR, Fg$, $F\theta, Fq^P, FR, Fg$ is ,
@@ -224,22 +224,22 @@ The details are described in the section "Solving the Diffusion-Based Budget Equ
 There are two ways to evaluate the evaporation terms $\beta Fq^P(T_0,q_1)$.
 
 1. as a $\beta=1$
-     ([p-sfc:sfc-balance\]](#p-sfc:sfc-balance $Fq^P$, obtained by solving for (1)
+ Solved for     ([\\p-sfc:sfc-balance\](#p-sfc:sfc-balance)) $Fq^P$
      (possible evaporation amount) multiplied by $\beta$.
 
 2. using $\beta$.
-     ([p-sfc:sfc-balance\]](#p-sfc:sfc-balance )) directly.
+     ([p-sfc:sfc-balance\]](#p-sfc:sfc-balance)) directly solve.
 
 The temperatures used in the calculations in $\beta Fq^P$ are different between the former and the latter.
 In the former case, the temperature in the case of $\beta=1$,
 In the latter case, the actual temperature is used.
 
 The CCSR/NIES AGCM uses the former method as standard.
-On a snow or ice surface ([p-sfc[p-sfc:sfc-balance\]](#p-sfc: sfc-balance)) of the result of solving
+The result of solving (with a [\blind\blind\blind\blind\blind\blade}(#p-sfc:sfc-balance)](#p-sfc:sfc-balance) on a snow or ice surface
 If the $T_0$ exceeds the freezing point,
 Or, when $T_0$ divides the freezing temperature of seawater at the sea surface (in the case of oceanic mixed-layer model)
 by fixing the temperature of the $T_0$ at the freezing point and calculating each flux,
-([p-sfc:sfc-balance\]](#p-sfc:sfc-balance )), and the residuals (energy residuals) of the formula
+([p-sfc:sfc-balance\]](#p-sfc:sfc-balance)) and the residuals (energy residuals) of the formula
 Suppose it is used for freezing and thawing snow and ice.
 
 ### Set the discrete coordinate system `MODULE:[SETGLV,SETWLV,SETSLV]`
@@ -259,7 +259,7 @@ For convenience, it is represented by $l=0$ and $zg_{0} = zg_{1/2} = zg_{-1/2} =
 Physical quantities, such as heat and moisture fluxes in the ground, and wetness
 The evaluation of surface characteristics is based on whether the surface is sea or land, and in the case of land surface
 This is done separately if there is snowfall or not.
-In the following section, we will first evaluate the evaluation method for the land surface case without snow.
+In the following, we will first evaluate the evaluation method for the land surface case without snow.
 We shall describe in brief. We will describe the difference between the case of sea level and snow surface in detail later.
 
 The heat capacity of the land surface is ,
@@ -272,7 +272,7 @@ $$
 
 where $\tilde{C}g_{l}$ is the volume specific heat.
 
-The heat flux of the land surface is treated as a constant heat conduction coefficient (which may depend on $l$). ).
+The land heat flux is treated as a constant heat transfer coefficient (which may depend on $l$).
 
 $$
   Fg_{l-1/2} = Kg_{l-1/2} (G_l - G_{l-1})(zg_l - zg_{l-1}) \; ,
@@ -310,7 +310,7 @@ $$
   F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
 $$
 
-> <span id="basic-Fw" label="basic-Fw"& gt;gt;\\braham\[basic-Fw]< /span>
+> <span id="basic-Fw" label="basic-Fw">\\[basic-Fw]</span>
 
 Here, $g_w$ represents the effect of gravity.
 
@@ -322,7 +322,7 @@ There are two ways to evaluate the groundwater flux on land.
 
 In the method of fixed diffusion coefficients, we simply express it as follows.
 $K_w$ is the diffusion coefficient and $\rho_w$ is the density of liquid water.
-where the gravitational potential in ([basic-Fw\]](#basic-Fw)) The term $g_w$ is
+where the gravitational potential term $g_w$ in ([basic-Fw\]](#basic-Fw)) is
 Ignore it.
 
 $$
@@ -354,7 +354,7 @@ $$
 
 
 
-where $Kw$ is the saturated hydraulic conductivity, $W$ is the saturation degree, $\psi$ is the pressure potential,
+where $Kw$ is the saturated hydraulic conductivity, $W$ is the saturation degree, and $\psi$ is the pressure potential,
 It is given as follows.
 
 $$
@@ -369,7 +369,7 @@ $$
 $$
 
 
-$Kw$, $B$, and $\psi s$ are constants, surface type May depend on $m$ and $l$.
+$Kw$, $B$, and $\psi s$ are constants and may depend on the ground surface types $m$ and $l$.
 
 ### Calculating land surface spill`MODULE:[LNDROF]`
 
@@ -458,7 +458,7 @@ $$
   \right. \; .
 $$
 
-> <span id="inf-exs" label="inf-exs"&gt ;inf-exs]< /span>
+> <span id="inf-exs" label="inf-exs">\blazer[inf-exs]</span>
 
 The amount of precipitation input percolating to the ground surface is modified as follows.
 
@@ -479,7 +479,7 @@ $$
 
 
 
-On the formula ([index[inf-exs\]](#inf-exs)), convective rainfall intensity To probability $f(P_c)$
+On the formula ([index[inf-exs]](#inf-exs)), convective rainfall intensity probability $f(P_c)$
 It is derived from the following equation, which assumes an exponential distribution.
 
 $$
@@ -527,7 +527,7 @@ $$
 $$
 
 
-where the wetness factor ($f_w$) and the zenith angle factor ($f_{\zeta}$) are constants Yes.
+Here, the wetness factor ($f_w$) and the zenith angle factor ($f_{\zeta}$) are constants.
 
 ### Evaluating roughness on land surface`MODULE:[LNDZ0]`
 
@@ -664,7 +664,7 @@ That is, the heat capacity and thermal diffusivity of the first layer are
 The shape will be changed by the presence of snow.
 
 The heat capacity is expressed as a simple sum of
-$C_y$ as the specific heat per mass of snow, $W_y$ as the mass per unit area of snow So,
+Let $C_y$ be the specific heat per mass of snow and $W_y$ be the mass per unit area of snow,
 
 $$
   Cg_{l} = Cg'_{l} + C_y W_y \; .
@@ -753,7 +753,7 @@ Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T}
 $$
 
 
-and if the $Tw_1$ is lower than the freezing point $Tm$, snow, TERM If it's over 00101, it shall be considered rain.
+If the freezing point ($Tw_1$) is lower than the freezing point ($Tm$), it is assumed to be snow, and if it is higher than the freezing point ($Tm$), it is assumed to be rain.
 The reason why the wet-ball temperature is used is that the temperature of precipitation reaching the surface is
 This is to incorporate effects that depend on the likelihood of evaporation during the fall of precipitation.
 
@@ -803,7 +803,7 @@ $$
 
 In the case of $\hat{G_1} < Tm$, the temperature of the part of the snow that melts in the energy balance except for the snow is
 I'm assuming it doesn't change.
-$L_M$ is the latent heat of melting, $Tm$ is the freezing point, $Cp_I$ is the specific heat of ice It is.
+$L_M$ is the latent heat of melting, $Tm$ is the freezing point, and $Cp_I$ is the specific heat of ice.
 
 The actual snowmelt and soil temperature are based on the current amount of snow and soil temperature in the case of full melting of the $Wy$,
 
@@ -856,7 +856,7 @@ $$
 
 
 where $Is$ is the surface infiltration rate due to snow cover.
-The standard value of critical snowpack for infiltration for $Wy_{Ci}$ is 200 kg/m$^2$ .
+The standard value of critical snowpack for infiltration, $Wy_{Ci}$, is 200 kg/m$^2$.
 
 ### Evaluating albedo on snow-covered surfaces`MODULE:[SNWALB]`
 
@@ -893,7 +893,7 @@ $$
 where $T_0$ is the surface temperature.
 Dry Snow Albedo $\alpha s_d$, Wet Snow Albedo $\alpha s_m$
 The standard values for
-Critical temperature ($Td$ and $Tm$) was 258.15 and 273.15, respectively Yes.
+The critical temperatures ($Td$ and $Tm$) are 258.15 and 273.15, respectively.
 
 Furthermore, as in the absence of snow, we can take into account the effect of the zenith angle dependence of solar radiation
 (Not considered in the standard).
@@ -950,7 +950,7 @@ After calculating the ground temperature by thermal diffusion,
 
 Calculate.
 
-If the icing ratio of the $l$ layer is set to $w_{Fl}$, the freezing water in the $\Delta w_{Fl}$ is,
+Assuming that the ice content of the $l$ layer is $w_{Fl}$, the freezing water ($\Delta w_{Fl}$) is
 
 $$
   \Delta w_{Fl} = \left\{
@@ -997,7 +997,7 @@ The predictor variables are temperature ($G$) and sea ice thickness ($h_I$).
 First, determine the heat capacity and surface flux of the ocean.
      `MODULE:[SEAFLX]`
  The heat capacity of the oceans is ,
- Specific Heat of Water $C_w$, Specific Heat of Ice $C_I$, Density of Water and Ice $\rho_w$ as ,
+ The specific heat of water $C_w$, the specific heat of ice $C_I$, and the density of water and ice as $\rho_w$,
 
 $$
   C_s  = C_I \rho_w h_I +   C_w \rho_w (D - h_I)
@@ -1020,9 +1020,9 @@ $$
 
  where $T_I$ is the freezing temperature of sea ice at 271.35 K. where $T_I$ is the freezing temperature of sea ice at 271.35 K.
 
- Heat flux     in the $z=D$ is usually zero while the $Fs_{1+1/2}$ is usually zero,
+ Heat flux in the     $z=D$ is usually zero while the $Fs_{1+1/2}$ is usually zero,
  It can be given from the outside.
- It is used in the case of flux correction for oceanic heat transport.
+ It is used in the case of flux correction considering oceanic heat transport.
 
 2. using this heat flux and heat capacity
  As with the land surface, determine the change in temperature ($G$).
@@ -1031,7 +1031,7 @@ The melting of the sea ice surface is treated in the same way as snow.
      `MODULE:[SEAFLX]`
 
  First, I'll set the melting value, $\tilde{M_I}$, to
- When     the $G \ge T_I$ ,
+ When the     $G \ge T_I$ ,
 
 $$
   M_I
@@ -1040,7 +1040,7 @@ $$
 $$
 
 
- When     the $G < T_I$ ,
+ When the     $G < T_I$ ,
 
 $$
   M_I
@@ -1077,7 +1077,7 @@ The next step is to consider the growth process from the bottom of the sea ice.
 
      1. when there is no sea ice ($h_I=0$)
 
- When         the $G <  T_I$ ,
+ When the         $G <  T_I$ ,
 
 $$
   \tilde{f_I}
@@ -1086,7 +1086,7 @@ $$
 $$
 
 
- When         the $G \ge T_I$ ,
+ When the         $G \ge T_I$ ,
 
 $$
   \tilde{f_I}
@@ -1156,8 +1156,8 @@ $$
 
  The equivalent of giving a .
 
-     To do flux correction,
+ To do     flux correction,
  Provide the appropriate $\tau$ and perform nudging,
- Remember     the $F_n$,
+ Remember the     $F_n$,
  You can give it to me as $Fs_{1+1/2}$.
 

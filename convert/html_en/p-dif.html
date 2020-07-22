@@ -44,7 +44,7 @@
 </header>
 <h2 id="vertical-diffusion.">Vertical Diffusion.</h2>
 <h3 id="vertical-diffusion-scheme-overview.">Vertical Diffusion Scheme Overview.</h3>
-<p>The vertical diffusion scheme, due to sub-grid scale turbulent diffusion. Evaluating the vertical flux of physical quantities. The main input data are wind speed, <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, and temperature <span class="math inline"><em>T</em></span> The specific humidity <span class="math inline"><em>q</em></span>, the cloud cover <span class="math inline"><em>l</em></span>, is The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and It is the differential value for obtaining an implicit solution.</p>
+<p>The vertical diffusion scheme, due to sub-grid scale turbulent diffusion. Evaluating the vertical flux of physical quantities. The main input data are wind speed, <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, temperature <span class="math inline"><em>T</em></span>, specific humidity <span class="math inline"><em>q</em></span>, and cloud cover <span class="math inline"><em>l</em></span>, The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and It is the differential value for obtaining an implicit solution.</p>
 <p>To estimate the vertical diffusion coefficient, the Mellor and Yamada (1974, 1982). The turbulent closure model. Using level 2 parameterization.</p>
 <p>The outline of the calculation procedure is as follows.</p>
 <ol type="1">
@@ -129,7 +129,7 @@ $$</span><br /></p>
 l = \frac{kz}{1+kz/l_0}
 $$</span><br /></p>
 <p>Take. <span class="math inline"><em>k</em></span> is a Kárman constant. The current standard value is <span class="math inline"><em>l</em><sub>0</sub> = 200</span> m.</p>
-<p>If <span class="math inline"><em>S</em><sub><em>H</em></sub>, <em>S</em><sub><em>M</em></sub></span> are shown as functions of <span class="math inline"><em>R</em><sub><em>i</em><em>f</em></sub></span>, Figure<a href="#p-dif:smsh-rif">p-dif:smsh-rif]</a> Yes.</p>
+<p>If <span class="math inline"><em>S</em><sub><em>H</em></sub>, <em>S</em><sub><em>M</em></sub></span> are shown as functions of <span class="math inline"><em>R</em><sub><em>i</em><em>f</em></sub></span>, Figure [p-dif:smsh-rif]] (#p-dif:smsh-rif).</p>
 <h3 id="calculating-flux.">Calculating Flux.</h3>
 <p>Using the above, we calculate the fluxes and flux derivatives.</p>
 <p><br /><span class="math display"><em>F</em><em>u</em><sub><em>k</em> − 1/2</sub> = <em>K</em><sub><em>M</em>, <em>k</em> − 1/2</sub>(<em>u</em><sub><em>k</em> − 1</sub> − <em>u</em><sub><em>k</em></sub>)/(<em>σ</em><sub><em>k</em> − 1</sub> − <em>σ</em><sub><em>k</em></sub>)</span><br /></p>

@@ -10,9 +10,9 @@ condensation processes involved in clouds other than cumulus convection,
 Calculating latent heat release and water vapor reduction,
 precipitation. We also calculate the cloud water content and cloud
 coverage involved in the radiation. The main input data are temperature
-\(T\), specific humidity \(q\), and cloud cover \(l\), and is, The
-output data is the time rate of change of temperature, specific humidity
-and cloud water content,
+\(T\), specific humidity \(q\), and cloud cover \(l\), The output data
+is the time rate of change of temperature, specific humidity and cloud
+water content,
 \(\partial T/\partial t, \partial q/\partial t, \partial l/\partial t\),
 The cloud cover is \(C\).
 
@@ -62,11 +62,11 @@ water volume \(q^t\) in the grid, Between \((1-b)\bar{q}^t\) and
 the probability density function is ,
 
 \begin{eqnarray}
-  F(q^t) = \left\{
+  F(q^t) = \left\{ 
            \begin{array}{ll}
-             (2b\bar{q}^t)^{-1} \; \;
+             (2b\bar{q}^t)^{-1} \; \; 
                  (1-b)\bar{q}^t < q^t <  (1+b)\bar{q}^t \\
-             0                         (その他)
+             0                         その他
            \end{array}
            \right. \; .
 \end{eqnarray}
@@ -75,15 +75,15 @@ We consider this distribution to be a horizontal distribution. On the
 other hand, the saturation specific humidity is based on the grid
 average of \(\bar{q}^*\).
 
-In the grid, Consider the existence of clouds in the region of
-\(q^t > q^*\) (Figure {[}lsc:fig-cloud
-\protect\hyperlink{lsc:fig-cloud}{{]}}).
+In the grid, Consider the presence of a cloud in a region in
+\(q^t > q^*\) (Figure
+{[}lsc\protect\hyperlink{lsc:fig-cloud}{lsc:fig-cloud{]}}).
 
 Then, as shown by the shading in the figure, the The horizontal ratio of
 the portion of the total water volume exceeding saturation \(C\) is ,
 
 \begin{eqnarray}
-  C = \left\{
+  C = \left\{ 
            \begin{array}{ll}
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
              \displaystyle
@@ -101,7 +101,7 @@ In addition, the cloud cover of \(l\) is in the region of \(q^t > q^*\)
 This is an integral of \(q^t - q^*\),
 
 \begin{eqnarray}
-  l = \left\{
+  l = \left\{ 
            \begin{array}{ll} \displaystyle
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
             \displaystyle
@@ -112,12 +112,11 @@ This is an integral of \(q^t - q^*\),
              \bar{q}^t - \bar{q}^*
                 \; \;  (1-b)\bar{q}^t \geq \bar{q}^*
            \end{array}
-        \right.
+        \right. 
 \end{eqnarray}
 
 \begin{quote}
-\textless span id=``p-lsc:l'' label=``p-lsc:l''\&gt
-;p-lsc:l\textbackslash.com;
+\protect\hypertarget{p-lsc:l}{}{\blazer[p-lsc:l]}
 \end{quote}
 
 \hypertarget{determination-by-successive-approximation}{%
@@ -125,8 +124,8 @@ This is an integral of \(q^t - q^*\),
 approximation}\label{determination-by-successive-approximation}}
 
 First, from the Water Vapor \(q\) and Cloud Water \(l\) and the
-Temperature \(T\), Total water volume \(q^t\) and liquid water
-temperature TERM Ask for 00029.
+Temperature \(T\), Find the total water volume \(q^t\) and liquid water
+temperature \(T_l\).
 
 \begin{eqnarray}
   q^t   =  q + l \; , \\
@@ -145,23 +144,23 @@ method is \(l^{(1)}\), It changes the temperature,
 \end{eqnarray}
 
 \begin{quote}
-{[}p-lsc:itereate1{[}p-lsc:itereate1{]}\textless/ span\textgreater{}
+\protect\hypertarget{p-lsc:itereate1}{}{ }
 \end{quote}
 
 The cloud water content evaluated using the saturation specific humidity
 versus temperature was estimated from \(l^{(2)}\), The resulting
 temperature change is solved by successive approximation as \(T^{(2)}\)
 \ldots{} In order to speed up this sequential convergence, we use the
-Newton method. I.e.,
-(\protect\hyperlink{p-lsc:itereateux5cux25201}{{[}p-lsc:itereate1{]}}))
-instead of
+Newton method. I.e., instead of (ie,
+({[}\protect\hyperlink{p-lsc:itereate1}{p-lsc:itereate1{]}})
 
 \begin{eqnarray}
-  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)}
+  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
                    \left( 1 - \frac{L}{C_P} \frac{dl}{dT} \right)^{-1}
 \end{eqnarray}
 
-. \(dl/dT\) uses the analytical You can ask for.
+. \(dl/dT\) can be obtained analytically using
+({[}\protect\hyperlink{p-lsc:l}{p-lsc:l{]}}).
 
 \hypertarget{precipitation-process.}{%
 \subsubsection{precipitation process.}\label{precipitation-process.}}
@@ -184,11 +183,11 @@ where \(l_C\) is the critical cloud water content, In view of the
 Bergeron-Findeisen effect ,
 
 \begin{eqnarray}
-  l_C = \left\{
+  l_C = \left\{ 
         \begin{array}{ll}
           l_C^0 \; \;  T \ge T_0 \\
-          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right]
-                \right\}^{-1}\; \;
+          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right] 
+                \right\}^{-1}\; \; 
                        T_0 > T >  T_c \\
           l_C^0 ( 1+\alpha )^{-1}
                        T \le T_c
@@ -240,7 +239,7 @@ speed, Consider the effect. Rate of descent \(V_S\) is,
 However, \(V_S^0=3\) m/s, \(\gamma=0.17\). So..,
 
 \begin{eqnarray}
-  \tau_S = \frac{\Delta p}{\rho g V_S}
+  \tau_S = \frac{\Delta p}{\rho g V_S} 
 \end{eqnarray}
 
 as well as precipitation.
