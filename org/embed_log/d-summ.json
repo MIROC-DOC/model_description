@@ -1,5 +1,9 @@
 {
     "imath": {
+        "TERM00034": {
+            "count": 2,
+            "text": "$p_S$"
+        },
         "TERM00052": {
             "count": 2,
             "text": "$T^{t+\\Delta t}$"

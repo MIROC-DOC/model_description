@@ -43,47 +43,47 @@
 <h1 class="title">MIROC-DOC d-time</h1>
 </header>
 <h2 id="time-integration.">Time integration.</h2>
-<p>The time difference scheme is basically a leap frog. However, the terms of the diffusion terms and physical processes are backward or forward differences. A time filter (Asselin, 1972) is used to suppress the computational mode. And to make the <span class="math inline"><em>Δ</em><em>t</em></span> larger, Applying the semi-implicit method to the term gravitational wave (Bourke, 1988).</p>
-<h3 id="time-integration-and-time-filtering-with-leap-frog">Time integration and time filtering with leap frog</h3>
-<p>The leap frog is used as a time integration scheme for advection terms and so on. The backward difference of <span class="math inline">2<em>Δ</em><em>t</em></span> is used for the horizontal diffusion term. In addition, the pseudo <span class="math inline"><em>p</em></span> surface correction of the diffusion term and the frictional heat term by horizontal diffusion are treated as a correction and becomes the forward difference in <span class="math inline">2<em>Δ</em><em>t</em></span>. The physical process section (<span class="math inline">ℱ<sub><em>λ</em></sub>, ℱ<sub><em>φ</em></sub>, <em>Q</em>, <em>S</em><sub><em>q</em></sub></span>) is , I still use the forward differential of <span class="math inline">2<em>Δ</em><em>t</em></span>. (However, we treat the calculation of the time varying term of vertical diffusion as a backward difference. See the chapter on physical processes for details.)</p>
-<p>Expressed as <span class="math inline"><em>X</em></span> on behalf of each forecast variable,</p>
+<p>The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Asselin, 1972) is used to suppress the computational mode. In order to increase the value of <span class="math inline"><em>Δ</em><em>t</em></span>, we use a time filter (Asselin, 1972), Applying the semi-implicit method to the gravitational wave term (Bourke, 1988).</p>
+<h3 id="time-integration-and-time-filtering-by-leap-frog">Time integration and time filtering by leap frog</h3>
+<p>We use leap frog as a time integration scheme for advection terms and so on. The backward difference of <span class="math inline">2<em>Δ</em><em>t</em></span> is used for the horizontal diffusion term. The pseudo <span class="math inline"><em>p</em></span> surface correction of the diffusion term and the frictional heat by horizontal diffusion term are combined with treated as a correction and becomes a forward difference in <span class="math inline">2<em>Δ</em><em>t</em></span>. The physical process terms (<span class="math inline">ℱ<sub><em>λ</em></sub>, ℱ<sub><em>φ</em></sub>, <em>Q</em>, <em>S</em><sub><em>q</em></sub></span>) are treated as We still use the forward difference of <span class="math inline">2<em>Δ</em><em>t</em></span>. (However, for the calculation of the time-varying term of vertical diffusion, we treat it as a backward difference. Please refer to the chapter on physical processes for details.)</p>
+<p>Representing each of the forecast variables as <span class="math inline"><em>X</em></span>, we obtain</p>
 <p><br /><span class="math display"><em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup> = <em>X̄</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup> + 2<em>Δ</em><em>t</em><em>Ẋ</em><sub><em>a</em><em>d</em><em>v</em></sub>(<em>X</em><sup><em>t</em></sup>) + 2<em>Δ</em><em>t</em><em>Ẋ</em><sub><em>d</em><em>i</em><em>f</em></sub>(<em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>)</span><br /></p>
-<p><span class="math inline"><em>Ẋ</em><sub><em>a</em><em>d</em><em>v</em></sub></span> is an advection term etc, <span class="math inline"><em>Ẋ</em><sub><em>d</em><em>i</em><em>f</em></sub></span> is a horizontal diffusion term.</p>
-<p>$ ^{t+t} $ has a , Pseudo, etc. <span class="math inline"><em>p</em></span> Correction of frictional heat (<span class="math inline"><em>Ẋ</em><sub><em>d</em><em>i</em><em>s</em></sub></span>) by surface and horizontal diffusion and physical processes ($ _{phy} $) have been added, $ {X}^{t+t} $.</p>
+<p>$ <em>{adv} $ is an advection term etc, $ </em>{dif} $ is a horizontal diffusion term.</p>
+<p>In $ ^{t+t} $, there is a horizontal diffusion term, Pseudo, etc. <span class="math inline"><em>p</em></span> Correction of frictional heat ($ <em>{dis} <span class="math inline">)<em>b</em><em>y</em><em>s</em><em>u</em><em>r</em><em>f</em><em>a</em><em>c</em><em>e</em><em>a</em><em>n</em><em>d</em><em>h</em><em>o</em><em>r</em><em>i</em><em>z</em><em>o</em><em>n</em><em>t</em><em>a</em><em>l</em><em>d</em><em>i</em><em>f</em><em>f</em><em>u</em><em>s</em><em>i</em><em>o</em><em>n</em><em>a</em><em>n</em><em>d</em><em>p</em><em>h</em><em>y</em><em>s</em><em>i</em><em>c</em><em>a</em><em>l</em><em>p</em><em>r</em><em>o</em><em>c</em><em>e</em><em>s</em><em>s</em><em>e</em><em>s</em>(</span> </em>{phy} $) have been added, $ {X}^{t+t} $.</p>
 <p><br /><span class="math display"><em>X</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup> = <em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup> + 2<em>Δ</em><em>t</em><em>Ẋ</em><sub><em>d</em><em>i</em><em>s</em></sub>(<em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>) + 2<em>Δ</em><em>t</em><em>Ẋ</em><sub><em>p</em><em>h</em><em>y</em></sub>(<em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>)</span><br /></p>
-<p>To remove the computation mode in leap frog Apply the time filter of Asselin (1972) at every step. Namely,</p>
+<p>To remove the calculation mode in leap frog The time filter of Asselin (1972) is applied at every step. I.e. ,</p>
 <p><br /><span class="math display"><em>X̄</em><sup><em>t</em></sup> = (1 − 2<em>ϵ</em><sub><em>f</em></sub>)<em>X</em><sup><em>t</em></sup> + <em>ϵ</em><sub><em>f</em></sub>(<em>X̄</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup>+<em>X</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>)</span><br /></p>
-<p>and <span class="math inline"><em>X̄</em></span>. For <span class="math inline"><em>ϵ</em><sub><em>f</em></sub></span> it is standard to use 0.05.</p>
+<p>and <span class="math inline"><em>X̄</em></span>. Normally 0.05 is used as the <span class="math inline"><em>ϵ</em><sub><em>f</em></sub></span>.</p>
 <h3 id="semi-implicit-time-integration">semi-implicit time integration</h3>
-<p>For mechanics calculations, the leap frog is basically used, Compute some terms as implicit. Here, implicit considers a trapezoidal implicit. Regarding the vector quantity <span class="math inline"><strong>q</strong></span>, The value in <span class="math inline"><em>t</em></span> is converted to <span class="math inline"><strong>q</strong></span>, The value in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span> was converted to <span class="math inline"><strong>q</strong><sup>+</sup></span>, If you write the value of <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span> as <span class="math inline"><strong>q</strong><sup>−</sup></span>, What is trapezoidal implicit? <span class="math inline">(<strong>q</strong><sup>+</sup> + <strong>q</strong><sup>−</sup>)/2</span>. The solution is done by using the time-varying terms evaluated by using Now, as a time-varying term in <span>q</span>, The term A is treated in the leap forg method and the term B is treated in the trapezoidal implicit method. A is nonlinear with respect to <span>q</span>, while B is Suppose it is linear. Namely,</p>
+<p>For mechanics calculations, the leap frog is basically used, We treat some terms as implicit. Here, the implicit considers the trapezoidal implicit. For the vector quantity <span class="math inline"><strong>q</strong></span>, The value in <span class="math inline"><em>t</em></span> is converted to <span class="math inline"><strong>q</strong></span>, The value in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span> was converted to <span class="math inline"><strong>q</strong><sup>+</sup></span>, If you write the value of <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span> as <span class="math inline"><strong>q</strong><sup>−</sup></span>, What is trapezoidal implicit? <span class="math inline">(<strong>q</strong><sup>+</sup> + <strong>q</strong><sup>−</sup>)/2</span>. We use the time-varying terms evaluated by using Now, as a time-varying term in <span>q</span>, The term A is treated in the leap forg method and the term B is treated in the trapezoidal implicit method. Assume that A is nonlinear with respect to <span>q</span>, while B is linear. In other words,</p>
 <p><br /><span class="math display"><strong>q</strong><sup>+</sup> = <strong>q</strong><sup>−</sup> + 2<em>Δ</em><em>t</em>𝒜(<strong>q</strong>) + 2<em>Δ</em><em>t</em><em>B</em>(<strong>q</strong><sup>+</sup> + <strong>q</strong><sup>−</sup>)/2</span><br /></p>
-<p>Note that <span class="math inline"><em>B</em></span> is a square matrix. Then, <span class="math inline"><em>Δ</em><strong>q</strong> ≡ <strong>q</strong><sup>+</sup> − <strong>q</strong></span> And then you can write,</p>
+<p>where <span class="math inline"><em>B</em></span> is a square matrix. Then, <span class="math inline"><em>Δ</em><strong>q</strong> ≡ <strong>q</strong><sup>+</sup> − <strong>q</strong></span> And then you can write,</p>
 <p><br /><span class="math display">(<em>I</em> − <em>Δ</em><em>t</em><em>B</em>)<em>Δ</em><strong>q</strong> = 2<em>Δ</em><em>t</em>(𝒜(<strong>q</strong>)+<em>B</em><strong>q</strong>)</span><br /></p>
 <p>This can be easily solved by matrix operations.</p>
-<h3 id="applying-semi-implicit-time-integration">Applying semi-implicit time integration</h3>
-<p>So we apply this method and treat the term of linear gravity waves as implicit. This makes the time step <span class="math inline"><em>Δ</em><em>t</em></span> smaller.</p>
-<p>In a system of equations, the basic field is such that <span class="math inline"><em>T</em> = <em>T̄</em><sub><em>k</em></sub></span> Separation of the linear gravitational wave term and the other terms (with the index <span class="math inline"><em>N</em><em>G</em></span>). Vertical Vector Representation Using <span class="math inline"><strong>D</strong> = {<em>D</em><sub><em>k</em></sub>}</span>, <span class="math inline"><strong>T</strong> = {<em>T</em><sub><em>k</em></sub>}</span>,</p>
+<h3 id="semi-implicit-time-integration-applied">semi-implicit time integration applied</h3>
+<p>Then, we apply this method and treat the term of linear gravity waves as implicit. This allows us to reduce the time step (<span class="math inline"><em>Δ</em><em>t</em></span>).</p>
+<p>In the system of equations, the basic field is such that <span class="math inline"><em>T</em> = <em>T̄</em><sub><em>k</em></sub></span> Separation of the linear gravity wave term and the other terms (with the index <span class="math inline"><em>N</em><em>G</em></span>). Vertical Vector Representation Using <span class="math inline"><strong>D</strong> = {<em>D</em><sub><em>k</em></sub>}</span>, <span class="math inline"><strong>T</strong> = {<em>T</em><sub><em>k</em></sub>}</span>,</p>
 <p><br /><span class="math display">$$
-   \frac{\partial \pi}{\partial t} =
+   \frac{\partial \pi}{\partial t} = 
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
      - \mathbf{C} \cdot \mathbf{D}  ,
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  \frac{\partial \mathbf{D}}{\partial t} =
+  \frac{\partial \mathbf{D}}{\partial t} = 
           \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S}
+          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S} 
                                   + \underline{W} \mathbf{T}
                                   + \mathbf{G} \pi )  
           - {\mathcal D}_M \mathbf{D} ,
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  \frac{\partial \mathbf{T}}{\partial t}
+  \frac{\partial \mathbf{T}}{\partial t} 
       =   \left( \frac{\partial \mathbf{T}}
                         {\partial t}       \right)_{NG}  
          - \underline{h} \mathbf{D}
          - {\mathcal D}_H \mathbf{T} ,
 $$</span><br /></p>
-<p>Here, the non-gravitational wave term is</p>
+<p>where the non-gravitational wave term is,</p>
 <p><br /><span class="math display">$$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
    =   - \sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi  
@@ -91,7 +91,7 @@ $$</span><br /></p>
    =   Z_{k}
 $$</span><br /></p>
 <blockquote>
-<p><span id="Section Z" label="Section Z" label="Section Z" >&amp;lt ;/span&gt;</p>
+<p>&lt;span id=“Section Z” label=“Section Z” label=“Section Z” label="&gt;\\.} </span></p>
 </blockquote>
 <p><br /><span class="math display">$$
   \dot{\sigma}^{NG}_{k-1/2}
@@ -105,28 +105,28 @@ $$</span><br /></p>
             \frac{\partial (A_u)_{k}}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
-          - \nabla^{2}_{\sigma} \hat{E}_{k}
-          - {\mathcal D}(D_{k})
+          - \nabla^{2}_{\sigma} \hat{E}_{k} 
+          - {\mathcal D}(D_{k}) 
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG}
-      =   - \frac{1}{a\cos\varphi}
+  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG} 
+      =   - \frac{1}{a\cos\varphi} 
                \frac{\partial u_k T'_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
-          + \hat{H}_{k}
-          - {\mathcal D}(T_{k})
+          + \hat{H}_{k} 
+          - {\mathcal D}(T_{k}) 
 $$</span><br /></p>
 <p><br /><span class="math display">$$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
                                          - T^{\prime}_{k}   )
                + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
                                          - \hat{T^{\prime}}_{k+1/2} ) ]
                 \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
                                          - \bar{T}_{k}   )
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
@@ -134,10 +134,10 @@ $$</span><br /></p>
          + \hat{\kappa}_{k} T_{v,k} \mathbf{v}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -148,13 +148,13 @@ $$</span><br /></p>
          + \frac{Q_k + (Q_{diff})_k}{C_p}
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  \hat{E}_k = E_{k}
+  \hat{E}_k = E_{k} 
             + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} )
 $$</span><br /></p>
-<p>where the vector and matrix of the gravitational wave term (underlined) are</p>
+<p>where the vector and matrix of the gravitational wave terms (underlined) are,</p>
 <p><br /><span class="math display"><em>C</em><sub><em>k</em></sub> = <em>Δ</em><em>σ</em><sub><em>k</em></sub></span><br /></p>
 <blockquote>
-<p><span id="Coefficient C" label="Coefficient C">Dr./Ing. lt;/span&gt;</p>
+<p><span id="Coefficient C" label="Coefficient C">\c[Coefficient C]</span></p>
 </blockquote>
 <p><br /><span class="math display"><em>W</em><sub><em>k</em><em>l</em></sub> = <em>C</em><sub><em>p</em></sub><em>α</em><sub><em>l</em></sub><em>δ</em><sub><em>k</em> ≥ <em>l</em></sub> + <em>C</em><sub><em>p</em></sub><em>β</em><sub><em>l</em></sub><em>δ</em><sub><em>k</em> − 1 ≥ <em>l</em></sub></span><br /></p>
 <p><br /><span class="math display"><em>G</em><sub><em>k</em></sub> = <em>κ̂</em><sub><em>k</em></sub><em>C</em><sub><em>p</em></sub><em>T̄</em><sub><em>k</em></sub></span><br /></p>
@@ -162,165 +162,155 @@ $$</span><br /></p>
 \underline{h} = \underline{Q}\underline{S} - \underline{R}
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  Q_{kl} = \frac{1}{\Delta \sigma_{k}}
-             ( \hat{\bar{T}}_{k-1/2} - \bar{T}_{k} ) \delta_{k=l}
-         + \frac{1}{\Delta \sigma_{k}}
-             ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l}
+  Q_{kl} = \frac{1}{\Delta \sigma_{k}} 
+             ( \hat{\bar{T}}_{k-1/2} - \bar{T}_{k} ) \delta_{k=l} 
+         + \frac{1}{\Delta \sigma_{k}} 
+             ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l} 
 $$</span><br /></p>
 <p><br /><span class="math display"><em>S</em><sub><em>k</em><em>l</em></sub> = <em>σ</em><sub><em>k</em> − 1/2</sub><em>Δ</em><em>σ</em><sub><em>l</em></sub> − <em>Δ</em><em>σ</em><sub><em>l</em></sub><em>δ</em><sub><em>k</em> ≤ <em>l</em></sub></span><br /></p>
 <p><br /><span class="math display">$$
-  R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} }
-                     \Delta \sigma_{l} \delta_{k \leq l}
-                   + \frac{ \beta_{k} }{ \Delta \sigma_{k} }
+  R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} } 
+                     \Delta \sigma_{l} \delta_{k \leq l} 
+                   + \frac{ \beta_{k} }{ \Delta \sigma_{k} } 
                      \Delta \sigma_{l} \delta_{k+1 \leq l}  
              \right) \bar{T}_{k} .
 $$</span><br /></p>
 <blockquote>
-<p><span id="Coefficient R" label="Coefficient R" >Dr.R.[Coefficient R]&amp; lt;/span&gt;</p>
+<p><span id="Coefficient R" label="Coefficient R">[Coefficient R]</span>.</p>
 </blockquote>
-<p>Here, for example, <span class="math inline"><em>δ</em><sub><em>k</em> ≤ <em>l</em></sub></span> is the same as A function that is 1 if the $ k l$ is valid and 0 otherwise.</p>
-<p>Using the following expression ,</p>
+<p>Here, for example, <span class="math inline"><em>δ</em><sub><em>k</em> ≤ <em>l</em></sub></span> is the same as It is a function that is 1 if $ k l$ is true and 0 otherwise.</p>
+<p>Using the following expression,</p>
 <p><br /><span class="math display">$$
-  \delta_{t} {X} \equiv \frac{1}{2 \Delta t}
+  \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
 $$</span><br /></p>
-<p>PluginPointPointPoint.com</p>
+<blockquote>
+<p><span id="Shemiinp" label="Shemiinp">\centric=“Shemiinp”&gt; </span>.</p>
+</blockquote>
 <p><br /><span class="math display">$$
     \overline{X}^{t}
-   \equiv  \frac{1}{2} \left( {X}^{t+\Delta t}
+   \equiv  \frac{1}{2} \left( {X}^{t+\Delta t} 
                               + {X}^{t-\Delta t} \right)
-         \\
+         \\ 
    =  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
 $$</span><br /></p>
-<p>If we apply the semi-implicit method to the system of equations,</p>
+<p>Applying the semi-implicit method to a system of equations,</p>
 <p><br /><span class="math display">$$
   \delta_{t} \pi =
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
      - \mathbf{C} \cdot \overline{ \mathbf{D} }^{t}
 $$</span><br /></p>
 <blockquote>
-<p>&lt;span id=“semi-imp pi” label="semi-imp</p>
+<p><span id="semi-imp pi" label="semi-imp pi" label="semi-imp pi">[semi-imp pi]</span></p>
 </blockquote>
 <p><br /><span class="math display">$$
   \delta_{t} \mathbf{D} =
           \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S}
-                                  + \underline{W}
+          - \nabla^{2}_{\sigma} ( \mathbf{\Phi}_{S} 
+                                  + \underline{W} 
                                      \overline{ \mathbf{T} }^{t}
                                   + \mathbf{G}
-                                  \overline{\pi}^{t} )
-          - {\mathcal D}_M ( \mathbf{D}^{t-\Delta t}
+                                  \overline{\pi}^{t} ) 
+          - {\mathcal D}_M ( \mathbf{D}^{t-\Delta t} 
                          + 2 \Delta t \delta_{t} \mathbf{D} )
 $$</span><br /></p>
 <blockquote>
-<p><span id="semi-imp D" label="semi-imp D ">\brahammer[semi-imp D\]</span></p>
+<p><span id="semi-imp D" label="semi-imp D" label="semi-imp D">[semi-imp D\[semi-imp D]</span></p>
 </blockquote>
 <p><br /><span class="math display">$$
   \delta_{t} \mathbf{T} =
         \left( \frac{\partial \mathbf{T}}{\partial t} \right)_{NG}  
-         - \underline{h} \overline{ \mathbf{D} }^{t}
+         - \underline{h} \overline{ \mathbf{D} }^{t} 
          - {\mathcal D}_H ( \mathbf{T}^{t-\Delta t}
                         + 2 \Delta t \delta_{t} \mathbf{T} )
 $$</span><br /></p>
 <blockquote>
-<p><span id="semi-imp T" label="semi-imp T "> &gt;Semi-imp T\[semi-imp T]</span>.</p>
+<p><span id="semi-imp T" label="semi-imp T" label="semi-imp T">[semi-imp T]</span></p>
 </blockquote>
 <p>So..,</p>
 <blockquote>
-<p><span id="semi-imp barD" label="semi- imp barD">[semi-imp barD]</span>&lt;/a</p>
-</blockquote>
-<p><br /><span class="math display">$$
-      \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
-           \underline{I}  
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
-           + (1+2\Delta t {\mathcal D}_M)
-             \mathbf{G} \mathbf{C}^{T} ) \nabla^{2}_{\sigma}
-  \right\}
-      \overline{ \mathbf{D} }^{t}
-       \\
-  = ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
-       \mathbf{D}^{t-\Delta t}
-  + \Delta t
-     \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
-  \\
-  -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S}
-                          + \underline{W}
-                            \left[ ( 1-2\Delta t {\mathcal D}_H )
-                                    \mathbf{T}^{t-\Delta t}
-                                  + \Delta t
-                                      \left( \frac{\partial \mathbf{T}}
-                                                  {\partial t}     
-                                      \right)_{NG} \right]
-                   \right.
-  \\
-                 \left.   
-                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G}
-                            \left[ \pi^{t-\Delta t}
-                                  + \Delta t
-                                     \left( \frac{\partial \pi}
-                                                 {\partial t}
-                                     \right)_{NG}  \right]
-                   \right\} .
+<p><span id="semi-imp barD" label="semi-imp barD" label="semi-imp barD">\brachos[semi-imp barD]</span> <br /><span class="math display">$$
+\left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
+\underline{I}  
+- ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
++ (1+2\Delta t {\mathcal D}_M)
+\mathbf{G} \mathbf{C}^{T} ) \nabla^{2}_{\sigma}
+\right\}
+\overline{ \mathbf{D} }^{t} 
+\\
+= ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M ) 
+\mathbf{D}^{t-\Delta t}
++ \Delta t 
+\left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
+\\
+-  \Delta t \nabla^{2}_{\sigma}     
+\left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S} 
++ \underline{W} 
+\left[ ( 1-2\Delta t {\mathcal D}_H ) 
+\mathbf{T}^{t-\Delta t}
++ \Delta t 
+\left( \frac{\partial \mathbf{T}}
+{\partial t}     
+\right)_{NG} \right]
+\right.
+\\
+\left.  \hspace*{20mm} 
++ ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G} 
+\left[ \pi^{t-\Delta t} 
++ \Delta t
+\left( \frac{\partial \pi}
+{\partial t} 
+\right)_{NG}  \right]
+\right\} . 
 $$</span><br /></p>
-<p>Since the spherical harmonic expansion is used, <br /><span class="math display">$$
-    \nabla^{2}_{\sigma} = - \frac{n(n+1)}{a^{2}}
-$$</span><br /> com] and the above equation can be solved for <span class="math inline">$\overline{ \mathbf{D}_n^m }^{t}$</span>. And then..,</p>
+</blockquote>
+<p>Since we use the spherical harmonic expansion, we can use it,</p>
+<p>and the above formula can be solved for <span class="math inline">$\overline{ \mathbf{D}_n^m }^{t}$</span>. After that,</p>
 <p><br /><span class="math display">$$
    D^{t+\Delta t} = 2\overline{ \mathbf{D} }^{t} - D^{t-\Delta t}
 $$</span><br /></p>
-<p>and, (<a href="#semi-imp%20T">[semi-imp pi]](#semi-imp%20pi)), ([\blink}](#semi-imp%20pi) semi-imp T]</a>) The value in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span> according to <span class="math inline"><em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span> is required.</p>
+<p>and (<a href="#semi-imp%20pi">semi-imp pi]</a>, (<a href="#semi-imp%20T">semi-imp T\</a>) The value in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span> according to <span class="math inline"><em>X̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span> is required .</p>
 <h3 id="time-scheme-properties-and-time-step-estimates">Time scheme properties and time step estimates</h3>
 <p>advectional equation</p>
 <p><br /><span class="math display">$$
   \frac{\partial X}{\partial t} = c \frac{\partial X}{\partial x}
 $$</span><br /></p>
-<p>Considering the stability of the discretization in the leap frog in Now,</p>
+<p>Consider the stability of the leap frog discretization in Now,</p>
 <p>If we place the difference between</p>
 <p><br /><span class="math display"><em>X</em><sup><em>n</em> + 1</sup> = <em>X</em><sup><em>n</em> − 1</sup> + 2<em>i</em><em>k</em><em>Δ</em><em>t</em><em>X</em><sup><em>n</em></sup></span><br /></p>
-<p>That would be. Here, \lambda = X<sup>{n+1}/X</sup>n = X<sup>n/X</sup>{n-1}}\\bars}] So,</p>
+<p>where Here , \lambda = X<sup>{n+1}/X</sup>n = X<sup>n/X</sup>{n-1}}\\bars}] So,</p>
 <p><br /><span class="math display"><em>λ</em><sup>2</sup> = 1 + 2<em>i</em><em>k</em><em>c</em><em>Δ</em><em>t</em><em>λ</em> .</span><br /></p>
-<p>The solution is called <span class="math inline"><em>k</em><em>c</em><em>Δ</em><em>t</em> = <em>p</em></span>,</p>
+<p>The solution is labeled <span class="math inline"><em>k</em><em>c</em><em>Δ</em><em>t</em> = <em>p</em></span>,</p>
 <p><br /><span class="math display">$$
  \lambda = -i p \pm \sqrt{1-p^2}
 $$</span><br /></p>
 <p>This absolute value is</p>
 <p><br /><span class="math display">$$
-  |\lambda| = \left\{
+  |\lambda| = \left\{ 
              \begin{array}{ll}
                1                      |p| \le 1 \\
                p \pm \sqrt{p^2-1} \;\;    |p| &gt; 1
              \end{array}
              \right.
 $$</span><br /></p>
-<p>In the case of <span class="math inline">|<em>p</em>| &gt; 1</span>, it is <span class="math inline">|<em>λ</em>| &gt; 1</span>, It is a solution whose absolute value increases exponentially with time. This indicates that the computation is unstable.</p>
-<p>On the other hand, for <span class="math inline">|<em>p</em>| ≤ 1</span>, the number is <span class="math inline">|<em>λ</em>| = 1</span>, The calculation is neutral. However, there are two solutions for <span class="math inline"><em>λ</em></span>, One of them, when <span class="math inline"><em>Δ</em><em>t</em> → 1</span> is set to This is a <span class="math inline"><em>λ</em> → 1</span>, but.., The other is <span class="math inline"><em>λ</em> →  − 1</span>. This indicates that the solution oscillates strongly in time. This mode is called calculation mode, One of the problems with the leap frog method. This mode can be used by applying a time filter to the It can be attenuated.</p>
-<p>The terms of the <span class="math inline">|<em>p</em>| = <em>k</em><em>c</em><em>Δ</em><em>t</em> ≤ 1</span> are , Given the horizontal discretization grid spacing <span class="math inline"><em>Δ</em><em>x</em></span>, the This will cause the maximum value of <span class="math inline"><em>k</em></span> to be than one person can be in a position to do so. From becoming ,</p>
+<p>In the case of <span class="math inline">|<em>p</em>| &gt; 1</span>, it would be <span class="math inline">|<em>λ</em>| &gt; 1</span>, The solution becomes exponentially larger in absolute value with time. This indicates that the computation is unstable.</p>
+<p>On the other hand, in the case of <span class="math inline">|<em>p</em>| ≤ 1</span>, the value is <span class="math inline">|<em>λ</em>| = 1</span>, The calculation is neutral. However, there are two solutions for <span class="math inline"><em>λ</em></span>, One of them, when <span class="math inline"><em>Δ</em><em>t</em> → 1</span> is set to This is a <span class="math inline"><em>λ</em> → 1</span>, but.., The other is <span class="math inline"><em>λ</em> →  − 1</span>. This indicates a time-varying solution. This mode is called “calculation mode”, One of the problems with the leap frog method. This mode can be applied by applying a time filter to the It can be attenuated.</p>
+<p>The terms of the <span class="math inline">|<em>p</em>| = <em>k</em><em>c</em><em>Δ</em><em>t</em> ≤ 1</span> are, Given the horizontal discretization grid spacing <span class="math inline"><em>Δ</em><em>x</em></span>, the This will cause the maximum value of <span class="math inline"><em>k</em></span> to be than one person can be in a position to do so. From becoming ,</p>
 <p><br /><span class="math display">$$
    \Delta t \le \frac{\Delta x}{\pi c}
 $$</span><br /></p>
-<p>That would be. In the case of a spectral model, the maximum wavenumber depends on the <span class="math inline"><em>N</em></span>, Earth radius is set to <span class="math inline"><em>a</em></span>,</p>
+<p>In the case of the spectral model, the maximum wavenumber of For the spectral model, the maximum wavenumber is determined by <span class="math inline"><em>N</em></span>, Earth radius is set to <span class="math inline"><em>a</em></span>,</p>
 <p><br /><span class="math display">$$
    \Delta t \le \frac{a}{N c}  
 $$</span><br /></p>
-<p>This is a condition for stability.</p>
-<p>To guarantee the stability of the integration, As for <span class="math inline"><em>c</em></span>, it has the fastest advection and propagation speed, You can use a time step smaller than <span class="math inline"><em>Δ</em><em>t</em></span> determined by that. When semi-implicit is not used, the propagation speed of gravity wave (<span class="math inline"><em>c</em> ∼ 300<em>m</em>/<em>s</em></span>) is the criterion for stability, When semi-implicit is used, advection by the east-west wind is usually Limiting factors. Therefore, <span class="math inline"><em>Δ</em><em>t</em></span> sets <span class="math inline"><em>U</em><sub><em>m</em><em>a</em><em>x</em></sub></span> as the maximum value of the east-west wind,</p>
+<p>This is the stability condition.</p>
+<p>To guarantee the stability of the integral, As for <span class="math inline"><em>c</em></span>, it has the fastest advection and propagation speed, You may use a time step smaller than <span class="math inline"><em>Δ</em><em>t</em></span> which is determined by the semi-implicit method. If semi-implicit is not used, the propagation speed of the gravitational wave (<span class="math inline"><em>c</em> ∼ 300<em>m</em>/<em>s</em></span>) is the criterion for stability, When semi-implicit is used, advection by the east-west wind is usually This is a limiting factor. Therefore, the <span class="math inline"><em>Δ</em><em>t</em></span> sets <span class="math inline"><em>U</em><sub><em>m</em><em>a</em><em>x</em></sub></span> as the maximum value of the east-west wind,</p>
 <p><br /><span class="math display">$$
    \Delta t \le \frac{a}{N U_{max}}  
 $$</span><br /></p>
-<p>Take to meet the . In practice, this is multiplied by a safety factor.</p>
-<h3 id="handling-of-the-initiation-of-time-integration">Handling of the Initiation of Time Integration</h3>
-<p>Not calculated by AGCM, If you start with an appropriate initial value, you can use a model-consistent You cannot give two physical quantities of time in <span class="math inline"><em>t</em></span> and <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>. However, if you give an inconsistent value for <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span> A large calculation mode occurs.</p>
-<p>So, first, as <span class="math inline"><em>X</em><sup><em>Δ</em><em>t</em>/4</sup> = <em>X</em><sup>0</sup></span>, in the time step of <span class="math inline">1/4</span></p>
-<p><br /><span class="math display">$$
-X^{\frac{\Delta t}{2}} = X^0 + \frac{\Delta t}{2}\dot{X}^{ \frac{\Delta t}{4}}  = X^0 + \frac{\Delta t}{2}\dot{X}^0
-$$</span><br /></p>
-<p>and furthermore, in the time step of <span class="math inline">1/2</span>,</p>
-<p><br /><span class="math display">$$
- X^{\Delta t} = X^0 + \Delta t \dot{X}^{\frac{\Delta t}{2}}
- $$</span><br /></p>
-<p>And, in the original time step,</p>
-<p><br /><span class="math display"><em>X</em><sup>2<em>Δ</em><em>t</em></sup> = <em>X</em><sup>0</sup> + 2<em>Δ</em><em>t</em><em>Ẋ</em><sup><em>Δ</em><em>t</em></sup></span><br /></p>
-<p>and then perform the calculation with leap frog as usual, The occurrence of computation mo</p>
+<p>In practice, this is multiplied by a safety factor. In practice, this should be multiplied by a safety factor.</p>
+<h3 id="treatment-at-the-beginning-of-time-integration.">Treatment at the beginning of time integration.</h3>
+<p>Not calculated by AGCM, If you start with an appropriate initial value, you can use a model-consistent You cannot give the physical quantities for two times of <span class="math inline"><em>t</em></span> and <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>. However, if you give an inconsistent value for <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>, then you should not give an inconsistent value for <span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>, A large calculation mode is generated.</p>
+<p>So, first, as <span class="math inline"><em>X</em><sup><em>Δ</em><em>t</em>/4</sup> = <em>X</em><sup>0</sup></span>, in the time step of <span class="math inline">1/4</span> {X<sup>{{X}</sup>{Dt/2} = X^0 + X^0 + {{X}^{Dt/2} = X^0 + t/2 \Dentro{X}^0\0}] and furthermore, in the time step of <span class="math inline">1/2</span>, \\lopen}t = X<sup>{X}</sup>{X}^<sup>{X}</sup>{t/2}}}t = X^0 + }t}t}t/2}t And, in the original time step, \\ltraLabella t} = X^{2t} = X^0 + 2ttt}<sup>{X}</sup>{t}] and then perform the calculation with leap frog as usual, The occurrence of computation modes is reduced.</p>
 </body>
 </html>

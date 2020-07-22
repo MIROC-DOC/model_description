@@ -10,15 +10,15 @@ Method and It was created based on the k-Distribution Method. by gases
 and clouds/aerosols Considering the absorption, emission, and scattering
 processes of solar and terrestrial radiation, Calculate the value of the
 radiation flux at each level. The main input data are temperature \(T\),
-specific humidity \(q\), and cloud cover \(l\), cloud cover is in \(C\),
-The output data are upward and downward radiation fluxes, \(F^-, F^+\),
-and the differential coefficient of upward radiation flux with respect
-to surface temperature This is a \(dF^-/dT_g\).
+specific humidity \(q\), cloud cover \(l\), and cloud cover \(C\), The
+output data are upward and downward radiation fluxes, \(F^-, F^+\), and
+the differential coefficient of upward radiation flux with respect to
+surface temperature This is a \(dF^-/dT_g\).
 
 The calculation is done for several wavelengths. Each wavelength range
 is based on the k-distribution method, It is further divided into
-several sub-channels. As for gaseous absorption, H\(_2\)O, CO\(_2\),
-O\(_3\), N\(_2\)O, Band Absorption of the CH\(_4\) and , Continuous
+several sub-channels. As for gaseous absorption, Band Absorption in
+H\(_2\)O, CO\(_2\), O\(_3\), N\(_2\)O, CH\(_4\) and , Continuous
 absorption of H\(_2\)O, O\(_2\), O\(_3\) and CFC absorption is
 incorporated. As for the scattering, we can use Rayleigh scattering of
 gases and Scattering by cloud and aerosol particles is incorporated.
@@ -85,7 +85,7 @@ required.
 \end{eqnarray}
 
 \begin{quote}
-\protect\hypertarget{p-rad:beer}{}{beer{[}p-rad:beer{]}}.
+\protect\hypertarget{p-rad:beer}{}{\blazer[p-rad:beer]}
 \end{quote}
 
 However, the absorption and emission of radiation by gas molecules is
@@ -114,12 +114,12 @@ smooth function,
 \end{eqnarray}
 
 \begin{quote}
-\protect\hypertarget{p-rad:beer-kd}{}{\textbackslash blazer{[}p-rad:beer-kd{]}}
+\protect\hypertarget{p-rad:beer-kd}{}{ }
 \end{quote}
 
 with the addition of a finite number of exponential terms (subchannels),
-as It is possible to calculate relatively precisely. This method is
-furthermore , It has the advantage that it is easy to consider
+such that It is possible to calculate relatively precisely. This method
+is furthermore , It has the advantage that it is easy to consider
 absorption and scattering at the same time.
 
 In the CCSR/NIES AGCM , By changing the radiation parameter data, the
@@ -127,9 +127,9 @@ Calculations can be performed at various wavelengths. Not currently used
 as a standard, The wavelength range is divided into 18 parts. In
 addition, each wavelength range is divided into one to six sub-channels
 (corresponding to the \(i\) in the above formula), There will be 37
-channels in total. The wavelength range is the wavenumber (cm\(^{-1}\))
+channels in total. The wavelength range is a wavenumber (cm\(^{-1}\))
 50, 250, 400, 550, 770, 990, 1100, 1400, 2000, 2500, 4000, 14500, 31500,
-33000, 34500, 36000, 43,000, 46,000, 50000 Divided by.
+33000, 34500, 36000, 43000, 46000, 50000 Divided by.
 
 \hypertarget{calculating-the-planck-function-moduleplanks}{%
 \subsubsection{\texorpdfstring{Calculating the Planck function
@@ -166,7 +166,7 @@ index \(m\) as the type of molecule, It looks like the following.
 \end{eqnarray}
 
 where \(k^{(m)}\) is the absorption coefficient of the molecule \(m\),
-and each subchannel has a Different.
+which is different for each subchannel.
 
 \begin{eqnarray}
  k^{(m)} = \exp\left\{ \sum_{i=0}{N_i} \sum_{j=0}{N_j} A^{(m)}_{ij}
@@ -175,16 +175,15 @@ and each subchannel has a Different.
 \end{eqnarray}
 
 as a function of temperature \(T\)(K) and atmospheric pressure
-\(p\)(hPa) in the form Given. \(C^{(m)}\) is the amount of gas in the
-layer represented by mol cm\(^{-2}\), Volume Mixing Ratio \(r\) (in
-ppmv) to ,
+\(p\)(hPa). \(C^{(m)}\) is the amount of gas in the layer represented by
+mol cm\(^{-2}\), Volume Mixing Ratio \(r\) (in ppmv) to ,
 
 \begin{eqnarray}
   C = 1\times 10^{-5} \frac{p}{R_u T} \Delta z \cdot r
 \end{eqnarray}
 
-And it can be calculated that . However, \(R_u\) is the gas constant per
-mole (8.31 J mol\(_{-1}\) K\(^{-1}\)) and , The unit of air layer
+And it can be calculated that . Note that \(R_u\) is the gas constant
+per mole (8.31 J mol\(_{-1}\) K\(^{-1}\)), The unit of air layer
 thickness \(\Delta z\) is in km. The volume mixing ratio \(r\) at ppmv
 is Mass Mixture Ratio \(q\) to ,
 
@@ -226,8 +225,8 @@ mixing ratio,
 
 .
 
-Continuous absorption of O\(_3\) is achieved by using the mixing ratio
-\(r^{O_3}\) and incorporating the temperature dependence .
+The continuous absorption of O\(_3\) is based on the mixing ratio
+\(r^{O_3}\) and incorporates a temperature dependence,
 
 \begin{eqnarray}
 \tau^{O_3} = \sum_{n=0}{2} A^{O_3}_n r^{O_3} \frac{T}{T_{STD}}^n \rho \Delta z
@@ -533,8 +532,8 @@ This calculation is done for each sub-channel and each layer.
 \subsubsection{\texorpdfstring{Radiation flux at each layer boundary
 \texttt{MODULE:{[}ADDING{]}}}{Radiation flux at each layer boundary MODULE:{[}ADDING{]}}}\label{radiation-flux-at-each-layer-boundary-moduleadding}}
 
-Transmission Coefficient of Each Layer \(R_l\), Reflection Coefficient
-\(T_l\), Radiation Source Function \(\epsilon^\pm_l\) is required in all
+Transmission coefficient of each layer \(R_l\), Reflection coefficient
+\(T_l\), Radiation source function \(\epsilon^\pm_l\) is required in all
 layers of \(l\), The radiation fluxes at each layer boundary can be
 obtained by using the adding method. This means that the two layers of
 \(R,T,\epsilon\) are known, The \(R,T,\epsilon\) of the whole combined
@@ -567,9 +566,9 @@ following.
 
 Let's say there are layers 1, 2, \ldots{}\(N\) from the top. However,
 the surface is considered to be a single layer and is the \(N\) layer.
-Reflectance and radiance of the layers from the \(n\) to the \(N\) are
-considered as a single layer source function Given the
-\(R^+_{n,N}, \epsilon^-_{n,N}\), \(R^+_{n,N}, \epsilon^-_{n,N}\) ,
+Reflectance and source function of the layers from the \(n\) to the
+\(N\) layer as a single layer Given the \(R^+_{n,N}, \epsilon^-_{n,N}\),
+\(R^+_{n,N}, \epsilon^-_{n,N}\) ,
 
 \begin{eqnarray}
   R^+_{n,N}  =  R^+_n 
@@ -730,8 +729,7 @@ Calculate for.
 \item
   reflection and transmission coefficients for each layer, The source
   function is averaged with the weight of the cloud cover of the
-  stratocumulus, \(C^l\). The averages are expressed by adding the
-  \(\bar{}\),
+  stratocumulus, \(C^l\). The averages are represented by \(\bar{}\),
 \end{enumerate}
 
 \begin{eqnarray}
@@ -839,7 +837,7 @@ is the zenith angle) is
 \(\pi\)).
 
 Assuming that the eccentricity of the Earth's orbit is \(e\) (Katayama,
-1974 ),
+1974),
 
 \begin{eqnarray}
    a_0  =   1 + e^2 \\
@@ -870,7 +868,7 @@ The calculation of the radiation is usually not done at every step. To
 do so, we have to save the radiation flux, If the time is not used for
 radiation calculation, it is used. As for the shortwave radiation,
 Percentage of time (time that is \(\mu_0>0\)) between next calculation
-time and daylight hours \(f\) and Using the solar incidence angle factor
+time (\(f\)) and Using the solar incidence angle factor
 (\(\bar{\mu_0}\)) averaged over the daylight hours Seeking Flux
 \(\bar{F}\),
 

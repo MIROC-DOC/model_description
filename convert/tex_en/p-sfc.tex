@@ -23,7 +23,8 @@ Surface processes are classified as follows.
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  geothermal diffusion processes - Determining the geothermal structure
+  geothermal diffusion processes - Determining the geothermal
+  temperature structure
 \item
   geological and hydrological processes - Determining the structure of
   underground water, runoff, etc.
@@ -81,7 +82,7 @@ parentheses refer to the descriptions in other sections.
   from the outside, Change according to snowfall and other factors.
 \item
   evaluate the heat flux and heat capacity within the ground surface .
-  \texttt{MODULE:{[}LNDFLX(pglnd),\ SEAFLX(pgsea),\ SNWFLX\ (pgsnw){]}}
+  \texttt{MODULE:{[}LNDFLX(pglnd),\ SEAFLX(pgsea),\ SNWFLX(pgsnw){]}}
   Estimate the heat capacity of each layer of land and sea, The heat
   flux at each layer boundary is estimated from the heat transfer
   equation. If there is snowfall, change the heat capacity and flux.
@@ -95,8 +96,8 @@ parentheses refer to the descriptions in other sections.
   \texttt{MODULE:{[}GNDBET(pgsfc){]}} For the land surface, the
   calculation depends on soil moisture and stomatal resistance.
 \item
-  perform an implicit solution of geothermal conduction up to the middle
-  \texttt{MODULE:{[}GNDHT1(\ pggnd){]}} Evaluate the temperature change
+  implicit solution of geo-thermal conduction up to the middle
+  \texttt{MODULE:{[}GNDHT1(pggnd){]}} Evaluate the temperature change
   due to heat conduction in the ground. However, taking into account the
   surface temperature changes Since it is done implicitly, only the
   first step is done here.
@@ -112,7 +113,7 @@ parentheses refer to the descriptions in other sections.
   flux as the flux used for snowmelt.
 \item
   implicit solution for geothermal conduction
-  \texttt{MODULE:{[}GNDHT2(pggnd\ ){]}} Since the change in surface
+  \texttt{MODULE:{[}GNDHT2(pggnd){]}} Since the change in surface
   temperature was obtained, we used it to determine Solving for changes
   in ground temperature due to heat conduction in the ground.
 \item
@@ -131,8 +132,8 @@ parentheses refer to the descriptions in other sections.
   If the snow melts, it will keep the temperature below the freezing
   point, Decrease the snowpack.
 \item
-  solves the diffusion of groundwater by implicit method
-  \texttt{MODULE:{[}GNDWTR(\ pggnd){]}} Solving changes in subsurface
+  implicit solution for groundwater diffusion
+  \texttt{MODULE:{[}GNDWTR(pggnd){]}} Solving changes in subsurface
   moisture due to subsurface water fluxes.
 \item
   evaluate precipitation interception by snowpack
@@ -239,54 +240,62 @@ surface.}\label{classification-of-the-ground-surface.}}
 The ground surface is a condition given by the outside world, According
 to the surface type \(m\), they are classified as follows.
 
-\begin{itemize}
-\item
-  TAB00000:0.0 m
-\item
-  TAB00000:0.1 requirement
-\item
-  TAB00000:1.0 -I can't even begin to tell you what to do.
-\item
-  TAB00000:1.1 mixed-layered ocean
-\item
-  TAB00000:2.0 -I can't tell you how many times I've been in a row.
-\item
-  TAB00000:2.1 Sea Ice (given from outside)
-\item
-  TAB00000:3.0 0
-\item
-  TAB00000:3.1 Sea level (providing temperature from outside)
-\item
-  TAB00000:4.0 1
-\item
-  TAB00000:4.1 land ice
-\item
-  TAB00000:5.0 \(\ge\) 2
-\item
-  TAB00000:5.1 land surface
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+m\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+requirement\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+-I can't even begin to tell you what to do.\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+mixed-layered ocean\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+-I can't tell you how many times I've been in a row.\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Sea Ice (given from outside)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Sea level (providing temperature from outside)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+land ice\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\(\ge\) 2\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+land surface\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 Furthermore, depending on the possible internal changes in the ice
 conditions, Take the following ground surface conditions \(n\).
 
-\begin{itemize}
-\item
-  TAB00001:0.0 n
-\item
-  TAB00001:0.1 state
-\item
-  TAB00001:1.0 0
-\item
-  TAB00001:1.1 Sea surface without ice
-\item
-  TAB00001:2.0 1
-\item
-  TAB00001:2.1 Sea Ice and Land Ice
-\item
-  TAB00001:3.0 \(\ge\) 2
-\item
-  TAB00001:3.1 land surface
-\end{itemize}
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+n & state\tabularnewline
+0 & Sea surface without ice\tabularnewline
+1 & Sea Ice and Land Ice\tabularnewline
+\(\ge\) 2 & land surface\tabularnewline
+\bottomrule
+\end{longtable}
 
 These are defined in \texttt{MODULE:{[}GNDSFC(pgsfc){]}}.
 
@@ -300,7 +309,7 @@ The conditions of the surface heat balance are ,
 \end{eqnarray}
 
 \begin{quote}
-{[}p-sfc:sfc-balance{[}p-sfc:sfc-balance{]}\& lt;/span\textgreater{}
+\protect\hypertarget{p-sfc:sfc-balance}{}{\blazer[p-sfc:sfc-balance]}.
 \end{quote}
 
 It is. \(F\theta, Fq^P, FR, Fg\), \(F\theta, Fq^P, FR, Fg\) is ,
@@ -329,13 +338,13 @@ There are two ways to evaluate the evaporation terms
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  as a \(\beta=1\) ({[}p-sfc:sfc-balance{]}{]}(\#p-sfc:sfc-balance
-  \(Fq^P\), obtained by solving for (1) (possible evaporation amount)
-  multiplied by \(\beta\).
+  as a \(\beta=1\) Solved for
+  ({[}\textbackslash p-sfc:sfc-balance{]}(\#p-sfc:sfc-balance)) \(Fq^P\)
+  (possible evaporation amount) multiplied by \(\beta\).
 \item
   using \(\beta\).
-  (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}})
-  directly.
+  (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}}) directly
+  solve.
 \end{enumerate}
 
 The temperatures used in the calculations in \(\beta Fq^P\) are
@@ -343,14 +352,14 @@ different between the former and the latter. In the former case, the
 temperature in the case of \(\beta=1\), In the latter case, the actual
 temperature is used.
 
-The CCSR/NIES AGCM uses the former method as standard. On a snow or ice
-surface
-({[}p-sfc\protect\hyperlink{p-sfc:ux5cux2520sfc-balance}{p-sfc:sfc-balance{]}})
-of the result of solving If the \(T_0\) exceeds the freezing point, Or,
+The CCSR/NIES AGCM uses the former method as standard. The result of
+solving (with a
+\protect\hyperlink{p-sfc:sfc-balance}{\blind\blind\blind\blind\blind\blade\}(\#p-sfc:sfc-balance)}
+on a snow or ice surface If the \(T_0\) exceeds the freezing point, Or,
 when \(T_0\) divides the freezing temperature of seawater at the sea
 surface (in the case of oceanic mixed-layer model) by fixing the
 temperature of the \(T_0\) at the freezing point and calculating each
-flux, (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}}), and
+flux, (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}}) and
 the residuals (energy residuals) of the formula Suppose it is used for
 freezing and thawing snow and ice.
 
@@ -376,11 +385,10 @@ capacity
 Physical quantities, such as heat and moisture fluxes in the ground, and
 wetness The evaluation of surface characteristics is based on whether
 the surface is sea or land, and in the case of land surface This is done
-separately if there is snowfall or not. In the following section, we
-will first evaluate the evaluation method for the land surface case
-without snow. We shall describe in brief. We will describe the
-difference between the case of sea level and snow surface in detail
-later.
+separately if there is snowfall or not. In the following, we will first
+evaluate the evaluation method for the land surface case without snow.
+We shall describe in brief. We will describe the difference between the
+case of sea level and snow surface in detail later.
 
 The heat capacity of the land surface is ,
 
@@ -391,8 +399,8 @@ The heat capacity of the land surface is ,
 
 where \(\tilde{C}g_{l}\) is the volume specific heat.
 
-The heat flux of the land surface is treated as a constant heat
-conduction coefficient (which may depend on \(l\)). ).
+The land heat flux is treated as a constant heat transfer coefficient
+(which may depend on \(l\)).
 
 \begin{eqnarray}
   Fg_{l-1/2} = Kg_{l-1/2} (G_l - G_{l-1})(zg_l - zg_{l-1}) \; ,
@@ -430,8 +438,7 @@ The basic formula for the groundwater flux can be written as follows.
 \end{eqnarray}
 
 \begin{quote}
-\textless span id=``basic-Fw'' label=``basic-Fw''\&
-gt;gt;\textbackslash braham{[}basic-Fw{]}\textless{} /span\textgreater{}
+\protect\hypertarget{basic-Fw}{}{\textbackslash{[}basic-Fw{]}}
 \end{quote}
 
 Here, \(g_w\) represents the effect of gravity.
@@ -449,9 +456,8 @@ There are two ways to evaluate the groundwater flux on land.
 
 In the method of fixed diffusion coefficients, we simply express it as
 follows. \(K_w\) is the diffusion coefficient and \(\rho_w\) is the
-density of liquid water. where the gravitational potential in
-(\protect\hyperlink{basic-Fw}{basic-Fw{]}}) The term \(g_w\) is Ignore
-it.
+density of liquid water. where the gravitational potential term \(g_w\)
+in (\protect\hyperlink{basic-Fw}{basic-Fw{]}}) is Ignore it.
 
 \begin{eqnarray}
   Fw_{l-1/2} = \rho_w Kw_{l-1/2} (w_l - w_{l-1})/(zw_l - zw_{l-1}) \; ,
@@ -479,8 +485,8 @@ we obtain the following.
 \end{eqnarray}
 
 where \(Kw\) is the saturated hydraulic conductivity, \(W\) is the
-saturation degree, \(\psi\) is the pressure potential, It is given as
-follows.
+saturation degree, and \(\psi\) is the pressure potential, It is given
+as follows.
 
 \begin{eqnarray}
   W_l = w_l / ws_l \; , \;\;
@@ -492,8 +498,8 @@ follows.
   \frac{\partial \psi_l}{\partial w_l} = -B \psi_l W_l / ws \; .
 \end{eqnarray}
 
-\(Kw\), \(B\), and \(\psi s\) are constants, surface type May depend on
-\(m\) and \(l\).
+\(Kw\), \(B\), and \(\psi s\) are constants and may depend on the ground
+surface types \(m\) and \(l\).
 
 \hypertarget{calculating-land-surface-spillmodulelndrof}{%
 \subsubsection{\texorpdfstring{Calculating land surface
@@ -582,8 +588,7 @@ below.
 \end{eqnarray}
 
 \begin{quote}
-\textless span id=``inf-exs'' label=``inf-exs''\&gt
-;inf-exs{]}\textless{} /span\textgreater{}
+\protect\hypertarget{inf-exs}{}{\blazer[inf-exs]}
 \end{quote}
 
 The amount of precipitation input percolating to the ground surface is
@@ -604,9 +609,9 @@ modified as follows.
   \right. \; .
 \end{eqnarray}
 
-On the formula ({[}index\protect\hyperlink{inf-exs}{inf-exs{]}}),
-convective rainfall intensity To probability \(f(P_c)\) It is derived
-from the following equation, which assumes an exponential distribution.
+On the formula (\protect\hyperlink{inf-exs}{index{[}inf-exs{]}}),
+convective rainfall intensity probability \(f(P_c)\) It is derived from
+the following equation, which assumes an exponential distribution.
 
 \begin{eqnarray}
   f(P_c) = \frac{\kappa}{\overline{P_c}} 
@@ -656,8 +661,8 @@ zenith angle as follows (Not considered in the standard).
   \alpha = \alpha + \Delta f_{\zeta} (1 - \alpha)(1 - \cos^2 \zeta) \; .
 \end{eqnarray}
 
-where the wetness factor (\(f_w\)) and the zenith angle factor
-(\(f_{\zeta}\)) are constants Yes.
+Here, the wetness factor (\(f_w\)) and the zenith angle factor
+(\(f_{\zeta}\)) are constants.
 
 \hypertarget{evaluating-roughness-on-land-surfacemodulelndz0}{%
 \subsubsection{\texorpdfstring{Evaluating roughness on land
@@ -829,9 +834,9 @@ the ground surface. That is, the heat capacity and thermal diffusivity
 of the first layer are The shape will be changed by the presence of
 snow.
 
-The heat capacity is expressed as a simple sum of \(C_y\) as the
-specific heat per mass of snow, \(W_y\) as the mass per unit area of
-snow So,
+The heat capacity is expressed as a simple sum of Let \(C_y\) be the
+specific heat per mass of snow and \(W_y\) be the mass per unit area of
+snow,
 
 \begin{eqnarray}
   Cg_{l} = Cg'_{l} + C_y W_y \; .
@@ -920,8 +925,9 @@ Atmosphere First Layer Wet Bulb Temperature \(Tw_1\)
 Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T} )
 \end{eqnarray}
 
-and if the \(Tw_1\) is lower than the freezing point \(Tm\), snow, TERM
-If it's over 00101, it shall be considered rain. The reason why the
+If the freezing point (\(Tw_1\)) is lower than the freezing point
+(\(Tm\)), it is assumed to be snow, and if it is higher than the
+freezing point (\(Tm\)), it is assumed to be rain. The reason why the
 wet-ball temperature is used is that the temperature of precipitation
 reaching the surface is This is to incorporate effects that depend on
 the likelihood of evaporation during the fall of precipitation.
@@ -974,8 +980,7 @@ When the \(\hat{G_1} < Tm\) ,
 In the case of \(\hat{G_1} < Tm\), the temperature of the part of the
 snow that melts in the energy balance except for the snow is I'm
 assuming it doesn't change. \(L_M\) is the latent heat of melting,
-\(Tm\) is the freezing point, \(Cp_I\) is the specific heat of ice It
-is.
+\(Tm\) is the freezing point, and \(Cp_I\) is the specific heat of ice.
 
 The actual snowmelt and soil temperature are based on the current amount
 of snow and soil temperature in the case of full melting of the \(Wy\),
@@ -1025,8 +1030,8 @@ surface water input here.
 \end{eqnarray}
 
 where \(Is\) is the surface infiltration rate due to snow cover. The
-standard value of critical snowpack for infiltration for \(Wy_{Ci}\) is
-200 kg/m\(^2\) .
+standard value of critical snowpack for infiltration, \(Wy_{Ci}\), is
+200 kg/m\(^2\).
 
 \hypertarget{evaluating-albedo-on-snow-covered-surfacesmodulesnwalb}{%
 \subsubsection{\texorpdfstring{Evaluating albedo on snow-covered
@@ -1062,8 +1067,8 @@ smaller effect is considered as follows.
 
 where \(T_0\) is the surface temperature. Dry Snow Albedo
 \(\alpha s_d\), Wet Snow Albedo \(\alpha s_m\) The standard values for
-Critical temperature (\(Td\) and \(Tm\)) was 258.15 and 273.15,
-respectively Yes.
+The critical temperatures (\(Td\) and \(Tm\)) are 258.15 and 273.15,
+respectively.
 
 Furthermore, as in the absence of snow, we can take into account the
 effect of the zenith angle dependence of solar radiation (Not considered
@@ -1132,8 +1137,8 @@ After calculating the ground temperature by thermal diffusion,
 
 Calculate.
 
-If the icing ratio of the \(l\) layer is set to \(w_{Fl}\), the freezing
-water in the \(\Delta w_{Fl}\) is,
+Assuming that the ice content of the \(l\) layer is \(w_{Fl}\), the
+freezing water (\(\Delta w_{Fl}\)) is
 
 \begin{eqnarray}
   \Delta w_{Fl} = \left\{
@@ -1179,9 +1184,9 @@ model of thickness \(D\) as an example. The predictor variables are
 temperature (\(G\)) and sea ice thickness (\(h_I\)).
 
 First, determine the heat capacity and surface flux of the ocean.
-\texttt{MODULE:{[}SEAFLX{]}} The heat capacity of the oceans is ,
-Specific Heat of Water \(C_w\), Specific Heat of Ice \(C_I\), Density of
-Water and Ice \(\rho_w\) as ,
+\texttt{MODULE:{[}SEAFLX{]}} The heat capacity of the oceans is , The
+specific heat of water \(C_w\), the specific heat of ice \(C_I\), and
+the density of water and ice as \(\rho_w\),
 
 \begin{eqnarray}
   C_s  = C_I \rho_w h_I +   C_w \rho_w (D - h_I)
@@ -1204,7 +1209,7 @@ where \(T_I\) is the freezing temperature of sea ice at 271.35 K. where
 
 Heat flux in the \(z=D\) is usually zero while the \(Fs_{1+1/2}\) is
 usually zero, It can be given from the outside. It is used in the case
-of flux correction for oceanic heat transport.
+of flux correction considering oceanic heat transport.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1338,9 +1343,5 @@ This is a heat flux
 
 The equivalent of giving a .
 
-\begin{verbatim}
- To do flux correction,
-\end{verbatim}
-
-Provide the appropriate \(\tau\) and perform nudging, Remember the
-\(F_n\), You can give it to me as \(Fs_{1+1/2}\).
+To do flux correction, Provide the appropriate \(\tau\) and perform
+nudging, Remember the \(F_n\), You can give it to me as \(Fs_{1+1/2}\).
