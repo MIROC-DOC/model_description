@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-solv</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-solv</h1>
+</header>
+<h2 id="solving-the-diffuse-balance-equation-for-atmospheric-and-surface-systems">Solving the diffuse balance equation for atmospheric and surface systems</h2>
+<h3 id="basic-solutions.">Basic Solutions.</h3>
+<p>Radiative, vertical diffusion, ground boundary layer and surface processes are Some terms are treated as implicit in the Compute the time-varying term and do time integration at the end. As a time-varying term for the vector quantity <span>q</span>, The term <span class="math inline">𝒜</span> for the Euler method and the term <span class="math inline">ℬ</span> for the implicit method Divided into .</p>
+<p><br /><span class="math display"><strong>q</strong><sup>+</sup> = <strong>q</strong> + 2<em>Δ</em><em>t</em>𝒜(<strong>q</strong>) + 2<em>Δ</em><em>t</em>ℬ(<strong>q</strong><sup>+</sup>) .</span><br /></p>
+<p>It is difficult to solve this in the general case, but, It can be solved by linearizing <span class="math inline"><em>B</em></span> in an approximate manner.</p>
+<p><br /><span class="math display">ℬ(<strong>q</strong><sup>+</sup>) ≃ ℬ(<strong>q</strong>) + <em>B</em>(<strong>q</strong><sup>+</sup> − <strong>q</strong>)</span><br /></p>
+<p>using the matrix <span class="math inline"><em>B</em></span> as Here,</p>
+<p><br /><span class="math display">$$
+  B_{ij} = \frac{\partial {\mathcal B}_i}{\partial q_j}
+$$</span><br /></p>
+<p>It is. So.., <span class="math inline"><em>Δ</em><strong>q</strong> ≡ <strong>q</strong><sup>+</sup> − <strong>q</strong></span> And then you can write,</p>
+<p><br /><span class="math display">(<em>I</em> − 2<em>Δ</em><em>t</em><em>B</em>)<em>Δ</em><strong>q</strong> = 2<em>Δ</em><em>t</em>(𝒜(<strong>q</strong>)+ℬ(<strong>q</strong>)) .</span><br /></p>
+<p>It is easy to solve in principle by matrix operations.</p>
+<h3 id="fundamental-equations.">Fundamental Equations.</h3>
+<p>Radiation, vertical diffusion, ground boundary layer and surface processes The equations are basically expressed as follows.</p>
+<p><br /><span class="math display">$$
+     \frac{\partial u}{\partial t}   =   - g \frac{\partial }{\partial p} F_u \; , \\
+     \frac{\partial v}{\partial t}   =   - g \frac{\partial }{\partial p} F_v \; , \\
+ c_p \frac{\partial T}{\partial t}   =   - g \frac{\partial }{\partial p} ( F_T + F_R ) \; , \\
+     \frac{\partial q}{\partial t}   =   - g \frac{\partial }{\partial p} F_q \; , \\
+ C_g \frac{\partial G}{\partial t}   =   -   \frac{\partial }{\partial z} F_g \; .
+$$</span><br /></p>
+<p>where <span class="math inline"><em>F</em><sub><em>u</em></sub>, <em>F</em><sub><em>v</em></sub>, <em>F</em><sub><em>T</em></sub>, <em>F</em><sub><em>q</em></sub></span> are By vertical diffusion, <span class="math inline"><em>u</em>, <em>v</em>, <em>c</em><sub><em>p</em></sub><em>T</em>, <em>q</em></span>, respectively is the vertical upward flux density of Also, the <span class="math inline"><em>F</em><sub><em>R</em></sub></span> is a radiant It is a vertical upward energy flux density.</p>
+<p>The atmosphere is discretized in the <span class="math inline"><em>σ</em> = <em>p</em>/<em>p</em><sub><em>S</em></sub></span> coordinate system. Wind speed, temperature, etc. are defined in layer <span class="math inline"><em>σ</em><sub><em>k</em></sub></span>. The flux is defined by the layer boundary <span class="math inline"><em>σ</em><sub><em>k</em> − 1/2</sub></span>. <span class="math inline"><em>k</em></span> increases from lower to higher levels. Also, <span class="math inline"><em>σ</em><sub>1/2</sub> = 1</span>, This is the <span class="math inline"><em>σ</em><sub><em>k</em></sub> ≃ (<em>σ</em><sub><em>k</em> − 1/2</sub> + <em>σ</em><sub><em>k</em> + 1/2</sub>)/2</span>. <span class="math inline"><em>σ</em></span> The coordinates are only available when we consider a one-dimensional vertical process, It is considered to be the same as the <span class="math inline"><em>p</em></span> coordinates except for the difference in the constant (<span class="math inline"><em>p</em><sub><em>S</em></sub></span>) times Good. Here,</p>
+<p><br /><span class="math display"><em>Δ</em><em>σ</em><sub><em>k</em></sub> = <em>σ</em><sub><em>k</em> − 1/2</sub> − <em>σ</em><sub><em>k</em> + 1/2</sub> ,</span><br /></p>
+<p><br /><span class="math display">$$
+  \Delta m_{k} = \frac{1}{g} \Delta p_k  
+   = \frac{p_S}{g} ( \sigma_{k-1/2} - \sigma_{k+1/2} )
+$$</span><br /></p>
+<p>And write .</p>
+<h3 id="implicit-time-difference">implicit time difference</h3>
+<p>For terms that can be linearized, such as the vertical diffusion term, we use the implicit method. Diffusion coefficients and other factors also depend on the forecast variables, The coefficients are only calculated first, not iteratively. However, the treatment of the time step is devised to improve the stability (see below).</p>
+<p>For example, the equation of the discretized <span class="math inline"><em>u</em></span> ([[u-eq.]](#u- eq.orig)) is ,</p>
+<p><br /><span class="math display">(<em>u</em><sub><em>k</em></sub><sup><em>m</em> + 1</sup> − <em>u</em><sub><em>k</em></sub><sup><em>m</em></sup>)/<em>Δ</em><em>t</em> = (<em>F</em><em>u</em><sub><em>k</em> − 1/2</sub><sup><em>m</em> + 1</sup> − <em>F</em><em>u</em><sub><em>k</em> + 1/2</sub><sup><em>m</em> + 1</sup>)/<em>Δ</em><em>m</em><sub><em>k</em></sub></span><br /></p>
+<p>Here, <span class="math inline"><em>m</em></span> is a time step. Since <span class="math inline"><em>F</em><em>u</em><sub><em>k</em> − 1/2</sub></span> etc. is a function of <span class="math inline"><em>u</em><sub><em>k</em></sub></span>, its dependency is linearized and the</p>
+<p><br /><span class="math display">$$
+   Fu^{m+1}_{k-1/2}
+  =  Fu^{m}_{k-1/2}
+  +  \sum_{k'=1}^{K}
+     \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} (u^{m+1}_{k'}-u^{m}_{k'})
+$$</span><br /></p>
+<blockquote>
+<p><span id="u-flux.next" label="u-flux. next">[u-flux.next]</span>.</p>
+</blockquote>
+<p>Thus, if you put <span class="math inline"><em>δ</em><em>u</em><sub><em>k</em></sub> ≡ (<em>u</em><sub><em>k</em></sub><sup><em>m</em> + 1</sup> − <em>u</em><sub><em>k</em></sub><sup><em>m</em></sup>)/<em>Δ</em><em>t</em></span>,</p>
+<p><br /><span class="math display">$$
+  \Delta m_k \delta u_k
+  =   \left( Fu^{m}_{k-1/2}
+         +  \sum_{k'=1}^{K}
+            \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}} \Delta t \delta u_{k'}
+         -   Fu^{m}_{k+1/2}
+         -  \sum_{k'=1}^{K}
+            \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \Delta t \delta u_{k'}
+      \right)
+$$</span><br /></p>
+<p>Namely,</p>
+<p><br /><span class="math display">$$
+  \Delta m_k \delta u_k
+  -  \sum_{k'=1}^{K} \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}}
+                       - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right)
+                 \Delta t\delta u_{k'}
+  = Fu^{m}_{k-1/2} - Fu^{m}_{k+1/2}
+$$</span><br /></p>
+<p>It can be written in the following matrix form</p>
+<p><br /><span class="math display">$$
+  \sum_{k'=1}^{K} M^u_{k,k'} \delta u_k' = Fu^{m}_{k-1/2} - Fu^{m}_{k+1/2}
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
+          -  \left(  \frac{\partial Fu^{m}_{k-1/2}}{\partial u_{k'}}
+                   - \frac{\partial Fu^{m}_{k+1/2}}{\partial u_{k'}} \right) \Delta t
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“u-matrix” label=“u-matrix”&amp; gt;gt;u-matrix[u-matrix]</span></p>
+</blockquote>
+<p>This can be solved by LU decomposition or some other method. Normally, <span class="math inline"><em>M</em><sub><em>k</em>, <em>k</em>′</sub><sup><em>u</em></sup></span> is easy to solve since it is a triple diagonal. After solving it, ([<a href="#u-flux.next">u-flux.next]</a>), you can use We calculate the consistent flux to this method. The same is true for <span class="math inline"><em>v</em></span>.</p>
+<h3 id="implicit-time-difference-coupling">implicit time difference coupling</h3>
+<p>Temperature, specific humidity, and ground temperature are not as simple as those in the previous section.</p>
+<p><br /><span class="math display">$$
+  c_p \Delta m_k \delta T_k
+   -  \sum_{k'=0}^{K}
+                 \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}}
+                       - \frac{\partial F\theta^{m}_{k+1/2}}{\partial T_{k'}} \right)
+                 \Delta t\delta T_{k'}
+  - \sum_{k'=0}^{K}
+                 \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}}
+                       - \frac{\partial FR^{m}_{k+1/2}}{\partial T_{k'}} \right)
+                 \Delta t\delta T_{k'}  \\
+  =   ( F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2} )
+  + ( FR^{m}_{k-1/2} - FR^{m}_{k+1/2} )
+$$</span><br /></p>
+<blockquote>
+<p><span id="deq-theta" label="deq-theta "></p>
+</blockquote>
+<p>Daily, we’re going to have to go through a lot of stuff to get to the top.</p>
+<p><br /><span class="math display">$$
+  \Delta m_k \delta q_k
+  -  \sum_{k'=0}^{K} \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}}
+                            - \frac{\partial Fq^{m}_{k+1/2}}{\partial q_{k'}} \right)
+                 \Delta t\delta q_{k'}
+  = ( Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2} )
+$$</span><br /></p>
+<blockquote>
+<p><span id="deq-q" label="deq-q">&gt; &lt;span id="deq-q deq-q\.com</p>
+</blockquote>
+<p><br /><span class="math display">$$
+  Cg_l \Delta z_l \delta G_l
+  +  \sum_{l'=0}^{L} \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}}
+                            - \frac{\partial Fg^{m}_{l+1/2}}{\partial G_{l'}} \right)
+                 \Delta t\delta T_{k'}
+  = - ( Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2} )
+$$</span><br /></p>
+<blockquote>
+<p><span id="deq-g" label="deq-g">&gt; </span> <span id="deq-g" label="deq-g">&gt; </span> <span id="deq-g" label="deq-g">&gt; </span> <span id="deq-g" label="deq-g">&gt; </span> <span id="deq-g" label="deq-g">&gt; <span id="deq-g" label="deq-g">&gt; <span id="deq-g" label="deq-g">&gt; <span id="deq-g" label="deq-g">&gt; <span id="deq-g" label="deq-g">&gt; &lt;span id=“deq-g” label="deq-g deq-g\&gt;.</p>
+</blockquote>
+<p>Here, <span class="math inline">∑<sub><em>k</em>′</sub></span> and <span class="math inline">∑<sub><em>l</em>′</sub></span> in the above equations are Note that I took this from <span class="math inline"><em>k</em>′ = 0</span>, <span class="math inline"><em>l</em>′ = 0</span>. because, This is because the flux at the surface is as follows</p>
+<p><br /><span class="math display"><em>F</em><em>θ</em><sub>1/2</sub> = <em>c</em><sub><em>p</em></sub><em>C</em><sub><em>H</em></sub>|<strong>v</strong><sub>1/2</sub>|(<em>θ</em><sub>0</sub> − <em>θ</em><sub>1</sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>q</em><sub>1/2</sub> = <em>β</em><em>C</em><sub><em>E</em></sub>|<strong>v</strong><sub>1/2</sub>|(<em>q</em><sub>0</sub> − <em>q</em><sub>1</sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>g</em><sub>1/2</sub> = <em>K</em><sub><em>g</em></sub>(<em>G</em><sub>1</sub> − <em>G</em><sub>0</sub>)/<em>z</em><sub>1</sub></span><br /></p>
+<p>Where the surface skin temperature is set to <span class="math inline"><em>T</em><sub>0</sub></span>, <span class="math inline"><em>θ</em><sub>0</sub> = <em>T</em><sub>0</sub></span>, <span class="math inline"><em>q</em><sub>0</sub> = <em>q</em><sup>*</sup>(<em>T</em><sub>0</sub>)</span> (saturated specific humidity), <span class="math inline"><em>G</em><sub>0</sub> = <em>T</em><sub>0</sub></span>. They all depend on the <span class="math inline"><em>T</em><sub>0</sub></span>. Also, for <span class="math inline"><em>F</em><em>R</em><sub><em>k</em></sub></span>, all values in <span class="math inline"><em>k</em></span> depend on <span class="math inline"><em>T</em><sub>0</sub></span> I do.</p>
+<p>(as well as <a href="#u-matrix">\0.25}(#u-matrix)</a>, matrix <span class="math inline"><em>M</em><sup><em>θ</em></sup>, <em>M</em><sup><em>q</em></sup>, <em>M</em><sup><em>g</em></sup></span> ,Using <span class="math inline"><em>M</em><sup><em>θ</em></sup>, <em>M</em><sup><em>q</em></sup>, <em>M</em><sup><em>g</em></sup></span> (<a href="#deq-theta">deq-theta]</a>), (<a href="#deq-q">deq-q [\brazer]</a>), ([(#deq-g)), if you rewrite it, <span class="math inline"><em>k</em> ≥ 2</span> (about <span class="math inline"><em>θ</em>, <em>q</em></span>) or TERM At 00039 (for <span class="math inline"><em>G</em></span>),</p>
+<p><br /><span class="math display">$$
+    \sum_{k'=1}^{K}  M^\theta_{k,k'} \delta T_{k'}
+        =  (F\theta^{m}_{k-1/2} - F\theta^{m}_{k+1/2})
+        + (FR^{m}_{k-1/2} - FR^{m}_{k+1/2})   \\
+ +  \left(\frac{\partial FR^{m}_{k-1/2}}{\partial T_0} - \frac{\partial FR^{m}_{k+1/2}}{\partial T_0} \right)
+     \Delta t\delta T_0 \; ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="comb-theta2" label="comb- </span> > theta2">theta2[combo-theta2\blind.</p>
+</blockquote>
+<p><br /><span class="math display">$$
+ \sum_{k'=1}^{K}  M^q_{k,k'} \delta q_{k'}
+         = (Fq^{m}_{k-1/2} - Fq^{m}_{k+1/2}) \; ,
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“comb-q2” label=“comb-q2”&amp;gt ;combo-q2\blazer.com;</span></p>
+</blockquote>
+<p><br /><span class="math display">$$
+  \sum_{l'=0}^{L} M^g_{l,l'} \delta G_{l'}
+         = - (Fg^{m}_{l-1/2} - Fg^{m}_{l+1/2}) \; .
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“comb-g2” label=“comb-g2”&amp;gt ;combo-g2.com;</span></p>
+</blockquote>
+<p>However,</p>
+<p><br /><span class="math display">$$
+M^{\theta}_{k,k'} \equiv c_p \Delta m_k \delta_{k,k'}
+          -  \left(  \frac{\partial F\theta^{m}_{k-1/2}}{\partial T_{k'}}
+                   - \frac{\partial F\theta^{m}_{k+1/2}}{\partial T_{k'}} \right) \Delta t
+          -  \left(  \frac{\partial FR^{m}_{k-1/2}}{\partial T_{k'}}
+                   - \frac{\partial FR^{m}_{k+1/2}}{\partial T_{k'}} \right) \Delta t \; ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+M^{q}_{k,k'} \equiv \Delta m_k \delta_{k,k'}
+          -  \left(  \frac{\partial Fq^{m}_{k-1/2}}{\partial q_{k'}}
+                   - \frac{\partial Fq^{m}_{k+1/2}}{\partial q_{k'}} \right) \Delta t \; ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+M^{g}_{l,l'} \equiv Cg_l \Delta z_l \delta_{l,l'}
+          -  \left(  \frac{\partial Fg^{m}_{l-1/2}}{\partial G_{l'}}
+                   - \frac{\partial Fg^{m}_{l+1/2}}{\partial G_{l'}} \right) \Delta t \; .
+$$</span><br /></p>
+<p><span class="math inline"><em>k</em> = 1</span> (about <span class="math inline"><em>θ</em>, <em>q</em></span>) or <span class="math inline"><em>l</em> = 0</span> (for <span class="math inline"><em>G</em></span>),</p>
+<p><br /><span class="math display">$$
+    \sum_{k'=1}^{K}  M^\theta_{1,k'} \delta T_{k'}
+  +  \frac{\partial F\theta^{m}_{1/2}}{\partial T_1} \Delta t\delta T_1
+        =  (F\theta^{m}_{1/2} - F\theta^{m}_{3/2})
+        + (FR^{m}_{1/2} - FR^{m}_{3/2})   \\
+ +   \frac{\partial F\theta^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0
+      \\
+ +  \left(\frac{\partial FR^{m}_{1/2}}{\partial T_0} - \frac{\partial FR^{m}_{3/2}}{\partial T_0} \right)
+     \Delta t\delta T_0 \; ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="comb-theta" label="comb- Theta">theta[comb-theta]</span>.</p>
+</blockquote>
+<p><br /><span class="math display">$$
+ \sum_{k'=1}^{K}  M^q_{1,k'} \delta q_{k'}
+         - \frac{\partial Fq^{m}_{1/2}}{\partial q_1} \Delta t\delta q_1
+         = (Fq^{m}_{1/2} - Fq^{m}_{3/2})
+         + \frac{\partial Fq^{m}_{1/2}}{\partial T_0} \Delta t\delta T_0 \; ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="combo-q" label="combo-q">’ comb-q\brai]</span>.</p>
+</blockquote>
+<p><br /><span class="math display">$$
+  {\sum_{l'=1}^{L} M^g_{0,l'} \delta G_{l'}
+           +  \left(    \frac{\partial F\theta^{m}_{1/2}}{\partial T_0}
+           +  L \frac{\partial Fq^{m}_{1/2}}{\partial T_0}
+           +    \frac{\partial FR^{m}_{1/2}}{\partial T_0}
+           -  \frac{\partial Fg^{m}_{1/2}}{\partial T_0} \right) \Delta t\delta T_0  }
+         \\
+         =  - F\theta^{m} - L Fq^{m} - FR^{m} +  Fg^{m}_{1/2}  \\
+         -    \frac{\partial F\theta^{m}_{1/2}}{\partial T_1} \Delta t\delta T_1
+           -  L \frac{\partial Fq^{m}_{1/2}}{\partial q_1} \Delta t\delta q_1
+           -    \frac{\partial FR^{m}_{1/2}}{\partial T_1} \Delta t\delta T_1
+           +    \frac{\partial Fg^{m}_{1/2}}{\partial G_1} \Delta t\delta G_1  
+$$</span><br /></p>
+<blockquote>
+<p><span id="combo-g" label="combo-g">&gt; <span id="combo-g" label="combo-g">&gt;.</p>
+</blockquote>
+<p>However,</p>
+<p><br /><span class="math display">$$
+M^{\theta}_{1,k'} \equiv c_p \Delta m_1 \delta_{1,k'}
+          -  \left(
+                   - \frac{\partial F\theta^{m}_{3/2}}{\partial T_{k'}} \right) \Delta t
+          -  \left( \frac{\partial FR^{m}_{1/2}}{\partial T_{k'}}
+                   - \frac{\partial FR^{m}_{3/2}}{\partial T_{k'}} \right) \Delta t \; ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+M^{q}_{1,k'} \equiv \Delta m_1 \delta_{1,k'}
+          -  \left(
+                   - \frac{\partial Fq^{m}_{3/2}}{\partial q_{k'}} \right) \Delta t \; ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+M^{g}_{0,l'} \equiv
+             \left(
+                   - \frac{\partial Fg^{m}_{1/2}}{\partial G_{l'}} \right) \Delta t \; .
+$$</span><br /></p>
+<p>However, ([comb-g]](#comb-g)), the balance condition of the ground surface</p>
+<p><br /><span class="math display"><em>F</em><em>θ</em><sup><em>m</em> + 1</sup> + <em>L</em><em>F</em><em>q</em><sup><em>m</em> + 1</sup> + <em>F</em><em>R</em><sup><em>m</em> + 1</sup> − <em>F</em><em>g</em><sup><em>m</em> + 1</sup> = 0</span><br /></p>
+<p>as the case of <span class="math inline"><em>l</em> = 0</span> in the soil temperature equation, (Note that it is not included in the formula of <a href="#deq-g">deq-g</a>].</p>
+<p>These, (<a href="#comb-theta2">comb-theta2]</a>), ([comb- [q2] (#comb-q2)), (<a href="#comb-theta">\(#comb-g2)), ([comb-theta]</a>), (<a href="#comb-q">comb-q [i.e., [comb-q]</a>), ([i.e., <a href="#comb-g">i.e., [comb-g]</a>) for the <span class="math inline">2<em>K</em> + <em>L</em> + 1</span> unknowns, There are equations of equality that can be solved. In practice, the LU decomposition can be used to solve the problem.</p>
+<p>Once you’re untied, ([u-flux.next]](#u-flux.next)) as well as , Consistent flux should be sought.</p>
+<h3 id="solving-the-coupling-formula-for-time-difference">Solving the Coupling Formula for Time Difference</h3>
+<p>([comb-theta]](#comb-theta)), etc. I can write.</p>
+<p><br /><span class="math display">$$
+  \sum_{k'=1}^{K} ( M_{k,k'} + \delta_{1,k} \delta_{1,k'} \alpha)
+    = F_k + \delta_{1,k} ( F_s + \gamma T_0 )
+$$</span><br /></p>
+<p>Where, <span class="math inline"><em>F</em><sub><em>s</em></sub>, <em>α</em>, <em>γ</em></span> The term in Section 3.1 is a term associated with surface flux, The others are terms associated with vertical diffusion. Here, if we reverse the top and bottom and represent it as a matrix, we get the following.</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll} M_{KK}  \cdots  M_{K1} \\ \vdots  
+  \vdots \\ M_{1K}  \cdots  M_{11} + \alpha \\
+\end{array}  \right)
+\left( \begin{array}{l} T_K \\ \vdots \\ T_1 \\
+\end{array}  \right)
+= \left( \begin{array}{l} F_K \\ \vdots \\ F_1 + F_s + \gamma T_{0} \\
+\end{array} \right)
+$$</span><br /></p>
+<p>For the sake of brevity, we shall now refer to this document as <span class="math inline"><em>K</em> = 3</span>. For the sake of notation simplicity, we will now refer to it as <span class="math inline"><em>K</em> = 3</span>. You can’t lose the.</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23}
+  M_{22}  M_{21} \\ M_{13}  M_{12}  M_{11} + \alpha \\
+\end{array} \right)
+\left( \begin{array}{l} T_3 \\ T_2 \\ T_1 \\
+\end{array} \right)
+= \left( \begin{array}{l} F_3 \\ F_2 \\ F_1 + F_s + \gamma T_{0} \\
+\end{array} \right)
+$$</span><br /></p>
+<p>Here, The expression for <span class="math inline"><em>F</em><sub><em>s</em></sub> = 0, <em>α</em> = 0, <em>γ</em> = 0</span>, (This corresponds to the case where flux replacement at the surface is not considered.) by LU decomposition.</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23}
+  M_{22}  M_{21} \\ M_{13}  M_{12}  M_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“solve-0” label=“solve-0” &amp;gt ;</span>.</p>
+</blockquote>
+<p>LU. Take it apart,</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         1       0       0      \\
+         L_{23}  1       0      \\
+         L_{13}  L_{12}  1      \\
+         \end{array} \right)
+  \left( \begin{array}{lll}
+         U_{33}  U_{32}  U_{31} \\
+         0       U_{22}  U_{21} \\
+         0       0       U_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+$$</span><br /></p>
+<p>Now..,</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         1       0       0      \\
+         L_{23}  1       0      \\
+         L_{13}  L_{12}  1      \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         f'_3 \\ f'_2 \\ f'_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 \\
+          \end{array} \right)
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“solve-z” label=“solve-z”&amp;gt</p>
+</blockquote>
+<p>for <span class="math inline"><em>f</em>′</span> (which can be easily solved by starting from <span class="math inline"><em>f</em>′<sub>3</sub> = <em>F</em><sub>3</sub></span>), And then..,</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         U_{33}  U_{32}  U_{31} \\
+         0       U_{22}  U_{21} \\
+         0       0       U_{11} \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T'_3 \\ T'_2 \\ T'_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          f'_3 \\ f'_2 \\ f'_1 \\
+          \end{array} \right)
+$$</span><br /></p>
+<p>for <span class="math inline"><em>f</em>′</span>, starting from <span class="math inline"><em>x</em>′<sub>1</sub> = <em>z</em>′<sub>1</sub>/<em>U</em><sub>11</sub></span>, and solving in sequence.</p>
+<p>For <span class="math inline"><em>α</em> ≠ 0, <em>γ</em> ≠ 0</span>, the LU decomposition is</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         1       0       0      \\
+         L_{23}  1       0      \\
+         L_{13}  L_{12}  1      \\
+         \end{array} \right)
+  \left( \begin{array}{lll}
+         U_{33}  U_{32}  U_{31} \\
+         0       U_{22}  U_{21} \\
+         0       0       U_{11}+\alpha \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T_3 \\ T_2 \\ T_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
+          \end{array} \right)
+$$</span><br /></p>
+<p>Now..,</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         1       0       0      \\
+         L_{23}  1       0      \\
+         L_{13}  L_{12}  1      \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         f_3 \\ f_2 \\ f_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          F_3 \\ F_2 \\ F_1 + F_s + \gamma T_0 \\
+          \end{array} \right)
+$$</span><br /></p>
+<p>But if you compare this with the following It turns out there is a connection.</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{l}
+         f_3 \\ f_2 \\ f_1 \\
+         \end{array} \right)
+ =
+  \left( \begin{array}{l}
+         f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma T_0 \\
+         \end{array} \right)
+$$</span><br /></p>
+<p>With this,</p>
+<p><br /><span class="math display">$$
+  \left( \begin{array}{lll}
+         U_{33}  U_{32}  U_{31} \\
+         0       U_{22}  U_{21} \\
+         0       0       U_{11} + \alpha \\
+         \end{array} \right)
+  \left( \begin{array}{l}
+         T_3 \\ T_2 \\ T_1 \\
+         \end{array} \right)
+  =
+  \left(  \begin{array}{l}
+          f'_3 \\ f'_2 \\ f'_1 + F_s + \gamma x_0 \\
+          \end{array} \right)
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“solve-x” label=“solve-x”&amp;gt ;</span></p>
+</blockquote>
+<p>The result is That is, ,</p>
+<p><br /><span class="math display">(<em>U</em><sub>11</sub> + <em>α</em>)<em>T</em><sub>1</sub> = <em>f</em>′<sub>1</sub> + <em>F</em><sub><em>s</em></sub> + <em>γ</em><em>T</em><sub>0</sub></span><br /></p>
+<blockquote>
+<p>&lt;span id=“solve-1” label=“solve-1”&amp;gt</p>
+</blockquote>
+<p>where, <span class="math inline"><em>U</em><sub><em>k</em>, <em>k</em>′</sub></span> and, <span class="math inline"><em>f</em>′<sub><em>k</em></sub></span> are, The expression <span class="math inline"><em>α</em> = <em>γ</em> = 0</span> (<a href="#solve-0">\0\0\0.0\0.0\0.0}</a>), In other words, without considering the surface flux term Note that this can be obtained by performing LU decomposition. The physical meaning of these terms is , During the flux exchange process with the ground surface, The entire atmosphere has a heat capacity of <span class="math inline"><em>U</em><sub>11</sub></span>, Flux (<span class="math inline"><em>f</em>′<sub>1</sub></span>) from the top Indicates that it can be regarded as one layer to be supplied.</p>
+<p>(<a href="#comb-theta2">combo-theta2]</a>) and ([combo-theta2]) and ([combe<a href="#comb-theta">comb-theta]</a>), ([combo-q2](#comb-q2)) and ([combo-q2](#comb-q2)). comb-q))), ([combo-g2](#comb-g2)) and ([combo-g2](#comb-g2)). comb-g))) in each of the (the expression corresponding to [(#solve-1)) is obtained, as follows Yes.</p>
+<p><br /><span class="math display">(<em>U</em><sub>11</sub><sup><em>T</em></sup> + <em>α</em><sup><em>T</em></sup>)<em>δ</em><em>T</em><sub>1</sub> − <em>γ</em><sup><em>T</em></sup><em>δ</em><em>T</em><sub>0</sub> = <em>f</em><sub>1</sub><sup><em>T</em></sup> + <em>F</em><em>θ</em><sub>1/2</sub></span><br /></p>
+<p><br /><span class="math display">(<em>U</em><sub>11</sub><sup><em>q</em></sup> + <em>α</em><sup><em>q</em></sup>)<em>δ</em><em>q</em><sub>1</sub> − <em>γ</em><sup><em>q</em></sup><em>δ</em><em>T</em><sub>0</sub> = <em>f</em><sub>1</sub><sup><em>q</em></sup> + <em>F</em><em>q</em><sub>1/2</sub><sup><em>P</em></sup></span><br /></p>
+<p><br /><span class="math display">(<em>U</em><sub>00</sub><sup><em>g</em></sup> + <em>α</em><sup><em>g</em></sup>)<em>δ</em><em>T</em><sub>0</sub> − <em>γ</em><sup><em>g</em>1</sup><em>δ</em><em>T</em><sub>1</sub> − <em>γ</em><sup><em>g</em>2</sup><em>δ</em><em>q</em><sub>1</sub> = <em>f</em><sub>0</sub><sup><em>g</em></sup> − <em>F</em><em>θ</em><sub>1/2</sub> − <em>L</em><em>F</em><em>q</em><sub>1/2</sub></span><br /></p>
+<p>Therefore, if we concatenate the three equations above, we get We can solve for the unknown variables <span class="math inline"><em>δ</em><em>T</em><sub>1</sub>, <em>δ</em><em>q</em><sub>1</sub>, <em>δ</em><em>T</em><sub>0</sub></span>. If we can solve these problems, we can then (<a href="#solve-x">\0.25}</a>) in sequence <span class="math inline"><em>x</em><sub>2</sub>, <em>x</em><sub>3</sub></span>,TERM Can be solved with 00061. Afterwards, the consistuous flux is applied to the obtained temperature</p>
+<p><br /><span class="math display">$$
+  F\theta_c  =  F\theta_{1/2}
+                   + \gamma^{T} \delta T_0 -\alpha^{T} \delta T_1 \\
+  Fq^P_c  =  Fq^P_{1/2}
+                   + \gamma^{q} \delta T_0 -\alpha^{q} \delta q_1
+$$</span><br /></p>
+<p>Calculate as. Here, we show the case where <span class="math inline"><em>M</em></span> is a general matrix, It is even simpler since it is actually a triple diagonal matrix.</p>
+<p>During the program, For atmospheric parts in <code>MODULE:[VFTND1(pimtx.F)]</code>, <code>MODULE:[GNDHT1(pggnd.F)]</code> for the underground part of the LU decomposition method first half of the year (where <span class="math inline"><em>f</em>′<sub><em>k</em></sub></span> is obtained), In <code>MODULE:[SLVSFC(pgslv.F)]</code>, the <span class="math inline">3 × 3</span> Solve the equation, Seeking <span class="math inline"><em>δ</em><em>q</em><sub>1</sub>, <em>δ</em><em>G</em><sub>1</sub>, <em>δ</em><em>T</em><sub>0</sub></span>. Then, in <code>MODULE:[GNDHT2(pggnd.F)]</code> The second half of the LU decomposition method is performed and the rate of change of temperature in the ground is solved, Correct the fluxes so that the balance is matched. Also, in <code>MODULE:[VFTND2(pimtx.F)]</code>, for the atmosphere Solving the rate of temperature change, Fluxes are corrected with <code>MODULE:[FLXCOR(pimtx.F)]</code>.</p>
+<h3 id="combined-expression-for-time-difference">Combined expression for time difference</h3>
+<p>The coupling formula for finding <span class="math inline"><em>δ</em><em>T</em><sub>1</sub>, <em>δ</em><em>q</em><sub>1</sub>, <em>δ</em><em>T</em><sub>0</sub></span> is , Solve three times under different conditions as follows.</p>
+<p>Solve for surface wetness <span class="math inline"><em>β</em></span> as 1. Surface temperature is a variable.</p>
+<ol start="2" type="1">
+<li><p>the surface wetness obtained by <code>MODULE:[GNDBET]</code>. Surface temperature is a variable .</p></li>
+<li><p>the surface wetness obtained by <code>MODULE:[GNDBET]</code>. In case of snowmelt, the surface temperature is fixed at the freezing point.</p></li>
+</ol>
+<p>The first calculation is performed to estimate the possible evaporation rate, <span class="math inline"><em>F</em><em>q</em><sup><em>P</em></sup></span>. (When the surface wetness is small, the energy balance of the model indicates that Using the obtained <span class="math inline"><em>F</em><em>q</em></span>, the possible evaporation rate can be calculated by <span class="math inline">$\widetilde{Fq^P} = Fq / \beta$</span> diagnosed as, would result in unrealistically large values). Possible evaporation rate is ,</p>
+<p><br /><span class="math display">$$
+  Fq^P_c = Fq^P_{1/2}
+       + \frac{\partial Fq^P_{1/2}}{\partial q_1} \delta q_1 2 \Delta t
+       + \frac{\partial Fq^P_{1/2}}{\partial T_0} \delta T_0 2 \Delta t
+$$</span><br /></p>
+<p>That would be. The subscript <span class="math inline"><em>c</em></span> means after correction, This is a consistent flux to the obtained temperature etc.</p>
+<p>In the second and subsequent calculations ,</p>
+<ol type="1">
+<li>to the amount of possible evaporation found in the first calculation Surface wetness (evaporation efficiency) <span class="math inline"><em>β</em></span> multiplied by the amount of evaporation <span class="math inline"><em>F</em><em>q</em><sub>1</sub></span>.</li>
+</ol>
+<p><br /><span class="math display"><em>F</em><em>q</em> = <em>β</em><em>F</em><em>q</em><sup><em>P</em></sup></span><br /></p>
+<ol start="2" type="1">
+<li>evaporation quantity <span class="math inline"><em>F</em><em>q</em><sub>1</sub></span> is</li>
+</ol>
+<p><br /><span class="math display"><em>β</em><em>ρ</em><em>C</em><sub><em>E</em></sub>|<strong>v</strong>|(<em>q</em><sub>*</sub>(<em>T</em><sub>0</sub>) − <em>q</em>)</span><br /></p>
+<p>As required by , Once again, rebalancing the energy.</p>
+<p>Two methods of calculating the amount of evaporation can be used (The standard uses the method in 1.). The third calculation is performed during snow and ice melt and sea ice formation in the mixed layer ocean. This is done in order to fix the surface temperature at the freezing point, for example, to unbalance the energy. In this case, the amount of energy used for the phase change of water, such as snowmelt, is diagnostically determined, It will be used later to calculate the amount of snow melt, etc.</p>
+<p>The concrete form of the coupling formula is as follows.</p>
+<p><br /><span class="math display">$$
+  \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{ccc}
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
+      0
+      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
+                         + \frac{\partial FR_{1/2}}{\partial T_0}\right) 2 \Delta t \\
+      0
+      U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t
+      - \beta \frac{\partial Fq^P_{1/2}}{\partial T_0} \Delta t \\
+        \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t
+      L \beta \frac{\partial Fq_{1/2}}{\partial q_1} \Delta t
+      U_{00}^g + \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
+                + L \beta \frac{\partial Fq_{1/2}}{\partial T_0}
+                + \frac{\partial FR_{1/2}}{\partial T_0} \right) 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\ \delta T_0 \\
+  \end{array} \right)   \\
+=  \left( \begin{array}{l}
+      f_1^T + F\theta_{1/2} \\  
+      f_1^q + \beta Fq^P_{1/2} \\  
+      f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} \\  
+  \end{array} \right) \; .
+$$</span><br /></p>
+<blockquote>
+<p><span id="combin-eq" label="combin-eq "> &gt;combin[combin-eq]</span>.</p>
+</blockquote>
+<p>Where, <span class="math inline"><em>U</em><sub>11</sub><sup><em>T</em></sup>, <em>U</em><sub>11</sub><sup><em>q</em></sup>, <em>U</em><sub>00</sub><sup><em>g</em></sup></span> and <span class="math inline"><em>f</em><sub>1</sub><sup><em>T</em></sup>, <em>f</em><sub>1</sub><sup><em>q</em></sup>, <em>f</em><sub>0</sub><sup><em>g</em></sup></span> is , The components of the matrices and vectors obtained by doing the first half of the LU decomposition method. When the ground is covered with snow or ice, instead of the latent heat <span class="math inline"><em>L</em></span> Using the Latent Heat of Sublimation <span class="math inline"><em>L</em><em>s</em> = <em>L</em> + <em>L</em><sub><em>M</em></sub></span> <span class="math inline"><em>L</em><sub><em>M</em></sub></span> is the latent heat of melting of water. However, in the second calculation, If the first method is used as an estimate of evaporation, we get the following.</p>
+<p><br /><span class="math display">$$
+ \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{ccc}
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
+      0
+      - \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
+                         + \frac{\partial FR_{1/2}}{\partial T_0}\right) 2 \Delta t \\
+      0
+      U_{11}^q - \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \Delta t  \\
+        \frac{\partial F\theta_{1/2}}{\partial T_1} \Delta t  
+      U_{00}^g + \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
+                + \frac{\partial FR_{1/2}}{\partial T_0} \right) 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\ \delta T_0 \\
+  \end{array} \right)   \\
+=
+  \left( \begin{array}{l}
+      f_1^T + F\theta_{1/2} \\  
+      f_1^q + \beta Fq^P_c \\  
+      f_0^g - F\theta_{1/2} - L \beta Fq^P0_c \\  
+  \end{array} \right) \; .
+$$</span><br /></p>
+<p>In the third calculation, the concatenation equation for a fixed surface temperature is</p>
+<p><br /><span class="math display">$$
+ \renewcommand{\arraystretch}{1.5}
+  \left( \begin{array}{cc}
+      U_{11}^T - \frac{\partial F\theta_{1/2}}{\partial T_1} 2 \Delta t
+      0 \\
+      0
+      U_{11}^q - \frac{\partial Fq_{1/2}}{\partial q_1} 2 \Delta t \\
+  \end{array} \right)
+  \left( \begin{array}{l}
+      \delta T_1 \\ \delta q_1 \\
+  \end{array} \right)  \\
+=
+  \left( \begin{array}{l}
+      f_1^T + + F\theta_{1/2}
+      + \left( \frac{\partial F\theta_{1/2}}{\partial T_0}
+                    + \frac{\partial FR_{1/2}}{\partial T_0} \right) \delta_0 T_0 2 \Delta t \\
+      f_1^q +  \beta Fq^P_{1/2}
+      + \frac{\partial Fq_{1/2}}{\partial T_0} \delta_0 T_0 2 \Delta t \\
+  \end{array} \right) \; .
+$$</span><br /></p>
+<blockquote>
+<p><span id="combin-eq3" label="combin-eq 3">.com[combin-eq3]</span></p>
+</blockquote>
+<p>Here, <span class="math inline"><em>δ</em><sub>0</sub><em>T</em><sub>0</sub></span> is the rate of change to the temperature to be fixed,</p>
+<p><br /><span class="math display"><em>δ</em><sub>0</sub><em>T</em><sub>0</sub> = (<em>T</em><sub>0</sub><sup><em>f</em><em>i</em><em>x</em></sup> − <em>T</em><sub>0</sub>)/<em>Δ</em><em>t</em> .</span><br /></p>
+<p><span class="math inline"><em>T</em><sub>0</sub><sup><em>f</em><em>i</em><em>x</em></sup></span> is 273.15K for snow and ice melting, In the case of sea ice production it is 271.15K. If the second method of evaporation calculation is used, then Similarly, use <span class="math inline"><em>F</em><em>q</em><sub><em>c</em></sub><sup><em>P</em></sup></span> instead of <span class="math inline"><em>F</em><em>q</em><sub>1/2</sub><sup><em>P</em></sup></span>, Calculate the differential term of <span class="math inline"><em>F</em><sub><em>q</em></sub></span> as 0. In this case,</p>
+<p><br /><span class="math display">$$
+\Delta s  =  f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} - U_{00}^g
+          -  \left(\frac{\partial F\theta_{1/2}}{\partial T_0}
+                + L \beta \frac{\partial Fq_{1/2}}{\partial T_0}
+                + \frac{\partial FR_{1/2}}{\partial T_0} \right) \delta_0 T_0 \Delta t
+                 \\
+          -  \frac{\partial F\theta_{1/2}}{\partial T_1} \delta T_1 \Delta t
+                - L \beta \frac{\partial Fq^P_{1/2}}{\partial q_1} \delta q_1 \Delta t \; .
+$$</span><br /></p>
+<p><span class="math inline"><em>Δ</em><em>s</em></span>, calculated by the Surface Energy Balance, It is the amount of energy used for the phase change of water.</p>
+<h3 id="implicit-treatment-of-time-steps-in-time-differences">implicit Treatment of Time Steps in Time Differences</h3>
+<p>Although the implicit method is used for the time difference of the vertical diffusion term, In general, the diffusion coefficients are nonlinear, and we explicitly evaluate these coefficients This can cause problems of numerical instability. To improve stability, Kalnay and Kanamitsu (19?) following the I’m working on how to handle the time steps.</p>
+<p>For simplicity, we will take the following ordinary differential equations as an example.</p>
+<p><br /><span class="math display">$$
+  \frac{\partial X}{\partial t} = - K(X) X
+$$</span><br /></p>
+<p>The coefficient <span class="math inline"><em>K</em>(<em>X</em>)</span> represents the nonlinearity. If we evaluate only the coefficients explicitly and make them implicitly different, we get the following equation.</p>
+<p><br /><span class="math display">$$
+  \frac{X^{m+1} - X^m}{\Delta t} = - K( X^m ) X^{m+1}
+$$</span><br /></p>
+<blockquote>
+<p><span id="normal-fd" label="normal-fd "> &gt; &gt; normal-fd\.com[normal-fd]</span></p>
+</blockquote>
+<p>However, consider the value of <span class="math inline"><em>X</em></span> two steps ahead, <span class="math inline"><em>X</em><sup>*</sup></span>,</p>
+<p><br /><span class="math display">$$
+  \frac{X^{\ast} - X^m}{2\Delta t} = - K ( X^m ) X^{\ast}
+$$</span><br /></p>
+<blockquote>
+<p>&lt;span id=“modify-fd1” label="modify-fd</p>
+</blockquote>
+<p><br /><span class="math display">$$
+  X^{m+1} = \frac{X^{\ast} + X^m}2
+$$</span><br /></p>
+<blockquote>
+<p><span id="modify-fd2" label="modify-fd 2">up in the streets.</p>
+</blockquote>
+<p>. In general, (<a href="#modify-fd1">[modify-fd1]</a>), (<a href="#modify-fd1">\0.25}</a> modify-fd2]](#modify-fd2)) is better than (known to be more stable than [normal-fd] (#normal-fd)) It is.</p>
+<p>(<a href="#modify-fd1">modify-fd1]</a>), ([\brachio<a href="#modify-fd2">modify- fd2]</a>), to find the rate of change over time Rewriting it into a form yields the following.</p>
+<p><br /><span class="math display">$$
+  \left(\frac{\Delta X}{\Delta t}\right)^{\ast} =
+     - K( X^m ) \left( X^m +
+        \left(\frac{\Delta X}{\Delta t}\right)^{\ast}
+        2 \Delta t \right)
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  X^{m+1} = X^m + \left(\frac{\Delta X}{\Delta t}\right)^{\ast} \Delta t
+$$</span><br /></p>
+<p>That is, the time step in determining the rate of change of the rate of change of time includes the following, Using twice the time integration step.</p>
+</body>
+</html>

@@ -146,95 +146,18 @@ Parentheses are the coordinate system and $\lambda,\varphi,\sigma, z$ are the co
 Longitude, latitude, dimensionless pressure $\sigma$, indicating vertical depth.
 \The entries in the list are in units.
 
- - TAB00000:0.0 
- east-west wind speed
-
- - TAB00000:0.1 
-     $u$ ($\lambda,\varphi,\sigma$)
-
- - TAB00000:0.2 
-     \The "m/score
-
- - TAB00000:1.0 
- north-south wind speed
-
- - TAB00000:1.1 
-     $v$ ($\lambda,\varphi,\sigma$)
-
- - TAB00000:1.2 
-     \The "m/score
-
- - TAB00000:2.0 
- atmospheric temperature
-
- - TAB00000:2.1 
-     $T$ ($\lambda,\varphi,\sigma$)
-
- - TAB00000:2.2 
-     \K.L.A.[K.R.I.E.D.]
-
- - TAB00000:3.0 
- surface pressure
-
- - TAB00000:3.1 
-     $p_S$ ($\lambda,\varphi$)
-
- - TAB00000:3.2 
-     The "hPa\\
-
- - TAB00000:4.0 
- specific humidity
-
- - TAB00000:4.1 
-     $q$ ($\lambda,\varphi,\sigma$)
-
- - TAB00000:4.2 
-     [kg/kg\\]
-
- - TAB00000:5.0 
- Cloud water mixing ratio
-
- - TAB00000:5.1 
-     $l$ ($\lambda,\varphi,\sigma$)
-
- - TAB00000:5.2 
-     [kg/kg\\]
-
- - TAB00000:6.0 
- underground temperature
-
- - TAB00000:6.1 
-     $T_g$ ($\lambda,\varphi,z$)
-
- - TAB00000:6.2 
-     \K.L.A.[K.R.I.E.D.]
-
- - TAB00000:7.0 
- subterranean moisture
-
- - TAB00000:7.1 
-     $W_g$ ($\lambda,\varphi,z$)
-
- - TAB00000:7.2 
-     \The "m/m\
-
- - TAB00000: 8.0 
- amount of snowfall
-
- - TAB00000:8.1 
-     $W_y$ ($\lambda,\varphi$)
-
- - TAB00000:8.2 
- 
-
- - TAB00000:9.0 
- sea-ice thickness
-
- - TAB00000:9.1 
-     $h_I$ ($\lambda,\varphi$)
-
- - TAB00000:9.2 
-     \\0.25\\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.00}.
+| Header0 | Header1 | Header2 |
+| ------- | ------- | ------- |
+| east-west wind speed | $u$ ($\lambda,\varphi,\sigma$) | \The "m/score |
+| north-south wind speed | $v$ ($\lambda,\varphi,\sigma$) | \The "m/score |
+| atmospheric temperature | $T$ ($\lambda,\varphi,\sigma$) | \K.L.A.[K.R.I.E.D.] |
+| surface pressure | $p_S$ ($\lambda,\varphi$) | The "hPa\\ |
+| specific humidity | $q$ ($\lambda,\varphi,\sigma$) | [kg/kg\\] |
+| Cloud water mixing ratio | $l$ ($\lambda,\varphi,\sigma$) | [kg/kg\\] |
+| underground temperature | $T_g$ ($\lambda,\varphi,z$) | \K.L.A.[K.R.I.E.D.] |
+| subterranean moisture | $W_g$ ($\lambda,\varphi,z$) | \The "m/m\ |
+|  | $W_y$ ($\lambda,\varphi$) |  |
+| sea-ice thickness | $h_I$ ($\lambda,\varphi$) | \\0.25\\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.00}. |
 
 However, the sea ice thickness is usually only a predictor in the mixed-layer coupled model.
 In addition, the ground temperature is also higher in the oceans not covered by sea ice
@@ -542,4 +465,5 @@ q^{t+\Delta t}, l^{t+\Delta t}$
  Since the information     on $u^{t-\Delta t}$ has been erased,
  This operation is a two-step process.
  The first stage of operation is done in the mechanical process.)
+
 

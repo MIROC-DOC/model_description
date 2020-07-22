@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-rad</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-rad</h1>
+</header>
+<h2 id="radiant-flux.">Radiant Flux.</h2>
+<h3 id="summary-of-radiation-flux-calculations">Summary of Radiation Flux Calculations</h3>
+<p>The CCSR/NIES AGCM radiation calculation scheme is , Discrete Ordinate Method and It was created based on the k-Distribution Method. by gases and clouds/aerosols Considering the absorption, emission, and scattering processes of solar and terrestrial radiation, Calculate the value of the radiation flux at each level. The main input data are temperature <span class="math inline"><em>T</em></span>, specific humidity <span class="math inline"><em>q</em></span>, and cloud cover <span class="math inline"><em>l</em></span>, cloud cover is in <span class="math inline"><em>C</em></span>, The output data are upward and downward radiation fluxes, <span class="math inline"><em>F</em><sup>−</sup>, <em>F</em><sup>+</sup></span>, and the differential coefficient of upward radiation flux with respect to surface temperature This is a <span class="math inline"><em>d</em><em>F</em><sup>−</sup>/<em>d</em><em>T</em><sub><em>g</em></sub></span>.</p>
+<p>The calculation is done for several wavelengths. Each wavelength range is based on the k-distribution method, It is further divided into several sub-channels. As for gaseous absorption, H<span class="math inline"><em></em><sub>2</sub></span>O, CO<span class="math inline"><em></em><sub>2</sub></span>, O<span class="math inline"><em></em><sub>3</sub></span>, N<span class="math inline"><em></em><sub>2</sub></span>O, Band Absorption of the CH<span class="math inline"><em></em><sub>4</sub></span> and , Continuous absorption of H<span class="math inline"><em></em><sub>2</sub></span>O, O<span class="math inline"><em></em><sub>2</sub></span>, O<span class="math inline"><em></em><sub>3</sub></span> and CFC absorption is incorporated. As for the scattering, we can use Rayleigh scattering of gases and Scattering by cloud and aerosol particles is incorporated.</p>
+<p>The outline of the calculation procedure is as follows (subroutine names in parentheses).</p>
+<ol type="1">
+<li><p>calculate the Planck function from atmospheric temperature <code>MODULE:[PLANKS]</code>.</p></li>
+<li><p>in each subchannel, Calculates the optical thickness due to gas absorption <code>MODULE:[PTFIT]</code>.</p></li>
+<li><p>by continuous absorption and CFC absorption calculate the optical thickness <code>MODULE:[CNTCFC]</code>.</p></li>
+<li><p>of Rayleigh scattering and particle scattering Calculates the optical thickness and scattering moment <code>MODULE:[SCATMM]</code>.</p></li>
+<li><p>from the optical thickness and solar zenith angle of the scattering, Seeking sea-level albedo <code>MODULE:[SSRFC]</code>.</p></li>
+<li><p>for each sub-channel, Expand the Planck function by optical thickness <code>MODULE:[PLKEXP]</code>.</p></li>
+<li><p>for each sub-channel, Calculates the transmission coefficient, reflection coefficient, and source function for each layer <code>MODULE:[TWST]</code></p></li>
+<li><p>by adding method, the calculate the radiation flux <code>MODULE:[ADDING]</code></p></li>
+</ol>
+<p>To account for the partial coverage of clouds, The transmission coefficients, reflection coefficients and source functions for each layer are Calculated separately for cloud cover and cloud-free conditions, Multiply the cloud cover by the weight of the cloud cover and take the average. We also consider the cloud cover of the cumulus clouds. In addition, we also perform several additions and calculate the clear-sky radiation flux.</p>
+<h3 id="wavelengths-and-subchannels.">Wavelengths and Subchannels.</h3>
+<p>The basics of radiative flux calculations are , Beer-Lambert’s Law</p>
+<p><br /><span class="math display"><em>F</em><sup><em>λ</em></sup>(<em>z</em>) = <em>F</em><sup><em>λ</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><sup><em>λ</em></sup><em>z</em>)</span><br /></p>
+<p>. where <span class="math inline"><em>F</em><sup><em>λ</em></sup></span> is the radiant flux density at the wavelength of <span class="math inline"><em>λ</em></span>. <span class="math inline"><em>k</em><sup><em>λ</em></sup></span> is the absorption coefficient. In order to calculate the radiative fluxes related to the heating rate, we need to calculate the An integration operation with respect to the wavelength is required.</p>
+<p><br /><span class="math display"><em>F</em>(<em>z</em>) = ∫<em>F</em><sup><em>λ</em></sup>(<em>z</em>)<em>d</em><em>λ</em> = ∫<em>F</em><sup><em>λ</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><sup><em>λ</em></sup><em>z</em>)<em>d</em><em>λ</em></span><br /></p>
+<blockquote>
+<p><span id="p-rad:beer" label="p-rad: &gt; beer">beer[p-rad:beer]</span>.</p>
+</blockquote>
+<p>However, the absorption and emission of radiation by gas molecules is not Due to the complicated wavelength dependence of the absorption line structure of the molecule, It is not easy to evaluate this integration precisely. The method designed to make the relatively precise calculation easier is It is a k-distribution method. Within a certain wavelength range, the absorption coefficient of <span class="math inline"><em>k</em></span> Consider the density function <span class="math inline"><em>F</em>(<em>k</em>)</span> for <span class="math inline"><em>λ</em></span>, (<a href="#p-rad:beer">p-rad:beer]</a>)</p>
+<p><br /><span class="math display">∫<em>F</em><sup><em>λ</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><sup><em>λ</em></sup><em>z</em>)<em>d</em><em>λ</em> ≃ ∫<em>F̄</em><sup><em>k</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><em>z</em>)<em>F</em>(<em>k</em>)<em>d</em><em>k</em></span><br /></p>
+<p>which is approximated by where <span class="math inline"><em>b</em><em>a</em><em>r</em><em>F</em><sup><em>k</em></sup>(0)</span> is In the <span class="math inline"><em>z</em> = 0</span>, the absorption coefficient in this wavelength range has a value of <span class="math inline"><em>k</em></span> It is a flux averaged over a wavelength. This expression shows that <span class="math inline"><em>F̄</em><sub><em>k</em></sub>, <em>F</em>(<em>k</em>)</span> are the same as the <span class="math inline"><em>k</em></span> If you have a relatively smooth function,</p>
+<p><br /><span class="math display">∫<em>F</em><sup><em>λ</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><sup><em>λ</em></sup><em>z</em>)<em>d</em><em>λ</em> ≃ ∑<em>F̄</em><sup><em>i</em></sup>(0)<em>e</em><em>x</em><em>p</em>( − <em>k</em><sup><em>i</em></sup><em>z</em>)<em>F</em><sup><em>i</em></sup></span><br /></p>
+<blockquote>
+<p><span id="p-rad:beer-kd" label="p-rad: beer-kd">\blazer[p-rad:beer-kd]</span></p>
+</blockquote>
+<p>with the addition of a finite number of exponential terms (subchannels), as It is possible to calculate relatively precisely. This method is furthermore , It has the advantage that it is easy to consider absorption and scattering at the same time.</p>
+<p>In the CCSR/NIES AGCM , By changing the radiation parameter data, the Calculations can be performed at various wavelengths. Not currently used as a standard, The wavelength range is divided into 18 parts. In addition, each wavelength range is divided into one to six sub-channels (corresponding to the <span class="math inline"><em>i</em></span> in the above formula), There will be 37 channels in total. The wavelength range is the wavenumber (cm<span class="math inline"><em></em><sup> − 1</sup></span>) 50, 250, 400, 550, 770, 990, 1100, 1400, 2000, 2500, 4000, 14500, 31500, 33000, 34500, 36000, 43,000, 46,000, 50000 Divided by.</p>
+<h3 id="calculating-the-planck-function-moduleplanks">Calculating the Planck function <code>MODULE:[PLANKS]</code></h3>
+<p>The Planck function <span class="math inline">$\overline{B}^w(T)$</span> integrated in each wavelength range is, Evaluate by the following formula.</p>
+<p><br /><span class="math display">$$
+  \overline{B}^w(T) 
+   = \lambda^{-2} T \exp \left\{ \sum_{n=0}{4} B^w_n (\bar{\lambda}^w T)^{-n}
+                         \right\}
+$$</span><br /></p>
+<p><span class="math inline"><em>λ̄</em><sup><em>w</em></sup></span> is the average wavelength of the wavelength range, <span class="math inline"><em>B</em><sub><em>n</em></sub><sup><em>w</em></sup></span> is a parameter defined by function fitting. This is the atmospheric temperature of each layer, <span class="math inline"><em>T</em><sub><em>l</em></sub></span>, and the boundary atmospheric temperature of each layer, <span class="math inline"><em>T</em><sub><em>l</em> + 1/2</sub></span> and surface temperature <span class="math inline"><em>T</em><sub><em>g</em></sub></span>.</p>
+<p>In the following, the index <span class="math inline"><em>w</em></span> is basically abbreviated for the wavelength range.</p>
+<h3 id="calculating-the-optical-thickness-by-gas-absorption-moduleptfit">Calculating the optical thickness by gas absorption <code>MODULE:[PTFIT]</code></h3>
+<p>The optical thickness of the gas absorption is determined by using the index <span class="math inline"><em>m</em></span> as the type of molecule, It looks like the following.</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>g</em></sup> = ∑<sub><em>m</em> = 1</sub><em>N</em><sub><em>m</em></sub><em>k</em><sup>(<em>m</em>)</sup><em>C</em><sup>(<em>m</em>)</sup></span><br /></p>
+<p>where <span class="math inline"><em>k</em><sup>(<em>m</em>)</sup></span> is the absorption coefficient of the molecule <span class="math inline"><em>m</em></span>, and each subchannel has a Different.</p>
+<p><br /><span class="math display"><em>k</em><sup>(<em>m</em>)</sup> = exp {∑<sub><em>i</em> = 0</sub><em>N</em><sub><em>i</em></sub>∑<sub><em>j</em> = 0</sub><em>N</em><sub><em>j</em></sub><em>A</em><sub><em>i</em><em>j</em></sub><sup>(<em>m</em>)</sup>(ln<em>p</em>)<sup><em>i</em></sup>(<em>T</em>−<em>T</em><sub><em>S</em><em>T</em><em>D</em></sub>)<sup><em>j</em></sup>}</span><br /></p>
+<p>as a function of temperature <span class="math inline"><em>T</em></span>(K) and atmospheric pressure <span class="math inline"><em>p</em></span>(hPa) in the form Given. <span class="math inline"><em>C</em><sup>(<em>m</em>)</sup></span> is the amount of gas in the layer represented by mol cm<span class="math inline"><em></em><sup> − 2</sup></span>, Volume Mixing Ratio <span class="math inline"><em>r</em></span> (in ppmv) to ,</p>
+<p><br /><span class="math display">$$
+  C = 1\times 10^{-5} \frac{p}{R_u T} \Delta z \cdot r
+$$</span><br /></p>
+<p>And it can be calculated that . However, <span class="math inline"><em>R</em><sub><em>u</em></sub></span> is the gas constant per mole (8.31 J mol<span class="math inline"><em></em><sub> − 1</sub></span> K<span class="math inline"><em></em><sup> − 1</sup></span>) and , The unit of air layer thickness <span class="math inline"><em>Δ</em><em>z</em></span> is in km. The volume mixing ratio <span class="math inline"><em>r</em></span> at ppmv is Mass Mixture Ratio <span class="math inline"><em>q</em></span> to ,</p>
+<p><br /><span class="math display"><em>r</em> = 10<sup>6</sup><em>R</em><sup>(<em>m</em>)</sup>/<em>R</em><sup>(<em>a</em><em>i</em><em>r</em>)</sup><em>q</em> = 10<sup>6</sup><em>M</em><sup>(<em>a</em><em>i</em><em>r</em>)</sup>/<em>M</em><sup>(<em>m</em>)</sup></span><br /></p>
+<p>This can be converted by . <span class="math inline"><em>R</em><sup>(<em>m</em>)</sup>, <em>R</em><sup>(<em>a</em><em>i</em><em>r</em>)</sup></span> are Gas constant per target molecule and atmospheric mass, respectively, <span class="math inline"><em>M</em><sup>(<em>m</em>)</sup>, <em>M</em><sup>(<em>a</em><em>i</em><em>r</em>)</sup></span> is It is the average molecular weight of the target molecule and the atmosphere, respectively.</p>
+<p>This calculation is done for each sub-channel and each layer.</p>
+<h3 id="optical-thickness-by-continuous-absorption-and-cfc-absorption-modulecntcfc">Optical Thickness by Continuous Absorption and CFC Absorption <code>MODULE:[CNTCFC]</code></h3>
+<p>The optical thickness of the H<span class="math inline"><em></em><sub>2</sub></span>O continuous absorption <span class="math inline"><em>τ</em><sup><em>H</em><sub>2</sub><em>O</em></sup></span> is , Think of it as a dimer, Basically, it is evaluated in proportion to the square of the volume mixing ratio of water vapor.</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>H</em><sub>2</sub><em>O</em></sup> = (<em>A</em><sup><em>H</em><sub>2</sub><em>O</em></sup> + <em>f</em>(<em>T</em>)<em>Â</em><sup><em>H</em><sub>2</sub><em>O</em></sup>)(<em>r</em><sup><em>H</em><sub>2</sub><em>O</em></sup>)<sup>2</sup><em>ρ</em><em>Δ</em><em>z</em></span><br /></p>
+<p>The <span class="math inline"><em>f</em>(<em>T</em>)</span> for the <span class="math inline"><em>Â</em></span> section is , The temperature dependence of the absorption of the dimer. Furthermore, in the wavelength range where normal gas absorption is ignored, the Incorporate a contribution proportional to the square of the volume mixing ratio of water vapor.</p>
+<p>The continuous absorption of O<span class="math inline"><em></em><sub>2</sub></span> is assumed to be constant in the mixing ratio,</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>O</em><sub>2</sub></sup> = <em>A</em><sup><em>O</em><sub>2</sub></sup><em>ρ</em><em>Δ</em><em>z</em></span><br /></p>
+<p>.</p>
+<p>Continuous absorption of O<span class="math inline"><em></em><sub>3</sub></span> is achieved by using the mixing ratio <span class="math inline"><em>r</em><sup><em>O</em><sub>3</sub></sup></span> and incorporating the temperature dependence .</p>
+<p><br /><span class="math display">$$
+\tau^{O_3} = \sum_{n=0}{2} A^{O_3}_n r^{O_3} \frac{T}{T_{STD}}^n \rho \Delta z
+$$</span><br /></p>
+<p>Absorption of CFCs is considered for <span class="math inline"><em>N</em><sub><em>m</em></sub></span> types of CFCs,</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>C</em><em>F</em><em>C</em></sup> = ∑<sub><em>m</em> = 1</sub><em>N</em><sub><em>m</em></sub><em>A</em><sub><em>m</em></sub><sup><em>C</em><em>F</em><em>C</em></sup><em>r</em><sup>(<em>m</em>)</sup><em>ρ</em><em>Δ</em><em>z</em></span><br /></p>
+<p>The sum of these optical thicknesses is <span class="math inline"><em>τ</em><sup><em>C</em><em>O</em><em>N</em></sup></span>.</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>C</em><em>O</em><em>N</em></sup> = <em>τ</em><sup><em>H</em><sub>2</sub><em>O</em></sup> + <em>τ</em><sup><em>O</em><sub>2</sub></sup> + <em>τ</em><sup><em>O</em><sub>3</sub></sup> + <em>τ</em><sup><em>C</em><em>F</em><em>C</em></sup></span><br /></p>
+<p>This calculation is performed for each wavelength range and each layer.</p>
+<h3 id="scattering-optical-thickness-and-scattering-moments-modulescatmm">Scattering optical thickness and scattering moments <code>MODULE:[SCATMM]</code></h3>
+<p>The optical thicknesses of Rayleigh scattering and particle dissipation (including scattering and absorption) are</p>
+<p><br /><span class="math display"><em>τ</em><sup><em>s</em></sup> = (<em>e</em><sup><em>R</em></sup>+∑<sub><em>p</em> = 1</sub><em>N</em><sub><em>p</em></sub><em>e</em><sub><em>m</em></sub><sup>(<em>p</em>)</sup><em>r</em><sup>(<em>p</em>)</sup>)<em>ρ</em><em>Δ</em><em>z</em></span><br /></p>
+<p>where <span class="math inline"><em>e</em><sup><em>R</em></sup></span> is the dissipation coefficient of Rayleigh scattering, The <span class="math inline"><em>e</em><sup>(<em>p</em>)</sup></span> is the dissipation factor of the particle <span class="math inline"><em>p</em></span>, <span class="math inline"><em>r</em><sup>(<em>p</em>)</sup></span> converted to standard conditions It is the volume mixing ratio of the particle <span class="math inline"><em>p</em></span>.</p>
+<p>Here, the mass mixing ratio of cloud water from <span class="math inline"><em>l</em></span> The conversion of cloud grains to standard state-conversion volume mixing ratios (ppmv) is as follows.</p>
+<p><br /><span class="math display">$$
+  r = 10^6 \frac{p_{STD}}{R T_{STD}}/\rho_w
+$$</span><br /></p>
+<p>However, <span class="math inline"><em>ρ</em><sub><em>w</em></sub></span> is the density of cloud particles.</p>
+<p>On the other hand, the scattering-induced part of the optical thickness, <span class="math inline"><em>τ</em><sub><em>s</em></sub><sup><em>s</em></sup></span>, is</p>
+<p><br /><span class="math display"><em>τ</em><sub><em>s</em></sub><sup><em>s</em></sup> = (<em>s</em><sup><em>R</em></sup>+∑<sub><em>p</em> = 1</sub><em>N</em><sub><em>p</em></sub><em>s</em><sub><em>m</em></sub><sup>(<em>p</em>)</sup><em>r</em><sup>(<em>p</em>)</sup>)<em>ρ</em><em>Δ</em><em>z</em></span><br /></p>
+<p>where <span class="math inline"><em>s</em><sup><em>R</em></sup></span> is the scattering coefficient of Rayleigh scattering, <span class="math inline"><em>s</em><sup>(<em>p</em>)</sup></span> is the scattering coefficient for the particle <span class="math inline"><em>p</em></span>.</p>
+<p>Also, the standardized scattering moments <span class="math inline"><em>g</em></span> (asymmetry factor) and <span class="math inline"><em>f</em></span> (forward scattering factor) were not</p>
+<p><br /><span class="math display">$$
+g = \frac{1}{\tau_s} \left[
+    \left( g^R + \sum_{p=1}{N_p} g^{(p)}_m r^{(p)}\right) \rho \Delta z
+    \right]
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+f = \frac{1}{\tau_s} \left[ 
+    \left( f^R + \sum_{p=1}{N_p} f^{(p)}_m r^{(p)}\right) \rho \Delta z
+    \right]
+$$</span><br /></p>
+<p>Here, <span class="math inline"><em>g</em><sup><em>R</em></sup>, <em>f</em><sup><em>R</em></sup></span> are the scattering moments of Rayleigh scattering, <span class="math inline"><em>g</em><sup>(<em>p</em>)</sup>, <em>f</em><sup>(<em>p</em>)</sup></span> is the scattering moment of the particle <span class="math inline"><em>p</em></span>.</p>
+<p>This calculation is performed for each wavelength range and each layer.</p>
+<h3 id="albedo-at-sea-level-modulessrfc">Albedo at Sea Level <code>MODULE:[SSRFC]</code></h3>
+<p>Albedo <span class="math inline"><em>α</em><sub><em>s</em></sub></span> at sea level is the vertical addition of the optical thickness of the scattering Using <span class="math inline"> &lt; <em>τ</em><sup><em>s</em></sup>&gt;</span> and the solar incidence angle factor <span class="math inline"><em>μ</em><sub>0</sub></span>,</p>
+<p><br /><span class="math display"><em>α</em><sub><em>s</em></sub> = exp {∑<sub><em>i</em>, <em>j</em></sub><em>C</em><sub><em>i</em><em>j</em></sub>𝒯<sup><em>j</em></sup><em>μ</em><sub>0</sub><sup><em>j</em></sup>}</span><br /></p>
+<p>expressed as follows. However,</p>
+<p><br /><span class="math display">𝒯 = (4 &lt; <em>τ</em><sup><em>s</em></sup> &gt; /<em>μ</em>)<sup> − 1</sup></span><br /></p>
+<p>It is.</p>
+<p>This calculation is done for each wavelength.</p>
+<h3 id="total-optical-thickness.">Total Optical Thickness.</h3>
+<p>Gaseous band absorption, continuous absorption, Rayleigh scattering, particle scattering and absorption All things considered, the optical thickness is ,</p>
+<p><br /><span class="math display"><em>τ</em> = <em>τ</em><sup><em>g</em></sup> + <em>τ</em><sup><em>C</em><em>O</em><em>N</em></sup> + <em>τ</em><sup><em>s</em></sup></span><br /></p>
+<p>where <span class="math inline"><em>τ</em><sup><em>g</em></sup></span> is different for each subchannel. Here, since <span class="math inline"><em>τ</em><sup><em>g</em></sup></span> is different for each subchannel, The calculation is done for each sub-channel and each layer.</p>
+<h3 id="planck-function-expansion-moduleplkexp">Planck function expansion <code>MODULE:[PLKEXP]</code></h3>
+<p>In each layer, the Planck function <span class="math inline"><em>B</em></span> is</p>
+<p><br /><span class="math display"><em>B</em>(<em>τ</em>′) = <em>b</em><sub>0</sub> + <em>b</em><sub>1</sub><em>τ</em>′ + <em>b</em><sub>2</sub>(<em>τ</em>′)<sup>2</sup></span><br /></p>
+<p>and obtain the expansion coefficients <span class="math inline"><em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, <em>b</em>, 2</span>. Here, as <span class="math inline"><em>B</em>(0)</span> <span class="math inline"><em>B</em></span> at the top of each layer (bordering the top layer), As <span class="math inline"><em>B</em>(<em>τ</em>)</span>, <span class="math inline"><em>B</em></span> at the bottom edge of each layer (the boundary with the layer below), As <span class="math inline"><em>B</em>(<em>τ</em>/2)</span>, use the <span class="math inline"><em>B</em></span> at the representative level of each layer.</p>
+<p><br /><span class="math display">$$
+  b_0  =  B(0)  \\
+  b_1  =  ( 4B(\tau/2) - B(\tau) - 3B(0) )/\tau  \\
+  b_2  =  2 ( B(\tau) + B(0) - 2B(\tau/2) )/\tau^2  
+$$</span><br /></p>
+<p>This calculation is done for each sub-channel and each layer.</p>
+<h3 id="transmission-and-reflection-coefficients-of-each-layer-the-source-function-moduletwst">Transmission and reflection coefficients of each layer, the source function <code>MODULE:[TWST]</code></h3>
+<p>So far obtained, optical thickness <span class="math inline"><em>τ</em></span>, optical thickness of scattering <span class="math inline"><em>τ</em><sup><em>s</em></sup></span>, Scattering Moments <span class="math inline"><em>g</em>, <em>f</em></span>, Expansion Coefficient for Planck Function <span class="math inline"><em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, <em>b</em><sub>2</sub></span>, Using the solar incidence angle factor <span class="math inline"><em>μ</em><sub>0</sub></span>, Assuming a uniform layer, and using the two-stream approximation Transmission Coefficient <span class="math inline"><em>R</em></span>, Reflection Coefficient <span class="math inline"><em>T</em></span>, Downward Radiation Source Function <span class="math inline"><em>ϵ</em><sup>+</sup></span>, Find the upward radiation source function <span class="math inline"><em>ϵ</em><sup>−</sup></span>.</p>
+<p>The single-scattering albedo <span class="math inline"><em>ω</em></span> is,</p>
+<p><br /><span class="math display"><em>ω</em> = <em>τ</em><sub><em>s</em></sub><sup><em>s</em></sup>/<em>τ</em></span><br /></p>
+<p>The contribution from the forward scattering factor <span class="math inline"><em>f</em></span> is Corrected Optical Thickness <span class="math inline"><em>τ</em><sup>*</sup></span>, The single-scattering albedo <span class="math inline"><em>ω</em><sup>*</sup></span>, asymmetric factor <span class="math inline"><em>g</em><sup>*</sup></span> is,</p>
+<p><br /><span class="math display">$$
+  \tau^*  =  \frac{\tau}{1-\omega f} \\
+  \omega^*  =  \frac{(1-f)\omega}{1-\omega f}   \\
+  g^*  =  \frac{g-f}{1-f}  
+$$</span><br /></p>
+<p>From now on, as a phase function of the normalized scattering,</p>
+<p><br /><span class="math display">$$
+  \hat{P}^\pm    =  \omega^* {W^-}^2 \left( 1 \pm 3g^* \mu \right)/2 \\
+  \hat{S}_s^\pm  =  \omega^* W^-     \left( 1 \pm 3g^* \mu \mu_0 \right)/2
+$$</span><br /></p>
+<p>However, <span class="math inline"><em>μ</em></span> is a two-stream directional cosine, and</p>
+<p><br /><span class="math display">$$
+  \mu \equiv \left\{ \begin{array}{ll}
+                   1/\sqrt{3} \; \; \;  可視・近赤外域 \\
+                   1/1.66     \; \; \;  赤外域
+                    \end{array}
+             \right.
+$$</span><br /></p>
+<p><br /><span class="math display"><em>W</em><sup>−</sup> ≡ <em>μ</em><sup> − 1/2</sup></span><br /></p>
+<p>Furthermore,</p>
+<p><br /><span class="math display">$$
+  X  =  \mu^{-1} - (\hat{P}^+ - \hat{P}^- ) \\
+  Y  =  \mu^{-1} - (\hat{P}^+ + \hat{P}^- ) \\
+  \hat{\sigma}_s^{\pm}  =  \hat{S}_s^+ \pm \hat{S}_s^- \\
+  \lambda  =  \sqrt{XY}
+$$</span><br /></p>
+<p>the reflectance <span class="math inline"><em>R</em></span> and transmission <span class="math inline"><em>T</em></span> become</p>
+<p><br /><span class="math display">$$
+ \frac{A^+{\tau^*}}{A^-{\tau^*}}
+   =  \frac{X (1+e^{-\lambda\tau^*}) - \lambda (1-e^{-\lambda\tau^*})}
+             {X (1+e^{-\lambda\tau^*}) + \lambda (1-e^{-\lambda\tau^*})} \\
+ \frac{B^+{\tau^*}}{B^-{\tau^*}}
+   =  \frac{X (1-e^{-\lambda\tau^*}) - \lambda (1+e^{-\lambda\tau^*})}
+             {X (1-e^{-\lambda\tau^*}) + \lambda (1+e^{-\lambda\tau^*})}
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  R  =   \frac{1}{2} \left(  \frac{A^+{\tau^*}}{A^-{\tau^*}} 
+                             + \frac{B^+{\tau^*}}{B^-{\tau^*}} \right) \\
+  T  =   \frac{1}{2} \left(  \frac{A^+{\tau^*}}{A^-{\tau^*}} 
+                             - \frac{B^+{\tau^*}}{B^-{\tau^*}} \right)
+$$</span><br /></p>
+<p>Next, we first find the source function from which the Planck function is derived.</p>
+<p><br /><span class="math display"><em>b̂</em><sub><em>n</em></sub> = 2<em>π</em>(1 − <em>ω</em><sup>*</sup>)<em>W</em><sup>−</sup><em>b</em><sub><em>n</em></sub>   <em>n</em> = 0, 1, 2</span><br /></p>
+<p>The expansion coefficients of the radiant function can be found from</p>
+<p><br /><span class="math display">$$
+  D_2^\pm  =  \frac{\hat{b}_2}{Y} \\
+  D_1^\pm  =  \frac{\hat{b}_1}{Y} \mp  \frac{2 \hat{b}_2}{XY} \\
+  D_0^\pm  =  \frac{\hat{b}_0}{Y} + \frac{2 \hat{b}_2}{XY^2} 
+                \mp  \frac{\hat{b}_1}{XY} \\
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  D^\pm(0)       =  D_0^pm \\
+  D^\pm(\tau^*)  =  D_0^pm + D_1^pm \tau^* + D_2^pm {\tau^*}^2
+$$</span><br /></p>
+<p>The source function <span class="math inline"><em>ϵ̂</em><sub><em>A</em></sub><sup>±</sup></span>, which is derived from the Planck function, is</p>
+<p><br /><span class="math display">$$
+  \hat{\epsilon}_A^-  =  D^-(0) - R D^+(0) - T D^-(\tau^*) \\
+  \hat{\epsilon}_A^+  =  D^+(0) - T D^+(0) - R D^-(\tau^*)
+$$</span><br /></p>
+<p>On the other hand, the source function of the solar-induced radiation is</p>
+<p><br /><span class="math display">$$
+  Q\gamma = \frac{X\hat{\sigma}_s^+ + \mu_0^{-1} \hat{\sigma}_s^-}
+                 {\lambda^2 - \mu_0^{-2} }
+$$</span><br /></p>
+<p>than ,</p>
+<p><br /><span class="math display">$$
+  V_s^\pm = \frac{1}{2} \left[
+             Q\gamma \pm \left( \frac{Q\gamma}{\mu X} 
+                                + \frac{\hat{\sigma}_s^-}{X} \right)
+                        \right]
+$$</span><br /></p>
+<p>we obtain the following by using</p>
+<p><br /><span class="math display">$$
+  \hat{\epsilon}_S^-  =  V_s^- - R V_s^+ - T V_s^- e^{-\tau^*/\mu_0} \\
+  \hat{\epsilon}_S^+  =  V_s^+ - T V_s^+ - R V_s^- e^{-\tau^*/\mu_0}
+$$</span><br /></p>
+<p>This calculation is done for each sub-channel and each layer.</p>
+<h3 id="combinations-of-source-functions-for-each-layer.">Combinations of source functions for each layer.</h3>
+<p>The Planck function origin and solar-induced origin The combined source function is</p>
+<p><br /><span class="math display">$$
+  \epsilon^\pm  = 
+  \epsilon_A^\pm + \hat{\epsilon}_S^\pm e^{-&lt;\tau^*&gt;/\mu_0} F_0 \\
+$$</span><br /></p>
+<p>However, the <span class="math inline"> &lt; <em>τ</em><sup>*</sup>&gt;</span> is not a good match for the upper atmosphere. However, <span class="math inline"> &lt; <em>τ</em><sup>*</sup>&gt;</span> has a value of to the top of the layer we’re considering now. It is the total optical thickness of the <span class="math inline"><em>τ</em><sup>*</sup></span>, It is the incident flux in the wavelength range under consideration in <span class="math inline"><em>F</em><sub>0</sub></span>. In other words, <span class="math inline"><em>e</em><sup> −  &lt; <em>τ</em><sup>*</sup> &gt; /<em>μ</em><sub>0</sub></sup><em>F</em><sub>0</sub></span> is It is the incident flux at the top of the layer under consideration. This calculation is actually ,</p>
+<p><br /><span class="math display"><em>e</em><sup> −  &lt; <em>τ</em><sup>*</sup> &gt; /<em>μ</em><sub>0</sub></sup> = <em>Π</em>′<em>e</em><sup> − <em>τ</em><sup>*</sup>/<em>μ</em><sub>0</sub></sup></span><br /></p>
+<p>The procedure is as follows. <span class="math inline"><em>Π</em>′</span> will be taken from the uppermost layer of the atmosphere by Represents the product up to one layer above the layer we’re considering now.</p>
+<p>This calculation is done for each sub-channel and each layer.</p>
+<h3 id="radiation-flux-at-each-layer-boundary-moduleadding">Radiation flux at each layer boundary <code>MODULE:[ADDING]</code></h3>
+<p>Transmission Coefficient of Each Layer <span class="math inline"><em>R</em><sub><em>l</em></sub></span>, Reflection Coefficient <span class="math inline"><em>T</em><sub><em>l</em></sub></span>, Radiation Source Function <span class="math inline"><em>ϵ</em><sub><em>l</em></sub><sup>±</sup></span> is required in all layers of <span class="math inline"><em>l</em></span>, The radiation fluxes at each layer boundary can be obtained by using the adding method. This means that the two layers of <span class="math inline"><em>R</em>, <em>T</em>, <em>ϵ</em></span> are known, The <span class="math inline"><em>R</em>, <em>T</em>, <em>ϵ</em></span> of the whole combined layer of the two layers can be easily calculated by It is an exploitation of what is required . In a homogeneous layer, the reflectance of the incident light from above, the transmission coefficient and the It is the same as the reflectance and transmittance of the incident light from below, Because it is different in heterogeneous layers composed of multiple layers, The reflectance, transmittance and transmittance of the incident light from above (<span class="math inline"><em>R</em><sup>+</sup>, <em>T</em><sup>+</sup></span>, <span class="math inline"><em>R</em><sup>+</sup>, <em>T</em><sup>+</sup></span>) Distinguish between the reflectance and the transmittance of the incident light from below (<span class="math inline"><em>R</em><sup>−</sup>, <em>T</em><sup>−</sup></span>) and the reflectance of the incident light from below (<span class="math inline"><em>R</em><sup>−</sup>, <em>T</em><sup>−</sup></span>). Now, in layer 1 above and layer 2 below, these If <span class="math inline"><em>R</em><sub>1</sub><sup>±</sup>, <em>T</em>±<sub>1</sub>, <em>ϵ</em><sub>1</sub><sup>±</sup>, <em>R</em><sub>2</sub><sup>±</sup>, <em>T</em>±<sub>2</sub>, <em>ϵ</em><sub>2</sub><sup>±</sup></span> are known, Value in the composite layer <span class="math inline"><em>R</em><sub>1, 2</sub><sup>±</sup>, <em>T</em>±<sub>1, 2</sub>, <em>ϵ</em><sub>1, 2</sub><sup>±</sup></span> is It looks like the following.</p>
+<p><br /><span class="math display">$$
+  R^+_{1,2}  =  R^+_1 + T^-_1 ( 1- R^+_2 R^-_1 )^{-1} R^+_2 T^+_1 \\
+  R^-_{1,2}  =  R^-_2 + T^+_2 ( 1- R^+_1 R^-_2 )^{-1} R^-_1 T^-_2 \\
+  T^+_{1,2}  =  T^+_2 ( 1- R^+_1 R^-_2 )^{-1} T^+_1 \\
+  T^-_{1,2}  =  T^-_1 ( 1- R^+_1 R^-_2 )^{-1} T^-_2 \\
+  \epsilon^+_{1,2}  =  \epsilon^+_2 
+    + T^+_2 ( 1- R^+_2 R^-_1 )^{-1} ( R^-_1 \epsilon^-_2 + \epsilon^+_1 ) \\
+  \epsilon^-_{1,2}  =  \epsilon^-_1 
+    + T^-_1 ( 1- R^+_2 R^-_1 )^{-1} ( R^+_2 \epsilon^+_1 + \epsilon^-_2 ) 
+$$</span><br /></p>
+<p>Let’s say there are layers 1, 2, …<span class="math inline"><em>N</em></span> from the top. However, the surface is considered to be a single layer and is the <span class="math inline"><em>N</em></span> layer. Reflectance and radiance of the layers from the <span class="math inline"><em>n</em></span> to the <span class="math inline"><em>N</em></span> are considered as a single layer source function Given the <span class="math inline"><em>R</em><sub><em>n</em>, <em>N</em></sub><sup>+</sup>, <em>ϵ</em><sub><em>n</em>, <em>N</em></sub><sup>−</sup></span>, <span class="math inline"><em>R</em><sub><em>n</em>, <em>N</em></sub><sup>+</sup>, <em>ϵ</em><sub><em>n</em>, <em>N</em></sub><sup>−</sup></span> ,</p>
+<p><br /><span class="math display">$$
+  R^+_{n,N}  =  R^+_n 
+      + T^-_n ( 1- R^+_{n+1,N} R^-_n )^{-1} R^+_{n+1,N} T^+_n \\
+  \epsilon^-_{n,N}  =  \epsilon^-_n
+    + T^-_n ( 1- R^+_{n,N} R^-_n )^{-1} 
+      ( R^+_{n,N} \epsilon^+_n + \epsilon^-_{n,N} ) 
+$$</span><br /></p>
+<p>This is the value at the surface</p>
+<p><br /><span class="math display">$$
+  R^+_{N,N}  =   R^+_N = 2 {W^+}^2 \alpha_s \\
+  \epsilon^-_{N,N}  =   \epsilon^-_N 
+    = W^+ \left( 2 \alpha_s \mu_0 e^{-&lt;\tau^*&gt;/\mu_0} F_0 
+                 + 2 \pi (1-\alpha_s) B_N 
+          \right)
+$$</span><br /></p>
+<p>It can be solved by <span class="math inline"><em>n</em> = <em>N</em> − 1, …1</span> in sequence, starting from However,</p>
+<p><br /><span class="math display"><em>W</em><sup>+</sup> ≡ <em>μ</em><sup>1/2</sup></span><br /></p>
+<p>In the next section, we consider the reflectance and source function of the layers from the first to the <span class="math inline"><em>n</em></span> as a single layer Given the <span class="math inline"><em>R</em><sub>1, <em>n</em></sub><sup>−</sup>, <em>ϵ</em><sub>1, <em>n</em></sub><sup>+</sup></span>, <span class="math inline"><em>R</em><sub>1, <em>n</em></sub><sup>−</sup>, <em>ϵ</em><sub>1, <em>n</em></sub><sup>+</sup></span> ,</p>
+<p><br /><span class="math display">$$
+  R^-_{1,n}  =  R^-_n 
+      + T^+_n ( 1- R^+_{1,n-1} R^-_n )^{-1} R^-_{1,n-1} T^-_n \\
+  \epsilon^+_{1,n}  =  \epsilon^+_n
+    + T^+_n ( 1- R^+_{1,n-1} R^-_n )^{-1} 
+      ( R^-_{1,n-1} \epsilon^-_n + \epsilon^+_{1,n-1} ) 
+$$</span><br /></p>
+<p>and this is also <span class="math inline"><em>R</em><sub>1, 1</sub><sup>−</sup> = <em>R</em><sub>1</sub><sup>−</sup>, <em>ϵ</em><sub>1, 1</sub><sup>+</sup> = <em>ϵ</em><sub>1</sub><sup>+</sup></span> It can be solved by <span class="math inline"><em>n</em> = 2, …<em>N</em></span>, starting from</p>
+<p>With these , Downward flux at the boundary between layers <span class="math inline"><em>n</em></span> and <span class="math inline"><em>n</em> + 1</span> <span class="math inline"><em>u</em><sub><em>n</em>, <em>n</em> + 1</sub><sup>+</sup></span> and upward flux <span class="math inline"><em>u</em><sub><em>n</em>, <em>n</em> + 1</sub><sup>−</sup></span> is , <span class="math inline">1 ∼ <em>n</em></span> The combination of layers and <span class="math inline"><em>n</em> + 1 ∼ <em>N</em></span> Reduced to a matter between two layers of combined layers,</p>
+<p><br /><span class="math display">$$
+ u^+_{n+1/2} = (1-R^-_{1,n} R^+_{n+1,N})^{-1}
+    (\epsilon^+_{1,n} + R^-_{1,n} \epsilon^-_{n+1,N} ) \\
+ u^-_{n+1/2} = R^+_{n+1,N}  u^+_{n,n+1} + \epsilon^-_{n+1,N}
+$$</span><br /></p>
+<p>It can be written as. However, the flux at the top of the atmosphere is not</p>
+<p><br /><span class="math display">$$
+ u^+_{1/2}  =  0 \\
+ u^-_{1/2}  =  \epsilon^-_{1,N}
+$$</span><br /></p>
+<p>Finally, since this flux is scaled , We rescaled and added direct solar incidence to the Find the radiation flux.</p>
+<p><br /><span class="math display">$$
+  F^+_{n+1/2}  =  \frac{W^+}{\bar{W}} u^+_{n+1/2} 
+                + \mu_0 e^{-&lt;\tau^*&gt;_{1,n}/\mu_0} F_0 \\\\
+  F^-_{n+1/2}  =  \frac{W^+}{\bar{W}} u^-_{n+1/2} \\
+$$</span><br /></p>
+<p>This calculation is done for each sub-channel.</p>
+<h3 id="add-in-the-flux.">Add in the flux.</h3>
+<p>If the radiation flux <span class="math inline"><em>F</em><sub><em>c</em></sub><sup>±</sup></span> is found for each subchannel in each layer, the It corresponds to a wavelength representative of the subchannel By applying a weight (<span class="math inline"><em>w</em><sub><em>c</em></sub></span>) and adding them together, The wavelength-integrated flux is found.</p>
+<p><br /><span class="math display"><em>F̄</em><sup>±</sup> = ∑<sub><em>c</em></sub><em>w</em><sub><em>c</em></sub><em>F</em><sup>±</sup></span><br /></p>
+<p>In practice, the short wavelength range (solar region), Divided into long wavelengths (earth’s radiation region) and added together. In addition, a part of the short wavelength region (shorter than the wavelength of <span class="math inline">0.7<em>μ</em></span>) The downward flux at the surface is obtained as PAR (photosynthetically active radiation).</p>
+<h3 id="the-temperature-derivative-of-the-flux">The temperature derivative of the flux</h3>
+<p>To solve for surface temperature by implicit, Differential term of upward flux with respect to surface temperature Calculating <span class="math inline"><em>d</em><em>F</em><sup>−</sup>/<em>d</em><em>T</em><sub><em>g</em></sub></span>. Therefore, the value for temperatures 1K higher than <span class="math inline"><em>T</em><sub><em>g</em></sub></span> We also obtained <span class="math inline">$\overline{B}^w(T_g+1)$</span> and used it to Redo the flux calculation using the addition method, The difference from the original value is set to <span class="math inline"><em>d</em><em>F</em><sup>−</sup>/<em>d</em><em>T</em><sub><em>g</em></sub></span>. This is a meaningful value only in the long-wavelength region (Earth’s radiation region).</p>
+<h3 id="handling-of-cloud-cover">Handling of cloud cover</h3>
+<p>In the CCSR/NIES AGCM , Considering the horizontal coverage of clouds in a single grid. There are two types of clouds</p>
+<ol type="1">
+<li><p>stratus cloud. Diagnosed by the large scale condensation scheme <code>MODULE:[LSCOND]</code>. For each layer (<span class="math inline"><em>n</em></span>), the lattice-averaged cloud water content of <span class="math inline"><em>l</em><sub><em>n</em></sub><sup><em>l</em></sup></span> and The horizontal coverage factor (cloud cover) <span class="math inline"><em>C</em><sub><em>n</em></sub><sup><em>l</em></sup></span> is defined.</p></li>
+<li><p>cumulus clouds. Diagnosed by the cumulus convection scheme <code>MODULE:[CUMLUS]</code>. For each layer (<span class="math inline"><em>n</em></span>) the lattice-averaged cloud water content <span class="math inline"><em>l</em><sub><em>n</em></sub><sup><em>c</em></sup></span> is defined, but Horizontal coverage (cloud cover) <span class="math inline"><em>C</em><sup><em>c</em></sup></span> shall be constant in the vertical direction.</p></li>
+</ol>
+<p>In these treatments, we assume that the stratocumulus clouds overlap randomly in a vertical direction, Assuming that the cumulus cloud always occupies the same area in the upper and lower layers (Assume that the cloud cover is 0 or 1 if it is confined to that region). To do so, we perform the following calculations.</p>
+<ol type="1">
+<li><p>optical thickness of Rayleigh and particle scattering/absorption, etc. <span class="math inline"><em>τ</em><sup><em>s</em></sup>, <em>τ</em><sub><em>s</em></sub><sup><em>s</em></sup>, <em>g</em>, <em>f</em></span>,</p>
+<ol type="1">
+<li><p>when cloud water of the <span class="math inline"><em>l</em><sub><em>n</em></sub><sup><em>l</em></sup>/<em>C</em><sub><em>n</em></sub><sup><em>l</em></sup></span> exists (stratocumulus)</p></li>
+<li><p>when there are no clouds at all</p></li>
+<li><p>when cloud water in the cloud cover of <span class="math inline"><em>l</em><sub><em>n</em></sub><sup><em>c</em></sup>/<em>C</em><sup><em>c</em></sup></span> is present (cumulus clouds)</p></li>
+</ol></li>
+</ol>
+<p>Calculate for.</p>
+<ol start="2" type="1">
+<li><p>reflection and transmission coefficients for each layer, The radiant source function (Planck function origin, insolation origin) is Calculate for each of the three cases above. The values for no clouds. <span class="math inline"><em>R</em><sup>∘</sup></span>, in the case of stratus clouds <span class="math inline"><em>R</em><sup><em>l</em></sup></span>, in the case of cumulus clouds <span class="math inline"><em>R</em><sup><em>c</em></sup></span> and so on.</p></li>
+<li><p>reflection and transmission coefficients for each layer, The source function is averaged with the weight of the cloud cover of the stratocumulus, <span class="math inline"><em>C</em><sup><em>l</em></sup></span>. The averages are expressed by adding the <span class="math inline">$\bar{}$</span>,</p></li>
+</ol>
+<p><br /><span class="math display">$$
+        \bar{R}  =  ( 1 - C^l ) R^\circ + C^l R^l \\
+        \bar{T}  =  ( 1 - C^l ) T^\circ + C^l T^l \\
+        \bar{\epsilon}  =  
+            ( 1 - C^l ) \epsilon_A^\circ + C^l \epsilon_A^l \\        
+           +  
+            \left[ ( 1 - C^l ) \epsilon_S^\circ + C^l \epsilon_S^l \right] 
+            e^{-\overline{&lt;\tau^*&gt;}/\mu_0} F_0 
+$$</span><br /></p>
+<p>However, the However ,</p>
+<p><br /><span class="math display">$$
+        e^{-\overline{&lt;\tau^*&gt;}/\mu_0} 
+        = \Pi' \left[ ( 1 - C^l ) e^{-\tau^{*\circ}/\mu_0} 
+                       + C_l e^{-\tau^{*l}/\mu_0} \right]
+$$</span><br /></p>
+<p>It is. Also,</p>
+<p><br /><span class="math display">$$
+        \epsilon^\circ  =  \epsilon_A^\circ +
+                             \epsilon_S^\circ 
+                              e^{-&lt;\tau^{*\circ}&gt;/\mu_0} F_0 \\
+        \epsilon^c      =  \epsilon_A^c +
+                             \epsilon_S^c 
+                              e^{-&lt;\tau^{*c}&gt;/\mu_0} F_0        
+$$</span><br /></p>
+<p>Seek also.</p>
+<ol start="4" type="1">
+<li><p>when the characteristic values of the average (e.g., <span class="math inline"><em>R̄</em></span>) are used, When using a characteristic value without clouds (e.g., <span class="math inline"><em>R</em><sup>∘</sup></span>), When the characteristic values of cumulus clouds (e.g., <span class="math inline"><em>R</em><sup><em>c</em></sup></span>) are used, fluxes by adding, respectively. Find <span class="math inline"><em>F̄</em>, <em>F</em><sup>∘</sup>, <em>F</em><sup><em>c</em></sup></span>.</p></li>
+<li><p>the final flux we seek is</p></li>
+</ol>
+<p><br /><span class="math display"><em>F</em> = (1 − <em>C</em><sup><em>c</em></sup>)<em>F̄</em> + <em>C</em><sup><em>c</em></sup><em>F</em><sup><em>c</em></sup></span><br /></p>
+<pre><code> ($F^\circ$ is used to estimate cloud radiative forcing</code></pre>
+<p>I’m doing the math.)</p>
+<h3 id="incidence-flux-and-angle-of-incidence-moduleshtins">Incidence flux and angle of incidence <code>MODULE:[SHTINS]</code></h3>
+<p>Incident Flux <span class="math inline"><em>F</em><sub>0</sub></span> is , Solar constant, <span class="math inline"><em>F</em><sub>00</sub></span>, The distance between the sun and the earth, The ratio of the ratio to the time average is <span class="math inline"><em>r</em><sub><em>s</em></sub></span>.</p>
+<p><br /><span class="math display"><em>F</em><sub>0</sub> = <em>F</em><sub>00</sub><em>r</em><sub><em>s</em></sub><sup>−</sup>2</span><br /></p>
+<p>Here, <span class="math inline"><em>r</em><sub><em>s</em></sub></span> asks for the following.</p>
+<p><br /><span class="math display"><em>M</em> ≡ 2<em>π</em>(<em>d</em> − <em>d</em><sub>0</sub>)</span><br /></p>
+<p>As ,</p>
+<p><br /><span class="math display"><em>r</em><sub><em>s</em></sub> = <em>a</em><sub>0</sub> − <em>a</em><sub>1</sub>cos <em>M</em> − <em>a</em><sub>2</sub>cos 2<em>M</em> − <em>a</em><sub>3</sub>cos 3<em>M</em></span><br /></p>
+<p>Note that <span class="math inline"><em>d</em></span> is the time in days since the beginning of the year.</p>
+<p>The angle of incidence is obtained as follows. Solar angle position <span class="math inline"><em>ω</em><sub><em>s</em></sub></span></p>
+<p><br /><span class="math display"><em>ω</em><sub><em>s</em></sub> = <em>M</em> + <em>b</em><sub>1</sub>sin <em>M</em> + <em>b</em><sub>2</sub>sin 2<em>M</em> + <em>b</em><sub>3</sub>sin 3<em>M</em></span><br /></p>
+<p>As the solar declination <span class="math inline"><em>δ</em><sub><em>s</em></sub></span> is</p>
+<p><br /><span class="math display">sin <em>δ</em><sub><em>s</em></sub> = sin <em>ϵ</em>sin (<em>ω</em><sub><em>s</em></sub> − <em>ω</em><sub>0</sub>)</span><br /></p>
+<p>Then the angle of incidence factor <span class="math inline"><em>μ</em> = cos <em>ζ</em></span> (where <span class="math inline"><em>ζ</em></span> is the zenith angle) is</p>
+<p><br /><span class="math display"><em>μ</em> = cos <em>ζ</em> = cos <em>φ</em>cos <em>δ</em><sub><em>s</em></sub>cos <em>h</em> + sin <em>φ</em>sin <em>δ</em><sub><em>s</em></sub></span><br /></p>
+<p><span class="math inline"><em>φ</em></span> is a latitude, <span class="math inline"><em>h</em></span> is the time angle (local time minus <span class="math inline"><em>π</em></span>).</p>
+<p>Assuming that the eccentricity of the Earth’s orbit is <span class="math inline"><em>e</em></span> (Katayama, 1974 ),</p>
+<p><br /><span class="math display">$$
+   a_0  =   1 + e^2 \\
+   a_1  =   e - 3/8 e^3 - 5/32 e^5 \\
+   a_2  =   1/2 e^2 - 1/3e^4 \\
+   a_3  =   3/8 e^3 - 135/64^5 \\
+   b_1  =  2e - 1/4 e^3 + 5/96 e^5 \\
+   b_2  =  5/4 e^2 - 11/24 e^4 \\
+   b_3  =  13/12 e^3 - 645/940 e^5 \\
+$$</span><br /></p>
+<p>It is also possible to give average annual insolation. In this case, the annual mean incidence and the annual mean angle of incidence are It approximates to be as follows.</p>
+<p><br /><span class="math display">$$
+\overline{F} = F_{00}/\pi
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\overline{\mu} \simeq 0.410 + 0.590 \cos^2 \varphi .
+$$</span><br /></p>
+<h3 id="other-notes.">Other Notes.</h3>
+<p>The calculation of the radiation is usually not done at every step. To do so, we have to save the radiation flux, If the time is not used for radiation calculation, it is used. As for the shortwave radiation, Percentage of time (time that is <span class="math inline"><em>μ</em><sub>0</sub> &gt; 0</span>) between next calculation time and daylight hours <span class="math inline"><em>f</em></span> and Using the solar incidence angle factor (<span class="math inline">$\bar{\mu_0}$</span>) averaged over the daylight hours Seeking Flux <span class="math inline"><em>F̄</em></span>,</p>
+<p><br /><span class="math display">$$
+        F =  f \frac{\mu_0}{\bar{\mu_0}} \bar{F}
+$$</span><br /></p>
+<p>.</p>
+<ol start="2" type="1">
+<li>cloud water depends on the temperature, Treated as water and ice cloud particles. Percentage treated as ice clouds <span class="math inline"><em>f</em><sub><em>I</em></sub></span> is ,</li>
+</ol>
+<p><br /><span class="math display">$$
+        f_I = \frac{ T_0 - T }{ T_0 - T_1 }
+$$</span><br /></p>
+<pre><code> (but with a maximum value of 1 and a minimum value of 0). Also,
+ $T_0 = 273.15{K}, T_1 = 258.15{K}$.</code></pre>
+</body>
+</html>

@@ -163,3 +163,4 @@ $$
 1. when the wind speed at the lowest level is small ($U_{1} \le v_{min}$) and
  In the case of small undulations in the earth's surface ($Z_{SD} \le (Z_{SD})_{min}$),
  Assuming no gravitational waves are excited at the earth's surface.
+

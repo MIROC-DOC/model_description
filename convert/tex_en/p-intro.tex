@@ -1,0 +1,432 @@
+\hypertarget{physical-processes.}{%
+\section{Physical Processes.}\label{physical-processes.}}
+
+\hypertarget{overview-of-physical-processes.}{%
+\subsection{Overview of Physical
+Processes.}\label{overview-of-physical-processes.}}
+
+As a physical process, we can consider the following
+
+\begin{itemize}
+\item
+  cumulus convection process
+\item
+  large-scale condensation process
+\item
+  radiation process
+\item
+  vertical diffusion process
+\item
+  surface flux
+\item
+  Surface and underground processes
+\item
+  gravitational wave resistance
+\end{itemize}
+
+The time-varying terms of the forecast variables due to these processes
+Calculate \(F_x, F_y, Q, M, S\), \(F_x, F_y, Q, M, S\) and do time
+integration. In addition, in order to evaluate the atmospheric and
+surface fluxes Using the surface sub-model. In the surface sub-model,
+Ground Temperature \(T_g\), Ground Moisture \(W_g\), Snowpack \(W_y\),
+etc. It is used as a predictor variable.
+
+\hypertarget{fundamental-equations.}{%
+\subsubsection{Fundamental Equations.}\label{fundamental-equations.}}
+
+Equation of motion of the atmosphere in the \(\sigma\) coordinate
+system, thermodynamic equation, Consider the equation for a sequence of
+substances such as water vapor. The vertical fluxes of momentum, heat,
+water vapor, etc. are considered, Find the time variation due to its
+convergence. All vertical fluxes are positive upward.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  equation of motion
+\end{enumerate}
+
+\begin{eqnarray}
+  \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
+\end{eqnarray}
+
+\begin{verbatim}
+ > <span id="u-eq.orig" label="u-eq.orig ">\\braham.org</span>
+\end{verbatim}
+
+\begin{eqnarray}
+  \rho \frac{dv}{dt} = \frac{\partial Fv}{\partial \sigma}
+\end{eqnarray}
+
+\begin{verbatim}
+ $u, v$: East-West, North-South Wind;
+ $Fu, Fv$: Their vertical flux.
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  thermodynamic equation
+\end{enumerate}
+
+\begin{eqnarray}
+  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma}
+                     + \frac{\partial F{R}}{\partial \sigma}
+\end{eqnarray}
+
+\begin{verbatim}
+ $T$: Temperature ;
+ $c_p$: Constant Pressure Specific Heat;
+ $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Hot Position;
+ $F\theta$: Vertical Sensible Heat Flux;
+ $FR$: Vertical Radiation Flux.
+\end{verbatim}
+
+If we write \(\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}\), then this
+is
+
+\begin{eqnarray}
+  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma}
+                     + \frac{\partial F{R}}{\partial \sigma}
+\end{eqnarray}
+
+As far as vertical 1D processes are concerned, Instead of the
+\(\theta\), consider the \(\theta'\). For the sake of simplicity, unless
+there is a risk of confusion, Write \(\theta'\) as \(\theta\).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  water vapor continuity formula
+\end{enumerate}
+
+\begin{eqnarray}
+  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma}
+\end{eqnarray}
+
+\begin{verbatim}
+ $q$: Specific Humidity;
+ $F{q}$: Vertical Steam Flux.
+
+ ### Fundamental Equations in the Ground
+\end{verbatim}
+
+Considered in terms of \(z\) coordinates with the downward direction
+positive. After all, all vertical fluxes are positive upward.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  thermal formula
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial C_g G}{\partial t} = \frac{\partial Fg}{\partial z} + Sg
+\end{eqnarray}
+
+\begin{verbatim}
+ $G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat;
+ $F{g}$: Vertical Heat Flux;
+ $Sg$; Heating term (due to phase change, etc.).
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  formula for ground moisture
+\end{enumerate}
+
+\begin{eqnarray}
+  C_w \frac{\partial w}{\partial t} = \frac{\partial Fw}{\partial z} + Sw
+\end{eqnarray}
+
+\begin{verbatim}
+ $w$: Ground Moisture;
+ $F{w}$: Lead Water Flux;
+ $Sw$; Sources of water (spills, etc.).
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  energy balance equation
+\end{enumerate}
+
+At the surface, an energy balance is established.
+
+\begin{eqnarray}
+    F{\theta} + L F{q} + F{R} - F{g} = \Delta s \; \; (\sigma=1, z=0)
+\end{eqnarray}
+
+\begin{verbatim}
+ $L$: Latent Heat of Evaporation;
+ $\Delta s$: Surface energy balance (due to phase change, etc.).
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  surface water balance
+\end{enumerate}
+
+\begin{eqnarray}
+  Pg + Fw - Rg = 0
+\end{eqnarray}
+
+\begin{verbatim}
+ $Pg$: Precipitation;
+ $Rg$: Surface Runoff.
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
+\item
+  the snow balance
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial Wy}{\partial t} = Py - Fy - My
+\end{eqnarray}
+
+\begin{verbatim}
+ $Wy$: Snow cover(kg/m$^2$);
+ $Py$: Snowfall;
+ $Fy$: Sublimation;
+ $My$: Snowmelt.
+\end{verbatim}
+
+\hypertarget{time-integration-of-physical-processes.}{%
+\subsubsection{Time integration of physical
+processes.}\label{time-integration-of-physical-processes.}}
+
+Classifying physical processes in terms of the time integration of
+predictor variables, The order of execution can be divided into the
+following three categories.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  cumulus convection and large-scale condensation
+\item
+  radiation, vertical diffusion, ground boundary layer and surface
+  processes
+\item
+  gravitational wave resistance, mass regulation, dry convection
+  regulation
+\end{enumerate}
+
+Cumulus convection and large-scale condensation,
+
+\begin{eqnarray}
+  \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t}
+                         +  2 \Delta t Q_{CUM}(\hat{T}^{t+\Delta t})
+\end{eqnarray}
+
+\begin{eqnarray}
+  \hat{T}^{t+\Delta t,(2)} = \hat{T}^{t+\Delta t,(1)}
+                         +  2 \Delta t Q_{LSC}(\hat{T}^{t+\Delta t,(1)})
+\end{eqnarray}
+
+by the usual Euler difference. Large-scale condensation schemes include
+, Note that the updated values are passed on by the cumulus convection
+scheme. In practice, the output of the heating rate and so on are used
+in the routines for cumulus convection and large-scale condensation,
+Time integration is done by the immediately following
+\texttt{MODULE:{[}GDINTG{]}}.
+
+Radiation in the following groups, vertical diffusion, ground boundary
+layer and surface processes calculations are essentially all of these
+updated values ( \(\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}\),
+\(\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}\), etc. ) This is
+done by using However, in order to calculate some of the terms as
+implicit, the Calculate all of these terms together and calculate the
+heating rate, etc, Finally, we do time integration. In other words,
+symbolically,
+
+\begin{eqnarray}
+  \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)}
+              + 2 \Delta t Q_{RAD,DIF,SFC}
+               (\hat{T}^{t+\Delta t,(2)},\hat{T}^{t+\Delta t,(3)})
+\end{eqnarray}
+
+That would be.
+
+As for gravitational wave resistance, mass regulation and dry convection
+regulation, It is similar to cumulus convection and large-scale
+condensation.
+
+\begin{eqnarray}
+  \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}
+              +  2 \Delta t Q_{ADJ}(\hat{T}^{t+\Delta t,(3)})
+\end{eqnarray}
+
+\hypertarget{various-physical-quantities.}{%
+\subsubsection{Various physical
+quantities.}\label{various-physical-quantities.}}
+
+A simple calculation from the predictive variables can be used to find
+Definitions of various physical quantities. Some of these are ,
+Calculated with \texttt{MODULE:{[}PSETUP{]}}.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  temporary temperature
+\end{enumerate}
+
+Provisional Temperature \(T_v\) is ,
+
+\begin{eqnarray}
+  T_v = T ( 1 + \epsilon_v q - l )
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  air density
+\end{enumerate}
+
+The atmospheric density, \(\rho\), is calculated as follows
+
+\begin{eqnarray}
+  \rho = \frac{p}{RT_v}
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  high degree
+\end{enumerate}
+
+The high degree \(z\) is a mechanical process The same method is used to
+calculate the geopotential.
+
+\begin{eqnarray}
+  z = \frac{\Phi}{g}
+\end{eqnarray}
+
+\begin{eqnarray}
+ \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1}
+\end{eqnarray}
+
+\begin{eqnarray}
+ \Phi_k - \Phi_{k-1}
+   =  C_{p}
+   \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
+          - 1 \right] T_{v,k}
+       + C_{p}
+   \left[ 1-
+         \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
+              \right] T_{v,k-1}
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  layer boundary temperature
+\end{enumerate}
+
+The temperature of the boundary of the layer is determined by the
+temperature of the \(\ln p\), i.e., the temperature of the boundary
+relative to the \(\ln \sigma\) Perform a linear interpolation and
+calculate.
+
+\begin{eqnarray}
+  T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_k
+            + \frac{\ln \sigma_{k-1/2} - \ln \sigma_k}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_{k-1}
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  saturated specific humidity
+\end{enumerate}
+
+Saturation Specific Humidity \(q^*(T,p)\) is approximated using the
+saturation vapor pressure \(e^*(T)\),
+
+\begin{eqnarray}
+q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
+\end{eqnarray}
+
+Here, it is \(\epsilon=0.622\),
+
+\begin{eqnarray}
+\frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
+\end{eqnarray}
+
+\begin{verbatim}
+ > <span id="e-sat" label="e-sat">\blazer[e-sat satrap]< /span>
+\end{verbatim}
+
+Therefore, if the latent heat of evaporation (\(L\)) and the gas
+constant (\(R_v\)) of water vapor are held constant .
+
+\begin{eqnarray}
+e^*(T) = e^*(T=273{K})
+                      \exp \left[ \frac{L}{R_v}
+                            \left( \frac{1}{273} - \frac{1}{T} \right)
+                       \right] ,\\
+e^*(T=273{K}) = 611
+\end{eqnarray}
+
+is a \textbackslash blank\blank\blank\blank.com.
+
+\begin{verbatim}
+ (From [\\\begin{eqnarray}e-sat\end{eqnarray}] (#e-sat)),
+\end{verbatim}
+
+\begin{eqnarray}
+\frac{\partial q^*}{\partial T} = \frac{L}{R_v T^2} q^*(T,p) .
+\end{eqnarray}
+
+Here, if the temperature is lower than the freezing point 273.15 K Use
+the sublimation latent heat \(L+L_M\) as the latent heat \(L\).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  dry static energy, wet static energy
+\end{enumerate}
+
+Dry static energy \(s\) is
+
+\begin{eqnarray}
+  s = C_p T + g z \; ,
+\end{eqnarray}
+
+Wet Static Energy \(h\) is
+
+\begin{eqnarray}
+  h = C_p T + g z + L q \; ,
+\end{eqnarray}
+
+. defined by .
