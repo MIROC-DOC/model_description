@@ -29,7 +29,7 @@ It is a quantity calculated by some method that does not include time integratio
 To be more specific ,
 The model is basically a solution to the following equation (the prediction equation).
 
-> <span id="struct:u-eq-1" label="struct :u-eq-1">\\[struct:u-eq-1]</span>
+> <span id="struct:u-eq-1" label="struct:u-eq-1" label="struct:u-eq-1">\\[construct:u-eq-1]</span>
 > EQ=00004. 
 > EQ=00004. 
 > EQ=00004. 
@@ -43,7 +43,7 @@ It is a forecast variable with a two- or three-dimensional distribution, such as
 The right-hand side is the term that gives rise to the time variation of each of those forecast variables.
 This time-varying term TERM00001,TERM00001 is ,
 It is calculated based on the predictor variables TERM00002 and TERM00002,
-Advection due to atmospheric motion represented by TERM00003 and TERM00004 (in the above equation ." in section TERM00005) and ,
+The terms such as advection due to atmospheric motion represented by TERM00003 and TERM00004 (the term of TERM00005 in the above formula), and
 The term "cloud and radiation" can be broadly divided into two categories: the term by each process, such as cloud and radiation, and the term by each process (the term in the appendix TERM00006).
 The former is called the dynamic process and the latter is called the physical process.
 
@@ -66,10 +66,10 @@ This is done by approximating the left-hand side by a difference. For example,
 By making ,
 
 > EQ=00001.
-> <span id="struct:sabun" label="struct: sabun">\brahammer[struct:sabun\]</span>.
+> <span id="struct:sabun" label="struct:sabun" label="struct:sabun">\\brax[struct:sabun\]</span>
 
 That would be.
-Here, TERM00007 is a function of the forecast variables TERM00008, TERM00008, etc. But..,
+Here, TERM00007 is a function of the forecast variables TERM00008, TERM00008, etc,
 Depending on which time forecast variables are used in that calculation to evaluate TERM00009,
 There are various possible time difference schemes.
 In the CCSR/NIES AGCM ,
@@ -91,7 +91,7 @@ Using a combination of the Euler and implicit methods,
 > EQ=00003.
 
 I'm looking for.
-Here, ([construct:sabun\]](#struct:sabun)) TERM00013.
+where the TERM00013 of ([construct:sabun\]](#struct:sabun))
 Note that it has been replaced by TERM00014.
 
 ### Model Execution Flow.
@@ -99,7 +99,7 @@ Note that it has been replaced by TERM00014.
 The flow of model execution in brief is as follows.
 \is the name of the relevant subroutine.
 
-1. set the parameters of the experiment, coordinates, etc. `MODULE:[SETPAR,PCONST, SETCOR,SETZS]`
+1. set the parameters of an experiment, coordinates, etc. `MODULE:[SETPAR,PCONST,SETCOR,SETZS]`
 
 2. read the initial values of the predictor variable `MODULE:[RDSTRT]`
 
@@ -217,7 +217,7 @@ Longitude, latitude, dimensionless pressure TERM00016, indicating vertical depth
 However, the sea ice thickness is usually only a predictor in the mixed-layer coupled model.
 In addition, the ground temperature is also higher in the oceans not covered by sea ice
 Normally, it is not a predictor variable.
-Also, in the CCSR/NIES AGCM, TERM00038 and TERM00039 are independent Not a variable ,
+Also, in the CCSR/NIES AGCM, TERM00038 and TERM00039 are not independent variables,
 In fact, TERM00040 is the forecast variable.
 
 Of these,
@@ -250,7 +250,7 @@ We briefly summarize the flow of the model, focusing on the time evolution of th
  The initial values for the atmospheric quantities TERM00049 and TERM00049 are read from ,
  This is done with `MODULE:[RDSTRT]`, called by the main routine.
  On the other hand, the initial values of the surface and underground quantities TERM00050 and TERM00050 are read from
- In `MODULE:[PRSTRT]`,     called by `MODULE:[PHYSCS]`, the This is done.
+ Conducted by `MODULE:[PRSTRT]`, called by     `MODULE:[PHYSCS]`.
 
 2. start the time step `MODULE:[TIMSTP]`
      
@@ -261,7 +261,7 @@ We briefly summarize the flow of the model, focusing on the time evolution of th
      TERM00054 is essentially an externally given parameter,
  At regular intervals, the stability of the calculation is evaluated,
  If there is a risk of calculation instability
- reduce the size of     the TERM00055 `MODULE:[TIMSTP]`.
+ reduce the size of the     TERM00055 `MODULE:[TIMSTP]`.
 
 Set the output of the predictor variable `MODULE:[AHSTIN]`
      
@@ -285,7 +285,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
          
  Atmospheric forecast parameters of TERM00061,TERM00061
  In order to estimate the change term due to mechanical processes, we first need to estimate
-         TERM00062 and TERM00062 as the grid point values for vorticity and divergence TERM00063, Convert to TERM00063.
+ Convert         TERM00062,TERM00062 to the grid values of vorticity and divergence TERM00063,TERM00063.
  This is because the equations of mechanics are written in terms of vorticity and divergence.
  This transformation involves a spatial derivative,
  This can be done precisely by using the spherical harmonic function expansion
@@ -297,18 +297,18 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
      
      2. calculation of the time-varying term by advection `MODULE:[GRDDYN]`
          
- Using the values         in TERM00067 of TERM00066 and TERM00066,
+ Using the values in TERM00067 of         TERM00066 and TERM00066,
  Due to horizontal and vertical advection,
  Compute some of the time-varying terms for each atmospheric variable.
  First, from the continuity equation, vertical velocity TERM00068 and
- To find the time variation term         of TERM00069 diagnostically,
+ To find the time variation term of         TERM00069 diagnostically,
  Using it, calculate the vertical advection term for TERM00070 and TERM00070.
  Furthermore, the horizontal advection fluxes of TERM00071 and TERM00071 are calculated.
      
      3. convert to a spectrum `MODULE:[GD2WD, TENG2W]`
          
  Value of grid points in TERM00072 for atmospheric forecast parameters
-         From TERM00073,TERM00073,
+ From         TERM00073,TERM00073,
  Values in Spectral Space in Spherical Harmonic Function Expansion
          (However, the vorticity is changed to divergence) 
          TERM00074,TERM00074 
@@ -329,7 +329,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
      
      4. time integration `MODULE:[TINTGR]`
          
- Among the time-varying terms         in TERM00080 and TERM00080 ,
+ Among the time-varying terms in         TERM00080 and TERM00080 ,
  We have added a linearly dependent term (the gravitational wave term) to the horizontally diverging TERM00081
  Treat in the         semi-implicit method,
  In addition, the horizontal diffusion of TERM00082,TERM00082
@@ -355,7 +355,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  In large areas of mountain slopes, water vapor is transported uphill,
  Causing problems such as bringing false precipitation at the top of the mountain.
  To mitigate that, etc. such that the diffusion of the TERM00089 surface is close to
- Insert corrections for TERM00090 and TERM00090 `MODULE:[ CORDIF]`. CORDIF]`.
+ Insert corrections for TERM00090 and TERM00090 `MODULE:[CORDIF]`.
          
  Also, heat from friction is added to TERM00091 `MODULE:[CORFRC]`
      
@@ -366,18 +366,18 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  In addition, the correction is made so that the mass of the dry air is constant.
      
  When I left     DYNMCS ,
- The value of the forecast parameter     in TERM00095 has been discarded,
- Overwritten by the value of the forecast variable     in TERM00096.
+ The value of the forecast parameter in     TERM00095 has been discarded,
+ Overwritten by the value of the forecast variable in     TERM00096.
  The area containing the     TERM00097 forecast variable is ,
  Only the mechanics process is considered.
- The value of the forecast parameter     in TERM00098 is entered.
+ The value of the forecast parameter in     TERM00098 is entered.
 
 5. physical process `MODULE:[PHYSCS]`
      
  Value of the predicted variables in TERM00099 considering only mechanical processes 
      TERM00100,TERM00100 
  and by adding a time-varying term from physical processes to
- The value of the forecast parameter     in TERM00101 
+ The value of the forecast parameter in     TERM00101 
      TERM00102,TERM00102 
  Ask for .
      
@@ -388,9 +388,9 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
      
      2. cumulus convection, large-scale condensation `MODULE:[CUMLUS, LSCOND]`
          
- The time-varying terms of TERM00103 and TERM00103 due to cumulus convection are found, and `MODULE :[CUMLUS]`
+ To find the time-varying terms of TERM00103 and TERM00103 due to cumulus convection, and `MODULE:[CUMLUS]`
  Perform time integration with `MODULE:[GDINTG]` just for that term.
- In addition, the time-varying terms of TERM00104 and TERM00104 due to large-scale condensation and ` MODULE:[LSCOND]`,
+ In addition, the time-varying terms of TERM00104 and TERM00104 due to large-scale condensation are found, and `MODULE:[LSCOND]`,
  Perform time integration with `MODULE:[GDINTG]` just for that term.
  Precipitation due to cumulus convection and large scale condensation TERM00105,TERM00105,
  Cloud cover (TERM00106, TERM00106, etc.) is required.
@@ -414,7 +414,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  We can also give it to you from the outside here.
  Using these and TERM00109 and TERM00109
  Shortwave and longwave radiation flux TERM00110, and
- Calculates the differential coefficient of surface temperature used for         implicit calculation `MODULE:[ RADFLX]`. RADFLX]`.
+ Calculates the differential coefficient of surface temperature for         implicit calculation `MODULE:[RADFLX]`.
      
      5. calculation of the vertical diffuse flux `MODULE:[VDFFLX, VFTND1]`
          
@@ -422,7 +422,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  with ,
  Fluxes in TERM00112 and TERM00112 by vertical diffusion and
  Calculate the differential coefficient for         implicit calculation `MODULE:[VDFFLX]`.
- In addition, the implicit solution is computed in the middle with the LU decomposition of `MODULE:[ VFTND1]`. VFTND1]`.
+ In addition, the implicit solution is computed midway through the LU decomposition, `MODULE:[VFTND1]`.
      
      6. calculation of surface processes and time integration of underground variables `MODULE:[SURFCE]`
          
@@ -434,7 +434,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
          TERM00116
  is required.
  In addition, the rate of change of the predicted variables for the first layer of the atmosphere
-         Find TERM00117,TERM00117.
+ Find         TERM00117,TERM00117.
          
  Snow accumulation and snowmelt processes are taken into account,
  The value of the snowpack in TERM00118 is determined by TERM00119,
@@ -443,14 +443,14 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
          
  In the case of the oceanic mixed layer model, the
  Ocean temperature and sea ice thickness
- The value         in TERM00121 is found by time integration.
+ The value in         TERM00121 is found by time integration.
      
-     7. evaluation of time variation due to radiative and vertical diffusion `MODULE:[VFTND2, RADTND, FLXCOR]`
+     7. evaluation of time variation due to radial and vertical diffusion `MODULE:[VFTND2, RADTND, FLXCOR]`
          
  Combined radiative flux and vertical diffusion
  The rate of change of each forecast variable of the atmosphere over time. 
-         Seek TERM00122,TERM00122 `MODULE:[VFTND2]`.
- In addition, isolate the contribution of the radiation from them `MODULE:[RADTND]`.
+ Seek         TERM00122,TERM00122 `MODULE:[VFTND2]`.
+ In addition, isolate the contribution from the radiation from `MODULE:[RADTND]`.
  This is not directly used in the model, but ,
  For the convenience of the data output.
          
@@ -458,14 +458,14 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  due to changes in surface temperature and atmospheric forecast variables.
  We are taking into account changes in flux.
  We'll account for that and the fluxes that break even.
-         Calculate with `MODULE:[FLXCOR]`.
+ Calculate with         `MODULE:[FLXCOR]`.
  This is also for the convenience of data output.
      
      8. evaluation of gravitational wave resistance `MODULE:[GRAVTY]`
          
  Calculating the change in atmospheric momentum due to gravitational waves originating from the terrain,
  Time Dependence of TERM00123 and TERM00123 by Vertical Diffusion
-         Add to TERM00124,TERM00124.
+ Add to         TERM00124,TERM00124.
      
      9. evaluation of the atmospheric pressure change term
          
@@ -476,7 +476,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
          
  due to radiation, vertical diffusion, surface processes, gravitational wave resistance, etc.
  The rate of change of each forecast variable of the atmosphere over time.
-         Using TERM00126,TERM00126,
+ Using         TERM00126,TERM00126,
  Find the value of         TERM00127 by time integration.
      
      11. drying convection adjustment `MODULE:[DADJST]`
@@ -485,7 +485,7 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  Drying convection adjustment.
      
  By the above procedure,
- Value of the forecast parameters     in TERM00129 
+ Value of the forecast parameters in     TERM00129 
      TERM00130,TERM00130 
  is required.
 
@@ -495,9 +495,8 @@ Set the output of the predictor variable `MODULE:[AHSTIN]`
  Apply a time filter.
      TERM00131,TERM00131
  The results of the smoothing operation using the data at the three times of
- Operate on each variable by replacing it     with TERM00132.
+ Operate on each variable by replacing it with     TERM00132.
      (Actually, at the `MODULE:[TFILT]` stage, the
- Since the information     on TERM00133 has been erased,
+ Since the information on     TERM00133 has been erased,
  This operation is a two-step process.
  The first stage of operation is done in the mechanical process.)
-
