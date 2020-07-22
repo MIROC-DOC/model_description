@@ -5,11 +5,11 @@
 The surface flux scheme is ,
 due to turbulent transport in the ground boundary layer.
 Assessing the flux of physical quantities between atmospheric surfaces.
-The main input data are wind speed $u, v$, $u, v$, and temperature $T$, Specific humidity is the $q$,
+The main input data are wind speed $u, v$, $u, v$, temperature $T$, and specific humidity $q$,
 The output data are the vertical fluxes of momentum, heat, water vapor and
 It is the differential value for obtaining an implicit solution.
 
-Bulk coefficients are obtained according to Louis(1979), Louis <span>*et al.*& lt;/span>(1982).
+Bulk coefficients are obtained according to Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 
 The outline of the calculation procedure is as follows.
@@ -81,7 +81,7 @@ Here, the calculation method is abbreviated.
 ### Bulk factor.
 
 The bulk coefficients $C_M,C_H,C_E$ are
-Louis(1979), Louis <span>*et al.*</span span>(1982).
+Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 i.e., the roughness to momentum, heat, and water vapor.
 $z_{0M}, z_{0H}, z_{0E}$ respectively
@@ -161,7 +161,7 @@ The coefficient is $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 ), \;
 ( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
 
 The dependence of the bulk coefficients on $Ri_B$ is illustrated in Fig,
-Figure [p-sflx:cm\]] (#p-sflx:cm), Figure [p-sflx:ch [\\\\]](#p-sflx:ch), Figure [p-sflx:ch](#p-sflx:ch).
+Figure [p-sflx:cm\] (#p-sflx:cm), Figure [p-sflx:ch\] (#p-sflx:ch).
 
 ### Calculating Flux.
 

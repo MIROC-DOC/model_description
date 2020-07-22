@@ -63,7 +63,7 @@
 <p><br /><span class="math display">$$
   \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
 $$</span><br /></p>
-<pre><code> &gt; &lt;span id=&quot;u-eq.orig&quot; label=&quot;u-eq.orig &quot;&gt;\\braham.org&lt;/span&gt;</code></pre>
+<pre><code> &gt; &lt;span id=&quot;u-eq.orig&quot; label=&quot;u-eq.orig&quot; label=&quot;u-eq.orig&quot;&gt;\\centric&lt;/span&gt;</code></pre>
 <p><br /><span class="math display">$$
   \rho \frac{dv}{dt} = \frac{\partial Fv}{\partial \sigma}
 $$</span><br /></p>
@@ -73,8 +73,8 @@ $$</span><br /></p>
 <li>thermodynamic equation</li>
 </ol>
 <p><br /><span class="math display">$$
-  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma}
-                     + \frac{\partial F{R}}{\partial \sigma}
+  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma} 
+                     + \frac{\partial F{R}}{\partial \sigma} 
 $$</span><br /></p>
 <pre><code> $T$: Temperature ;
  $c_p$: Constant Pressure Specific Heat;
@@ -83,15 +83,15 @@ $$</span><br /></p>
  $FR$: Vertical Radiation Flux.</code></pre>
 <p>If we write <span class="math inline"><em>θ</em>′ = <em>T</em>(<em>p</em>/<em>p</em><sub><em>s</em></sub>)<sup> − <em>κ</em></sup> = <em>T</em><em>σ</em><sup> − <em>κ</em></sup></span>, then this is</p>
 <p><br /><span class="math display">$$
-  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma}
-                     + \frac{\partial F{R}}{\partial \sigma}
+  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma} 
+                     + \frac{\partial F{R}}{\partial \sigma} 
 $$</span><br /></p>
 <p>As far as vertical 1D processes are concerned, Instead of the <span class="math inline"><em>θ</em></span>, consider the <span class="math inline"><em>θ</em>′</span>. For the sake of simplicity, unless there is a risk of confusion, Write <span class="math inline"><em>θ</em>′</span> as <span class="math inline"><em>θ</em></span>.</p>
 <ol start="3" type="1">
 <li>water vapor continuity formula</li>
 </ol>
 <p><br /><span class="math display">$$
-  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma}
+  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma} 
 $$</span><br /></p>
 <pre><code> $q$: Specific Humidity;
  $F{q}$: Vertical Steam Flux.
@@ -174,16 +174,16 @@ $$</span><br /></p>
 </ol>
 <p>The high degree <span class="math inline"><em>z</em></span> is a mechanical process The same method is used to calculate the geopotential.</p>
 <p><br /><span class="math display">$$
-  z = \frac{\Phi}{g}
+  z = \frac{\Phi}{g} 
 $$</span><br /></p>
 <p><br /><span class="math display"><em>Φ</em><sub>1</sub> = <em>Φ</em><sub><em>s</em></sub> + <em>C</em><sub><em>p</em></sub>(<em>σ</em><sub>1</sub><sup> − <em>κ</em></sup> − 1)<em>T</em><sub><em>v</em>, 1</sub></span><br /></p>
 <p><br /><span class="math display">$$
- \Phi_k - \Phi_{k-1}
+ \Phi_k - \Phi_{k-1} 
    =  C_{p}
    \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
-          - 1 \right] T_{v,k}
+          - 1 \right] T_{v,k} 
        + C_{p}
-   \left[ 1-
+   \left[ 1- 
          \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
               \right] T_{v,k-1}
 $$</span><br /></p>
@@ -208,17 +208,17 @@ $$</span><br /></p>
 <p><br /><span class="math display">$$
 \frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
 $$</span><br /></p>
-<pre><code> &gt; &lt;span id=&quot;e-sat&quot; label=&quot;e-sat&quot;&gt;\blazer[e-sat satrap]&lt; /span&gt;</code></pre>
-<p>Therefore, if the latent heat of evaporation (<span class="math inline"><em>L</em></span>) and the gas constant (<span class="math inline"><em>R</em><sub><em>v</em></sub></span>) of water vapor are held constant .</p>
+<pre><code> &gt; &lt;span id=&quot;e-sat&quot; label=&quot;e-sat&quot;&gt;\\blade[e-sat]&lt; /span&gt;</code></pre>
+<p>Therefore, if the latent heat of evaporation (<span class="math inline"><em>L</em></span>) and the gas constant (<span class="math inline"><em>R</em><sub><em>v</em></sub></span>) of the water vapor are held constant, then the number of vapor particles will be reduced,</p>
 <p><br /><span class="math display">$$
-e^*(T) = e^*(T=273{K})
-                      \exp \left[ \frac{L}{R_v}
+  e^*(T) = e^*(T=273{K}) 
+                      \exp \left[ \frac{L}{R_v} 
                             \left( \frac{1}{273} - \frac{1}{T} \right)
-                       \right] ,\\
-e^*(T=273{K}) = 611
+                       \right] ,
 $$</span><br /></p>
-<p>is a \blank.com.</p>
-<pre><code> (From [\\\[e-sat\]] (#e-sat)),</code></pre>
+<pre><code> $e^*(T=273{K}) = 611$ is a \\blank\blank\blank\blank\.com.
+
+ (From [\\\[e-sat\]] (#e-sat)),</code></pre>
 <p><br /><span class="math display">$$
 \frac{\partial q^*}{\partial T} = \frac{L}{R_v T^2} q^*(T,p) .
 $$</span><br /></p>

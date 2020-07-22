@@ -44,7 +44,7 @@
 </header>
 <h2 id="massive-coagulation">Massive Coagulation</h2>
 <h3 id="overview-of-large-scale-condensation-schemes.">Overview of Large Scale Condensation Schemes.</h3>
-<p>Large-scale condensation schemes are , This is a representation of the condensation processes involved in clouds other than cumulus convection, Calculating latent heat release and water vapor reduction, precipitation. We also calculate the cloud water content and cloud coverage involved in the radiation. The main input data are temperature <span class="math inline"><em>T</em></span>, specific humidity <span class="math inline"><em>q</em></span>, and cloud cover <span class="math inline"><em>l</em></span>, and is, The output data is the time rate of change of temperature, specific humidity and cloud water content, <span class="math inline">∂<em>T</em>/∂<em>t</em>, ∂<em>q</em>/∂<em>t</em>, ∂<em>l</em>/∂<em>t</em></span>, The cloud cover is <span class="math inline"><em>C</em></span>.</p>
+<p>Large-scale condensation schemes are , This is a representation of the condensation processes involved in clouds other than cumulus convection, Calculating latent heat release and water vapor reduction, precipitation. We also calculate the cloud water content and cloud coverage involved in the radiation. The main input data are temperature <span class="math inline"><em>T</em></span>, specific humidity <span class="math inline"><em>q</em></span>, and cloud cover <span class="math inline"><em>l</em></span>, The output data is the time rate of change of temperature, specific humidity and cloud water content, <span class="math inline">∂<em>T</em>/∂<em>t</em>, ∂<em>q</em>/∂<em>t</em>, ∂<em>l</em>/∂<em>t</em></span>, The cloud cover is <span class="math inline"><em>C</em></span>.</p>
 <p>In the CCSR/NIES AGCM, in addition to the water-vapor mixture ratio (specific humidity <span class="math inline"><em>q</em></span>), the Cloud water content (<span class="math inline"><em>l</em></span>) is also a forecast variable in the model. In fact, in this large-scale condensation routine First, calculate the sum of the two, the total amount of water (<span class="math inline"><em>q</em><sup><em>t</em></sup> = <em>q</em> + <em>l</em></span>), We are dividing it again into cloud water and water vapor, In effect, the forecast variable is a single total water volume (<span class="math inline"><em>q</em><sup><em>t</em></sup></span>). By assuming the distribution of the variation of <span class="math inline"><em>q</em><sup><em>t</em></sup></span> in the grid, Diagnosis of the cloud cover and cloud water content in each grid. The conversion of cloud water into precipitation and the evaporation of precipitation during its fall are also considered.</p>
 <p>The outline of the calculation procedure is as follows.</p>
 <ol type="1">
@@ -58,19 +58,19 @@
 <h3 id="diagnosis-of-cloud-water-levels">Diagnosis of cloud water levels</h3>
 <p>When the grid-averaged total water volume <span class="math inline"><em>q̄</em><sup><em>t</em></sup> = <em>q̄</em> + <em>l̄</em></span> is given, Distribution of the total water volume <span class="math inline"><em>q</em><sup><em>t</em></sup></span> in the grid, Between <span class="math inline">(1 − <em>b</em>)<em>q̄</em><sup><em>t</em></sup></span> and <span class="math inline">(1 + <em>b</em>)<em>q̄</em><sup><em>t</em></sup></span> It is assumed to be uniformly distributed. That is, the probability density function is ,</p>
 <p><br /><span class="math display">$$
-  F(q^t) = \left\{
+  F(q^t) = \left\{ 
            \begin{array}{ll}
-             (2b\bar{q}^t)^{-1} \; \;
+             (2b\bar{q}^t)^{-1} \; \; 
                  (1-b)\bar{q}^t &lt; q^t &lt;  (1+b)\bar{q}^t \\
-             0                         (その他)
+             0                         その他
            \end{array}
            \right. \; .
 $$</span><br /></p>
 <p>We consider this distribution to be a horizontal distribution. On the other hand, the saturation specific humidity is based on the grid average of <span class="math inline"><em>q̄</em><sup>*</sup></span>.</p>
-<p>In the grid, Consider the existence of clouds in the region of <span class="math inline"><em>q</em><sup><em>t</em></sup> &gt; <em>q</em><sup>*</sup></span> (Figure [lsc:fig-cloud <a href="#lsc:fig-cloud">]</a>).</p>
+<p>In the grid, Consider the presence of a cloud in a region in <span class="math inline"><em>q</em><sup><em>t</em></sup> &gt; <em>q</em><sup>*</sup></span> (Figure [lsc<a href="#lsc:fig-cloud">lsc:fig-cloud]</a>).</p>
 <p>Then, as shown by the shading in the figure, the The horizontal ratio of the portion of the total water volume exceeding saturation <span class="math inline"><em>C</em></span> is ,</p>
 <p><br /><span class="math display">$$
-  C = \left\{
+  C = \left\{ 
            \begin{array}{ll}
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
              \displaystyle
@@ -84,7 +84,7 @@ $$</span><br /></p>
 <p>and this is the cloud cover (horizontal cloud coverage).</p>
 <p>In addition, the cloud cover of <span class="math inline"><em>l</em></span> is in the region of <span class="math inline"><em>q</em><sup><em>t</em></sup> &gt; <em>q</em><sup>*</sup></span> This is an integral of <span class="math inline"><em>q</em><sup><em>t</em></sup> − <em>q</em><sup>*</sup></span>,</p>
 <p><br /><span class="math display">$$
-  l = \left\{
+  l = \left\{ 
            \begin{array}{ll} \displaystyle
              0 \; \;  (1+b)\bar{q}^t \leq \bar{q}^* \\
             \displaystyle
@@ -95,13 +95,13 @@ $$</span><br /></p>
              \bar{q}^t - \bar{q}^*
                 \; \;  (1-b)\bar{q}^t \geq \bar{q}^*
            \end{array}
-        \right.
+        \right. 
 $$</span><br /></p>
 <blockquote>
-<p>&lt;span id=“p-lsc:l” label=“p-lsc:l”&amp;gt ;p-lsc:l\.com;</span></p>
+<p><span id="p-lsc:l" label="p-lsc:l"></span></p>
 </blockquote>
 <h3 id="determination-by-successive-approximation">Determination by successive approximation</h3>
-<p>First, from the Water Vapor <span class="math inline"><em>q</em></span> and Cloud Water <span class="math inline"><em>l</em></span> and the Temperature <span class="math inline"><em>T</em></span>, Total water volume <span class="math inline"><em>q</em><sup><em>t</em></sup></span> and liquid water temperature TERM Ask for 00029.</p>
+<p>First, from the Water Vapor <span class="math inline"><em>q</em></span> and Cloud Water <span class="math inline"><em>l</em></span> and the Temperature <span class="math inline"><em>T</em></span>, Find the total water volume <span class="math inline"><em>q</em><sup><em>t</em></sup></span> and liquid water temperature <span class="math inline"><em>T</em><sub><em>l</em></sub></span>.</p>
 <p><br /><span class="math display">$$
   q^t   =  q + l \; , \\
   T_l   =  T - \frac{L}{C_P} l \; .
@@ -112,14 +112,14 @@ $$</span><br /></p>
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
 $$</span><br /></p>
 <blockquote>
-<p><span id="p-lsc:itereate1" label="p- lsc:itereate1">[p-lsc:itereate1[p-lsc:itereate1]&lt;/ span&gt;</p>
+<p><span id="p-lsc:itereate1" label="p-lsc:itereate1" label="p-lsc:itereate1"> </span></p>
 </blockquote>
-<p>The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from <span class="math inline"><em>l</em><sup>(2)</sup></span>, The resulting temperature change is solved by successive approximation as <span class="math inline"><em>T</em><sup>(2)</sup></span> … In order to speed up this sequential convergence, we use the Newton method. I.e., (<a href="#p-lsc:itereate%201">[p-lsc:itereate1]</a>)) instead of</p>
+<p>The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from <span class="math inline"><em>l</em><sup>(2)</sup></span>, The resulting temperature change is solved by successive approximation as <span class="math inline"><em>T</em><sup>(2)</sup></span> … In order to speed up this sequential convergence, we use the Newton method. I.e., instead of (ie, ([<a href="#p-lsc:itereate1">p-lsc:itereate1]</a>)</p>
 <p><br /><span class="math display">$$
-  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)}
+  T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
                    \left( 1 - \frac{L}{C_P} \frac{dl}{dT} \right)^{-1}
 $$</span><br /></p>
-<p>. <span class="math inline"><em>d</em><em>l</em>/<em>d</em><em>T</em></span> uses the analytical You can ask for.</p>
+<p>. <span class="math inline"><em>d</em><em>l</em>/<em>d</em><em>T</em></span> can be obtained analytically using ([<a href="#p-lsc:l">p-lsc:l]</a>).</p>
 <h3 id="precipitation-process.">precipitation process.</h3>
 <p>Precipitation occurs dependent on the amount of cloud water diagnosed. If the precipitation rate (in 1/s) is set to <span class="math inline"><em>P</em></span>,</p>
 <p><br /><span class="math display"><em>P</em> = <em>l</em>/<em>τ</em><sub><em>P</em></sub> .</span><br /></p>
@@ -130,11 +130,11 @@ $$</span><br /></p>
 $$</span><br /></p>
 <p>where <span class="math inline"><em>l</em><sub><em>C</em></sub></span> is the critical cloud water content, In view of the Bergeron-Findeisen effect ,</p>
 <p><br /><span class="math display">$$
-  l_C = \left\{
+  l_C = \left\{ 
         \begin{array}{ll}
           l_C^0 \; \;  T \ge T_0 \\
-          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right]
-                \right\}^{-1}\; \;
+          l_C^0 \left\{ 1+\alpha \exp\left[ - \beta(T-Tc)^2 \right] 
+                \right\}^{-1}\; \; 
                        T_0 &gt; T &gt;  T_c \\
           l_C^0 ( 1+\alpha )^{-1}
                        T \le T_c
@@ -162,7 +162,7 @@ $$</span><br /></p>
 <p><br /><span class="math display"><em>V</em><sub><em>S</em></sub> = <em>V</em><sub><em>S</em></sub><sup>0</sup>(<em>ρ</em><sub><em>a</em></sub><em>f</em><sub><em>I</em></sub><em>l</em>)<sup><em>γ</em></sup> .</span><br /></p>
 <p>However, <span class="math inline"><em>V</em><sub><em>S</em></sub><sup>0</sup> = 3</span> m/s, <span class="math inline"><em>γ</em> = 0.17</span>. So..,</p>
 <p><br /><span class="math display">$$
-  \tau_S = \frac{\Delta p}{\rho g V_S}
+  \tau_S = \frac{\Delta p}{\rho g V_S} 
 $$</span><br /></p>
 <p>as well as precipitation.</p>
 <h3 id="evaporation-process-of-precipitation.">Evaporation process of precipitation.</h3>

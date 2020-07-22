@@ -18,7 +18,7 @@ Longitude is discretized at equal intervals \texttt{MODULE:{[}ASETL{]}}.
 \end{eqnarray}
 
 Latitude is the Gauss latitude \(\varphi_j\) described in Mechanics, and
-\texttt{MODULE:{[}\ ASETL{]}}, Gauss-Legendre derived from the integral
+\texttt{MODULE:{[}ASETL{]}}, Gauss-Legendre derived from the integral
 formula. This takes \(\mu = \sin \varphi\) as its argument J The zero
 point of the next Legendre polynomial \texttt{MODULE:{[}GAUSS{]}}.
 
@@ -48,8 +48,8 @@ discuss later in Mechanics, the value of the layer boundaries Define the
 \end{eqnarray}
 
 Find the \(\sigma\) representing the layer by Figure
-{[}a-setup:level{]}{]} (\#a-setup:level), with the standard Indicates
-the level of the 20 layers used.
+{[}a-setup:level{]}{]} (\#a-setup:level) shows the 20 levels of the
+standard.
 
 Each forecast variable is all, \((\lambda_i, \varphi_j, \sigma_k)\) or
 defined on the grid of \((\lambda_i, \varphi_j, z_l)\). (The underground
@@ -66,164 +66,189 @@ compromised \(\Delta t\) can change.
 The basic physical constants are shown below
 \texttt{MODULE:{[}APCON{]}}.
 
-\begin{itemize}
-\item
-  TAB00000:0.0 earth radius
-\item
-  TAB00000:0.1 \(a\)
-\item
-  TAB00000:0.2 m
-\item
-  TAB00000:0.3 6.37 \(\times 10^6\)
-\item
-  TAB00000:1.0 acceleration of gravity
-\item
-  TAB00000:1.1 \(g\)
-\item
-  TAB00000:1.2 ms\(^-2\)
-\item
-  TAB00000:1.3 9.8
-\item
-  TAB00000:2.0 atmospheric pressure specific heat
-\item
-  TAB00000:2.1 \(C_p\)
-\item
-  TAB00000:2.2 J kg\(^{-1}\) K\(^{-1}\)
-\item
-  TAB00000:2.3 1004.6
-\item
-  TAB00000:3.0 Atmospheric gas constant
-\item
-  TAB00000:3.1 \(R\)
-\item
-  TAB00000:3.2 J kg\(^{-1}\) K\(^{-1}\)
-\item
-  TAB00000:3.3 287.04
-\item
-  TAB00000:4.0 Latent heat of water evaporation
-\item
-  TAB00000:4.1 \(L\)
-\item
-  TAB00000:4.2 J kg\(^{-1}\)
-\item
-  TAB00000:4.3 2.5 \(\times 10^6\)
-\item
-  TAB00000:5.0 Water vapor constant pressure specific heat
-\item
-  TAB00000:5.1 \(C_v\)
-\item
-  TAB00000:5.2 J kg\(^{-1}\) K\(^{-1}\)
-\item
-  TAB00000:5.3 1810\bsp.
-\item
-  TAB00000:6.0 Gas constant of water
-\item
-  TAB00000:6.1 \(R_v\)
-\item
-  TAB00000:6.2 J kg\(^{-1}\) K\(^{-1}\)
-\item
-  TAB00000:6.3 461.
-\item
-  TAB00000:7.0 Density of liquid water
-\item
-  TAB00000:7.1 \(d_{H_2O}\)
-\item
-  TAB00000:7.2 J kg\(^{-1}\) K\(^{-1}\)
-\item
-  TAB00000:7.3
-
-  \begin{enumerate}
-  \def\labelenumi{\arabic{enumi}.}
-  \setcounter{enumi}{999}
-  \tightlist
-  \item
-  \end{enumerate}
-\item
-  TAB00000: 8.0 0 in \(^{\circ}\). saturation vapor
-\item
-  TAB00000:8.1 \(e^*\)(273K)
-\item
-  TAB00000:8.2 Pa.
-\item
-  TAB00000:8.3 611
-\item
-  TAB00000:9.0 Stefan Bolzman constant
-\item
-  TAB00000:9.1 \(\sigma_{SB}\)
-\item
-  TAB00000:9.2 W m\(^{-2}\) K\(^{-4}\)
-\item
-  TAB00000:9.3 5.67 \(\times 10^{-8}\)
-\item
-  TAB00000:10.0 Kárman Constant
-\item
-  TAB00000:10.1 \(k\)
-\item
-  TAB00000:10.2
-\item
-  TAB00000:10.3 0.4
-\item
-  TAB00000:11.0 Latent heat of ice melting
-\item
-  TAB00000:11.1 \(L_M\)
-\item
-  TAB00000:11.2 J kg\(^{-1}\)
-\item
-  TAB00000:11.3 3.4 \(\times 10^5\)
-\item
-  TAB00000:12.0 Water Freezing Point
-\item
-  TAB00000:12.1 \(T_M\)
-\item
-  TAB00000:12.2 K
-\item
-  TAB00000:12.3 273.15
-\item
-  TAB00000:13.0 Constant pressure specific heat of water
-\item
-  TAB00000:13.1 \(C_w\)
-\item
-  TAB00000:13.2 J kg\(^{-1}\)
-\item
-  TAB00000:13.3 4,200.
-\item
-  TAB00000:14.0 The freezing point of seawater
-\item
-  TAB00000:14.1 \(T_I\)
-\item
-  TAB00000:14.2 K
-\item
-  TAB00000:14.3 271.35
-\item
-  TAB00000:15.0 Specific heat ratio of ice at constant pressure
-\item
-  TAB00000:15.1 \(C_I = C_w - L_M/T_M\)
-\item
-  TAB00000:15.2
-\item
-  TAB00000:15.3 2397.
-\item
-  TAB00000:16.0 water vapor molecular weight ratio
-\item
-  TAB00000:16.1 \(\epsilon = R/R_v\)
-\item
-  TAB00000:16.2
-\item
-  TAB00000:16.3 0.622
-\item
-  TAB00000:17.0 coefficient of provisional temperature
-\item
-  TAB00000:17.1 \(\epsilon_v = \epsilon^{-1} - 1\)
-\item
-  TAB00000:17.2
-\item
-  TAB00000:17.3 0.606
-\item
-  TAB00000:18.0 Ratio of specific heat to gas constant
-\item
-  TAB00000:18.1 \(\kappa = R/C_p\)
-\item
-  TAB00000:18.2
-\item
-  TAB00000:18.3 0.286
-\end{itemize}
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header3\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+earth radius\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(a\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+m\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+6.37 \(\times 10^6\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+acceleration of gravity\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(g\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+ms\(^-2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+9.8\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+atmospheric pressure specific heat\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_p\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1004.6\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Atmospheric gas constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(R\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+287.04\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Latent heat of water evaporation\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(L\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.5 \(\times 10^6\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Water vapor constant pressure specific heat\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1810\bsp.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Gas constant of water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(R_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+461.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Density of liquid water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(d_{H_2O}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1000.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(e^*\)(273K)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Pa.\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+611\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Stefan Bolzman\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\sigma_{SB}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+W m\(^{-2}\) K\(^{-4}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.67\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Kárman Constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(k\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.4\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Latent heat of ice melting\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(L_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+3.4 \(\times 10^5\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Water Freezing Point\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(T_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+273.15\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Constant pressure specific heat of water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_w\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+4,200.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+The freezing point of seawater\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(T_I\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+271.35\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Specific heat ratio of ice at constant pressure\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_I = C_w - L_M/T_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2397.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+water vapor molecular weight ratio\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\epsilon = R/R_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.622\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+coefficient of provisional temperature\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\epsilon_v = \epsilon^{-1} - 1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.606\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Ratio of specific heat to gas constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\kappa = R/C_p\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.286\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}

@@ -1,13 +1,13 @@
 ## Summary of the mechanics part
 
 Here, we duplicate the previous description,
-Enumerate the calculations performed in the Mechanical Process Department.
+Enumerate the calculations performed in the mechanical part.
 
-### Summary of Calculations for the Mechanics Portion
+### Summary of calculations in the mechanics part.
 
 The mechanical processes are calculated in the following order.
 
-1. converting horizontal wind into vorticity and divergence `MODULE:[UV2VDG(dvect)]`
+1. the transformation of horizontal wind into vorticity and divergence `MODULE:[UV2VDG(dvect)]`
 
 2. calculation of pseudotemperature `MODULE:[VIRTMD(dvtmp)]`
 
@@ -25,7 +25,7 @@ The mechanical processes are calculated in the following order.
 
 9. convert the predictive variables to grid values `MODULE:[GENGD(dgeng)]`
 
-10. pseudo, etc. $p$ plane spreading correction `MODULE:[CORDIF(ddifc )]`
+10. pseudo etc. $p$ plane spreading correction `MODULE:[CORDIF(ddifc)]`
 
 11. consideration of frictional heat by diffusion `MODULE:[CORFRC(ddifc)]`
 
@@ -38,7 +38,7 @@ The mechanical processes are calculated in the following order.
 ### Conversion of Horizontal Wind to Vorticity and Divergence
 
 Grid point values for horizontal wind $u_{ij}, v_{ij}$
-from the grid values of vorticity and divergence $\zeta_{ij}, D_{ij}$.
+from the grid point values of vorticity and divergence $\zeta_{ij}, D_{ij}$.
 First, the spectra of vorticity and divergence
 Ask for $\zeta_n^m, D_n^m$,
 
@@ -52,8 +52,8 @@ $$
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
 $$
- 
-> <span id="d-summ:uv-zeta" label="d- summ:uv-zeta">[d-summ:uv-zeta]</ span>
+  
+> <span id="d-summ:uv-zeta" label="d-summ:uv-zeta" label="d-summ:uv-zeta"> </span>
 
 
 $$
@@ -66,11 +66,11 @@ $$
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} ; .
 $$
- 
-> <span id="d-summ:uv-D" label="d-summ: uv-D">\\[d-summ:uv-D\]</span>
+  
+> <span id="d-summ:uv-D" label="d-summ:uv-D" label="d-summ:uv-D">\[d-summ:uv-D\\[d-summ:uv-D\]</span>.
 
 
-I'll take that further,
+And more,
 
 $$
   \zeta_{ij} 
@@ -81,7 +81,7 @@ $$
 
 and so on.
 
-### Calculating a Provisional Temperature
+### Calculating Pseudotemperature
 
 Provisional Temperature $T_v$ is ,
 
@@ -95,7 +95,7 @@ $R_v$ is a gas constant for water vapor
 (461 Jkg$^{-1}$K$^{-1}$)
 $R$ is a gas constant of air
 (287.04 Jkg$^{-1}$K$^{-1}$)
-It is.
+.
 
 ### Calculating the Barometric gradient term
 
@@ -150,7 +150,7 @@ $$
 $$
 
 
-and its non-gravity components.
+and its non-gravity component.
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
@@ -167,7 +167,7 @@ $$
 $$
 
 
-### Time change term due to advection.
+### The time-varying term due to advection.
 
 Momentum advection term:
 
@@ -181,7 +181,7 @@ $$
            - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi} 
                   \frac{\partial \pi}{\partial \lambda} 
 $$
- 
+  
 
 
 $$
@@ -194,7 +194,7 @@ $$
            - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a} 
              \frac{\partial \pi}{\partial \varphi} 
 $$
- 
+  
 
 
 $$
@@ -205,7 +205,7 @@ $$
 $$
 
 
-Temperature advection term:
+Temperature Advection Term:
 
 $$
  (u T')_k  = u_k (T_k - \bar{T} )
@@ -245,14 +245,14 @@ $$
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
 $$
- 
- 
- 
- 
- 
+  
+  
+  
+  
+  
 
 
-Water vapor advection term:
+Water Vapor Advection Term:
 
 $$
  (u q)_k  = u_k q_k
@@ -272,7 +272,7 @@ R_k  =  q_k D_k
 $$
 
 
-### Conversion of Predictive Variables into Spectra
+### Conversion of Predictive Variables to Spectra.
 
 
 ([\\\d\[d-summ:uv-D\]](#d-summ:uv-D)) to
@@ -280,7 +280,7 @@ $$
 $u_{ij}^{t-\Delta t}, v_{ij}^{t-\Delta t}$.
 Spectral representation of vorticity and divergence
 Convert to $\zeta_n^m, D_n^m$.
-Furthermore,
+Furthermore ,
 Temperature $T^{t-\Delta t}$, Specific Humidity $q^{t-\Delta t}$,
 $\pi = \ln p_S^{t-\Delta t}$.
 
@@ -292,7 +292,7 @@ $$
 
 to a spectral representation.
 
-### Conversion of time-varying terms to spectra
+### Conversion of time-varying terms to spectra.
 
 Time Variation Term of Vorticity
 
@@ -310,8 +310,8 @@ $$
           \frac{w_j}{a(1-\mu_j^{2})} 
           \\ 
 $$
- 
- 
+  
+  
 
 
 The non-gravity wave component of the time-varying term of the divergence
@@ -334,12 +334,12 @@ $$
           \hat{E}_{ij}  {Y_n^{m *}}_{ij} w_j
           \\ 
 $$
- 
- 
- 
+  
+  
+  
 
 
-The non-gravity wave component of the time-varying term of temperature
+The non-gravitational component of the time-varying term of temperature
 
 $$
   \left( \frac{\partial T_n^m}{\partial t} \right)^{NG}
@@ -358,11 +358,11 @@ $$
           \hat{H}_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$
- 
- 
+  
+  
 
 
-Time-varying term of water vapor
+Time-varying terms for water vapor
 
 $$
   \frac{\partial q_n^m}{\partial t}
@@ -381,11 +381,11 @@ $$
           R_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$
- 
- 
+  
+  
 
 
-### Spectral value time integration
+### Spectral Value Time Integration
 
 Equations in matrix form
 
@@ -423,12 +423,12 @@ $$
                                      \right)_{NG}  \right]
                    \right\} . 
 $$
- 
- 
- 
+  
+  
+  
 
 
-by using LU decomposition to solve for
+By using LU decomposition to solve for
 Ask for $\bar{D}$,
 
 $$
@@ -447,10 +447,10 @@ $$
 $$
 
 
-due to
+by.
 $\partial \mathbf{T}/\partial t$,
 $\partial \pi/\partial t$
-and calculate the value of the spectrum in $t+\Delta t$.
+and calculate the value of the spectrum in $t+\Delta t$ by finding
 
 $$
   \zeta^{t+\Delta t}  =  \left( \zeta^{t-\Delta t}
@@ -466,16 +466,16 @@ $$
 \pi^{t+\Delta t}  =  \pi^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial \pi}{\partial t}
 $$
- 
- 
- 
- 
+  
+  
+  
+  
 
 
-### Conversion of Predictive Variables to Grid Values
+### Conversion of Prediction Variables to Grid Values
 
 Spectral values of vorticity and divergence from $\zeta_n^m, D_n^m$
-Find the grid values of the horizontal wind speed $u_{ij}, v_{ij}$.
+Find the grid values for the horizontal wind speed $u_{ij}, v_{ij}$.
 
 $$
   u_{ij}
@@ -503,7 +503,7 @@ $$
 $$
 
 
-Furthermore,
+Furthermore ,
 
 $$
   T_{ij} 
@@ -512,22 +512,22 @@ $$
 $$
 
 
-$T_{ij}, \pi_{ij}, q_{ij}$ is obtained by such methods as
+$T_{ij}, \pi_{ij}, q_{ij}$ are obtained by such methods as
 
 $$
   {p_S}_{ij} = \exp \pi_{ij} 
 $$
 
 
-to calculate.
+Calculate the .
 
 ### Pseudo etc. $p$ Surface Diffusion Correction
 
 Horizontal diffusion is applied on the surface of $\sigma$ and so on,
 In large areas of mountain slopes, water vapor is transported uphill,
-Causing problems such as bringing false precipitation at the top of the mountain.
-To mitigate that, etc. close to the diffusion of the $p$ surface
-Insert corrections for $T,q,l$.
+causing problems such as bringing false precipitation at the top of the mountain.
+To mitigate it, such as close to the diffusion of the $p$ surface
+Insert a correction for $T,q,l$.
 
 $$
   {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
@@ -542,11 +542,11 @@ $$
                     -  {\mathcal D} (\pi) 
                        \sigma \frac{\partial T}{\partial \sigma}
 $$
- 
- 
+  
+  
 
 
-So,
+so,
 
 $$
   T_k \leftarrow  T_k 
@@ -557,11 +557,11 @@ $$
 
 
 And so on.
-${\mathcal D}(\pi)$ has been replaced by the spectral value of $pi$ in the $\pi_n^m$
+${\mathcal D}(\pi)$ is equal to the spectral value of $pi$ in $\pi_n^m$
 The spectral representation of the diffusion coefficient multiplied by
-It is used to convert to a grid value.
+Converted into a grid value.
 
-### Consideration of frictional heat from diffusion.
+### Consideration of frictional heat by diffusion.
 
 Frictional heat from diffusion is ,
 
@@ -571,7 +571,7 @@ $$
 $$
 
 
-It is estimated that .
+It is estimated that
 Therefore,
 
 $$
@@ -582,28 +582,28 @@ $$
 $$
 
 
-### Correction for conservation of mass
+### Correction for conservation of mass.
 
 The spectral method is not used,
 The global integration of the $\pi = \ln p_S$ is preserved except for rounding errors,
-The conservation of the mass, i.e. the global integration of $p_S$, is not guaranteed.
-Also, with the expiration of the spectral wavenumber, the
+The conservation of the mass, i.e., the global integration of $p_S$, is not guaranteed.
+Also, as the spectral wavenumber expires, it is not possible to preserve the global integration of $p_S$,
 Negative values of the grid points of water vapor are sometimes observed.
-For these reasons ,
+For these reasons,
 Let the mass of dry air and water vapor, the mass of cloud water be preserved,
-In addition, corrections are made to remove areas with negative water vapor content.
+Furthermore, corrections are made to remove the negative water vapor content in the region.
 
-First, at the beginning of the mechanics calculation, `MODULE:[FIXMAS]`,
-Calculate global integrals $M_q, M_l$ for each component of water vapor and cloud water.
+First, at the beginning of the dynamics calculation, `MODULE:[FIXMAS]` is added,
+Global integrals of water vapor and cloud water are calculated for $M_q, M_l$.
 
 $$
   M_q^0  =  \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
   M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k 
 $$
- 
+  
 
 
-Also, in the first step of the calculation
+In the first step of the calculation, the global integrals of
 Calculate and memorize dry mass $M_d$.
 
 $$
@@ -612,36 +612,36 @@ $$
 
 
 At the end of the dynamics calculation, `MODULE:[MASFIX]`,
-The following procedure is used to make the correction.
+The correction is performed as follows.
 
-First, we discuss the grid points with negative water vapor content,
- The water vapor is distributed from the grid points directly below,
- Remove the negative water vapor.
- If it is     $q_k < 0 $,
-     
+First, for the grid points with negative water vapor content,
+    The water vapor is distributed from the grid points directly below,
+    Remove negative water vapor.
+    If this is $q_k < 0 $,
+
 $$
         q_k'      =  0          \\
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
 $$
- 
+  
 
-     
- However, this should only be done if this is $q_{k-1}' \ge 0 $.
 
-Next, set the value to zero for the grid points not removed by the above procedure.
+    However, this is only done for $q_{k-1}' \ge 0 $.
 
-3. calculate the global integration value $M_q$
- Make sure this matches the $M_q^0$,
- Multiply the global water vapor content by a certain percentage.
-     
+The value is then set to zero for the grid points not removed by the above procedure.
+
+3. calculate the global integration value $M_q$ and
+    Make sure this matches the $M_q^0$,
+    Multiply the global water vapor content by a constant percentage.
+
 $$
         q'' = \frac{M_q^0}{M_q} q' 
 $$
 
 
-4. perform dry air mass correction.
- Similarly, calculate $M_d$,
-     
+4. correcting the dry air mass.
+    Similarly, calculate $M_d$ and
+
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
 $$
@@ -678,7 +678,7 @@ $$
 $$
 
 
-given in profiles like
+The profile is given as
 However,
 
 $$
@@ -686,16 +686,16 @@ $$
 $$
 
 
-Approximate to .
-The standard value is, $K_R^0 = {(30day)}^{-1}$,
+It is approximated as follows.
+Standard values are, $K_R^0 = {(30day)}^{-1}$,
 $z_R = -H \ln \sigma_{top}$ ($\sigma_{top}$ : the top level of the model),
 $H = 8000$ m,
-$H_R = 7000$ m.
+$H_R = 7000$ m. .
 
 ### Time Filter.
 
 To remove the computation mode in leap frog
-Apply the time filter of Asselin (1972) at every step.
+Applying Asselin's (1972) time filter at every step.
 
 $$
   \bar{T}^{t}
@@ -705,12 +705,12 @@ $$
 $$
 
 
-and $\bar{T}$.
-The $T^{t-\Delta t}$ for the next step of the mechanical process is
-Using this $\bar{T}^t$.
-The standard value for $\epsilon_f$ is 0.05.
+and $\bar{T}$ are obtained.
+$T^{t-\Delta t}$, which is used in the next step of the mechanical process, is
+Use this $\bar{T}^t$.
+For a $\epsilon_f$ it is standard to use 0.05.
 
-In fact.
+In practice, you should use
 First, in the `MODULE:[GENGD]` conversion of the predictor to a grid of values, the following variables are used,
 
 $$
@@ -721,7 +721,7 @@ $$
 $$
 
 
-and when the physical process is done
+and when the physical process is complete, the
 After determining the value of $T^{t+\Delta t}$, you can use `MODULE:[TFILT]` to determine the value of the $T^{t+\Delta t}$,
 
 $$
@@ -729,8 +729,5 @@ $$
     = ( 1 -\epsilon_f ) \bar{T}^{t*}  
        +  \epsilon_f \bar{T}^{t+\Delta t}
 $$
-
-
-.
 
 

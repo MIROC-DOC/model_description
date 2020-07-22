@@ -38,7 +38,7 @@ $$
    > 0 
 $$
 
-> <span id="p-adj:cond" label="p-adj: > cond">p-adj[p-adj:cond\en]</span>.
+> <span id="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond"> </span>.
 
 is a condition.
 

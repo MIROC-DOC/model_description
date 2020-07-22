@@ -1,15 +1,15 @@
 ## Horizontal discretization
 
 The horizontal discretization of the
-Using the spectral transformation method (Bourke, 1988).
-The differential terms for longitude and latitude are evaluated by the orthogonal function expansion,
-On the other hand, the nonlinear term is computed on the grid points.
+The spectral transformation method is used (Bourke, 1988).
+The differential terms for longitude and latitude are evaluated by orthogonal function expansion,
+On the other hand, non-linear terms are computed on the grid points.
 
 ### Spectral Expansion.
 
 As an expansion function system, it is a Laplacian eigenfunction system on a sphere
-Using the spherical harmonic functions $Y_n^m(\lambda,\mu)$.
-However, it is $\mu \equiv \sin\varphi$.
+The spherical harmonic function $Y_n^m(\lambda,\mu)$ are used.
+with $\mu \equiv \sin\varphi$.
 $Y_n^m$ satisfies the following equation,
 
 $$
@@ -18,23 +18,23 @@ $$
 $$
 
 
-Using the Legendre jury function $P_n^m$ it is written as follows.
+Using the Legendre junction number $P_n^m$ it is written as follows.
 
 $$
 Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{im \lambda}
 $$
 
 
-However, it is $ n \geq | m | $.
+but $ n \geq | m | $.
 
-The expansion by spherical harmonic functions is ,
+The expansion by the spherical harmonic function is written as ,
 
 $$
    {Y_n^m}_{ij} \equiv Y_n^m ( \lambda_i, \mu_j )
 $$
 
 
-When I write ,
+If you write ,
 
 $$
   X_{ij} \equiv X ( \lambda_i, \mu_j )
@@ -42,7 +42,7 @@ $$
         X_n^m {Y_n^m}_{ij} ,
 $$
 
-> <span id="spherical expansion" label="spherical expansion">\centric expansion </span>.
+> <span id="Spherical Expansion" label="Spherical Expansion">\\\blur[Spherical Expansion]</span>
 
 The inverse of that is ,
 
@@ -54,18 +54,18 @@ $$
          =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m*}}_{ij} w_j 
 $$
- 
-> <span id="Deployment factor" label="Deployment factor">\blendon[Deployment factor </span>.
+  
+> <span id="Deployment Factor" label="Deployment Factor">\\\.com[Deployment Factor]</span>
 
 
-expressed as follows.
-When evaluating the sum of the integral, you can substitute the sum of ,
+.
+When evaluating by replacing the integral with the sum,
 See Gauss's trapezoidal formula for the $\lambda$ integral,
-Use the Gauss-Legendre integral formula for the $\mu$ integral.
+We use the Gauss-Legendre integral formula for the $\mu$ integral.
 $\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load.
-The $\lambda_i$ is an evenly spaced grid.
+Also, $\lambda_i$ is a grid of evenly spaced Gauss loads.
 
-Using spectral expansion,
+Using the spectral expansion, we can obtain a new formula for Gauss-Legendre integration,
 The grid point values for the terms containing the derivatives are found as follows.
 
 $$
@@ -75,7 +75,7 @@ $$
        im X_n^m {Y_n^m}_{ij}
 $$
 
-> <span id="barometric pressure x" label="barometric pressure x">\blazer.com[barometric pressure x]& lt;/span>
+> <span id="barometric pressure x" label="barometric pressure x">\a[barometric pressure x]</span>.
 
 $$
    \left( \cos\varphi \frac{\partial X}{\partial \varphi} \right)_{ij}
@@ -84,7 +84,7 @@ $$
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
 $$
 
-> <span id="barometric pressure y" label="barometric pressure y">\blazer[barometric pressure y]& lt;/span>
+> <span id="barometric y" label="barometric y" label="barometric y">\blaze[barometric y]</span>.
 
 Furthermore,
 From the spectral components of $\zeta$ and $D$,
@@ -102,7 +102,7 @@ $$
     \right\}
 $$
 
-> <span id="Seeking U" label="Seeking U" >\blaze[U Seeking a seat
+> <span id="Seeking U" label="Seeking U" label="Seeking U">\\[Seeking U]</span>.
 
 $$
   v_{ij}
@@ -116,12 +116,12 @@ $$
     \right\}
 $$
 
-> <span id="Ask for V" label="Ask for V" >\blaze[V Seeking a seat
+> <span id="Seeking V" label="Seeking V">\\\[V seeking]</span>
 
 The derivative that appears in the advection term of the equation is,
-The following is required.
+It is required as follows.
 
-> <span id="A integral" label="A integral" label="A integral">A Integral\[A integral]& lt;/span>
+> <span id="A integral" label="A integral" label="A integral">\[A integral]</span>
 $$
   \left( \frac{1}{a\cos\varphi} \frac{\partial A}{\partial \lambda} \right)_n^m 
    =  \frac{1}{4 \pi} 
@@ -134,11 +134,11 @@ $$
           im A_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
 $$
- 
- 
+  
+  
 
 
-> <span id="BIntegral" label="BIntegral">\blazer[BIntegral\.com]& lt;/span>
+> <span id="B integral" label="B integral" label="B integral">B integral\blazer\blazer]</span>.
 $$
   \left( \frac{1}{a\cos\varphi} 
          \frac{\partial }{\partial \varphi} (A\cos\varphi) \right)_n^m 
@@ -154,11 +154,11 @@ $$
           (1-\mu_j^2)  \frac{\partial }{\partial \mu} 
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
 $$
- 
- 
+  
+  
 
 
-Furthermore,
+Further ,
 
 $$
      \left( \nabla^{2}_{\sigma} X \right)_n^m
@@ -166,9 +166,9 @@ $$
 $$
 
 
-to be used for the evaluation of the $\nabla^2$ section.
+to evaluate the term $\nabla^2$.
 
-### Horizontal Diffusion Term
+### Horizontal Diffusion Term.
 
 The horizontal diffusion term is entered in the form $\nabla^{N_D}$ as follows.
 
@@ -180,7 +180,7 @@ $$
                     \zeta ,
 $$
 
-> <span id="Horizontal Diffusion" label="Horizontal Diffusion">\blaze[horizontal diffusion </span>.
+> <span id="Horizontal Diffusion" label="Horizontal Diffusion">Regular\[Horizontal Diffusion]</span>.
 
 $$
      {\mathcal D}(D) = K_{MH} 
@@ -202,33 +202,33 @@ $$
 
 
 This horizontal diffusion term has strong implications for computational stability.
-To represent selective horizontal diffusion on small scales,
-For $N_D$, use 4 $\sim$ 16.
-Here, the extra terms on vorticity and divergence diffusion are
-This shows that the term for rigid body rotation in $n=1$ is not damped.
+In order to represent selective horizontal diffusion on small scales,
+For $N_D$, 4 $\sim$ 16 is used.
+The extra terms on the diffusion of vorticity and divergence are
+It represents that the term for rigid body rotation in $n=1$ does not decay.
 
-### Spectral representation of equations
+### Spectral representation of the equation
 
 1. a series of equations
-     
+
 $$
   \frac{\partial \pi_m^m}{\partial t}
   =  - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k  \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
 $$
- 
+  
 
-     
- Here,
-     
+
+    Here,
+
 $$
 Z \equiv - \sum_{k=1}^{K} \mathbf{v}_k \cdot \nabla \pi .
 $$
 
 
 2. equation of motion
-     
+
 $$
   \frac{\partial \zeta_n^m}{\partial t} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -244,10 +244,10 @@ $$
           \\ 
    -   ({\mathcal D}_M)_n^m \zeta_n^m  \; ,
 $$
- 
- 
+  
+  
 
-     
+
 $$
   \frac{\partial \tilde{D}_n^m}{\partial t} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -269,13 +269,13 @@ $$
           ( \Phi_n^m + C_{p} \hat{\kappa}_k \bar{T}_k \pi_n^m ) 
           -  ({\mathcal D}_M)_n^m D_n^m  ,
 $$
- 
- 
- 
+  
+  
+  
 
-     
- However,
-     
+
+    However,
+
 $$
 ({\mathcal D}_M)_n^m = K_{MH} \left[ 
                             \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2}
@@ -285,7 +285,7 @@ $$
 
 
 3. thermodynamic equation
-     
+
 $$
   \frac{\partial T_n^m}{\partial t}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -305,13 +305,13 @@ $$
           \\ 
      - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
 $$
- 
- 
- 
+  
+  
+  
 
-     
- However,
-     
+
+    However,
+
 $$
 ({\mathcal D}_H)_n^m 
    =  K_{HH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
@@ -319,7 +319,7 @@ $$
 
 
 4. water vapor formula
-     
+
 $$
   \frac{\partial q_n^m}{\partial t}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -338,17 +338,16 @@ $$
           \\ 
      + ({\mathcal D}_H)_n^m q_n^m
 $$
- 
- 
- 
+  
+  
+  
 
-     
- However,
-     
+
+    However,
+
 $$
 ({\mathcal D}_E)_n^m 
    =  K_{EH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
 $$
-
 
 
