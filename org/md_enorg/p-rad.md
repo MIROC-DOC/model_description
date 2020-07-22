@@ -8,8 +8,8 @@ It was created based on the k-Distribution Method.
 by gases and clouds/aerosols
 Considering the absorption, emission, and scattering processes of solar and terrestrial radiation,
 Calculate the value of the radiation flux at each level.
-The main input data are temperature TERM00000, specific humidity TERM00001, and cloud cover TERM 00002, cloud cover is in TERM00003,
-The output data are upward and downward radiation fluxes, TERM00004,TERM 00004,
+The main input data are temperature TERM00000, specific humidity TERM00001, cloud cover TERM00002, and cloud cover TERM00003,
+The output data are upward and downward radiation fluxes, TERM00004 and TERM00004,
 and the differential coefficient of upward radiation flux with respect to surface temperature
 This is a TERM00005.
 
@@ -17,7 +17,7 @@ The calculation is done for several wavelengths.
 Each wavelength range is based on the k-distribution method,
 It is further divided into several sub-channels.
 As for gaseous absorption,
-TERM00006, TERM00007, TERM00008, TERM00009, Band Absorption of the TERM00010 and ,
+Band Absorption in TERM00006, TERM00007, TERM00008, TERM00009, TERM00010 and ,
 Continuous absorption of TERM00011, TERM00012, TERM00013
 and CFC absorption is incorporated.
 As for the scattering, we can use Rayleigh scattering of gases and
@@ -68,7 +68,7 @@ In order to calculate the radiative fluxes related to the heating rate, we need 
 An integration operation with respect to the wavelength is required.
 
 > EQ=00001.
-> <span id="p-rad:beer" label="p-rad: > beer">beer[p-rad:beer\]</span>.
+> <span id="p-rad:beer" label="p-rad:beer" label="p-rad:beer">\blazer[p-rad:beer]</span>
 
 However, the absorption and emission of radiation by gas molecules is not
 Due to the complicated wavelength dependence of the absorption line structure of the molecule,
@@ -88,9 +88,9 @@ This expression shows that TERM00023 and TERM00023 are the same as the TERM00024
 If you have a relatively smooth function,
 
 > EQ=00003.
-> <span id="p-rad:beer-kd" label="p-rad: beer-kd">\\blazer[p-rad:beer-kd\]</span>
+> <span id="p-rad:beer-kd" label="p-rad:beer-kd" label="p-rad:beer-kd"> </span>
 
-with the addition of a finite number of exponential terms (subchannels), as
+with the addition of a finite number of exponential terms (subchannels), such that
 It is possible to calculate relatively precisely.
 This method is furthermore ,
 It has the advantage that it is easy to consider absorption and scattering at the same time.
@@ -102,9 +102,9 @@ Not currently used as a standard,
 The wavelength range is divided into 18 parts.
 In addition, each wavelength range is divided into one to six sub-channels (corresponding to the TERM00025 in the above formula),
 There will be 37 channels in total.
-The wavelength range is the wavenumber (TERM00026)
+The wavelength range is a wavenumber (TERM00026)
 50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
-2500, 4000, 14500, 31500, 33000, 34500, 36000, 43,000, 46,000, 50000
+2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
 Divided by.
 
 ### Calculating the Planck function `MODULE:[PLANKS]`
@@ -128,18 +128,18 @@ It looks like the following.
 
 > EQ=00005.
 
-where TERM00035 is the absorption coefficient of the molecule TERM00036, and each subchannel has a Different.
+where TERM00035 is the absorption coefficient of the molecule TERM00036, which is different for each subchannel.
 
 > EQ=00006.
 
-as a function of temperature TERM00037(K) and atmospheric pressure TERM00038(hPa) in the form Given.
+as a function of temperature TERM00037(K) and atmospheric pressure TERM00038(hPa).
 TERM00039 is the amount of gas in the layer represented by mol TERM00040,
 Volume Mixing Ratio TERM00041 (in ppmv) to ,
 
 > EQ=00007.
 
 And it can be calculated that .
-However, TERM00042 is the gas constant per mole (8.31 J TERM00043 TERM 00044) and ,
+Note that TERM00042 is the gas constant per mole (8.31 J TERM00043 TERM00044),
 The unit of air layer thickness TERM00045 is in km.
 The volume mixing ratio TERM00046 at ppmv is
 Mass Mixture Ratio TERM00047 to ,
@@ -173,7 +173,7 @@ The continuous absorption of TERM00054 is assumed to be constant in the mixing r
 
 .
 
-Continuous absorption of TERM00055 is achieved by using the mixing ratio TERM00056 and incorporating the temperature dependence .
+The continuous absorption of TERM00055 is based on the mixing ratio TERM00056 and incorporates a temperature dependence,
 
 > EQ=00011.
 
@@ -271,10 +271,10 @@ This calculation is done for each sub-channel and each layer.
 ### Transmission and reflection coefficients of each layer, the source function `MODULE:[TWST]`
 
 So far obtained, optical thickness TERM00087, optical thickness of scattering TERM00088,
-Scattering Moments TERM00089,TERM00089, Expansion Coefficient for Planck Function TERM 00090,TERM00090,
+Scattering Moments TERM00089,TERM00089, Expansion Coefficient for Planck Function TERM00090,TERM00090,
 Using the solar incidence angle factor TERM00091,
 Assuming a uniform layer, and using the two-stream approximation
-Transmission Coefficient TERM00092, Reflection Coefficient TERM00093, Downward Radiation Source Function TERM 00094,
+Transmission Coefficient TERM00092, Reflection Coefficient TERM00093, Downward Radiation Source Function TERM00094,
 Find the upward radiation source function TERM00095.
 
 The single-scattering albedo TERM00096 is,
@@ -373,7 +373,7 @@ This calculation is done for each sub-channel and each layer.
 
 ### Radiation flux at each layer boundary `MODULE:[ADDING]`
 
-Transmission Coefficient of Each Layer TERM00110, Reflection Coefficient TERM00111, Radiation Source Function TERM 00112
+Transmission coefficient of each layer TERM00110, Reflection coefficient TERM00111, Radiation source function TERM00112
 is required in all layers of TERM00113,
 The radiation fluxes at each layer boundary can be obtained by using the adding method.
 This means that the two layers of TERM00114 and TERM00114 are known,
@@ -399,7 +399,7 @@ It looks like the following.
 
 Let's say there are layers 1, 2, ...TERM00120 from the top.
 However, the surface is considered to be a single layer and is the TERM00121 layer.
-Reflectance and radiance of the layers from the TERM00122 to the TERM00123 are considered as a single layer source function
+Reflectance and source function of the layers from the TERM00122 to the TERM00123 layer as a single layer
 Given the TERM00124, TERM00124 ,
 
 > EQ=00056.
@@ -425,7 +425,7 @@ and this is also TERM00128,TERM00128
 It can be solved by TERM00129 and TERM00129, starting from
 
 With these ,
-Downward flux at the boundary between layers TERM00130 and TERM00131 TERM 00132
+Downward flux at the boundary between layers TERM00130 and TERM00131 TERM00132
 and upward flux TERM00133 is ,
 TERM00134 The combination of layers and
 TERM00135 Reduced to a matter between two layers of combined layers,
@@ -514,7 +514,7 @@ To do so, we perform the following calculations.
 
 3. reflection and transmission coefficients for each layer,
  The source function is averaged with the weight of the cloud cover of the stratocumulus, TERM00155.
- The averages are expressed by adding the TERM00156,
+ The averages are represented by TERM00156,
 
      > EQ=00062.
      > EQ=00062.
@@ -537,7 +537,7 @@ To do so, we perform the following calculations.
  When using a characteristic value without clouds (e.g., TERM00158),
  When the characteristic values of cumulus clouds (e.g., TERM00159) are used,
  fluxes by adding, respectively.
-     Find TERM00160,TERM00160.
+ Find     TERM00160,TERM00160.
 
 5. the final flux we seek is
 
@@ -581,7 +581,7 @@ Then the angle of incidence factor TERM00169 (where TERM00170 is the zenith angl
 TERM00171 is a latitude,
 TERM00172 is the time angle (local time minus TERM00173).
 
-Assuming that the eccentricity of the Earth's orbit is TERM00174 (Katayama, 1974 ),
+Assuming that the eccentricity of the Earth's orbit is TERM00174 (Katayama, 1974),
 
 > EQ=00064.
 > EQ=00064.
@@ -606,7 +606,7 @@ The calculation of the radiation is usually not done at every step.
  To do so, we have to save the radiation flux,
  If the time is not used for radiation calculation, it is used.
  As for the shortwave radiation,
- Percentage of time (time that is TERM00175) between next calculation time and daylight hours TERM00176 and
+ Percentage of time (time that is TERM00175) between next calculation time (TERM00176) and
  Using the solar incidence angle factor (TERM00177) averaged over the daylight hours
  Seeking Flux TERM00178,
 

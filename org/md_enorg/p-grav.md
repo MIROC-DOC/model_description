@@ -6,7 +6,7 @@ The gravitational wave resistance scheme is,
 Excited by sub-grid scale terrain
 The upward momentum flux of the gravitational wave is represented,
 The horizontal wind deceleration associated with its convergence is calculated.
-The main input data are: east-west wind TERM00000, north-south wind TERM00001, temperature TERM 00002, and is,
+The main input data are: east-west wind TERM00000, north-south wind TERM00001, and temperature TERM00002,
 The output data is the time rate of change for the east-west and north-south winds,
 TERM00003,TERM00003, is.
 
@@ -28,11 +28,11 @@ The outline of the calculation procedure is as follows.
 
 The gravitational waves of surface origin
 Given the vertical flux of horizontal momentum,
-Fluxes at a certain altitude TERM00004 and
+Flux at a certain altitude TERM00004 and
 Local Fluid Number TERM00005 and ,
 
 > EQ=00000.
-> <span id="p-grav:tau-fl" label="p-grav :tau-fl">\\fl.com[p-grav:tau-fl]</span>
+> <span id="p-grav:tau-fl" label="p-grav:tau-fl" label="p-grav:tau-fl">\fl.</span> </span>
 
 The relationship between the two is valid.
 Here, TERM00006 is
@@ -43,11 +43,11 @@ It is a proportional constant .
 Now..,
 
 > EQ=00001.
-> <span id="p-grav:fl-tau" label="p-grav :fl-tau">fl-tau\[p-grav:fl-tau]</span>
+> <span id="p-grav:fl-tau" label="p-grav:fl-tau" label="p-grav:fl-tau">\blazer[p-grav:fl-tau]</span>
 
 Local Fluid Number TERM00010 is ,
 Assume that a certain value, the critical fluid number TERM00011, cannot be exceeded.
-Calculated from ([£l;p-grav:tau-fl\]](#p-grav:tau-fl) used as an example of
+Calculated from ([£p-grav:tau-fl\]](#p-grav:tau-fl)
 If the local fluid number exceeds the critical fluid number TERM00012
 The gravitational waves are supersaturated,
 Up to the momentum flux corresponding to the critical fluid number
@@ -59,7 +59,7 @@ due to gravitational waves excited at the earth's surface.
 The magnitude of the vertical flux of horizontal momentum TERM00013 is ,
 except for the local fluid number at the surface
 TERM00014.
-Substitute into ([p-grav:fl-tau\]](#p-grav:fl-tau) By ,
+([p-grav:fl-tau\]](#p-grav:fl-tau)) by substituting into ,
 
 > EQ=00002.
 
@@ -74,7 +74,7 @@ Assume that the standard deviation of the surface elevation is equal to TERM0001
 Here, the local fluid number at the surface
 If TERM00019 is the critical fluid number
 When you exceed the TERM00020,
-Momentum fluxes are defined by TERM00021 ([p-grav[p-grav:fl-tau\]](#p- grav:fl-tau))) to the value substituted for
+The momentum flux is substituted for TERM00021 into ([p-grav:fl-tau\]](#p-grav:fl-tau))
 Let's say it can be contained.
 Namely,
 
