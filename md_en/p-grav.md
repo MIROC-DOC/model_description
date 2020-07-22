@@ -6,7 +6,7 @@ The gravitational wave resistance scheme is,
 Excited by sub-grid scale terrain
 The upward momentum flux of the gravitational wave is represented,
 The horizontal wind deceleration associated with its convergence is calculated.
-The main input data are: east-west wind $u$, north-south wind $v$, temperature $T$, and is,
+The main input data are: east-west wind $u$, north-south wind $v$, and temperature $T$,
 The output data is the time rate of change for the east-west and north-south winds,
 $\partial u/\partial t, \partial v/\partial t$, is.
 
@@ -28,7 +28,7 @@ The outline of the calculation procedure is as follows.
 
 The gravitational waves of surface origin
 Given the vertical flux of horizontal momentum,
-Fluxes at a certain altitude $\tau$ and
+Flux at a certain altitude $\tau$ and
 Local Fluid Number $F_L = NH/U$ and ,
 
 $$
@@ -37,7 +37,7 @@ $$
            \right)^{1/2} \; ,
 $$
 
-> <span id="p-grav:tau-fl" label="p-grav :tau-fl">\\fl.com[p-grav:tau-fl]</span>
+> <span id="p-grav:tau-fl" label="p-grav:tau-fl" label="p-grav:tau-fl">\fl.</span> </span>
 
 The relationship between the two is valid.
 Here, $N = g/\theta \partial \theta/\partial z$ is
@@ -51,11 +51,11 @@ $$
   \tau = \frac{E_f F_L^2 \rho U^3}{N}
 $$
 
-> <span id="p-grav:fl-tau" label="p-grav :fl-tau">fl-tau\[p-grav:fl-tau]</span>
+> <span id="p-grav:fl-tau" label="p-grav:fl-tau" label="p-grav:fl-tau">\blazer[p-grav:fl-tau]</span>
 
 Local Fluid Number $F_L$ is ,
 Assume that a certain value, the critical fluid number $F_{c}$, cannot be exceeded.
-Calculated from ([£l;p-grav:tau-fl\]](#p-grav:tau-fl) used as an example of
+Calculated from ([£p-grav:tau-fl\]](#p-grav:tau-fl)
 If the local fluid number exceeds the critical fluid number $F_{c}$
 The gravitational waves are supersaturated,
 Up to the momentum flux corresponding to the critical fluid number
@@ -67,7 +67,7 @@ due to gravitational waves excited at the earth's surface.
 The magnitude of the vertical flux of horizontal momentum $\tau_{1/2}$ is ,
 except for the local fluid number at the surface
 $(F_L)_{1/2} = N_1 h/U_1$.
-Substitute into ([p-grav:fl-tau\]](#p-grav:fl-tau) By ,
+([p-grav:fl-tau\]](#p-grav:fl-tau)) by substituting into ,
 
 $$
   \tau_{1/2} = E_f h^2 \rho_1 N_1 U_1 \; ,
@@ -85,7 +85,7 @@ Assume that the standard deviation of the surface elevation is equal to $Z_{SD}$
 Here, the local fluid number at the surface
 If $(F_L)_{1/2} = N_1 Z_{SD}/U_1$ is the critical fluid number
 When you exceed the $F_c$,
-Momentum fluxes are defined by $F_c$ ([p-grav[p-grav:fl-tau\]](#p- grav:fl-tau))) to the value substituted for
+The momentum flux is substituted for $F_c$ into ([p-grav:fl-tau\]](#p-grav:fl-tau))
 Let's say it can be contained.
 Namely,
 

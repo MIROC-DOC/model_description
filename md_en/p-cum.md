@@ -337,7 +337,7 @@ $$
 
 
 However, in the case of $w^a(z) < q^c(z)$, it is $l^c(z)=0$.
-Furthermore, it is unlikely that a precipitation event will turn into cloudy water once it has risen,
+Furthermore, it is unlikely that a precipitation event will be followed by cloudy water,
 $R(z)$ must be an increasing function of $z$.
 This will limit the $r(z)$.
 
@@ -391,7 +391,7 @@ A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
        \right] \eta dz \; .
 $$
 
-> <span id="p-cum:cwf" label="p-cum:cwf "> >P-Cum[p-cum:cwff\\]</span>
+> <span id="p-cum:cwf" label="p-cum:cwf" label="p-cum:cwf">\blaze[p-cum:cwf]</span>
 
 Essentially, the work associated with the downdraft, discussed below, should be
 It should be accounted for, but we'll ignore it here for simplicity's sake.
@@ -430,7 +430,7 @@ $$
 
 
 and using $\bar{h}', \bar{q}'$
-Calculated from the cloud work function ([p-cum:cwf\]](#p-cum:cwf)) as $A'$.
+Let $A'$ be the cloud work function calculated from ([p-cum:cwf\]](#p-cum:cwf)).
 
 So..,
 
@@ -440,7 +440,7 @@ $$
 
 
 That would be.
-Here, when determining $A'$, it should be set to $\bar{h}', \bar{q}'$ We've got it.
+Here, when obtaining $A'$, the original $\bar{h}', \bar{q}'$ were used
 I should recalculate the vertical structure of the clouds,
 Now we are using the same cloud structure.
 
@@ -542,7 +542,7 @@ $$
 
 In the above equation, $f_d$ is the portion of the evaporation that is taken up by the downdraft,
 $(1-f_d)$ evaporates directly into the mean field.
-However, the downdraft mass flux $M^d$
+However, the downdraft mass flux $M^d$ is
 The total mass flux of cloud base shall not exceed the $f_m$ of $M$.
 The current standard value is $f_d=0.5, f_m=1.0$.
 

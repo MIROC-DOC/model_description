@@ -50,7 +50,7 @@
 <p><br /><span class="math display">$$
   \lambda_i = 2 \pi \frac{i-1}{I}  \;\;\; i = 1, \ldots I-1
 $$</span><br /></p>
-<p>Latitude is the Gauss latitude <span class="math inline"><em>φ</em><sub><em>j</em></sub></span> described in Mechanics, and <code>MODULE:[ ASETL]</code>, Gauss-Legendre derived from the integral formula. This takes <span class="math inline"><em>μ</em> = sin <em>φ</em></span> as its argument J The zero point of the next Legendre polynomial <code>MODULE:[GAUSS]</code>.</p>
+<p>Latitude is the Gauss latitude <span class="math inline"><em>φ</em><sub><em>j</em></sub></span> described in Mechanics, and <code>MODULE:[ASETL]</code>, Gauss-Legendre derived from the integral formula. This takes <span class="math inline"><em>μ</em> = sin <em>φ</em></span> as its argument J The zero point of the next Legendre polynomial <code>MODULE:[GAUSS]</code>.</p>
 <p>If J is large, we can approximate</p>
 <p><br /><span class="math display">$$
   \varphi_j =  \pi ( \frac{1}{2}- \frac{j-1/2}{J} ) \;\;\; j = 1, \ldots J-1
@@ -65,91 +65,142 @@ $$</span><br /></p>
                      \right)
               \right\}^{1/\kappa}
 $$</span><br /></p>
-<p>Find the <span class="math inline"><em>σ</em></span> representing the layer by Figure [a-setup:level]] (#a-setup:level), with the standard Indicates the level of the 20 layers used.</p>
+<p>Find the <span class="math inline"><em>σ</em></span> representing the layer by Figure [a-setup:level]] (#a-setup:level) shows the 20 levels of the standard.</p>
 <p>Each forecast variable is all, <span class="math inline">(<em>λ</em><sub><em>i</em></sub>, <em>φ</em><sub><em>j</em></sub>, <em>σ</em><sub><em>k</em></sub>)</span> or defined on the grid of <span class="math inline">(<em>λ</em><sub><em>i</em></sub>, <em>φ</em><sub><em>j</em></sub>, <em>z</em><sub><em>l</em></sub>)</span>. (The underground level, <span class="math inline"><em>z</em><sub><em>l</em></sub></span>, is discussed in the Physical Processes section.)</p>
 <p>In the time direction, they are discretized at equally spaced <span class="math inline"><em>Δ</em><em>t</em></span>, The time integration of the forecasting equation is performed. However, if the stability of the time integration may be compromised <span class="math inline"><em>Δ</em><em>t</em></span> can change.</p>
 <h3 id="physical-constants.">Physical Constants.</h3>
 <p>The basic physical constants are shown below <code>MODULE:[APCON]</code>.</p>
-<ul>
-<li><p>TAB00000:0.0 earth radius</p></li>
-<li><p>TAB00000:0.1 <span class="math inline"><em>a</em></span></p></li>
-<li><p>TAB00000:0.2 m</p></li>
-<li><p>TAB00000:0.3 6.37 <span class="math inline"> × 10<sup>6</sup></span></p></li>
-<li><p>TAB00000:1.0 acceleration of gravity</p></li>
-<li><p>TAB00000:1.1 <span class="math inline"><em>g</em></span></p></li>
-<li><p>TAB00000:1.2 ms<span class="math inline"><em></em><sup>−</sup>2</span></p></li>
-<li><p>TAB00000:1.3 9.8</p></li>
-<li><p>TAB00000:2.0 atmospheric pressure specific heat</p></li>
-<li><p>TAB00000:2.1 <span class="math inline"><em>C</em><sub><em>p</em></sub></span></p></li>
-<li><p>TAB00000:2.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:2.3 1004.6</p></li>
-<li><p>TAB00000:3.0 Atmospheric gas constant</p></li>
-<li><p>TAB00000:3.1 <span class="math inline"><em>R</em></span></p></li>
-<li><p>TAB00000:3.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:3.3 287.04</p></li>
-<li><p>TAB00000:4.0 Latent heat of water evaporation</p></li>
-<li><p>TAB00000:4.1 <span class="math inline"><em>L</em></span></p></li>
-<li><p>TAB00000:4.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:4.3 2.5 <span class="math inline"> × 10<sup>6</sup></span></p></li>
-<li><p>TAB00000:5.0 Water vapor constant pressure specific heat</p></li>
-<li><p>TAB00000:5.1 <span class="math inline"><em>C</em><sub><em>v</em></sub></span></p></li>
-<li><p>TAB00000:5.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:5.3 1810.</p></li>
-<li><p>TAB00000:6.0 Gas constant of water</p></li>
-<li><p>TAB00000:6.1 <span class="math inline"><em>R</em><sub><em>v</em></sub></span></p></li>
-<li><p>TAB00000:6.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:6.3 461.</p></li>
-<li><p>TAB00000:7.0 Density of liquid water</p></li>
-<li><p>TAB00000:7.1 <span class="math inline"><em>d</em><sub><em>H</em><sub>2</sub><em>O</em></sub></span></p></li>
-<li><p>TAB00000:7.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:7.3</p>
-<ol start="1000" type="1">
-<li></li>
-</ol></li>
-<li><p>TAB00000: 8.0 0 in <span class="math inline"><em></em><sup>∘</sup></span>. saturation vapor</p></li>
-<li><p>TAB00000:8.1 <span class="math inline"><em>e</em><sup>*</sup></span>(273K)</p></li>
-<li><p>TAB00000:8.2 Pa.</p></li>
-<li><p>TAB00000:8.3 611</p></li>
-<li><p>TAB00000:9.0 Stefan Bolzman constant</p></li>
-<li><p>TAB00000:9.1 <span class="math inline"><em>σ</em><sub><em>S</em><em>B</em></sub></span></p></li>
-<li><p>TAB00000:9.2 W m<span class="math inline"><em></em><sup> − 2</sup></span> K<span class="math inline"><em></em><sup> − 4</sup></span></p></li>
-<li><p>TAB00000:9.3 5.67 <span class="math inline"> × 10<sup> − 8</sup></span></p></li>
-<li><p>TAB00000:10.0 Kárman Constant</p></li>
-<li><p>TAB00000:10.1 <span class="math inline"><em>k</em></span></p></li>
-<li><p>TAB00000:10.2</p></li>
-<li><p>TAB00000:10.3 0.4</p></li>
-<li><p>TAB00000:11.0 Latent heat of ice melting</p></li>
-<li><p>TAB00000:11.1 <span class="math inline"><em>L</em><sub><em>M</em></sub></span></p></li>
-<li><p>TAB00000:11.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:11.3 3.4 <span class="math inline"> × 10<sup>5</sup></span></p></li>
-<li><p>TAB00000:12.0 Water Freezing Point</p></li>
-<li><p>TAB00000:12.1 <span class="math inline"><em>T</em><sub><em>M</em></sub></span></p></li>
-<li><p>TAB00000:12.2 K</p></li>
-<li><p>TAB00000:12.3 273.15</p></li>
-<li><p>TAB00000:13.0 Constant pressure specific heat of water</p></li>
-<li><p>TAB00000:13.1 <span class="math inline"><em>C</em><sub><em>w</em></sub></span></p></li>
-<li><p>TAB00000:13.2 J kg<span class="math inline"><em></em><sup> − 1</sup></span></p></li>
-<li><p>TAB00000:13.3 4,200.</p></li>
-<li><p>TAB00000:14.0 The freezing point of seawater</p></li>
-<li><p>TAB00000:14.1 <span class="math inline"><em>T</em><sub><em>I</em></sub></span></p></li>
-<li><p>TAB00000:14.2 K</p></li>
-<li><p>TAB00000:14.3 271.35</p></li>
-<li><p>TAB00000:15.0 Specific heat ratio of ice at constant pressure</p></li>
-<li><p>TAB00000:15.1 <span class="math inline"><em>C</em><sub><em>I</em></sub> = <em>C</em><sub><em>w</em></sub> − <em>L</em><sub><em>M</em></sub>/<em>T</em><sub><em>M</em></sub></span></p></li>
-<li><p>TAB00000:15.2</p></li>
-<li><p>TAB00000:15.3 2397.</p></li>
-<li><p>TAB00000:16.0 water vapor molecular weight ratio</p></li>
-<li><p>TAB00000:16.1 <span class="math inline"><em>ϵ</em> = <em>R</em>/<em>R</em><sub><em>v</em></sub></span></p></li>
-<li><p>TAB00000:16.2</p></li>
-<li><p>TAB00000:16.3 0.622</p></li>
-<li><p>TAB00000:17.0 coefficient of provisional temperature</p></li>
-<li><p>TAB00000:17.1 <span class="math inline"><em>ϵ</em><sub><em>v</em></sub> = <em>ϵ</em><sup> − 1</sup> − 1</span></p></li>
-<li><p>TAB00000:17.2</p></li>
-<li><p>TAB00000:17.3 0.606</p></li>
-<li><p>TAB00000:18.0 Ratio of specific heat to gas constant</p></li>
-<li><p>TAB00000:18.1 <span class="math inline"><em>κ</em> = <em>R</em>/<em>C</em><sub><em>p</em></sub></span></p></li>
-<li><p>TAB00000:18.2</p></li>
-<li><p>TAB00000:18.3 0.286</p></li>
-</ul>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>earth radius</td>
+<td><span class="math inline"><em>a</em></span></td>
+<td>m</td>
+<td>6.37 <span class="math inline"> × 10<sup>6</sup></span></td>
+</tr>
+<tr class="even">
+<td>acceleration of gravity</td>
+<td><span class="math inline"><em>g</em></span></td>
+<td>ms<span class="math inline"><em></em><sup>−</sup>2</span></td>
+<td>9.8</td>
+</tr>
+<tr class="odd">
+<td>atmospheric pressure specific heat</td>
+<td><span class="math inline"><em>C</em><sub><em>p</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1004.6</td>
+</tr>
+<tr class="even">
+<td>Atmospheric gas constant</td>
+<td><span class="math inline"><em>R</em></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>287.04</td>
+</tr>
+<tr class="odd">
+<td>Latent heat of water evaporation</td>
+<td><span class="math inline"><em>L</em></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>2.5 <span class="math inline"> × 10<sup>6</sup></span></td>
+</tr>
+<tr class="even">
+<td>Water vapor constant pressure specific heat</td>
+<td><span class="math inline"><em>C</em><sub><em>v</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1810.</td>
+</tr>
+<tr class="odd">
+<td>Gas constant of water</td>
+<td><span class="math inline"><em>R</em><sub><em>v</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>461.</td>
+</tr>
+<tr class="even">
+<td>Density of liquid water</td>
+<td><span class="math inline"><em>d</em><sub><em>H</em><sub>2</sub><em>O</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1000.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline"><em>e</em><sup>*</sup></span>(273K)</td>
+<td>Pa.</td>
+<td>611</td>
+</tr>
+<tr class="even">
+<td>Stefan Bolzman</td>
+<td><span class="math inline"><em>σ</em><sub><em>S</em><em>B</em></sub></span></td>
+<td>W m<span class="math inline"><em></em><sup> − 2</sup></span> K<span class="math inline"><em></em><sup> − 4</sup></span></td>
+<td>5.67</td>
+</tr>
+<tr class="odd">
+<td>Kárman Constant</td>
+<td><span class="math inline"><em>k</em></span></td>
+<td></td>
+<td>0.4</td>
+</tr>
+<tr class="even">
+<td>Latent heat of ice melting</td>
+<td><span class="math inline"><em>L</em><sub><em>M</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>3.4 <span class="math inline"> × 10<sup>5</sup></span></td>
+</tr>
+<tr class="odd">
+<td>Water Freezing Point</td>
+<td><span class="math inline"><em>T</em><sub><em>M</em></sub></span></td>
+<td>K</td>
+<td>273.15</td>
+</tr>
+<tr class="even">
+<td>Constant pressure specific heat of water</td>
+<td><span class="math inline"><em>C</em><sub><em>w</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>4,200.</td>
+</tr>
+<tr class="odd">
+<td>The freezing point of seawater</td>
+<td><span class="math inline"><em>T</em><sub><em>I</em></sub></span></td>
+<td>K</td>
+<td>271.35</td>
+</tr>
+<tr class="even">
+<td>Specific heat ratio of ice at constant pressure</td>
+<td><span class="math inline"><em>C</em><sub><em>I</em></sub> = <em>C</em><sub><em>w</em></sub> − <em>L</em><sub><em>M</em></sub>/<em>T</em><sub><em>M</em></sub></span></td>
+<td></td>
+<td>2397.</td>
+</tr>
+<tr class="odd">
+<td>water vapor molecular weight ratio</td>
+<td><span class="math inline"><em>ϵ</em> = <em>R</em>/<em>R</em><sub><em>v</em></sub></span></td>
+<td></td>
+<td>0.622</td>
+</tr>
+<tr class="even">
+<td>coefficient of provisional temperature</td>
+<td><span class="math inline"><em>ϵ</em><sub><em>v</em></sub> = <em>ϵ</em><sup> − 1</sup> − 1</span></td>
+<td></td>
+<td>0.606</td>
+</tr>
+<tr class="odd">
+<td>Ratio of specific heat to gas constant</td>
+<td><span class="math inline"><em>κ</em> = <em>R</em>/<em>C</em><sub><em>p</em></sub></span></td>
+<td></td>
+<td>0.286</td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>

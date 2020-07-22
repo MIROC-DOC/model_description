@@ -1,10 +1,5 @@
 {
-    "imath": {
-        "TERM00000": {
-            "count": 2,
-            "text": "$\\zeta,D,T,q$"
-        }
-    },
+    "imath": {},
     "emath": {},
     "tabular": {}
 }

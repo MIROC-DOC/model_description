@@ -1,12 +1,13 @@
 \hypertarget{vertical-discretization}{%
 \subsection{Vertical discretization}\label{vertical-discretization}}
 
-According to Arakawa and Suarez (1983), Discretize the basic equations
-vertically by differences. The scheme has the following characteristics.
+According to Arakawa and Suarez (1983), The basic equations are
+discretized vertically by differences. This scheme has the following
+features.
 
 \begin{itemize}
 \item
-  Save the total integrated mass
+  Conservation of the total domain-integrated mass
 \item
   Save the total integrated energy
 \item
@@ -21,22 +22,22 @@ vertically by differences. The scheme has the following characteristics.
   distribution, The hydrostatic pressure equation becomes accurate and
   the barometric gradient force becomes zero.
 \item
-  Isothermal atmosphere stays isothermal forever
+  The isothermal atmosphere stays at the isothermal level indefinitely
 \end{itemize}
 
 \hypertarget{how-to-take-a-level.}{%
 \subsubsection{How to take a level.}\label{how-to-take-a-level.}}
 
-Number the layers from bottom to top. If the physical quantity of
-\(\zeta,D,T,q\), \(\zeta,D,T,q\) is defined at the integer level (layer)
-I do. On the other hand, \(\dot{\sigma}\) is defined at the half-integer
-level. First, the value of \(\sigma\) at a half-integer level
-\(\sigma_{k-1/2}, (k=1,2,\ldots K)\) Define the . However, level
-\(\frac{1}{2}\) is the lower end (\(\sigma=1\)), Level \(K+\frac{1}{2}\)
-should be the upper end (\(\sigma=0\)).
+Number the layers from the bottom to the top. Assume that the physical
+quantity of \(\zeta,D,T,q\) is defined in terms of integer levels
+(layers). On the other hand, \(\dot{\sigma}\) is defined by the
+half-integer level (level). First, let the value of \(\sigma\) at the
+half-integer level be \(\sigma_{k-1/2}, (k=1,2,\ldots K)\) is defined.
+except that level \(\frac{1}{2}\) is the lower end (\(\sigma=1\)), Level
+\(K+\frac{1}{2}\) should be the uppermost (\(\sigma=0\)).
 
-Value of \(\sigma\) in integer level \(\sigma_k, (k=1,2,\ldots K)\) is
-obtained from the following equation.
+The value of \(\sigma\) for an integer level
+\(\sigma_k, (k=1,2,\ldots K)\) is found by the following formula.
 
 \begin{eqnarray}
  \sigma_k = \left\{ \frac{1}{1+\kappa}
@@ -48,8 +49,7 @@ obtained from the following equation.
 \end{eqnarray}
 
 \begin{quote}
-\protect\hypertarget{Bearux20definition}{}{Are you sure?
-GumaDinformation.com{]}}
+\blindness.0000
 \end{quote}
 
 Furthermore,
@@ -59,24 +59,19 @@ Furthermore,
 \end{eqnarray}
 
 \begin{quote}
-\protect\hypertarget{sigmaux20thickness}{}{Are you sure? Bear thickness
-}
+\protect\hypertarget{sigmaux20thickness}{}{Sigma thickness{[}sigma
+thickness{]}}
 \end{quote}
 
 .
 
 \hypertarget{vertical-discretization-representation.}{%
-\subsubsection{Vertical discretization
+\subsubsection{vertical discretization
 representation.}\label{vertical-discretization-representation.}}
 
 The discretized representation of each equation is as follows.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  continuity formula, vertical velocity
-\end{enumerate}
+The equation of continuity, vertical velocity
 
 \begin{eqnarray}
   \frac{\partial \pi}{\partial t}
@@ -100,7 +95,7 @@ The discretized representation of each equation is as follows.
 \setcounter{enumi}{1}
 \tightlist
 \item
-  hydrostatic pressure formula
+  hydrostatic pressure equation
 \end{enumerate}
 
 \begin{eqnarray}
@@ -120,10 +115,10 @@ The discretized representation of each equation is as follows.
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 \end{eqnarray}
 
-Here,
-
 \begin{verbatim}
- > <span id="Hydrostatic pressure coefficient" label="Hydrostatic pressure coefficient">Drum pressure coefficient Hydraulic Pressure CoefficientPointPoint.com
+Here ,
+
+> <span id="Hydrostatic pressure coefficient" label="Hydrostatic pressure coefficient">Are you sure you can't take a look at it?
 \end{verbatim}
 
 \begin{eqnarray}
@@ -151,8 +146,7 @@ Here,
 \end{eqnarray}
 
 \begin{verbatim}
- > <span id="Vorticity After All" label="Vorticity After All">\bout_Vorticity After All </span>.
- 
+> <span id="Vorticity After All" label="Vorticity After All">\\\.com\.} </span>.
 \end{verbatim}
 
 \begin{eqnarray}
@@ -167,7 +161,9 @@ Here,
           - {\mathcal D}(D_k) 
 \end{eqnarray}
 
+\begin{verbatim}
 Here,
+\end{verbatim}
 
 \begin{eqnarray}
   (A_u)_k
@@ -193,7 +189,11 @@ Here,
              + {\mathcal F}_y
 \end{eqnarray}
 
-First Kpa\textbackslash cleaner\cleaner\cleaner.com \begin{eqnarray}
+\begin{verbatim}
+> <span id="Hatchetkappa" label="Hatchetkappa">\\blade\.com\blade\bladeCoCoCoCo.} </span>.
+\end{verbatim}
+
+\begin{eqnarray}
    \hat{\kappa}_k 
     =       \frac{  \sigma_{k-1/2}(   \sigma^{\kappa}_{k-1/2} 
                                     - \sigma^{\kappa}_k      ) 
@@ -230,7 +230,9 @@ T'_{v,k} = T_{v,k} - \bar{T}_k
           - {\mathcal D}(T_k)  \\
 \end{eqnarray}
 
-Here,
+\begin{verbatim}
+Where ,
+\end{verbatim}
 
 \begin{eqnarray}
    H_k 
@@ -287,7 +289,7 @@ Here,
 \end{eqnarray}
 
 \begin{verbatim}
- > <span id="Temperature Interpolation Factor" label="Temperature Interpolation Factor">\blaze> <span id="Temperature Interpolation Factor Temperature interpolation coefficient\en.com
+> <span id="Temperature Interpolation Factor" label="Temperature Interpolation Factor">\\BackBackBacklash\.com
 \end{verbatim}
 
 \begin{eqnarray}
@@ -318,7 +320,9 @@ Here,
           - {\mathcal D}(q_k) 
 \end{eqnarray}
 
-lt;/span\textgreater{}
+\begin{verbatim}
+> <span id="q eventually" label="q eventually" label="q eventually">\\blana[q eventually]</span>
+\end{verbatim}
 
 \begin{eqnarray}
 R_k  =  q_k D_k 

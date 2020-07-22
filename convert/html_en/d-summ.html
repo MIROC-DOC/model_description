@@ -43,11 +43,11 @@
 <h1 class="title">MIROC-DOC d-summ</h1>
 </header>
 <h2 id="summary-of-the-mechanics-part">Summary of the mechanics part</h2>
-<p>Here, we duplicate the previous description, Enumerate the calculations performed in the Mechanical Process Department.</p>
-<h3 id="summary-of-calculations-for-the-mechanics-portion">Summary of Calculations for the Mechanics Portion</h3>
+<p>Here, we duplicate the previous description, Enumerate the calculations performed in the mechanical part.</p>
+<h3 id="summary-of-calculations-in-the-mechanics-part.">Summary of calculations in the mechanics part.</h3>
 <p>The mechanical processes are calculated in the following order.</p>
 <ol type="1">
-<li><p>converting horizontal wind into vorticity and divergence <code>MODULE:[UV2VDG(dvect)]</code></p></li>
+<li><p>the transformation of horizontal wind into vorticity and divergence <code>MODULE:[UV2VDG(dvect)]</code></p></li>
 <li><p>calculation of pseudotemperature <code>MODULE:[VIRTMD(dvtmp)]</code></p></li>
 <li><p>calculation of the barometric gradient term <code>MODULE:[HGRAD(dvect)]</code></p></li>
 <li><p>diagnostic calculation of vertical flow <code>MODULE:[GRDDYN/PSDOT(dgdyn)]</code></p></li>
@@ -56,51 +56,51 @@
 <li><p>convert the time-varying term into a spectrum <code>MODULE:[TENG2W(dg2wd)]</code></p></li>
 <li><p>time integration of spectral values <code>MODULE:[TINTGR(dintg)]</code></p></li>
 <li><p>convert the predictive variables to grid values <code>MODULE:[GENGD(dgeng)]</code></p></li>
-<li><p>pseudo, etc. <span class="math inline"><em>p</em></span> plane spreading correction <code>MODULE:[CORDIF(ddifc )]</code></p></li>
+<li><p>pseudo etc. <span class="math inline"><em>p</em></span> plane spreading correction <code>MODULE:[CORDIF(ddifc)]</code></p></li>
 <li><p>consideration of frictional heat by diffusion <code>MODULE:[CORFRC(ddifc)]</code></p></li>
 <li><p>correction for conservation of mass <code>MODULE:[MASFIX(dmfix)]</code></p></li>
 <li><p>(physical process) <code>MODULE:[PHYSCS(padmn)]</code></p></li>
 <li><p>(time filter) <code>MODULE:[TFILT(aadvn)]</code></p></li>
 </ol>
 <h3 id="conversion-of-horizontal-wind-to-vorticity-and-divergence">Conversion of Horizontal Wind to Vorticity and Divergence</h3>
-<p>Grid point values for horizontal wind <span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub>, <em>v</em><sub><em>i</em><em>j</em></sub></span> from the grid values of vorticity and divergence <span class="math inline"><em>ζ</em><sub><em>i</em><em>j</em></sub>, <em>D</em><sub><em>i</em><em>j</em></sub></span>. First, the spectra of vorticity and divergence Ask for <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span>,</p>
+<p>Grid point values for horizontal wind <span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub>, <em>v</em><sub><em>i</em><em>j</em></sub></span> from the grid point values of vorticity and divergence <span class="math inline"><em>ζ</em><sub><em>i</em><em>j</em></sub>, <em>D</em><sub><em>i</em><em>j</em></sub></span>. First, the spectra of vorticity and divergence Ask for <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span>,</p>
 <p><br /><span class="math display">$$
 \zeta_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
-                \frac{w_j}{a(1-\mu_j^{2})}
+                \frac{w_j}{a(1-\mu_j^{2})} 
                  \\
            +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                     u_{ij} \cos\varphi_j (1-\mu_j^2)
+                     u_{ij} \cos\varphi_j (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
 $$</span><br /></p>
 <blockquote>
-<p><span id="d-summ:uv-zeta" label="d- summ:uv-zeta">[d-summ:uv-zeta]&lt;/ span&gt;</p>
+<p><span id="d-summ:uv-zeta" label="d-summ:uv-zeta" label="d-summ:uv-zeta"> </span></p>
 </blockquote>
 <p><br /><span class="math display">$$
     D_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
-                \frac{w_j}{a(1-\mu_j^{2})}
+                \frac{w_j}{a(1-\mu_j^{2})} 
                  \\
            -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                  v_{ij} \cos\varphi_j  (1-\mu_j^2)
+                  v_{ij} \cos\varphi_j  (1-\mu_j^2) 
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
                  \frac{w_j}{a(1-\mu_j^{2})} ; .
 $$</span><br /></p>
 <blockquote>
-<p><span id="d-summ:uv-D" label="d-summ: uv-D">\[d-summ:uv-D]</span></p>
+<p><span id="d-summ:uv-D" label="d-summ:uv-D" label="d-summ:uv-D">[d-summ:uv-D\[d-summ:uv-D]</span>.</p>
 </blockquote>
-<p>I’ll take that further,</p>
+<p>And more,</p>
 <p><br /><span class="math display">$$
-  \zeta_{ij}
-   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+  \zeta_{ij} 
+   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       \zeta_n^m  {Y_n^m}_{ij} \; ,
 $$</span><br /></p>
 <p>and so on.</p>
-<h3 id="calculating-a-provisional-temperature">Calculating a Provisional Temperature</h3>
+<h3 id="calculating-pseudotemperature">Calculating Pseudotemperature</h3>
 <p>Provisional Temperature <span class="math inline"><em>T</em><sub><em>v</em></sub></span> is ,</p>
 <p><br /><span class="math display"><em>T</em><sub><em>v</em></sub> = <em>T</em>(1 + <em>ϵ</em><sub><em>v</em></sub><em>q</em> − <em>l</em>) ,</span><br /></p>
-<p>However, it is <span class="math inline"><em>ϵ</em><sub><em>v</em></sub> = <em>R</em><sub><em>v</em></sub>/<em>R</em> − 1</span>, <span class="math inline"><em>R</em><sub><em>v</em></sub></span> is a gas constant for water vapor (461 Jkg<span class="math inline"><em></em><sup> − 1</sup></span>K<span class="math inline"><em></em><sup> − 1</sup></span>) <span class="math inline"><em>R</em></span> is a gas constant of air (287.04 Jkg<span class="math inline"><em></em><sup> − 1</sup></span>K<span class="math inline"><em></em><sup> − 1</sup></span>) It is.</p>
+<p>However, it is <span class="math inline"><em>ϵ</em><sub><em>v</em></sub> = <em>R</em><sub><em>v</em></sub>/<em>R</em> − 1</span>, <span class="math inline"><em>R</em><sub><em>v</em></sub></span> is a gas constant for water vapor (461 Jkg<span class="math inline"><em></em><sup> − 1</sup></span>K<span class="math inline"><em></em><sup> − 1</sup></span>) <span class="math inline"><em>R</em></span> is a gas constant of air (287.04 Jkg<span class="math inline"><em></em><sup> − 1</sup></span>K<span class="math inline"><em></em><sup> − 1</sup></span>) .</p>
 <h3 id="calculating-the-barometric-gradient-term">Calculating the Barometric gradient term</h3>
 <p>The barometric gradient term <span class="math inline">$\nabla \pi = \frac{1}{p_S} \nabla p_S$</span> is , First, we need to get the <span class="math inline"><em>π</em><sub><em>n</em></sub><sup><em>m</em></sup></span></p>
 <p><br /><span class="math display">$$
@@ -109,27 +109,27 @@ $$</span><br /></p>
 $$</span><br /></p>
 <p>to a spectral representation and then ,</p>
 <p><br /><span class="math display">$$
-   \frac{1}{a \cos \varphi}
+   \frac{1}{a \cos \varphi} 
    \left( \frac{\partial \pi}{\partial \lambda} \right)_{ij}
-     =
-   \frac{1}{a \cos \varphi}
-        {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+     = 
+   \frac{1}{a \cos \varphi} 
+        {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        im \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
 $$</span><br /></p>
 <p><br /><span class="math display">$$
    \frac{1}{a}
    \left( \frac{\partial \pi}{\partial \varphi} \right)_{ij}
      =  
-   \frac{1}{a \cos \varphi}
-       {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
-       \pi_n^m
+   \frac{1}{a \cos \varphi} 
+       {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       \pi_n^m 
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 $$</span><br /></p>
 <h3 id="diagnostic-calculations-of-vertical-flow.">Diagnostic calculations of vertical flow.</h3>
 <p>Barometric pressure change term, and lead DC,</p>
 <p><br /><span class="math display">$$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi )
+ = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi ) 
        \Delta  \sigma_k
 $$</span><br /></p>
 <p><br /><span class="math display">$$
@@ -138,7 +138,7 @@ $$</span><br /></p>
    - \sum_{l=k}^{K} ( D_l + \mathbf{v}_l \cdot \nabla \pi )          
        \Delta  \sigma_l
 $$</span><br /></p>
-<p>and its non-gravity components.</p>
+<p>and its non-gravity component.</p>
 <p><br /><span class="math display">$$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
    =   - \sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi  
@@ -150,47 +150,47 @@ $$</span><br /></p>
    - \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi
        \Delta  \sigma_{l}
 $$</span><br /></p>
-<h3 id="time-change-term-due-to-advection.">Time change term due to advection.</h3>
+<h3 id="the-time-varying-term-due-to-advection.">The time-varying term due to advection.</h3>
 <p>Momentum advection term:</p>
 <p><br /><span class="math display">$$
-  (A_u)_k
-    =  ( \zeta_k + f ) v_k
-             - \frac{1}{2 \Delta \sigma_k}
+  (A_u)_k 
+    =  ( \zeta_k + f ) v_k 
+             - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( u_{k-1} - u_k   )
                + \dot{\sigma}_{k+1/2} ( u_k   - u_{k+1} ) ]
             \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi}
-                  \frac{\partial \pi}{\partial \lambda}
+           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  (A_v)_k
-    =  - ( \zeta_k + f ) u_k
-             - \frac{1}{2 \Delta \sigma_k}
+  (A_v)_k 
+    =  - ( \zeta_k + f ) u_k 
+             - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( v_{k-1} - v_k   )
                + \dot{\sigma}_{k+1/2} ( v_k   - v_{k+1} ) ]
             \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a}
-             \frac{\partial \pi}{\partial \varphi}
+           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a} 
+             \frac{\partial \pi}{\partial \varphi} 
 $$</span><br /></p>
 <p><br /><span class="math display">$$
  \hat{E}_k    
-  = \frac{1}{2} ( u^2 + v^2 )
+  = \frac{1}{2} ( u^2 + v^2 ) 
     +  \sum_{k'=1}^{k} \left[  C_p \alpha_k ( T_v - T )_{k'}
                               + C_p \beta_k ( T_v - T )_{k'-1} \right]
 $$</span><br /></p>
-<p>Temperature advection term:</p>
+<p>Temperature Advection Term:</p>
 <p><br /><span class="math display">(<em>u</em><em>T</em>′)<sub><em>k</em></sub> = <em>u</em><sub><em>k</em></sub>(<em>T</em><sub><em>k</em></sub> − <em>T̄</em>)</span><br /></p>
 <p><br /><span class="math display">(<em>v</em><em>T</em>′)<sub><em>k</em></sub> = <em>v</em><sub><em>k</em></sub>(<em>T</em><sub><em>k</em></sub> − <em>T̄</em>)</span><br /></p>
 <p><br /><span class="math display">$$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2} 
                                          - T^{\prime}_{k}   )
                + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
                                          - \hat{T^{\prime}}_{k+1/2} ) ]
                 \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2}
+         - \frac{1}{\Delta \sigma_{k}} 
+             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2} 
                                          - \bar{T}_{k}   )
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
@@ -198,10 +198,10 @@ $$</span><br /></p>
          + \hat{\kappa}_{k} T_{v,k} \mathbf{v}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi
+             \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -209,38 +209,38 @@ $$</span><br /></p>
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
 $$</span><br /></p>
-<p>Water vapor advection term:</p>
+<p>Water Vapor Advection Term:</p>
 <p><br /><span class="math display">(<em>u</em><em>q</em>)<sub><em>k</em></sub> = <em>u</em><sub><em>k</em></sub><em>q</em><sub><em>k</em></sub></span><br /></p>
 <p><br /><span class="math display">(<em>v</em><em>q</em>)<sub><em>k</em></sub> = <em>v</em><sub><em>k</em></sub><em>q</em><sub><em>k</em></sub></span><br /></p>
 <p><br /><span class="math display">$$
-R_k  =  q_k D_k
-       - \frac{1}{2 \Delta \sigma_k}
+R_k  =  q_k D_k 
+       - \frac{1}{2 \Delta \sigma_k} 
              [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
                + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
 $$</span><br /></p>
-<h3 id="conversion-of-predictive-variables-into-spectra">Conversion of Predictive Variables into Spectra</h3>
+<h3 id="conversion-of-predictive-variables-to-spectra.">Conversion of Predictive Variables to Spectra.</h3>
 <p>(<a href="#d-summ:uv-D">\</a>) to</p>
-<p><span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup>, <em>v</em><sub><em>i</em><em>j</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>. Spectral representation of vorticity and divergence Convert to <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span>. Furthermore, Temperature <span class="math inline"><em>T</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>, Specific Humidity <span class="math inline"><em>q</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>, <span class="math inline"><em>π</em> = ln <em>p</em><sub><em>S</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>.</p>
+<p><span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup>, <em>v</em><sub><em>i</em><em>j</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>. Spectral representation of vorticity and divergence Convert to <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span>. Furthermore , Temperature <span class="math inline"><em>T</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>, Specific Humidity <span class="math inline"><em>q</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>, <span class="math inline"><em>π</em> = ln <em>p</em><sub><em>S</em></sub><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>.</p>
 <p><br /><span class="math display">$$
   X_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m *}}_{ij}  w_j \; ,
 $$</span><br /></p>
 <p>to a spectral representation.</p>
-<h3 id="conversion-of-time-varying-terms-to-spectra">Conversion of time-varying terms to spectra</h3>
+<h3 id="conversion-of-time-varying-terms-to-spectra.">Conversion of time-varying terms to spectra.</h3>
 <p>Time Variation Term of Vorticity</p>
 <p><br /><span class="math display">$$
-  \frac{\partial \zeta_n^m}{\partial t}
+  \frac{\partial \zeta_n^m}{\partial t} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_v)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
    +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_u)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \frac{w_j}{a(1-\mu_j^{2})} 
+          \\ 
 $$</span><br /></p>
 <p>The non-gravity wave component of the time-varying term of the divergence</p>
 <p><br /><span class="math display">$$
@@ -248,105 +248,105 @@ $$</span><br /></p>
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_u)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
    -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_v)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
-   -   \frac{n(n+1)}{a^{2}}
+   -   \frac{n(n+1)}{a^{2}} 
          \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \hat{E}_{ij}  {Y_n^{m *}}_{ij} w_j
-          \\
+          \\ 
 $$</span><br /></p>
-<p>The non-gravity wave component of the time-varying term of temperature</p>
+<p>The non-gravitational component of the time-varying term of temperature</p>
 <p><br /><span class="math display">$$
   \left( \frac{\partial T_n^m}{\partial t} \right)^{NG}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (u T')_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (v T')_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          \hat{H}_{ij}
+          \hat{H}_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$</span><br /></p>
-<p>Time-varying term of water vapor</p>
+<p>Time-varying terms for water vapor</p>
 <p><br /><span class="math display">$$
   \frac{\partial q_n^m}{\partial t}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (uq)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
-         \frac{w_j}{a(1-\mu_j^{2})}
+         \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (vq)_{ij} \cos \varphi_j
-          (1-\mu_j^2)
+          (1-\mu_j^2) 
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
+          \frac{w_j}{a(1-\mu_j^{2})} 
           \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          R_{ij}
+          R_{ij} 
           {Y_n^{m *}}_{ij} w_j
 $$</span><br /></p>
-<h3 id="spectral-value-time-integration">Spectral value time integration</h3>
+<h3 id="spectral-value-time-integration">Spectral Value Time Integration</h3>
 <p>Equations in matrix form</p>
 <p><br /><span class="math display">$$
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
            + (1+2\Delta t {\mathcal D}_M)
              \mathbf{G} \mathbf{C}^{T} ) \nabla^{2}_{\sigma}
   \right\}
-      \overline{ \mathbf{D} }^{t}
+      \overline{ \mathbf{D} }^{t} 
        \\
-  = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M )
+  = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M ) 
        \mathbf{D}^{t-\Delta t}
-  + \Delta t
+  + \Delta t 
          \left( \frac{\partial \mathbf{D}}{\partial t} \right)_{NG}  
   \\
   -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S}
-                          + \underline{W}
-                            \left[ ( 1-2\Delta t {\mathcal D}_H )
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) \mathbf{\Phi}_{S} 
+                          + \underline{W} 
+                            \left[ ( 1-2\Delta t {\mathcal D}_H ) 
                                     \mathbf{T}^{t-\Delta t}
-                                  + \Delta t
+                                  + \Delta t 
                                       \left( \frac{\partial \mathbf{T}}
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
   \\
-                 \left.  
-                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G}
-                            \left[ \pi^{t-\Delta t}
+                 \left.  \hspace*{20mm} 
+                          + ( 1+2\Delta t {\mathcal D}_H ) \mathbf{G} 
+                            \left[ \pi^{t-\Delta t} 
                                   + \Delta t
                                      \left( \frac{\partial \pi}
-                                                 {\partial t}
+                                                 {\partial t} 
                                      \right)_{NG}  \right]
-                   \right\} .
+                   \right\} . 
 $$</span><br /></p>
-<p>by using LU decomposition to solve for Ask for <span class="math inline"><em>D̄</em></span>,</p>
+<p>By using LU decomposition to solve for Ask for <span class="math inline"><em>D̄</em></span>,</p>
 <p><br /><span class="math display">$$
-  \frac{\partial \mathbf{T}}{\partial t}
+  \frac{\partial \mathbf{T}}{\partial t} 
       =   \left( \frac{\partial \mathbf{T}}
                         {\partial t}       \right)_{NG}  
          - \underline{h} \mathbf{D}
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  \frac{\partial \pi}{\partial t}
+  \frac{\partial \pi}{\partial t} 
       =   \left( \frac{\partial \pi}
                         {\partial t}       \right)_{NG}  
          - \mathbf{C} \cdot \mathbf{D}
 $$</span><br /></p>
-<p>due to <span class="math inline">∂<strong>T</strong>/∂<em>t</em></span>, <span class="math inline">∂<em>π</em>/∂<em>t</em></span> and calculate the value of the spectrum in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span>.</p>
+<p>by. <span class="math inline">∂<strong>T</strong>/∂<em>t</em></span>, <span class="math inline">∂<em>π</em>/∂<em>t</em></span> and calculate the value of the spectrum in <span class="math inline"><em>t</em> + <em>Δ</em><em>t</em></span> by finding</p>
 <p><br /><span class="math display">$$
   \zeta^{t+\Delta t}  =  \left( \zeta^{t-\Delta t}
                                 +   2 \Delta t \frac{\partial \zeta}{\partial t} \right)
@@ -361,15 +361,15 @@ $$</span><br /></p>
 \pi^{t+\Delta t}  =  \pi^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial \pi}{\partial t}
 $$</span><br /></p>
-<h3 id="conversion-of-predictive-variables-to-grid-values">Conversion of Predictive Variables to Grid Values</h3>
-<p>Spectral values of vorticity and divergence from <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span> Find the grid values of the horizontal wind speed <span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub>, <em>v</em><sub><em>i</em><em>j</em></sub></span>.</p>
+<h3 id="conversion-of-prediction-variables-to-grid-values">Conversion of Prediction Variables to Grid Values</h3>
+<p>Spectral values of vorticity and divergence from <span class="math inline"><em>ζ</em><sub><em>n</em></sub><sup><em>m</em></sup>, <em>D</em><sub><em>n</em></sub><sup><em>m</em></sup></span> Find the grid values for the horizontal wind speed <span class="math inline"><em>u</em><sub><em>i</em><em>j</em></sub>, <em>v</em><sub><em>i</em><em>j</em></sub></span>.</p>
 <p><br /><span class="math display">$$
   u_{ij}
   =  \frac{1}{\cos \varphi_j}
-     {\mathcal R}\mathbf{e} \sum_{m=-N}^{N}
-                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
+     {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} 
+                       \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
     \left\{
-             \frac{a}{n(n+1)} \zeta_n^m
+             \frac{a}{n(n+1)} \zeta_n^m 
             (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
           -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
@@ -381,77 +381,77 @@ $$</span><br /></p>
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
           -  \frac{im a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
-          -  \frac{a}{n(n+1)} \tilde{D}_n^m
+          -  \frac{a}{n(n+1)} \tilde{D}_n^m 
             (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
     \right\}
 $$</span><br /></p>
-<p>Furthermore,</p>
+<p>Furthermore ,</p>
 <p><br /><span class="math display">$$
-  T_{ij}
-   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
+  T_{ij} 
+   =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       T_n^m  {Y_n^m}_{ij} \; ,
 $$</span><br /></p>
-<p><span class="math inline"><em>T</em><sub><em>i</em><em>j</em></sub>, <em>π</em><sub><em>i</em><em>j</em></sub>, <em>q</em><sub><em>i</em><em>j</em></sub></span> is obtained by such methods as</p>
+<p><span class="math inline"><em>T</em><sub><em>i</em><em>j</em></sub>, <em>π</em><sub><em>i</em><em>j</em></sub>, <em>q</em><sub><em>i</em><em>j</em></sub></span> are obtained by such methods as</p>
 <p><br /><span class="math display"><em>p</em><sub><em>S</em></sub><sub><em>i</em><em>j</em></sub> = exp <em>π</em><sub><em>i</em><em>j</em></sub></span><br /></p>
-<p>to calculate.</p>
+<p>Calculate the .</p>
 <h3 id="pseudo-etc.-p-surface-diffusion-correction">Pseudo etc. <span class="math inline"><em>p</em></span> Surface Diffusion Correction</h3>
-<p>Horizontal diffusion is applied on the surface of <span class="math inline"><em>σ</em></span> and so on, In large areas of mountain slopes, water vapor is transported uphill, Causing problems such as bringing false precipitation at the top of the mountain. To mitigate that, etc. close to the diffusion of the <span class="math inline"><em>p</em></span> surface Insert corrections for <span class="math inline"><em>T</em>, <em>q</em>, <em>l</em></span>.</p>
+<p>Horizontal diffusion is applied on the surface of <span class="math inline"><em>σ</em></span> and so on, In large areas of mountain slopes, water vapor is transported uphill, causing problems such as bringing false precipitation at the top of the mountain. To mitigate it, such as close to the diffusion of the <span class="math inline"><em>p</em></span> surface Insert a correction for <span class="math inline"><em>T</em>, <em>q</em>, <em>l</em></span>.</p>
 <p><br /><span class="math display">$$
   {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
                 \simeq  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
-                      - \frac{\partial \sigma}{\partial p}
+                      - \frac{\partial \sigma}{\partial p} 
                       (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} p
                       \cdot \frac{\partial T}{\partial \sigma}                   \\
                 =      (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
                     -  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} \pi
                           \cdot \sigma \frac{\partial T}{\partial \sigma}  \\
-                =    {\mathcal D} (T)
-                    -  {\mathcal D} (\pi)
+                =    {\mathcal D} (T) 
+                    -  {\mathcal D} (\pi) 
                        \sigma \frac{\partial T}{\partial \sigma}
 $$</span><br /></p>
-<p>So,</p>
+<p>so,</p>
 <p><br /><span class="math display">$$
-  T_k \leftarrow  T_k
+  T_k \leftarrow  T_k 
        -  2 \Delta t
         \sigma_{k} \frac{T_{k+1}-T_{k-1}}{\sigma_{k+1} - \sigma_{k-1}}
         {\mathcal D}(\pi)
 $$</span><br /></p>
-<p>And so on. <span class="math inline">𝒟(<em>π</em>)</span> has been replaced by the spectral value of <span class="math inline"><em>p</em><em>i</em></span> in the <span class="math inline"><em>π</em><sub><em>n</em></sub><sup><em>m</em></sup></span> The spectral representation of the diffusion coefficient multiplied by It is used to convert to a grid value.</p>
-<h3 id="consideration-of-frictional-heat-from-diffusion.">Consideration of frictional heat from diffusion.</h3>
+<p>And so on. <span class="math inline">𝒟(<em>π</em>)</span> is equal to the spectral value of <span class="math inline"><em>p</em><em>i</em></span> in <span class="math inline"><em>π</em><sub><em>n</em></sub><sup><em>m</em></sup></span> The spectral representation of the diffusion coefficient multiplied by Converted into a grid value.</p>
+<h3 id="consideration-of-frictional-heat-by-diffusion.">Consideration of frictional heat by diffusion.</h3>
 <p>Frictional heat from diffusion is ,</p>
 <p><br /><span class="math display"><em>Q</em><sub><em>D</em><em>I</em><em>F</em></sub> =  − (<em>u</em><sub><em>i</em><em>j</em></sub>𝒟(<em>u</em>)<sub><em>i</em><em>j</em></sub>+<em>v</em><sub><em>i</em><em>j</em></sub>𝒟(<em>v</em>)<sub><em>i</em><em>j</em></sub>)</span><br /></p>
-<p>It is estimated that . Therefore,</p>
+<p>It is estimated that Therefore,</p>
 <p><br /><span class="math display">$$
-  T_k \leftarrow  T_k
+  T_k \leftarrow  T_k 
        -  \frac{2 \Delta t}{C_p}
-           \left( u_{ij} {\mathcal D}(u)_{ij}
+           \left( u_{ij} {\mathcal D}(u)_{ij} 
                  + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$</span><br /></p>
-<h3 id="correction-for-conservation-of-mass">Correction for conservation of mass</h3>
-<p>The spectral method is not used, The global integration of the <span class="math inline"><em>π</em> = ln <em>p</em><sub><em>S</em></sub></span> is preserved except for rounding errors, The conservation of the mass, i.e. the global integration of <span class="math inline"><em>p</em><sub><em>S</em></sub></span>, is not guaranteed. Also, with the expiration of the spectral wavenumber, the Negative values of the grid points of water vapor are sometimes observed. For these reasons , Let the mass of dry air and water vapor, the mass of cloud water be preserved, In addition, corrections are made to remove areas with negative water vapor content.</p>
-<p>First, at the beginning of the mechanics calculation, <code>MODULE:[FIXMAS]</code>, Calculate global integrals <span class="math inline"><em>M</em><sub><em>q</em></sub>, <em>M</em><sub><em>l</em></sub></span> for each component of water vapor and cloud water.</p>
+<h3 id="correction-for-conservation-of-mass.">Correction for conservation of mass.</h3>
+<p>The spectral method is not used, The global integration of the <span class="math inline"><em>π</em> = ln <em>p</em><sub><em>S</em></sub></span> is preserved except for rounding errors, The conservation of the mass, i.e., the global integration of <span class="math inline"><em>p</em><sub><em>S</em></sub></span>, is not guaranteed. Also, as the spectral wavenumber expires, it is not possible to preserve the global integration of <span class="math inline"><em>p</em><sub><em>S</em></sub></span>, Negative values of the grid points of water vapor are sometimes observed. For these reasons, Let the mass of dry air and water vapor, the mass of cloud water be preserved, Furthermore, corrections are made to remove the negative water vapor content in the region.</p>
+<p>First, at the beginning of the dynamics calculation, <code>MODULE:[FIXMAS]</code> is added, Global integrals of water vapor and cloud water are calculated for <span class="math inline"><em>M</em><sub><em>q</em></sub>, <em>M</em><sub><em>l</em></sub></span>.</p>
 <p><br /><span class="math display">$$
   M_q^0  =  \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
-  M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k
+  M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k 
 $$</span><br /></p>
-<p>Also, in the first step of the calculation Calculate and memorize dry mass <span class="math inline"><em>M</em><sub><em>d</em></sub></span>.</p>
+<p>In the first step of the calculation, the global integrals of Calculate and memorize dry mass <span class="math inline"><em>M</em><sub><em>d</em></sub></span>.</p>
 <p><br /><span class="math display"><em>M</em><sub><em>d</em></sub><sup>0</sup> = ∑<sub><em>i</em><em>j</em><em>k</em></sub>(1 − <em>q</em> − <em>l</em>)<em>p</em><sub><em>S</em></sub><em>Δ</em><em>λ</em><sub><em>i</em></sub><em>w</em><sub><em>j</em></sub><em>Δ</em><em>σ</em><sub><em>k</em></sub></span><br /></p>
-<p>At the end of the dynamics calculation, <code>MODULE:[MASFIX]</code>, The following procedure is used to make the correction.</p>
-<p>First, we discuss the grid points with negative water vapor content, The water vapor is distributed from the grid points directly below, Remove the negative water vapor. If it is $q_k &lt; 0 $,</p>
+<p>At the end of the dynamics calculation, <code>MODULE:[MASFIX]</code>, The correction is performed as follows.</p>
+<p>First, for the grid points with negative water vapor content, The water vapor is distributed from the grid points directly below, Remove negative water vapor. If this is $q_k &lt; 0 $,</p>
 <p><br /><span class="math display">$$
         q_k'      =  0          \\
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
 $$</span><br /></p>
-<p>However, this should only be done if this is $q_{k-1}’  $.</p>
-<p>Next, set the value to zero for the grid points not removed by the above procedure.</p>
+<pre><code>However, this is only done for $q_{k-1}&#39; \ge 0 $.</code></pre>
+<p>The value is then set to zero for the grid points not removed by the above procedure.</p>
 <ol start="3" type="1">
-<li>calculate the global integration value <span class="math inline"><em>M</em><sub><em>q</em></sub></span> Make sure this matches the <span class="math inline"><em>M</em><sub><em>q</em></sub><sup>0</sup></span>, Multiply the global water vapor content by a certain percentage.</li>
+<li>calculate the global integration value <span class="math inline"><em>M</em><sub><em>q</em></sub></span> and Make sure this matches the <span class="math inline"><em>M</em><sub><em>q</em></sub><sup>0</sup></span>, Multiply the global water vapor content by a constant percentage.</li>
 </ol>
 <p><br /><span class="math display">$$
-        q'' = \frac{M_q^0}{M_q} q'
+        q'' = \frac{M_q^0}{M_q} q' 
 $$</span><br /></p>
 <ol start="4" type="1">
-<li>perform dry air mass correction. Similarly, calculate <span class="math inline"><em>M</em><sub><em>d</em></sub></span>,</li>
+<li>correcting the dry air mass. Similarly, calculate <span class="math inline"><em>M</em><sub><em>d</em></sub></span> and</li>
 </ol>
 <p><br /><span class="math display">$$
         p_S'' = \frac{M_d^0}{M_d} p_S
@@ -459,33 +459,32 @@ $$</span><br /></p>
 <h3 id="horizontal-diffusion-and-rayleigh-friction">Horizontal Diffusion and Rayleigh Friction</h3>
 <p>The coefficients of horizontal diffusion can be expressed spectrally,</p>
 <p><br /><span class="math display">$$
- {{\mathcal D}_M}_n^m = K_M
-                      \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
-                                - \left( \frac{2}{a^2} \right)^{N_D/2}
+ {{\mathcal D}_M}_n^m = K_M 
+                      \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
+                                - \left( \frac{2}{a^2} \right)^{N_D/2} 
                       \right]
                   + K_R
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
+  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$</span><br /></p>
 <p><br /><span class="math display">$$
-  {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
+  {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$</span><br /></p>
 <p>The <span class="math inline"><em>K</em><sub><em>R</em></sub></span> is the Rayleigh coefficient of friction. The Rayleigh coefficient of friction is</p>
 <p><br /><span class="math display">$$
   K_R = K_R^0 \left[ 1+\tanh \left( \frac{z-z_R}{H_R} \right) \right]
 $$</span><br /></p>
-<p>given in profiles like However,</p>
+<p>The profile is given as However,</p>
 <p><br /><span class="math display"><em>z</em> =  − <em>H</em>ln <em>σ</em></span><br /></p>
-<p>Approximate to . The standard value is, <span class="math inline"><em>K</em><sub><em>R</em></sub><sup>0</sup> = (30<em>d</em><em>a</em><em>y</em>)<sup> − 1</sup></span>, <span class="math inline"><em>z</em><sub><em>R</em></sub> =  − <em>H</em>ln <em>σ</em><sub><em>t</em><em>o</em><em>p</em></sub></span> (<span class="math inline"><em>σ</em><sub><em>t</em><em>o</em><em>p</em></sub></span> : the top level of the model), <span class="math inline"><em>H</em> = 8000</span> m, <span class="math inline"><em>H</em><sub><em>R</em></sub> = 7000</span> m.</p>
+<p>It is approximated as follows. Standard values are, <span class="math inline"><em>K</em><sub><em>R</em></sub><sup>0</sup> = (30<em>d</em><em>a</em><em>y</em>)<sup> − 1</sup></span>, <span class="math inline"><em>z</em><sub><em>R</em></sub> =  − <em>H</em>ln <em>σ</em><sub><em>t</em><em>o</em><em>p</em></sub></span> (<span class="math inline"><em>σ</em><sub><em>t</em><em>o</em><em>p</em></sub></span> : the top level of the model), <span class="math inline"><em>H</em> = 8000</span> m, <span class="math inline"><em>H</em><sub><em>R</em></sub> = 7000</span> m. .</p>
 <h3 id="time-filter.">Time Filter.</h3>
-<p>To remove the computation mode in leap frog Apply the time filter of Asselin (1972) at every step.</p>
+<p>To remove the computation mode in leap frog Applying Asselin’s (1972) time filter at every step.</p>
 <p><br /><span class="math display"><em>T̄</em><sup><em>t</em></sup> = (1 − 2<em>ϵ</em><sub><em>f</em></sub>)<em>T</em><sup><em>t</em></sup> + <em>ϵ</em><sub><em>f</em></sub>(<em>T̄</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup>+<em>T</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>)</span><br /></p>
-<p>and <span class="math inline"><em>T̄</em></span>. The <span class="math inline"><em>T</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span> for the next step of the mechanical process is Using this <span class="math inline"><em>T̄</em><sup><em>t</em></sup></span>. The standard value for <span class="math inline"><em>ϵ</em><sub><em>f</em></sub></span> is 0.05.</p>
-<p>In fact. First, in the <code>MODULE:[GENGD]</code> conversion of the predictor to a grid of values, the following variables are used,</p>
+<p>and <span class="math inline"><em>T̄</em></span> are obtained. <span class="math inline"><em>T</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup></span>, which is used in the next step of the mechanical process, is Use this <span class="math inline"><em>T̄</em><sup><em>t</em></sup></span>. For a <span class="math inline"><em>ϵ</em><sub><em>f</em></sub></span> it is standard to use 0.05.</p>
+<p>In practice, you should use First, in the <code>MODULE:[GENGD]</code> conversion of the predictor to a grid of values, the following variables are used,</p>
 <p><br /><span class="math display"><em>T̄</em><sup><em>t</em>*</sup> = (1 − <em>ϵ</em><sub><em>f</em></sub>)<sup> − 1</sup>[(1−2<em>ϵ</em><sub><em>f</em></sub>)<em>T</em><sup><em>t</em></sup>+<em>ϵ</em><sub><em>f</em></sub><em>T̄</em><sup><em>t</em> − <em>Δ</em><em>t</em></sup>]</span><br /></p>
-<p>and when the physical process is done After determining the value of <span class="math inline"><em>T</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span>, you can use <code>MODULE:[TFILT]</code> to determine the value of the <span class="math inline"><em>T</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span>,</p>
+<p>and when the physical process is complete, the After determining the value of <span class="math inline"><em>T</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span>, you can use <code>MODULE:[TFILT]</code> to determine the value of the <span class="math inline"><em>T</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span>,</p>
 <p><br /><span class="math display"><em>T̄</em><sup><em>t</em></sup> = (1 − <em>ϵ</em><sub><em>f</em></sub>)<em>T̄</em><sup><em>t</em>*</sup> + <em>ϵ</em><sub><em>f</em></sub><em>T̄</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup></span><br /></p>
-<p>.</p>
 </body>
 </html>

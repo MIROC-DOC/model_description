@@ -47,18 +47,17 @@ To be more specific , The model is basically a solution to the following
 equation (the prediction equation).
 
 \begin{quote}
-\protect\hypertarget{struct:u-eq-1}{}{\textbackslash{[}struct:u-eq-1{]}}
-\end{quote}
-
+\protect\hypertarget{struct:u-eq-1}{}{\textbackslash{[}construct:u-eq-1{]}}
 \begin{eqnarray}
-  \frac{\partial u}{\partial t}  =  \left( {\mathcal F}_x \right)_D + \left( {\mathcal F}_x \right)_P
-   \\
-  \frac{\partial v}{\partial t}  =  \left( {\mathcal F}_y \right)_D + \left( {\mathcal F}_y \right)_P \\
-  \frac{\partial T}{\partial t}  =  \left( Q \right)_D + \left( Q \right)_P \\
-  \frac{\partial p_S}{\partial t}  =  \left( M \right)_D + \left( M \right)_P \\
-  \frac{\partial q}{\partial t}  =  \left( S \right)_D + \left( S \right)_P \\
-  \frac{\partial T_g}{\partial t}  =  \left( Q_g \right)_D + \left( Q_g \right)_P
+\frac{\partial u}{\partial t}  =  \left( {\mathcal F}_x \right)_D + \left( {\mathcal F}_x \right)_P 
+\\
+\frac{\partial v}{\partial t}  =  \left( {\mathcal F}_y \right)_D + \left( {\mathcal F}_y \right)_P \\
+\frac{\partial T}{\partial t}  =  \left( Q \right)_D + \left( Q \right)_P \\
+\frac{\partial p_S}{\partial t}  =  \left( M \right)_D + \left( M \right)_P \\
+\frac{\partial q}{\partial t}  =  \left( S \right)_D + \left( S \right)_P \\
+\frac{\partial T_g}{\partial t}  =  \left( Q_g \right)_D + \left( Q_g \right)_P 
 \end{eqnarray}
+\end{quote}
 
 Where, \(u,v,T,p_S,q,T_g\), \(u,v,T,p_S,q,T_g\) is, Easterly wind,
 north-south wind, temperature, surface pressure, specific humidity,
@@ -67,9 +66,9 @@ three-dimensional distribution, such as The right-hand side is the term
 that gives rise to the time variation of each of those forecast
 variables. This time-varying term
 \({\mathcal F}_x,{\mathcal F}_y,Q,S,Q_g\) is , It is calculated based on
-the predictor variables \(u,v,T,p_S,q,T_g\), Advection due to
-atmospheric motion represented by \(u\) and \(v\) (in the above equation
-." in section \(D\)) and , The term ``cloud and radiation'' can be
+the predictor variables \(u,v,T,p_S,q,T_g\), The terms such as advection
+due to atmospheric motion represented by \(u\) and \(v\) (the term of
+\(D\) in the above formula), and The term ``cloud and radiation'' can be
 broadly divided into two categories: the term by each process, such as
 cloud and radiation, and the term by each process (the term in the
 appendix \(P\)). The former is called the dynamic process and the latter
@@ -98,20 +97,20 @@ example,
 By making ,
 
 \begin{eqnarray}
-  q^{t+\Delta t} = q^{t}
+  q^{t+\Delta t} = q^{t} 
        + \Delta t \left[ \left( S \right)_D + \left( S \right)_P  \right]
 \end{eqnarray}
 
 \begin{quote}
-\protect\hypertarget{struct:sabun}{}{\brahammer{[}struct:sabun{]}}.
+\protect\hypertarget{struct:sabun}{}{\textbackslash brax{[}struct:sabun{]}}
 \end{quote}
 
 That would be. Here, \(S\) is a function of the forecast variables
-\(u,v,T,p_S,q\), \(u,v,T,p_S,q\), etc. But.., Depending on which time
-forecast variables are used in that calculation to evaluate \(S\), There
-are various possible time difference schemes. In the CCSR/NIES AGCM ,
-Euler method that uses the values from \(t\) as they are, The leap frog
-method using the values from \(t+\Delta t/2\), The implicit method using
+\(u,v,T,p_S,q\), \(u,v,T,p_S,q\), etc, Depending on which time forecast
+variables are used in that calculation to evaluate \(S\), There are
+various possible time difference schemes. In the CCSR/NIES AGCM , Euler
+method that uses the values from \(t\) as they are, The leap frog method
+using the values from \(t+\Delta t/2\), The implicit method using
 (approximate) values in \(t+\Delta t\) is used together.
 
 In the CCSR/NIES AGCM The time integration of the predictors is done
@@ -131,9 +130,9 @@ implicit methods,
   q^{t+\Delta t} = \tilde{q}^{t+\Delta t} + 2 \Delta t \left( S \right)_P
 \end{eqnarray}
 
-I'm looking for. Here,
-(\protect\hyperlink{struct:sabun}{construct:sabun{]}}) \(\Delta t\).
-Note that it has been replaced by \(2 \Delta t\).
+I'm looking for. where the \(\Delta t\) of
+(\protect\hyperlink{struct:sabun}{construct:sabun{]}}) Note that it has
+been replaced by \(2 \Delta t\).
 
 \hypertarget{model-execution-flow.}{%
 \subsubsection{Model Execution Flow.}\label{model-execution-flow.}}
@@ -144,8 +143,8 @@ relevant subroutine.
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  set the parameters of the experiment, coordinates, etc.
-  \texttt{MODULE:{[}SETPAR,PCONST,\ SETCOR,SETZS{]}}
+  set the parameters of an experiment, coordinates, etc.
+  \texttt{MODULE:{[}SETPAR,PCONST,SETCOR,SETZS{]}}
 \item
   read the initial values of the predictor variable
   \texttt{MODULE:{[}RDSTRT{]}}
@@ -181,75 +180,95 @@ system and \(\lambda,\varphi,\sigma, z\) are the coordinates,
 respectively, Longitude, latitude, dimensionless pressure \(\sigma\),
 indicating vertical depth. \The entries in the list are in units.
 
-\begin{itemize}
-\item
-  TAB00000:0.0 east-west wind speed
-\item
-  TAB00000:0.1 \(u\) (\(\lambda,\varphi,\sigma\))
-\item
-  TAB00000:0.2 \The "m/score
-\item
-  TAB00000:1.0 north-south wind speed
-\item
-  TAB00000:1.1 \(v\) (\(\lambda,\varphi,\sigma\))
-\item
-  TAB00000:1.2 \The "m/score
-\item
-  TAB00000:2.0 atmospheric temperature
-\item
-  TAB00000:2.1 \(T\) (\(\lambda,\varphi,\sigma\))
-\item
-  TAB00000:2.2 \K.L.A.{[}K.R.I.E.D.{]}
-\item
-  TAB00000:3.0 surface pressure
-\item
-  TAB00000:3.1 \(p_S\) (\(\lambda,\varphi\))
-\item
-  TAB00000:3.2 The "hPa\textbackslash{}
-\item
-  TAB00000:4.0 specific humidity
-\item
-  TAB00000:4.1 \(q\) (\(\lambda,\varphi,\sigma\))
-\item
-  TAB00000:4.2 {[}kg/kg\textbackslash{]}
-\item
-  TAB00000:5.0 Cloud water mixing ratio
-\item
-  TAB00000:5.1 \(l\) (\(\lambda,\varphi,\sigma\))
-\item
-  TAB00000:5.2 {[}kg/kg\textbackslash{]}
-\item
-  TAB00000:6.0 underground temperature
-\item
-  TAB00000:6.1 \(T_g\) (\(\lambda,\varphi,z\))
-\item
-  TAB00000:6.2 \K.L.A.{[}K.R.I.E.D.{]}
-\item
-  TAB00000:7.0 subterranean moisture
-\item
-  TAB00000:7.1 \(W_g\) (\(\lambda,\varphi,z\))
-\item
-  TAB00000:7.2 \The "m/m\\
-\item
-  TAB00000: 8.0 amount of snowfall
-\item
-  TAB00000:8.1 \(W_y\) (\(\lambda,\varphi\))
-\item
-  TAB00000:8.2
-\item
-  TAB00000:9.0 sea-ice thickness
-\item
-  TAB00000:9.1 \(h_I\) (\(\lambda,\varphi\))
-\item
-  TAB00000:9.2
-  \textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.00\}.
-\end{itemize}
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header2\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+east-west wind speed\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(u\) (\(\lambda,\varphi,\sigma\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\The "m/score\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+north-south wind speed\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(v\) (\(\lambda,\varphi,\sigma\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\The "m/score\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+atmospheric temperature\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(T\) (\(\lambda,\varphi,\sigma\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\K.L.A.{[}K.R.I.E.D.{]}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+surface pressure\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(p_S\) (\(\lambda,\varphi\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The "hPa\textbackslash{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+specific humidity\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(q\) (\(\lambda,\varphi,\sigma\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+{[}kg/kg\textbackslash{]}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Cloud water mixing ratio\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(l\) (\(\lambda,\varphi,\sigma\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+{[}kg/kg\textbackslash{]}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+underground temperature\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(T_g\) (\(\lambda,\varphi,z\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\K.L.A.{[}K.R.I.E.D.{]}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+subterranean moisture\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(W_g\) (\(\lambda,\varphi,z\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\The "m/m\textbackslash{}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(W_y\) (\(\lambda,\varphi\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+sea-ice thickness\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\(h_I\) (\(\lambda,\varphi\))\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.25\textbackslash0.00\}.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 However, the sea ice thickness is usually only a predictor in the
 mixed-layer coupled model. In addition, the ground temperature is also
 higher in the oceans not covered by sea ice Normally, it is not a
-predictor variable. Also, in the CCSR/NIES AGCM, \(q\) and \(l\) are
-independent Not a variable , In fact, \(q+l\) is the forecast variable.
+predictor variable. Also, in the CCSR/NIES AGCM, \(q\) and \(l\) are not
+independent variables, In fact, \(q+l\) is the forecast variable.
 
 Of these, The surface and subsurface related quantities
 \(T_g, W_g, W_y, h_I\) are At the same time it only stores the amount of
@@ -292,8 +311,8 @@ The initial values for the atmospheric quantities \(u, v, T, p_S, q, l\)
 are read from , This is done with \texttt{MODULE:{[}RDSTRT{]}}, called
 by the main routine. On the other hand, the initial values of the
 surface and underground quantities \(T_g, W_g, W_y, h_I\) are read from
-In \texttt{MODULE:{[}PRSTRT{]}}, called by \texttt{MODULE:{[}PHYSCS{]}},
-the This is done.
+Conducted by \texttt{MODULE:{[}PRSTRT{]}}, called by
+\texttt{MODULE:{[}PHYSCS{]}}.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -341,15 +360,16 @@ Ask for .
 
 \begin{verbatim}
  1. convert to vorticity and divergence `MODULE:[UV2VDG, VIRTMD, HGRAD]`
+     
 \end{verbatim}
 
 Atmospheric forecast parameters of \(u, v, T, p_S, q, l\) In order to
 estimate the change term due to mechanical processes, we first need to
-estimate \(u^{t}, v^{t}\) as the grid point values for vorticity and
-divergence \(\zeta^{t},D^{t}\), Convert to \(\zeta^{t},D^{t}\). This is
-because the equations of mechanics are written in terms of vorticity and
-divergence. This transformation involves a spatial derivative, This can
-be done precisely by using the spherical harmonic function expansion
+estimate Convert \(u^{t}, v^{t}\) to the grid values of vorticity and
+divergence \(\zeta^{t},D^{t}\). This is because the equations of
+mechanics are written in terms of vorticity and divergence. This
+transformation involves a spatial derivative, This can be done precisely
+by using the spherical harmonic function expansion
 \texttt{MODULE:{[}UV2VDG{]}}.
 
 Furthermore, calculate the pseudotemperature \(T_v^{t}\), and then set
@@ -359,6 +379,7 @@ pressure \(\nabla \ln p_S\) \texttt{MODULE:{[}HGRAD{]}}.
 
 \begin{verbatim}
  2. calculation of the time-varying term by advection `MODULE:[GRDDYN]`
+     
 \end{verbatim}
 
 Using the values in \(t\) of \(u, v, T, p_S, q, l\), Due to horizontal
@@ -371,6 +392,7 @@ diagnostically, Using it, calculate the vertical advection term for
 
 \begin{verbatim}
  3. convert to a spectrum `MODULE:[GD2WD, TENG2W]`
+     
 \end{verbatim}
 
 Value of grid points in \(t-\Delta t\) for atmospheric forecast
@@ -395,6 +417,7 @@ this point.
 
 \begin{verbatim}
  4. time integration `MODULE:[TINTGR]`
+     
 \end{verbatim}
 
 Among the time-varying terms in \(\zeta, D, T, \pi\) , We have added a
@@ -409,6 +432,7 @@ is required.
 
 \begin{verbatim}
  5. conversion to grid values `MODULE:[GENGD]`
+     
 \end{verbatim}
 
 From the forecast variables in the spectral representation ,
@@ -419,6 +443,7 @@ processes Grid point values for forecast values
 
 \begin{verbatim}
  6. diffusion correction `MODULE:[CORDIF, CORFRC]`
+     
 \end{verbatim}
 
 Horizontal diffusion is applied on the surface of \(\sigma\) and so on,
@@ -426,13 +451,14 @@ In large areas of mountain slopes, water vapor is transported uphill,
 Causing problems such as bringing false precipitation at the top of the
 mountain. To mitigate that, etc. such that the diffusion of the \(p\)
 surface is close to Insert corrections for \(T,q,l\)
-\texttt{MODULE:{[}\ CORDIF{]}}. CORDIF{]}`.
+\texttt{MODULE:{[}CORDIF{]}}.
 
 Also, heat from friction is added to \(\hat{T}\)
 \texttt{MODULE:{[}CORFRC{]}}
 
 \begin{verbatim}
  7. mass conservation correction `MODULE:[MASFIX]`
+     
 \end{verbatim}
 
 Saving of the global integral values of \(q\) and \(l\) is satisfied,
@@ -464,19 +490,21 @@ Ask for .
 
 \begin{verbatim}
  Calculation of the basic diagnostic variables `MODULE:[PSETUP]`
+     
 \end{verbatim}
 
 The basic Find the diagnostic variables.
 
 \begin{verbatim}
  2. cumulus convection, large-scale condensation `MODULE:[CUMLUS, LSCOND]`
+     
 \end{verbatim}
 
-The time-varying terms of \(T, q, l\) due to cumulus convection are
-found, and \texttt{MODULE\ :{[}CUMLUS{]}} Perform time integration with
+To find the time-varying terms of \(T, q, l\) due to cumulus convection,
+and \texttt{MODULE:{[}CUMLUS{]}} Perform time integration with
 \texttt{MODULE:{[}GDINTG{]}} just for that term. In addition, the
-time-varying terms of \(T, q, l\) due to large-scale condensation and
-\texttt{MODULE:{[}LSCOND{]}}, Perform time integration with
+time-varying terms of \(T, q, l\) due to large-scale condensation are
+found, and \texttt{MODULE:{[}LSCOND{]}}, Perform time integration with
 \texttt{MODULE:{[}GDINTG{]}} just for that term. Precipitation due to
 cumulus convection and large scale condensation \(P_c, P_l\), Cloud
 cover (\(C_c, C_l\), \(C_c, C_l\), etc.) is required. This makes
@@ -486,6 +514,7 @@ That would be.
 
 \begin{verbatim}
  3. set the surface boundary condition `MODULE:[GNDSFC, GNDALB]`
+     
 \end{verbatim}
 
 Set up the surface conditions with given data. The ground state index,
@@ -496,6 +525,7 @@ been incorporated into the radiative flux calculation routine.)
 
 \begin{verbatim}
  4. calculation of the radiation flux `MODULE:[RADCON, RADFLX]`
+     
 \end{verbatim}
 
 Set the atmospheric data for radiation flux calculation
@@ -504,24 +534,25 @@ water and cloud cover are obtained by convection and large-scale
 condensation, We can also give it to you from the outside here. Using
 these and \(\hat{T}^{t+\Delta t,a}, \hat{q}^{t+\Delta t,a}\) Shortwave
 and longwave radiation flux \(F_R\), and Calculates the differential
-coefficient of surface temperature used for implicit calculation
-\texttt{MODULE:{[}\ RADFLX{]}}. RADFLX{]}`.
+coefficient of surface temperature for implicit calculation
+\texttt{MODULE:{[}RADFLX{]}}.
 
 \begin{verbatim}
  5. calculation of the vertical diffuse flux `MODULE:[VDFFLX, VFTND1]`
-
-     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t},
+     
+     $\hat{u}^{t+\Delta t}, \hat{v}^{t+\Delta t}, 
 \end{verbatim}
 
 \hat{T}\^{}\{t+\Delta t,a\}, \hat{q}\^{}\{t+\Delta t,a\},
 \hat{l}\^{}\{t+\Delta t,a\}\$ with , Fluxes in \(u, v, T, q, l\) by
 vertical diffusion and Calculate the differential coefficient for
 implicit calculation \texttt{MODULE:{[}VDFFLX{]}}. In addition, the
-implicit solution is computed in the middle with the LU decomposition of
-\texttt{MODULE:{[}\ VFTND1{]}}. VFTND1{]}`.
+implicit solution is computed midway through the LU decomposition,
+\texttt{MODULE:{[}VFTND1{]}}.
 
 \begin{verbatim}
  6. calculation of surface processes and time integration of underground variables `MODULE:[SURFCE]`
+     
 \end{verbatim}
 
 Calculate the fluxes of \$u, v, T, q \$ between the earth's surface and
@@ -543,13 +574,14 @@ sea ice thickness The value in \(t+\Delta t\) is found by time
 integration.
 
 \begin{verbatim}
- 7. evaluation of time variation due to radiative and vertical diffusion `MODULE:[VFTND2, RADTND, FLXCOR]`
+ 7. evaluation of time variation due to radial and vertical diffusion `MODULE:[VFTND2, RADTND, FLXCOR]`
+     
 \end{verbatim}
 
 Combined radiative flux and vertical diffusion The rate of change of
 each forecast variable of the atmosphere over time. Seek
 \({\mathcal F}_x, {\mathcal F}_y, Q, S\) \texttt{MODULE:{[}VFTND2{]}}.
-In addition, isolate the contribution of the radiation from them
+In addition, isolate the contribution from the radiation from
 \texttt{MODULE:{[}RADTND{]}}. This is not directly used in the model,
 but , For the convenience of the data output.
 
@@ -561,6 +593,7 @@ for the convenience of data output.
 
 \begin{verbatim}
  8. evaluation of gravitational wave resistance `MODULE:[GRAVTY]`
+     
 \end{verbatim}
 
 Calculating the change in atmospheric momentum due to gravitational
@@ -569,6 +602,7 @@ Vertical Diffusion Add to \({\mathcal F}_x, {\mathcal F}_y\).
 
 \begin{verbatim}
  9. evaluation of the atmospheric pressure change term
+     
 \end{verbatim}
 
 Considering the changes in pressure due to precipitation and
@@ -576,6 +610,7 @@ evaporation, Find the atmospheric pressure change term \(M\).
 
 \begin{verbatim}
  10. time integration of physical processes `MODULE:[GDINTG]`
+     
 \end{verbatim}
 
 due to radiation, vertical diffusion, surface processes, gravitational
@@ -586,6 +621,7 @@ the atmosphere over time. Using
 
 \begin{verbatim}
  11. drying convection adjustment `MODULE:[DADJST]`
+     
 \end{verbatim}
 
 If the calculated \(T, q, l\) are unstable for dry convection Drying

@@ -6,7 +6,7 @@ Large-scale condensation schemes are ,
 This is a representation of the condensation processes involved in clouds other than cumulus convection,
 Calculating latent heat release and water vapor reduction, precipitation.
 We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature $T$, specific humidity $q$, and cloud cover $l$, and is,
+The main input data are temperature $T$, specific humidity $q$, and cloud cover $l$,
 The output data is the time rate of change of temperature, specific humidity and cloud water content,
 $\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$,
 The cloud cover is $C$.
@@ -26,7 +26,7 @@ The outline of the calculation procedure is as follows.
 1. add the amount of water vapor ($q$) and the amount of cloud water ($l$)
  Total water volume $q^t$
  The temperature has evaporated the cloud water,
-     Set the liquid water temperature $T_l$.
+ Set the     liquid water temperature $T_l$.
 
 2. assuming the distribution of the variation in $q^t$,
  Find the cloud cover and separate it again into cloud water and water vapor.
@@ -63,7 +63,7 @@ We consider this distribution to be a horizontal distribution.
 On the other hand, the saturation specific humidity is based on the grid average of $\bar{q}^*$.
 
 In the grid,
-Consider the existence of clouds in the region of $q^t > q^*$ (Figure [lsc:fig-cloud [\]](#lsc:fig-cloud)).
+Consider the presence of a cloud in a region in $q^t > q^*$ (Figure [lsc[lsc:fig-cloud\]](#lsc:fig-cloud)).
 
 Then, as shown by the shading in the figure, the
 The horizontal ratio of the portion of the total water volume exceeding saturation $C$ is ,
@@ -102,12 +102,12 @@ $$
         \right. 
 $$
 
-> <span id="p-lsc:l" label="p-lsc:l"&gt ;p-lsc:l\\.com;</span>
+> <span id="p-lsc:l" label="p-lsc:l">\blazer[p-lsc:l]</span>
 
 ### Determination by successive approximation
 
 First, from the Water Vapor $q$ and Cloud Water $l$ and the Temperature $T$,
-Total water volume $q^t$ and liquid water temperature TERM Ask for 00029.
+Find the total water volume $q^t$ and liquid water temperature $T_l$.
 
 $$
   q^t   =  q + l \; , \\
@@ -127,12 +127,12 @@ $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
 $$
 
-> <span id="p-lsc:itereate1" label="p- lsc:itereate1">[p-lsc:itereate1\[p-lsc:itereate1]</ span>
+> <span id="p-lsc:itereate1" label="p-lsc:itereate1" label="p-lsc:itereate1"> </span>
 
 The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from $l^{(2)}$,
 The resulting temperature change is solved by successive approximation as $T^{(2)}$ ...
 In order to speed up this sequential convergence, we use the Newton method.
-I.e., ([\[p-lsc:itereate1\]](#p-lsc:itereate 1))) instead of
+I.e., instead of (ie, ([[p-lsc:itereate1\]](#p-lsc:itereate1))
 
 $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
@@ -141,7 +141,7 @@ $$
 
 
 .
-$dl/dT$ uses the analytical You can ask for.
+$dl/dT$ can be obtained analytically using ([[p-lsc:l\]](#p-lsc:l)).
 
 ### precipitation process.
 

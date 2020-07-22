@@ -17,7 +17,7 @@ $$
 $$
 
 
-Latitude is the Gauss latitude $\varphi_j$ described in Mechanics, and `MODULE:[ ASETL]`,
+Latitude is the Gauss latitude $\varphi_j$ described in Mechanics, and `MODULE:[ASETL]`,
 Gauss-Legendre derived from the integral formula.
 This takes $\mu = \sin \varphi$ as its argument
 J The zero point of the next Legendre polynomial `MODULE:[GAUSS]`.
@@ -48,7 +48,7 @@ $$
 
 
 Find the $\sigma$ representing the layer by
-Figure [a-setup:level\]] (#a-setup:level), with the standard Indicates the level of the 20 layers used.
+Figure [a-setup:level\]] (#a-setup:level) shows the 20 levels of the standard.
 
 Each forecast variable is all, $(\lambda_i, \varphi_j, \sigma_k)$
 or defined on the grid of $(\lambda_i, \varphi_j, z_l)$.
@@ -84,5 +84,4 @@ The basic physical constants are shown below `MODULE:[APCON]`.
 | water vapor molecular weight ratio | $\epsilon  = R/R_v$ |  | 0.622 |
 | coefficient of provisional temperature | $\epsilon_v = \epsilon^{-1} - 1$ |  | 0.606 |
 | Ratio of specific heat to gas constant | $\kappa = R/C_p$ |  | 0.286 |
-
 
