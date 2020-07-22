@@ -23,7 +23,7 @@ The conditions for convective instability in the layers TERM00004 and TERM00004 
 Namely,
 
 > EQ=00001.
-> <span id="p-adj:cond" label="p-adj: > cond">p-adj[p-adj:cond\en]</span>.
+> <span id="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond"> </span>.
 
 is a condition.
 
