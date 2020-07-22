@@ -56,7 +56,7 @@ def replace_imath(doc, dic, log):
         text = math2str(value[0])
 
         # "TERM00000 and TERM00000" と "TERM00000,TERM00000" を置換
-        pattern = key + r"(,|\sand\s)" + key
+        pattern = key + r"(,|\s+and\s)\s*" + key
         count = len(re.findall(pattern, doc))
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
