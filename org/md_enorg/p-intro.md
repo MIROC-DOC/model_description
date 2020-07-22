@@ -37,7 +37,7 @@ All vertical fluxes are positive upward.
 1. equation of motion
 
      > EQ=00000.
-     > <span id="u-eq.orig" label="u-eq.orig ">\\braham.org</span>
+     > <span id="u-eq.orig" label="u-eq.orig" label="u-eq.orig">\\centric</span>
 
      > EQ=00001.
 
@@ -59,7 +59,7 @@ All vertical fluxes are positive upward.
      > EQ=00003.
 
  As far as vertical 1D processes are concerned,
-     Instead of the TERM00013, consider the TERM00014.
+ Instead of the     TERM00013, consider the TERM00014.
  For the sake of simplicity, unless there is a risk of confusion,
  Write     TERM00015 as TERM00016.
 
@@ -204,9 +204,9 @@ Calculated with `MODULE:[PSETUP]`.
  Here, it is TERM00044,
 
      > EQ=00021.
-     > <span id="e-sat" label="e-sat">\blazer[e-sat satrap]< /span>
+     > <span id="e-sat" label="e-sat">\\blade[e-sat]< /span>
 
- Therefore, if the latent heat of evaporation (TERM00045) and the gas constant (TERM00046) of water vapor are held constant .
+ Therefore, if the latent heat of evaporation (TERM00045) and the gas constant (TERM00046) of the water vapor are held constant, then the number of vapor particles will be reduced,
 
      > EQ=00022.
 
