@@ -5,11 +5,11 @@
 The surface flux scheme is ,
 due to turbulent transport in the ground boundary layer.
 Assessing the flux of physical quantities between atmospheric surfaces.
-The main input data are wind speed TERM00000, TERM00000, and temperature TERM00001, Specific humidity is the TERM00002,
+The main input data are wind speed TERM00000, TERM00000, temperature TERM00001, and specific humidity TERM00002,
 The output data are the vertical fluxes of momentum, heat, water vapor and
 It is the differential value for obtaining an implicit solution.
 
-Bulk coefficients are obtained according to Louis(1979), Louis <span>*et al.*& lt;/span>(1982).
+Bulk coefficients are obtained according to Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 
 The outline of the calculation procedure is as follows.
@@ -60,7 +60,7 @@ Here, the calculation method is abbreviated.
 ### Bulk factor.
 
 The bulk coefficients TERM00007 and TERM00007 are
-Louis(1979), Louis <span>*et al.*</span span>(1982).
+Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 i.e., the roughness to momentum, heat, and water vapor.
 TERM00008 and TERM00008 respectively
@@ -91,7 +91,7 @@ but the method of calculation is abbreviated.
 The coefficient is TERM00016,TERM00016.
 
 The dependence of the bulk coefficients on TERM00017 is illustrated in Fig,
-Figure [p-sflx:cm\]] (#p-sflx:cm), Figure [p-sflx:ch [\\\\]](#p-sflx:ch), Figure [p-sflx:ch](#p-sflx:ch).
+Figure [p-sflx:cm\] (#p-sflx:cm), Figure [p-sflx:ch\] (#p-sflx:ch).
 
 ### Calculating Flux.
 

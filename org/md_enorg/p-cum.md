@@ -233,7 +233,7 @@ Cloud water content TERM00047 is ,
 > EQ=00031.
 
 However, in the case of TERM00048, it is TERM00049.
-Furthermore, it is unlikely that a precipitation event will turn into cloudy water once it has risen,
+Furthermore, it is unlikely that a precipitation event will be followed by cloudy water,
 TERM00050 must be an increasing function of TERM00051.
 This will limit the TERM00052.
 
@@ -265,7 +265,7 @@ The cloud work function (CWF), TERM00056 is,
 It is,
 
 > EQ=00009.
-> <span id="p-cum:cwf" label="p-cum:cwf "> >P-Cum[p-cum:cwff\\]</span>
+> <span id="p-cum:cwf" label="p-cum:cwf" label="p-cum:cwf">\blaze[p-cum:cwf]</span>
 
 Essentially, the work associated with the downdraft, discussed below, should be
 It should be accounted for, but we'll ignore it here for simplicity's sake.
@@ -294,14 +294,14 @@ With this,
 > EQ=00035.
 
 and using TERM00059 and TERM00059
-Calculated from the cloud work function ([p-cum:cwf\]](#p-cum:cwf)) as TERM00060.
+Let TERM00060 be the cloud work function calculated from ([p-cum:cwf\]](#p-cum:cwf)).
 
 So..,
 
 > EQ=00010.
 
 That would be.
-Here, when determining TERM00061, it should be set to TERM00062,TERM00062 We've got it.
+Here, when obtaining TERM00061, the original TERM00062 and TERM00062 were used
 I should recalculate the vertical structure of the clouds,
 Now we are using the same cloud structure.
 
@@ -374,7 +374,7 @@ Note that this is TERM00081.
 
 In the above equation, TERM00082 is the portion of the evaporation that is taken up by the downdraft,
 TERM00083 evaporates directly into the mean field.
-However, the downdraft mass flux TERM00084
+However, the downdraft mass flux TERM00084 is
 The total mass flux of cloud base shall not exceed the TERM00086 of TERM00085.
 The current standard value is TERM00087,TERM00087.
 
