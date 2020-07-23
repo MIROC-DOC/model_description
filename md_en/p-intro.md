@@ -40,7 +40,7 @@ $$
   \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
 $$
 
-     > <span id="u-eq.orig" label="u-eq.orig ">\\braham.org</span>
+     > <span id="u-eq.orig" label="u-eq.orig" label="u-eq.orig">\\centric</span>
 
 $$
   \rho \frac{dv}{dt} = \frac{\partial Fv}{\partial \sigma}
@@ -73,7 +73,7 @@ $$
 
 
  As far as vertical 1D processes are concerned,
-     Instead of the $\theta$, consider the $\theta'$.
+ Instead of the     $\theta$, consider the $\theta'$.
  For the sake of simplicity, unless there is a risk of confusion,
  Write     $\theta'$ as $\theta$.
 
@@ -287,9 +287,9 @@ $$
 \frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
 $$
 
-     > <span id="e-sat" label="e-sat">\blazer[e-sat satrap]< /span>
+     > <span id="e-sat" label="e-sat">\\blade[e-sat]< /span>
 
- Therefore, if the latent heat of evaporation ($L$) and the gas constant ($R_v$) of water vapor are held constant .
+ Therefore, if the latent heat of evaporation ($L$) and the gas constant ($R_v$) of the water vapor are held constant, then the number of vapor particles will be reduced,
 
 $$
   e^*(T) = e^*(T=273{K}) 

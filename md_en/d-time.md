@@ -1,23 +1,23 @@
 ## Time integration.
 
-The time difference scheme is basically a leap frog.
-However, the terms of the diffusion terms and physical processes are backward or forward differences.
+The time difference scheme is essentially a leap frog.
+However, the diffusion terms and physical process terms are backward or forward differences.
 A time filter (Asselin, 1972) is used to suppress the computational mode.
-And to make the $\Delta t$ larger,
-Applying the semi-implicit method to the term gravitational wave (Bourke, 1988).
+In order to increase the value of $\Delta t$, we use a time filter (Asselin, 1972),
+Applying the semi-implicit method to the gravitational wave term (Bourke, 1988).
 
-### Time integration and time filtering with leap frog
+### Time integration and time filtering by leap frog
 
-The leap frog is used as a time integration scheme for advection terms and so on.
+We use leap frog as a time integration scheme for advection terms and so on.
 The backward difference of $2 \Delta t$ is used for the horizontal diffusion term.
-In addition, the pseudo $p$ surface correction of the diffusion term and the frictional heat term by horizontal diffusion are
-treated as a correction and becomes the forward difference in $2 \Delta t$.
-The physical process section (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) is ,
-I still use the forward differential of $2 \Delta t$.
-(However, we treat the calculation of the time varying term of vertical diffusion as a backward difference.
-See the chapter on physical processes for details.)
+The pseudo $p$ surface correction of the diffusion term and the frictional heat by horizontal diffusion term are combined with
+treated as a correction and becomes a forward difference in $2 \Delta t$.
+The physical process terms (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) are treated as
+We still use the forward difference of $2 \Delta t$.
+(However, for the calculation of the time-varying term of vertical diffusion, we treat it as a backward difference.
+Please refer to the chapter on physical processes for details.)
 
-Expressed as ${X}$ on behalf of each forecast variable,
+Representing each of the forecast variables as ${X}$, we obtain
 
 $$
   \hat{X}^{t+\Delta t} 
@@ -32,7 +32,7 @@ $$
 $ \dot{X}_{adv} $ is an advection term etc,
 $ \dot{X}_{dif} $ is a horizontal diffusion term.
 
-$ \hat{X}^{t+\Delta t} $ has a ,
+In $ \hat{X}^{t+\Delta t} $, there is a horizontal diffusion term,
 Pseudo, etc. $p$ Correction of frictional heat ($ \dot{X}_{dis} $) by surface and horizontal diffusion
 and physical processes ($ \dot{X}_{phy} $) have been added,
 $ {X}^{t+\Delta t} $.
@@ -47,9 +47,9 @@ $$
 $$
 
 
-To remove the computation mode in leap frog
-Apply the time filter of Asselin (1972) at every step.
-Namely,
+To remove the calculation mode in leap frog
+The time filter of Asselin (1972) is applied at every step.
+I.e. ,
 
 $$
   \bar{X}^{t}
@@ -60,24 +60,24 @@ $$
 
 
 and $\bar{X}$.
-For $\epsilon_f$ it is standard to use 0.05.
+Normally 0.05 is used as the $\epsilon_f$.
 
 ### semi-implicit time integration
 
 For mechanics calculations, the leap frog is basically used,
-Compute some terms as implicit.
-Here, implicit considers a trapezoidal implicit.
-Regarding the vector quantity ${\mathbf q}$,
+We treat some terms as implicit.
+Here, the implicit considers the trapezoidal implicit.
+For the vector quantity ${\mathbf q}$,
 The value in $t$ is converted to ${\mathbf q}$,
 The value in $t+\Delta t$ was converted to ${\mathbf q}^+$,
 If you write the value of $t-\Delta t$ as ${\mathbf q}^-$,
 What is trapezoidal implicit?
 $({\mathbf q}^+ +  {\mathbf q}^- )/2$.
-The solution is done by using the time-varying terms evaluated by using
+We use the time-varying terms evaluated by using
 Now, as a time-varying term in <span>q</span>,
 The term A is treated in the leap forg method and the term B is treated in the trapezoidal implicit method.
-A is nonlinear with respect to <span>q</span>, while B is Suppose it is linear.
-Namely,
+Assume that A is nonlinear with respect to <span>q</span>, while B is linear.
+In other words,
 
 $$
   {\mathbf q}^+ 
@@ -88,7 +88,7 @@ $$
 $$
 
 
-Note that $B$ is a square matrix. Then,
+where $B$ is a square matrix. Then,
 $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
 And then you can write,
 
@@ -101,13 +101,13 @@ $$
 
 This can be easily solved by matrix operations.
 
-### Applying semi-implicit time integration
+### semi-implicit time integration applied
 
-So we apply this method and treat the term of linear gravity waves as implicit.
-This makes the time step $\Delta t$ smaller.
+Then, we apply this method and treat the term of linear gravity waves as implicit.
+This allows us to reduce the time step ($\Delta t$).
 
-In a system of equations, the basic field is such that $T=\bar{T}_k$
-Separation of the linear gravitational wave term and the other terms (with the index $NG$).
+In the system of equations, the basic field is such that $T=\bar{T}_k$
+Separation of the linear gravity wave term and the other terms (with the index $NG$).
 Vertical Vector Representation
 Using $\mathbf{D}=\{ D_{k} \}$, $\mathbf{T}=\{ T_{k} \}$,
 
@@ -137,7 +137,7 @@ $$
 $$
 
 
-Here, the non-gravitational wave term is
+where the non-gravitational wave term is,
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
@@ -146,7 +146,7 @@ $$
    =   Z_{k}
 $$
 
-> <span id="Section Z" label="Section Z" label="Section Z" >\bout[Section Z]&lt ;/span>
+> <span id="Section Z" label="Section Z" label="Section Z" label=">\\\\\.} </span>
 
 $$
   \dot{\sigma}^{NG}_{k-1/2}
@@ -208,12 +208,12 @@ $$
                 \\
          + \frac{Q_k + (Q_{diff})_k}{C_p}
 $$
- 
- 
- 
- 
- 
- 
+  
+  
+  
+  
+  
+  
 
 
 $$
@@ -222,13 +222,13 @@ $$
 $$
 
 
-where the vector and matrix of the gravitational wave term (underlined) are
+where the vector and matrix of the gravitational wave terms (underlined) are,
 
 $$
   C_{k} = \Delta \sigma_{k}
 $$
 
-> <span id="Coefficient C" label="Coefficient C">Dr./Ing. lt;/span>
+> <span id="Coefficient C" label="Coefficient C">\\c\[Coefficient C]</span>
 
 $$
   W_{kl} = C_{p} \alpha_{l} \delta_{k \geq l}
@@ -268,19 +268,19 @@ $$
              \right) \bar{T}_{k} .
 $$
 
-> <span id="Coefficient R" label="Coefficient R" >Dr.R.[Coefficient R]& lt;/span>
+> <span id="Coefficient R" label="Coefficient R">\R\[Coefficient R]</span>.
 
 Here, for example, $\delta_{k \leq l}$ is the same as
-A function that is 1 if the $ k \leq l$ is valid and 0 otherwise.
+It is a function that is 1 if $ k \leq l$ is true and 0 otherwise.
 
-Using the following expression ,
+Using the following expression,
 
 $$
   \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
 $$
 
- PluginPointPointPoint.com
+> <span id="Shemiinp" label="Shemiinp">\\centric="Shemiinp\centric"> </span>.
 
 $$
     \overline{X}^{t}
@@ -289,10 +289,10 @@ $$
          \\ 
    =  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
 $$
- 
+  
 
 
-If we apply the semi-implicit method to the system of equations,
+Applying the semi-implicit method to a system of equations,
 
 $$
   \delta_{t} \pi =
@@ -300,7 +300,7 @@ $$
      - \mathbf{C} \cdot \overline{ \mathbf{D} }^{t}
 $$
 
-> <span id="semi-imp pi" label="semi-imp 
+> <span id="semi-imp pi" label="semi-imp pi" label="semi-imp pi">\[semi-imp pi]</span>
 
 $$
   \delta_{t} \mathbf{D} =
@@ -314,7 +314,7 @@ $$
                          + 2 \Delta t \delta_{t} \mathbf{D} )
 $$
 
-> <span id="semi-imp D" label="semi-imp D ">\\brahammer[semi-imp D\\\]</span>
+> <span id="semi-imp D" label="semi-imp D" label="semi-imp D">\[semi-imp D\\[semi-imp D\]</span>
 
 $$
   \delta_{t} \mathbf{T} =
@@ -324,11 +324,11 @@ $$
                         + 2 \Delta t \delta_{t} \mathbf{T} )
 $$
 
-> <span id="semi-imp T" label="semi-imp T "> >Semi-imp T\\[semi-imp T]</span>.
+> <span id="semi-imp T" label="semi-imp T" label="semi-imp T">\[semi-imp T]</span>
 
 So..,
 
-> <span id="semi-imp barD" label="semi- imp barD">\blank\[semi-imp barD\blank]</span></a
+> <span id="semi-imp barD" label="semi-imp barD" label="semi-imp barD">\\brachos[semi-imp barD\brachos]</span>
 $$
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
@@ -363,27 +363,24 @@ $$
                                      \right)_{NG}  \right]
                    \right\} . 
 $$
- 
- 
- 
+  
+  
+  
 
 
-Since the spherical harmonic expansion is used,
-$$
-    \nabla^{2}_{\sigma} = - \frac{n(n+1)}{a^{2}}
-$$
-com]
-and the above equation can be solved for $\overline{ \mathbf{D}_n^m }^{t}$.
-And then..,
+Since we use the spherical harmonic expansion, we can use it,
+
+and the above formula can be solved for $\overline{ \mathbf{D}_n^m }^{t}$.
+After that,
 
 $$
    D^{t+\Delta t} = 2\overline{ \mathbf{D} }^{t} - D^{t-\Delta t}
 $$
 
 
-and, ([[semi-imp pi\]](#semi-imp%20pi)), ([\\blink\blink}](#semi-imp%20pi) semi-imp T\]](#semi-imp%20T))
+and ([semi-imp pi\]](#semi-imp%20pi), ([semi-imp T\\](#semi-imp%20T))
 The value in $t+\Delta t$ according to $\hat{X}^{t+\Delta t}$
-is required.
+is required .
 
 ### Time scheme properties and time step estimates
 
@@ -394,7 +391,7 @@ $$
 $$
 
 
-Considering the stability of the discretization in the leap frog in
+Consider the stability of the leap frog discretization in
 Now,
 
 If we place the difference between
@@ -404,8 +401,8 @@ $$
 $$
 
 
-That would be.
-Here,
+where
+Here ,
 \\lambda = X^{n+1}/X^n = X^n/X^{n-1}}\\\\bars}]
 So,
 
@@ -414,7 +411,7 @@ $$
 $$
 
 
-The solution is called $kc \Delta t = p$,
+The solution is labeled $kc \Delta t = p$,
 
 $$
  \lambda = -i p \pm \sqrt{1-p^2}
@@ -433,23 +430,23 @@ $$
 $$
 
 
-In the case of $|p|>1$, it is $|\lambda| > 1$,
-It is a solution whose absolute value increases exponentially with time.
+In the case of $|p|>1$, it would be $|\lambda| > 1$,
+The solution becomes exponentially larger in absolute value with time.
 This indicates that the computation is unstable.
 
-On the other hand, for $|p| \le 1$, the number is $|\lambda| = 1$,
+On the other hand, in the case of $|p| \le 1$, the value is $|\lambda| = 1$,
 The calculation is neutral.
 However, there are two solutions for $\lambda$,
 One of them, when $\Delta t \rightarrow 1$ is set to
 This is a $\lambda \rightarrow 1$, but..,
 The other is $\lambda \rightarrow -1$.
-This indicates that the solution oscillates strongly in time.
-This mode is called calculation mode,
+This indicates a time-varying solution.
+This mode is called "calculation mode",
 One of the problems with the leap frog method.
-This mode can be used by applying a time filter to the
+This mode can be applied by applying a time filter to the
 It can be attenuated.
 
-The terms of the $|p|=kc \Delta t \le 1$ are ,
+The terms of the $|p|=kc \Delta t \le 1$ are,
 Given the horizontal discretization grid spacing $\Delta x$, the
 This will cause the maximum value of $k$ to be
 \More than one person can be in a position to do so.
@@ -460,8 +457,8 @@ $$
 $$
 
 
-That would be.
-In the case of a spectral model, the maximum wavenumber depends on the $N$,
+In the case of the spectral model, the maximum wavenumber of
+For the spectral model, the maximum wavenumber is determined by $N$,
 Earth radius is set to $a$,
 
 $$
@@ -469,41 +466,40 @@ $$
 $$
 
 
-This is a condition for stability.
+This is the stability condition.
 
-To guarantee the stability of the integration,
+To guarantee the stability of the integral,
 As for $c$, it has the fastest advection and propagation speed,
-You can use a time step smaller than $\Delta t$ determined by that.
-When semi-implicit is not used, the propagation speed of gravity wave
+You may use a time step smaller than $\Delta t$ which is determined by the semi-implicit method.
+If semi-implicit is not used, the propagation speed of the gravitational wave
 ($c \sim 300m/s$) is the criterion for stability,
 When semi-implicit is used, advection by the east-west wind is usually
-Limiting factors.
-Therefore, $\Delta t$ sets $U_{max}$ as the maximum value of the east-west wind,
+This is a limiting factor.
+Therefore, the $\Delta t$ sets $U_{max}$ as the maximum value of the east-west wind,
 
 $$
    \Delta t \le \frac{a}{N U_{max}}  
 $$
 
 
-Take to meet the .
 In practice, this is multiplied by a safety factor.
+In practice, this should be multiplied by a safety factor.
 
-### Handling of the Initiation of Time Integration
+### Treatment at the beginning of time integration.
 
 Not calculated by AGCM,
 If you start with an appropriate initial value, you can use a model-consistent
-You cannot give two physical quantities of time in $t$ and $t-\Delta t$.
-However, if you give an inconsistent value for $t-\Delta t$
-A large calculation mode occurs.
+You cannot give the physical quantities for two times of $t$ and $t-\Delta t$.
+However, if you give an inconsistent value for $t-\Delta t$, then you should not give an inconsistent value for $t-\Delta t$,
+A large calculation mode is generated.
 
 So, first, as $X^{\Delta t/4} = X^0$, in the time step of $1/4$
-\{X^{X}^{D}t/2} = X^0 + X^0 + {{X}^{D}^{X}^^{\\\finger}}. Delta t/4}
-                  = X^0 + t/2 \\Dentro{X}^0\0}]
+\{X^{{X}^{D\Delta t/2} = X^0 + X^0 + {{X}^{D\Delta t/2}
+                 = X^0 + t/2 \\Dentro{X}^0\0}]
 and furthermore, in the time step of $1/2$,
-\\\\ltraL\Delta t} = X^0 +    X^0+\l\Delta t/2 }]
+\\\\lopen}t = X^{X}^{X}^^{X}^{\Delta t/2}}\lopen}t = X^0 + \lopen}t\lopen}t\lopen}t/2\lopen}t
 And, in the original time step,
-\\blossom[X^{2\Delta t} = X^0 + 2\blossomDot{X}^{2\blossomDelta t} = X^0 + 2\blossomDelta t    }]
+\\\\ltraLabella t} = X^{2\Delta t} = X^0 + 2\labella t\labella t\labella t}^{X}^{\labella t}]
 and then perform the calculation with leap frog as usual,
-The occurrence of computation mo
-
+The occurrence of computation modes is reduced.
 

@@ -6,7 +6,7 @@ Large-scale condensation schemes are ,
 This is a representation of the condensation processes involved in clouds other than cumulus convection,
 Calculating latent heat release and water vapor reduction, precipitation.
 We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature TERM00000, specific humidity TERM00001, and cloud cover TERM 00002, and is,
+The main input data are temperature TERM00000, specific humidity TERM00001, and cloud cover TERM00002,
 The output data is the time rate of change of temperature, specific humidity and cloud water content,
 TERM00003,TERM00003,
 The cloud cover is TERM00004.
@@ -26,7 +26,7 @@ The outline of the calculation procedure is as follows.
 1. add the amount of water vapor (TERM00010) and the amount of cloud water (TERM00011)
  Total water volume TERM00012
  The temperature has evaporated the cloud water,
-     Set the liquid water temperature TERM00013.
+ Set the     liquid water temperature TERM00013.
 
 2. assuming the distribution of the variation in TERM00014,
  Find the cloud cover and separate it again into cloud water and water vapor.
@@ -54,7 +54,7 @@ We consider this distribution to be a horizontal distribution.
 On the other hand, the saturation specific humidity is based on the grid average of TERM00019.
 
 In the grid,
-Consider the existence of clouds in the region of TERM00020 (Figure [lsc:fig-cloud [\]](#lsc:fig-cloud)).
+Consider the presence of a cloud in a region in TERM00020 (Figure [lsc[lsc:fig-cloud\]](#lsc:fig-cloud)).
 
 Then, as shown by the shading in the figure, the
 The horizontal ratio of the portion of the total water volume exceeding saturation TERM00021 is ,
@@ -67,12 +67,12 @@ In addition, the cloud cover of TERM00022 is in the region of TERM00023
 This is an integral of TERM00024,
 
 > EQ=00002.
-> <span id="p-lsc:l" label="p-lsc:l"&gt ;p-lsc:l\\.com;</span>
+> <span id="p-lsc:l" label="p-lsc:l">\blazer[p-lsc:l]</span>
 
 ### Determination by successive approximation
 
 First, from the Water Vapor TERM00025 and Cloud Water TERM00026 and the Temperature TERM00027,
-Total water volume TERM00028 and liquid water temperature TERM Ask for 00029.
+Find the total water volume TERM00028 and liquid water temperature TERM00029.
 
 > EQ=00017.
 > EQ=00017.
@@ -85,17 +85,17 @@ Assuming that the cloud water content evaluated by the aforementioned method is 
 It changes the temperature,
 
 > EQ=00003.
-> <span id="p-lsc:itereate1" label="p- lsc:itereate1">[p-lsc:itereate1\[p-lsc:itereate1]</ span>
+> <span id="p-lsc:itereate1" label="p-lsc:itereate1" label="p-lsc:itereate1"> </span>
 
 The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from TERM00035,
 The resulting temperature change is solved by successive approximation as TERM00036 ...
 In order to speed up this sequential convergence, we use the Newton method.
-I.e., ([\[p-lsc:itereate1\]](#p-lsc:itereate 1))) instead of
+I.e., instead of (ie, ([[p-lsc:itereate1\]](#p-lsc:itereate1))
 
 > EQ=00004.
 
 .
-TERM00037 uses the analytical You can ask for.
+TERM00037 can be obtained analytically using ([[p-lsc:l\]](#p-lsc:l)).
 
 ### precipitation process.
 

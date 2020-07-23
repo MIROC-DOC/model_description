@@ -8,89 +8,121 @@ AGCM}\label{characteristics-of-ccsrnies-agcm}}
 AGCM5.4 was developed in collaboration with the Center for Climate
 System Research (CCSR) at the University of Tokyo. Prepared in
 collaboration with the National Institute for Environmental Studies
-(NIES) , A global three-dimensional general circulation model of the
-atmosphere. The characteristics of the model are listed below.
+(NIES) , The model is a global three-dimensional general circulation
+model. The features of the model are listed below.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+System of equations\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+System of hydrostatic primitive equations\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Area.\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Global 3D\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Predictive variables\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Horizontal Discretization\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Spectral Conversion Method\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Vertical discretization\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+σ system (Arakawa and Suarez, 1983)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Radiation\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+2-stream DOM/adding method\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+(Based on Nakajima and Tanaka, 1986)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+A large-scale cloud process\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Scheme with the total water mixing ratio as a forecast variable\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+(Based on Le Treut and Li, 1991)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Cumulus Convection\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Simplified Arakawa-Schubert scheme\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Vertical Diffusion\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Mellor and Yamada(1974) level2\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Louis (1979), bulk type\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+(Considering the convection effect of stomatal resistance, Miller et
+al.~1992)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Surface Thermal Processes\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Multilayer Heat Transfer\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Surface Hydrological Processes\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Bucket Model\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Scheme based on McFarlane (1987)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The north-south vertical and east-west vertical two-dimensional
+models.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{verbatim}
+The vertical one-dimensional model.
+\end{verbatim}
 
 \begin{itemize}
 \item
-  TAB00000:0.0 system of equations
+  TAB00000: 18.0
 \item
-  TAB00000:0.1 hydrostatic primitive equation system
-\item
-  TAB00000:1.0 area
-\item
-  TAB00000:1.1 Global 3D
-\item
-  TAB00000:2.0 predictive variable
-\item
-  TAB00000:2.1 Horizontal wind speed, temperature, surface pressure,
-  specific humidity, cloud cover, Land surface temperature, Soil
-  moisture
-\item
-  TAB00000:3.0 horizontal discretization
-\item
-  TAB00000:3.1 spectral transformation technique
-\item
-  TAB00000:4.0 vertical discretization
-\item
-  TAB00000:4.1 σ-system (Arakawa and Suarez, 1983)
-\item
-  TAB00000:5.0 emission
-\item
-  TAB00000:5.1 2-stream DOM/adding method
-\item
-  TAB00000:6.0
-\item
-  TAB00000:6.1 (Based on Nakajima and Tanaka, 1986)
-\item
-  TAB00000:7.0 large-scale cloud process
-\item
-  TAB00000:7.1 Scheme with total water mixing ratio as a forecast
-  variable
-\item
-  TAB00000: 8.0
-\item
-  TAB00000:8.1 (Based on Le Treut and Li, 1991)
-\item
-  TAB00000:9.0 cumulus convection
-\item
-  TAB00000:9.1 Simplified Arakawa-Schubert scheme
-\item
-  TAB00000:10.0 vertical diffusion
-\item
-  TAB00000:10.1 Mellor and Yamada(1974) level2
-\item
-  TAB00000:11.0 Surface flux
-\item
-  TAB00000:11.1 Louis(1979) Bulk type
-\item
-  TAB00000:12.0
-\item
-  TAB00000:12.1 (Considering the convection effects of stomatal
-  resistance, Miller et al.~1992)
-\item
-  TAB00000:13.0 surface thermal process
-\item
-  TAB00000:13.1 multi-layered heat conduction
-\item
-  TAB00000:14.0 Surface Hydrological Processes
-\item
-  TAB00000:14.1 bucket model
-\item
-  TAB00000:15.0
-\item
-  TAB00000:15.1 (or, New Bucket Model, Multilayer Water Transport)
-\item
-  TAB00000:16.0 gravitational wave resistance
-\item
-  TAB00000:16.1 Scheme based on McFarlane (1987)
-\item
-  TAB00000:17.0 option
-\item
-  TAB00000:17.1 North-south vertical and east-west vertical
-  two-dimensional models. A vertical 1D model.
-\item
-  TAB00000:18.0
-\item
-  TAB00000:18.1 Marine Mixed-Layer Coupling Model
+  TAB00000: 18.1\\
+  The mixed-layer coupled model for the ocean
 \end{itemize}

@@ -5,7 +5,7 @@
 The vertical diffusion scheme,
 due to sub-grid scale turbulent diffusion.
 Evaluating the vertical flux of physical quantities.
-The main input data are wind speed, $u, v$, $u, v$, and temperature $T$ The specific humidity $q$, the cloud cover $l$, is
+The main input data are wind speed, $u, v$, $u, v$, temperature $T$, specific humidity $q$, and cloud cover $l$,
 The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and
 It is the differential value for obtaining an implicit solution.
 
@@ -163,7 +163,7 @@ $k$ is a Kárman constant.
 The current standard value is $l_0=200$ m.
 
 If $S_H, S_M$ are shown as functions of $R_{if}$,
-Figure[p-dif:smsh-rif\]](#p-dif:smsh-rif) Yes.
+Figure [p-dif:smsh-rif\]] (#p-dif:smsh-rif).
 
 ### Calculating Flux.
 

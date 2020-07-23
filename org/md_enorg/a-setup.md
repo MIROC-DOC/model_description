@@ -14,7 +14,7 @@ Longitude is discretized at equal intervals `MODULE:[ASETL]`.
 
 > EQ=00000.
 
-Latitude is the Gauss latitude TERM00005 described in Mechanics, and `MODULE:[ ASETL]`,
+Latitude is the Gauss latitude TERM00005 described in Mechanics, and `MODULE:[ASETL]`,
 Gauss-Legendre derived from the integral formula.
 This takes TERM00006 as its argument
 J The zero point of the next Legendre polynomial `MODULE:[GAUSS]`.
@@ -34,7 +34,7 @@ Define the TERM00009 in TERM00010 and then ,
 > EQ=00002.
 
 Find the TERM00011 representing the layer by
-Figure [a-setup:level\]] (#a-setup:level), with the standard Indicates the level of the 20 layers used.
+Figure [a-setup:level\]] (#a-setup:level) shows the 20 levels of the standard.
 
 Each forecast variable is all, TERM00012,TERM00012
 or defined on the grid of TERM00013,TERM00013.
@@ -274,4 +274,3 @@ The basic physical constants are shown below `MODULE:[APCON]`.
 
  - TAB00000:18.3 
      0.286
-

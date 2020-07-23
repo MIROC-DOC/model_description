@@ -5,7 +5,7 @@
 The vertical diffusion scheme,
 due to sub-grid scale turbulent diffusion.
 Evaluating the vertical flux of physical quantities.
-The main input data are wind speed, TERM00000, TERM00000, and temperature TERM00001 The specific humidity TERM00002, the cloud cover TERM00003, is
+The main input data are wind speed, TERM00000, TERM00000, temperature TERM00001, specific humidity TERM00002, and cloud cover TERM00003,
 The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and
 It is the differential value for obtaining an implicit solution.
 
@@ -98,7 +98,7 @@ TERM00015 is a Kárman constant.
 The current standard value is TERM00016 m.
 
 If TERM00017 and TERM00017 are shown as functions of TERM00018,
-Figure[p-dif:smsh-rif\]](#p-dif:smsh-rif) Yes.
+Figure [p-dif:smsh-rif\]] (#p-dif:smsh-rif).
 
 ### Calculating Flux.
 

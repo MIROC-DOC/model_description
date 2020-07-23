@@ -5,11 +5,11 @@
 ### Basic Equations.
 
 The basic equation is ,
-Sphere ($\lambda,\varphi$, $\lambda,\varphi$), at $\sigma$ coordinates It is a system of primitive equations and
+It is a system of primitive equations at the spherical ($\lambda,\varphi$) and $\sigma$ coordinates,
 It is given as follows ( Haltiner and Williams , 1980 ).
 
-1. a series of equations
-     
+1. a series of expressions
+
 $$
   \frac{\partial \pi}{\partial t} 
     + \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi
@@ -17,18 +17,18 @@ $$
           - \frac{\partial \dot{\sigma}}{\partial \sigma}
 $$
 
-     > <span id="mass" label="mass" label="mass">\\l.lt[mass]&lt ;/span>
+    > <span id="mass" label="mass" label="mass">\\\\blur[mass]</span>
 
 2. hydrostatic pressure formula
-     
+
 $$
   \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
 $$
 
-  lt;/span>
+    > <span id="hydrostatic" label="hydrostatic" label="hydrostatic pressure">\blaze[hydrostatic pressure]</span>.
 
 3. equation of motion
-     
+
 $$
   \frac{\partial \zeta}{\partial t} 
      =   \frac{1}{a\cos\varphi}
@@ -38,8 +38,8 @@ $$
           - {\mathcal D}(\zeta) 
 $$
 
-     > <span id="Vorticity" label="Vorticity">\centric\centric\centric\centric\centric\centric\lopen}&lt ;/span>
-     
+    > <span id="Vorticity" label="Vorticity" label="Vorticity">\\\\.00002}</span>
+
 $$
   \frac{\partial D}{\partial t} 
      =    \frac{1}{a\cos\varphi}
@@ -51,11 +51,11 @@ $$
           - {\mathcal D}(D) 
 $$
 
-     > <span id="divergence" label="divergence">\blaze[divergence]&lt ;/span>
+    > <span id="divergence" label="divergence">\\\[divergence]</span>
 
 4. thermodynamic equation
-     
-     > <span id="Heat Power" label="Heat Power">\blaze[Heat Power]&lt ;/span>
+
+    > <span id="Heat Power" label="Heat Power">\\blind\blind\blind\.com
 $$
   \frac{\partial T}{\partial t}
      =  - \frac{1}{a\cos\varphi}
@@ -73,12 +73,14 @@ $$
           + \frac{Q_{diff}}{C_{p}}
           - {\mathcal D}(T) 
 $$
- 
+  
 
 
 5. water vapor formula
-     
-     > <span id="Water Vapor" label="Water Vapor">\blazer\blazer.com > <span id="Water Vapor" label="Water Vapor\cleaner\cleaner\.com lt;/span>
+
+
+
+
 $$
   \frac{\partial q}{\partial t}
    =  - \frac{1}{a\cos\varphi}
@@ -90,7 +92,7 @@ $$
           + S_{q}
           - {\mathcal D}(q) 
 $$
- 
+  
 
 
 Here,
@@ -147,24 +149,24 @@ $$
                  \left[ \cos\varphi
                        \frac{\partial }{\partial \varphi} \right]  .
 $$
- 
- 
- 
- 
- 
- 
- 
-> <span id="Vorticity definition" label="Vorticity definition">Drumming[Vorticity definition </span>.
- 
-> <span id="divergent definitions" label="divergent definitions">\blaze[divergent definitions </span>.
- 
-> <span id="Section B" label="Section B" label="Section B" >\blaze[Section B\blaze]&lt ;/span>
- 
-> <span id="Section A" label="Section A" label="Section A">\\\\\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F\.3F.3F\.3F\.3F.3F.3F\.3F.3F.3F\.3F.3F.\.3F.3F.\.3F.3F.\.3F.3F.\.3F.3F.\\.3F.3F.\.3F.\.3F.\.3F.3F.\\.3F.3F.\\.3F.3F.3F.\.3F.3F.\.3F.\.3F.3F.3F.\.3F.\.3F.3F.\.3F.\.3F.\.3F.3F.\.3F.\.3F.3F.\. ;/span>
- 
-> <span id="Section E" label="Section E" label="Section E.">\\\lopen[E section]&lt ;/span>
- 
- 
+  
+  
+  
+  
+  
+  
+  
+> <span id="Vorticity definition" label="Vorticity definition">\\\blade\.com.
+  
+> <span id="Divergent Definitions" label="Divergent Definitions">\\\[Divergent Definitions]</span>
+  
+> <span id="Section B" label="Section B" label="Section B">\\brachio[Section B]</span>.
+  
+> <span id="Section A" label="Section A" label="Section A" label="Section A">\\\\\\\.} </span>
+  
+> <span id="Section E" label="Section E" label="Section E">\\\\\\.}
+  
+  
 
 
 ${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$
@@ -174,8 +176,8 @@ are forces due to small-scale kinetic processes (treated as 'physical processes'
 The $Q$ is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
 Heating and temperature changes,
 The $S_q$ is a system of 'physical processes' such as condensation and small-scale kinetic processes
-It is a water vapor source term.
-Also, $Q_{diff}$ is a frictional heat,
+The $Q_{diff}$ is a water vapor source term.
+The $Q_{diff}$ is the frictional heat,
 
 $$
   Q_{diff}
@@ -184,9 +186,9 @@ $$
 
 
 $( \frac{\partial \mathbf{v}}{\partial t} )_{diff} $ is ,
-It is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
+The time-varying terms of $u,v$ due to horizontal and vertical diffusion.
 
-### Boundary Conditions.
+### Boundary conditions.
 
 The boundary conditions for lead-direct current are
 
@@ -195,7 +197,7 @@ $$
 $$
 
 
-It is. 
+. Thus, from ([\\0.25\0.25}(#mass)),
 The time-varying surface pressure equation and
 Diagnostic Formula for determining the vertical velocity ($\dot{\sigma}$) in the $\sigma$ system
 
@@ -205,7 +207,7 @@ $$
      - \int_{0}^{1} D  d \sigma ,
 $$
 
-> <span id="barometric pressure trend" label="barometric trend">\blindness </span>.
+> <span id="barometric tendency" label="barometric tendency">\blazing tendency </span>
 
 $$
    \dot{\sigma} 
@@ -216,8 +218,7 @@ $$
          \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
 $$
 
-> <span id="vertical speed" label="vertical speed">\blazing speed </span>.
+> <span id="vertical speed" label="vertical speed">\blaze[vertical speed]</span>
 
-is led.
-
+is led. 
 

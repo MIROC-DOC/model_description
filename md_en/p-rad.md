@@ -8,7 +8,7 @@ It was created based on the k-Distribution Method.
 by gases and clouds/aerosols
 Considering the absorption, emission, and scattering processes of solar and terrestrial radiation,
 Calculate the value of the radiation flux at each level.
-The main input data are temperature $T$, specific humidity $q$, and cloud cover $l$, cloud cover is in $C$,
+The main input data are temperature $T$, specific humidity $q$, cloud cover $l$, and cloud cover $C$,
 The output data are upward and downward radiation fluxes, $F^-, F^+$,
 and the differential coefficient of upward radiation flux with respect to surface temperature
 This is a $dF^-/dT_g$.
@@ -17,7 +17,7 @@ The calculation is done for several wavelengths.
 Each wavelength range is based on the k-distribution method,
 It is further divided into several sub-channels.
 As for gaseous absorption,
-H$_2$O, CO$_2$, O$_3$, N$_2$O, Band Absorption of the CH$_4$ and ,
+Band Absorption in H$_2$O, CO$_2$, O$_3$, N$_2$O, CH$_4$ and ,
 Continuous absorption of H$_2$O, O$_2$, O$_3$
 and CFC absorption is incorporated.
 As for the scattering, we can use Rayleigh scattering of gases and
@@ -75,7 +75,7 @@ $$
  = \int F^\lambda(0) exp (-k^\lambda z) d \lambda
 $$
 
-> <span id="p-rad:beer" label="p-rad: > beer">beer[p-rad:beer\]</span>.
+> <span id="p-rad:beer" label="p-rad:beer" label="p-rad:beer">\blazer[p-rad:beer]</span>
 
 However, the absorption and emission of radiation by gas molecules is not
 Due to the complicated wavelength dependence of the absorption line structure of the molecule,
@@ -103,9 +103,9 @@ $$
  \simeq \sum \bar{F}^i(0) exp (-k^i z) F^i
 $$
 
-> <span id="p-rad:beer-kd" label="p-rad: beer-kd">\\blazer[p-rad:beer-kd\]</span>
+> <span id="p-rad:beer-kd" label="p-rad:beer-kd" label="p-rad:beer-kd"> </span>
 
-with the addition of a finite number of exponential terms (subchannels), as
+with the addition of a finite number of exponential terms (subchannels), such that
 It is possible to calculate relatively precisely.
 This method is furthermore ,
 It has the advantage that it is easy to consider absorption and scattering at the same time.
@@ -117,9 +117,9 @@ Not currently used as a standard,
 The wavelength range is divided into 18 parts.
 In addition, each wavelength range is divided into one to six sub-channels (corresponding to the $i$ in the above formula),
 There will be 37 channels in total.
-The wavelength range is the wavenumber (cm$^{-1}$)
+The wavelength range is a wavenumber (cm$^{-1}$)
 50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
-2500, 4000, 14500, 31500, 33000, 34500, 36000, 43,000, 46,000, 50000
+2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
 Divided by.
 
 ### Calculating the Planck function `MODULE:[PLANKS]`
@@ -151,7 +151,7 @@ $$
 $$
 
 
-where $k^{(m)}$ is the absorption coefficient of the molecule $m$, and each subchannel has a Different.
+where $k^{(m)}$ is the absorption coefficient of the molecule $m$, which is different for each subchannel.
 
 $$
  k^{(m)} = \exp\left\{ \sum_{i=0}{N_i} \sum_{j=0}{N_j} A^{(m)}_{ij}
@@ -160,7 +160,7 @@ $$
 $$
 
 
-as a function of temperature $T$(K) and atmospheric pressure $p$(hPa) in the form Given.
+as a function of temperature $T$(K) and atmospheric pressure $p$(hPa).
 $C^{(m)}$ is the amount of gas in the layer represented by mol cm$^{-2}$,
 Volume Mixing Ratio $r$ (in ppmv) to ,
 
@@ -170,7 +170,7 @@ $$
 
 
 And it can be calculated that .
-However, $R_u$ is the gas constant per mole (8.31 J mol$_{-1}$ K$^{-1}$) and ,
+Note that $R_u$ is the gas constant per mole (8.31 J mol$_{-1}$ K$^{-1}$),
 The unit of air layer thickness $\Delta z$ is in km.
 The volume mixing ratio $r$ at ppmv is
 Mass Mixture Ratio $q$ to ,
@@ -213,7 +213,7 @@ $$
 
 .
 
-Continuous absorption of O$_3$ is achieved by using the mixing ratio $r^{O_3}$ and incorporating the temperature dependence .
+The continuous absorption of O$_3$ is based on the mixing ratio $r^{O_3}$ and incorporates a temperature dependence,
 
 $$
 \tau^{O_3} = \sum_{n=0}{2} A^{O_3}_n r^{O_3} \frac{T}{T_{STD}}^n \rho \Delta z
@@ -540,7 +540,7 @@ This calculation is done for each sub-channel and each layer.
 
 ### Radiation flux at each layer boundary `MODULE:[ADDING]`
 
-Transmission Coefficient of Each Layer $R_l$, Reflection Coefficient $T_l$, Radiation Source Function $\epsilon^\pm_l$
+Transmission coefficient of each layer $R_l$, Reflection coefficient $T_l$, Radiation source function $\epsilon^\pm_l$
 is required in all layers of $l$,
 The radiation fluxes at each layer boundary can be obtained by using the adding method.
 This means that the two layers of $R,T,\epsilon$ are known,
@@ -577,7 +577,7 @@ $$
 
 Let's say there are layers 1, 2, ...$N$ from the top.
 However, the surface is considered to be a single layer and is the $N$ layer.
-Reflectance and radiance of the layers from the $n$ to the $N$ are considered as a single layer source function
+Reflectance and source function of the layers from the $n$ to the $N$ layer as a single layer
 Given the $R^+_{n,N}, \epsilon^-_{n,N}$, $R^+_{n,N}, \epsilon^-_{n,N}$ ,
 
 $$
@@ -733,7 +733,7 @@ To do so, we perform the following calculations.
 
 3. reflection and transmission coefficients for each layer,
  The source function is averaged with the weight of the cloud cover of the stratocumulus, $C^l$.
- The averages are expressed by adding the $\bar{}$,
+ The averages are represented by $\bar{}$,
 
 $$
         \bar{R}  =  ( 1 - C^l ) R^\circ + C^l R^l \\
@@ -778,7 +778,7 @@ $$
  When using a characteristic value without clouds (e.g., $R^\circ$),
  When the characteristic values of cumulus clouds (e.g., $R^c$) are used,
  fluxes by adding, respectively.
-     Find $\bar{F}, F^\circ, F^c$.
+ Find     $\bar{F}, F^\circ, F^c$.
 
 5. the final flux we seek is
 
@@ -844,7 +844,7 @@ $$
 $\varphi$ is a latitude,
 $h$ is the time angle (local time minus $\pi$).
 
-Assuming that the eccentricity of the Earth's orbit is $e$ (Katayama, 1974 ),
+Assuming that the eccentricity of the Earth's orbit is $e$ (Katayama, 1974),
 
 $$
    a_0  =   1 + e^2 \\
@@ -884,7 +884,7 @@ The calculation of the radiation is usually not done at every step.
  To do so, we have to save the radiation flux,
  If the time is not used for radiation calculation, it is used.
  As for the shortwave radiation,
- Percentage of time (time that is $\mu_0>0$) between next calculation time and daylight hours $f$ and
+ Percentage of time (time that is $\mu_0>0$) between next calculation time ($f$) and
  Using the solar incidence angle factor ($\bar{\mu_0}$) averaged over the daylight hours
  Seeking Flux $\bar{F}$,
 

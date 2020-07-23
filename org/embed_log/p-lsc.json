@@ -1,10 +1,5 @@
 {
-    "imath": {
-        "TERM00029": {
-            "count": 0,
-            "text": "$T_l$"
-        }
-    },
+    "imath": {},
     "emath": {},
     "tabular": {}
 }
