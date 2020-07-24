@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/22 07:58:16 fuyuki lexer.py>'
+# 'Time-stamp: <2020/07/24 09:02:40 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -1026,8 +1026,8 @@ class ParserStd(LexerBase):
         if not os.path.exists(incf):
             parent = os.path.dirname(self.ftree.file)
             incf = os.path.join(parent, os.path.basename(incf))
-        if self.verbose > 0 or True:
-            print('Read %s' % incf)
+        if self.verbose > -2:
+            print(f'% Read {incf}')
         ilex = self.parse_file(incf)
         if self.include == 1:
             return(None)
