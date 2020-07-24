@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/22 08:25:58 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/07/24 09:02:12 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -13,7 +13,7 @@ import pprint as ppr
 import pyparsing as pp
 
 
-class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
+class ParserMirocDoc(psitex.ParserStd):
     """Simple class for MIROC document replacement."""
 
     def __init__(self, macros=None,
@@ -184,7 +184,7 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
         """Batch replacement of special macros (for root source)."""
         if self.label:
             for f in self.ftree.root:
-                print('###', f.file)
+                # print('###', f.file)
                 self.rep_ref(tree=f.lex)
 
     def rep_imath(self, tree=None, fmt=None, lev=0):
@@ -239,8 +239,9 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
                             pfx = pfx.group()
                         if sfx:
                             sfx = sfx.group()
-                        sys.stdout.write('unit/chem mode (%s:%s:%s)\n'
-                                         % (pfx, xm, sfx))
+                        if self.verbose > -1:
+                            sys.stdout.write('unit/chem token (%s:%s:%s)\n'
+                                             % (pfx, xm, sfx))
                         pass
                     if head:
                         rep.insert(0, ' ')
@@ -328,7 +329,8 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
                 m[con] = ['\n', txt, '\n']
                 self.tbl_emath[txt] = src
             else:
-                sys.stderr.write('Ignore displaymath %s\n' % chk)
+                if self.verbose > -1:
+                    sys.stdout.write('Ignore displaymath %s\n' % chk)
 
     def rep_tabular(self, tree=None, fmt=None):
         """Replace tabular environement."""
@@ -407,7 +409,8 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
                         sys.stderr.write('Exists output file %s.\n' % dest)
                         sys.exit(1)
                 of = open(dest, 'w')
-            print(f'% Convert {f.file} > {dest}')
+            if self.verbose > -2:
+                print(f'% Convert {f.file} > {dest}')
             of.write(''.join(self.flatten(tree)))
             if outdir:
                 of.close()
@@ -450,13 +453,17 @@ class ParserMirocDoc(psitex.ParserBase, psitex.ParserStd):
                 print('%s: (null)')
 
 
-def show_usage(run=None):
+def show_usage(run=None, short=False, out=None):
     """Show usage."""
+    out = out or sys.stdout
     run = run or ''
-    print(f"Usage: {run} [OPTIONS]... [FILES]....")
-    print("""MIROC document parser for the pushmi-pullyu project.
+    out.write(f"Usage: {run} [OPTIONS]... [FILES]....\n")
+    out.write("""MIROC document parser for the pushmi-pullyu project.\n""")
 
-Input files are parsed and output to same basenames under output
+    if short:
+        out.write(f"""run {run} -h to print the usage.\n""")
+    else:
+        out.write("""Input files are parsed and output to same basenames under output
 directory (default `.').  If subfile-mode is enabled (-S) all
 the included files are also parsed and output to their same
 basenames under same output directory.
@@ -469,7 +476,7 @@ General options
     -h, --help           show this usage
     -v, --verbose        be more verbose
     -q, --quiet          be more silent
-    --debug              enable to print debug information
+        --debug          enable to print debug information
     -f, --force          force overwrite if exists
     -o, --output=FILE    set output filename as FILE
     -d, --outdir=PATH    set PATH as output directory (must exist)
@@ -484,8 +491,8 @@ Replacement controls
                          SW: d=description
 
 Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>.
-This system is part of MIROC-DOC project and psiTeX project.""")
-    pass
+This system is part of MIROC-DOC project and psiTeX project.\n""")
+        pass
 
 
 def main(args, run):
@@ -498,8 +505,9 @@ def main(args, run):
                                     'math', 'dennou', 'label', 'subfiles',
                                     'equation=', 'tabular=', ])
     except getopt.GetoptError as err:
-        print(err)
-        raise
+        sys.stderr.write(str(err) + '\n')
+        show_usage(run=run, short=True, out=sys.stderr)
+        sys.exit(1)
     debug = False
     outdir = None
     outf = None
@@ -543,7 +551,7 @@ def main(args, run):
             assert False, "Unhandled option %s" % o
 
     if len(args) == 0:
-        show_usage(run=run)
+        show_usage(run=run, short=True)
         sys.exit(0)
 
     if not outf and not outdir:
@@ -556,7 +564,8 @@ def main(args, run):
         outdir = outdir or '.'
 
     for f in args:
-        print(f"% Parse {f}")
+        if vlev > -2:
+            print(f"% Parse {f}")
         lb = ParserMirocDoc(eenv=eenv, etab=etab,
                             label=label, math=math,
                             include=inc,
@@ -576,7 +585,8 @@ def main(args, run):
             cache = root + '.json'
             cache = os.path.join(outdir, cache)
             cf = open(cache, 'w')
-            print(f'% Create cache {cache}')
+            if vlev > -2:
+                print(f'% Create cache {cache}')
             lb.dump(cf)
             cf.close()
 
