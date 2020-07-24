@@ -53,8 +53,14 @@ alternate.
 `parse_jp.py` requires `python` version 3, and the package `pyparsing`
 for lexical analysis of the source.
 
-Although `plastex` may work better for this purpose, I was not
-familiar with `plastex` in the beginning of this project.
+There are two python files: `parse_jp.py` and `psitex.py`.  The former
+controls replacement of those specific to MIROC document.  The latter
+is a (relatively) general module to parse LaTeX sources, which is
+originally developed for another objective.
+
+Although `plastex` may work better for this purpose, the maintainer
+was not familiar with `plastex` in the beginning of this (psiTeX)
+project.
 
 ### Usage
 
