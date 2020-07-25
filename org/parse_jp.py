@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/24 09:02:12 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/07/25 15:23:24 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -51,7 +51,9 @@ class ParserMirocDoc(psitex.ParserStd):
             eenv = 'quote'
         elif eenv in ['qn', 'qq']:
             eenv = 'quotation'
-        if eenv not in [None, 'quote', 'quotation']:
+        elif eenv in ['v']:
+            eenv = 'verbatim'
+        if eenv not in [None, 'quote', 'quotation', 'verbatim']:
             sys.stderr.write('Invalid parameter %s\n' % eenv)
             sys.exit(1)
         self.eenv = eenv
@@ -183,9 +185,11 @@ class ParserMirocDoc(psitex.ParserStd):
     def post_parse_root(self, *args, **kw):
         """Batch replacement of special macros (for root source)."""
         if self.label:
-            for f in self.ftree.root:
-                # print('###', f.file)
-                self.rep_ref(tree=f.lex)
+            if self.include > 2:
+                self.rep_ref(tree=self.ftree.root.lex)
+            else:
+                for f in self.ftree.root.walk():
+                    self.rep_ref(tree=f.lex)
 
     def rep_imath(self, tree=None, fmt=None, lev=0):
         """Replace inline maths."""
@@ -268,18 +272,18 @@ class ParserMirocDoc(psitex.ParserStd):
         tree = tree or self.ftree.lex
         for m in self.search_env(tree, r'equation', r'equation*',
                                  r'displaymath', ):
-            lbl = self.search(m, r'\label')
+            # lbl = self.search(m, r'\label')
             eqn = self.get_eqn(m)
             # print(eqn)
             txt = fmt % len(self.tbl_emath)
             src = m.B.copy()
             self.tbl_emath[txt] = src
             rep = ['\n', txt, eqn, '\n']
-            if len(lbl) == 1:
-                rep.extend([lbl, '\n'])
-            elif len(lbl) > 1:
-                ll = [''.join(self.flatten(li)) for li in lbl]
-                sys.stderr.write('Multiple labels {%s}\n' % ' '.join(ll))
+            # if len(lbl) == 1:
+            #     rep.extend([lbl, '\n'])
+            # elif len(lbl) > 1:
+            #     ll = [''.join(self.flatten(li)) for li in lbl]
+            #     sys.stderr.write('Multiple labels {%s}\n' % ' '.join(ll))
             self.modify_env(m, body=rep)
             if self.eenv:
                 self.modify_env(m, name=self.eenv)
@@ -366,6 +370,8 @@ class ParserMirocDoc(psitex.ParserStd):
                 if any(line):
                     for col, e in enumerate(line):
                         label = txt + ('%d.%d' % (row, col))
+                        if isinstance(e, str):
+                            e = [e]
                         rep.append([r'\item',
                                     ['[', label, ']'], ' '] + e + ['\n'])
             self.modify_env(m, body=rep, name=self.etab, args=None)
@@ -389,7 +395,12 @@ class ParserMirocDoc(psitex.ParserStd):
     def write(self, outdir, outf, over=False, *args, **kw):
         """Write all the results."""
         # super().write(*args, **kw)
-        for f in self.ftree.root:
+        if self.include > 2:
+            files = [self.ftree.root]  # root only
+        else:
+            files = self.ftree.root.walk()    # iterate through trees
+
+        for f in files:
             src = f.file
             tree = f.lex
             of = sys.stdout
@@ -485,8 +496,9 @@ Replacement controls
     -D, --dennou         replace dennou macros
     -L, --label          embed labels and their references
     -S, --subfiles       also parse included files
+    -1, --onefile        expand included files to the root (imply -S)
     -E, --equation=SW    replace equation-like environments as SW
-                         SW: q=quote, qq=quotation
+                         SW: q=quote, qq=quotation, v=verbatim
     -T, --tabular=SW     replace tabular-like environments as SW
                          SW: d=description
 
@@ -498,11 +510,12 @@ This system is part of MIROC-DOC project and psiTeX project.\n""")
 def main(args, run):
     """Main."""
     try:
-        opts, args = getopt.getopt(args, 'hvqfo:d:MDLSE:T:',
-                                   ['help', 'verbose', 'quiet', 'debug',
-                                    'force',
+        opts, args = getopt.getopt(args, 'hvqfo:d:MDLS1E:T:',
+                                   ['debug',
+                                    'help', 'verbose', 'quiet', 'force',
                                     'output=', 'outdir=',
-                                    'math', 'dennou', 'label', 'subfiles',
+                                    'math', 'dennou', 'label',
+                                    'subfiles', 'onefile',
                                     'equation=', 'tabular=', ])
     except getopt.GetoptError as err:
         sys.stderr.write(str(err) + '\n')
@@ -540,7 +553,9 @@ def main(args, run):
         elif o in ['-D', '--dennou']:
             dennou = True
         elif o in ['-S', '--subfiles']:
-            inc = 1
+            inc = max(inc, 1)
+        elif o in ['-1', '--onefile']:
+            inc = max(inc, 3)
         elif o in ['-L', '--label']:
             label = True
         elif o in ['-M', '--math']:
@@ -562,6 +577,9 @@ def main(args, run):
         outdir = False
     else:
         outdir = outdir or '.'
+    if outf and len(args) > 1:
+        sys.stderr.write('Argument -o FILE conflicts with multiple files.\n')
+        sys.exit(1)
 
     for f in args:
         if vlev > -2:
@@ -580,7 +598,7 @@ def main(args, run):
 
         lb.write(outdir, outf, over=overw)
         if outdir:
-            base = os.path.basename(f)
+            base = os.path.basename(outf or f)
             root, ext = os.path.splitext(base)
             cache = root + '.json'
             cache = os.path.join(outdir, cache)
