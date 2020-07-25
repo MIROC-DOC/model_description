@@ -54,9 +54,9 @@ alternate.
 for lexical analysis of the source.
 
 There are two python files: `parse_jp.py` and `psitex.py`.  The former
-controls replacement of those specific to MIROC document.  The latter
-is a (relatively) general module to parse LaTeX sources, which is
-originally developed for another objective.
+is the main executable, which controls replacement of those specific
+to MIROC document.  The latter is a (relatively) general module to
+parse LaTeX sources, which is originally developed for another objective.
 
 Although `plastex` may work better for this purpose, the maintainer
 was not familiar with `plastex` in the beginning of this (psiTeX)
@@ -66,7 +66,8 @@ project.
 
 A typical usage is as follows:
 ```bash
-% ./parse_jp.py -S -L -D -M -Td -Eq -d tex_jpx tex_jp/agcm.tex
+% mkdir tex_jpx   # prepare output directory
+% ./parse_jp.py -S -L -D -M -Td -Ev -d tex_jpx tex_jp/agcm.tex
 % ls tex_jpx
 a-intro.tex  d-hori.tex  p-dif.tex    p-sflx.tex
 a-setup.tex  d-summ.tex  p-grav.tex   p-solv.tex
@@ -77,6 +78,14 @@ d-basic.tex  p-cum.tex   p-sfc.tex
 ```
 Results are written under `tex_jpx` directory.
 The file `agcm.json` contains all the information for later use.
+
+If you want one combined TeX file apply `-1` as an argument:
+```bash
+% mkdir tex_jp1   # prepare output directory
+% ./parse_jp.py -1 -S -L -D -M -Td -Ev -d tex_jp1 tex_jp/agcm.tex
+% ls tex_jp1
+agcm.json   agcm.tex
+```
 
 ### Reference of command-line arguments
 
@@ -149,7 +158,7 @@ Results:
 
 The number of equations is preserved.  `\label` macros are deleted.
 
-#### Math environments replacement (`-Eq` `-Eqq`)
+#### Math environments replacement (`-Eq` `-Eqq` `-Ev`)
 
 Math environments, (e.g., `equation`) can be converted to another
 environments with `-E` argument (need `-M` to set).
@@ -170,6 +179,7 @@ Results:
     EQ=00004.
     \end{quote}
 
+Using `-Ev` they are converted to `verbatim`.
 Using `-Eq` or `-Eqq` they are converted to `quote` or `quotation`.
 
 #### Tabular environments replacement (`-Td`)
@@ -268,22 +278,22 @@ Results:
 
 `\EQN{}` is not a standard macro and used for a placeholder.
 
-Using `-M -Eq` together, they are converted as follows:
+Using `-M -E*` together, they are converted as follows:
 
 ```bash
-% ./parse_jp.sh -M -Eq -L tex_jp/a-intro.tex
+% ./parse_jp.sh -M -Ev -L tex_jp/a-intro.tex
 ```
 
 Results:
 
-    \begin{quote}
+    \begin{verbatim}
     EQ=00004.    --- (1)
     EQ=00004.    --- (2)
     EQ=00004.    --- (3)
     EQ=00004.    --- (4)
     EQ=00004.    --- (5)
     EQ=00004.    --- (6)
-    \end{quote}
+    \end{verbatim}
 
 #### Subfiles inclusion (`-S`)
 

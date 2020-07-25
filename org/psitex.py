@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/24 09:02:40 fuyuki lexer.py>'
+# 'Time-stamp: <2020/07/25 14:37:59 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -46,11 +46,11 @@ class FileTree:
         else:
             return({self.file: None})
 
-    def __iter__(self):
+    def walk(self):
         """Iterate through tree."""
         yield self
         for ch in self.children or []:
-            yield from ch
+            yield from ch.walk()
 
 
 class LexerBase:
@@ -698,9 +698,10 @@ class LexerBase:
         # print('PARSE:', file, cf.file)
         if cf.parent:
             self.ftree = cf.parent
-        # print(cf.aslist())
-        # print(cf.lex)
-        self.post_parse(orig=cf.lex)
+        if self.include < 3 or cf.parent is None:
+            self.post_parse(orig=cf.lex)
+        if cf.parent is None:
+            self.post_parse_root(orig=cf.lex)
 
         return(results)
 
@@ -739,17 +740,20 @@ class LexerBase:
 
     def post_parse(self, orig=None):
         """Postproccess after parser."""
-        # orig = orig or self.ftree.lex
-        # self.cache['tree'] = orig.asList()
 
         for k in sorted(self.report.keys()):
             sys.stderr.write('%s\n' % self.report[k])
+
+    def post_parse_root(self, orig=None):
+        """Postproccess after parser (for root)."""
+
+        pass
 
     def write(self, file=None, all=None, tree=None):
         """Write results to file."""
         file = file or sys.stdout
         if all:
-            for f in self.ftree.root:
+            for f in self.ftree.root.walk():
                 print(f'%%%%% {f.file}')
                 tree = f.lex
                 file.write(''.join(self.flatten(tree)))
@@ -836,7 +840,7 @@ class LexerBase:
 
         if dump:
             print('%%% dump')
-            for f in self.ftree.root:
+            for f in self.ftree.root.walk():
                 print(f'%% {f.file}')
                 print(f.lex.dump())
         # print('### tree %s', self.file)
@@ -1115,11 +1119,6 @@ class ParserStd(LexerBase):
         """Perform dummy action."""
         print('DUMMY', loc)
         print(toks.dump())
-    # def post_parse(self, orig=None):
-    #     """Postproccess after parser."""
-    #     orig = orig or self.orig
-    #     super().post_parse(orig=orig)
-    #     # self.adj_tabular()
 
     def adj_tabular(self, orig=None):
         r"""Adjust tabular environement structure.
