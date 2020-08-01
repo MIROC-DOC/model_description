@@ -13,115 +13,99 @@
 \begin{enumerate}
 \item 連続の式
 
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\label{質量}
-\end{quote}
+\end{verbatim}
 
 \item 静水圧の式
 
-\begin{quote}
+\begin{verbatim}
 EQ=00001.
-\label{静水圧}
-\end{quote}
+\end{verbatim}
 
 
 \item 運動方程式
 
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\label{渦度}
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00003.
-\label{発散}
-\end{quote}
+\end{verbatim}
 
 
 \item 熱力学の式
 
-\begin{quote}
-\label{熱力}
-\nonumber
-EQ=00008.\\
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+EQ=00008.
+\end{verbatim}
 
 
 \item 水蒸気の式
 
-\begin{quote}
-\label{水蒸気}
-\nonumber
-EQ=00009.\\
+\begin{verbatim}
 EQ=00009.
-\end{quote}
+EQ=00009.
+\end{verbatim}
 
 \end{enumerate}
 
 ここで,
 %
-\begin{quote}
-EQ=00010.\\
-EQ=00010.\\
-EQ=00010.\\
-EQ=00010.\\
-EQ=00010.\\
-EQ=00010.\\
-EQ=00010.\\
-\label{渦度定義}
-EQ=00010.\\
-\label{発散定義}
-EQ=00010.\\
-\label{B項}
-EQ=00010.\\
-\label{A項}
-EQ=00010.\\
-\label{E項}
-EQ=00010.\\
-\nonumber
-EQ=00010.\\
+\begin{verbatim}
 EQ=00010.
-\end{quote}
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+EQ=00010.
+\end{verbatim}
 
-TERM00002,TERM00002
+TERM00006,TERM00006
 は水平拡散項,
-TERM00003,TERM00003
+TERM00007,TERM00007
 は小規模運動過程(`物理過程'として扱う)による力,
-TERM00004 は放射, 凝結, 小規模運動過程等の`物理過程'による
+TERM00008 は放射, 凝結, 小規模運動過程等の`物理過程'による
 加熱・温度変化,
-TERM00005 は凝結, 小規模運動過程等の`物理過程'による
+TERM00009 は凝結, 小規模運動過程等の`物理過程'による
 水蒸気ソース項である.
-また, TERM00006 は摩擦熱であり,
+また, TERM00010 は摩擦熱であり,
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 %
-TERM00007 は,
-水平および鉛直の拡散による TERM00008,TERM00008 の時間変化項である.
+TERM00013 は,
+水平および鉛直の拡散による TERM00014,TERM00014 の時間変化項である.
 
 \subsubsection{境界条件}
 
 鉛直流に関する境界条件は
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 %
 である. よって(\ref{質量}) から,
 地表気圧の時間変化式と
-TERM00009 系での鉛直速度 TERM00010 を求める診断式
+TERM00015 系での鉛直速度 TERM00016 を求める診断式
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\label{気圧傾向}
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00007.
-\label{鉛直速度}
-\end{quote}
+\end{verbatim}
 %
 が導かれる.
 

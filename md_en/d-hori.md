@@ -1,48 +1,47 @@
 ## Horizontal discretization
 
 The horizontal discretization of the
-The spectral transformation method is used (Bourke, 1988).
-The differential terms for longitude and latitude are evaluated by orthogonal function expansion,
-On the other hand, non-linear terms are computed on the grid points.
+Using the spectral transformation method (Bourke, 1988).
+The differential terms for longitude and latitude are evaluated by the orthogonal function expansion,
+On the other hand, the nonlinear term is computed on the grid points.
 
 ### Spectral Expansion.
 
 As an expansion function system, it is a Laplacian eigenfunction system on a sphere
-The spherical harmonic function $Y_n^m(\lambda,\mu)$ are used.
-with $\mu \equiv \sin\varphi$.
+Using the spherical harmonic functions $Y_n^m(\lambda,\mu)$.
+However, it is $\mu \equiv \sin\varphi$.
 $Y_n^m$ satisfies the following equation,
 
 $$
 \nabla^{2}_{\sigma} Y_n^m(\lambda,\mu) 
 = - \frac{n(n+1)}{a^{2}} Y_n^m(\lambda,\mu) 
 $$
+     --- (1)
 
-
-Using the Legendre junction number $P_n^m$ it is written as follows.
+Using the Legendre jury function $P_n^m$ it is written as follows.
 
 $$
 Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{im \lambda}
 $$
+    --- (2)
 
+However, it is $ n \geq | m | $.
 
-but $ n \geq | m | $.
-
-The expansion by the spherical harmonic function is written as ,
+The expansion by spherical harmonic functions is ,
 
 $$
    {Y_n^m}_{ij} \equiv Y_n^m ( \lambda_i, \mu_j )
 $$
+     --- (3)
 
-
-If you write ,
+When I write ,
 
 $$
   X_{ij} \equiv X ( \lambda_i, \mu_j )
-  =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+  =  {\mathcal R}{TERM00006} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
         X_n^m {Y_n^m}_{ij} ,
 $$
-
-> <span id="Spherical Expansion" label="Spherical Expansion">\\\blur[Spherical Expansion]</span>
+     --- (4)
 
 The inverse of that is ,
 
@@ -54,37 +53,34 @@ $$
          =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m*}}_{ij} w_j 
 $$
-  
-> <span id="Deployment Factor" label="Deployment Factor">\\\.com[Deployment Factor]</span>
+    --- (5)
+    --- (6)
 
-
-.
-When evaluating by replacing the integral with the sum,
+expressed as follows.
+When evaluating the sum of the integral, you can substitute the sum of ,
 See Gauss's trapezoidal formula for the $\lambda$ integral,
-We use the Gauss-Legendre integral formula for the $\mu$ integral.
+Use the Gauss-Legendre integral formula for the $\mu$ integral.
 $\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load.
-Also, $\lambda_i$ is a grid of evenly spaced Gauss loads.
+The $\lambda_i$ is an evenly spaced grid.
 
-Using the spectral expansion, we can obtain a new formula for Gauss-Legendre integration,
+Using spectral expansion,
 The grid point values for the terms containing the derivatives are found as follows.
 
 $$
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
      =  
-        {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+        {\mathcal R}{TERM00012} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        im X_n^m {Y_n^m}_{ij}
 $$
-
-> <span id="barometric pressure x" label="barometric pressure x">\a[barometric pressure x]</span>.
+     --- (7)
 
 $$
    \left( \cos\varphi \frac{\partial X}{\partial \varphi} \right)_{ij}
-     =  {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+     =  {\mathcal R}{TERM00013} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        X_n^m 
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
 $$
-
-> <span id="barometric y" label="barometric y" label="barometric y">\blaze[barometric y]</span>.
+     --- (8)
 
 Furthermore,
 From the spectral components of $\zeta$ and $D$,
@@ -93,40 +89,37 @@ The grid point values for $u,v$ are obtained as follows.
 $$
   u_{ij}
   = \frac{1}{\cos\varphi}
-     {\mathcal R}\mathbf{e} \sum_{m=-N}^{N} 
+     {\mathcal R}{TERM00017} \sum_{m=-N}^{N} 
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
     \left\{
              \frac{a}{n(n+1)} \zeta_n^m 
-            (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
+            (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
           -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
 $$
-
-> <span id="Seeking U" label="Seeking U" label="Seeking U">\\[Seeking U]</span>.
+     --- (9)
 
 $$
   v_{ij}
   = \frac{1}{\cos\varphi}
-   {\mathcal R}\mathbf{e} \sum_{m=-N}^{N}
+   {\mathcal R}{TERM00018} \sum_{m=-N}^{N}
                      \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
           -  \frac{im a}{n(n+1)} \zeta_n^m {Y_n^m}_{ij}
           -  \frac{a}{n(n+1)} D_n^m 
-            (1-\mu^{2}) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
+            (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
     \right\}
 $$
-
-> <span id="Seeking V" label="Seeking V">\\\[V seeking]</span>
+     --- (10)
 
 The derivative that appears in the advection term of the equation is,
-It is required as follows.
+The following is required.
 
-> <span id="A integral" label="A integral" label="A integral">\[A integral]</span>
 $$
-  \left( \frac{1}{a\cos\varphi} \frac{\partial A}{\partial \lambda} \right)_n^m 
+  \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m 
    =  \frac{1}{4 \pi} 
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
-          \frac{1}{a\cos\varphi} \frac{\partial A}{\partial \lambda} Y_n^{m *} \\
+          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \\
    =  \frac{1}{4 \pi} 
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda \,
           im A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \\
@@ -134,17 +127,16 @@ $$
           im A_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
 $$
-  
-  
 
 
-> <span id="B integral" label="B integral" label="B integral">B integral\blazer\blazer]</span>.
+     --- (11)
+
 $$
   \left( \frac{1}{a\cos\varphi} 
-         \frac{\partial }{\partial \varphi} (A\cos\varphi) \right)_n^m 
+         \frac{\partial{}}{\partial {\varphi}} (A\cos\varphi) \right)_n^m 
     =  \frac{1}{4 \pi a} 
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
-           \frac{\partial }{\partial \mu} (A\cos\varphi) Y_n^{m *}  \\
+           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \\
     =  - \frac{1}{4 \pi a} 
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda 
            A \cos\varphi \frac{\partial }{\partial \mu} Y_n^{m *}
@@ -154,21 +146,21 @@ $$
           (1-\mu_j^2)  \frac{\partial }{\partial \mu} 
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
 $$
-  
-  
 
 
-Further ,
+     --- (12)
+
+Furthermore,
 
 $$
      \left( \nabla^{2}_{\sigma} X \right)_n^m
        =  - \frac{n(n+1)}{a^{2}} X_n^m
 $$
+     --- (13)
 
+for the evaluation in $\nabla^2$.
 
-to evaluate the term $\nabla^2$.
-
-### Horizontal Diffusion Term.
+### Horizontal Diffusion Term
 
 The horizontal diffusion term is entered in the form $\nabla^{N_D}$ as follows.
 
@@ -179,8 +171,7 @@ $$
                       \right]
                     \zeta ,
 $$
-
-> <span id="Horizontal Diffusion" label="Horizontal Diffusion">Regular\[Horizontal Diffusion]</span>.
+    --- (14)
 
 $$
      {\mathcal D}(D) = K_{MH} 
@@ -189,48 +180,48 @@ $$
                       \right]
                     D ,
 $$
-
+     --- (15)
 
 $$
     {\mathcal D}(T) = (-1)^{N_D/2} K_{HH} \nabla^{N_D} T ,
 $$
-
+    --- (16)
 
 $$
     {\mathcal D}(q) = (-1)^{N_D/2} K_{EH} \nabla^{N_D} q .
 $$
-
+    --- (17)
 
 This horizontal diffusion term has strong implications for computational stability.
-In order to represent selective horizontal diffusion on small scales,
-For $N_D$, 4 $\sim$ 16 is used.
-The extra terms on the diffusion of vorticity and divergence are
-It represents that the term for rigid body rotation in $n=1$ does not decay.
+To represent selective horizontal diffusion on small scales,
+For $N_D$, use 4 $\sim$ 16.
+Here, the extra terms on vorticity and divergence diffusion are
+This shows that the term for rigid body rotation in $n=1$ is not damped.
 
-### Spectral representation of the equation
+### Spectral representation of equations
 
 1. a series of equations
 
 $$
-  \frac{\partial \pi_m^m}{\partial t}
+  \frac{\partial{\pi_m^m}}{\partial {t}}
   =  - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k  \\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
 $$
-  
 
+    --- (18)
 
-    Here,
+ Here,
 
 $$
-Z \equiv - \sum_{k=1}^{K} \mathbf{v}_k \cdot \nabla \pi .
+Z \equiv - \sum_{k=1}^{K} {TERM00024}_k \cdot \nabla \pi .
 $$
-
+    --- (19)
 
 2. equation of motion
 
 $$
-  \frac{\partial \zeta_n^m}{\partial t} 
+  \frac{\partial{\zeta_n^m}}{\partial {t}} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_v)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
@@ -244,12 +235,12 @@ $$
           \\ 
    -   ({\mathcal D}_M)_n^m \zeta_n^m  \; ,
 $$
-  
-  
 
+
+    --- (20)
 
 $$
-  \frac{\partial \tilde{D}_n^m}{\partial t} 
+  \frac{\partial{\tilde{D}_n^m}}{\partial {t}} 
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im (A_u)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
@@ -269,12 +260,12 @@ $$
           ( \Phi_n^m + C_{p} \hat{\kappa}_k \bar{T}_k \pi_n^m ) 
           -  ({\mathcal D}_M)_n^m D_n^m  ,
 $$
-  
-  
-  
 
 
-    However,
+
+    --- (21)
+
+ However,
 
 $$
 ({\mathcal D}_M)_n^m = K_{MH} \left[ 
@@ -282,12 +273,12 @@ $$
                             - \left( \frac{2}{a^2} \right)^{N_D/2}
                             \right]  .
 $$
-
+    --- (22)
 
 3. thermodynamic equation
 
 $$
-  \frac{\partial T_n^m}{\partial t}
+  \frac{\partial{T_n^m}}{\partial {t}}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im u_{ij} T'_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
@@ -305,23 +296,23 @@ $$
           \\ 
      - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
 $$
-  
-  
-  
 
 
-    However,
+
+     --- (23)
+
+ However,
 
 $$
 ({\mathcal D}_H)_n^m 
    =  K_{HH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
 $$
-
+    --- (24)
 
 4. water vapor formula
 
 $$
-  \frac{\partial q_n^m}{\partial t}
+  \frac{\partial{q_n^m}}{\partial {t}}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           im u_{ij} q_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} 
@@ -338,16 +329,15 @@ $$
           \\ 
      + ({\mathcal D}_H)_n^m q_n^m
 $$
-  
-  
-  
 
 
-    However,
+
+     --- (25)
+
+ However,
 
 $$
 ({\mathcal D}_E)_n^m 
    =  K_{EH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
 $$
-
-
+    --- (26)

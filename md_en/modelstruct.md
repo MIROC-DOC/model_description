@@ -137,15 +137,15 @@ Each entry's argument is accompanied by a continuation line column to explain th
 
 Here, the meaning of the input and output columns is as follows
 \In the meantime, I'm going to be in a position to take a look at some of the things I've done in the past.
-     \begin{array}{ll}   
+     \begin{array}{ll}
 
  × x & whatever is in it
      \{array}
 
 
-     \begin{array}{ll}   
+     \begin{array}{ll}
  O O & may be subject to change in the course of the event
- - & the value will not change
+       - & the value will not change
  × x & I can't guarantee what you'll find
      \{array}
 
@@ -241,4 +241,3 @@ The reason for the use of two letters here, as well as `! I use two letters as w
  Systems that use other end-of-line comment formats (e.g. HITAC VOS3)
  to ensure substitution for, and
      The reason for this is that Sun's CPP will malfunction if you use only `! is because Sun's CPP will malfunction if there is only `!
-

@@ -313,7 +313,7 @@ Each entry's argument is accompanied by a continuation line column to explain th
  circle (e.g. of friends)
 
  - TAB00004:3.3
- -
+     -
 
  - TAB00004:3.4
  Input value ('variable')
@@ -328,7 +328,7 @@ Each entry's argument is accompanied by a continuation line column to explain th
  circle (e.g. of friends)
 
  - TAB00004:4.3
- -
+     -
 
  - TAB00004:4.4
  Input value ('constant')
@@ -343,7 +343,7 @@ Each entry's argument is accompanied by a continuation line column to explain th
  circle (e.g. of friends)
 
  - TAB00004:5.3
- -
+     -
 
  - TAB00004:5.4
  Variables that determine the size of the matching array
@@ -380,15 +380,15 @@ Each entry's argument is accompanied by a continuation line column to explain th
 
 Here, the meaning of the input and output columns is as follows
 \In the meantime, I'm going to be in a position to take a look at some of the things I've done in the past.
-     \begin{array}{ll}   
+     \begin{array}{ll}
 
  × x & whatever is in it
      \{array}
 
 
-     \begin{array}{ll}   
+     \begin{array}{ll}
  O O & may be subject to change in the course of the event
- - & the value will not change
+       - & the value will not change
  × x & I can't guarantee what you'll find
      \{array}
 

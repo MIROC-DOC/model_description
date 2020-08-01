@@ -1,12 +1,172 @@
 {
     "imath": {
+        "TERM00031": {
+            "count": 0,
+            "text": "$\\mathbf{C}$"
+        },
+        "TERM00032": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00033": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00034": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00035": {
+            "count": 0,
+            "text": "$\\mathbf{\\Phi}$"
+        },
+        "TERM00036": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00037": {
+            "count": 0,
+            "text": "$\\mathbf{G}$"
+        },
+        "TERM00038": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00039": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00040": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00041": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00042": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00043": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
+        },
+        "TERM00044": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
+        },
+        "TERM00045": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
+        },
+        "TERM00046": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
+        },
+        "TERM00047": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
+        },
+        "TERM00050": {
+            "count": 0,
+            "text": "$\\mathbf{C}$"
+        },
+        "TERM00051": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00052": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00053": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00054": {
+            "count": 0,
+            "text": "$\\mathbf{\\Phi}$"
+        },
+        "TERM00055": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00056": {
+            "count": 0,
+            "text": "$\\mathbf{G}$"
+        },
         "TERM00057": {
-            "count": 2,
-            "text": "$t-\\Delta t$"
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00058": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00059": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00060": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00061": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00062": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00063": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00064": {
+            "count": 0,
+            "text": "$\\mathbf{G}$"
+        },
+        "TERM00065": {
+            "count": 0,
+            "text": "$\\mathbf{C}$"
+        },
+        "TERM00066": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00067": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00068": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
+        },
+        "TERM00069": {
+            "count": 0,
+            "text": "$\\mathbf{\\Phi}$"
+        },
+        "TERM00070": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00071": {
+            "count": 0,
+            "text": "$\\mathbf{T}$"
+        },
+        "TERM00072": {
+            "count": 0,
+            "text": "$\\mathbf{G}$"
+        },
+        "TERM00074": {
+            "count": 0,
+            "text": "$\\mathbf{D}$"
         }
     },
     "emath": {
-        "EQ=00036.": {
+        "EQ=00042.": {
             "count": 0,
             "text": "$$\n    \\nabla^{2}_{\\sigma} = - \\frac{n(n+1)}{a^{2}}\n$$\n"
         }

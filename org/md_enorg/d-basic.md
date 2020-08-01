@@ -8,89 +8,74 @@ The basic equation is ,
 It is a system of primitive equations at the spherical (TERM00000,TERM00000) and TERM00001 coordinates,
 It is given as follows ( Haltiner and Williams , 1980 ).
 
-1. a series of expressions
+1. a series of equations
 
-    > EQ=00000.
-    > <span id="mass" label="mass" label="mass">\\\\blur[mass]</span>
+         EQ=00000.     --- (1)
 
 2. hydrostatic pressure formula
 
-    > EQ=00001.
-    > <span id="hydrostatic" label="hydrostatic" label="hydrostatic pressure">\blaze[hydrostatic pressure]</span>.
+         EQ=00001.    --- (2)
 
 3. equation of motion
 
-    > EQ=00002.
-    > <span id="Vorticity" label="Vorticity" label="Vorticity">\\\\.00002}</span>
+         EQ=00002.     --- (3)
 
-    > EQ=00003.
-    > <span id="divergence" label="divergence">\\\[divergence]</span>
+         EQ=00003.     --- (4)
 
 4. thermodynamic equation
 
-    > <span id="Heat Power" label="Heat Power">\\blind\blind\blind\.com
-    > EQ=00008.  
-    > EQ=00008.
+         EQ=00008.
+         EQ=00008.     --- (5)
 
 5. water vapor formula
 
-
-
-
-    > EQ=00009.  
-    > EQ=00009.
+         EQ=00009.
+         EQ=00009.     --- (6)
 
 Here,
 
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.  
-> <span id="Vorticity definition" label="Vorticity definition">\\\blade\.com.
-> EQ=00010.  
-> <span id="Divergent Definitions" label="Divergent Definitions">\\\[Divergent Definitions]</span>
-> EQ=00010.  
-> <span id="Section B" label="Section B" label="Section B">\\brachio[Section B]</span>.
-> EQ=00010.  
-> <span id="Section A" label="Section A" label="Section A" label="Section A">\\\\\\\.} </span>
-> EQ=00010.  
-> <span id="Section E" label="Section E" label="Section E">\\\\\\.}
-> EQ=00010.  
-> EQ=00010.  
-> EQ=00010.
+     EQ=00010.     --- (7)
+     EQ=00010.     --- (8)
+     EQ=00010.     --- (9)
+     EQ=00010.     --- (10)
+     EQ=00010.     --- (11)
+     EQ=00010.     --- (12)
+     EQ=00010.     --- (13)
+     EQ=00010.     --- (14)
+     EQ=00010.     --- (15)
+     EQ=00010.     --- (16)
+     EQ=00010.    --- (17)
+     EQ=00010.     --- (18)
+     EQ=00010.
+     EQ=00010.     --- (19)
 
-TERM00002,TERM00002
+TERM00006,TERM00006
 is the horizontal diffusion term,
-TERM00003,TERM00003
+TERM00007,TERM00007
 are forces due to small-scale kinetic processes (treated as 'physical processes'),
-The TERM00004 is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
+The TERM00008 is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
 Heating and temperature changes,
-The TERM00005 is a system of 'physical processes' such as condensation and small-scale kinetic processes
-The TERM00006 is a water vapor source term.
-The TERM00006 is the frictional heat,
+The TERM00009 is a process that involves physical processes such as condensation and small-scale motion
+It is a water vapor source term.
+Also, the TERM00010 is a frictional heat,
 
-> EQ=00004.
+     EQ=00004.    --- (20)
 
-TERM00007 is ,
-The time-varying terms of TERM00008 and TERM00008 due to horizontal and vertical diffusion.
+TERM00013 is ,
+It is a time-varying term of TERM00014,TERM00014 due to horizontal and vertical diffusion.
 
-### Boundary conditions.
+### Boundary Conditions.
 
 The boundary conditions for lead-direct current are
 
-> EQ=00005.
+     EQ=00005.     --- (21)
 
-. Thus, from ([\\0.25\0.25}(#mass)),
+Therefore, from (1) Therefore, from (1),
 The time-varying surface pressure equation and
-Diagnostic Formula for determining the vertical velocity (TERM00010) in the TERM00009 system
+Diagnostic Formula for determining the vertical velocity (TERM00016) in the TERM00015 system
 
-> EQ=00006.
-> <span id="barometric tendency" label="barometric tendency">\blazing tendency </span>
+     EQ=00006.     --- (22)
 
-> EQ=00007.
-> <span id="vertical speed" label="vertical speed">\blaze[vertical speed]</span>
+     EQ=00007.     --- (23)
 
-is led. 
+is led.

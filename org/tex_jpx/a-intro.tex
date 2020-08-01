@@ -28,15 +28,14 @@ CCSR/NIES AGCMは, 全球3次元大気を物理的法則に基づいて記述し
 より具体的に言えば,
 モデルは, 基本的に以下のような方程式(予報方程式)の解を求めている.
 
-\begin{quote}
-\label{struct:u-eq-1}
-EQ=00004.\\
-EQ=00004.\\
-EQ=00004.\\
-EQ=00004.\\
-EQ=00004.\\
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+EQ=00004.
+EQ=00004.
+EQ=00004.
+EQ=00004.
+EQ=00004.
+\end{verbatim}
 
 ここで, TERM00000,TERM00000 は, 
 それぞれ東西風, 南北風, 気温, 地表気圧,比湿など,地表面状態量
@@ -62,15 +61,14 @@ CCSR/NIES AGCM においては, 水平微分項の計算に
 (\ref{struct:u-eq-1})などの
 左辺を差分で近似することによって行なう. 例えば,
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\end{quote}
+\end{verbatim}
 %
 とすることにより, 
-\begin{quote}
+\begin{verbatim}
 EQ=00001.
-\label{struct:sabun}
-\end{quote}
+\end{verbatim}
 となる. 
 ここで, TERM00007 は予報変数 TERM00008,TERM00008 などの関数であるが,
 その計算においてどの時刻の予報変数を用いて TERM00009 を評価するかによって,
@@ -83,16 +81,16 @@ TERM00012 における(近似的な)値を用いる implicit 法を併用して�
 CCSR/NIES AGCM では
 予報変数の時間積分は力学過程と物理過程とで別々に行なっている.
 すなわち, まず力学の項は基本的に leap frog を用い,
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\end{quote}
+\end{verbatim}
 を解く. ただし一部の項は implicit 扱いをしている.
 物理過程では,
 力学の項を積分した結果に基づき, 
 Euler 法と implicit 法を併用して,
-\begin{quote}
+\begin{verbatim}
 EQ=00003.
-\end{quote}
+\end{verbatim}
 を求めている. 
 ここで, (\ref{struct:sabun})の TERM00013 を
 TERM00014 におきかえていることに注意.

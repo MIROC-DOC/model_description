@@ -12,18 +12,18 @@ In some cases, there may be multiple entries in a module.
 
 Example:
 
-<span>**directory**</span>**dynamics: ** 
+<span>**directory**</span>**dynamics: **
 <span>**File**</span> **dadmn.F: **
-\blanket* Package DADMN 
-. 
+\blanket* Package DADMN
+.
 <span>**File**</span> **dshpe.F: **
-\blanket* Package DSPHE 
+\blanket* Package DSPHE
 <span>** Module DSETNM: **</span>̄
 <span>**Module W2G**</span>
-SUBROUTINE W2G 
-ENTRY G2W 
-ENTRY SPSTUP 
-<span>** Module DSETNM:**</span> SUBROUTINE DSETNM 
+SUBROUTINE W2G
+ENTRY G2W
+ENTRY SPSTUP
+<span>** Module DSETNM:**</span> SUBROUTINE DSETNM
 
 ### Directory Structure.
 
@@ -75,12 +75,12 @@ There are several modules that have multiple entries using the ENTRY statement.
  We avoid this type of encapsulation structure as much as possible and instead use such an encapsulation structure.
 
 Only two COMMONs are in use.
-     
+
 | Header0 | Header1 |
 | ------- | ------- |
 | COMMON /COMCON/ | Standard physical constants (earth radius, gas constant, etc.) |
 | Anonymous COMMON | work area |
-     
+
      COMCON contains the standard physical constants.
  This COMMON definition is in <span>`include/zccom.F`</span>,
  It is used to include as necessary.
@@ -96,7 +96,7 @@ For include file inclusion and conditional compilation
  Using selection by     <span>`#ifdef`</span> and <span>`#ifndef`</span>.
  Files are imported from the <span>`inlcude`</span> directory,
  It is as follows.
-     
+
 | Header0 | Header1 |
 | ------- | ------- |
 | Array size parameter statements | zcdim.F |
@@ -125,7 +125,7 @@ All variables are declared. 2.
  It is a prerequisite for use.
 
 Each entry's argument is accompanied by a continuation line column to explain the function.
-     
+
 | Header0 | Header1 | Header2 | Header3 | Header4 |
 | ------- | ------- | ------- | ------- | ------- |
 | symbol | meaning | input | Outputs | function |
@@ -136,50 +136,50 @@ Each entry's argument is accompanied by a continuation line column to explain th
 | D | dimension | circle (e.g. of friends) | - | Variables that determine the size of the matching array |
 | W | work | ×impossibility | ×impossibility | work area |
 | U | undefined | ×impossibility | ×impossibility | dummy |
-     
+
  Here, the meaning of the input and output columns is as follows
      \In the meantime, I'm going to be in a position to take a look at some of the things I've done in the past.
-         \begin{array}{ll}   
- 
+         \begin{array}{ll}
+
  × x & whatever is in it
-         \{array} 
- 
- 
-         \begin{array}{ll}   
+         \{array}
+
+ \The output is     a lot more than just a\\lopenopenPointPointPoint.com
+         \begin{array}{ll}
  O O & may be subject to change in the course of the event
            - & the value will not change
  × x & I can't guarantee what you'll find
-         \{array} 
- 
+         \{array}
+
  The important ones are M,O,I, where M,O and I are important, and C,D are a type of I.
  The use of     C, D, and I is not so neat.
 
 The contents of each file are as follows.
-     
-     ` *" PACKAGE PSAVE save/load data (real memory version) ` 
-     :̄ Package Name 
-     `*" [HIS] 93/11/10(numaguti) AGCM5.3` 
-     Change log 
-     `        SUBROUTINE PGSAVE     !" Internal Data Save ` 
-     : Module Declaration 
-     `*    [PARAM]` 
-     The following, parameter statements are (included) followed by 
-     `    * [MODIFY] ` 
-     : Declarations of input and output variables 
-     `    * [OUTPUT] ` 
-     : the following, output variable declarations 
-     `    * [INPUT] ` 
-     : The following, Declarations of Input Variables 
-     `    * [ENTRY OUTPUT] ` 
-     : Declare output variables in the entry... 
-     `    * [INTERNAL WORK] ` 
-     : Declarations of internal work variables 
-     `*    [INTERNAL SAVE]` 
-     Declarations of internal variables (which should be kept after RETURN) 
-     `*    [INTERNAL PARAM]` 
-     Declarations of internal parameters (to be read by NAMELIST, etc.) 
-     `*    [ONCE]` 
- The following is     the part to be done only once on the first call 
+
+     ` *" PACKAGE PSAVE save/load data (real memory version) `
+     :̄ Package Name
+     `*" [HIS] 93/11/10(numaguti) AGCM5.3`
+     Change log
+     `        SUBROUTINE PGSAVE     !" Internal Data Save `
+     : Module Declaration
+     `*    [PARAM]`
+     The following, parameter statements are (included) followed by
+     `    * [MODIFY] `
+     : Declarations of input and output variables
+     `    * [OUTPUT] `
+     : the following, output variable declarations
+     `    * [INPUT] `
+     : The following, Declarations of Input Variables
+     `    * [ENTRY OUTPUT] `
+     : Declare output variables in the entry...
+     `    * [INTERNAL WORK] `
+     : Declarations of internal work variables
+     `*    [INTERNAL SAVE]`
+     Declarations of internal variables (which should be kept after RETURN)
+     `*    [INTERNAL PARAM]`
+     Declarations of internal parameters (to be read by NAMELIST, etc.)
+     `*    [ONCE]`
+ The following is     the part to be done only once on the first call
 
 Sentence numbers are assigned to each block in the thousands,
  I'm guessing as structurally as possible.
@@ -189,19 +189,19 @@ Sentence numbers are assigned to each block in the thousands,
 The names of variables, entry names, etc. must be six characters or less.
 
 2. variable name and type mapping
-     
+
 | Header0 | Header1 |
 | ------- | ------- |
 | A-G, P-Z | Floating point number (<span>`REAL*8`</span>) |
 | H | String (<span>`CHARACTER`</span>) |
 | I-N. | Integer (<span>`INTEGER`</span>) |
 | O | Logical type (<span>`LOGICAL`</span>) |
-     
+
  However, in the variables read by NAMELIST,
  This may not be met.
 
 Conventions on the correspondence between variable names and contents
-     
+
 | Header0 | Header1 | Header2 |
 | ------- | ------- | ------- |
 | Prefix: | GA | The grid point state quantity ($t$) |
@@ -239,4 +239,3 @@ The reason for the use of two characters here, not just `! I use two letters as 
  Systems that use other end-of-line comment formats (e.g. HITAC VOS3)
  to ensure substitution for, and
      The reason for this is that Sun's CPP will malfunction if you use only `! is because Sun's CPP will malfunction if there is only `!
-
