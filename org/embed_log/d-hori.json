@@ -3,6 +3,30 @@
         "TERM00005": {
             "count": 0,
             "text": "$\\sum_{m=-N}^{N} \\sum_{n=|m|}^{N} \n               \\rightarrow\n               \\sum_{m=-N}^{N} \\sum_{n=|m|}^{N+|m|}$"
+        },
+        "TERM00006": {
+            "count": 0,
+            "text": "$\\mathbf{e}$"
+        },
+        "TERM00012": {
+            "count": 0,
+            "text": "$\\mathbf{e}$"
+        },
+        "TERM00013": {
+            "count": 0,
+            "text": "$\\mathbf{e}$"
+        },
+        "TERM00017": {
+            "count": 0,
+            "text": "$\\mathbf{e}$"
+        },
+        "TERM00018": {
+            "count": 0,
+            "text": "$\\mathbf{e}$"
+        },
+        "TERM00024": {
+            "count": 0,
+            "text": "$\\mathbf{v}$"
         }
     },
     "emath": {},

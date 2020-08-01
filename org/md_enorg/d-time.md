@@ -1,256 +1,259 @@
 ## Time integration.
 
-The time difference scheme is essentially a leap frog.
-However, the diffusion terms and physical process terms are backward or forward differences.
+The time difference scheme is basically a leap frog.
+However, the terms of the diffusion terms and physical processes are backward or forward differences.
 A time filter (Asselin, 1972) is used to suppress the computational mode.
-In order to increase the value of TERM00000, we use a time filter (Asselin, 1972),
-Applying the semi-implicit method to the gravitational wave term (Bourke, 1988).
+And to make the TERM00000 larger,
+Applying the semi-implicit method to the term gravitational wave (Bourke, 1988).
 
-### Time integration and time filtering by leap frog
+### Time integration and time filtering with leap frog
 
-We use leap frog as a time integration scheme for advection terms and so on.
+The leap frog is used as a time integration scheme for advection terms and so on.
 The backward difference of TERM00001 is used for the horizontal diffusion term.
-The pseudo TERM00002 surface correction of the diffusion term and the frictional heat by horizontal diffusion term are combined with
-treated as a correction and becomes a forward difference in TERM00003.
-The physical process terms (TERM00004 and TERM00004) are treated as
-We still use the forward difference of TERM00005.
-(However, for the calculation of the time-varying term of vertical diffusion, we treat it as a backward difference.
-Please refer to the chapter on physical processes for details.)
+In addition, the pseudo TERM00002 surface correction of the diffusion term and the frictional heat term by horizontal diffusion are
+treated as a correction and becomes the forward difference in TERM00003.
+The physical process section (TERM00004,TERM00004) is ,
+I still use the forward differential of TERM00005.
+(However, we treat the calculation of the time varying term of vertical diffusion as a backward difference.
+See the chapter on physical processes for details.)
 
-Representing each of the forecast variables as TERM00006, we obtain
+Expressed as TERM00006 on behalf of each forecast variable,
 
-> EQ=00000.
+     EQ=00000.     --- (1)
 
 TERM00007 is an advection term etc,
 TERM00008 is a horizontal diffusion term.
 
-In TERM00009, there is a horizontal diffusion term,
+TERM00009 has a ,
 Pseudo, etc. TERM00010 Correction of frictional heat (TERM00011) by surface and horizontal diffusion
 and physical processes (TERM00012) have been added,
 TERM00013.
 
-> EQ=00001.
+     EQ=00001.    --- (2)
 
-To remove the calculation mode in leap frog
-The time filter of Asselin (1972) is applied at every step.
-I.e. ,
+To remove the computation mode in leap frog
+Apply the time filter of Asselin (1972) at every step.
+Namely,
 
-> EQ=00002.
+     EQ=00002.     --- (3)
 
 and TERM00014.
-Normally 0.05 is used as the TERM00015.
+For TERM00015 it is standard to use 0.05.
 
 ### semi-implicit time integration
 
 For mechanics calculations, the leap frog is basically used,
-We treat some terms as implicit.
-Here, the implicit considers the trapezoidal implicit.
-For the vector quantity TERM00016,
+Compute some terms as implicit.
+Here, implicit considers a trapezoidal implicit.
+Regarding the vector quantity TERM00016,
 The value in TERM00017 is converted to TERM00018,
 The value in TERM00019 was converted to TERM00020,
 If you write the value of TERM00021 as TERM00022,
 What is trapezoidal implicit?
 TERM00023.
-We use the time-varying terms evaluated by using
+The solution is done by using the time-varying terms evaluated by using
 Now, as a time-varying term in <span>q</span>,
 The term A is treated in the leap forg method and the term B is treated in the trapezoidal implicit method.
-Assume that A is nonlinear with respect to <span>q</span>, while B is linear.
-In other words,
+Assume that A is nonlinear for <span>q</span>, but B is linear.
+Namely,
 
-> EQ=00003.
+     EQ=00003.     --- (4)
 
-where TERM00024 is a square matrix. Then,
+Note that TERM00024 is a square matrix. Then,
 TERM00025
 And then you can write,
 
-> EQ=00004.
+     EQ=00004.     --- (5)
 
 This can be easily solved by matrix operations.
 
-### semi-implicit time integration applied
+### Applying semi-implicit time integration
 
-Then, we apply this method and treat the term of linear gravity waves as implicit.
-This allows us to reduce the time step (TERM00026).
+So we apply this method and treat the term of linear gravity waves as implicit.
+This makes the time step TERM00026 smaller.
 
-In the system of equations, the basic field is such that TERM00027
-Separation of the linear gravity wave term and the other terms (with the index TERM00028).
+In a system of equations, the basic field is such that TERM00027
+Separation of the linear gravitational wave term and the other terms (with the index TERM00028).
 Vertical Vector Representation
 Using TERM00029, TERM00030,
 
-> EQ=00005.
+     EQ=00005.     --- (6)
 
-> EQ=00006.
+     EQ=00006.     --- (7)
 
-> EQ=00032.
+     EQ=00038.     --- (8)
 
-where the non-gravitational wave term is,
+Here, the non-gravitational wave term is
 
-> EQ=00007.
-> <span id="Section Z" label="Section Z" label="Section Z" label=">\\\\\.} </span>
+     EQ=00007.     --- (9)
 
-> EQ=00008.
+     EQ=00008.     --- (10)
 
-> EQ=00009.
+     EQ=00009.     --- (11)
 
-> EQ=00010.
+     EQ=00010.     --- (12)
 
-> EQ=00033.  
-> EQ=00033.  
-> EQ=00033.  
-> EQ=00033.  
-> EQ=00033.  
-> EQ=00033.  
-> EQ=00033.
+     EQ=00039.
+     EQ=00039.
+     EQ=00039.
+     EQ=00039.
+     EQ=00039.
+     EQ=00039.
+     EQ=00039.     --- (13)
 
-> EQ=00011.
+     EQ=00011.    --- (14)
 
-where the vector and matrix of the gravitational wave terms (underlined) are,
+where the vector and matrix of the gravitational wave term (underlined) are
 
-> EQ=00012.
-> <span id="Coefficient C" label="Coefficient C">\\c\[Coefficient C]</span>
+     EQ=00012.    --- (15)
 
-> EQ=00013.
+     EQ=00013.    --- (16)
 
-> EQ=00014.
+     EQ=00014.    --- (17)
 
-> EQ=00015.
+     EQ=00015.    --- (18)
 
-> EQ=00016.
+     EQ=00016.    --- (19)
 
-> EQ=00017.
+     EQ=00017.    --- (20)
 
-> EQ=00018.
-> <span id="Coefficient R" label="Coefficient R">\R\[Coefficient R]</span>.
+     EQ=00018.     --- (21)
 
-Here, for example, TERM00031 is the same as
-It is a function that is 1 if TERM00032 is true and 0 otherwise.
+Here, for example, TERM00048 is
+A function that is 1 if TERM00049 is valid and 0 otherwise.
 
-Using the following expression,
+Using the following expression ,
 
-> EQ=00019.
-> <span id="Shemiinp" label="Shemiinp">\\centric="Shemiinp\centric"> </span>.
+     EQ=00019.    --- (22)
 
-> EQ=00034.  
-> EQ=00034.
+     EQ=00040.
+     EQ=00040.    --- (23)
 
-Applying the semi-implicit method to a system of equations,
+If we apply the semi-implicit method to the system of equations,
 
-> EQ=00020.
-> <span id="semi-imp pi" label="semi-imp pi" label="semi-imp pi">\[semi-imp pi]</span>
+     EQ=00020.    --- (24)
 
-> EQ=00021.
-> <span id="semi-imp D" label="semi-imp D" label="semi-imp D">\[semi-imp D\\[semi-imp D\]</span>
+     EQ=00021.     --- (25)
 
-> EQ=00022.
-> <span id="semi-imp T" label="semi-imp T" label="semi-imp T">\[semi-imp T]</span>
+     EQ=00022.     --- (26)
 
 So..,
 
-> <span id="semi-imp barD" label="semi-imp barD" label="semi-imp barD">\\brachos[semi-imp barD\brachos]</span>
-> EQ=00035.  
-> EQ=00035.  
-> EQ=00035.  
-> EQ=00035.
+     EQ=00041.
+     EQ=00041.
+     EQ=00041.
+     EQ=00041.    --- (27)
 
-Since we use the spherical harmonic expansion, we can use it,
+Since the spherical harmonic expansion is used,
 
-and the above formula can be solved for TERM00033.
-After that,
+and the above equation can be solved for TERM00073.
+And then..,
 
-> EQ=00023.
+     EQ=00023.     --- (28)
 
-and ([semi-imp pi\]](#semi-imp%20pi), ([semi-imp T\\](#semi-imp%20T))
-The value in TERM00034 according to TERM00035
-is required .
+and, (24), (26)
+The value in TERM00075 according to TERM00076
+is required.
 
 ### Time scheme properties and time step estimates
 
 advectional equation
 
-> EQ=00024.
+     EQ=00024.    --- (29)
 
-Consider the stability of the leap frog discretization in
+Considering the stability of the discretization in the leap frog in
 Now,
+
+     EQ=00025.
 
 If we place the difference between
 
-> EQ=00025.
+     EQ=00026.    --- (30)
 
-where
-Here ,
-\\lambda = X^{n+1}/X^n = X^n/X^{n-1}}\\\\bars}]
+That would be.
+Here,
+
+     EQ=00027.
+
 So,
 
-> EQ=00026.
+     EQ=00028.     --- (31)
 
-The solution is labeled TERM00036,
+The solution is called TERM00077,
 
-> EQ=00027.
+     EQ=00029.    --- (32)
 
 This absolute value is
 
-> EQ=00028.
+     EQ=00030.     --- (33)
 
-In the case of TERM00037, it would be TERM00038,
-The solution becomes exponentially larger in absolute value with time.
+and in the case of TERM00078, it is TERM00079,
+It is a solution whose absolute value increases exponentially with time.
 This indicates that the computation is unstable.
 
-On the other hand, in the case of TERM00039, the value is TERM00040,
+On the other hand, in the case of TERM00080, because it is TERM00081,
 The calculation is neutral.
-However, there are two solutions for TERM00041,
-One of them, when TERM00042 is set to
-This is a TERM00043, but..,
-The other is TERM00044.
-This indicates a time-varying solution.
-This mode is called "calculation mode",
+However, there are two solutions to the value of TERM00082,
+One of them is TERM00083, and the other is
+This is TERM00084, but ,
+The other would be TERM00085.
+This indicates that the solution oscillates strongly in time.
+This mode is called calculation mode,
 One of the problems with the leap frog method.
-This mode can be applied by applying a time filter to the
+This mode can be used by applying a time filter to the
 It can be attenuated.
 
-The terms of the TERM00045 are,
-Given the horizontal discretization grid spacing TERM00046, the
-This will cause the maximum value of TERM00047 to be
-\More than one person can be in a position to do so.
+The terms of the TERM00086 are ,
+Given the horizontal discretization lattice interval TERM00087, if
+This will cause the maximum value of TERM00088 to be
+
+     EQ=00031.
+
 From becoming ,
 
-> EQ=00029.
+     EQ=00032.     --- (34)
 
-In the case of the spectral model, the maximum wavenumber of
-For the spectral model, the maximum wavenumber is determined by TERM00048,
-Earth radius is set to TERM00049,
+That would be.
+In the case of spectral models, the maximum wavenumber is determined by TERM00089,
+Earth radius is set to TERM00090,
 
-> EQ=00030.
+     EQ=00033.    --- (35)
 
-This is the stability condition.
+This is a condition for stability.
 
-To guarantee the stability of the integral,
-As for TERM00050, it has the fastest advection and propagation speed,
-You may use a time step smaller than TERM00051 which is determined by the semi-implicit method.
-If semi-implicit is not used, the propagation speed of the gravitational wave
-(TERM00052) is the criterion for stability,
+To guarantee the stability of the integration,
+As for TERM00091, it has the fastest advection and propagation speed,
+You can use a smaller time step than TERM00092 determined by that.
+When semi-implicit is not used, the propagation speed of gravity wave
+(TERM00093) is the criterion for stability, but ,
 When semi-implicit is used, advection by the east-west wind is usually
-This is a limiting factor.
-Therefore, the TERM00053 sets TERM00054 as the maximum value of the east-west wind,
+Limiting factors.
+Thus, TERM00094 assumes that TERM00095 is the maximum value of the east-west wind,
 
-> EQ=00031.
+     EQ=00034.    --- (36)
 
+Take to meet the .
 In practice, this is multiplied by a safety factor.
-In practice, this should be multiplied by a safety factor.
 
-### Treatment at the beginning of time integration.
+### Handling of the Initiation of Time Integration
 
 Not calculated by AGCM,
 If you start with an appropriate initial value, you can use a model-consistent
-You cannot give the physical quantities for two times of TERM00055 and TERM00056.
-However, if you give an inconsistent value for TERM00057, then you should not give an inconsistent value for TERM00057,
-A large calculation mode is generated.
+You cannot give two physical quantities of time in TERM00096 and TERM00097.
+However, if you give an inconsistent value for TERM00098
+A large calculation mode occurs.
 
-So, first, as TERM00058, in the time step of TERM00059
-\{X^{{X}^{D\Delta t/2} = X^0 + X^0 + {{X}^{D\Delta t/2}
-                 = X^0 + t/2 \\Dentro{X}^0\0}]
-and furthermore, in the time step of TERM00060,
-\\\\lopen}t = X^{X}^{X}^^{X}^{\Delta t/2}}\lopen}t = X^0 + \lopen}t\lopen}t\lopen}t/2\lopen}t
+So, first, as TERM00099, in the time step of TERM00100
+
+     EQ=00035.
+
+and furthermore, in the time step of TERM00101,
+
+     EQ=00036.
+
 And, in the original time step,
-\\\\ltraLabella t} = X^{2\Delta t} = X^0 + 2\labella t\labella t\labella t}^{X}^{\labella t}]
+
+     EQ=00037.
+
 and then perform the calculation with leap frog as usual,
 The occurrence of computation modes is reduced.

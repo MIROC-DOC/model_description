@@ -1,13 +1,5 @@
 {
     "imath": {
-        "TERM00000": {
-            "count": 2,
-            "text": "$u,v,T,p_S,q,T_g$"
-        },
-        "TERM00008": {
-            "count": 2,
-            "text": "$u,v,T,p_S,q$"
-        },
         "TERM00035": {
             "count": 0,
             "text": "m$^2$"
@@ -15,10 +7,6 @@
         "TERM00083": {
             "count": 0,
             "text": "$t+\\Delta t$"
-        },
-        "TERM00106": {
-            "count": 2,
-            "text": "$C_c, C_l$"
         }
     },
     "emath": {},

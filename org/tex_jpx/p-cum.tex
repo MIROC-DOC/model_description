@@ -86,19 +86,19 @@ Moorthi and Suarez (1992) と同様に,
 \subsubsection{Arakawa-Schubertスキームの基本的枠組}
 
 雲の質量フラックス TERM00005, デトレインメント TERM00006 は, 
-\begin{quote}
-EQ=00021.\\
+\begin{verbatim}
 EQ=00021.
-\end{quote}
+EQ=00021.
+\end{verbatim}
 と表される. 
 TERM00007 を雲底 TERM00008 での質量フラックスであり,
 TERM00009 はそれで無次元化された質量フラックスである.
 
 これにより, 平均場の時間変化は, 以下のように求められる.
-\begin{quote}
-EQ=00022.\\
+\begin{verbatim}
 EQ=00022.
-\end{quote}
+EQ=00022.
+\end{verbatim}
 ただし, TERM00010,TERM00010 は平均場の湿潤静的エネルギーと比湿,
 TERM00011,TERM00011 はデトレインメントに含まれる空気の
 湿潤静的エネルギー, 比湿, 雲水量である.
@@ -120,99 +120,92 @@ TERM00013 は雲仕事関数を用いたクロージャの仮定によって求�
 
 雲底高度 TERM00014 を, 
 地表大気の持ち上げ凝結高度, すなわち,
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\end{quote}
+\end{verbatim}
 をみたす最低の TERM00015 として定義する.
 
 無次元化された質量フラックス TERM00016 は, 
 エントレインメント率を TERM00017 として,
-\begin{quote}
+\begin{verbatim}
 EQ=00001.
-\end{quote}
+\end{verbatim}
 すなわち,
-\begin{quote}
-\nonumber
-EQ=00023.\\
+\begin{verbatim}
 EQ=00023.
-\end{quote}
+EQ=00023.
+\end{verbatim}
 
 雲の中の湿潤静的エネルギー TERM00018, 総水量 TERM00019 に関する収支は,
-\begin{quote}
-EQ=00024.\\
+\begin{verbatim}
 EQ=00024.
-\end{quote}
+EQ=00024.
+\end{verbatim}
 ここで, TERM00020,TERM00020 はそれぞれ,
 平均場の TERM00021 および TERM00022, 降水生成である.
 
 積分すると,
-\begin{quote}
-\nonumber
-EQ=00025.\\
+\begin{verbatim}
 EQ=00025.
-\end{quote}
-\begin{quote}
-\nonumber
-EQ=00026.\\
-\nonumber
-EQ=00026.\\
+EQ=00025.
+\end{verbatim}
+\begin{verbatim}
 EQ=00026.
-\end{quote}
+EQ=00026.
+EQ=00026.
+\end{verbatim}
 
 質量フラックスは地表で0であるとし,
 雲底より下においても直線的に増大すると仮定する,
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\end{quote}
+\end{verbatim}
 この雲底より下のエントレインメントを計算することにより,
 雲底での TERM00023,TERM00023 が求められる. すなわち,
-\begin{quote}
-EQ=00027.\\
+\begin{verbatim}
 EQ=00027.
-\end{quote}
+EQ=00027.
+\end{verbatim}
 
 雲による単位質量フラックスあたりの浮力は,
-\begin{quote}
-\nonumber
-EQ=00028.\\
-\nonumber
-EQ=00028.\\
-\nonumber
-EQ=00028.\\
+\begin{verbatim}
 EQ=00028.
-\end{quote}
+EQ=00028.
+EQ=00028.
+EQ=00028.
+\end{verbatim}
 ここで, TERM00024 は仮温度, TERM00025 は飽和比湿,
 TERM00026,
 TERM00027 であり,
 TERM00028,TERM00028 は, それぞれ平均場の飽和時の値を示す.
 また, TERM00029,TERM00029 は雲の水蒸気量, 雲水量であり,
-\begin{quote}
-EQ=00029.\\
+\begin{verbatim}
 EQ=00029.
-\end{quote}
+EQ=00029.
+\end{verbatim}
 雲頂 TERM00030 においては, 浮力 TERM00031 が0であるとする.
 従って, TERM00032 を解けば, 与えられた雲頂高度 TERM00033 に対応する
 TERM00034 を求めることができる.
 ここで, 地表面から上に積分した降水率 TERM00035 に関しては, 
 既知の関数 TERM00036 を用いて以下のように
 表されると仮定する. 
-\begin{quote}
+\begin{verbatim}
 EQ=00003.
-\end{quote}
+\end{verbatim}
 すると, 
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 
 TERM00037 は簡単に解くことができて,
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 ただし, 
-\begin{quote}
-EQ=00030.\\
+\begin{verbatim}
 EQ=00030.
-\end{quote}
+EQ=00030.
+\end{verbatim}
 
 前述のように本来は TERM00038 を指定して TERM00039 を求めるのであり,
 ある TERM00040 に対して物理的に意味のある TERM00041 が
@@ -220,9 +213,9 @@ EQ=00030.
 その吟味が必要であるが, ここでは,
 TERM00042 が小さくなるほど TERM00043 が
 低くなるべきであることを考慮に入れる.
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\end{quote}
+\end{verbatim}
 が満たされるかどうかの吟味を行ない,
 満たされない場合は雲頂 TERM00044 を持つ雲は存在しないとして処理を行なう.
 また, TERM00045 に最小値を設け, 
@@ -232,47 +225,45 @@ EQ=00006.
 プリュームの大きさに最大があることに相当する.
 
 雲水量 TERM00047 は,
-\begin{quote}
-\nonumber
-EQ=00031.\\
+\begin{verbatim}
 EQ=00031.
-\end{quote}
+EQ=00031.
+\end{verbatim}
 ただし, TERM00048 の場合には TERM00049 である.
 さらに, 一度降水したものが上昇後雲水になることは考えられないので,
 TERM00050 は TERM00051 の増加関数でなければならない.
 これにより TERM00052 に制限がつくことになる.
 
 デトレインメントの空気の特性値は,
-\begin{quote}
-EQ=00032.\\
-EQ=00032.\\
+\begin{verbatim}
 EQ=00032.
-\end{quote}
+EQ=00032.
+EQ=00032.
+\end{verbatim}
 
 TERM00053 の場合は,
 雲は存在しないとする. この場合,
-\begin{quote}
+\begin{verbatim}
 EQ=00007.
-\end{quote}
+\end{verbatim}
 を満たす TERM00054 が存在するときには,
 その直上を新たに TERM00055 とし,
-\begin{quote}
-EQ=00033.\\
+\begin{verbatim}
 EQ=00033.
-\end{quote}
+EQ=00033.
+\end{verbatim}
 として求める.
 
 \subsubsection{雲仕事関数(CWF)}
 
 雲仕事関数(CWF), TERM00056 は,
-\begin{quote}
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+\end{verbatim}
 であり,
-\begin{quote}
+\begin{verbatim}
 EQ=00009.
-\label{p-cum:cwf}
-\end{quote}
+\end{verbatim}
 本来は, 後述するダウンドラフトにともなう仕事も
 勘定に入れるべきだが, ここでは簡単のために無視する.
 
@@ -290,22 +281,22 @@ EQ=00009.
 
 それを見積もるために, まず, 単位雲底質量フラックス TERM00058 の雲による
 平均場の時間変化を求める.
-\begin{quote}
-EQ=00034.\\
+\begin{verbatim}
 EQ=00034.
-\end{quote}
+EQ=00034.
+\end{verbatim}
 これにより,
-\begin{quote}
-EQ=00035.\\
+\begin{verbatim}
 EQ=00035.
-\end{quote}
+EQ=00035.
+\end{verbatim}
 を計算し, TERM00059,TERM00059 を用いて
 (\ref{p-cum:cwf}) から雲仕事関数を計算したものを TERM00060 とおく.
 
 すると,
-\begin{quote}
+\begin{verbatim}
 EQ=00010.
-\end{quote}
+\end{verbatim}
 となる.
 ここで, TERM00061 を求める際に本来は TERM00062,TERM00062 に対応した
 雲の鉛直構造を計算しなおすべきであるが, 
@@ -315,23 +306,23 @@ EQ=00010.
 
 各雲頂高度の雲の総和の, 
 雲の質量フラックス TERM00063 は
-\begin{quote}
+\begin{verbatim}
 EQ=00011.
-\end{quote}
+\end{verbatim}
 
 また, 降水のフラックス TERM00064 は,
-\begin{quote}
+\begin{verbatim}
 EQ=00012.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{平均場の時間変化}
 
 補償下降流およびデトレインメントによる
 平均場の時間変化は, 以下のように求められる.
-\begin{quote}
-EQ=00036.\\
+\begin{verbatim}
 EQ=00036.
-\end{quote}
+EQ=00036.
+\end{verbatim}
 ただし, TERM00065 である.
 
 \subsubsection{降水の蒸発とダウンドラフト}
@@ -340,18 +331,18 @@ EQ=00036.
 さらにその一部は, ダウンドラフトを形成する.
 
 蒸発率 TERM00066 は,
-\begin{quote}
+\begin{verbatim}
 EQ=00013.
-\end{quote}
+\end{verbatim}
 ただし, TERM00067 は湿球温度に対応する飽和比湿であり,
-\begin{quote}
+\begin{verbatim}
 EQ=00014.
-\end{quote}
+\end{verbatim}
 TERM00068,TERM00068 は微物理のパラメータである.
 TERM00069 は降水粒子の密度であり, TERM00070 を降水の終端速度として,
-\begin{quote}
+\begin{verbatim}
 EQ=00015.
-\end{quote}
+\end{verbatim}
 現在の標準値は TERM00071, TERM00072, TERM00073 m/s である.
 
 ダウンドラフトについては, 次の様な仮定を行う.
@@ -373,13 +364,13 @@ EQ=00015.
 降水の蒸発時には湿潤静的エネルギーは保存すること,
 ならびに蒸発によって飽和になったときの比湿が
 TERM00081 であることに注意. 
-\begin{quote}
+\begin{verbatim}
 EQ=00016.
-\end{quote}
-\begin{quote}
-EQ=00037.\\
+\end{verbatim}
+\begin{verbatim}
 EQ=00037.
-\end{quote}
+EQ=00037.
+\end{verbatim}
 
 上式で, TERM00082 は蒸発のうちダウンドラフトにとりこまれる分であり,
 TERM00083 は平均場に直接蒸発する. 
@@ -392,25 +383,25 @@ TERM00083 は平均場に直接蒸発する.
 放射に用いる格子平均の雲水量 TERM00088 は, 
 雲水 TERM00089 を含む積雲の強い上昇域の
 占める割合を TERM00090 とすると,
-\begin{quote}
+\begin{verbatim}
 EQ=00017.
-\end{quote}
+\end{verbatim}
 質量フラックス TERM00091 は, この TERM00092 と
 上昇流の鉛直速度 TERM00093 を用いて
-\begin{quote}
+\begin{verbatim}
 EQ=00018.
-\end{quote}
+\end{verbatim}
 となるから, 結局,
-\begin{quote}
+\begin{verbatim}
 EQ=00019.
-\end{quote}
+\end{verbatim}
 
 放射の見積りに用いられる雲量 TERM00094  は, 
 実際には上昇流や雲水の分布に水平方向の広がりがあることを
 考えると, この TERM00095  よりはかなり大きな値をとるのが妥当である.
 ここでは, 簡単に, 
-\begin{quote}
+\begin{verbatim}
 EQ=00020.
-\end{quote}
+\end{verbatim}
 とする.
 現在の標準値は, TERM00096, TERM00097 である.

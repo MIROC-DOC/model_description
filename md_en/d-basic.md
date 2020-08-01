@@ -8,24 +8,22 @@ The basic equation is ,
 It is a system of primitive equations at the spherical ($\lambda,\varphi$) and $\sigma$ coordinates,
 It is given as follows ( Haltiner and Williams , 1980 ).
 
-1. a series of expressions
+1. a series of equations
 
 $$
   \frac{\partial \pi}{\partial t} 
-    + \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi
-     =  - \nabla_{\sigma} \cdot \mathbf{v}_{H} 
+    + {TERM00002}_{H} \cdot \nabla_{\sigma} \pi
+     =  - \nabla_{\sigma} \cdot {TERM00003}_{H} 
           - \frac{\partial \dot{\sigma}}{\partial \sigma}
 $$
-
-    > <span id="mass" label="mass" label="mass">\\\\blur[mass]</span>
+     --- (1)
 
 2. hydrostatic pressure formula
 
 $$
   \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
 $$
-
-    > <span id="hydrostatic" label="hydrostatic" label="hydrostatic pressure">\blaze[hydrostatic pressure]</span>.
+    --- (2)
 
 3. equation of motion
 
@@ -37,8 +35,7 @@ $$
             \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
           - {\mathcal D}(\zeta) 
 $$
-
-    > <span id="Vorticity" label="Vorticity" label="Vorticity">\\\\.00002}</span>
+     --- (3)
 
 $$
   \frac{\partial D}{\partial t} 
@@ -50,12 +47,10 @@ $$
            ( \Phi + R \bar{T} \pi + E ) 
           - {\mathcal D}(D) 
 $$
-
-    > <span id="divergence" label="divergence">\\\[divergence]</span>
+     --- (4)
 
 4. thermodynamic equation
 
-    > <span id="Heat Power" label="Heat Power">\\blind\blind\blind\.com
 $$
   \frac{\partial T}{\partial t}
      =  - \frac{1}{a\cos\varphi}
@@ -66,20 +61,17 @@ $$
         - \dot{\sigma} 
               \frac{\partial T }{\partial \sigma}
           + \kappa T \left( \frac{\partial \pi}{\partial t}
-                            + \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi 
+                            + {TERM00004}_{H} \cdot \nabla_{\sigma} \pi 
                             + \frac{ \dot{\sigma} }{ \sigma } 
                      \right)
           + \frac{Q}{C_{p}}
           + \frac{Q_{diff}}{C_{p}}
           - {\mathcal D}(T) 
 $$
-  
 
+     --- (5)
 
 5. water vapor formula
-
-
-
 
 $$
   \frac{\partial q}{\partial t}
@@ -92,8 +84,8 @@ $$
           + S_{q}
           - {\mathcal D}(q) 
 $$
-  
 
+     --- (6)
 
 Here,
 
@@ -134,7 +126,7 @@ $$
 %
      E  \equiv   \frac{u^{2}+v^{2}}{2} \\
 %
- \mathbf{v}_{H} \cdot \nabla
+ {TERM00005}_{H} \cdot \nabla
         \equiv  \frac{u}{a \cos \varphi} 
          \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
      + \frac{v}{a}
@@ -149,25 +141,20 @@ $$
                  \left[ \cos\varphi
                        \frac{\partial }{\partial \varphi} \right]  .
 $$
-  
-  
-  
-  
-  
-  
-  
-> <span id="Vorticity definition" label="Vorticity definition">\\\blade\.com.
-  
-> <span id="Divergent Definitions" label="Divergent Definitions">\\\[Divergent Definitions]</span>
-  
-> <span id="Section B" label="Section B" label="Section B">\\brachio[Section B]</span>.
-  
-> <span id="Section A" label="Section A" label="Section A" label="Section A">\\\\\\\.} </span>
-  
-> <span id="Section E" label="Section E" label="Section E">\\\\\\.}
-  
-  
+     --- (7)
+     --- (8)
+     --- (9)
+     --- (10)
+     --- (11)
+     --- (12)
+     --- (13)
+     --- (14)
+     --- (15)
+     --- (16)
+    --- (17)
+     --- (18)
 
+     --- (19)
 
 ${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$
 is the horizontal diffusion term,
@@ -175,39 +162,38 @@ ${\mathcal F}_\lambda, {\mathcal F}_\varphi$
 are forces due to small-scale kinetic processes (treated as 'physical processes'),
 The $Q$ is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
 Heating and temperature changes,
-The $S_q$ is a system of 'physical processes' such as condensation and small-scale kinetic processes
-The $Q_{diff}$ is a water vapor source term.
-The $Q_{diff}$ is the frictional heat,
+The $S_q$ is a process that involves physical processes such as condensation and small-scale motion
+It is a water vapor source term.
+Also, the $Q_{diff}$ is a frictional heat,
 
 $$
   Q_{diff}
- = - \mathbf{v} \cdot  ( \frac{\partial \mathbf{v}}{\partial t} )_{diff} .
+ = - {TERM00011} \cdot  ( \frac{\partial {TERM00012}}{\partial t} )_{diff} .
 $$
+    --- (20)
 
+$( \frac{\partial {$\mathbf{v}$}}{\partial t} )_{diff} $ is ,
+It is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
 
-$( \frac{\partial \mathbf{v}}{\partial t} )_{diff} $ is ,
-The time-varying terms of $u,v$ due to horizontal and vertical diffusion.
-
-### Boundary conditions.
+### Boundary Conditions.
 
 The boundary conditions for lead-direct current are
 
 $$
   \dot{\sigma} = 0  \ \ \ at \ \ \sigma = 0 , \ 1 .
 $$
+     --- (21)
 
-
-. Thus, from ([\\0.25\0.25}(#mass)),
+Therefore, from (1) Therefore, from (1),
 The time-varying surface pressure equation and
 Diagnostic Formula for determining the vertical velocity ($\dot{\sigma}$) in the $\sigma$ system
 
 $$
    \frac{\partial \pi}{\partial t}
-   = - \int_{0}^{1} \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma
+   = - \int_{0}^{1} {TERM00017}_{H} \cdot \nabla_{\sigma} \pi d \sigma
      - \int_{0}^{1} D  d \sigma ,
 $$
-
-> <span id="barometric tendency" label="barometric tendency">\blazing tendency </span>
+     --- (22)
 
 $$
    \dot{\sigma} 
@@ -215,10 +201,8 @@ $$
      \frac{\partial \pi}{\partial t}
      - \int_{0}^{\sigma} D d \sigma
      - \int_{0}^{\sigma} 
-         \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
+         {TERM00018}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
 $$
+     --- (23)
 
-> <span id="vertical speed" label="vertical speed">\blaze[vertical speed]</span>
-
-is led. 
-
+is led.

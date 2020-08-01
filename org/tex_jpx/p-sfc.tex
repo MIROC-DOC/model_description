@@ -201,10 +201,9 @@ CCSR/NIES AGCM の地表過程の特徴を簡単に列挙する:
 
 地表熱バランスの条件は,
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\label{p-sfc:sfc-balance}
-\end{quote}
+\end{verbatim}
 %
 である.
 TERM00009,TERM00009 は,
@@ -263,36 +262,35 @@ TERM00020 が氷点を越える場合,
 一通り記述する. 海面, 雪面の場合の相違点は後で述べる. 
 
 陸面の熱容量は,
-\begin{quote}
+\begin{verbatim}
 EQ=00001.
-\end{quote}
+\end{verbatim}
 ここで, TERM00033 は体積比熱である.
 
 陸面の熱フラックスは, 熱伝導係数を一定として取り扱う(TERM00034 には依存しうる).
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00003.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{陸面の水フラックスの計算 \texttt{MODULE:[LNDWFX]}}
 
 各層の水の容量 TERM00035 は, 
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 ただし, 実際にはこれだけ水を蓄えることができない.
 最大蓄え得る容量, すなわち飽和容量は, TERM00036 を飽和含水率として,
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 
 地中水フラックスの基本式は以下のように書ける. 
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\label{basic-Fw}
-\end{quote}
+\end{verbatim}
 ここで, TERM00037 は重力による効果を表す. 
 
 陸面の地中水フラックスの評価方法としては, 2通りの方法を考える.
@@ -305,30 +303,30 @@ EQ=00006.
 TERM00038 は拡散係数, TERM00039 は液体水の密度である.
 ここで, (\ref{basic-Fw}) における 重力ポテンシャル項 TERM00040 は
 無視している. 
-\begin{quote}
+\begin{verbatim}
 EQ=00007.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+\end{verbatim}
 
 一方, 含水率依存の拡散係数による方法では, 
 水理ポテンシャルを用いて以下のように求める.
-\begin{quote}
+\begin{verbatim}
 EQ=00009.
-\end{quote}
-\begin{quote}
-EQ=00063.\\
+\end{verbatim}
+\begin{verbatim}
 EQ=00063.
-\end{quote}
+EQ=00063.
+\end{verbatim}
 ここで, TERM00041 は飽和透水係数, TERM00042 は飽和度, TERM00043 は圧力ポテンシャルで, 
 以下のように与えられる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00010.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00011.
-\end{quote}
+\end{verbatim}
 TERM00044, TERM00045, TERM00046 は定数で, 地表面タイプ TERM00047 と TERM00048 に依存しうる. 
 
 \subsubsection{陸面の流出の計算\texttt{MODULE:[LNDROF]}}
@@ -341,24 +339,24 @@ TERM00044, TERM00045, TERM00046 は定数で, 地表面タイプ TERM00047 と T
 \end{enumerate}
 
 バケツモデルでは,
-\begin{quote}
+\begin{verbatim}
 EQ=00012.
-\end{quote}
+\end{verbatim}
 を計算し, これが
-\begin{quote}
+\begin{verbatim}
 EQ=00013.
-\end{quote}
+\end{verbatim}
 であった場合には, 流出を TERM00049 として,
-\begin{quote}
-EQ=00064.\\
+\begin{verbatim}
 EQ=00064.
-\end{quote}
+EQ=00064.
+\end{verbatim}
 とするものである.
 それ以外では, 
-\begin{quote}
-EQ=00065.\\
+\begin{verbatim}
 EQ=00065.
-\end{quote}
+EQ=00065.
+\end{verbatim}
 
 新バケツモデル(近藤,1993) は, 表層土壌の種類と深さが空間的に
 一様でない場合の平均的な地中への浸透量を見積もるモデルである. 
@@ -366,42 +364,41 @@ EQ=00065.
 ここでは時間ステップ毎に用いるように変更した. 
 %
 新バケツモデルでは, 降水浸透, 流出後の土壌水分量を以下のように見積もる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00014.
-\end{quote}
+\end{verbatim}
 ここで TERM00050 は時定数である(標準値 3600s). 
 %
 このとき流出量 TERM00051 は, 地表の水収支より
-\begin{quote}
-EQ=00066.\\
+\begin{verbatim}
 EQ=00066.
-\end{quote}
+EQ=00066.
+\end{verbatim}
 と見積もられる. 
 ただし,
-\begin{quote}
+\begin{verbatim}
 EQ=00015.
-\end{quote}
+\end{verbatim}
 
 土壌の浸透能を考慮した地表流出 TERM00052 の評価は, 浸透能を TERM00053, 
 層雲性降雨の強度を TERM00054, 対流性降雨の強度を TERM00055 とすると, 
 以下で与えられる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00016.
-\label{inf-exs}
-\end{quote}
+\end{verbatim}
 地表へ浸透する降水の入力量は以下のように修正される. 
-\begin{quote}
-EQ=00067.\\
+\begin{verbatim}
 EQ=00067.
-\end{quote}
+EQ=00067.
+\end{verbatim}
 式(\ref{inf-exs})の上の場合は, 対流性降雨の降水強度確率 TERM00056 に
 指数分布を仮定した以下の式より導かれる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00017.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00018.
-\end{quote}
+\end{verbatim}
 ただし, 層雲性降雨が一様に浸透すると考えて有効な浸透能を
 TERM00057 とした. 
 TERM00058 は, 対流性降雨の降水域が全グリッド面積に占める割合で, 
@@ -424,12 +421,12 @@ TERM00058 は, 対流性降雨の降水域が全グリッド面積に占める�
 
 また, 地表湿潤度, 日射の天頂角の影響を以下のように考慮することも可能である
 (標準では考慮していない). 
-\begin{quote}
+\begin{verbatim}
 EQ=00019.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00020.
-\end{quote}
+\end{verbatim}
 ここで, 湿潤度ファクター TERM00060, 天頂角ファクター TERM00061 は定数である. 
 
 \subsubsection{陸面での粗度の評価\texttt{MODULE:[LNDZ0]}}
@@ -466,15 +463,15 @@ EQ=00020.
       \item 関数タイプ1.
             臨界飽和度 TERM00071 を越えれば1, それ以下は線形に依存するもの.
 
-        \begin{quote}
+        \begin{verbatim}
 EQ=00021.
-\end{quote}
+\end{verbatim}
 
       \item 関数タイプ2. TERM00072 に非線形に依存するもの.
 
-        \begin{quote}
+        \begin{verbatim}
 EQ=00022.
-\end{quote}
+\end{verbatim}
       \end{enumerate}
 
 \end{enumerate}
@@ -497,24 +494,24 @@ EQ=00022.
 海面においては, 海氷の存在によって熱容量が異なる.
 海水の体積比熱 TERM00074 と
 海氷の体積比熱 TERM00075 とを用いて, TERM00076 を海氷の厚さとして,
-\begin{quote}
+\begin{verbatim}
 EQ=00023.
-\end{quote}
+\end{verbatim}
 
 海面においても, 熱伝導係数を一定とする(TERM00077 には依存しうる).
-\begin{quote}
+\begin{verbatim}
 EQ=00024.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00025.
-\end{quote}
+\end{verbatim}
 
 ただし, 海氷が存在する領域では, 
 海氷と海水の境界の温度を TERM00078(TERM00079 271.15K)とし,
 熱伝導係数を海氷の値とする.
-\begin{quote}
+\begin{verbatim}
 EQ=00026.
-\end{quote}
+\end{verbatim}
 
 海氷域以外の海洋の熱フラックスが意味を持つのは
 海洋混合層モデルを用いた場合のみである.
@@ -554,23 +551,22 @@ EQ=00026.
 
 熱容量は, 単純な和で表され,
 TERM00082 を雪の質量当たりの比熱, TERM00083 を雪の単位面積当たりの質量とすると,
-\begin{quote}
+\begin{verbatim}
 EQ=00027.
-\end{quote}
+\end{verbatim}
 ただし, TERM00084 は, 雪がない場合の熱容量である.
 
 熱フラックスは, 雪と土壌の境界の仮想的な温度を TERM00085 とすると,
-\begin{quote}
+\begin{verbatim}
 EQ=00028.
-\end{quote}
+\end{verbatim}
 ただし, TERM00086 は, 積雪深であり, 
 TERM00087 を雪の密度とすると, TERM00088 である.
 上式から TERM00089 を消去すると,
-\begin{quote}
-\nonumber
-EQ=00068.\\
+\begin{verbatim}
 EQ=00068.
-\end{quote}
+EQ=00068.
+\end{verbatim}
 ただし, TERM00090 は, 雪がない場合のフラックスである.
 従って, これが既に計算してあれば,
 それと雪のみのフラックスの調和平均を取ることによって,
@@ -585,43 +581,43 @@ EQ=00068.
 さらに, TERM00096 だけでなく, TERM00097 も雪によって変化するという
 取り扱いをする.
 
-\begin{quote}
+\begin{verbatim}
 EQ=00029.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00030.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{積雪の昇華の計算\texttt{MODULE:[SNWSUB]}}
 
 昇華フラックスの分だけ積雪量を減少させる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00031.
-\end{quote}
+\end{verbatim}
 
 積雪が昇華しきってしまうときには, 不足分の水分フラックスを土壌から蒸発させる. 
 このとき地表のエネルギーバランスは地表水分フラックスがすべて昇華したとして
 計算されてしまっているので, 土壌温度の補正を行なう必要がある. 
-\begin{quote}
+\begin{verbatim}
 EQ=00032.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{降雪の計算\texttt{MODULE:[SNWFLP]}}
 
 降水が地表に到達したときに固体(雪)であるか, 液体(雨)であるかの判定を行なう. 
 
 大気第一層の湿球温度 TERM00098 を
-\begin{quote}
+\begin{verbatim}
 EQ=00033.
-\end{quote}
+\end{verbatim}
 で評価し, TERM00099 が氷点 TERM00100 よりも低ければ雪, TERM00101 以上ならば雨とする. 
 湿球温度を用いるのは, 地表に到達した降水の温度が
 降水の落下途中での蒸発の起こりやすさに依存する効果を取り入れるためである. 
 
 ここで, 降雪の場合はその分だけ積雪量を増加させる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00034.
-\end{quote}
+\end{verbatim}
 TERM00102 は降雪フラックスである. 
 
 \subsubsection{融雪の計算\texttt{MODULE:[SNWMLP]}}
@@ -636,30 +632,30 @@ TERM00102 は降雪フラックスである.
 融雪量 TERM00105 と土壌温度 TERM00106 は, 
 
 TERM00107 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00035.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00036.
-\end{quote}
+\end{verbatim}
 TERM00108 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00037.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00038.
-\end{quote}
+\end{verbatim}
 TERM00109 のときは, エネルギーバランスで解ける雪以外の部分の温度は
 変化しないと仮定している. 
 TERM00110 は融解の潜熱, TERM00111 は氷点, TERM00112 は氷の比熱である. 
 
 実際の融雪量と土壌温度は, 現在の雪の量 TERM00113 が融けきる場合も考慮して, 
-\begin{quote}
+\begin{verbatim}
 EQ=00039.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00040.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{積雪面の流出の計算\texttt{MODULE:[SNWROF]}}
  
@@ -667,14 +663,14 @@ EQ=00040.
 積雪の影響による流出 TERM00115 を以下のように評価して, 
 地表への水分入力から除いておく. 
 また, 融雪水 TERM00116 をここで地表への水分入力に加える. 
-\begin{quote}
+\begin{verbatim}
 EQ=00041.
-\end{quote}
-\begin{quote}
-EQ=00069.\\
-EQ=00069.\\
+\end{verbatim}
+\begin{verbatim}
 EQ=00069.
-\end{quote}
+EQ=00069.
+EQ=00069.
+\end{verbatim}
 ここで, TERM00117 は積雪の影響による地表の浸透率である. 
 浸透に関する臨界積雪量 TERM00118 の標準値は 200 kg/TERM00119 である. 
 
@@ -685,15 +681,15 @@ EQ=00069.
 アルベドは積雪の平方根に比例して雪の値 TERM00121 に近づく
 (臨界値 TERM00122 は, 標準で 200kg/TERM00123).
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00042.
-\end{quote}
+\end{verbatim}
 
 また, 融解が起こって積雪が湿っているとき雪のアルベドが
 小さくなる効果を以下のように考慮している. 
-\begin{quote}
+\begin{verbatim}
 EQ=00043.
-\end{quote}
+\end{verbatim}
 ここで TERM00124 は地表温度である. 
 乾いた雪のアルベド TERM00125, 湿った雪のアルベド TERM00126
 の標準値はそれぞれ 0.7, 0.5. 
@@ -709,9 +705,9 @@ EQ=00043.
 地表粗度は積雪の平方根に比例して雪の粗度に近づく
 (臨界値 TERM00130 は, 標準で 200kg/TERM00131).
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00044.
-\end{quote}
+\end{verbatim}
 %
 雪の粗度の標準値は, 運動量, 温度, 水蒸気に対してそれぞれ
 10 TERM00132, 10 TERM00133, 10 TERM00134 である. 
@@ -723,9 +719,9 @@ EQ=00044.
 地表湿潤度は積雪の平方根に比例して雪の湿潤度 1 に近づく
 (臨界値 TERM00136 は, 標準で 200kg/TERM00137).
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00045.
-\end{quote}
+\end{verbatim}
 
 \bigskip
 以下では, オプション的の地表過程について記述する.
@@ -744,21 +740,21 @@ EQ=00045.
 計算する. 
 
 第 TERM00138 層の含氷率を TERM00139 とすると, 凍結する水分 TERM00140 は, 
-\begin{quote}
+\begin{verbatim}
 EQ=00046.
-\end{quote}
+\end{verbatim}
 ただし, 負の TERM00141 は融解する水分を表す. 
 TERM00142 は土壌温度が氷点になるまで凍結/融解が
 起こったとしたときの TERM00143 の値であり, 以下で与えられる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00047.
-\end{quote}
+\end{verbatim}
 TERM00144 は氷点 273.16K である. 
 
 土壌水分の相変化の潜熱による土壌温度の変化は以下で与えられる. 
-\begin{quote}
+\begin{verbatim}
 EQ=00048.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{海洋混合層モデル \texttt{MODULE:[SEAFRZ]}}
 
@@ -775,18 +771,18 @@ EQ=00048.
        \texttt{MODULE:[SEAFLX]}
 海洋の熱容量は,
 水の比熱 TERM00148, 氷の比熱 TERM00149, 水と氷の密度を TERM00150 として,
-\begin{quote}
+\begin{verbatim}
 EQ=00049.
-\end{quote}
+\end{verbatim}
 
 海氷がない場合, 熱伝導フラックスは,
-\begin{quote}
+\begin{verbatim}
 EQ=00050.
-\end{quote}
+\end{verbatim}
 一方, 海氷がある場合は,
-\begin{quote}
+\begin{verbatim}
 EQ=00051.
-\end{quote}
+\end{verbatim}
 となる. ここで, TERM00151 は海氷の氷結温度で, 271.35K である.
 
 TERM00152 での熱フラックス TERM00153 は通常 0 であるが,
@@ -801,26 +797,26 @@ TERM00152 での熱フラックス TERM00153 は通常 0 であるが,
 
 まず 融解量 TERM00155 を  \\
 TERM00156 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00052.
-\end{quote}
+\end{verbatim}
 TERM00157 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00053.
-\end{quote}
+\end{verbatim}
 で見積もり,
 ただし, 融けきった場合は, TERM00158 とし, その分の熱を補正する.
-\begin{quote}
+\begin{verbatim}
 EQ=00054.
-\end{quote}
+\end{verbatim}
 氷の厚さを変化させ,
-\begin{quote}
+\begin{verbatim}
 EQ=00055.
-\end{quote}
+\end{verbatim}
 次に, それに見合うだけ熱容量を変化させる.
-\begin{quote}
+\begin{verbatim}
 EQ=00056.
-\end{quote}
+\end{verbatim}
 
 \item 次に, 海氷の底からの成長過程を考慮する.
 
@@ -828,54 +824,54 @@ EQ=00056.
 \item 海氷が存在しないとき(TERM00159)
 
 TERM00160 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00057.
-\end{quote}
+\end{verbatim}
 TERM00161 のとき, 
-\begin{quote}
+\begin{verbatim}
 EQ=00058.
-\end{quote}
+\end{verbatim}
 で見積もる.
 これが正のときには, 海氷が生成される.
 ここで,  TERM00162 は, TERM00163 が TERM00164 K以下
 となるときに正となることに注意.
-\begin{quote}
-EQ=00070.\\
-EQ=00070.\\
+\begin{verbatim}
 EQ=00070.
-\end{quote}
+EQ=00070.
+EQ=00070.
+\end{verbatim}
 
 \item 海氷が既に存在するとき(TERM00165)
 
 海氷の下の海水から海氷の底面までの熱フラックスを
-\begin{quote}
+\begin{verbatim}
 EQ=00059.
-\end{quote}
+\end{verbatim}
 で見積もる.
 TERM00166 と 海洋から上への熱フラックス TERM00167 との差が
 海氷の成長または融解に使用される.
-\begin{quote}
+\begin{verbatim}
 EQ=00060.
-\end{quote}
+\end{verbatim}
 よって,
-\begin{quote}
-EQ=00071.\\
-EQ=00071.\\
+\begin{verbatim}
 EQ=00071.
-\end{quote}
+EQ=00071.
+EQ=00071.
+\end{verbatim}
 \end{enumerate}
 
 \item 外部から参照温度 TERM00168 を与えて,
       それに nudging をかけることができる.
 %      
-      \begin{quote}
+      \begin{verbatim}
 EQ=00061.
-\end{quote}
+\end{verbatim}
 %
       これは熱フラックス 
-      \begin{quote}
+      \begin{verbatim}
 EQ=00062.
-\end{quote}
+\end{verbatim}
       を与えたことに相当する.
 
       flux correction をするには,

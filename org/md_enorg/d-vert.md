@@ -1,122 +1,115 @@
 ## Vertical discretization
 
 According to Arakawa and Suarez (1983),
-The basic equations are discretized vertically by differences.
-This scheme has the following features.
+Discretize the basic equations vertically by differences.
+The scheme has the following characteristics.
 
-  - Conservation of the total domain-integrated mass
+ - Save the total integrated mass
 
-  - Save the total integrated energy
+ - Save the total integrated energy
 
-  - Preserving angular momentum for global integration
+ - Preserving angular momentum for global integration
 
-  - Conservation of total mass-integrated potential temperature
+ - Conservation of total mass-integrated potential temperature
 
-  - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
+ - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
 
-  - Constant in the horizontal direction, for a given temperature distribution,
-    The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
+ - Constant in the horizontal direction, for a given temperature distribution,
+ The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
 
-  - The isothermal atmosphere stays at the isothermal level indefinitely
+ - Isothermal atmosphere stays isothermal forever
 
 ### How to take a level.
 
-Number the layers from the bottom to the top.
-Assume that the physical quantity of TERM00000 and TERM00000 is defined in terms of integer levels (layers).
-On the other hand, TERM00001 is defined by the half-integer level (level).
-First, let the value of TERM00002 at the half-integer level be
+Number the layers from bottom to top.
+Assume that the physical quantity of TERM00000 and TERM00000 is defined at the integer level (layer).
+On the other hand, TERM00001 is defined at the half-integer level.
+First, the value of TERM00002 at a half-integer level
 TERM00003,TERM00003
-is defined.
-except that level TERM00004 is the lower end (TERM00005),
-Level TERM00006 should be the uppermost (TERM00007).
+Define the .
+However, level TERM00004 is the lower end (TERM00005),
+Level TERM00006 should be the upper end (TERM00007).
 
-The value of TERM00008 for an integer level
+Value of TERM00008 in integer level
 TERM00009,TERM00009
-is found by the following formula.
+is obtained from the following equation.
 
-> EQ=00000.
-> <span id="Bear definition" label="Bear definition">\blindness\.0000
+     EQ=00000.     --- (1)
 
 Furthermore,
 
-> EQ=00001.
-> <span id="sigma thickness" label="sigma thickness">Sigma thickness\[sigma thickness]</span>
+     EQ=00001.    --- (2)
 
 .
 
-### vertical discretization representation.
+### Vertical discretization representation.
 
 The discretized representation of each equation is as follows.
 
-The equation of continuity, vertical velocity
+1. continuity formula, vertical velocity
 
-    > EQ=00002.
+         EQ=00002.     --- (3)
 
-    > EQ=00003.
+         EQ=00003.     --- (4)
 
-    > EQ=00004.
+         EQ=00004.     --- (5)
 
-2. hydrostatic pressure equation
+2. hydrostatic pressure formula
 
-    > EQ=00010.  
-    > EQ=00010.
+         EQ=00010.     --- (6)
+         EQ=00010.
 
-    > EQ=00011.  
-    > EQ=00011.
+         EQ=00011.    --- (7)
+         EQ=00011.
 
-    Here ,
+ Here,
 
-    > <span id="Hydrostatic pressure coefficient" label="Hydrostatic pressure coefficient">Are you sure you can't take a look at it?
-    > EQ=00012.  
-    > EQ=00012.
+         EQ=00012.    --- (8)
+         EQ=00012.    --- (9)
 
 3. equation of motion
 
-    > EQ=00005.
-    > <span id="Vorticity After All" label="Vorticity After All">\\\.com\.} </span>.
+         EQ=00005.     --- (10)
 
-    > EQ=00006.
+         EQ=00006.     --- (11)
 
-    Here,
+ Here,
 
-    > EQ=00013.  
-    > EQ=00013.
+         EQ=00013.
+         EQ=00013.    --- (12)
 
-    > EQ=00014.  
-    > EQ=00014.
+         EQ=00014.
+         EQ=00014.    --- (13)
 
-    > <span id="Hatchetkappa" label="Hatchetkappa">\\blade\.com\blade\bladeCoCoCoCo.} </span>.
-    > EQ=00015.  
-    > EQ=00015.
+         EQ=00015.
+         EQ=00015.    --- (14)
 
-    > EQ=00007.
+         EQ=00007.     --- (15)
 
 4. thermodynamic equation
 
-    > EQ=00016.  
-    > EQ=00016.  
-    > EQ=00016.
+         EQ=00016.
+         EQ=00016.
+         EQ=00016.    --- (16)
 
-    Where ,
+ Here,
 
-    > EQ=00017.  
-    > EQ=00017.  
-    > EQ=00017.  
-    > EQ=00017.  
-    > EQ=00017.  
-    > EQ=00017.  
-    > EQ=00017.
+         EQ=00017.
+         EQ=00017.
+         EQ=00017.
+         EQ=00017.
+         EQ=00017.
+         EQ=00017.
+         EQ=00017.    --- (17)
 
-    > EQ=00018.  
-    > EQ=00018.
+         EQ=00018.    --- (18)
+         EQ=00018.    --- (19)
 
-    > <span id="Temperature Interpolation Factor" label="Temperature Interpolation Factor">\\BackBackBacklash\.com
-    > EQ=00019.  
-    > EQ=00019.
+         EQ=00019.    --- (20)
+         EQ=00019.    --- (21)
 
 5. water vapor formula
 
-    > EQ=00008.
-    > <span id="q eventually" label="q eventually" label="q eventually">\\blana[q eventually]</span>
+         EQ=00008.     --- (22)
 
-    > EQ=00009.
+         EQ=00009.     --- (23)

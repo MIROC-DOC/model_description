@@ -28,56 +28,56 @@ level 2 のパラメタリゼーションを用いる.
 大気中の鉛直拡散フラックスは, 
 拡散係数 TERM00004 を用いて, 以下のように評価される.
 
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00001.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00002.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00003.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{Richardson 数}
 
 大気の成層安定度の基準となる,
 バルクRichardson数 TERM00005 は
 
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 で定義される.
 ここで, TERM00006 は TERM00007 を表す.
 また, TERM00008 は, 静水圧の式より,
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 
 フラックスRicahrdson数 TERM00009 は,
 
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\end{quote}
+\end{verbatim}
 ただし, 
 
-\begin{quote}
-EQ=00020.\\
-EQ=00020.\\
-EQ=00020.\\
-EQ=00020.\\
-EQ=00020.\\
+\begin{verbatim}
 EQ=00020.
-\end{quote}
-\begin{quote}
+EQ=00020.
+EQ=00020.
+EQ=00020.
+EQ=00020.
+EQ=00020.
+\end{verbatim}
+\begin{verbatim}
 EQ=00007.
-\end{quote}
+\end{verbatim}
 
-\begin{quote}
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+\end{verbatim}
 
 TERM00010 と TERM00011 の関係を図示すると,
 図\ref{p-dif:rib-rif} のようになる.
@@ -96,31 +96,31 @@ TERM00010 と TERM00011 の関係を図示すると,
 各層の境界(TERM00012 レベル)ごとに,
 次のように与えられる.
 
-\begin{quote}
-EQ=00021.\\
+\begin{verbatim}
 EQ=00021.
-\end{quote}
+EQ=00021.
+\end{verbatim}
 
-ここで, TERM00013,TERM00013 は,
-\begin{quote}
+ここで, TERM00015,TERM00015 は,
+\begin{verbatim}
 EQ=00009.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00010.
-\end{quote}
+\end{verbatim}
 を用いて,
-\begin{quote}
-EQ=00022.\\
+\begin{verbatim}
 EQ=00022.
-\end{quote} 
+EQ=00022.
+\end{verbatim} 
 
-TERM00014 は混合距離であり, Blakadar(1962)に従って,
-\begin{quote}
+TERM00016 は混合距離であり, Blakadar(1962)に従って,
+\begin{verbatim}
 EQ=00011.
-\end{quote}
+\end{verbatim}
 ととる. 
-TERM00015 は K\'{a}rman 定数である. 
+TERM00017 は K\'{a}rman 定数である. 
 % 漸近混合距離$l_0$は, 
 % $R_{iB} > R_{iBC}$ となるような最大の$\sigma$ を
 % 境界層の上端$\sigma_B$と考え, それ以上と以下で異なる値を与える.
@@ -139,15 +139,15 @@ TERM00015 は K\'{a}rman 定数である.
 % 
 % 現在の標準値は, 
 % $R_{iBC}=2, l_{0B}=1000\mbox{m}, l_{0F}=10\mbox{m}$ である.
-現在の標準値は, TERM00016 m である.
+現在の標準値は, TERM00018 m である.
 
-TERM00017,TERM00017 を TERM00018 の関数として示すと,
+TERM00019,TERM00019 を TERM00020 の関数として示すと,
 図\ref{p-dif:smsh-rif} のようになる.
 
 \begin{figure}[htbp]
   \begin{center}
     \epsfile{file=dif-smsh.ps,width=70mm}
-    \caption{フラックスRichardson数と TERM00019,TERM00019 の関係}
+    \caption{フラックスRichardson数と TERM00021,TERM00021 の関係}
     \label{p-dif:smsh-rif}
   \end{center}
 \end{figure}
@@ -157,31 +157,31 @@ TERM00017,TERM00017 を TERM00018 の関数として示すと,
 
 以上を用い, フラックスおよびフラックス微分を計算する.
 
-\begin{quote}
+\begin{verbatim}
 EQ=00012.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00013.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00014.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00015.
-\end{quote}
+\end{verbatim}
 
-\begin{quote}
+\begin{verbatim}
 EQ=00016.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00017.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00018.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00019.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{拡散係数の最小値}
 
@@ -189,7 +189,7 @@ EQ=00019.
 これをそのまま用いるとモデルの振舞いにさまざまな
 悪影響をもたらすので, 適当な最小値を置く.
 現在の標準値は, 全てのフラックスに共通で
-TERM00020 0.15 TERM00021/s である.
+TERM00022 0.15 TERM00023/s である.
 
 \subsubsection{その他の留意点}
 

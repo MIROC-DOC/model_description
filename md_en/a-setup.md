@@ -15,7 +15,7 @@ Longitude is discretized at equal intervals `MODULE:[ASETL]`.
 $$
   \lambda_i = 2 \pi \frac{i-1}{I}  \;\;\; i = 1, \ldots I-1
 $$
-
+     --- (1)
 
 Latitude is the Gauss latitude $\varphi_j$ described in Mechanics, and `MODULE:[ASETL]`,
 Gauss-Legendre derived from the integral formula.
@@ -27,7 +27,7 @@ If J is large, we can approximate
 $$
   \varphi_j =  \pi ( \frac{1}{2}- \frac{j-1/2}{J} ) \;\;\; j = 1, \ldots J-1
 $$
-
+    --- (2)
 
 Normally, the grid spacing of longitude and latitude is taken as $J = I/2$ almost equally.
 This is based on the triangular truncation of the spectral method.
@@ -45,7 +45,7 @@ $$
                      \right)
               \right\}^{1/\kappa}
 $$
-
+     --- (3)
 
 Find the $\sigma$ representing the layer by
 Figure [a-setup:level\]] (#a-setup:level) shows the 20 levels of the standard.
@@ -84,4 +84,3 @@ The basic physical constants are shown below `MODULE:[APCON]`.
 | water vapor molecular weight ratio | $\epsilon  = R/R_v$ |  | 0.622 |
 | coefficient of provisional temperature | $\epsilon_v = \epsilon^{-1} - 1$ |  | 0.606 |
 | Ratio of specific heat to gas constant | $\kappa = R/C_p$ |  | 0.286 |
-

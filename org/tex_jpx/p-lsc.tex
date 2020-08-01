@@ -45,9 +45,9 @@ CCSR/NIES AGCM では, 水蒸気混合比 (比湿 TERM00005) に加えて
 総水量 TERM00016 の格子内での分布を,
 TERM00017 から TERM00018 の間の
 一様分布であると仮定する. すなわち確率密度関数は,
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\end{quote}
+\end{verbatim}
 この分布は, 水平方向の分布であると考える.
 一方, 飽和比湿は格子平均の値 TERM00019 を用いる.
 
@@ -65,43 +65,41 @@ TERM00020 である領域に雲が存在すると考える(図\ref{lsc:fig-cloud
 
 すると, 図の陰影で示すような,
 総水量が飽和を越える部分の水平方向の比率 TERM00021 は,
-\begin{quote}
+\begin{verbatim}
 EQ=00001.
-\end{quote}
+\end{verbatim}
 となり, これが雲量(水平雲被覆率)である.
 
 また, 雲水量 TERM00022 は, TERM00023 である領域で
 TERM00024 を積分したもので,
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\label{p-lsc:l}
-\end{quote}
+\end{verbatim}
 
 \subsubsection{逐次近似による決定}
 
 まず, 水蒸気 TERM00025 と 雲水 TERM00026 温度 TERM00027 から,
 総水量 TERM00028 と liquid water temperature TERM00029 を求める.
-\begin{quote}
-EQ=00017.\\
+\begin{verbatim}
 EQ=00017.
-\end{quote}
+EQ=00017.
+\end{verbatim}
 TERM00030 は, 雲水を全て蒸発させたときの温度に対応する.
 TERM00031, TERM00032 と置く.
 
 温度 TERM00033 に対する飽和比湿によって, 
 前述の方法で評価した雲水量を TERM00034 とすると,
 それによって温度が変わり,
-\begin{quote}
+\begin{verbatim}
 EQ=00003.
-\label{p-lsc:itereate1}
-\end{quote}
+\end{verbatim}
 この温度に対する飽和比湿によって, 評価した雲水量を TERM00035,
 それによって変化した温度を TERM00036 \ldots として逐次近似で解く.
 この逐次収束を速めるために, Newton 法の取扱いを行なう.
 すなわち, (\ref{p-lsc:itereate1})の代わりに
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 とする.
 TERM00037 は, (\ref{p-lsc:l}) を用いて解析的に求めることができる.
 
@@ -109,80 +107,80 @@ TERM00037 は, (\ref{p-lsc:l}) を用いて解析的に求めることができ�
 
 降水は診断された雲水量に依存して起こる.
 降水率(単位1/s)を TERM00038 とすると,
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 
 TERM00039 は降水の時間スケールであり,
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\end{quote}
+\end{verbatim}
 ここで, TERM00040 は臨界雲水量であり,
 Bergeron-Findeisen 効果を考慮して,
-\begin{quote}
+\begin{verbatim}
 EQ=00007.
-\end{quote}
+\end{verbatim}
 TERM00041, TERM00042, TERM00043, 
 TERM00044 K, TERM00045 K である.
 
 降水は TERM00046 の減少をもたらす.
-\begin{quote}
-EQ=00018.\\
+\begin{verbatim}
 EQ=00018.
-\end{quote}
+EQ=00018.
+\end{verbatim}
 これを TERM00047 の間積分すると,
-\begin{quote}
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+\end{verbatim}
 
 ある高さ TERM00048 での降水フラックス
 (単位kg TERM00049 TERM00050)を TERM00051 とすると,
-\begin{quote}
+\begin{verbatim}
 EQ=00009.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{氷の落下過程}
 
 雲水は, 温度に応じて氷雲, 水雲に分かれる.
 氷雲の比率は
-\begin{quote}
+\begin{verbatim}
 EQ=00010.
-\end{quote}
+\end{verbatim}
 (ただし, 最大値1, 最小値0) である. また,
 TERM00052,TERM00052.
 氷雲は, ゆっくりとした速度で降下するとして, 
 その効果を考える. 降下速度 TERM00053 は,
-\begin{quote}
+\begin{verbatim}
 EQ=00011.
-\end{quote}
+\end{verbatim}
 ただし, TERM00054 m/s, TERM00055.
 すると, 
-\begin{quote}
+\begin{verbatim}
 EQ=00012.
-\end{quote}
+\end{verbatim}
 として, 降水と同様に処理できる.
 
 \subsubsection{降水の蒸発過程}
 
 降水の蒸発 TERM00056 は, 次のように見積もる.
 
-\begin{quote}
+\begin{verbatim}
 EQ=00013.
-\end{quote}
+\end{verbatim}
 ただし, TERM00057 のときは 0 とする.
 TERM00058 は湿球温度に対応する飽和比湿で,
-\begin{quote}
+\begin{verbatim}
 EQ=00014.
-\end{quote}
+\end{verbatim}
 %
 これにより, 降水は
-\begin{quote}
+\begin{verbatim}
 EQ=00015.
-\end{quote}
+\end{verbatim}
 となる. また, 蒸発による温度の下降を見積もる.
-\begin{quote}
+\begin{verbatim}
 EQ=00016.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{その他の留意点}
 

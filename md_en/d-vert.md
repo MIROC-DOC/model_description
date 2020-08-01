@@ -1,38 +1,38 @@
 ## Vertical discretization
 
 According to Arakawa and Suarez (1983),
-The basic equations are discretized vertically by differences.
-This scheme has the following features.
+Discretize the basic equations vertically by differences.
+The scheme has the following characteristics.
 
-  - Conservation of the total domain-integrated mass
+ - Save the total integrated mass
 
-  - Save the total integrated energy
+ - Save the total integrated energy
 
-  - Preserving angular momentum for global integration
+ - Preserving angular momentum for global integration
 
-  - Conservation of total mass-integrated potential temperature
+ - Conservation of total mass-integrated potential temperature
 
-  - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
+ - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
 
-  - Constant in the horizontal direction, for a given temperature distribution,
-    The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
+ - Constant in the horizontal direction, for a given temperature distribution,
+ The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
 
-  - The isothermal atmosphere stays at the isothermal level indefinitely
+ - Isothermal atmosphere stays isothermal forever
 
 ### How to take a level.
 
-Number the layers from the bottom to the top.
-Assume that the physical quantity of $\zeta,D,T,q$ is defined in terms of integer levels (layers).
-On the other hand, $\dot{\sigma}$ is defined by the half-integer level (level).
-First, let the value of $\sigma$ at the half-integer level be
+Number the layers from bottom to top.
+Assume that the physical quantity of $\zeta,D,T,q$ is defined at the integer level (layer).
+On the other hand, $\dot{\sigma}$ is defined at the half-integer level.
+First, the value of $\sigma$ at a half-integer level
 $\sigma_{k-1/2}, (k=1,2,\ldots K)$
-is defined.
-except that level $\frac{1}{2}$ is the lower end ($\sigma=1$),
-Level $K+\frac{1}{2}$ should be the uppermost ($\sigma=0$).
+Define the .
+However, level $\frac{1}{2}$ is the lower end ($\sigma=1$),
+Level $K+\frac{1}{2}$ should be the upper end ($\sigma=0$).
 
-The value of $\sigma$ for an integer level
+Value of $\sigma$ in integer level
 $\sigma_k, (k=1,2,\ldots K)$
-is found by the following formula.
+is obtained from the following equation.
 
 $$
  \sigma_k = \left\{ \frac{1}{1+\kappa}
@@ -42,52 +42,50 @@ $$
                      \right)
               \right\}^{1/\kappa}
 $$
-
-> <span id="Bear definition" label="Bear definition">\blindness\.0000
+     --- (1)
 
 Furthermore,
 
 $$
   \Delta \sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2}
 $$
-
-> <span id="sigma thickness" label="sigma thickness">Sigma thickness\[sigma thickness]</span>
+    --- (2)
 
 .
 
-### vertical discretization representation.
+### Vertical discretization representation.
 
 The discretized representation of each equation is as follows.
 
-The equation of continuity, vertical velocity
+1. continuity formula, vertical velocity
 
 $$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + \mathbf{v}_k \cdot \nabla \pi ) 
+ = - \sum_{k=1}^{K} ( D_k + {TERM00010}_k \cdot \nabla \pi ) 
        \Delta  \sigma_k
 $$
-
+     --- (3)
 
 $$
   \dot{\sigma}_{k-1/2}
  = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
-   - \sum_{l=k}^{K} ( D_l + \mathbf{v}_l \cdot \nabla \pi )          
+   - \sum_{l=k}^{K} ( D_l + {TERM00011}_l \cdot \nabla \pi )          
        \Delta  \sigma_l
 $$
-
+     --- (4)
 
 $$
   \dot{\sigma}_{1/2} = \dot{\sigma}_{K+1/2} = 0
 $$
+     --- (5)
 
-
-2. hydrostatic pressure equation
+2. hydrostatic pressure formula
 
 $$
  \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
            =  \Phi_{s} + C_{p} \alpha_{1} T_{v,1} 
 $$
-  
+     --- (6)
 
 
 $$
@@ -101,20 +99,19 @@ $$
               \right] T_{v,k-1} \\
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 $$
-  
+    --- (7)
 
 
-    Here ,
+ Here,
 
-    > <span id="Hydrostatic pressure coefficient" label="Hydrostatic pressure coefficient">Are you sure you can't take a look at it?
 $$
  \alpha_k   =  \left( \frac{ \sigma_{k-1/2} }
                                { \sigma_k } \right)^{\kappa} -1 \\
  \beta_k    =  1- \left( \frac{ \sigma_{k+1/2} }
                                { \sigma_k } \right)^{\kappa} .
 $$
-  
-
+    --- (8)
+    --- (9)
 
 3. equation of motion
 
@@ -126,8 +123,7 @@ $$
             \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
           - {\mathcal D}(\zeta_k) 
 $$
-
-    > <span id="Vorticity After All" label="Vorticity After All">\\\.com\.} </span>.
+     --- (10)
 
 $$
   \frac{\partial D}{\partial t} 
@@ -140,9 +136,9 @@ $$
              + ({\mathit KE})_k )
           - {\mathcal D}(D_k) 
 $$
+     --- (11)
 
-
-    Here,
+ Here,
 
 $$
   (A_u)_k
@@ -155,8 +151,8 @@ $$
                   \frac{\partial \pi}{\partial \lambda} 
              + {\mathcal F}_x
 $$
-  
 
+    --- (12)
 
 $$
   (A_v)_k
@@ -169,10 +165,9 @@ $$
                \frac{\partial \pi}{\partial \varphi} 
              + {\mathcal F}_y
 $$
-  
 
+    --- (13)
 
-    > <span id="Hatchetkappa" label="Hatchetkappa">\\blade\.com\blade\bladeCoCoCoCo.} </span>.
 $$
    \hat{\kappa}_k 
     =       \frac{  \sigma_{k-1/2}(   \sigma^{\kappa}_{k-1/2} 
@@ -185,13 +180,13 @@ $$
   =  \frac{ \sigma_{k-1/2} \alpha_k + \sigma_{k+1/2} \beta_k }
             { \Delta \sigma_k                                  } 
 $$
-  
 
+    --- (14)
 
 $$
 T'_{v,k} = T_{v,k} - \bar{T}_k
 $$
-
+     --- (15)
 
 4. thermodynamic equation
 
@@ -206,11 +201,11 @@ $$
           + \frac{(Q_{diff})_k}{C_p} 
           - {\mathcal D}(T_k)  \\
 $$
-  
-  
 
 
-    Where ,
+    --- (16)
+
+ Here,
 
 $$
    H_k 
@@ -220,16 +215,16 @@ $$
                + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
                 \\
         + \left\{ \alpha_k
-                    \left[ \sigma_{k-1/2} \mathbf{v}_k \cdot \nabla \pi
+                    \left[ \sigma_{k-1/2} {TERM00012}_k \cdot \nabla \pi
                           - \sum_{l=k}^{K} 
-                           ( D_l + \mathbf{v}_l \cdot \nabla \pi )
+                           ( D_l + {TERM00013}_l \cdot \nabla \pi )
                             \Delta  \sigma_l
                     \right]
              \right.    \\
           + \left. \beta_k
-                     \left[ \sigma_{k+1/2} \mathbf{v}_k \cdot \nabla \pi
+                     \left[ \sigma_{k+1/2} {TERM00014}_k \cdot \nabla \pi
                           - \sum_{l=k+1}^{K} 
-                           ( D_l + \mathbf{v}_l \cdot \nabla \pi )
+                           ( D_l + {TERM00015}_l \cdot \nabla \pi )
                             \Delta  \sigma_l
                     \right]
               \right\} 
@@ -240,25 +235,25 @@ $$
              [   \dot{\sigma}_{k-1/2} ( \hat{T}_{k-1/2} - T_k   )
                + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
                 \\
-        + \hat{\kappa}_k \mathbf{v}_k \cdot \nabla \pi T_{v,k} 
+        + \hat{\kappa}_k {TERM00016}_k \cdot \nabla \pi T_{v,k} 
                 \\
         - \alpha_k \sum_{l=k}^{K} 
-                           ( D_l + \mathbf{v}_l \cdot \nabla \pi )
+                           ( D_l + {TERM00017}_l \cdot \nabla \pi )
                             \Delta  \sigma_l 
                             \frac{T_{v,k}}{\Delta \sigma_k} 
                 \\
         - \beta_k \sum_{l=k+1}^{K} 
-                           ( D_l + \mathbf{v}_l \cdot \nabla \pi )
+                           ( D_l + {TERM00018}_l \cdot \nabla \pi )
                             \Delta  \sigma_l 
                             \frac{T_{v,k}}{\Delta \sigma_k} 
 $$
-  
-  
-  
-  
-  
-  
 
+
+
+
+
+
+    --- (17)
 
 $$
   \hat{T}_{k-1/2}
@@ -272,10 +267,9 @@ $$
           { \sigma_{k-1}^{\kappa} - \sigma_k^{\kappa}           } \\
    =  a_k T_k + b_{k-1} T_{k-1}
 $$
-  
+    --- (18)
+    --- (19)
 
-
-    > <span id="Temperature Interpolation Factor" label="Temperature Interpolation Factor">\\BackBackBacklash\.com
 $$
   a_k  =  \alpha_k 
               \left[ 1- \left( \frac{ \sigma_k }{ \sigma_{k-1} }
@@ -284,8 +278,8 @@ $$
               \left[ \left( \frac{ \sigma_k }{ \sigma_{k+1} } 
                      \right)^{\kappa} - 1 \right]^{-1} .  
 $$
-  
-
+    --- (20)
+    --- (21)
 
 5. water vapor formula
 
@@ -299,8 +293,7 @@ $$
           + S_{q,k}
           - {\mathcal D}(q_k) 
 $$
-
-    > <span id="q eventually" label="q eventually" label="q eventually">\\blana[q eventually]</span>
+     --- (22)
 
 $$
 R_k  =  q_k D_k 
@@ -308,5 +301,4 @@ R_k  =  q_k D_k
              [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
                + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
 $$
-
-
+     --- (23)

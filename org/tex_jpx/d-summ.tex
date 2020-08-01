@@ -31,283 +31,258 @@
 から渦度・発散の格子点値 TERM00002,TERM00002 を求める.
 まず, 渦度・発散のスペクトル
 TERM00003,TERM00003 を求める,
-\begin{quote}
-\nonumber
-EQ=00033.\\
-\label{d-summ:uv-zeta}
+\begin{verbatim}
 EQ=00033.
-\end{quote}
-\begin{quote}
-\nonumber
-EQ=00034.\\
-\label{d-summ:uv-D}
+EQ=00033.
+\end{verbatim}
+\begin{verbatim}
 EQ=00034.
-\end{quote}
+EQ=00034.
+\end{verbatim}
 それをさらに, 
-\begin{quote}
+\begin{verbatim}
 EQ=00000.
-\end{quote}
+\end{verbatim}
 等を用いて格子点値に変換する.
 
 \subsubsection{仮温度の計算}
 
-仮温度 TERM00004 は, 
-\begin{quote}
+仮温度 TERM00005 は, 
+\begin{verbatim}
 EQ=00035.
-\end{quote}
-ただし, TERM00005 であり, 
-TERM00006 は水蒸気の気体定数
-(461 TERM00007TERM00008)
-TERM00009 は空気の気体定数
-(287.04 TERM00010TERM00011)
+\end{verbatim}
+ただし, TERM00006 であり, 
+TERM00007 は水蒸気の気体定数
+(461 TERM00008TERM00009)
+TERM00010 は空気の気体定数
+(287.04 TERM00011TERM00012)
 である.
 
 \subsubsection{気圧傾度項の計算}
 
-気圧傾度項 TERM00012 は,
-まず, TERM00013 を
-\begin{quote}
+気圧傾度項 TERM00013 は,
+まず, TERM00014 を
+\begin{verbatim}
 EQ=00001.
-\end{quote}
+\end{verbatim}
 でスペクトル表現に直してから,
-\begin{quote}
+\begin{verbatim}
 EQ=00002.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00003.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{鉛直流の診断的計算}
 
 気圧変化項, および鉛直流,
-\begin{quote}
+\begin{verbatim}
 EQ=00004.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00005.
-\end{quote}
+\end{verbatim}
 %
 ならびにその非重力波成分を計算する.
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00006.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00007.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{移流による時間変化項}
 
 運動量移流項:
-\begin{quote}
-\nonumber
-EQ=00036.\\
+\begin{verbatim}
 EQ=00036.
-\end{quote}
+EQ=00036.
+\end{verbatim}
 %
-\begin{quote}
-\nonumber
-EQ=00037.\\
+\begin{verbatim}
 EQ=00037.
-\end{quote}
-\begin{quote}
+EQ=00037.
+\end{verbatim}
+\begin{verbatim}
 EQ=00008.
-\end{quote}
+\end{verbatim}
 
 温度移流項:
-\begin{quote}
+\begin{verbatim}
 EQ=00009.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00010.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
-\nonumber
-EQ=00038.\\
-\nonumber
-EQ=00038.\\
-\nonumber
-EQ=00038.\\
-\nonumber
-EQ=00038.\\
-\nonumber
-EQ=00038.\\
+\begin{verbatim}
 EQ=00038.
-\end{quote}
+EQ=00038.
+EQ=00038.
+EQ=00038.
+EQ=00038.
+EQ=00038.
+\end{verbatim}
 
 水蒸気移流項:
-\begin{quote}
+\begin{verbatim}
 EQ=00011.
-\end{quote}
-\begin{quote}
+\end{verbatim}
+\begin{verbatim}
 EQ=00012.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00013.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{予報変数のスペクトルへの変換}
 
 (\ref{d-summ:uv-zeta}) および
 (\ref{d-summ:uv-D}) を用いて
 
-TERM00014,TERM00014 を
+TERM00024,TERM00024 を
 渦度・発散のスペクトル表現
-TERM00015,TERM00015 に変換する.
+TERM00025,TERM00025 に変換する.
 さらに,
-温度 TERM00016, 比湿 TERM00017, 
-TERM00018 を
-\begin{quote}
+温度 TERM00026, 比湿 TERM00027, 
+TERM00028 を
+\begin{verbatim}
 EQ=00014.
-\end{quote}
+\end{verbatim}
 でスペクトル表現に変換する.
 
 \subsubsection{時間変化項のスペクトルへの変換}
 
 渦度の時間変化項
-\begin{quote}
-\nonumber
-EQ=00039.\\
-\nonumber
-EQ=00039.\\
+\begin{verbatim}
 EQ=00039.
-\end{quote}
+EQ=00039.
+EQ=00039.
+\end{verbatim}
 %
 発散の時間変化項の非重力波成分
-\begin{quote}
-\nonumber
-EQ=00040.\\
-\nonumber
-EQ=00040.\\
-\nonumber
-EQ=00040.\\
+\begin{verbatim}
 EQ=00040.
-\end{quote}
+EQ=00040.
+EQ=00040.
+EQ=00040.
+\end{verbatim}
 %
 温度の時間変化項の非重力波成分
-\begin{quote}
-\nonumber
-EQ=00041.\\
-\nonumber
-EQ=00041.\\
+\begin{verbatim}
 EQ=00041.
-\end{quote}
+EQ=00041.
+EQ=00041.
+\end{verbatim}
 %
 水蒸気の時間変化項
-\begin{quote}
-\nonumber
-EQ=00042.\\
-\nonumber
-EQ=00042.\\
+\begin{verbatim}
 EQ=00042.
-\end{quote}
+EQ=00042.
+EQ=00042.
+\end{verbatim}
 
 \subsubsection{スペクトル値時間積分}
 
 行列形式の方程式
-\begin{quote}
-\nonumber
-EQ=00043.\\
-\nonumber
-EQ=00043.\\
-\nonumber
-EQ=00043.\\
+\begin{verbatim}
 EQ=00043.
-\end{quote}
+EQ=00043.
+EQ=00043.
+EQ=00043.
+\end{verbatim}
 %
 を LU 分解を用いて解くことによって 
-TERM00019 を求め,
+TERM00038 を求め,
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00015.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00016.
-\end{quote}
+\end{verbatim}
 
 %
 によって
-TERM00020,
-TERM00021 
-を求めて, TERM00022 におけるスペクトルの値を計算する.
-\begin{quote}
-EQ=00044.\\
-EQ=00044.\\
-EQ=00044.\\
-EQ=00044.\\
+TERM00044,
+TERM00045 
+を求めて, TERM00046 におけるスペクトルの値を計算する.
+\begin{verbatim}
 EQ=00044.
-\end{quote}
+EQ=00044.
+EQ=00044.
+EQ=00044.
+EQ=00044.
+\end{verbatim}
 
 \subsubsection{予報変数の格子点値への変換}
 
 
-渦度・発散のスペクトル値 TERM00023,TERM00023 から
-水平風速の格子点値 TERM00024,TERM00024 を求める.
-\begin{quote}
+渦度・発散のスペクトル値 TERM00047,TERM00047 から
+水平風速の格子点値 TERM00048,TERM00048 を求める.
+\begin{verbatim}
 EQ=00017.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00018.
-\end{quote}
+\end{verbatim}
 
 さらに,
-\begin{quote}
+\begin{verbatim}
 EQ=00019.
-\end{quote}
-などによって, TERM00025,TERM00025 を求め,
-\begin{quote}
+\end{verbatim}
+などによって, TERM00052,TERM00052 を求め,
+\begin{verbatim}
 EQ=00045.
-\end{quote}
+\end{verbatim}
 を計算する.
 
-\subsubsection{疑似等 TERM00026 面拡散補正}
+\subsubsection{疑似等 TERM00053 面拡散補正}
 
-水平拡散は 等 TERM00027 面上で適用されるが,
+水平拡散は 等 TERM00054 面上で適用されるが,
 山岳の傾斜の大きな領域では, 山を上る方向に水蒸気が輸送され,
 山頂部での偽の降水をもたらすなどの問題を起こす.
-それを緩和するために, 等 TERM00028 面の拡散に近くなるような
-補正を TERM00029,TERM00029 について入れる.
+それを緩和するために, 等 TERM00055 面の拡散に近くなるような
+補正を TERM00056,TERM00056 について入れる.
 
-\begin{quote}
-\nonumber
-EQ=00046.\\
-\nonumber
-EQ=00046.\\
+\begin{verbatim}
 EQ=00046.
-\end{quote}
+EQ=00046.
+EQ=00046.
+\end{verbatim}
 %
 であるから,
-\begin{quote}
+\begin{verbatim}
 EQ=00020.
-\end{quote}
+\end{verbatim}
 などととする.
-TERM00030 は, TERM00031 のスペクトル値 TERM00032 に
+TERM00057 は, TERM00058 のスペクトル値 TERM00059 に
 拡散係数のスペクトル表現をかけたものを
 格子の値に変換して用いる.
 
 \subsubsection{拡散による摩擦熱の考慮}
 
 拡散による摩擦熱は,
-\begin{quote}
+\begin{verbatim}
 EQ=00021.
-\end{quote}
+\end{verbatim}
 と見積もられる.
 したがって,
-\begin{quote}
+\begin{verbatim}
 EQ=00022.
-\end{quote}
+\end{verbatim}
 
 \subsubsection{質量の保存の補正}
 
 スペクトル法による取扱いは,
-TERM00033 の全球積分は丸め誤差を除いて保存するが,
-質量, すなわち TERM00034 の全球積分の保存は保証されない.
+TERM00060 の全球積分は丸め誤差を除いて保存するが,
+質量, すなわち TERM00061 の全球積分の保存は保証されない.
 また, スペクトルの波数打ちきりにともない,
 水蒸気の格子点値に負の値が出ることがある.
 これらの事情から, 
@@ -315,16 +290,16 @@ TERM00033 の全球積分は丸め誤差を除いて保存するが,
 さらに負の水蒸気量となる領域を除去するための補正を行なう.
 
 まず, 力学の計算の最初に \texttt{MODULE:[FIXMAS]},
-水蒸気, 雲水の各成分の全球積分値 TERM00035,TERM00035 を計算しておく.
-\begin{quote}
-EQ=00047.\\
+水蒸気, 雲水の各成分の全球積分値 TERM00062,TERM00062 を計算しておく.
+\begin{verbatim}
 EQ=00047.
-\end{quote}
+EQ=00047.
+\end{verbatim}
 また, 計算の最初のステップで
-乾燥質量 TERM00036 を計算し, 記憶する.
-\begin{quote}
+乾燥質量 TERM00063 を計算し, 記憶する.
+\begin{verbatim}
 EQ=00048.
-\end{quote}
+\end{verbatim}
 
 力学計算の終りには \texttt{MODULE:[MASFIX]},
 以下のような手順で補正を行なう.
@@ -332,29 +307,29 @@ EQ=00048.
 \item まず, 負の水蒸気量となる格子点について,
       直下の格子点から水蒸気を分配して,
       負の水蒸気を除去する.
-      TERM00037 であるとすると,
-      \begin{quote}
-EQ=00049.\\
+      TERM00064 であるとすると,
+      \begin{verbatim}
 EQ=00049.
-\end{quote}
-      ただし, これは TERM00038 となる場合にのみ行なう.
+EQ=00049.
+\end{verbatim}
+      ただし, これは TERM00065 となる場合にのみ行なう.
 
 \item 次に上の手続きで除去されなかった格子点について値を 0 とする.
 
-\item 全球積分値 TERM00039 を計算し,
-      これが TERM00040 と一致するように,
+\item 全球積分値 TERM00066 を計算し,
+      これが TERM00067 と一致するように,
       全球の水蒸気量に一定割合をかける.
 
-      \begin{quote}
+      \begin{verbatim}
 EQ=00023.
-\end{quote}
+\end{verbatim}
       
 \item 乾燥空気質量の補正を行なう.
-      同様に TERM00041 を計算し,
+      同様に TERM00068 を計算し,
 
-      \begin{quote}
+      \begin{verbatim}
 EQ=00024.
-\end{quote}
+\end{verbatim}
 
 \end{enumerate}
 
@@ -362,33 +337,33 @@ EQ=00024.
 
 水平拡散の係数をスペクトル表現すると,
 
-\begin{quote}
+\begin{verbatim}
 EQ=00025.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00026.
-\end{quote}
+\end{verbatim}
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00027.
-\end{quote}
+\end{verbatim}
 
-TERM00042 は レーリー摩擦係数である.
+TERM00069 は レーリー摩擦係数である.
 レーリー摩擦係数は
-\begin{quote}
+\begin{verbatim}
 EQ=00028.
-\end{quote}
+\end{verbatim}
 のようなプロファイルで与える.
 ただし,
-\begin{quote}
+\begin{verbatim}
 EQ=00029.
-\end{quote}
+\end{verbatim}
 と近似する.
-標準値は, TERM00043,
-TERM00044 (TERM00045 : モデルの最上レベル),
-TERM00046 m,
-TERM00047 m である.
+標準値は, TERM00070,
+TERM00071 (TERM00072 : モデルの最上レベル),
+TERM00073 m,
+TERM00074 m である.
 
 \subsubsection{時間フィルター}
 
@@ -396,23 +371,23 @@ TERM00047 m である.
 leap frog における計算モードの除去のために 
 Asselin(1972) の時間フィルターを毎ステップ適用する.
 %
-\begin{quote}
+\begin{verbatim}
 EQ=00030.
-\end{quote}
+\end{verbatim}
 %
-と TERM00048 を求める.
-次のステップの力学過程で用いる TERM00049 としては,
-この TERM00050 を用いる.
-TERM00051 としては標準的に 0.05 を使用する. 
+と TERM00075 を求める.
+次のステップの力学過程で用いる TERM00076 としては,
+この TERM00077 を用いる.
+TERM00078 としては標準的に 0.05 を使用する. 
 
 実際には
 まず, 予報変数の格子点値への変換 \texttt{MODULE:[GENGD]} の箇所で,
-\begin{quote}
+\begin{verbatim}
 EQ=00031.
-\end{quote}
+\end{verbatim}
 を求めておき, 物理過程の処理が終わり
-TERM00052 の値が確定した後で \texttt{MODULE:[TFILT]} で,
-\begin{quote}
+TERM00079 の値が確定した後で \texttt{MODULE:[TFILT]} で,
+\begin{verbatim}
 EQ=00032.
-\end{quote}
+\end{verbatim}
 とする.
