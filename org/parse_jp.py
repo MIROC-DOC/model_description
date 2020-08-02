@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/25 15:23:24 fuyuki evacuate.py>'
+# 'Time-stamp: <2020/08/02 17:42:34 fuyuki evacuate.py>'
 
 # import psitex as psi
 import psitex
@@ -18,7 +18,7 @@ class ParserMirocDoc(psitex.ParserStd):
 
     def __init__(self, macros=None,
                  eenv=None, etab=None,
-                 math=False, label=False, dennou=False, **kw):
+                 math=False, label=False, ref=False, dennou=False, **kw):
         """Initialize MIROC-Doc replacement."""
         macros = macros or {}
         macros['Module'] = 1
@@ -32,6 +32,7 @@ class ParserMirocDoc(psitex.ParserStd):
 
         self.dennou = dennou
         self.label = label
+        self.ref = ref
         self.math = math
         self.tbl_ref = {}
         self.tbl_imath = {}
@@ -81,7 +82,7 @@ class ParserMirocDoc(psitex.ParserStd):
     def action_counter(self, s, loc, toks):
         r"""Increase counters."""
         super().action_counter(s, loc, toks)
-        if self.label:
+        if self.ref or self.label:
             e = toks.E.C
             if e in self.matharrays:
                 pass
@@ -91,12 +92,13 @@ class ParserMirocDoc(psitex.ParserStd):
                     rep = (self.unparse(toks.B)
                            + (r' \EQN{%d}' % self.counters[k]))
                     rep = self.parse_string(rep)
-                    self.modify_env(toks, body=rep)
+                    if self.label:
+                        self.modify_env(toks, body=rep)
             return(toks)
 
     def action_array_row(self, s, loc, toks):
         super().action_array_row(s, loc, toks)
-        if self.label:
+        if self.ref or self.label:
             e = self.cenv[-1]
             if e in self.matharrays:
                 k = self.ckey.get(e)
@@ -104,10 +106,11 @@ class ParserMirocDoc(psitex.ParserStd):
                     c = self.counters[k]
                     rep = self.unparse(toks)
                     eqn = r' \EQN{%d}' % c
-                    if rep.endswith('\\\\'):
-                        rep = rep[:-2] + eqn + rep[-2:]
-                    else:
-                        rep = rep + eqn
+                    if self.label:
+                        if rep.endswith('\\\\'):
+                            rep = rep[:-2] + eqn + rep[-2:]
+                        else:
+                            rep = rep + eqn
                     toks = self.parse_string(rep)
         return(toks)
 
@@ -184,7 +187,7 @@ class ParserMirocDoc(psitex.ParserStd):
 
     def post_parse_root(self, *args, **kw):
         """Batch replacement of special macros (for root source)."""
-        if self.label:
+        if self.ref:
             if self.include > 2:
                 self.rep_ref(tree=self.ftree.root.lex)
             else:
@@ -307,10 +310,13 @@ class ParserMirocDoc(psitex.ParserStd):
     def get_eqn(self, tree):
         r"""Search \EQN and return its replacement."""
         eqn = self.search(tree, r'\EQN')
-        if eqn:
-            eqn = self.get_parameter(eqn[0], 1, unparse=True)
-        if eqn:
-            eqn = f'    --- ({eqn})'
+        if self.label:
+            if eqn:
+                eqn = self.get_parameter(eqn[0], 1, unparse=True)
+            if eqn:
+                eqn = f'    --- ({eqn})'
+        else:
+            eqn = None
         return(eqn or '')
 
     def rep_dispm(self, tree=None, fmt=None):
@@ -387,7 +393,7 @@ class ParserMirocDoc(psitex.ParserStd):
                 m[:] = [str(n)]
                 if self.verbose > 2:
                     print(f'% Reference embedded {tag}[{k}]=={n})')
-            elif self.verbose > 1:
+            elif self.verbose > 0:
                 print(f'% skipped {tag}[{k}]=={n})')
 
         pass
@@ -489,12 +495,13 @@ General options
     -q, --quiet          be more silent
         --debug          enable to print debug information
     -f, --force          force overwrite if exists
-    -o, --output=FILE    set output filename as FILE
+    -o, --output=FILE    set output filename as FILE (single-file case)
     -d, --outdir=PATH    set PATH as output directory (must exist)
 Replacement controls
     -M, --math           replace inline maths and math environements
     -D, --dennou         replace dennou macros
-    -L, --label          embed labels and their references
+    -L, --label          embed labels for equations
+    -R, --ref            embed references to equation labels
     -S, --subfiles       also parse included files
     -1, --onefile        expand included files to the root (imply -S)
     -E, --equation=SW    replace equation-like environments as SW
@@ -510,11 +517,11 @@ This system is part of MIROC-DOC project and psiTeX project.\n""")
 def main(args, run):
     """Main."""
     try:
-        opts, args = getopt.getopt(args, 'hvqfo:d:MDLS1E:T:',
+        opts, args = getopt.getopt(args, 'hvqfo:d:MDLRS1E:T:',
                                    ['debug',
                                     'help', 'verbose', 'quiet', 'force',
                                     'output=', 'outdir=',
-                                    'math', 'dennou', 'label',
+                                    'math', 'dennou', 'label', 'ref',
                                     'subfiles', 'onefile',
                                     'equation=', 'tabular=', ])
     except getopt.GetoptError as err:
@@ -530,6 +537,7 @@ def main(args, run):
     etab = None
     dennou = None
     label = None
+    ref = None
     math = None
     inc = 0
     for o, a in opts:
@@ -558,6 +566,8 @@ def main(args, run):
             inc = max(inc, 3)
         elif o in ['-L', '--label']:
             label = True
+        elif o in ['-R', '--ref']:
+            ref = True
         elif o in ['-M', '--math']:
             math = True
         elif o in ['--debug']:
@@ -585,7 +595,7 @@ def main(args, run):
         if vlev > -2:
             print(f"% Parse {f}")
         lb = ParserMirocDoc(eenv=eenv, etab=etab,
-                            label=label, math=math,
+                            label=label, ref=ref, math=math,
                             include=inc,
                             dennou=dennou,
                             verbose=vlev, debug=debug)
@@ -598,10 +608,14 @@ def main(args, run):
 
         lb.write(outdir, outf, over=overw)
         if outdir:
-            base = os.path.basename(outf or f)
-            root, ext = os.path.splitext(base)
-            cache = root + '.json'
-            cache = os.path.join(outdir, cache)
+            if outf:
+                root, ext = os.path.splitext(outf)
+                cache = root + '.json'
+            else:
+                base = os.path.basename(outf or f)
+                root, ext = os.path.splitext(base)
+                cache = root + '.json'
+                cache = os.path.join(outdir, cache)
             cf = open(cache, 'w')
             if vlev > -2:
                 print(f'% Create cache {cache}')

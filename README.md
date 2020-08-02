@@ -65,7 +65,7 @@ project.
 A typical usage is as follows:
 ```bash
 % mkdir tex_jpx   # prepare output directory
-% ./parse_jp.py -S -L -D -M -Td -Ev -d tex_jpx tex_jp/agcm.tex
+% ./parse_jp.py -S -R -D -M -Td -Ev -d tex_jpx tex_jp/agcm.tex
 % ls tex_jpx
 a-intro.tex  d-hori.tex  p-dif.tex    p-sflx.tex
 a-setup.tex  d-summ.tex  p-grav.tex   p-solv.tex
@@ -80,7 +80,7 @@ The file `agcm.json` contains all the information for later use.
 If you want one combined TeX file apply `-1` as an argument:
 ```bash
 % mkdir tex_jp1   # prepare output directory
-% ./parse_jp.py -1 -S -L -D -M -Td -Ev -d tex_jp1 tex_jp/agcm.tex
+% ./parse_jp.py -1 -S -R -D -M -Td -Ev -d tex_jp1 tex_jp/agcm.tex
 % ls tex_jp1
 agcm.json   agcm.tex
 ```
@@ -240,10 +240,10 @@ Results:
 Currently `\DP`, `\DD`, `\Dvect` and `\Dinclude` are expanded to
 corresponding normal LaTeX macros.
 
-#### Label and reference replacement (`-L`)
+#### Equation reference replacement (`-R`)
 
 Equation numbers and their references can be converted to numbers
-with `-L` argument.  In other words, `\ref{LABEL}` is replaced to
+with `-R` argument.  In other words, `\ref{LABEL}` is replaced to
 corresponding reference numbers.
 Reference number starts from 1 for each input file.  If the file
 inclusion is enabled (`-S`, see the next section) the numbers are kept
@@ -253,7 +253,7 @@ should be identical to the original document.  If not, please inform
 to the maintainer.
 
 ```bash
-% ./parse_jp.sh -L tex_jp/a-intro.tex
+% ./parse_jp.sh -R tex_jp/a-intro.tex
 ```
 
 Results:
@@ -274,9 +274,13 @@ Results:
       \DP{u}{t} & = & \left( {\cal F}_x \right)_D + \left( {\cal F}_x \right)_P 
       \label{struct:u-eq-1}  \EQN{1}\\
 
-`\EQN{}` is not a standard macro and used for a placeholder.
+`\EQN{}` may not appear in the results.  They are not a standard macro
+and used for a placeholder (see label replacement, `-L` argument).
 
-Using `-M -E*` together, they are converted as follows:
+#### Equation label replacement (`-L`)
+
+Equation numbers can be embedded into equations with `-L` argument.
+Using `-M -E*` together, the placeholder macro `\EQN{n}` are converted as follows:
 
 ```bash
 % ./parse_jp.sh -M -Ev -L tex_jp/a-intro.tex
