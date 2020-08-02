@@ -37,8 +37,8 @@ def embed(input_path, json_path, output_path, log_path):
         dic = json.load(f)
 
     log = {"imath": {}, "emath": {}, "tabular": {}}
-    doc = replace_imath(doc, dic, log["imath"])
     doc = replace_emath(doc, dic, log["emath"])
+    doc = replace_imath(doc, dic, log["imath"])
     doc = process_table(doc, log["tabular"])
 
     with open(output_path, "w") as fo:
