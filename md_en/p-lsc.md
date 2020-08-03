@@ -102,7 +102,6 @@ $$
         \right. 
 $$
 
-> <span id="p-lsc:l" label="p-lsc:l">\blazer[p-lsc:l]</span>
 
 ### Determination by successive approximation
 
@@ -127,12 +126,11 @@ $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
 $$
 
-> <span id="p-lsc:itereate1" label="p-lsc:itereate1" label="p-lsc:itereate1"> </span>
 
 The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from $l^{(2)}$,
 The resulting temperature change is solved by successive approximation as $T^{(2)}$ ...
 In order to speed up this sequential convergence, we use the Newton method.
-I.e., instead of (ie, ([[p-lsc:itereate1\]](#p-lsc:itereate1))
+That is, instead of (6)
 
 $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
@@ -141,7 +139,7 @@ $$
 
 
 .
-$dl/dT$ can be obtained analytically using ([[p-lsc:l\]](#p-lsc:l)).
+$dl/dT$ can be obtained analytically using (3).
 
 ### precipitation process.
 
@@ -185,7 +183,7 @@ Precipitation results in a decrease in $l$.
 
 $$
   P          =  l / \tau_P \; , \\
-  \frac{\partial l}{\partial t}  =  -P \; .
+  \frac{\partial{l}}{\partial {t}}  =  -P \; .
 $$
 
 
@@ -248,7 +246,7 @@ However, if $q^w < q$ is set, this should be zero.
 The $q_w$ is the saturation specific humidity corresponding to the wet bulb temperature,
 
 $$
-  q^w = q + \frac{q^* - q}{1+ \frac{L}{C_P}\frac{\partial q^*}{\partial T}} \; .
+  q^w = q + \frac{q^* - q}{1+ \frac{L}{C_P}\frac{\partial{q^*}}{\partial {T}}} \; .
 $$
 
 
@@ -262,7 +260,7 @@ $$
 The temperature drop due to evaporation is estimated to be We also estimate the temperature drop due to evaporation.
 
 $$
-  \frac{\partial T}{\partial t} = - \frac{L}{C_P} E \; .
+  \frac{\partial{T}}{\partial {t}} = - \frac{L}{C_P} E \; .
 $$
 
 
@@ -275,4 +273,3 @@ Calculations are made from the topmost layer down.
 2. fallen ice in the layer just below.
  It will be treated the same as the cloud water that already exists in that layer,
  incorporated into the total water volume.
-

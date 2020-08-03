@@ -27,7 +27,7 @@ $$
     + 2 \Delta t 
       \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right)
 $$
-     --- (1)
+
 
 $ \dot{X}_{adv} $ is an advection term etc,
 $ \dot{X}_{dif} $ is a horizontal diffusion term.
@@ -45,7 +45,7 @@ $$
     + 2 \Delta t 
       \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)
 $$
-    --- (2)
+
 
 To remove the computation mode in leap frog
 Apply the time filter of Asselin (1972) at every step.
@@ -57,7 +57,7 @@ $$
     +  \epsilon_f 
         \left( \bar{X}^{t-\Delta t} + {X}^{t+\Delta t} \right)
 $$
-     --- (3)
+
 
 and $\bar{X}$.
 For $\epsilon_f$ it is standard to use 0.05.
@@ -86,7 +86,7 @@ $$
       + 2 \Delta t B (   {\mathbf q}^+ 
                        + {\mathbf q}^-   )/2
 $$
-     --- (4)
+
 
 Note that $B$ is a square matrix. Then,
 $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
@@ -97,7 +97,7 @@ $$
       = 2 \Delta t \left( {\mathcal A}({\mathbf q})
                          + B {\mathbf q} \right) 
 $$
-     --- (5)
+
 
 This can be easily solved by matrix operations.
 
@@ -114,46 +114,46 @@ Using ${$\mathbf{D}$}=\{ D_{k} \}$, ${$\mathbf{T}$}=\{ T_{k} \}$,
 $$
    \frac{\partial \pi}{\partial t} = 
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
-     - {TERM00031} \cdot {TERM00032}  ,
+     - {$\mathbf{C}$} \cdot {$\mathbf{D}$}  ,
 $$
-     --- (6)
+
 
 $$
-  \frac{\partial {TERM00033}}{\partial t} = 
-          \left( \frac{\partial {TERM00034}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( {TERM00035}_{S} 
-                                  + \underline{W} {TERM00036}
-                                  + {TERM00037} \pi )  
-          - {\mathcal D}_M {TERM00038} ,
+  \frac{\partial {$\mathbf{D}$}}{\partial t} = 
+          \left( \frac{\partial {$\mathbf{D}$}}{\partial t} \right)_{NG}  
+          - \nabla^{2}_{\sigma} ( {$\mathbf{\Phi}$}_{S} 
+                                  + \underline{W} {$\mathbf{T}$}
+                                  + {$\mathbf{G}$} \pi )  
+          - {\mathcal D}_M {$\mathbf{D}$} ,
 $$
-     --- (7)
+
 
 $$
-  \frac{\partial {TERM00039}}{\partial t} 
-      =   \left( \frac{\partial {TERM00040}}
+  \frac{\partial {$\mathbf{T}$}}{\partial t} 
+      =   \left( \frac{\partial {$\mathbf{T}$}}
                         {\partial t}       \right)_{NG}  
-         - \underline{h} {TERM00041}
-         - {\mathcal D}_H {TERM00042} ,
+         - \underline{h} {$\mathbf{D}$}
+         - {\mathcal D}_H {$\mathbf{T}$} ,
 $$
-     --- (8)
+
 
 Here, the non-gravitational wave term is
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   =   - \sum_{k=1}^{K} {TERM00043}_{k} \cdot \nabla \pi  
+   =   - \sum_{k=1}^{K} {$\mathbf{v}$}_{k} \cdot \nabla \pi  
        \Delta  \sigma_{k}  \\
    =   Z_{k}
 $$
-     --- (9)
+
 
 $$
   \dot{\sigma}^{NG}_{k-1/2}
  = - \sigma_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   - \sum_{l=k}^{K} {TERM00044}_{l} \cdot \nabla \pi
+   - \sum_{l=k}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi
        \Delta  \sigma_{l}
 $$
-     --- (10)
+
 
 $$
   \left( \frac{\partial D}{\partial t} \right)^{NG}
@@ -164,7 +164,7 @@ $$
           - \nabla^{2}_{\sigma} \hat{E}_{k} 
           - {\mathcal D}(D_{k}) 
 $$
-     --- (11)
+
 
 $$
   \left( \frac{\partial T_{k}}{\partial t} \right)^{NG} 
@@ -175,7 +175,7 @@ $$
           + \hat{H}_{k} 
           - {\mathcal D}(T_{k}) 
 $$
-     --- (12)
+
 
 $$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
@@ -191,13 +191,13 @@ $$
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
                 \\
-         + \hat{\kappa}_{k} T_{v,k} {TERM00045}_{k} \cdot \nabla \pi
+         + \hat{\kappa}_{k} T_{v,k} {$\mathbf{v}$}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {TERM00046}_{l} \cdot \nabla \pi 
+             \sum_{l=k}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {TERM00047}_{l} \cdot \nabla \pi 
+             \sum_{l=k+1}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -213,36 +213,36 @@ $$
 
 
 
-     --- (13)
+
 
 $$
   \hat{E}_k = E_{k} 
             + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} )
 $$
-    --- (14)
+
 
 where the vector and matrix of the gravitational wave term (underlined) are
 
 $$
   C_{k} = \Delta \sigma_{k}
 $$
-    --- (15)
+
 
 $$
   W_{kl} = C_{p} \alpha_{l} \delta_{k \geq l}
          + C_{p} \beta_{l} \delta_{k-1 \geq l}
 $$
-    --- (16)
+
 
 $$
   G_{k} = \hat{\kappa}_{k} C_{p} \bar{T}_{k}
 $$
-    --- (17)
+
 
 $$
 \underline{h} = \underline{Q}\underline{S} - \underline{R}
 $$
-    --- (18)
+
 
 $$
   Q_{kl} = \frac{1}{\Delta \sigma_{k}} 
@@ -250,13 +250,13 @@ $$
          + \frac{1}{\Delta \sigma_{k}} 
              ( \bar{T}_{k} - \hat{\bar{T}}_{k+1/2}  ) \delta_{k+1=l} 
 $$
-    --- (19)
+
 
 $$
   S_{kl} = \sigma_{k-1/2} \Delta \sigma_{l} 
            - \Delta \sigma_{l} \delta_{k \leq l } 
 $$
-    --- (20)
+
 
 $$
   R_{kl} = - \left(  \frac{ \alpha_{k} }{ \Delta \sigma_{k} } 
@@ -265,7 +265,7 @@ $$
                      \Delta \sigma_{l} \delta_{k+1 \leq l}  
              \right) \bar{T}_{k} .
 $$
-     --- (21)
+
 
 Here, for example, $\delta_{k \leq l}$ is
 A function that is 1 if $ k \leq l$ is valid and 0 otherwise.
@@ -276,7 +276,7 @@ $$
   \delta_{t} {X} \equiv \frac{1}{2 \Delta t} 
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right)
 $$
-    --- (22)
+
 
 $$
     \overline{X}^{t}
@@ -286,38 +286,38 @@ $$
    =  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
 $$
 
-    --- (23)
+
 
 If we apply the semi-implicit method to the system of equations,
 
 $$
   \delta_{t} \pi =
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
-     - {TERM00050} \cdot \overline{ {TERM00051} }^{t}
+     - {$\mathbf{C}$} \cdot \overline{ {$\mathbf{D}$} }^{t}
 $$
-    --- (24)
+
 
 $$
-  \delta_{t} {TERM00052} =
-          \left( \frac{\partial {TERM00053}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\sigma} ( {TERM00054}_{S} 
+  \delta_{t} {$\mathbf{D}$} =
+          \left( \frac{\partial {$\mathbf{D}$}}{\partial t} \right)_{NG}  
+          - \nabla^{2}_{\sigma} ( {$\mathbf{\Phi}$}_{S} 
                                   + \underline{W} 
-                                     \overline{ {TERM00055} }^{t}
-                                  + {TERM00056}
+                                     \overline{ {$\mathbf{T}$} }^{t}
+                                  + {$\mathbf{G}$}
                                   \overline{\pi}^{t} ) 
-          - {\mathcal D}_M ( {TERM00057}^{t-\Delta t} 
-                         + 2 \Delta t \delta_{t} {TERM00058} )
+          - {\mathcal D}_M ( {$\mathbf{D}$}^{t-\Delta t} 
+                         + 2 \Delta t \delta_{t} {$\mathbf{D}$} )
 $$
-     --- (25)
+
 
 $$
-  \delta_{t} {TERM00059} =
-        \left( \frac{\partial {TERM00060}}{\partial t} \right)_{NG}  
-         - \underline{h} \overline{ {TERM00061} }^{t} 
-         - {\mathcal D}_H ( {TERM00062}^{t-\Delta t}
-                        + 2 \Delta t \delta_{t} {TERM00063} )
+  \delta_{t} {$\mathbf{T}$} =
+        \left( \frac{\partial {$\mathbf{T}$}}{\partial t} \right)_{NG}  
+         - \underline{h} \overline{ {$\mathbf{D}$} }^{t} 
+         - {\mathcal D}_H ( {$\mathbf{T}$}^{t-\Delta t}
+                        + 2 \Delta t \delta_{t} {$\mathbf{T}$} )
 $$
-     --- (26)
+
 
 So..,
 
@@ -326,28 +326,28 @@ $$
            \underline{I}  
       - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
            + (1+2\Delta t {\mathcal D}_M)
-             {TERM00064} {TERM00065}^{T} ) \nabla^{2}_{\sigma}
+             {$\mathbf{G}$} {$\mathbf{C}$}^{T} ) \nabla^{2}_{\sigma}
   \right\}
-      \overline{ {TERM00066} }^{t} 
+      \overline{ {$\mathbf{D}$} }^{t} 
        \\
   = ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M ) 
-       {TERM00067}^{t-\Delta t}
+       {$\mathbf{D}$}^{t-\Delta t}
   + \Delta t 
-     \left( \frac{\partial {TERM00068}}{\partial t} \right)_{NG}  
+     \left( \frac{\partial {$\mathbf{D}$}}{\partial t} \right)_{NG}  
   \\
   -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {TERM00069}_{S} 
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {$\mathbf{\Phi}$}_{S} 
                           + \underline{W} 
                             \left[ ( 1-2\Delta t {\mathcal D}_H ) 
-                                    {TERM00070}^{t-\Delta t}
+                                    {$\mathbf{T}$}^{t-\Delta t}
                                   + \Delta t 
-                                      \left( \frac{\partial {TERM00071}}
+                                      \left( \frac{\partial {$\mathbf{T}$}}
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
   \\
                  \left.  \hspace*{20mm} 
-                          + ( 1+2\Delta t {\mathcal D}_H ) {TERM00072} 
+                          + ( 1+2\Delta t {\mathcal D}_H ) {$\mathbf{G}$} 
                             \left[ \pi^{t-\Delta t} 
                                   + \Delta t
                                      \left( \frac{\partial \pi}
@@ -358,7 +358,7 @@ $$
 
 
 
-    --- (27)
+
 
 Since the spherical harmonic expansion is used,
 
@@ -366,9 +366,9 @@ and the above equation can be solved for $\overline{ {$\mathbf{D}$}_n^m }^{t}$.
 And then..,
 
 $$
-   D^{t+\Delta t} = 2\overline{ {TERM00074} }^{t} - D^{t-\Delta t}
+   D^{t+\Delta t} = 2\overline{ {$\mathbf{D}$} }^{t} - D^{t-\Delta t}
 $$
-     --- (28)
+
 
 and, (24), (26)
 The value in $t+\Delta t$ according to $\hat{X}^{t+\Delta t}$
@@ -381,7 +381,7 @@ advectional equation
 $$
   \frac{\partial{X}}{\partial {t}} = c \frac{\partial{X}}{\partial {x}}
 $$
-    --- (29)
+
 
 Considering the stability of the discretization in the leap frog in
 Now,
@@ -396,7 +396,7 @@ If we place the difference between
 $$
   X^{n+1} = X^{n-1} + 2 i k \Delta t X^n
 $$
-    --- (30)
+
 
 That would be.
 Here,
@@ -411,14 +411,14 @@ So,
 $$
   \lambda^2 = 1 + 2 i kc \Delta t \lambda \; .
 $$
-     --- (31)
+
 
 The solution is called $kc \Delta t = p$,
 
 $$
  \lambda = -i p \pm \sqrt{1-p^2}
 $$
-    --- (32)
+
 
 This absolute value is
 
@@ -430,7 +430,7 @@ $$
              \end{array}
              \right.
 $$
-     --- (33)
+
 
 and in the case of $|p|>1$, it is $|\lambda| > 1$,
 It is a solution whose absolute value increases exponentially with time.
@@ -462,7 +462,7 @@ From becoming ,
 $$
    \Delta t \le \frac{\Delta x}{\pi c}
 $$
-     --- (34)
+
 
 That would be.
 In the case of spectral models, the maximum wavenumber is determined by $N$,
@@ -471,7 +471,7 @@ Earth radius is set to $a$,
 $$
    \Delta t \le \frac{a}{N c}  
 $$
-    --- (35)
+
 
 This is a condition for stability.
 
@@ -487,7 +487,7 @@ Thus, $\Delta t$ assumes that $U_{max}$ is the maximum value of the east-west wi
 $$
    \Delta t \le \frac{a}{N U_{max}}  
 $$
-    --- (36)
+
 
 Take to meet the .
 In practice, this is multiplied by a safety factor.

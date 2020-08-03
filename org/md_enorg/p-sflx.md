@@ -31,104 +31,104 @@ Surface Flux TERM00003 and TERM00003 are
 Using the bulk coefficients TERM00004 and TERM00004
 It is expressed as follows.
 
-> EQ=00000.
+     EQ=00000.
 
-> EQ=00001.
+     EQ=00001.
 
-> EQ=00002.
+     EQ=00002.
 
-> EQ=00003.
+     EQ=00003.
 
-However, the TERM00005 is the amount of possible evaporation.
+However, the TERM00009 is the possible evaporation rate.
 The calculation of actual evaporation is a combination of "surface processes" and
 We will discuss this in the section "Solving Diffusion-Based Budget Equations for Atmospheric Surface Systems".
 
 ### Richardson Number.
 
 The standard of stability between atmospheric surfaces,
-Bulk Richardson number TERM00006 is
+Bulk Richardson Number TERM00010 is
 
-> EQ=00004.
+     EQ=00004.
 
 Here,
 
-> EQ=00005.
+     EQ=00005.
 
 is a correction factor and is approximated from the uncorrected bulk Richardson number, while
 Here, the calculation method is abbreviated.
 
 ### Bulk factor.
 
-The bulk coefficients TERM00007 and TERM00007 are
+The bulk coefficients TERM00011,TERM00011 are
 Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 i.e., the roughness to momentum, heat, and water vapor.
-TERM00008 and TERM00008 respectively
-In general, it is TERM00009 and TERM00009, but heat and water vapor are also
-Bulk factor for flux from the height of the TERM00010
-First find the TERM00011 and TERM00012 and then correct them.
+TERM00012 and TERM00012 respectively
+In general, the TERM00013 and TERM00013 are used, but heat and water vapor are also
+Bulk factor for flux from the height of the TERM00014
+Find first the TERM00015 and TERM00016 and then correct them.
 
-> EQ=00006.
+     EQ=00006.
 
-> EQ=00007.
+     EQ=00007.
 
-> EQ=00008.
+     EQ=00008.
 
-> EQ=00009.
+     EQ=00009.
 
-> EQ=00010.
+     EQ=00010.
 
-The TERM00013 and TERM00013 are
-The bulk coefficient (for fluxes from TERM00014) at neutral,
+TERM00017 and TERM00017 are
+The bulk factor (for fluxes from TERM00018) at neutral,
 
-> EQ=00011.
+     EQ=00011.
 
-Correction Factor TERM00015 is ,
+Correction Factor TERM00019 is ,
 
-> EQ=00012.
+     EQ=00012.
 
 but the method of calculation is abbreviated.
-The coefficient is TERM00016,TERM00016.
+The coefficients are TERM00020 and TERM00020.
 
-The dependence of the bulk coefficients on TERM00017 is illustrated in Fig,
+The dependence of the bulk coefficient on the TERM00021 is illustrated in Fig,
 Figure [p-sflx:cm\] (#p-sflx:cm), Figure [p-sflx:ch\] (#p-sflx:ch).
 
 ### Calculating Flux.
 
 This will calculate the flux.
 
-> EQ=00013.
+     EQ=00013.
 
-> EQ=00014.
+     EQ=00014.
 
-> EQ=00015.
+     EQ=00015.
 
-> EQ=00016.
+     EQ=00016.
 
 The differential term is as follows
 
-> EQ=00017.
+     EQ=00017.
 
-> EQ=00018.
+     EQ=00018.
 
-> EQ=00019.
+     EQ=00019.
 
-> EQ=00020.
+     EQ=00020.
 
-> EQ=00021.
+     EQ=00021.
 
 Here, it's important to note,
-TERM00019 is a quantity that is not required at this time.
+TERM00032 is a quantity that is not required at this time.
 Epidermal temperature is ,
 Conditions for surface heat balance
 
-> EQ=00022.
+     EQ=00022.
 
 Determined to meet.
-At this point, for TERM00020, we use the one from the previous time step for evaluation.
+At this point, for TERM00033, we use the one from the previous time step to evaluate.
 The true flux value that meets the surface balance is ,
 It is determined by solving this equation in conjunction with surface processes.
-In that sense, I have added TERM00021 to the flux above.
+In that sense, I have added TERM00034 to the flux above.
 
 ### handling at sea level.
 
@@ -138,44 +138,44 @@ At sea level, we follow Miller et al. (1992) and consider the following two effe
 
  - The roughness of the sea surface varies with the wind speed.
 
-The effect of free convection is calculated using the buoyancy flux TERM00022,
+The effect of free convection is calculated using the buoyancy flux TERM00035,
 
-> EQ=00023.
+     EQ=00023.
 
-When I was in TERM00023,
+During the TERM00036,
 
-> EQ=00024.
+     EQ=00024.
 
-> EQ=00025.
+     EQ=00025.
 
-to be considered by making TERM00024 corresponds to the thickness scale of the mixing layer.
-The current standard value is TERM00025 m.
+to be considered by making TERM00038 corresponds to the thickness scale of the mixed layer.
+The current standard value is TERM00039 m.
 
-The roughness variation of the sea surface is represented by the friction velocity TERM00026
+The roughness variation of the sea surface is represented by the friction velocity (TERM00040)
 
-> EQ=00026.
+     EQ=00026.
 
 with ,
 
-> EQ=00027.
-> EQ=00027.
-> EQ=00027.
+     EQ=00027.
+     EQ=00027.
+     EQ=00027.
 
-Evaluate as follows. TERM00027 TERM00028 TERM00029 is
+Evaluate as follows. TERM00041 TERM00042 TERM00043 is
 It is the kinematic viscosity of the atmosphere,
 The standard values for the other coefficients are
-TERM00030,TERM00030,
-TERM00031,TERM00031,
-TERM00032,TERM00032.
+TERM00044,TERM00044,
+TERM00045,TERM00045,
+TERM00046,TERM00046.
 
-For the above calculations, TERM00033 and TERM00033 are required,
+For the above calculations, TERM00047 and TERM00047 are required,
 Perform successive approximation calculations.
 
 ### Wind Speed Correction
 
 In general, the roughness of the ground surface is greater on large surfaces than on small surfaces.
 The downward transport of momentum is so efficient that the wind just above it is weak,
-The difference in wind speed cancels out the difference in roughness in TERM00034.
+The difference in wind speed cancels out the difference in roughness in TERM00048.
 
 In the model, the wind speed passed to the surface flux calculation is
 It is a value calculated by time integration of the mechanical processes,
@@ -191,6 +191,6 @@ Recalculate the momentum, heat, and water fluxes again.
 
 Consider the effects of small-scale exercise,
 Surface wind speed in the calculation of surface flux
-Set the minimum value of TERM00035.
+Set the minimum value of TERM00049.
 The current standard values are the same for all fluxes and
 It is 3 m/s.

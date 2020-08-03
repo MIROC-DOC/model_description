@@ -19,7 +19,7 @@ As a physical process, we can consider the following
  - gravitational wave resistance
 
 The time-varying terms of the forecast variables due to these processes
-Calculate $F_x, F_y, Q, M, S$, $F_x, F_y, Q, M, S$ and do time integration.
+Calculate $F_x, F_y, Q, M, S$ and do time integration.
 In addition, in order to evaluate the atmospheric and surface fluxes
 Using the surface sub-model.
 In the surface sub-model,
@@ -37,13 +37,12 @@ All vertical fluxes are positive upward.
 1. equation of motion
 
 $$
-  \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
+  \rho \frac{d {u}}{d {t}} = \frac{\partial{Fu}}{\partial {\sigma}}
 $$
 
-     > <span id="u-eq.orig" label="u-eq.orig" label="u-eq.orig">\\centric</span>
 
 $$
-  \rho \frac{dv}{dt} = \frac{\partial Fv}{\partial \sigma}
+  \rho \frac{d {v}}{d {t}} = \frac{\partial{Fv}}{\partial {\sigma}}
 $$
 
 
@@ -53,8 +52,8 @@ $$
 2. thermodynamic equation
 
 $$
-  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma} 
-                     + \frac{\partial F{R}}{\partial \sigma} 
+  \rho \frac{d {c_p T}}{d {t}} = \frac{T}{\theta} \frac{\partial{F{\theta}}}{\partial {\sigma}} 
+                     + \frac{\partial{F{R}}}{\partial {\sigma}} 
 $$
 
 
@@ -67,8 +66,8 @@ $$
  If we write $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, then this is
 
 $$
-  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma} 
-                     + \frac{\partial F{R}}{\partial \sigma} 
+  \rho \frac{d {c_p T}}{d {t}} = \sigma^\kappa \frac{\partial{F{\theta'}}}{\partial {\sigma}} 
+                     + \frac{\partial{F{R}}}{\partial {\sigma}} 
 $$
 
 
@@ -80,7 +79,7 @@ $$
 3. water vapor continuity formula
 
 $$
-  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma} 
+  \rho \frac{d {q}}{d {t}} = \frac{\partial{Fq}}{\partial {\sigma}} 
 $$
 
 
@@ -95,7 +94,7 @@ $$
 4. thermal formula
 
 $$
-  \frac{\partial C_g G}{\partial t} = \frac{\partial Fg}{\partial z} + Sg
+  \frac{\partial{C_g G}}{\partial {t}} = \frac{\partial{Fg}}{\partial {z}} + Sg
 $$
 
 
@@ -106,7 +105,7 @@ $$
 5. formula for ground moisture
 
 $$
-  C_w \frac{\partial w}{\partial t} = \frac{\partial Fw}{\partial z} + Sw
+  C_w \frac{\partial{w}}{\partial {t}} = \frac{\partial{Fw}}{\partial {z}} + Sw
 $$
 
 
@@ -139,7 +138,7 @@ $$
 8. the snow balance
 
 $$
-  \frac{\partial Wy}{\partial t} = Py - Fy - My
+  \frac{\partial{Wy}}{\partial {t}} = Py - Fy - My
 $$
 
 
@@ -181,7 +180,7 @@ Time integration is done by the immediately following `MODULE:[GDINTG]`.
 
 Radiation in the following groups, vertical diffusion, ground boundary layer and surface processes
 calculations are essentially all of these updated values
-( $\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, $\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, etc. )
+( $\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, etc. )
 This is done by using
 However, in order to calculate some of the terms as implicit, the
 Calculate all of these terms together and calculate the heating rate, etc,
@@ -261,7 +260,7 @@ $$
 4. layer boundary temperature
 
  The temperature of the boundary of the layer is determined by the temperature of the $\ln p$, i.e., the temperature of the boundary relative to the $\ln \sigma$
- Perform a linear interpolation and calculate.
+ Do a linear interpolation and calculate.
 
 $$
   T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
@@ -284,10 +283,9 @@ $$
  Here, it is $\epsilon=0.622$,
 
 $$
-\frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
+\frac{1}{e^*_v} \frac{\partial{e^*_v}}{\partial {T}} = \frac{L}{R_v T^2}
 $$
 
-     > <span id="e-sat" label="e-sat">\\blade[e-sat]< /span>
 
  Therefore, if the latent heat of evaporation ($L$) and the gas constant ($R_v$) of the water vapor are held constant, then the number of vapor particles will be reduced,
 
@@ -301,10 +299,10 @@ $$
 
      $e^*(T=273{K}) = 611$ is a \\blank\blank\blank\blank\.com.
 
-     (From [\\\[e-sat\]] (#e-sat)),
+     (22) From ,
 
 $$
-\frac{\partial q^*}{\partial T} = \frac{L}{R_v T^2} q^*(T,p) .
+\frac{\partial{q^*}}{\partial {T}} = \frac{L}{R_v T^2} q^*(T,p) .
 $$
 
 
@@ -328,4 +326,3 @@ $$
 
 
  . defined by .
-

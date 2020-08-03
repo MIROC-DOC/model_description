@@ -75,7 +75,6 @@ $$
  = \int F^\lambda(0) exp (-k^\lambda z) d \lambda
 $$
 
-> <span id="p-rad:beer" label="p-rad:beer" label="p-rad:beer">\blazer[p-rad:beer]</span>
 
 However, the absorption and emission of radiation by gas molecules is not
 Due to the complicated wavelength dependence of the absorption line structure of the molecule,
@@ -84,7 +83,7 @@ The method designed to make the relatively precise calculation easier is
 It is a k-distribution method.
 Within a certain wavelength range, the absorption coefficient of $k$
 Consider the density function $F(k)$ for $\lambda$,
-([p-rad:beer\]](#p-rad:beer))
+(2)
 
 $$
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
@@ -103,7 +102,6 @@ $$
  \simeq \sum \bar{F}^i(0) exp (-k^i z) F^i
 $$
 
-> <span id="p-rad:beer-kd" label="p-rad:beer-kd" label="p-rad:beer-kd"> </span>
 
 with the addition of a finite number of exponential terms (subchannels), such that
 It is possible to calculate relatively precisely.
@@ -117,7 +115,7 @@ Not currently used as a standard,
 The wavelength range is divided into 18 parts.
 In addition, each wavelength range is divided into one to six sub-channels (corresponding to the $i$ in the above formula),
 There will be 37 channels in total.
-The wavelength range is a wavenumber (cm$^{-1}$)
+The wavelength range is the wavenumber (cm$^{-1}$)
 50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
 2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
 Divided by.
@@ -549,7 +547,7 @@ It is an exploitation of what is required .
 In a homogeneous layer, the reflectance of the incident light from above, the transmission coefficient and the
 It is the same as the reflectance and transmittance of the incident light from below,
 Because it is different in heterogeneous layers composed of multiple layers,
-The reflectance, transmittance and transmittance of the incident light from above ($R^+, T^+$, $R^+, T^+$)
+The reflectance, transmittance and transmittance of the incident light from above ($R^+, T^+$)
 Distinguish between the reflectance and the transmittance of the incident light from below ($R^-, T^-$) and the reflectance of the incident light from below ($R^-, T^-$).
 Now, in layer 1 above and layer 2 below, these
 If $R^\pm_1, T\pm_1, \epsilon^\pm_1,
@@ -578,7 +576,7 @@ $$
 Let's say there are layers 1, 2, ...$N$ from the top.
 However, the surface is considered to be a single layer and is the $N$ layer.
 Reflectance and source function of the layers from the $n$ to the $N$ layer as a single layer
-Given the $R^+_{n,N}, \epsilon^-_{n,N}$, $R^+_{n,N}, \epsilon^-_{n,N}$ ,
+Given the $R^+_{n,N}, \epsilon^-_{n,N}$ ,
 
 $$
   R^+_{n,N}  =  R^+_n 
@@ -611,7 +609,7 @@ $$
 
 
 In the next section, we consider the reflectance and source function of the layers from the first to the $n$ as a single layer
-Given the $R^-_{1,n}, \epsilon^+_{1,n}$, $R^-_{1,n}, \epsilon^+_{1,n}$ ,
+Given the $R^-_{1,n}, \epsilon^+_{1,n}$ ,
 
 $$
   R^-_{1,n}  =  R^-_n 
@@ -692,7 +690,7 @@ Therefore, the value for temperatures 1K higher than $T_g$
 We also obtained $\overline{B}^w(T_g+1)$ and used it to
 Redo the flux calculation using the addition method,
 The difference from the original value is set to $dF^-/dT_g$.
-This is a meaningful value only in the long-wavelength region (Earth's radiation region).
+This is a meaningful value only in the long-wavelength region (earth's radiation region).
 
 ### Handling of cloud cover
 
@@ -733,7 +731,7 @@ To do so, we perform the following calculations.
 
 3. reflection and transmission coefficients for each layer,
  The source function is averaged with the weight of the cloud cover of the stratocumulus, $C^l$.
- The averages are represented by $\bar{}$,
+ The averages are expressed by adding the $\bar{}$,
 
 $$
         \bar{R}  =  ( 1 - C^l ) R^\circ + C^l R^l \\
@@ -906,4 +904,3 @@ $$
 
      (but with a maximum value of 1 and a minimum value of 0). Also,
      $T_0 = 273.15{K}, T_1 = 258.15{K}$.
-

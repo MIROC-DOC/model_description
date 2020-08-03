@@ -96,8 +96,8 @@ Parentheses are the names of the corresponding subroutines.
 
 Cloud Mass Flux TERM00005, Detrainment TERM00006 is,
 
-> EQ=00021.
-> EQ=00021.
+     EQ=00021.
+     EQ=00021.
 
 represented as .
 The mass flux at the cloud base (TERM00007) is the mass flux at TERM00008,
@@ -105,8 +105,8 @@ TERM00009 is a dimensionless mass flux in it.
 
 From this, the time variation of the mean field is calculated as
 
-> EQ=00022.
-> EQ=00022.
+     EQ=00022.
+     EQ=00022.
 
 However, TERM00010 and TERM00010 are based on the wet static energy of the mean field and the specific humidity,
 TERM00011,TERM00011 are the air in the detrainment
@@ -130,54 +130,54 @@ This calculation is simplified to a form that does not include a sequential appr
 Let's set the cloudbase altitude at TERM00014,
 The lifted condensation altitude of the surface atmosphere, i.e., the height of condensation,
 
-> EQ=00000.
+     EQ=00000.
 
 Define it as the minimum TERM00015 that meets the following criteria
 
 The dimensionless mass flux TERM00016 is,
 The entrainment rate is set to TERM00017,
 
-> EQ=00001.
+     EQ=00001.
 
 Namely,
 
-> EQ=00023.
-> EQ=00023.
+     EQ=00023.
+     EQ=00023.
 
 The balance on wet static energy TERM00018 and total water content TERM00019 in the clouds is,
 
-> EQ=00024.
-> EQ=00024.
+     EQ=00024.
+     EQ=00024.
 
 Here, TERM00020 and TERM00020 are respectively,
 TERM00021 and TERM00022, in mean field, are precipitation generation.
 
 Integrating,
 
-> EQ=00025.
-> EQ=00025.
+     EQ=00025.
+     EQ=00025.
 
-> EQ=00026.
-> EQ=00026.
-> EQ=00026.
+     EQ=00026.
+     EQ=00026.
+     EQ=00026.
 
 The mass flux is assumed to be zero at the surface,
 It is assumed to increase linearly below the cloud base,
 
-> EQ=00002.
+     EQ=00002.
 
 By calculating the entrainment below this cloud base,
 TERM00023 and TERM00023 are required at cloudbase. That is, ,
 
-> EQ=00027.
-> EQ=00027.
+     EQ=00027.
+     EQ=00027.
 
 The buoyancy per unit mass flux due to clouds is ,
 
-> EQ=00028.
-> EQ=00028.
-> EQ=00028.
-> EQ=00028.
+     EQ=00028.
+     EQ=00028.
+     EQ=00028.
+     EQ=00028.
 
 where TERM00024 is the provisional temperature and TERM00025 is the saturation specific humidity,
 TERM00026,
@@ -185,8 +185,8 @@ It is TERM00027,
 TERM00028 and TERM00028 indicate the values at mean-field saturation, respectively.
 TERM00029 and TERM00029 are the amounts of cloud water vapor and cloud water,
 
-> EQ=00029.
-> EQ=00029.
+     EQ=00029.
+     EQ=00029.
 
 For the cloud top TERM00030, the buoyancy TERM00031 is assumed to be zero.
 Thus, solving the TERM00032 corresponds to the given cloud top height of TERM00033
@@ -195,20 +195,20 @@ Here, for precipitation rate TERM00035 integrated from the ground upward, we hav
 Using the known function TERM00036
 Assume that it is represented.
 
-> EQ=00003.
+     EQ=00003.
 
 So..,
 
-> EQ=00004.
+     EQ=00004.
 
 TERM00037 is easy to solve and,
 
-> EQ=00005.
+     EQ=00005.
 
 However,
 
-> EQ=00030.
-> EQ=00030.
+     EQ=00030.
+     EQ=00030.
 
 As mentioned above, you should specify TERM00038 to obtain TERM00039,
 A physically meaningful TERM00041 for a given TERM00040
@@ -217,7 +217,7 @@ That scrutiny is necessary, but here it is,
 The smaller the TERM00042 is, the more the TERM00043 is
 Take into account that it should be lower.
 
-> EQ=00006.
+     EQ=00006.
 
 We will examine whether or not the
 If the value is not satisfied, assume that the cloud with cloud top TERM00044 does not exist.
@@ -229,8 +229,8 @@ The equivalent of having a maximum in the size of the plume.
 
 Cloud water content TERM00047 is ,
 
-> EQ=00031.
-> EQ=00031.
+     EQ=00031.
+     EQ=00031.
 
 However, in the case of TERM00048, it is TERM00049.
 Furthermore, it is unlikely that a precipitation event will be followed by cloudy water,
@@ -239,20 +239,20 @@ This will limit the TERM00052.
 
 The characteristic value of the detrainment air is ,
 
-> EQ=00032.
-> EQ=00032.
-> EQ=00032.
+     EQ=00032.
+     EQ=00032.
+     EQ=00032.
 
 In the case of TERM00053,
 Suppose that clouds do not exist. In this case,
 
-> EQ=00007.
+     EQ=00007.
 
 If there is a TERM00054 that satisfies ,
 The area directly above it has been renamed TERM00055,
 
-> EQ=00033.
-> EQ=00033.
+     EQ=00033.
+     EQ=00033.
 
 Seek as .
 
@@ -260,12 +260,11 @@ Seek as .
 
 The cloud work function (CWF), TERM00056 is,
 
-> EQ=00008.
+     EQ=00008.
 
 It is,
 
-> EQ=00009.
-> <span id="p-cum:cwf" label="p-cum:cwf" label="p-cum:cwf">\blaze[p-cum:cwf]</span>
+     EQ=00009.
 
 Essentially, the work associated with the downdraft, discussed below, should be
 It should be accounted for, but we'll ignore it here for simplicity's sake.
@@ -285,20 +284,20 @@ I make the assumption that.
 In order to estimate it, we firstly estimated the unit cloud-bottom mass flux of TERM00058
 Find the time variation of the mean field.
 
-> EQ=00034.
-> EQ=00034.
+     EQ=00034.
+     EQ=00034.
 
 With this,
 
-> EQ=00035.
-> EQ=00035.
+     EQ=00035.
+     EQ=00035.
 
 and using TERM00059 and TERM00059
-Let TERM00060 be the cloud work function calculated from ([p-cum:cwf\]](#p-cum:cwf)).
+Let TERM00060 be the one calculated from (32) for the cloud work function.
 
 So..,
 
-> EQ=00010.
+     EQ=00010.
 
 That would be.
 Here, when obtaining TERM00061, the original TERM00062 and TERM00062 were used
@@ -310,19 +309,19 @@ Now we are using the same cloud structure.
 The sum of the clouds at each cloud top altitude,
 Cloud Mass Flux TERM00063
 
-> EQ=00011.
+     EQ=00011.
 
 Also, precipitation flux TERM00064 is
 
-> EQ=00012.
+     EQ=00012.
 
 ### Time variation of the average field
 
 by compensated downstream flow and detraining.
 The time variation of the mean field is calculated as follows
 
-> EQ=00036.
-> EQ=00036.
+     EQ=00036.
+     EQ=00036.
 
 However, it is TERM00065.
 
@@ -333,16 +332,16 @@ In addition, some of them form a downdraft.
 
 Evaporation Rate TERM00066 is ,
 
-> EQ=00013.
+     EQ=00013.
 
 Note that TERM00067 is the saturation specific humidity corresponding to the wet bulb temperature,
 
-> EQ=00014.
+     EQ=00014.
 
 TERM00068,TERM00068 is a parameter of the microphysics.
 TERM00069 is the density of precipitation particles and TERM00070 is the terminal velocity of precipitation,
 
-> EQ=00015.
+     EQ=00015.
 
 The current standard values are TERM00071, TERM00072 and TERM00073 m/s.
 
@@ -367,14 +366,14 @@ Upon evaporation of precipitation, the wet static energy should be conserved,
 and the specific humidity when saturated by evaporation.
 Note that this is TERM00081.
 
-> EQ=00016.
+     EQ=00016.
 
-> EQ=00037.
-> EQ=00037.
+     EQ=00037.
+     EQ=00037.
 
 In the above equation, TERM00082 is the portion of the evaporation that is taken up by the downdraft,
 TERM00083 evaporates directly into the mean field.
-However, the downdraft mass flux TERM00084 is
+However, the downdraft mass flux TERM00084
 The total mass flux of cloud base shall not exceed the TERM00086 of TERM00085.
 The current standard value is TERM00087,TERM00087.
 
@@ -384,23 +383,23 @@ The lattice-averaged cloud water content used for radiation, TERM00088, is
 Strong upwelling areas of cumulus clouds, including cloud water TERM00089
 If the ratio of the ratio to the TERM00090 ,
 
-> EQ=00017.
+     EQ=00017.
 
 The mass flux TERM00091 is the same as this TERM00092
 Using the vertical velocity of the upstream stream, TERM00093
 
-> EQ=00018.
+     EQ=00018.
 
 So, in the end,
 
-> EQ=00019.
+     EQ=00019.
 
 The cloud cover used to estimate radiation, TERM00094, is ,
 that there is actually a horizontal spread in the distribution of upwelling and cloud water.
 It is reasonable to take a larger value than this TERM00095.
 Here, in brief,
 
-> EQ=00020.
+     EQ=00020.
 
 .
 The current standard values are TERM00096 and TERM00097.

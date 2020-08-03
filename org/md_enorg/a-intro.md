@@ -29,12 +29,12 @@ It is a quantity calculated by some method that does not include time integratio
 To be more specific ,
 The model is basically a solution to the following equation (the prediction equation).
 
-     EQ=00004.    --- (1)
-     EQ=00004.     --- (2)
-     EQ=00004.     --- (3)
-     EQ=00004.     --- (4)
-     EQ=00004.     --- (5)
-     EQ=00004.     --- (6)
+     EQ=00004.
+     EQ=00004.
+     EQ=00004.
+     EQ=00004.
+     EQ=00004.
+     EQ=00004.
 
 Where, TERM00000, TERM00000 is,
 Easterly wind, north-south wind, temperature, surface pressure, specific humidity, etc., respectively
@@ -60,11 +60,11 @@ The time integration of the predictive equation is ,
 (1) etc.
 This is done by approximating the left-hand side by a difference. For example,
 
-     EQ=00000.     --- (7)
+     EQ=00000.
 
 By making ,
 
-     EQ=00001.    --- (8)
+     EQ=00001.
 
 That would be.
 Here, TERM00007 is a function of the forecast variables TERM00008, TERM00008, etc,
@@ -79,14 +79,14 @@ In the CCSR/NIES AGCM
 The time integration of the predictors is done separately for mechanical and physical processes.
 First, the mechanics term is basically a leap frog,
 
-     EQ=00002.     --- (9)
+     EQ=00002.
 
 However, some terms are treated as implicit. but some terms are treated as implicit.
 In the physical process ,
 Based on the results of integrating the mechanics terms,
 Using a combination of the Euler and implicit methods,
 
-     EQ=00003.     --- (10)
+     EQ=00003.
 
 I'm looking for.
 Here, TERM00013 in (8) is
@@ -122,94 +122,94 @@ Parentheses are the coordinate system and TERM00015 and TERM00015 are the coordi
 Longitude, latitude, dimensionless pressure TERM00016, indicating vertical depth.
 \The entries in the list are in units.
 
- - TAB00000:0.0
+ - TAB00001:0.0
  east-west wind speed
 
- - TAB00000:0.1
+ - TAB00001:0.1
      TERM00017 (TERM00018,TERM00018)
 
- - TAB00000:0.2
+ - TAB00001:0.2
      \The "m/score
 
- - TAB00000:1.0
+ - TAB00001:1.0
  north-south wind speed
 
- - TAB00000:1.1
+ - TAB00001:1.1
      TERM00019 (TERM00020,TERM00020)
 
- - TAB00000:1.2
+ - TAB00001:1.2
      \The "m/score
 
- - TAB00000:2.0
+ - TAB00001:2.0
  atmospheric temperature
 
- - TAB00000:2.1
+ - TAB00001:2.1
      TERM00021 (TERM00022,TERM00022)
 
- - TAB00000:2.2
+ - TAB00001:2.2
      \K.L.A.[K.R.I.E.D.]
 
- - TAB00000:3.0
+ - TAB00001:3.0
  surface pressure
 
- - TAB00000:3.1
+ - TAB00001:3.1
      TERM00023 (TERM00024,TERM00024)
 
- - TAB00000:3.2
+ - TAB00001:3.2
      The "hPa\\
 
- - TAB00000:4.0
+ - TAB00001:4.0
  specific humidity
 
- - TAB00000:4.1
+ - TAB00001:4.1
      TERM00025 (TERM00026,TERM00026)
 
- - TAB00000:4.2
+ - TAB00001:4.2
      [kg/kg\\]
 
- - TAB00000:5.0
+ - TAB00001:5.0
  Cloud water mixing ratio
 
- - TAB00000:5.1
+ - TAB00001:5.1
      TERM00027 (TERM00028,TERM00028)
 
- - TAB00000:5.2
+ - TAB00001:5.2
      [kg/kg\\]
 
- - TAB00000:6.0
+ - TAB00001:6.0
  underground temperature
 
- - TAB00000:6.1
+ - TAB00001:6.1
      TERM00029 (TERM00030,TERM00030)
 
- - TAB00000:6.2
+ - TAB00001:6.2
      \K.L.A.[K.R.I.E.D.]
 
- - TAB00000:7.0
+ - TAB00001:7.0
  subterranean moisture
 
- - TAB00000:7.1
+ - TAB00001:7.1
      TERM00031 (TERM00032,TERM00032)
 
- - TAB00000:7.2
+ - TAB00001:7.2
      \The "m/m\
 
- - TAB00000: 8.0
+ - TAB00001:8.0
  amount of snowfall
 
- - TAB00000:8.1
+ - TAB00001:8.1
      TERM00033 (TERM00034,TERM00034)
 
- - TAB00000:8.2
+ - TAB00001:8.2
 
 
- - TAB00000:9.0
+ - TAB00001:9.0
  sea-ice thickness
 
- - TAB00000:9.1
+ - TAB00001:9.1
      TERM00036 (TERM00037,TERM00037)
 
- - TAB00000:9.2
+ - TAB00001:9.2
      \\0.25\\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.00}.
 
 However, the sea ice thickness is usually only a predictor in the mixed-layer coupled model.

@@ -12,18 +12,18 @@ It is given as follows ( Haltiner and Williams , 1980 ).
 
 $$
   \frac{\partial \pi}{\partial t} 
-    + {TERM00002}_{H} \cdot \nabla_{\sigma} \pi
-     =  - \nabla_{\sigma} \cdot {TERM00003}_{H} 
+    + {$\mathbf{v}$}_{H} \cdot \nabla_{\sigma} \pi
+     =  - \nabla_{\sigma} \cdot {$\mathbf{v}$}_{H} 
           - \frac{\partial \dot{\sigma}}{\partial \sigma}
 $$
-     --- (1)
+
 
 2. hydrostatic pressure formula
 
 $$
   \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
 $$
-    --- (2)
+
 
 3. equation of motion
 
@@ -35,7 +35,7 @@ $$
             \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
           - {\mathcal D}(\zeta) 
 $$
-     --- (3)
+
 
 $$
   \frac{\partial D}{\partial t} 
@@ -47,7 +47,7 @@ $$
            ( \Phi + R \bar{T} \pi + E ) 
           - {\mathcal D}(D) 
 $$
-     --- (4)
+
 
 4. thermodynamic equation
 
@@ -61,7 +61,7 @@ $$
         - \dot{\sigma} 
               \frac{\partial T }{\partial \sigma}
           + \kappa T \left( \frac{\partial \pi}{\partial t}
-                            + {TERM00004}_{H} \cdot \nabla_{\sigma} \pi 
+                            + {$\mathbf{v}$}_{H} \cdot \nabla_{\sigma} \pi 
                             + \frac{ \dot{\sigma} }{ \sigma } 
                      \right)
           + \frac{Q}{C_{p}}
@@ -69,7 +69,7 @@ $$
           - {\mathcal D}(T) 
 $$
 
-     --- (5)
+
 
 5. water vapor formula
 
@@ -85,7 +85,7 @@ $$
           - {\mathcal D}(q) 
 $$
 
-     --- (6)
+
 
 Here,
 
@@ -126,7 +126,7 @@ $$
 %
      E  \equiv   \frac{u^{2}+v^{2}}{2} \\
 %
- {TERM00005}_{H} \cdot \nabla
+ {$\mathbf{v}$}_{H} \cdot \nabla
         \equiv  \frac{u}{a \cos \varphi} 
          \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
      + \frac{v}{a}
@@ -141,20 +141,20 @@ $$
                  \left[ \cos\varphi
                        \frac{\partial }{\partial \varphi} \right]  .
 $$
-     --- (7)
-     --- (8)
-     --- (9)
-     --- (10)
-     --- (11)
-     --- (12)
-     --- (13)
-     --- (14)
-     --- (15)
-     --- (16)
-    --- (17)
-     --- (18)
 
-     --- (19)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$
 is the horizontal diffusion term,
@@ -168,9 +168,9 @@ Also, the $Q_{diff}$ is a frictional heat,
 
 $$
   Q_{diff}
- = - {TERM00011} \cdot  ( \frac{\partial {TERM00012}}{\partial t} )_{diff} .
+ = - {$\mathbf{v}$} \cdot  ( \frac{\partial {$\mathbf{v}$}}{\partial t} )_{diff} .
 $$
-    --- (20)
+
 
 $( \frac{\partial {$\mathbf{v}$}}{\partial t} )_{diff} $ is ,
 It is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
@@ -182,7 +182,7 @@ The boundary conditions for lead-direct current are
 $$
   \dot{\sigma} = 0  \ \ \ at \ \ \sigma = 0 , \ 1 .
 $$
-     --- (21)
+
 
 Therefore, from (1) Therefore, from (1),
 The time-varying surface pressure equation and
@@ -190,10 +190,10 @@ Diagnostic Formula for determining the vertical velocity ($\dot{\sigma}$) in the
 
 $$
    \frac{\partial \pi}{\partial t}
-   = - \int_{0}^{1} {TERM00017}_{H} \cdot \nabla_{\sigma} \pi d \sigma
+   = - \int_{0}^{1} {$\mathbf{v}$}_{H} \cdot \nabla_{\sigma} \pi d \sigma
      - \int_{0}^{1} D  d \sigma ,
 $$
-     --- (22)
+
 
 $$
    \dot{\sigma} 
@@ -201,8 +201,8 @@ $$
      \frac{\partial \pi}{\partial t}
      - \int_{0}^{\sigma} D d \sigma
      - \int_{0}^{\sigma} 
-         {TERM00018}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
+         {$\mathbf{v}$}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
 $$
-     --- (23)
+
 
 is led.

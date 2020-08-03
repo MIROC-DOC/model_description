@@ -1,20 +1,8 @@
 {
     "imath": {
-        "TERM00048": {
+        "TERM00050": {
             "count": 2,
             "text": "$K=3$"
-        },
-        "TERM00057": {
-            "count": 0,
-            "text": "$\\alpha=\\gamma=0$"
-        },
-        "TERM00075": {
-            "count": 2,
-            "text": "$U_{11}^T, U_{11}^q, U_{00}^g$"
-        },
-        "TERM00076": {
-            "count": 2,
-            "text": "$f_1^T, f_1^q, f_0^g$"
         }
     },
     "emath": {},

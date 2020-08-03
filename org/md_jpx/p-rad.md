@@ -76,7 +76,7 @@ TERM00016 は吸収係数である.
 k-distribution 法である.
 ある波長域の中で, 吸収係数 TERM00017 の,
 TERM00018 に関する密度関数 TERM00019 を考え,
-([\[p-rad:beer\]](#p-rad:beer)) を
+(2) を
 
     EQ=00002.
 

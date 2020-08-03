@@ -36,17 +36,16 @@ All vertical fluxes are positive upward.
 
 1. equation of motion
 
-     > EQ=00000.
-     > <span id="u-eq.orig" label="u-eq.orig" label="u-eq.orig">\\centric</span>
+         EQ=00000.
 
-     > EQ=00001.
+         EQ=00001.
 
      TERM00005,TERM00005: East-West, North-South Wind;
      TERM00006,TERM00006: Their vertical flux.
 
 2. thermodynamic equation
 
-     > EQ=00002.
+         EQ=00002.
 
      TERM00007: Temperature ;
      TERM00008: Constant Pressure Specific Heat;
@@ -56,7 +55,7 @@ All vertical fluxes are positive upward.
 
  If we write TERM00012, then this is
 
-     > EQ=00003.
+         EQ=00003.
 
  As far as vertical 1D processes are concerned,
  Instead of the     TERM00013, consider the TERM00014.
@@ -65,7 +64,7 @@ All vertical fluxes are positive upward.
 
 3. water vapor continuity formula
 
-     > EQ=00004.
+         EQ=00004.
 
      TERM00017: Specific Humidity;
      TERM00018: Vertical Steam Flux.
@@ -77,7 +76,7 @@ All vertical fluxes are positive upward.
 
 4. thermal formula
 
-     > EQ=00005.
+         EQ=00005.
 
      TERM00020: Ground Temperature; TERM00021: Constant Pressure Specific Heat;
      TERM00022: Vertical Heat Flux;
@@ -85,7 +84,7 @@ All vertical fluxes are positive upward.
 
 5. formula for ground moisture
 
-     > EQ=00006.
+         EQ=00006.
 
      TERM00024: Ground Moisture;
      TERM00025: Lead Water Flux;
@@ -95,21 +94,21 @@ All vertical fluxes are positive upward.
 
  At the surface, an energy balance is established.
 
-     > EQ=00007.
+         EQ=00007.
 
      TERM00027: Latent Heat of Evaporation;
      TERM00028: Surface energy balance (due to phase change, etc.).
 
 7. surface water balance
 
-     > EQ=00008.
+         EQ=00008.
 
      TERM00029: Precipitation;
      TERM00030: Surface Runoff.
 
 8. the snow balance
 
-     > EQ=00009.
+         EQ=00009.
 
      TERM00031: Snow cover(kg/TERM00032);
      TERM00033: Snowfall;
@@ -129,9 +128,9 @@ The order of execution can be divided into the following three categories.
 
 Cumulus convection and large-scale condensation,
 
-> EQ=00010.
+     EQ=00010.
 
-> EQ=00011.
+     EQ=00011.
 
 by the usual Euler difference.
 Large-scale condensation schemes include ,
@@ -148,14 +147,14 @@ Calculate all of these terms together and calculate the heating rate, etc,
 Finally, we do time integration.
 In other words, symbolically,
 
-> EQ=00012.
+     EQ=00012.
 
 That would be.
 
 As for gravitational wave resistance, mass regulation and dry convection regulation,
 It is similar to cumulus convection and large-scale condensation.
 
-> EQ=00013.
+     EQ=00013.
 
 ### Various physical quantities.
 
@@ -168,53 +167,52 @@ Calculated with `MODULE:[PSETUP]`.
 
  Provisional Temperature TERM00037 is ,
 
-     > EQ=00014.
+         EQ=00014.
 
 2. air density
 
  The atmospheric density, TERM00038, is calculated as follows
 
-     > EQ=00015.
+         EQ=00015.
 
 3. high degree
 
  The high degree TERM00039 is a mechanical process
  The same method is used to calculate the geopotential.
 
-     > EQ=00016.
+         EQ=00016.
 
-     > EQ=00017.
+         EQ=00017.
 
-     > EQ=00018.
+         EQ=00018.
 
 4. layer boundary temperature
 
  The temperature of the boundary of the layer is determined by the temperature of the TERM00040, i.e., the temperature of the boundary relative to the TERM00041
- Perform a linear interpolation and calculate.
+ Do a linear interpolation and calculate.
 
-     > EQ=00019.
+         EQ=00019.
 
 5. saturated specific humidity
 
  Saturation Specific Humidity TERM00042,TERM00042
  is approximated using the saturation vapor pressure TERM00043,
 
-     > EQ=00020.
+         EQ=00020.
 
  Here, it is TERM00044,
 
-     > EQ=00021.
-     > <span id="e-sat" label="e-sat">\\blade[e-sat]< /span>
+         EQ=00021.
 
  Therefore, if the latent heat of evaporation (TERM00045) and the gas constant (TERM00046) of the water vapor are held constant, then the number of vapor particles will be reduced,
 
-     > EQ=00022.
+         EQ=00022.
 
      TERM00047 is a \\blank\blank\blank\blank\.com.
 
-     (From [\\\[e-sat\]] (#e-sat)),
+     (22) From ,
 
-     > EQ=00023.
+         EQ=00023.
 
  Here, if the temperature is lower than the freezing point 273.15 K
  Use the sublimation latent heat TERM00049 as the latent heat TERM00048.
@@ -223,10 +221,10 @@ Calculated with `MODULE:[PSETUP]`.
 
  Dry static energy TERM00050 is
 
-     > EQ=00024.
+         EQ=00024.
 
  Wet Static Energy TERM00051 is
 
-     > EQ=00025.
+         EQ=00025.
 
  . defined by .

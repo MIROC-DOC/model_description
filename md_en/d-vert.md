@@ -42,14 +42,14 @@ $$
                      \right)
               \right\}^{1/\kappa}
 $$
-     --- (1)
+
 
 Furthermore,
 
 $$
   \Delta \sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2}
 $$
-    --- (2)
+
 
 .
 
@@ -61,23 +61,23 @@ The discretized representation of each equation is as follows.
 
 $$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + {TERM00010}_k \cdot \nabla \pi ) 
+ = - \sum_{k=1}^{K} ( D_k + {$\mathbf{v}$}_k \cdot \nabla \pi ) 
        \Delta  \sigma_k
 $$
-     --- (3)
+
 
 $$
   \dot{\sigma}_{k-1/2}
  = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
-   - \sum_{l=k}^{K} ( D_l + {TERM00011}_l \cdot \nabla \pi )          
+   - \sum_{l=k}^{K} ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )          
        \Delta  \sigma_l
 $$
-     --- (4)
+
 
 $$
   \dot{\sigma}_{1/2} = \dot{\sigma}_{K+1/2} = 0
 $$
-     --- (5)
+
 
 2. hydrostatic pressure formula
 
@@ -85,7 +85,7 @@ $$
  \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
            =  \Phi_{s} + C_{p} \alpha_{1} T_{v,1} 
 $$
-     --- (6)
+
 
 
 $$
@@ -99,7 +99,7 @@ $$
               \right] T_{v,k-1} \\
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 $$
-    --- (7)
+
 
 
  Here,
@@ -110,8 +110,8 @@ $$
  \beta_k    =  1- \left( \frac{ \sigma_{k+1/2} }
                                { \sigma_k } \right)^{\kappa} .
 $$
-    --- (8)
-    --- (9)
+
+
 
 3. equation of motion
 
@@ -123,7 +123,7 @@ $$
             \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
           - {\mathcal D}(\zeta_k) 
 $$
-     --- (10)
+
 
 $$
   \frac{\partial D}{\partial t} 
@@ -136,7 +136,7 @@ $$
              + ({\mathit KE})_k )
           - {\mathcal D}(D_k) 
 $$
-     --- (11)
+
 
  Here,
 
@@ -152,7 +152,7 @@ $$
              + {\mathcal F}_x
 $$
 
-    --- (12)
+
 
 $$
   (A_v)_k
@@ -166,7 +166,7 @@ $$
              + {\mathcal F}_y
 $$
 
-    --- (13)
+
 
 $$
    \hat{\kappa}_k 
@@ -181,12 +181,12 @@ $$
             { \Delta \sigma_k                                  } 
 $$
 
-    --- (14)
+
 
 $$
 T'_{v,k} = T_{v,k} - \bar{T}_k
 $$
-     --- (15)
+
 
 4. thermodynamic equation
 
@@ -203,7 +203,7 @@ $$
 $$
 
 
-    --- (16)
+
 
  Here,
 
@@ -215,16 +215,16 @@ $$
                + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
                 \\
         + \left\{ \alpha_k
-                    \left[ \sigma_{k-1/2} {TERM00012}_k \cdot \nabla \pi
+                    \left[ \sigma_{k-1/2} {$\mathbf{v}$}_k \cdot \nabla \pi
                           - \sum_{l=k}^{K} 
-                           ( D_l + {TERM00013}_l \cdot \nabla \pi )
+                           ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )
                             \Delta  \sigma_l
                     \right]
              \right.    \\
           + \left. \beta_k
-                     \left[ \sigma_{k+1/2} {TERM00014}_k \cdot \nabla \pi
+                     \left[ \sigma_{k+1/2} {$\mathbf{v}$}_k \cdot \nabla \pi
                           - \sum_{l=k+1}^{K} 
-                           ( D_l + {TERM00015}_l \cdot \nabla \pi )
+                           ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )
                             \Delta  \sigma_l
                     \right]
               \right\} 
@@ -235,15 +235,15 @@ $$
              [   \dot{\sigma}_{k-1/2} ( \hat{T}_{k-1/2} - T_k   )
                + \dot{\sigma}_{k+1/2} ( T_k   - \hat{T}_{k+1/2} ) ]
                 \\
-        + \hat{\kappa}_k {TERM00016}_k \cdot \nabla \pi T_{v,k} 
+        + \hat{\kappa}_k {$\mathbf{v}$}_k \cdot \nabla \pi T_{v,k} 
                 \\
         - \alpha_k \sum_{l=k}^{K} 
-                           ( D_l + {TERM00017}_l \cdot \nabla \pi )
+                           ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )
                             \Delta  \sigma_l 
                             \frac{T_{v,k}}{\Delta \sigma_k} 
                 \\
         - \beta_k \sum_{l=k+1}^{K} 
-                           ( D_l + {TERM00018}_l \cdot \nabla \pi )
+                           ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )
                             \Delta  \sigma_l 
                             \frac{T_{v,k}}{\Delta \sigma_k} 
 $$
@@ -253,7 +253,7 @@ $$
 
 
 
-    --- (17)
+
 
 $$
   \hat{T}_{k-1/2}
@@ -267,8 +267,8 @@ $$
           { \sigma_{k-1}^{\kappa} - \sigma_k^{\kappa}           } \\
    =  a_k T_k + b_{k-1} T_{k-1}
 $$
-    --- (18)
-    --- (19)
+
+
 
 $$
   a_k  =  \alpha_k 
@@ -278,8 +278,8 @@ $$
               \left[ \left( \frac{ \sigma_k }{ \sigma_{k+1} } 
                      \right)^{\kappa} - 1 \right]^{-1} .  
 $$
-    --- (20)
-    --- (21)
+
+
 
 5. water vapor formula
 
@@ -293,7 +293,7 @@ $$
           + S_{q,k}
           - {\mathcal D}(q_k) 
 $$
-     --- (22)
+
 
 $$
 R_k  =  q_k D_k 
@@ -301,4 +301,4 @@ R_k  =  q_k D_k
              [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
                + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
 $$
-     --- (23)
+

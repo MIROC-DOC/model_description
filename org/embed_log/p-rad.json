@@ -8,21 +8,9 @@
             "count": 2,
             "text": "$<\\tau^*>$"
         },
-        "TERM00116": {
-            "count": 2,
-            "text": "$R^+, T^+$"
-        },
         "TERM00117": {
             "count": 2,
             "text": "$R^-, T^-$"
-        },
-        "TERM00124": {
-            "count": 2,
-            "text": "$R^+_{n,N}, \\epsilon^-_{n,N}$"
-        },
-        "TERM00127": {
-            "count": 2,
-            "text": "$R^-_{1,n}, \\epsilon^+_{1,n}$"
         }
     },
     "emath": {},

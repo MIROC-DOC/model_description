@@ -1,10 +1,6 @@
 {
     "imath": {
-        "TERM00000": {
-            "count": 2,
-            "text": "$u, v$"
-        },
-        "TERM00018": {
+        "TERM00022": {
             "count": 0,
             "text": "$z_{0H}/z_{0M}=0.1$"
         }

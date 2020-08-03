@@ -5,7 +5,7 @@
 The surface flux scheme is ,
 due to turbulent transport in the ground boundary layer.
 Assessing the flux of physical quantities between atmospheric surfaces.
-The main input data are wind speed $u, v$, $u, v$, temperature $T$, and specific humidity $q$,
+The main input data are wind speed $u, v$, temperature $T$, and specific humidity $q$,
 The output data are the vertical fluxes of momentum, heat, water vapor and
 It is the differential value for obtaining an implicit solution.
 
@@ -32,33 +32,33 @@ Using the bulk coefficients $C_M, C_H, C_E$
 It is expressed as follows.
 
 $$
-Fu  =  - \rho C_M |\mathbf{v}| u
+Fu  =  - \rho C_M |{$\mathbf{v}$}| u
 $$
 
 
 $$
-Fv  =  - \rho C_M |\mathbf{v}| v
+Fv  =  - \rho C_M |{$\mathbf{v}$}| v
 $$
 
 
 $$
-F\theta  = \rho c_p C_H |\mathbf{v}| ( \theta_g - \theta )
+F\theta  = \rho c_p C_H |{$\mathbf{v}$}| ( \theta_g - \theta )
 $$
 
 
 $$
-Fq^P =  \rho C_E |\mathbf{v}| ( q_g - q )
+Fq^P =  \rho C_E |{$\mathbf{v}$}| ( q_g - q )
 $$
 
 
-However, the $Fq^P$ is the amount of possible evaporation.
+However, the $Fq^P$ is the possible evaporation rate.
 The calculation of actual evaporation is a combination of "surface processes" and
 We will discuss this in the section "Solving Diffusion-Based Budget Equations for Atmospheric Surface Systems".
 
 ### Richardson Number.
 
 The standard of stability between atmospheric surfaces,
-Bulk Richardson number $R_{iB}$ is
+Bulk Richardson Number $R_{iB}$ is
 
 $$
 R_{iB} = \frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
@@ -85,9 +85,9 @@ Louis(1979), Louis <span>*et al.*</span>(1982).
 However, we take into account the difference between the momentum and heat roughness in the correction.
 i.e., the roughness to momentum, heat, and water vapor.
 $z_{0M}, z_{0H}, z_{0E}$ respectively
-In general, it is $z_{0M} > z_{0H}, z_{0E}$, but heat and water vapor are also
+In general, the $z_{0M} > z_{0H}, z_{0E}$ are used, but heat and water vapor are also
 Bulk factor for flux from the height of the $z_{0M}$
-First find the $\widetilde{C_H}$ and $\widetilde{C_E}$ and then correct them.
+Find first the $\widetilde{C_H}$ and $\widetilde{C_E}$ and then correct them.
 
 $$
 C_M = \left\{ 
@@ -140,8 +140,8 @@ C_E = \widetilde{C_E} f_q
 $$
 
 
-The $C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ are
-The bulk coefficient (for fluxes from $z_{0M}$) at neutral,
+$C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ are
+The bulk factor (for fluxes from $z_{0M}$) at neutral,
 
 $$
 C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  = 
@@ -157,10 +157,10 @@ $$
 
 
 but the method of calculation is abbreviated.
-The coefficient is $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 ), \;
+The coefficients are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 ), \;
 ( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
 
-The dependence of the bulk coefficients on $Ri_B$ is illustrated in Fig,
+The dependence of the bulk coefficient on the $Ri_B$ is illustrated in Fig,
 Figure [p-sflx:cm\] (#p-sflx:cm), Figure [p-sflx:ch\] (#p-sflx:ch).
 
 ### Calculating Flux.
@@ -168,23 +168,23 @@ Figure [p-sflx:cm\] (#p-sflx:cm), Figure [p-sflx:ch\] (#p-sflx:ch).
 This will calculate the flux.
 
 $$
-\hat{F}u_{1/2}  =  - \rho_{1/2} C_M |\mathbf{v}_1| u_1
+\hat{F}u_{1/2}  =  - \rho_{1/2} C_M |{$\mathbf{v}$}_1| u_1
 $$
 
 
 $$
-\hat{F}v_{1/2}  =  - \rho_{1/2} C_M |\mathbf{v}_1| v_1
+\hat{F}v_{1/2}  =  - \rho_{1/2} C_M |{$\mathbf{v}$}_1| v_1
 $$
 
 
 $$
-\hat{F}\theta_{1/2}  = \rho_{1/2} c_p C_H |\mathbf{v}_1| 
+\hat{F}\theta_{1/2}  = \rho_{1/2} c_p C_H |{$\mathbf{v}$}_1| 
                     \left( T_0 - \sigma_1^{-\kappa} T_1 \right)
 $$
 
 
 $$
-\hat{F}q^P_{1/2}  =  \rho_{1/2} C_E |\mathbf{v}_1| 
+\hat{F}q^P_{1/2}  =  \rho_{1/2} C_E |{$\mathbf{v}$}_1| 
                     \left( q^*(T_0) - q_1 \right)
 $$
 
@@ -192,32 +192,32 @@ $$
 The differential term is as follows
 
 $$
-\frac{\partial Fu_{1/2}}{\partial u_1} = \frac{\partial Fv_{1/2}}{\partial v_1} 
-= - \rho_{1/2} C_M |\mathbf{v}_1|
+\frac{\partial{Fu_{1/2}}}{\partial {u_1}} = \frac{\partial{Fv_{1/2}}}{\partial {v_1}} 
+= - \rho_{1/2} C_M |{$\mathbf{v}$}_1|
 $$
 
 
 $$
-\frac{\partial F\theta_{1/2}}{\partial T_1} 
-= - \rho_{1/2} c_p C_H |\mathbf{v}_1| \sigma_1^{-\kappa}
+\frac{\partial{F\theta_{1/2}}}{\partial {T_1}} 
+= - \rho_{1/2} c_p C_H |{$\mathbf{v}$}_1| \sigma_1^{-\kappa}
 $$
 
 
 $$
-\frac{\partial F\theta_{1/2}}{\partial T_0} 
-= \rho_{1/2} c_p C_H |\mathbf{v}_1|
+\frac{\partial{F\theta_{1/2}}}{\partial {T_0}} 
+= \rho_{1/2} c_p C_H |{$\mathbf{v}$}_1|
 $$
 
 
 $$
-\frac{\partial Fq_{1/2}}{\partial q_1} 
- =  - \beta \rho_{1/2} C_E |\mathbf{v}_1| 
+\frac{\partial{Fq_{1/2}}}{\partial {q_1}} 
+ =  - \beta \rho_{1/2} C_E |{$\mathbf{v}$}_1| 
 $$
 
 
 $$
-\frac{\partial Fq^P_{1/2}}{\partial T_0} 
- =  \beta \rho_{1/2} C_E |\mathbf{v}_1| \left( \frac{dq^*}{dT} \right)_{1/2}
+\frac{\partial{Fq^P_{1/2}}}{\partial {T_0}} 
+ =  \beta \rho_{1/2} C_E |{$\mathbf{v}$}_1| \left( \frac{d {q^*}}{d {T}} \right)_{1/2}
 $$
 
 
@@ -232,7 +232,7 @@ $$
 
 
 Determined to meet.
-At this point, for $T_0$, we use the one from the previous time step for evaluation.
+At this point, for $T_0$, we use the one from the previous time step to evaluate.
 The true flux value that meets the surface balance is ,
 It is determined by solving this equation in conjunction with surface processes.
 In that sense, I have added $\hat{{}}$ to the flux above.
@@ -252,7 +252,7 @@ $$
 $$
 
 
-When I was in $F_B >0$,
+During the $F_B >0$,
 
 $$
   w^* = ( H_{B} F_B )^{1/3}
@@ -260,14 +260,14 @@ $$
 
 
 $$
-  |\mathbf{v}_1| = \left( u_1^2 + v_1^2 + (w^*)^2 \right)^{1/2}
+  |{$\mathbf{v}$}_1| = \left( u_1^2 + v_1^2 + (w^*)^2 \right)^{1/2}
 $$
 
 
-to be considered by making $H_B$ corresponds to the thickness scale of the mixing layer.
+to be considered by making $H_B$ corresponds to the thickness scale of the mixed layer.
 The current standard value is $H_B=2000$ m.
 
-The roughness variation of the sea surface is represented by the friction velocity $u^*$
+The roughness variation of the sea surface is represented by the friction velocity ($u^*$)
 
 $$
   u^* = \left( \sqrt{Fu^2 + Fv^2}/\rho \right)^{1/2}
@@ -315,7 +315,6 @@ Recalculate the momentum, heat, and water fluxes again.
 
 Consider the effects of small-scale exercise,
 Surface wind speed in the calculation of surface flux
-Set the minimum value of $|\mathbf{v}_1|$.
+Set the minimum value of $|{$\mathbf{v}$}_1|$.
 The current standard values are the same for all fluxes and
 It is 3 m/s.
-

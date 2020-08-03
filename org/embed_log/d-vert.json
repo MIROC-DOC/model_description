@@ -1,42 +1,5 @@
 {
-    "imath": {
-        "TERM00010": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00011": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00012": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00013": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00014": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00015": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00016": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00017": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        },
-        "TERM00018": {
-            "count": 0,
-            "text": "$\\mathbf{v}$"
-        }
-    },
+    "imath": {},
     "emath": {},
     "tabular": {}
 }

@@ -48,7 +48,7 @@ Distribution of the total water volume TERM00016 in the grid,
 Between TERM00017 and TERM00018
 It is assumed to be uniformly distributed. That is, the probability density function is ,
 
-> EQ=00000.
+     EQ=00000.
 
 We consider this distribution to be a horizontal distribution.
 On the other hand, the saturation specific humidity is based on the grid average of TERM00019.
@@ -59,23 +59,22 @@ Consider the presence of a cloud in a region in TERM00020 (Figure [lsc[lsc:fig-c
 Then, as shown by the shading in the figure, the
 The horizontal ratio of the portion of the total water volume exceeding saturation TERM00021 is ,
 
-> EQ=00001.
+     EQ=00001.
 
 and this is the cloud cover (horizontal cloud coverage).
 
 In addition, the cloud cover of TERM00022 is in the region of TERM00023
 This is an integral of TERM00024,
 
-> EQ=00002.
-> <span id="p-lsc:l" label="p-lsc:l">\blazer[p-lsc:l]</span>
+     EQ=00002.
 
 ### Determination by successive approximation
 
 First, from the Water Vapor TERM00025 and Cloud Water TERM00026 and the Temperature TERM00027,
 Find the total water volume TERM00028 and liquid water temperature TERM00029.
 
-> EQ=00017.
-> EQ=00017.
+     EQ=00017.
+     EQ=00017.
 
 The TERM00030 corresponds to the temperature at which all cloud water is evaporated.
 TERM00031, TERM00032
@@ -84,70 +83,69 @@ By saturation specific humidity relative to temperature TERM00033,
 Assuming that the cloud water content evaluated by the aforementioned method is TERM00034,
 It changes the temperature,
 
-> EQ=00003.
-> <span id="p-lsc:itereate1" label="p-lsc:itereate1" label="p-lsc:itereate1"> </span>
+     EQ=00003.
 
 The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from TERM00035,
 The resulting temperature change is solved by successive approximation as TERM00036 ...
 In order to speed up this sequential convergence, we use the Newton method.
-I.e., instead of (ie, ([[p-lsc:itereate1\]](#p-lsc:itereate1))
+That is, instead of (6)
 
-> EQ=00004.
+     EQ=00004.
 
 .
-TERM00037 can be obtained analytically using ([[p-lsc:l\]](#p-lsc:l)).
+TERM00037 can be obtained analytically using (3).
 
 ### precipitation process.
 
 Precipitation occurs dependent on the amount of cloud water diagnosed.
 If the precipitation rate (in 1/s) is set to TERM00038,
 
-> EQ=00005.
+     EQ=00005.
 
 TERM00039 is the time scale of precipitation,
 
-> EQ=00006.
+     EQ=00006.
 
 where TERM00040 is the critical cloud water content,
 In view of the Bergeron-Findeisen effect ,
 
-> EQ=00007.
+     EQ=00007.
 
 TERM00041, TERM00042, TERM00043,
 TERM00044 K, TERM00045 K
 
 Precipitation results in a decrease in TERM00046.
 
-> EQ=00018.
-> EQ=00018.
+     EQ=00018.
+     EQ=00018.
 
 Integrating this during TERM00047,
 
-> EQ=00008.
+     EQ=00008.
 
 Precipitation flux at a certain height, TERM00048
 If (unit kg TERM00049 TERM00050) is set to TERM00051
 
-> EQ=00009.
+     EQ=00009.
 
 ### Ice Falling Process.
 
 Cloud water is divided into ice and water clouds depending on the temperature.
 The ice cloud ratio is
 
-> EQ=00010.
+     EQ=00010.
 
 (but with a maximum value of 1 and a minimum value of 0). Also,
 TERM00052,TERM00052.
 The ice cloud will fall at a slow speed,
 Consider the effect. Rate of descent TERM00053 is,
 
-> EQ=00011.
+     EQ=00011.
 
 However, TERM00054 m/s, TERM00055.
 So..,
 
-> EQ=00012.
+     EQ=00012.
 
 as well as precipitation.
 
@@ -155,20 +153,20 @@ as well as precipitation.
 
 Evaporation of precipitation The evaporation of precipitation, TERM00056, is estimated as follows.
 
-> EQ=00013.
+     EQ=00013.
 
 However, if TERM00057 is set, this should be zero.
 The TERM00058 is the saturation specific humidity corresponding to the wet bulb temperature,
 
-> EQ=00014.
+     EQ=00014.
 
 This means that precipitation is
 
-> EQ=00015.
+     EQ=00015.
 
 The temperature drop due to evaporation is estimated to be We also estimate the temperature drop due to evaporation.
 
-> EQ=00016.
+     EQ=00016.
 
 ### Other Notes.
 

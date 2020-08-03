@@ -110,9 +110,9 @@ $\eta$ is a dimensionless mass flux in it.
 From this, the time variation of the mean field is calculated as
 
 $$
-  \frac{\partial \bar{h}}{\partial t}  =  M \frac{\partial \bar{h}}{\partial z} 
+  \frac{\partial{\bar{h}}}{\partial {t}}  =  M \frac{\partial{\bar{h}}}{\partial {z}} 
                        + D( h^t - \bar{h} ) \; , \\
-  \frac{\partial \bar{q}}{\partial t}  =  M\frac{\partial \bar{q}}{\partial z} 
+  \frac{\partial{\bar{q}}}{\partial {t}}  =  M\frac{\partial{\bar{q}}}{\partial {z}} 
                        + D( q^t + l^t - \bar{q} ) \; .
 $$
 
@@ -154,7 +154,7 @@ The dimensionless mass flux $\eta$ is,
 The entrainment rate is set to $\lambda$,
 
 $$
-  \frac{\partial \eta}{\partial z} = \lambda \; ,
+  \frac{\partial{\eta}}{\partial {z}} = \lambda \; ,
 $$
 
 
@@ -170,8 +170,8 @@ $$
 The balance on wet static energy $h^c$ and total water content $w^c$ in the clouds is,
 
 $$
-  \frac{\partial }{\partial z}( \eta h^c   )  =  \lambda \bar{h}      \; , \\
-  \frac{\partial }{\partial z}( \eta w^c   )  =  \lambda \bar{q} - \pi  \; .
+  \frac{\partial{}}{\partial {z}}( \eta h^c   )  =  \lambda \bar{h}      \; , \\
+  \frac{\partial{}}{\partial {z}}( \eta w^c   )  =  \lambda \bar{q} - \pi  \; .
 $$
 
 
@@ -315,7 +315,7 @@ The smaller the $\lambda$ is, the more the $z_T$ is
 Take into account that it should be lower.
 
 $$
-  \frac{\partial \lambda}{\partial z_T} < 0
+  \frac{\partial{\lambda}}{\partial {z_T}} < 0
 $$
 
 
@@ -391,7 +391,6 @@ A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
        \right] \eta dz \; .
 $$
 
-> <span id="p-cum:cwf" label="p-cum:cwf" label="p-cum:cwf">\blaze[p-cum:cwf]</span>
 
 Essentially, the work associated with the downdraft, discussed below, should be
 It should be accounted for, but we'll ignore it here for simplicity's sake.
@@ -412,9 +411,9 @@ In order to estimate it, we firstly estimated the unit cloud-bottom mass flux of
 Find the time variation of the mean field.
 
 $$
-  \frac{\partial \bar{h}'}{\partial t}  =  M_0 \eta \frac{\partial \bar{h}}{\partial z} 
+  \frac{\partial{\bar{h}'}}{\partial {t}}  =  M_0 \eta \frac{\partial{\bar{h}}}{\partial {z}} 
                        + \eta(z_T) \delta(z-z_T) ( h^t - \bar{h} ) \; , \\
-  \frac{\partial \bar{q}'}{\partial t}  =  M_0 \eta \frac{\partial \bar{q}}{\partial z} 
+  \frac{\partial{\bar{q}'}}{\partial {t}}  =  M_0 \eta \frac{\partial{\bar{q}}}{\partial {z}} 
                        + \eta(z_T) \delta(z-z_T) ( q^t + l^t - \bar{q} ) \; .
 $$
 
@@ -423,14 +422,14 @@ $$
 With this,
 
 $$
-  \bar{h}'  =  \bar{h} + \frac{\partial \bar{h}'}{\partial t} \delta t \; , \\
-  \bar{q}'  =  \bar{q} + \frac{\partial \bar{q}'}{\partial t} \delta t 
+  \bar{h}'  =  \bar{h} + \frac{\partial{\bar{h}'}}{\partial {t}} \delta t \; , \\
+  \bar{q}'  =  \bar{q} + \frac{\partial{\bar{q}'}}{\partial {t}} \delta t 
 $$
 
 
 
 and using $\bar{h}', \bar{q}'$
-Let $A'$ be the cloud work function calculated from ([p-cum:cwf\]](#p-cum:cwf)).
+Let $A'$ be the one calculated from (32) for the cloud work function.
 
 So..,
 
@@ -467,9 +466,9 @@ by compensated downstream flow and detraining.
 The time variation of the mean field is calculated as follows
 
 $$
-  \frac{\partial \bar{h}}{\partial t}  =  M \frac{\partial \bar{h}}{\partial z} 
+  \frac{\partial{\bar{h}}}{\partial {t}}  =  M \frac{\partial{\bar{h}}}{\partial {z}} 
                     + \int_i D^i ( (h^t)^i - \bar{h} ) \; , \\
-  \frac{\partial \bar{q}}{\partial t}  =  M\frac{\partial \bar{q}}{\partial z} 
+  \frac{\partial{\bar{q}}}{\partial {t}}  =  M\frac{\partial{\bar{q}}}{\partial {z}} 
                     + \int_i D^i ( (q^t)^i + (l^t)^i - \bar{q}(z_T^i) ) \; .
 $$
 
@@ -493,7 +492,7 @@ Note that $\bar{q}_{w}$ is the saturation specific humidity corresponding to the
 
 $$
   \bar{q}_w = \bar{q} 
-            + \frac{\bar{q}^* - \bar{q}}{1+ \frac{L}{C_P}\frac{\partial q^*}{\partial T}} \; .
+            + \frac{\bar{q}^* - \bar{q}}{1+ \frac{L}{C_P}\frac{\partial{q^*}}{\partial {T}}} \; .
 $$
 
 
@@ -529,20 +528,20 @@ and the specific humidity when saturated by evaporation.
 Note that this is $\bar{q}_{w}$.
 
 $$
-  \frac{\partial M^d}{\partial z} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
+  \frac{\partial{M^d}}{\partial {z}} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
 $$
 
 
 $$
-  \frac{\partial }{\partial z} ( M^d h^d )  =  \bar{h}     \frac{\partial M^d}{\partial z} \; ,\\
-  \frac{\partial }{\partial z} ( M^d q^d )  =  \bar{q}_{w} \frac{\partial M^d}{\partial z} \; .
+  \frac{\partial{}}{\partial {z}} ( M^d h^d )  =  \bar{h}     \frac{\partial{M^d}}{\partial {z}} \; ,\\
+  \frac{\partial{}}{\partial {z}} ( M^d q^d )  =  \bar{q}_{w} \frac{\partial{M^d}}{\partial {z}} \; .
 $$
 
 
 
 In the above equation, $f_d$ is the portion of the evaporation that is taken up by the downdraft,
 $(1-f_d)$ evaporates directly into the mean field.
-However, the downdraft mass flux $M^d$ is
+However, the downdraft mass flux $M^d$
 The total mass flux of cloud base shall not exceed the $f_m$ of $M$.
 The current standard value is $f_d=0.5, f_m=1.0$.
 
@@ -584,4 +583,3 @@ $$
 
 .
 The current standard values are $\alpha=0.3$ and $\beta=10$.
-

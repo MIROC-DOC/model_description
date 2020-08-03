@@ -37,7 +37,6 @@ $$
            \right)^{1/2} \; ,
 $$
 
-> <span id="p-grav:tau-fl" label="p-grav:tau-fl" label="p-grav:tau-fl">\fl.</span> </span>
 
 The relationship between the two is valid.
 Here, $N = g/\theta \partial \theta/\partial z$ is
@@ -51,11 +50,10 @@ $$
   \tau = \frac{E_f F_L^2 \rho U^3}{N}
 $$
 
-> <span id="p-grav:fl-tau" label="p-grav:fl-tau" label="p-grav:fl-tau">\blazer[p-grav:fl-tau]</span>
 
 Local Fluid Number $F_L$ is ,
 Assume that a certain value, the critical fluid number $F_{c}$, cannot be exceeded.
-Calculated from ([£p-grav:tau-fl\]](#p-grav:tau-fl)
+Calculated from (1)
 If the local fluid number exceeds the critical fluid number $F_{c}$
 The gravitational waves are supersaturated,
 Up to the momentum flux corresponding to the critical fluid number
@@ -67,7 +65,7 @@ due to gravitational waves excited at the earth's surface.
 The magnitude of the vertical flux of horizontal momentum $\tau_{1/2}$ is ,
 except for the local fluid number at the surface
 $(F_L)_{1/2} = N_1 h/U_1$.
-([p-grav:fl-tau\]](#p-grav:fl-tau)) by substituting into ,
+(2) by substituting (2) for ,
 
 $$
   \tau_{1/2} = E_f h^2 \rho_1 N_1 U_1 \; ,
@@ -85,7 +83,7 @@ Assume that the standard deviation of the surface elevation is equal to $Z_{SD}$
 Here, the local fluid number at the surface
 If $(F_L)_{1/2} = N_1 Z_{SD}/U_1$ is the critical fluid number
 When you exceed the $F_c$,
-The momentum flux is substituted for $F_c$ into ([p-grav:fl-tau\]](#p-grav:fl-tau))
+The momentum flux is calculated by substituting $F_c$ into (2) and
 Let's say it can be contained.
 Namely,
 
@@ -163,4 +161,3 @@ $$
 1. when the wind speed at the lowest level is small ($U_{1} \le v_{min}$) and
  In the case of small undulations in the earth's surface ($Z_{SD} \le (Z_{SD})_{min}$),
  Assuming no gravitational waves are excited at the earth's surface.
-
