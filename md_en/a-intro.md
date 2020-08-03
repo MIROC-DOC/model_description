@@ -38,12 +38,12 @@ $$
   \frac{\partial{q}}{\partial {t}}  =  \left( S \right)_D + \left( S \right)_P \\
   \frac{\partial{T_g}}{\partial {t}}  =  \left( Q_g \right)_D + \left( Q_g \right)_P 
 $$
-    --- (1)
-     --- (2)
-     --- (3)
-     --- (4)
-     --- (5)
-     --- (6)
+
+
+
+
+
+
 
 Where, $u,v,T,p_S,q,T_g$ is,
 Easterly wind, north-south wind, temperature, surface pressure, specific humidity, etc., respectively
@@ -72,7 +72,7 @@ This is done by approximating the left-hand side by a difference. For example,
 $$
   \frac{\partial{q}}{\partial {t}} \rightarrow \frac{q^{t+\Delta t} - q^{t}}{\Delta t}
 $$
-     --- (7)
+
 
 By making ,
 
@@ -80,7 +80,7 @@ $$
   q^{t+\Delta t} = q^{t} 
        + \Delta t \left[ \left( S \right)_D + \left( S \right)_P  \right]
 $$
-    --- (8)
+
 
 That would be.
 Here, $S$ is a function of the forecast variables $u,v,T,p_S,q$, etc,
@@ -98,7 +98,7 @@ First, the mechanics term is basically a leap frog,
 $$
   \tilde{q}^{t+\Delta t} = q^{t-\Delta t} + 2 \Delta t \left( S \right)_D^{t}
 $$
-     --- (9)
+
 
 However, some terms are treated as implicit. but some terms are treated as implicit.
 In the physical process ,
@@ -108,7 +108,7 @@ Using a combination of the Euler and implicit methods,
 $$
   q^{t+\Delta t} = \tilde{q}^{t+\Delta t} + 2 \Delta t \left( S \right)_P
 $$
-     --- (10)
+
 
 I'm looking for.
 Here, $\Delta t$ in (8) is
@@ -154,7 +154,7 @@ Longitude, latitude, dimensionless pressure $\sigma$, indicating vertical depth.
 | Cloud water mixing ratio | $l$ ($\lambda,\varphi,\sigma$) | [kg/kg\\] |
 | underground temperature | $T_g$ ($\lambda,\varphi,z$) | \K.L.A.[K.R.I.E.D.] |
 | subterranean moisture | $W_g$ ($\lambda,\varphi,z$) | \The "m/m\ |
-|  | $W_y$ ($\lambda,\varphi$) |  |
+| amount of snowfall | $W_y$ ($\lambda,\varphi$) |  |
 | sea-ice thickness | $h_I$ ($\lambda,\varphi$) | \\0.25\\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.25\0.00}. |
 
 However, the sea ice thickness is usually only a predictor in the mixed-layer coupled model.

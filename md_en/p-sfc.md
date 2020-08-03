@@ -203,10 +203,9 @@ $$
    F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
 $$
 
-> <span id="p-sfc:sfc-balance" label="p-sfc:sfc-balance" label="p-sfc:sfc-balance">\blazer[p-sfc:sfc-balance]</span>.
 
 It is.
-$F\theta, Fq^P, FR, Fg$, $F\theta, Fq^P, FR, Fg$ is ,
+$F\theta, Fq^P, FR, Fg$ is ,
 Atmospheric and subsurface forecast variables before evaluating surface processes and ,
 The evaluation is performed using the
 In the $T_0$ used at that time, this balance is generally not met.
@@ -224,22 +223,22 @@ The details are described in the section "Solving the Diffusion-Based Budget Equ
 There are two ways to evaluate the evaporation terms $\beta Fq^P(T_0,q_1)$.
 
 1. as a $\beta=1$
- Solved for     ([\\p-sfc:sfc-balance\](#p-sfc:sfc-balance)) $Fq^P$
+ $Fq^P$ obtained by solving     (1)
      (possible evaporation amount) multiplied by $\beta$.
 
 2. using $\beta$.
-     ([p-sfc:sfc-balance\]](#p-sfc:sfc-balance)) directly solve.
+ Solve     (1) directly.
 
 The temperatures used in the calculations in $\beta Fq^P$ are different between the former and the latter.
 In the former case, the temperature in the case of $\beta=1$,
 In the latter case, the actual temperature is used.
 
 The CCSR/NIES AGCM uses the former method as standard.
-The result of solving (with a [\blind\blind\blind\blind\blind\blade}(#p-sfc:sfc-balance)](#p-sfc:sfc-balance) on a snow or ice surface
+The result of solving (1) on a snow or ice surface
 If the $T_0$ exceeds the freezing point,
 Or, when $T_0$ divides the freezing temperature of seawater at the sea surface (in the case of oceanic mixed-layer model)
 by fixing the temperature of the $T_0$ at the freezing point and calculating each flux,
-([p-sfc:sfc-balance\]](#p-sfc:sfc-balance)) and the residuals (energy residuals) of the formula
+The residuals (energy residuals) in equation (1) are
 Suppose it is used for freezing and thawing snow and ice.
 
 ### Set the discrete coordinate system `MODULE:[SETGLV,SETWLV,SETSLV]`
@@ -259,7 +258,7 @@ For convenience, it is represented by $l=0$ and $zg_{0} = zg_{1/2} = zg_{-1/2} =
 Physical quantities, such as heat and moisture fluxes in the ground, and wetness
 The evaluation of surface characteristics is based on whether the surface is sea or land, and in the case of land surface
 This is done separately if there is snowfall or not.
-In the following, we will first evaluate the evaluation method for the land surface case without snow.
+In the following section, we will first evaluate the evaluation method for the land surface case without snow.
 We shall describe in brief. We will describe the difference between the case of sea level and snow surface in detail later.
 
 The heat capacity of the land surface is ,
@@ -280,7 +279,7 @@ $$
 
 
 $$
-  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_{l-1}}
+  \frac{\partial{Fg_{l-1/2}}}{\partial {G_l}} = - \frac{\partial{Fg_{l-1/2}}}{\partial {G_{l-1}}}
  = Kg_{l-1/2}/(zg_l - zg_{l-1}) \; .
 $$
 
@@ -307,10 +306,9 @@ $$
 The basic formula for the groundwater flux can be written as follows.
 
 $$
-  F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
+  F{w} = - K_{w} \left( \frac{\partial{w}}{\partial {z}} + g_w \right)
 $$
 
-> <span id="basic-Fw" label="basic-Fw">\\[basic-Fw]</span>
 
 Here, $g_w$ represents the effect of gravity.
 
@@ -322,7 +320,7 @@ There are two ways to evaluate the groundwater flux on land.
 
 In the method of fixed diffusion coefficients, we simply express it as follows.
 $K_w$ is the diffusion coefficient and $\rho_w$ is the density of liquid water.
-where the gravitational potential term $g_w$ in ([basic-Fw\]](#basic-Fw)) is
+where the gravitational potential term $g_w$ in (7) is
 Ignore it.
 
 $$
@@ -331,7 +329,7 @@ $$
 
 
 $$
-  \frac{\partial Fw_{l-1/2}}{\partial w_l} = - \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}}
+  \frac{\partial{Fw_{l-1/2}}}{\partial {w_l}} = - \frac{\partial{Fw_{l-1/2}}}{\partial {w_{l-1}}}
  = \rho_w Kw_{l-1/2}/(zw_l - zw_{l-1}) \; .
 $$
 
@@ -346,10 +344,10 @@ $$
 
 
 $$
-  \frac{\partial Fw_{l-1/2}}{\partial w_l} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
-                     \frac{\partial \psi_{l}}{\partial w_l}/(zw_l - zw_{l-1}) \; ,\\
-- \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
-                     \frac{\partial \psi_{l-1}}{\partial w_{l-1}}/(zw_l - zw_{l-1}) \; .
+  \frac{\partial{Fw_{l-1/2}}}{\partial {w_l}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial{\psi_{l}}}{\partial {w_l}}/(zw_l - zw_{l-1}) \; ,\\
+- \frac{\partial{Fw_{l-1/2}}}{\partial {w_{l-1}}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial{\psi_{l-1}}}{\partial {w_{l-1}}}/(zw_l - zw_{l-1}) \; .
 $$
 
 
@@ -365,7 +363,7 @@ $$
 
 $$
   \psi_l = \psi s_l (W_l)^{-B}\; , \;\;
-  \frac{\partial \psi_l}{\partial w_l} = -B \psi_l W_l / ws \; .
+  \frac{\partial{\psi_l}}{\partial {w_l}} = -B \psi_l W_l / ws \; .
 $$
 
 
@@ -458,7 +456,6 @@ $$
   \right. \; .
 $$
 
-> <span id="inf-exs" label="inf-exs">\blazer[inf-exs]</span>
 
 The amount of precipitation input percolating to the ground surface is modified as follows.
 
@@ -479,7 +476,7 @@ $$
 
 
 
-On the formula ([index[inf-exs]](#inf-exs)), convective rainfall intensity probability $f(P_c)$
+On top of equation (25), the precipitation intensity probability of convective rainfall is given by $f(P_c)$
 It is derived from the following equation, which assumes an exponential distribution.
 
 $$
@@ -529,7 +526,7 @@ $$
 
 Here, the wetness factor ($f_w$) and the zenith angle factor ($f_{\zeta}$) are constants.
 
-### Evaluating roughness on land surface`MODULE:[LNDZ0]`
+### Evaluating roughness on land surface `MODULE:[LNDZ0]`
 
 The evaluation of roughness is basically based on a constant value given by an external source.
 There are two ways to give it.
@@ -606,7 +603,7 @@ $$
 
 
 $$
-  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_l-1} 
+  \frac{\partial{Fg_{l-1/2}}}{\partial {G_l}} = - \frac{\partial{Fg_{l-1/2}}}{\partial {G_l-1}} 
  = Ks_{l-1/2}/(zs_l - zs_{l-1}) \; .
 $$
 
@@ -700,7 +697,7 @@ However, the $Fg'_{1/2}$ is the flux when there is no snow.
 Therefore, if this has already been calculated,
 By taking the harmonic mean of that and the snow only flux,
 Fluxes are required in the presence of snow.
-Also, the temperature differential coefficient of the fluxes $\frac{\partial Fg_{1/2}}{\partial G_1}$ and $\frac{\partial Fg_{1/2}}{\partial T_0}$
+Also, the temperature differential coefficient of the fluxes $\frac{\partial{Fg_{1/2}}}{\partial {G_1}}$ and $\frac{\partial{Fg_{1/2}}}{\partial {T_0}}$
 is similarly obtained by the harmonic mean of the temperature differential coefficients.
 
 If there is more than a certain amount of snowfall ,
@@ -749,7 +746,7 @@ When precipitation arrives at the ground surface, it is judged whether it is sol
 Atmosphere First Layer Wet Bulb Temperature $Tw_1$
 
 $$
-Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T} )
+Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial{q^*}}{\partial {T}} )
 $$
 
 
@@ -1022,7 +1019,7 @@ $$
 
  Heat flux in the     $z=D$ is usually zero while the $Fs_{1+1/2}$ is usually zero,
  It can be given from the outside.
- It is used in the case of flux correction considering oceanic heat transport.
+ It is used in the case of flux correction for oceanic heat transport.
 
 2. using this heat flux and heat capacity
  As with the land surface, determine the change in temperature ($G$).
@@ -1160,4 +1157,3 @@ $$
  Provide the appropriate $\tau$ and perform nudging,
  Remember the     $F_n$,
  You can give it to me as $Fs_{1+1/2}$.
-

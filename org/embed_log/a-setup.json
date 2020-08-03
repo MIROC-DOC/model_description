@@ -1,9 +1,250 @@
 {
-    "imath": {},
-    "emath": {},
+    "imath": {
+        "TERM00000": {
+            "count": 0,
+            "text": "$\\lambda$"
+        },
+        "TERM00001": {
+            "count": 0,
+            "text": "$\\varphi$"
+        },
+        "TERM00002": {
+            "count": 0,
+            "text": "$\\sigma = p/p_S$"
+        },
+        "TERM00003": {
+            "count": 0,
+            "text": "$p_S(\\lambda,\\varphi)$"
+        },
+        "TERM00004": {
+            "count": 0,
+            "text": "$z$"
+        },
+        "TERM00005": {
+            "count": 0,
+            "text": "$\\varphi_j$"
+        },
+        "TERM00006": {
+            "count": 0,
+            "text": "$\\mu = \\sin \\varphi$"
+        },
+        "TERM00007": {
+            "count": 0,
+            "text": "$J = I/2$"
+        },
+        "TERM00008": {
+            "count": 0,
+            "text": "$\\sigma$"
+        },
+        "TERM00009": {
+            "count": 0,
+            "text": "$\\sigma_{k-1/2}$"
+        },
+        "TERM00010": {
+            "count": 0,
+            "text": "$k = 1 \\ldots K+1$"
+        },
+        "TERM00011": {
+            "count": 0,
+            "text": "$\\sigma$"
+        },
+        "TERM00012": {
+            "count": 0,
+            "text": "$(\\lambda_i, \\varphi_j, \\sigma_k)$"
+        },
+        "TERM00013": {
+            "count": 0,
+            "text": "$(\\lambda_i, \\varphi_j, z_l)$"
+        },
+        "TERM00014": {
+            "count": 0,
+            "text": "$z_l$"
+        },
+        "TERM00015": {
+            "count": 0,
+            "text": "$\\Delta t$"
+        },
+        "TERM00016": {
+            "count": 0,
+            "text": "$\\Delta t$"
+        },
+        "TERM00017": {
+            "count": 0,
+            "text": "$a$"
+        },
+        "TERM00018": {
+            "count": 0,
+            "text": "$\\times 10^6$"
+        },
+        "TERM00019": {
+            "count": 0,
+            "text": "$g$"
+        },
+        "TERM00020": {
+            "count": 0,
+            "text": "ms$^-2$"
+        },
+        "TERM00021": {
+            "count": 0,
+            "text": "$C_p$"
+        },
+        "TERM00022": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00023": {
+            "count": 0,
+            "text": "K$^{-1}$"
+        },
+        "TERM00024": {
+            "count": 0,
+            "text": "$R$"
+        },
+        "TERM00025": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00026": {
+            "count": 0,
+            "text": "K$^{-1}$"
+        },
+        "TERM00027": {
+            "count": 0,
+            "text": "$L$"
+        },
+        "TERM00028": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00029": {
+            "count": 0,
+            "text": "$\\times 10^6$"
+        },
+        "TERM00030": {
+            "count": 0,
+            "text": "$C_v$"
+        },
+        "TERM00031": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00032": {
+            "count": 0,
+            "text": "K$^{-1}$"
+        },
+        "TERM00033": {
+            "count": 0,
+            "text": "$R_v$"
+        },
+        "TERM00034": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00035": {
+            "count": 0,
+            "text": "K$^{-1}$"
+        },
+        "TERM00036": {
+            "count": 0,
+            "text": "$d_{H_2O}$"
+        },
+        "TERM00037": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00038": {
+            "count": 0,
+            "text": "K$^{-1}$"
+        },
+        "TERM00039": {
+            "count": 0,
+            "text": "$^{\\circ}$"
+        },
+        "TERM00040": {
+            "count": 0,
+            "text": "$e^*$"
+        },
+        "TERM00041": {
+            "count": 0,
+            "text": "$\\sigma_{SB}$"
+        },
+        "TERM00042": {
+            "count": 0,
+            "text": "m$^{-2}$"
+        },
+        "TERM00043": {
+            "count": 0,
+            "text": "K$^{-4}$"
+        },
+        "TERM00044": {
+            "count": 0,
+            "text": "$\\times 10^{-8}$"
+        },
+        "TERM00045": {
+            "count": 0,
+            "text": "$k$"
+        },
+        "TERM00046": {
+            "count": 0,
+            "text": "$L_M$"
+        },
+        "TERM00047": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00048": {
+            "count": 0,
+            "text": "$\\times 10^5$"
+        },
+        "TERM00049": {
+            "count": 0,
+            "text": "$T_M$"
+        },
+        "TERM00050": {
+            "count": 0,
+            "text": "$C_w$"
+        },
+        "TERM00051": {
+            "count": 0,
+            "text": "kg$^{-1}$"
+        },
+        "TERM00052": {
+            "count": 0,
+            "text": "$T_I$"
+        },
+        "TERM00053": {
+            "count": 0,
+            "text": "$C_I  = C_w - L_M/T_M$"
+        },
+        "TERM00054": {
+            "count": 0,
+            "text": "$\\epsilon  = R/R_v$"
+        },
+        "TERM00055": {
+            "count": 0,
+            "text": "$\\epsilon_v = \\epsilon^{-1} - 1$"
+        },
+        "TERM00056": {
+            "count": 0,
+            "text": "$\\kappa = R/C_p$"
+        }
+    },
+    "emath": {
+        "EQ=00000.": {
+            "count": 0,
+            "text": "$$\n  \\lambda_i = 2 \\pi \\frac{i-1}{I}  \\;\\;\\; i = 1, \\ldots I-1\n$$\n"
+        },
+        "EQ=00001.": {
+            "count": 0,
+            "text": "$$\n  \\varphi_j =  \\pi ( \\frac{1}{2}- \\frac{j-1/2}{J} ) \\;\\;\\; j = 1, \\ldots J-1\n$$\n"
+        },
+        "EQ=00002.": {
+            "count": 0,
+            "text": "$$\n \\sigma_k = \\left\\{ \\frac{1}{1+\\kappa}\n                     \\left( \\frac{  \\sigma^{\\kappa +1}_{k-1/2}\n                                  - \\sigma^{\\kappa +1}_{k+1/2}      }\n                                  { \\sigma_{k-1/2} - \\sigma_{k+1/2} }\n                     \\right)\n              \\right\\}^{1/\\kappa}\n$$\n"
+        }
+    },
     "tabular": {
-        "0": [
-            "8.0",
+        "2": [
             "10.2",
             "15.2",
             "16.2",

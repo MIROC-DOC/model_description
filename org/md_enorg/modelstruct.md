@@ -160,7 +160,7 @@ W2G and G2W are used in many places, but this structure makes it possible for th
 This avoids the complexity of having to use PNM and DPNM as arguments.
 The COMMON variable is usually used in such cases.
 Here, the COMMON variable is used as an inconvenience for management and debugging.
-We avoid this type of encapsulation structure as much as possible and instead use such an encapsulation structure.
+We avoid this type of encapsulation structure as much as possible and instead use such an encapsulated structure.
 
 Only two COMMONs are in use.
 
@@ -385,7 +385,7 @@ Here, the meaning of the input and output columns is as follows
  × x & whatever is in it
      \{array}
 
-
+\The output is a lot more than just a\\lopenopenPointPointPoint.com
      \begin{array}{ll}
  O O & may be subject to change in the course of the event
        - & the value will not change

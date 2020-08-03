@@ -28,43 +28,43 @@ The outline of the calculation procedure is as follows.
 The vertical diffuse flux in the atmosphere is ,
 Using the diffusion coefficient TERM00004, it is evaluated as follows.
 
-> EQ=00000.
+     EQ=00000.
 
-> EQ=00001.
+     EQ=00001.
 
-> EQ=00002.
+     EQ=00002.
 
-> EQ=00003.
+     EQ=00003.
 
 ### Richardson Number.
 
 The standard for atmospheric stratospheric stability,
 Bulk Richardson number TERM00005 is
 
-> EQ=00004.
+     EQ=00004.
 
 . defined by .
 Here, TERM00006 represents TERM00007.
 The TERM00008 is based on the hydrostatic pressure equation,
 
-> EQ=00005.
+     EQ=00005.
 
 The flux Ricahrdson number TERM00009 is ,
 
-> EQ=00006.
+     EQ=00006.
 
 However,
 
-> EQ=00020.
-> EQ=00020.
-> EQ=00020.
-> EQ=00020.
-> EQ=00020.
-> EQ=00020.
+     EQ=00020.
+     EQ=00020.
+     EQ=00020.
+     EQ=00020.
+     EQ=00020.
+     EQ=00020.
 
-> EQ=00007.
+     EQ=00007.
 
-> EQ=00008.
+     EQ=00008.
 
 The relationship between the TERM00010 and the TERM00011 is illustrated in this figure,
 Figure [p-dif:rib-rif\]] (#p-dif:rib-rif).
@@ -75,50 +75,50 @@ The diffusion coefficient is ,
 For each layer boundary (TERM00012 level) ,
 It is given as follows.
 
-> EQ=00021.
-> EQ=00021.
+     EQ=00021.
+     EQ=00021.
 
-Here, TERM00013 and TERM00013 are,
+Here, TERM00015 and TERM00015 are,
 
-> EQ=00009.
+     EQ=00009.
 
-> EQ=00010.
+     EQ=00010.
 
 with ,
 
-> EQ=00022.
-> EQ=00022.
+     EQ=00022.
+     EQ=00022.
 
-TERM00014 is a mixing distance, according to Blakadar (1962),
+TERM00016 is a mixing distance, according to Blakadar (1962),
 
-> EQ=00011.
+     EQ=00011.
 
 Take.
-TERM00015 is a Kárman constant.
-The current standard value is TERM00016 m.
+TERM00017 is a Kárman constant.
+The current standard value is TERM00018 m.
 
-If TERM00017 and TERM00017 are shown as functions of TERM00018,
+If TERM00019 and TERM00019 are shown as functions of TERM00020,
 Figure [p-dif:smsh-rif\]] (#p-dif:smsh-rif).
 
 ### Calculating Flux.
 
 Using the above, we calculate the fluxes and flux derivatives.
 
-> EQ=00012.
+     EQ=00012.
 
-> EQ=00013.
+     EQ=00013.
 
-> EQ=00014.
+     EQ=00014.
 
-> EQ=00015.
+     EQ=00015.
 
-> EQ=00016.
+     EQ=00016.
 
-> EQ=00017.
+     EQ=00017.
 
-> EQ=00018.
+     EQ=00018.
 
-> EQ=00019.
+     EQ=00019.
 
 ### Minimum Diffusion Coefficient.
 
@@ -126,7 +126,7 @@ In the very stable case, the above estimate gives zero as the diffusion coeffici
 As it is, the model's behavior can be modified in various ways
 Set a suitable minimum value as it will have a negative effect.
 The current standard values are the same for all fluxes and
-TERM00020 0.15 TERM00021/s
+TERM00022 0.15 TERM00023/s
 
 ### Other Notes.
 

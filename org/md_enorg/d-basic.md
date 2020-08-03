@@ -10,44 +10,44 @@ It is given as follows ( Haltiner and Williams , 1980 ).
 
 1. a series of equations
 
-         EQ=00000.     --- (1)
+         EQ=00000.
 
 2. hydrostatic pressure formula
 
-         EQ=00001.    --- (2)
+         EQ=00001.
 
 3. equation of motion
 
-         EQ=00002.     --- (3)
+         EQ=00002.
 
-         EQ=00003.     --- (4)
+         EQ=00003.
 
 4. thermodynamic equation
 
          EQ=00008.
-         EQ=00008.     --- (5)
+         EQ=00008.
 
 5. water vapor formula
 
          EQ=00009.
-         EQ=00009.     --- (6)
+         EQ=00009.
 
 Here,
 
-     EQ=00010.     --- (7)
-     EQ=00010.     --- (8)
-     EQ=00010.     --- (9)
-     EQ=00010.     --- (10)
-     EQ=00010.     --- (11)
-     EQ=00010.     --- (12)
-     EQ=00010.     --- (13)
-     EQ=00010.     --- (14)
-     EQ=00010.     --- (15)
-     EQ=00010.     --- (16)
-     EQ=00010.    --- (17)
-     EQ=00010.     --- (18)
      EQ=00010.
-     EQ=00010.     --- (19)
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
+     EQ=00010.
 
 TERM00006,TERM00006
 is the horizontal diffusion term,
@@ -59,7 +59,7 @@ The TERM00009 is a process that involves physical processes such as condensation
 It is a water vapor source term.
 Also, the TERM00010 is a frictional heat,
 
-     EQ=00004.    --- (20)
+     EQ=00004.
 
 TERM00013 is ,
 It is a time-varying term of TERM00014,TERM00014 due to horizontal and vertical diffusion.
@@ -68,14 +68,14 @@ It is a time-varying term of TERM00014,TERM00014 due to horizontal and vertical 
 
 The boundary conditions for lead-direct current are
 
-     EQ=00005.     --- (21)
+     EQ=00005.
 
 Therefore, from (1) Therefore, from (1),
 The time-varying surface pressure equation and
 Diagnostic Formula for determining the vertical velocity (TERM00016) in the TERM00015 system
 
-     EQ=00006.     --- (22)
+     EQ=00006.
 
-     EQ=00007.     --- (23)
+     EQ=00007.
 
 is led.

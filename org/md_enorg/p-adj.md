@@ -18,24 +18,23 @@ A convection adjustment has been added to stabilize the calculation.
 
 The conditions for convective instability in the layers TERM00004 and TERM00004 are
 
-> EQ=00000.
+     EQ=00000.
 
 Namely,
 
-> EQ=00001.
-> <span id="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond"> </span>.
+     EQ=00001.
 
 is a condition.
 
 When this is satisfied ,
 
-> EQ=00003.
-> EQ=00003.
+     EQ=00003.
+     EQ=00003.
 
 to compensate for the temperature.
 Furthermore,
 
-> EQ=00002.
+     EQ=00002.
 
 to average the values of specific humidity etc. in the two layers.
 
@@ -44,7 +43,7 @@ The layers above and below it may become unstable. That's why,
 Repeating this operation from the lower level to the upper level.
 Repeat until there is no more layer of convective instability.
 However, considering the calculation error and so on,
-(as a condition of [\\p\[p-adj:condo\]](#p-adj:condo)),
+As a condition of (2) ,
 It is considered to have converged if S is less than or equal to some small finite value that is not zero.
 
 Currently, the standard adjustment is between the second and third layer from the bottom and above.

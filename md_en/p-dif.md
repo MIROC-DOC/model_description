@@ -5,7 +5,7 @@
 The vertical diffusion scheme,
 due to sub-grid scale turbulent diffusion.
 Evaluating the vertical flux of physical quantities.
-The main input data are wind speed, $u, v$, $u, v$, temperature $T$, specific humidity $q$, and cloud cover $l$,
+The main input data are wind speed, $u, v$, temperature $T$, specific humidity $q$, and cloud cover $l$,
 The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and
 It is the differential value for obtaining an implicit solution.
 
@@ -29,22 +29,22 @@ The vertical diffuse flux in the atmosphere is ,
 Using the diffusion coefficient $K$, it is evaluated as follows.
 
 $$
-  F{u} = K_{M} \frac{\partial u}{\partial \sigma} 
+  F{u} = K_{M} \frac{\partial{u}}{\partial {\sigma}} 
 $$
 
 
 $$
-  F{v} = K_M \frac{\partial v}{\partial \sigma} 
+  F{v} = K_M \frac{\partial{v}}{\partial {\sigma}} 
 $$
 
 
 $$
-  F{\theta} = K_H \frac{\partial \theta}{\partial \sigma} 
+  F{\theta} = K_H \frac{\partial{\theta}}{\partial {\sigma}} 
 $$
 
 
 $$
-  F{q} = K_q \frac{\partial q}{\partial \sigma} 
+  F{q} = K_q \frac{\partial{q}}{\partial {\sigma}} 
 $$
 
 
@@ -121,8 +121,8 @@ For each layer boundary ($k-1/2$ level) ,
 It is given as follows.
 
 $$
-K_M        =  l^2 \frac{\Delta |\mathbf{v}|}{\Delta z} S_M  \\
-K_H = K_q  =  l^2 \frac{\Delta |\mathbf{v}|}{\Delta z} S_H 
+K_M        =  l^2 \frac{\Delta |{$\mathbf{v}$}|}{\Delta z} S_M  \\
+K_H = K_q  =  l^2 \frac{\Delta |{$\mathbf{v}$}|}{\Delta z} S_H 
 $$
 
 
@@ -191,27 +191,27 @@ $$
 
 
 $$
-     \frac{\partial Fu_{k-1/2}}{\partial u_{k-1}} =   \frac{\partial Fv_{k-1/2}}{\partial v_{k-1}} 
-  = -\frac{\partial Fu_{k-1/2}}{\partial u_{k}} = - \frac{\partial Fv_{k-1/2}}{\partial v_{k}}  
+     \frac{\partial{Fu_{k-1/2}}}{\partial {u_{k-1}}} =   \frac{\partial{Fv_{k-1/2}}}{\partial {v_{k-1}}} 
+  = -\frac{\partial{Fu_{k-1/2}}}{\partial {u_{k}}} = - \frac{\partial{Fv_{k-1/2}}}{\partial {v_{k}}}  
   = K_{M,k-1/2}/(\sigma_{k-1}-\sigma_{k})
 $$
 
 
 $$
-  \frac{\partial F\theta_{k-1/2}}{\partial T_{k-1}}
+  \frac{\partial{F\theta_{k-1/2}}}{\partial {T_{k-1}}}
   = \sigma_{k-1}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
 $$
 
 
 $$
-  \frac{\partial F\theta_{k-1/2}}{\partial T_{k}}
+  \frac{\partial{F\theta_{k-1/2}}}{\partial {T_{k}}}
  = \sigma_{k}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
 $$
 
 
 $$
-  \frac{\partial Fq_{k-1/2}}{\partial u_{k-1}}
- = - \frac{\partial Fq_{k-1/2}}{\partial u_{k}}
+  \frac{\partial{Fq_{k-1/2}}}{\partial {u_{k-1}}}
+ = - \frac{\partial{Fq_{k-1/2}}}{\partial {u_{k}}}
  = K_{q,k-1/2}/(\sigma_{k-1}-\sigma_{k})
 $$
 
@@ -228,4 +228,3 @@ $K_{min}=$ 0.15 m$^{2}$/s
 
 I'm calling the shallow cumulus convection `MODULE:[SHLCOF]`,
 By default, this is a dummy.
-

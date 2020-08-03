@@ -31,8 +31,7 @@ Given the vertical flux of horizontal momentum,
 Flux at a certain altitude TERM00004 and
 Local Fluid Number TERM00005 and ,
 
-> EQ=00000.
-> <span id="p-grav:tau-fl" label="p-grav:tau-fl" label="p-grav:tau-fl">\fl.</span> </span>
+     EQ=00000.
 
 The relationship between the two is valid.
 Here, TERM00006 is
@@ -42,12 +41,11 @@ TERM00008 corresponds to the wind speed and TERM00009 corresponds to the horizon
 It is a proportional constant .
 Now..,
 
-> EQ=00001.
-> <span id="p-grav:fl-tau" label="p-grav:fl-tau" label="p-grav:fl-tau">\blazer[p-grav:fl-tau]</span>
+     EQ=00001.
 
 Local Fluid Number TERM00010 is ,
 Assume that a certain value, the critical fluid number TERM00011, cannot be exceeded.
-Calculated from ([£p-grav:tau-fl\]](#p-grav:tau-fl)
+Calculated from (1)
 If the local fluid number exceeds the critical fluid number TERM00012
 The gravitational waves are supersaturated,
 Up to the momentum flux corresponding to the critical fluid number
@@ -59,9 +57,9 @@ due to gravitational waves excited at the earth's surface.
 The magnitude of the vertical flux of horizontal momentum TERM00013 is ,
 except for the local fluid number at the surface
 TERM00014.
-([p-grav:fl-tau\]](#p-grav:fl-tau)) by substituting into ,
+(2) by substituting (2) for ,
 
-> EQ=00002.
+     EQ=00002.
 
 It is estimated that .
 Here,
@@ -74,11 +72,11 @@ Assume that the standard deviation of the surface elevation is equal to TERM0001
 Here, the local fluid number at the surface
 If TERM00019 is the critical fluid number
 When you exceed the TERM00020,
-The momentum flux is substituted for TERM00021 into ([p-grav:fl-tau\]](#p-grav:fl-tau))
+The momentum flux is calculated by substituting TERM00021 into (2) and
 Let's say it can be contained.
 Namely,
 
-> EQ=00003.
+     EQ=00003.
 
 ### Momentum fluxes in the upper levels.
 
@@ -91,29 +89,29 @@ Momentum fluxes calculated from the critical fluid number at the TERM00027 level
 In the case of a wave breaking event that exceeds
 The momentum flux decreases to the flux corresponding to the criticality.
 
-> EQ=00004.
+     EQ=00004.
 
 However, the TERM00029,
 . of the wind velocity vector at each layer,
 It is the magnitude of the projective component of the lowest level with respect to the direction of the horizontal wind,
 
-> EQ=00005.
+     EQ=00005.
 
 ### The magnitude of the time variation of horizontal wind due to momentum convergence.
 
 The temporal rate of change of the projective component of the horizontal wind, TERM00030, is
 
-> EQ=00006.
+     EQ=00006.
 
 as determined by i.e. ,
 
-> EQ=00007.
+     EQ=00007.
 
 With this ,
 The rate of change of the east-west and north-south winds over time is calculated as follows.
 
-> EQ=00008.
-> EQ=00008.
+     EQ=00008.
+     EQ=00008.
 
 ### Other Notes.
 

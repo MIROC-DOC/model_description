@@ -16,14 +16,14 @@ $$
 \nabla^{2}_{\sigma} Y_n^m(\lambda,\mu) 
 = - \frac{n(n+1)}{a^{2}} Y_n^m(\lambda,\mu) 
 $$
-     --- (1)
+
 
 Using the Legendre jury function $P_n^m$ it is written as follows.
 
 $$
 Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{im \lambda}
 $$
-    --- (2)
+
 
 However, it is $ n \geq | m | $.
 
@@ -32,16 +32,16 @@ The expansion by spherical harmonic functions is ,
 $$
    {Y_n^m}_{ij} \equiv Y_n^m ( \lambda_i, \mu_j )
 $$
-     --- (3)
+
 
 When I write ,
 
 $$
   X_{ij} \equiv X ( \lambda_i, \mu_j )
-  =  {\mathcal R}{TERM00006} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+  =  {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
         X_n^m {Y_n^m}_{ij} ,
 $$
-     --- (4)
+
 
 The inverse of that is ,
 
@@ -53,11 +53,11 @@ $$
          =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m*}}_{ij} w_j 
 $$
-    --- (5)
-    --- (6)
+
+
 
 expressed as follows.
-When evaluating the sum of the integral, you can substitute the sum of ,
+When evaluating the summation of the integral,
 See Gauss's trapezoidal formula for the $\lambda$ integral,
 Use the Gauss-Legendre integral formula for the $\mu$ integral.
 $\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load.
@@ -69,18 +69,18 @@ The grid point values for the terms containing the derivatives are found as foll
 $$
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
      =  
-        {\mathcal R}{TERM00012} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+        {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        im X_n^m {Y_n^m}_{ij}
 $$
-     --- (7)
+
 
 $$
    \left( \cos\varphi \frac{\partial X}{\partial \varphi} \right)_{ij}
-     =  {\mathcal R}{TERM00013} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+     =  {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        X_n^m 
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
 $$
-     --- (8)
+
 
 Furthermore,
 From the spectral components of $\zeta$ and $D$,
@@ -89,7 +89,7 @@ The grid point values for $u,v$ are obtained as follows.
 $$
   u_{ij}
   = \frac{1}{\cos\varphi}
-     {\mathcal R}{TERM00017} \sum_{m=-N}^{N} 
+     {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} 
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
     \left\{
              \frac{a}{n(n+1)} \zeta_n^m 
@@ -97,12 +97,12 @@ $$
           -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
 $$
-     --- (9)
+
 
 $$
   v_{ij}
   = \frac{1}{\cos\varphi}
-   {\mathcal R}{TERM00018} \sum_{m=-N}^{N}
+   {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N}
                      \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
           -  \frac{im a}{n(n+1)} \zeta_n^m {Y_n^m}_{ij}
@@ -110,7 +110,7 @@ $$
             (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
     \right\}
 $$
-     --- (10)
+
 
 The derivative that appears in the advection term of the equation is,
 The following is required.
@@ -129,7 +129,7 @@ $$
 $$
 
 
-     --- (11)
+
 
 $$
   \left( \frac{1}{a\cos\varphi} 
@@ -148,7 +148,7 @@ $$
 $$
 
 
-     --- (12)
+
 
 Furthermore,
 
@@ -156,7 +156,7 @@ $$
      \left( \nabla^{2}_{\sigma} X \right)_n^m
        =  - \frac{n(n+1)}{a^{2}} X_n^m
 $$
-     --- (13)
+
 
 for the evaluation in $\nabla^2$.
 
@@ -171,7 +171,7 @@ $$
                       \right]
                     \zeta ,
 $$
-    --- (14)
+
 
 $$
      {\mathcal D}(D) = K_{MH} 
@@ -180,17 +180,17 @@ $$
                       \right]
                     D ,
 $$
-     --- (15)
+
 
 $$
     {\mathcal D}(T) = (-1)^{N_D/2} K_{HH} \nabla^{N_D} T ,
 $$
-    --- (16)
+
 
 $$
     {\mathcal D}(q) = (-1)^{N_D/2} K_{EH} \nabla^{N_D} q .
 $$
-    --- (17)
+
 
 This horizontal diffusion term has strong implications for computational stability.
 To represent selective horizontal diffusion on small scales,
@@ -209,14 +209,14 @@ $$
                Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
 $$
 
-    --- (18)
+
 
  Here,
 
 $$
-Z \equiv - \sum_{k=1}^{K} {TERM00024}_k \cdot \nabla \pi .
+Z \equiv - \sum_{k=1}^{K} {$\mathbf{v}$}_k \cdot \nabla \pi .
 $$
-    --- (19)
+
 
 2. equation of motion
 
@@ -237,7 +237,7 @@ $$
 $$
 
 
-    --- (20)
+
 
 $$
   \frac{\partial{\tilde{D}_n^m}}{\partial {t}} 
@@ -263,7 +263,7 @@ $$
 
 
 
-    --- (21)
+
 
  However,
 
@@ -273,7 +273,7 @@ $$
                             - \left( \frac{2}{a^2} \right)^{N_D/2}
                             \right]  .
 $$
-    --- (22)
+
 
 3. thermodynamic equation
 
@@ -299,7 +299,7 @@ $$
 
 
 
-     --- (23)
+
 
  However,
 
@@ -307,7 +307,7 @@ $$
 ({\mathcal D}_H)_n^m 
    =  K_{HH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
 $$
-    --- (24)
+
 
 4. water vapor formula
 
@@ -332,7 +332,7 @@ $$
 
 
 
-     --- (25)
+
 
  However,
 
@@ -340,4 +340,4 @@ $$
 ({\mathcal D}_E)_n^m 
    =  K_{EH} \left( \frac{n(n+1)}{a^{2}} \right)^{N_D/2} .
 $$
-    --- (26)
+

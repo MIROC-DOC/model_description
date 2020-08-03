@@ -19,7 +19,7 @@ See the chapter on physical processes for details.)
 
 Expressed as TERM00006 on behalf of each forecast variable,
 
-     EQ=00000.     --- (1)
+     EQ=00000.
 
 TERM00007 is an advection term etc,
 TERM00008 is a horizontal diffusion term.
@@ -29,13 +29,13 @@ Pseudo, etc. TERM00010 Correction of frictional heat (TERM00011) by surface and 
 and physical processes (TERM00012) have been added,
 TERM00013.
 
-     EQ=00001.    --- (2)
+     EQ=00001.
 
 To remove the computation mode in leap frog
 Apply the time filter of Asselin (1972) at every step.
 Namely,
 
-     EQ=00002.     --- (3)
+     EQ=00002.
 
 and TERM00014.
 For TERM00015 it is standard to use 0.05.
@@ -57,13 +57,13 @@ The term A is treated in the leap forg method and the term B is treated in the t
 Assume that A is nonlinear for <span>q</span>, but B is linear.
 Namely,
 
-     EQ=00003.     --- (4)
+     EQ=00003.
 
 Note that TERM00024 is a square matrix. Then,
 TERM00025
 And then you can write,
 
-     EQ=00004.     --- (5)
+     EQ=00004.
 
 This can be easily solved by matrix operations.
 
@@ -77,21 +77,21 @@ Separation of the linear gravitational wave term and the other terms (with the i
 Vertical Vector Representation
 Using TERM00029, TERM00030,
 
-     EQ=00005.     --- (6)
+     EQ=00005.
 
-     EQ=00006.     --- (7)
+     EQ=00006.
 
-     EQ=00038.     --- (8)
+     EQ=00038.
 
 Here, the non-gravitational wave term is
 
-     EQ=00007.     --- (9)
+     EQ=00007.
 
-     EQ=00008.     --- (10)
+     EQ=00008.
 
-     EQ=00009.     --- (11)
+     EQ=00009.
 
-     EQ=00010.     --- (12)
+     EQ=00010.
 
      EQ=00039.
      EQ=00039.
@@ -99,57 +99,57 @@ Here, the non-gravitational wave term is
      EQ=00039.
      EQ=00039.
      EQ=00039.
-     EQ=00039.     --- (13)
+     EQ=00039.
 
-     EQ=00011.    --- (14)
+     EQ=00011.
 
 where the vector and matrix of the gravitational wave term (underlined) are
 
-     EQ=00012.    --- (15)
+     EQ=00012.
 
-     EQ=00013.    --- (16)
+     EQ=00013.
 
-     EQ=00014.    --- (17)
+     EQ=00014.
 
-     EQ=00015.    --- (18)
+     EQ=00015.
 
-     EQ=00016.    --- (19)
+     EQ=00016.
 
-     EQ=00017.    --- (20)
+     EQ=00017.
 
-     EQ=00018.     --- (21)
+     EQ=00018.
 
 Here, for example, TERM00048 is
 A function that is 1 if TERM00049 is valid and 0 otherwise.
 
 Using the following expression ,
 
-     EQ=00019.    --- (22)
+     EQ=00019.
 
      EQ=00040.
-     EQ=00040.    --- (23)
+     EQ=00040.
 
 If we apply the semi-implicit method to the system of equations,
 
-     EQ=00020.    --- (24)
+     EQ=00020.
 
-     EQ=00021.     --- (25)
+     EQ=00021.
 
-     EQ=00022.     --- (26)
+     EQ=00022.
 
 So..,
 
      EQ=00041.
      EQ=00041.
      EQ=00041.
-     EQ=00041.    --- (27)
+     EQ=00041.
 
 Since the spherical harmonic expansion is used,
 
 and the above equation can be solved for TERM00073.
 And then..,
 
-     EQ=00023.     --- (28)
+     EQ=00023.
 
 and, (24), (26)
 The value in TERM00075 according to TERM00076
@@ -159,7 +159,7 @@ is required.
 
 advectional equation
 
-     EQ=00024.    --- (29)
+     EQ=00024.
 
 Considering the stability of the discretization in the leap frog in
 Now,
@@ -168,7 +168,7 @@ Now,
 
 If we place the difference between
 
-     EQ=00026.    --- (30)
+     EQ=00026.
 
 That would be.
 Here,
@@ -177,15 +177,15 @@ Here,
 
 So,
 
-     EQ=00028.     --- (31)
+     EQ=00028.
 
 The solution is called TERM00077,
 
-     EQ=00029.    --- (32)
+     EQ=00029.
 
 This absolute value is
 
-     EQ=00030.     --- (33)
+     EQ=00030.
 
 and in the case of TERM00078, it is TERM00079,
 It is a solution whose absolute value increases exponentially with time.
@@ -211,13 +211,13 @@ This will cause the maximum value of TERM00088 to be
 
 From becoming ,
 
-     EQ=00032.     --- (34)
+     EQ=00032.
 
 That would be.
 In the case of spectral models, the maximum wavenumber is determined by TERM00089,
 Earth radius is set to TERM00090,
 
-     EQ=00033.    --- (35)
+     EQ=00033.
 
 This is a condition for stability.
 
@@ -230,7 +230,7 @@ When semi-implicit is used, advection by the east-west wind is usually
 Limiting factors.
 Thus, TERM00094 assumes that TERM00095 is the maximum value of the east-west wind,
 
-     EQ=00034.    --- (36)
+     EQ=00034.
 
 Take to meet the .
 In practice, this is multiplied by a safety factor.

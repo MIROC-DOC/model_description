@@ -53,7 +53,7 @@ $$
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
 $$
 
-    --- (1)
+
 
 $$
     D_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -66,16 +66,16 @@ $$
                  \frac{w_j}{a(1-\mu_j^{2})} ; .
 $$
 
-    --- (2)
+
 
 I'll take that further,
 
 $$
   \zeta_{ij} 
-   =  {\mathcal R}{TERM00004} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+   =  {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       \zeta_n^m  {Y_n^m}_{ij} \; ,
 $$
-     --- (3)
+
 
 and so on.
 
@@ -86,7 +86,7 @@ Provisional Temperature $T_v$ is ,
 $$
   T_v = T ( 1 + \epsilon_v q - l ) \; ,
 $$
-     --- (4)
+
 
 However, it is $\epsilon_v = R_v/R - 1$,
 $R_v$ is a gas constant for water vapor
@@ -104,7 +104,7 @@ $$
   \pi_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                (\ln {p_S})_{ij} {Y_n^{m *}}_{ij}  w_j \; ,
 $$
-    --- (5)
+
 
 to a spectral representation and then ,
 
@@ -113,21 +113,21 @@ $$
    \left( \frac{\partial \pi}{\partial \lambda} \right)_{ij}
      = 
    \frac{1}{a \cos \varphi} 
-        {\mathcal R}{TERM00015} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+        {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        im \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
 $$
-     --- (6)
+
 
 $$
    \frac{1}{a}
    \left( \frac{\partial \pi}{\partial \varphi} \right)_{ij}
      =  
    \frac{1}{a \cos \varphi} 
-       {\mathcal R}{TERM00016} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+       {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
        \pi_n^m 
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 $$
-     --- (7)
+
 
 ### Diagnostic calculations of vertical flow.
 
@@ -135,35 +135,35 @@ Barometric pressure change term, and lead DC,
 
 $$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + {TERM00017}_k \cdot \nabla \pi ) 
+ = - \sum_{k=1}^{K} ( D_k + {$\mathbf{v}$}_k \cdot \nabla \pi ) 
        \Delta  \sigma_k
 $$
-     --- (8)
+
 
 $$
   \dot{\sigma}_{k-1/2}
  = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
-   - \sum_{l=k}^{K} ( D_l + {TERM00018}_l \cdot \nabla \pi )          
+   - \sum_{l=k}^{K} ( D_l + {$\mathbf{v}$}_l \cdot \nabla \pi )          
        \Delta  \sigma_l
 $$
-     --- (9)
+
 
 and its non-gravity components.
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   =   - \sum_{k=1}^{K} {TERM00019}_{k} \cdot \nabla \pi  
+   =   - \sum_{k=1}^{K} {$\mathbf{v}$}_{k} \cdot \nabla \pi  
        \Delta  \sigma_{k}  \\
 $$
-     --- (10)
+
 
 $$
   \dot{\sigma}^{NG}_{k-1/2}
  = - \sigma_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   - \sum_{l=k}^{K} {TERM00020}_{l} \cdot \nabla \pi
+   - \sum_{l=k}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi
        \Delta  \sigma_{l}
 $$
-     --- (11)
+
 
 ### Time change term due to advection.
 
@@ -180,7 +180,7 @@ $$
                   \frac{\partial \pi}{\partial \lambda} 
 $$
 
-     --- (12)
+
 
 $$
   (A_v)_k 
@@ -193,7 +193,7 @@ $$
              \frac{\partial \pi}{\partial \varphi} 
 $$
 
-     --- (13)
+
 
 $$
  \hat{E}_k    
@@ -201,19 +201,19 @@ $$
     +  \sum_{k'=1}^{k} \left[  C_p \alpha_k ( T_v - T )_{k'}
                               + C_p \beta_k ( T_v - T )_{k'-1} \right]
 $$
-     --- (14)
+
 
 Temperature advection term:
 
 $$
  (u T')_k  = u_k (T_k - \bar{T} )
 $$
-     --- (15)
+
 
 $$
  (v T')_k  = v_k (T_k - \bar{T} )
 $$
-     --- (16)
+
 
 $$
  \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
@@ -229,13 +229,13 @@ $$
                + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
                                          - \hat{\bar{T}}_{k+1/2} ) ]
                 \\
-         + \hat{\kappa}_{k} T_{v,k} {TERM00021}_{k} \cdot \nabla \pi
+         + \hat{\kappa}_{k} T_{v,k} {$\mathbf{v}$}_{k} \cdot \nabla \pi
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {TERM00022}_{l} \cdot \nabla \pi 
+             \sum_{l=k}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {TERM00023}_{l} \cdot \nabla \pi 
+             \sum_{l=k+1}^{K} {$\mathbf{v}$}_{l} \cdot \nabla \pi 
                \Delta \sigma_{l}
                 \\
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
@@ -248,19 +248,19 @@ $$
 
 
 
-     --- (17)
+
 
 Water vapor advection term:
 
 $$
  (u q)_k  = u_k q_k
 $$
-    --- (18)
+
 
 $$
  (v q)_k  = v_k q_k
 $$
-    --- (19)
+
 
 $$
 R_k  =  q_k D_k 
@@ -268,7 +268,7 @@ R_k  =  q_k D_k
              [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
                + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
 $$
-    --- (20)
+
 
 ### Conversion of Predictive Variables into Spectra
 
@@ -286,7 +286,7 @@ $$
   X_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m *}}_{ij}  w_j \; ,
 $$
-    --- (21)
+
 
 to a spectral representation.
 
@@ -310,7 +310,7 @@ $$
 $$
 
 
-     --- (22)
+
 
 The non-gravity wave component of the time-varying term of the divergence
 
@@ -335,7 +335,7 @@ $$
 
 
 
-    --- (23)
+
 
 The non-gravity wave component of the time-varying term of temperature
 
@@ -358,7 +358,7 @@ $$
 $$
 
 
-    --- (24)
+
 
 Time-varying term of water vapor
 
@@ -381,7 +381,7 @@ $$
 $$
 
 
-    --- (25)
+
 
 ### Spectral value time integration
 
@@ -392,28 +392,28 @@ $$
            \underline{I}  
       - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
            + (1+2\Delta t {\mathcal D}_M)
-             {TERM00029} {TERM00030}^{T} ) \nabla^{2}_{\sigma}
+             {$\mathbf{G}$} {$\mathbf{C}$}^{T} ) \nabla^{2}_{\sigma}
   \right\}
-      \overline{ {TERM00031} }^{t} 
+      \overline{ {$\mathbf{D}$} }^{t} 
        \\
   = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M ) 
-       {TERM00032}^{t-\Delta t}
+       {$\mathbf{D}$}^{t-\Delta t}
   + \Delta t 
-         \left( \frac{\partial {TERM00033}}{\partial t} \right)_{NG}  
+         \left( \frac{\partial {$\mathbf{D}$}}{\partial t} \right)_{NG}  
   \\
   -  \Delta t \nabla^{2}_{\sigma}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {TERM00034}_{S} 
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {$\mathbf{\Phi}$}_{S} 
                           + \underline{W} 
                             \left[ ( 1-2\Delta t {\mathcal D}_H ) 
-                                    {TERM00035}^{t-\Delta t}
+                                    {$\mathbf{T}$}^{t-\Delta t}
                                   + \Delta t 
-                                      \left( \frac{\partial {TERM00036}}
+                                      \left( \frac{\partial {$\mathbf{T}$}}
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
   \\
                  \left.  \hspace*{20mm} 
-                          + ( 1+2\Delta t {\mathcal D}_H ) {TERM00037} 
+                          + ( 1+2\Delta t {\mathcal D}_H ) {$\mathbf{G}$} 
                             \left[ \pi^{t-\Delta t} 
                                   + \Delta t
                                      \left( \frac{\partial \pi}
@@ -424,26 +424,26 @@ $$
 
 
 
-    --- (26)
+
 
 by using LU decomposition to solve for
 Ask for $\bar{D}$,
 
 $$
-  \frac{\partial {TERM00039}}{\partial t} 
-      =   \left( \frac{\partial {TERM00040}}
+  \frac{\partial {$\mathbf{T}$}}{\partial t} 
+      =   \left( \frac{\partial {$\mathbf{T}$}}
                         {\partial t}       \right)_{NG}  
-         - \underline{h} {TERM00041}
+         - \underline{h} {$\mathbf{D}$}
 $$
-    --- (27)
+
 
 $$
   \frac{\partial \pi}{\partial t} 
       =   \left( \frac{\partial \pi}
                         {\partial t}       \right)_{NG}  
-         - {TERM00042} \cdot {TERM00043}
+         - {$\mathbf{C}$} \cdot {$\mathbf{D}$}
 $$
-    --- (28)
+
 
 due to
 $\partial {$\mathbf{T}$}/\partial t$,
@@ -464,11 +464,11 @@ $$
 \pi^{t+\Delta t}  =  \pi^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial{\pi}}{\partial {t}}
 $$
-    --- (29)
-    --- (30)
-    --- (31)
-    --- (32)
-    --- (33)
+
+
+
+
+
 
 ### Conversion of Predictive Variables to Grid Values
 
@@ -478,7 +478,7 @@ Find the horizontal wind speed grid values $u_{ij}, v_{ij}$.
 $$
   u_{ij}
   =  \frac{1}{\cos \varphi_j}
-     {\mathcal R}{TERM00049} \sum_{m=-N}^{N} 
+     {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} 
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N} 
     \left\{
              \frac{a}{n(n+1)} \zeta_n^m 
@@ -486,12 +486,12 @@ $$
           -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
 $$
-    --- (34)
+
 
 $$
   v_{ij}
   =  \frac{1}{\cos \varphi_j}
-     {\mathcal R}{TERM00050} \sum_{m=-N}^{N}
+     {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N}
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
           -  \frac{im a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
@@ -499,23 +499,23 @@ $$
             (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
     \right\}
 $$
-     --- (35)
+
 
 Furthermore,
 
 $$
   T_{ij} 
-   =  {\mathcal R}{TERM00051} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
+   =  {\mathcal R}{$\mathbf{e}$} \sum_{m=-N}^{N} \sum_{n=|m|}^{N} 
       T_n^m  {Y_n^m}_{ij} \; ,
 $$
-    --- (36)
+
 
 $T_{ij}, \pi_{ij}, q_{ij}$ are obtained by such methods as
 
 $$
   {p_S}_{ij} = \exp \pi_{ij} 
 $$
-    --- (37)
+
 
 to calculate.
 
@@ -542,7 +542,7 @@ $$
 $$
 
 
-    --- (38)
+
 
 So,
 
@@ -552,7 +552,7 @@ $$
         \sigma_{k} \frac{T_{k+1}-T_{k-1}}{\sigma_{k+1} - \sigma_{k-1}}
         {\mathcal D}(\pi)
 $$
-    --- (39)
+
 
 And so on.
 ${\mathcal D}(\pi)$ has been replaced by the spectral value of $pi$, $\pi_n^m$
@@ -567,7 +567,7 @@ $$
   Q_{DIF} = - \left( u_{ij} {\mathcal D}(u)_{ij} 
                    + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$
-    --- (40)
+
 
 It is estimated that .
 Therefore,
@@ -578,7 +578,7 @@ $$
            \left( u_{ij} {\mathcal D}(u)_{ij} 
                  + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$
-    --- (41)
+
 
 ### Correction for conservation of mass
 
@@ -598,8 +598,8 @@ $$
   M_q^0  =  \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
   M_l^0  =  \sum_{ijk} l p_S  \Delta\lambda_i w_j \Delta\sigma_k 
 $$
-    --- (42)
-    --- (43)
+
+
 
 Also, in the first step of the calculation
 Calculate and memorize the dry mass $M_d$.
@@ -607,7 +607,7 @@ Calculate and memorize the dry mass $M_d$.
 $$
   M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k 
 $$
-    --- (44)
+
 
 At the end of the dynamics calculation, `MODULE:[MASFIX]`,
 The following procedure is used to make the correction.
@@ -621,8 +621,8 @@ $$
         q_k'      =  0          \\
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
 $$
-    --- (45)
-    --- (46)
+
+
 
  However, this should only be done if it is $q_{k-1}' \ge 0 $.
 
@@ -635,7 +635,7 @@ Next, set the value to zero for the grid points not removed by the above procedu
 $$
         q'' = \frac{M_q^0}{M_q} q' 
 $$
-    --- (47)
+
 
 4. perform dry air mass correction.
  Similarly, calculate the $M_d$,
@@ -643,7 +643,7 @@ $$
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
 $$
-    --- (48)
+
 
 ### Horizontal Diffusion and Rayleigh Friction
 
@@ -656,17 +656,17 @@ $$
                       \right]
                   + K_R
 $$
-    --- (49)
+
 
 $$
   {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$
-    --- (50)
+
 
 $$
   {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2} 
 $$
-    --- (51)
+
 
 The $K_R$ is the Rayleigh coefficient of friction.
 The Rayleigh coefficient of friction is
@@ -674,7 +674,7 @@ The Rayleigh coefficient of friction is
 $$
   K_R = K_R^0 \left[ 1+\tanh \left( \frac{z-z_R}{H_R} \right) \right]
 $$
-     --- (52)
+
 
 given in profiles like
 However,
@@ -682,7 +682,7 @@ However,
 $$
   z = - H \ln \sigma 
 $$
-    --- (53)
+
 
 Approximate to .
 Standard value is, $K_R^0 = {(30day)}^{-1}$,
@@ -701,7 +701,7 @@ $$
     +  \epsilon_f 
         \left( \bar{T}^{t-\Delta t} + T^{t+\Delta t} \right)
 $$
-     --- (54)
+
 
 and $\bar{T}$.
 The $T^{t-\Delta t}$ used in the next step of the mechanical process is
@@ -717,7 +717,7 @@ $$
      \left[ ( 1-2 \epsilon_f ) T^{t} + \epsilon_f \bar{T}^{t-\Delta t}
      \right]
 $$
-    --- (55)
+
 
 and when the physical process is done
 After fixing the value of $T^{t+\Delta t}$, you can use `MODULE:[TFILT]` to determine the value of $T^{t+\Delta t}$,
@@ -727,6 +727,6 @@ $$
     = ( 1 -\epsilon_f ) \bar{T}^{t*}  
        +  \epsilon_f \bar{T}^{t+\Delta t}
 $$
-     --- (56)
+
 
 .

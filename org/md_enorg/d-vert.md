@@ -34,11 +34,11 @@ Value of TERM00008 in integer level
 TERM00009,TERM00009
 is obtained from the following equation.
 
-     EQ=00000.     --- (1)
+     EQ=00000.
 
 Furthermore,
 
-     EQ=00001.    --- (2)
+     EQ=00001.
 
 .
 
@@ -48,49 +48,49 @@ The discretized representation of each equation is as follows.
 
 1. continuity formula, vertical velocity
 
-         EQ=00002.     --- (3)
+         EQ=00002.
 
-         EQ=00003.     --- (4)
+         EQ=00003.
 
-         EQ=00004.     --- (5)
+         EQ=00004.
 
 2. hydrostatic pressure formula
 
-         EQ=00010.     --- (6)
+         EQ=00010.
          EQ=00010.
 
-         EQ=00011.    --- (7)
+         EQ=00011.
          EQ=00011.
 
  Here,
 
-         EQ=00012.    --- (8)
-         EQ=00012.    --- (9)
+         EQ=00012.
+         EQ=00012.
 
 3. equation of motion
 
-         EQ=00005.     --- (10)
+         EQ=00005.
 
-         EQ=00006.     --- (11)
+         EQ=00006.
 
  Here,
 
          EQ=00013.
-         EQ=00013.    --- (12)
+         EQ=00013.
 
          EQ=00014.
-         EQ=00014.    --- (13)
+         EQ=00014.
 
          EQ=00015.
-         EQ=00015.    --- (14)
+         EQ=00015.
 
-         EQ=00007.     --- (15)
+         EQ=00007.
 
 4. thermodynamic equation
 
          EQ=00016.
          EQ=00016.
-         EQ=00016.    --- (16)
+         EQ=00016.
 
  Here,
 
@@ -100,16 +100,16 @@ The discretized representation of each equation is as follows.
          EQ=00017.
          EQ=00017.
          EQ=00017.
-         EQ=00017.    --- (17)
+         EQ=00017.
 
-         EQ=00018.    --- (18)
-         EQ=00018.    --- (19)
+         EQ=00018.
+         EQ=00018.
 
-         EQ=00019.    --- (20)
-         EQ=00019.    --- (21)
+         EQ=00019.
+         EQ=00019.
 
 5. water vapor formula
 
-         EQ=00008.     --- (22)
+         EQ=00008.
 
-         EQ=00009.     --- (23)
+         EQ=00009.

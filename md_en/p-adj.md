@@ -38,7 +38,6 @@ $$
    > 0 
 $$
 
-> <span id="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond"> </span>.
 
 is a condition.
 
@@ -68,8 +67,7 @@ The layers above and below it may become unstable. That's why,
 Repeating this operation from the lower level to the upper level.
 Repeat until there is no more layer of convective instability.
 However, considering the calculation error and so on,
-(as a condition of [\\p\[p-adj:condo\]](#p-adj:condo)),
+As a condition of (2) ,
 It is considered to have converged if S is less than or equal to some small finite value that is not zero.
 
 Currently, the standard adjustment is between the second and third layer from the bottom and above.
-

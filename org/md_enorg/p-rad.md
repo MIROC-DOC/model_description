@@ -60,15 +60,14 @@ In addition, we also perform several additions and calculate the clear-sky radia
 The basics of radiative flux calculations are ,
 Beer-Lambert's Law
 
-> EQ=00000.
+     EQ=00000.
 
 . where TERM00014 is the radiant flux density at the wavelength of TERM00015.
 TERM00016 is the absorption coefficient.
 In order to calculate the radiative fluxes related to the heating rate, we need to calculate the
 An integration operation with respect to the wavelength is required.
 
-> EQ=00001.
-> <span id="p-rad:beer" label="p-rad:beer" label="p-rad:beer">\blazer[p-rad:beer]</span>
+     EQ=00001.
 
 However, the absorption and emission of radiation by gas molecules is not
 Due to the complicated wavelength dependence of the absorption line structure of the molecule,
@@ -77,9 +76,9 @@ The method designed to make the relatively precise calculation easier is
 It is a k-distribution method.
 Within a certain wavelength range, the absorption coefficient of TERM00017
 Consider the density function TERM00019 for TERM00018,
-([p-rad:beer\]](#p-rad:beer))
+(2)
 
-> EQ=00002.
+     EQ=00002.
 
 which is approximated by where TERM00020 is
 In the TERM00021, the absorption coefficient in this wavelength range has a value of TERM00022
@@ -87,8 +86,7 @@ It is a flux averaged over a wavelength.
 This expression shows that TERM00023 and TERM00023 are the same as the TERM00024
 If you have a relatively smooth function,
 
-> EQ=00003.
-> <span id="p-rad:beer-kd" label="p-rad:beer-kd" label="p-rad:beer-kd"> </span>
+     EQ=00003.
 
 with the addition of a finite number of exponential terms (subchannels), such that
 It is possible to calculate relatively precisely.
@@ -102,7 +100,7 @@ Not currently used as a standard,
 The wavelength range is divided into 18 parts.
 In addition, each wavelength range is divided into one to six sub-channels (corresponding to the TERM00025 in the above formula),
 There will be 37 channels in total.
-The wavelength range is a wavenumber (TERM00026)
+The wavelength range is the wavenumber (TERM00026)
 50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
 2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
 Divided by.
@@ -112,7 +110,7 @@ Divided by.
 The Planck function TERM00027 integrated in each wavelength range is,
 Evaluate by the following formula.
 
-> EQ=00004.
+     EQ=00004.
 
 TERM00028 is the average wavelength of the wavelength range,
 TERM00029 is a parameter defined by function fitting.
@@ -126,17 +124,17 @@ In the following, the index TERM00033 is basically abbreviated for the wavelengt
 The optical thickness of the gas absorption is determined by using the index TERM00034 as the type of molecule,
 It looks like the following.
 
-> EQ=00005.
+     EQ=00005.
 
 where TERM00035 is the absorption coefficient of the molecule TERM00036, which is different for each subchannel.
 
-> EQ=00006.
+     EQ=00006.
 
 as a function of temperature TERM00037(K) and atmospheric pressure TERM00038(hPa).
 TERM00039 is the amount of gas in the layer represented by mol TERM00040,
 Volume Mixing Ratio TERM00041 (in ppmv) to ,
 
-> EQ=00007.
+     EQ=00007.
 
 And it can be calculated that .
 Note that TERM00042 is the gas constant per mole (8.31 J TERM00043 TERM00044),
@@ -144,7 +142,7 @@ The unit of air layer thickness TERM00045 is in km.
 The volume mixing ratio TERM00046 at ppmv is
 Mass Mixture Ratio TERM00047 to ,
 
-> EQ=00008.
+     EQ=00008.
 
 This can be converted by .
 TERM00048 and TERM00048 are
@@ -160,7 +158,7 @@ The optical thickness of the TERM00050 continuous absorption TERM00051 is ,
 Think of it as a dimer,
 Basically, it is evaluated in proportion to the square of the volume mixing ratio of water vapor.
 
-> EQ=00009.
+     EQ=00009.
 
 The TERM00053 for the TERM00052 section is ,
 The temperature dependence of the absorption of the dimer.
@@ -169,21 +167,21 @@ Incorporate a contribution proportional to the square of the volume mixing ratio
 
 The continuous absorption of TERM00054 is assumed to be constant in the mixing ratio,
 
-> EQ=00010.
+     EQ=00010.
 
 .
 
 The continuous absorption of TERM00055 is based on the mixing ratio TERM00056 and incorporates a temperature dependence,
 
-> EQ=00011.
+     EQ=00011.
 
 Absorption of CFCs is considered for TERM00057 types of CFCs,
 
-> EQ=00012.
+     EQ=00012.
 
 The sum of these optical thicknesses is TERM00058.
 
-> EQ=00013.
+     EQ=00013.
 
 This calculation is performed for each wavelength range and each layer.
 
@@ -191,7 +189,7 @@ This calculation is performed for each wavelength range and each layer.
 
 The optical thicknesses of Rayleigh scattering and particle dissipation (including scattering and absorption) are
 
-> EQ=00014.
+     EQ=00014.
 
 where TERM00059 is the dissipation coefficient of Rayleigh scattering,
 The TERM00060 is the dissipation factor of the particle TERM00061,
@@ -201,13 +199,13 @@ It is the volume mixing ratio of the particle TERM00063.
 Here, the mass mixing ratio of cloud water from TERM00064
 The conversion of cloud grains to standard state-conversion volume mixing ratios (ppmv) is as follows.
 
-> EQ=00015.
+     EQ=00015.
 
 However, TERM00065 is the density of cloud particles.
 
 On the other hand, the scattering-induced part of the optical thickness, TERM00066, is
 
-> EQ=00016.
+     EQ=00016.
 
 where TERM00067 is the scattering coefficient of Rayleigh scattering,
 TERM00068 is the scattering coefficient for the particle TERM00069.
@@ -215,9 +213,9 @@ TERM00068 is the scattering coefficient for the particle TERM00069.
 Also, the standardized scattering moments
 TERM00070 (asymmetry factor) and TERM00071 (forward scattering factor) were not
 
-> EQ=00017.
+     EQ=00017.
 
-> EQ=00018.
+     EQ=00018.
 
 Here, TERM00072 and TERM00072 are the scattering moments of Rayleigh scattering,
 TERM00073,TERM00073 is the scattering moment of the particle TERM00074.
@@ -229,12 +227,12 @@ This calculation is performed for each wavelength range and each layer.
 Albedo TERM00075 at sea level is the vertical addition of the optical thickness of the scattering
 Using TERM00076 and the solar incidence angle factor TERM00077,
 
-> EQ=00019.
+     EQ=00019.
 
 expressed as follows.
 However,
 
-> EQ=00020.
+     EQ=00020.
 
 It is.
 
@@ -245,7 +243,7 @@ This calculation is done for each wavelength.
 Gaseous band absorption, continuous absorption, Rayleigh scattering, particle scattering and absorption
 All things considered, the optical thickness is ,
 
-> EQ=00021.
+     EQ=00021.
 
 where TERM00078 is different for each subchannel. Here, since TERM00078 is different for each subchannel,
 The calculation is done for each sub-channel and each layer.
@@ -254,7 +252,7 @@ The calculation is done for each sub-channel and each layer.
 
 In each layer, the Planck function TERM00079 is
 
-> EQ=00022.
+     EQ=00022.
 
 and obtain the expansion coefficients TERM00080 and TERM00080.
 Here, as TERM00081
@@ -262,9 +260,9 @@ TERM00082 at the top of each layer (bordering the top layer),
 As TERM00083, TERM00084 at the bottom edge of each layer (the boundary with the layer below),
 As TERM00085, use the TERM00086 at the representative level of each layer.
 
-> EQ=00045.
-> EQ=00045.
-> EQ=00045.
+     EQ=00045.
+     EQ=00045.
+     EQ=00045.
 
 This calculation is done for each sub-channel and each layer.
 
@@ -279,73 +277,73 @@ Find the upward radiation source function TERM00095.
 
 The single-scattering albedo TERM00096 is,
 
-> EQ=00023.
+     EQ=00023.
 
 The contribution from the forward scattering factor TERM00097 is
 Corrected Optical Thickness TERM00098,
 The single-scattering albedo TERM00099, asymmetric factor TERM00100 is,
 
-> EQ=00046.
-> EQ=00046.
-> EQ=00046.
+     EQ=00046.
+     EQ=00046.
+     EQ=00046.
 
 From now on, as a phase function of the normalized scattering,
 
-> EQ=00047.
-> EQ=00047.
+     EQ=00047.
+     EQ=00047.
 
 However, TERM00101 is a two-stream directional cosine, and
 
-> EQ=00024.
+     EQ=00024.
 
-> EQ=00025.
+     EQ=00025.
 
 Furthermore,
 
-> EQ=00048.
-> EQ=00048.
-> EQ=00048.
-> EQ=00048.
+     EQ=00048.
+     EQ=00048.
+     EQ=00048.
+     EQ=00048.
 
 the reflectance TERM00102 and transmission TERM00103 become
 
-> EQ=00049.
-> EQ=00049.
+     EQ=00049.
+     EQ=00049.
 
-> EQ=00050.
-> EQ=00050.
+     EQ=00050.
+     EQ=00050.
 
 Next, we first find the source function from which the Planck function is derived.
 
-> EQ=00026.
+     EQ=00026.
 
 The expansion coefficients of the radiant function can be found from
 
-> EQ=00051.
-> EQ=00051.
-> EQ=00051.
-> EQ=00051.
+     EQ=00051.
+     EQ=00051.
+     EQ=00051.
+     EQ=00051.
 
-> EQ=00052.
-> EQ=00052.
+     EQ=00052.
+     EQ=00052.
 
 The source function TERM00104, which is derived from the Planck function, is
 
-> EQ=00053.
-> EQ=00053.
+     EQ=00053.
+     EQ=00053.
 
 On the other hand, the source function of the solar-induced radiation is
 
-> EQ=00027.
+     EQ=00027.
 
 than ,
 
-> EQ=00028.
+     EQ=00028.
 
 we obtain the following by using
 
-> EQ=00054.
-> EQ=00054.
+     EQ=00054.
+     EQ=00054.
 
 This calculation is done for each sub-channel and each layer.
 
@@ -354,7 +352,7 @@ This calculation is done for each sub-channel and each layer.
 The Planck function origin and solar-induced origin
 The combined source function is
 
-> EQ=00029.
+     EQ=00029.
 
 However, the TERM00105 is not a good match for the upper atmosphere. However, TERM00105 has a value of
 to the top of the layer we're considering now.
@@ -364,7 +362,7 @@ In other words, TERM00108 is
 It is the incident flux at the top of the layer under consideration.
 This calculation is actually ,
 
-> EQ=00030.
+     EQ=00030.
 
 The procedure is as follows. TERM00109 will be taken from the uppermost layer of the atmosphere by
 Represents the product up to one layer above the layer we're considering now.
@@ -390,36 +388,36 @@ Value in the composite layer
 TERM00119,TERM00119 is
 It looks like the following.
 
-> EQ=00055.
-> EQ=00055.
-> EQ=00055.
-> EQ=00055.
-> EQ=00055.
-> EQ=00055.
+     EQ=00055.
+     EQ=00055.
+     EQ=00055.
+     EQ=00055.
+     EQ=00055.
+     EQ=00055.
 
 Let's say there are layers 1, 2, ...TERM00120 from the top.
 However, the surface is considered to be a single layer and is the TERM00121 layer.
 Reflectance and source function of the layers from the TERM00122 to the TERM00123 layer as a single layer
 Given the TERM00124, TERM00124 ,
 
-> EQ=00056.
-> EQ=00056.
+     EQ=00056.
+     EQ=00056.
 
 This is the value at the surface
 
-> EQ=00057.
-> EQ=00057.
+     EQ=00057.
+     EQ=00057.
 
 It can be solved by TERM00125 and TERM00125 in sequence, starting from
 However,
 
-> EQ=00031.
+     EQ=00031.
 
 In the next section, we consider the reflectance and source function of the layers from the first to the TERM00126 as a single layer
 Given the TERM00127, TERM00127 ,
 
-> EQ=00058.
-> EQ=00058.
+     EQ=00058.
+     EQ=00058.
 
 and this is also TERM00128,TERM00128
 It can be solved by TERM00129 and TERM00129, starting from
@@ -430,23 +428,23 @@ and upward flux TERM00133 is ,
 TERM00134 The combination of layers and
 TERM00135 Reduced to a matter between two layers of combined layers,
 
-> EQ=00059.
-> EQ=00059.
+     EQ=00059.
+     EQ=00059.
 
 It can be written as.
 However, the flux at the top of the atmosphere is not
 
-> EQ=00060.
-> EQ=00060.
+     EQ=00060.
+     EQ=00060.
 
 Finally, since this flux is scaled ,
 We rescaled and added direct solar incidence to the
 Find the radiation flux.
 
-> EQ=00061.
-> EQ=00061.
-> EQ=00061.
-> EQ=00061.
+     EQ=00061.
+     EQ=00061.
+     EQ=00061.
+     EQ=00061.
 
 This calculation is done for each sub-channel.
 
@@ -457,7 +455,7 @@ It corresponds to a wavelength representative of the subchannel
 By applying a weight (TERM00137) and adding them together,
 The wavelength-integrated flux is found.
 
-> EQ=00032.
+     EQ=00032.
 
 In practice, the short wavelength range (solar region),
 Divided into long wavelengths (earth's radiation region) and added together.
@@ -473,7 +471,7 @@ Therefore, the value for temperatures 1K higher than TERM00140
 We also obtained TERM00141 and used it to
 Redo the flux calculation using the addition method,
 The difference from the original value is set to TERM00142.
-This is a meaningful value only in the long-wavelength region (Earth's radiation region).
+This is a meaningful value only in the long-wavelength region (earth's radiation region).
 
 ### Handling of cloud cover
 
@@ -514,22 +512,22 @@ To do so, we perform the following calculations.
 
 3. reflection and transmission coefficients for each layer,
  The source function is averaged with the weight of the cloud cover of the stratocumulus, TERM00155.
- The averages are represented by TERM00156,
+ The averages are expressed by adding the TERM00156,
 
-     > EQ=00062.
-     > EQ=00062.
-     > EQ=00062.
-     > EQ=00062.
+         EQ=00062.
+         EQ=00062.
+         EQ=00062.
+         EQ=00062.
 
  However, the However ,
 
-     > EQ=00033.
+         EQ=00033.
 
  It is.
  Also,
 
-     > EQ=00063.
-     > EQ=00063.
+         EQ=00063.
+         EQ=00063.
 
  Seek also.
 
@@ -541,7 +539,7 @@ To do so, we perform the following calculations.
 
 5. the final flux we seek is
 
-     > EQ=00034.
+         EQ=00034.
 
      (TERM00161 is used to estimate cloud radiative forcing
  I'm doing the math.)
@@ -553,52 +551,52 @@ Solar constant, TERM00163,
 The distance between the sun and the earth,
 The ratio of the ratio to the time average is TERM00164.
 
-> EQ=00035.
+     EQ=00035.
 
 Here, TERM00165 asks for the following.
 
-> EQ=00036.
+     EQ=00036.
 
 As ,
 
-> EQ=00037.
+     EQ=00037.
 
 Note that TERM00166 is the time in days since the beginning of the year.
 
 The angle of incidence is obtained as follows.
 Solar angle position TERM00167
 
-> EQ=00038.
+     EQ=00038.
 
 As the solar declination TERM00168 is
 
-> EQ=00039.
+     EQ=00039.
 
 Then the angle of incidence factor TERM00169 (where TERM00170 is the zenith angle) is
 
-> EQ=00040.
+     EQ=00040.
 
 TERM00171 is a latitude,
 TERM00172 is the time angle (local time minus TERM00173).
 
 Assuming that the eccentricity of the Earth's orbit is TERM00174 (Katayama, 1974),
 
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
-> EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
+     EQ=00064.
 
 It is also possible to give average annual insolation.
 In this case, the annual mean incidence and the annual mean angle of incidence are
 It approximates to be as follows.
 
-> EQ=00041.
+     EQ=00041.
 
-> EQ=00042.
+     EQ=00042.
 
 ### Other Notes.
 
@@ -610,7 +608,7 @@ The calculation of the radiation is usually not done at every step.
  Using the solar incidence angle factor (TERM00177) averaged over the daylight hours
  Seeking Flux TERM00178,
 
-     > EQ=00043.
+         EQ=00043.
 
  .
 
@@ -618,7 +616,7 @@ The calculation of the radiation is usually not done at every step.
  Treated as water and ice cloud particles.
  Percentage treated as ice clouds TERM00179 is ,
 
-     > EQ=00044.
+         EQ=00044.
 
      (but with a maximum value of 1 and a minimum value of 0). Also,
      TERM00180,TERM00180.
