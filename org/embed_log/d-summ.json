@@ -1,0 +1,10 @@
+{
+    "imath": {
+        "TERM00079": {
+            "count": 2,
+            "text": "$T^{t+\\Delta t}$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}

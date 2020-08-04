@@ -1,0 +1,197 @@
+﻿
+\subsection{鉛直拡散}
+
+\subsubsection{鉛直拡散スキームの概要}
+
+鉛直拡散スキームは,
+サブグリッドスケールの乱流拡散による
+物理量の鉛直フラックスを評価する.
+主な入力データは, 風速, TERM00000,TERM00000, 気温 TERM00001, 比湿 TERM00002, 雲水量 TERM00003, であり,
+出力データは, 運動量, 熱, 水蒸気, 雲水の鉛直フラックスと
+implicit 解を得るための微分値である.
+
+鉛直拡散係数の見積りには
+Mellor and Yamada(1974, 1982)の
+乱流クロージャーモデルの
+level 2 のパラメタリゼーションを用いる.
+
+計算手順の概略は以下の通りである.
+\begin{enumerate}
+\item 大気の安定度として
+      Richardson 数を計算する.
+\item Richardson 数から拡散係数を計算する \texttt{MODULE:[VDFCOF]}.
+\item 拡散係数からフラックスとその微分を計算する.
+\end{enumerate}
+
+\subsubsection{フラックス計算の基本式}
+
+大気中の鉛直拡散フラックスは, 
+拡散係数 TERM00004 を用いて, 以下のように評価される.
+
+\begin{verbatim}
+EQ=00000.
+\end{verbatim}
+\begin{verbatim}
+EQ=00001.
+\end{verbatim}
+\begin{verbatim}
+EQ=00002.
+\end{verbatim}
+\begin{verbatim}
+EQ=00003.
+\end{verbatim}
+
+\subsubsection{Richardson 数}
+
+大気の成層安定度の基準となる,
+バルクRichardson数 TERM00005 は
+
+\begin{verbatim}
+EQ=00004.
+\end{verbatim}
+で定義される.
+ここで, TERM00006 は TERM00007 を表す.
+また, TERM00008 は, 静水圧の式より,
+\begin{verbatim}
+EQ=00005.
+\end{verbatim}
+
+フラックスRicahrdson数 TERM00009 は,
+
+\begin{verbatim}
+EQ=00006.
+\end{verbatim}
+ただし, 
+
+\begin{verbatim}
+EQ=00020.
+EQ=00020.
+EQ=00020.
+EQ=00020.
+EQ=00020.
+EQ=00020.
+\end{verbatim}
+\begin{verbatim}
+EQ=00007.
+\end{verbatim}
+
+\begin{verbatim}
+EQ=00008.
+\end{verbatim}
+
+TERM00010 と TERM00011 の関係を図示すると,
+図\ref{p-dif:rib-rif} のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=dif-rif.ps,width=70mm}
+    \caption{バルクRichardson数とフラックスRichadson数の関係}
+    \label{p-dif:rib-rif}
+  \end{center}
+\end{figure}
+
+\subsubsection{拡散係数}
+
+拡散係数は,
+各層の境界(TERM00012 レベル)ごとに,
+次のように与えられる.
+
+\begin{verbatim}
+EQ=00021.
+EQ=00021.
+\end{verbatim}
+
+ここで, TERM00015,TERM00015 は,
+\begin{verbatim}
+EQ=00009.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00010.
+\end{verbatim}
+を用いて,
+\begin{verbatim}
+EQ=00022.
+EQ=00022.
+\end{verbatim} 
+
+TERM00016 は混合距離であり, Blakadar(1962)に従って,
+\begin{verbatim}
+EQ=00011.
+\end{verbatim}
+ととる. 
+TERM00017 は K\'{a}rman 定数である. 
+% 漸近混合距離$l_0$は, 
+% $R_{iB} > R_{iBC}$ となるような最大の$\sigma$ を
+% 境界層の上端$\sigma_B$と考え, それ以上と以下で異なる値を与える.
+% \begin{equation}
+% \sigma_B = max(\sigma; R_{iB} > R_{iBC})
+% \end{equation}
+%
+% \begin{equation}
+%  l_0 = \left\{
+%  \begin{array}{l}
+%    l_{0B} \; \; ( \sigma > \sigma_B ) \\
+%    l_{0F} \; \; ( \sigma \le \sigma_B ) \\
+%  \end{array} 
+%  \right.
+% \end{equation}
+% 
+% 現在の標準値は, 
+% $R_{iBC}=2, l_{0B}=1000\mbox{m}, l_{0F}=10\mbox{m}$ である.
+現在の標準値は, TERM00018 m である.
+
+TERM00019,TERM00019 を TERM00020 の関数として示すと,
+図\ref{p-dif:smsh-rif} のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=dif-smsh.ps,width=70mm}
+    \caption{フラックスRichardson数と TERM00021,TERM00021 の関係}
+    \label{p-dif:smsh-rif}
+  \end{center}
+\end{figure}
+
+
+\subsubsection{フラックスの計算}
+
+以上を用い, フラックスおよびフラックス微分を計算する.
+
+\begin{verbatim}
+EQ=00012.
+\end{verbatim}
+\begin{verbatim}
+EQ=00013.
+\end{verbatim}
+\begin{verbatim}
+EQ=00014.
+\end{verbatim}
+\begin{verbatim}
+EQ=00015.
+\end{verbatim}
+
+\begin{verbatim}
+EQ=00016.
+\end{verbatim}
+\begin{verbatim}
+EQ=00017.
+\end{verbatim}
+\begin{verbatim}
+EQ=00018.
+\end{verbatim}
+\begin{verbatim}
+EQ=00019.
+\end{verbatim}
+
+\subsubsection{拡散係数の最小値}
+
+非常に安定な場合に, 以上の見積りは拡散係数として 0 を与える.
+これをそのまま用いるとモデルの振舞いにさまざまな
+悪影響をもたらすので, 適当な最小値を置く.
+現在の標準値は, 全てのフラックスに共通で
+TERM00022 0.15 TERM00023/s である.
+
+\subsubsection{その他の留意点}
+
+浅い積雲対流 \texttt{MODULE:[SHLCOF]} を呼んでいるが, 
+標準ではこれはダミーである.

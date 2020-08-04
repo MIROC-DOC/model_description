@@ -1,0 +1,10 @@
+{
+    "imath": {},
+    "emath": {
+        "EQ=00042.": {
+            "count": 0,
+            "text": "$$\n    \\nabla^{2}_{\\sigma} = - \\frac{n(n+1)}{a^{2}}\n$$\n"
+        }
+    },
+    "tabular": {}
+}

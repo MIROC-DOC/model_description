@@ -1,0 +1,18 @@
+{
+    "imath": {
+        "TERM00035": {
+            "count": 0,
+            "text": "m$^2$"
+        },
+        "TERM00083": {
+            "count": 0,
+            "text": "$t+\\Delta t$"
+        }
+    },
+    "emath": {},
+    "tabular": {
+        "1": [
+            "8.2"
+        ]
+    }
+}

@@ -1,0 +1,38 @@
+﻿%
+%  Depsf.sty                ver 1.0  92/03/26
+% 
+%
+\def\Depsf{\@ifnextchar [{\D@epsf} %% ]
+                         {\D@epsf[]}}
+\def\D@epsf[#1]{\@ifnextchar [ {\D@@epsf[#1]} %% ]
+                               {\D@@epsf[#1][]}}
+%
+\@ifundefined{psbox}{%
+%
+%  for epsf.sty  and  dvi2ps-j
+%
+   \@ifundefined{epsfile}{\input epsf.sty}{}
+   \gdef\D@@epsf[#1][#2]#3{%
+       \def\D@epw{#1} \def\D@eph{#2}
+       \ifx\D@epw\@empty\ifx\D@eph\@empty \epsfile{file=#3}
+                        \else \epsfile{file=#3,height=#2} \fi
+       \else \ifx\D@eph\@empty \epsfile{file=#3,width=#1}
+                        \else \epsfile{file=#3,width=#1,height=#2} \fi
+       \fi}
+   \gdef\Depsfdrafttrue{\epsfdrafttrue}
+}{%
+%
+%  for postscript.sty and jdvi2kps
+%
+   \gdef\D@@epsf[#1][#2]#3{%
+       \def\D@epw{#1} \def\D@eph{#2}
+       \ifx\D@epw\@empty\ifx\D@eph\@empty \psbox{#3}
+                        \else \psbox[height=#2]{#3} \fi
+       \else \ifx\D@eph\@empty \psbox[width=#1]{#3}
+                        \else \psbox[width=#1,height=#2]{#3} \fi
+       \fi}
+
+    \gdef\Depsfdrafttrue{%
+    \gdef\@postscriptbox##1##2##3{%
+      \mbox{\vbox to ##2{\hbox to ##1{\tt ##3\hfil}\vfil}}}}
+}

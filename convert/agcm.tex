@@ -1,0 +1,63 @@
+\documentclass[12pt,a4paper,onecolumn]{jarticle}
+%
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{ascmac}
+\usepackage[dvipdfm]{hyperref}
+%
+\title{\Huge CCSR/NIES AGCM の解説}
+\author{}
+\date{\today}
+\pagenumbering{arabic}
+%
+%
+\begin{document}
+%
+	\maketitle
+	\tableofcontents
+	\clearpage
+	%
+	% ccsr/nies agcm の特徴の list
+	\include{tex_en/summary}
+	% agcm の概念と構造
+	\include{tex_en/a-intro}
+	% 基本設定
+	\include{tex_en/a-setup}
+	% 基本方程式
+	\include{tex_en/d-basic}
+	% 力学:鉛直離散化
+	\include{tex_en/d-vert}
+	% 力学:水平離散化
+	\include{tex_en/d-hori}
+	% 力学:時間離散化
+	\include{tex_en/d-time}
+	% 力学:拡散項等
+	\include{tex_en/d-diff}
+	% 力学:まとめ
+	\include{tex_en/d-summ}
+	% 物理過程:イントロ
+	\include{tex_en/p-intro}
+	% 物理過程:積雲対流
+	\include{tex_en/p-cum}
+	% 物理過程:大規模凝結
+	\include{tex_en/p-lsc}
+	% 物理過程:放射
+	\include{tex_en/p-rad}
+	% 物理過程:拡散フラックス
+	\include{tex_en/p-dif}
+	% 物理過程:地表フラックス
+	\include{tex_en/p-sflx}
+	% 物理過程:地表モデル
+	\include{tex_en/p-sfc}
+	% 物理過程:implicit 解法
+	\include{tex_en/p-solv}
+	% 物理過程:重力波抵抗
+	\include{tex_en/p-grav}
+	% 物理過程:対流調節
+	\include{tex_en/p-adj}
+	% 参考文献
+	\include{tex_en/referenc}
+	%
+	%
+\end{document}

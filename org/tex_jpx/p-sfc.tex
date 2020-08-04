@@ -1,0 +1,885 @@
+﻿
+\subsection{地表過程}
+
+\subsubsection{地表過程の概要}
+
+地表過程は, 大気・地表間の運動量・熱・水の
+フラックスの交換を通して大気下端の境界条件を与える.
+地表過程は, 地中温度 TERM00000, 地中水分 TERM00001,
+積雪量 TERM00002 などの独自の予報変数を扱い,
+地表面の熱慣性, 水の蓄積, 積雪の蓄積, 
+海氷の蓄積などを評価する.
+主な入力データは, 大気・地表間の物理量の拡散
+ならびに放射と降水によるフラックスである.
+出力データは, 地表面温度 TERM00003 ならびに,
+アルベド, 粗度などの種々の境界条件パラメータである.
+
+地表過程は, 以下のように分類される.
+\begin{enumerate}
+  \item 地中熱拡散過程 --- 地中温度構造等を決める
+  \item 地中水文過程   ---  地中水分構造, 流出等を決める
+  \item 積雪過程        ---  積雪・融雪など, 雪に関わる諸過程の表現
+  \item 海洋混合層過程 --- 海洋温度, 海氷厚を決める(オプション)
+\end{enumerate}
+      
+CCSR/NIES AGCM の地表過程の特徴を簡単に列挙する:
+\begin{enumerate}
+\item 地中において, 多層の熱伝導, 水拡散(オプション)を評価する.
+\item 表皮温度を用いて地表熱収支を評価する.
+\item 熱と水の拡散伝導はimplicit法で解く.
+\item 雪は独立した層としては扱わず, 地表第1層と共に評価する.
+\item 多層で海洋混合層と海氷を評価する(オプション)
+\end{enumerate}
+
+計算の流れに沿って, スキームの概略を説明する.
+[\ ] 内は対応するサブルーチン名および( ) 内はファイル名である.
+また, 括弧で囲まれた項目は他の節の説明を参照のこと.
+
+\begin{enumerate}
+  \item (地表フラックスを評価する \texttt{MODULE:[SFCFLX(psfcm)]}) \\
+            大気-地表間の熱・水(蒸発)・運動量のフラックスを
+            バルク式で見積もる.
+            ただし, 蒸発効率 TERM00004 は1として行なう.
+
+  \item 地表粗度を評価する \texttt{MODULE:[GNDZ0(pgsfc)]} \\
+            基本的にはファイルや地表タイプに依存して
+            外部から与えられるが, 
+            積雪量などによって変更を行なう.
+
+  \item 地表面内の熱フラックスと熱容量を評価する .
+        \texttt{MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)]} \\
+            陸と海の各層の熱容量を見積り,
+            各層境界の熱フラックスを熱伝導の式から見積もる.
+            また, 積雪がある場合熱容量とフラックスを変更する.
+
+  \item 陸面の水フラックスと容量を評価する \texttt{MODULE:[LNDWFX(pglnd)]} \\
+            陸の各層の水の容量を見積もり, 
+            各層境界の水フラックスを水拡散の式から見積もる
+
+  \item 蒸発効率を評価する \texttt{MODULE:[GNDBET(pgsfc)]} \\
+            陸面では, 土壌水分と気孔抵抗に依存して計算する. 
+
+  \item 地中熱伝導のimplicit解法を途中まで行なう \texttt{MODULE:[GNDHT1(pggnd)]} \\
+            地中の熱伝導による温度の変化を評価する.
+            ただし, 地表面温度の変化も組み入れて 
+            implicit で行なうため, ここで行なうのは, その第1段階のみである.
+
+  \item 地表熱バランスを解く \texttt{MODULE:[SLVSFC(pgslv)]} \\
+            地表面の熱バランスの式を解き, 地表面温度と
+            大気第1層の気温・比湿の時間変化を求める.
+            これを用いて, 大気地表間の熱・水(蒸発)のフラックス
+            および地表での熱伝導フラックスを補正する.
+            また, 積雪または氷があり, 地表温度が氷点を越える場合には,
+            地表温度を氷点として, 
+            残差のフラックスを融雪に用いられるフラックスとして評価する.
+
+  \item 地中熱伝導をimplicit解法で解く \texttt{MODULE:[GNDHT2(pggnd)]} \\
+            地表面温度の変化が求められたので, それを用いて
+            地中の熱伝導による地中温度の変化を解く.
+
+  \item 積雪の昇華による積雪減少を評価する \texttt{MODULE:[SNWSUB(pgsnw)]} \\
+            積雪条件のとき, 求められた蒸発(昇華)フラックスによって
+            積雪を減少させる.
+
+  \item 降雪による積雪増加を評価する \texttt{MODULE:[SNWFLP(pgsnw)]} \\
+            降雪と降雨を判別し, 降雪時には積雪を増加させる.
+
+  \item 融雪による積雪減少を評価する \texttt{MODULE:[SNWMLP(pgsnw)]} \\
+            積雪時に地表温度または第1層温度が氷点を越える場合には,
+            融雪が起こるとし, 温度を氷点以下に保ち,
+            積雪を減少させる. 
+
+  \item 地中水の拡散をimplicit解法で解く \texttt{MODULE:[GNDWTR(pggnd)]} \\
+            地中の水フラックスによる地中水分の変化を解く.
+            
+  \item 積雪による降水遮断を評価する \texttt{MODULE:[SNWROF(pgsnw)]} \\
+            積雪がある場合は, 土壌への降水の浸透は妨げられ,
+            降雨と融雪水(の一部)が流出となる. 
+
+  \item 地表の流出を評価する \texttt{MODULE:[LNDROF(pglnd)]} \\
+            降雨と融雪水の地表流出を計算する.
+            バケツモデル, 新バケツモデル,
+            浸透能を用いた流出評価の3通りの評価方法を選択できる.
+
+  \item 凍土過程を評価する \texttt{MODULE:[LNDFRZ(pglnd)]} \\
+            地中水分の凍結融解と
+            それにともなう潜熱放出による温度変化を計算する.
+            ただし, このルーチンはオプションであり, 
+            通常はスキップされる.
+
+  \item 海氷の成長を評価する \texttt{MODULE:[SEAICE(pgsea)]} \\
+            海洋混合層オプションを指定した場合,
+            熱伝導による海氷の厚さの増減を計算する.
+
+  \item 海氷の表面融解を評価する \texttt{MODULE:[SEAMLT(pgsea)]} \\
+            海氷の地表温度または第1層温度が氷点を越える場合には,
+            融解が起こるとし, 温度を氷点以下に保ち,
+            海氷の厚さを減少させる. 
+
+  \item 海洋温度のナッジングを行なう \texttt{MODULE:[SEANDG(pgsea)]} \\
+            海洋混合層オプションを指定した場合, 与えられた
+            温度に近付けるようなナッジングを
+            海面の温度に付け加えることができる.
+
+  \item 地表の風速変化を評価する \texttt{MODULE:[SLVWND(pggnd)]}  \\
+            大気第1層の風速の変化を解く.
+\end{enumerate}
+
+また, 上に出てきた中で, いくつかのルーチンは
+更に以下のように, 陸面・海面・雪面の評価のサブルーチンに
+分かれるものがある.
+
+\begin{enumerate}
+\item 境界条件の設定 \texttt{MODULE:[GNDSFC(pgbnd)]}
+      \begin{enumerate}
+      \item 地表面条件を読み込む \texttt{MODULE:[GETIDX(pgbnd)]}
+      \item 海面条件を読み込む \texttt{MODULE:[GETSEA(pgbnd)]}
+      \item 海面条件を設定する \texttt{MODULE:[SEATMP(pgsea)]}
+      \end{enumerate}
+\item 地表アルベドを評価する \texttt{MODULE:[GNDALB(pgsfc)]}
+      \begin{enumerate}
+      \item アルベドを読み込む \texttt{MODULE:[GETALB(pgbnd)]}
+      \item 陸面アルベドを変更する \texttt{MODULE:[LNDALB(pglnd)]}
+      \item 海面アルベドを変更する \texttt{MODULE:[SEAALB(pgsea)]}
+      \item 雪面アルベドを変更する \texttt{MODULE:[SNWALB(pgsnw)]}
+      \end{enumerate}
+\item 地表粗度を評価する \texttt{MODULE:[GNDZ0(pgsfc)]}
+      \begin{enumerate}
+      \item 粗度を読み込む \texttt{MODULE:[GETZ0(pgbnd)]}
+      \item 陸面粗度を変更する \texttt{MODULE:[LNDZ0(pglnd)]}
+      \item 海面粗度を変更する \texttt{MODULE:[SEAZ0(pgsea)]}
+      \item 雪面粗度を変更する \texttt{MODULE:[SNWZ0(pgsnw)]}
+      \end{enumerate}
+\item 地表湿潤度を評価する \texttt{MODULE:[GNDBET(pgsfc)]} \\
+      \begin{enumerate}
+      \item 湿潤度を読み込む \texttt{MODULE:[GETBET(pgbnd)]}
+      \item 陸面湿潤度を変更する \texttt{MODULE:[LNDBET(pglnd)]}
+      \item 海面湿潤度を変更する \texttt{MODULE:[SEABET(pgsea)]}
+      \item 雪面湿潤度を変更する \texttt{MODULE:[SNWBET(pgsnw)]}
+      \end{enumerate}
+\end{enumerate}
+
+\subsubsection{地表面の分類}
+
+地表面は, 外部から与えられる条件として, 
+地表面タイプ TERM00005 によって, 以下のように分類される.
+\begin{center}
+\begin{description}
+\item[TAB00000:0.0] m
+\item[TAB00000:0.1] 条件
+\item[TAB00000:1.0] -2
+\item[TAB00000:1.1] 混合層海洋
+\item[TAB00000:2.0] -1
+\item[TAB00000:2.1] 海氷(外部から与えられたもの)
+\item[TAB00000:3.0] 0
+\item[TAB00000:3.1] 海面(外部から温度を与える)
+\item[TAB00000:4.0] 1
+\item[TAB00000:4.1] 陸氷
+\item[TAB00000:5.0] TERM00006 2
+\item[TAB00000:5.1] 陸面
+\end{description}
+\end{center}
+
+さらに, 内部的に変化しうる氷の状態によって, 
+以下のような地表面状態 TERM00007 をとる.
+\begin{center}
+\begin{description}
+\item[TAB00001:0.0] n
+\item[TAB00001:0.1] 状態
+\item[TAB00001:1.0] 0
+\item[TAB00001:1.1] 氷のない海面
+\item[TAB00001:2.0] 1
+\item[TAB00001:2.1] 海氷および陸氷
+\item[TAB00001:3.0] TERM00008 2
+\item[TAB00001:3.1] 陸面
+\end{description}
+\end{center}
+
+これらは, \texttt{MODULE:[GNDSFC(pgsfc)]} で定義される.
+
+\subsubsection{地表熱バランス}
+
+地表熱バランスの条件は,
+%
+\begin{verbatim}
+EQ=00000.
+\end{verbatim}
+%
+である.
+TERM00009,TERM00009 は,
+地表過程を評価する前の大気・地中の予報変数と,
+を用いて評価するが, 
+その時に用いた TERM00010 では, このバランスは一般には満たされない.
+
+この解き方にはいくつか方法がある.
+\begin{enumerate}
+\item TERM00011 のみを未知数と考える方法
+\item TERM00012,TERM00012 を未知数と考える方法
+\end{enumerate}
+CCSR/NIES AGCM では, 後者の方法を用いている.
+その際には, 大気・地面の全ての層の変数と結合して解く必要がある.
+詳しくは, 「大気地表系の拡散型収支式の解法」の節で述べる.
+
+また, 蒸発の項 TERM00013,TERM00013 の評価の仕方に2通りある.
+\begin{enumerate}
+\item TERM00014 として
+      (1) を解いて求めた TERM00015 
+      (可能蒸発量) に  TERM00016 をかけたものを用いる.
+
+\item TERM00017 を用いて
+      (1) を直接解く.
+\end{enumerate}
+前者と後者では, TERM00018 の項の計算に用いた温度が異なる.
+前者では, TERM00019 とした場合の温度,
+後者では, 実際の温度が使われていることになる.
+
+CCSR/NIES AGCM では, 標準的には前者の方法を用いる.
+雪面もしくは氷面で (1) を解いた結果の
+TERM00020 が氷点を越える場合, 
+または海面で TERM00021 が海水の氷結温度を割る場合(海洋混合層モデルの場合)
+には, TERM00022 を氷点に温度を固定して各フラックスを計算し,
+(1) の式の残差(エネルギー残差)が
+雪氷の凍結融解に使われるとする.
+
+\subsubsection{離散座標系の設定 \texttt{MODULE:[SETGLV,SETWLV,SETSLV]}}
+
+地中は, TERM00023 座標系で離散化される.
+陸地温度は層 TERM00024, 水分は層 TERM00025, 
+海洋温度は層 TERM00026 で定義される.
+上層から下層に TERM00027 が増大する.
+フラックスは, 層の境界 TERM00028,TERM00028 で定義される.
+
+また, TERM00029 に厚さ0の層を考え,
+表皮温度 TERM00030 を定義する.
+便宜的に TERM00031 で表し, TERM00032 とする.
+
+\subsubsection{陸面の熱フラックスと熱容量の計算 \texttt{MODULE:[LNDFLX]}}
+
+地中の熱・水分フラックスなどの物理量および湿潤度など
+地表面特性の評価は, 地表面が海面か陸面か, また陸面の場合
+積雪があるか否かで場合を分けて行なう. 
+以下では, まず雪の無い陸面の場合についての評価方法を
+一通り記述する. 海面, 雪面の場合の相違点は後で述べる. 
+
+陸面の熱容量は,
+\begin{verbatim}
+EQ=00001.
+\end{verbatim}
+ここで, TERM00033 は体積比熱である.
+
+陸面の熱フラックスは, 熱伝導係数を一定として取り扱う(TERM00034 には依存しうる).
+\begin{verbatim}
+EQ=00002.
+\end{verbatim}
+\begin{verbatim}
+EQ=00003.
+\end{verbatim}
+
+\subsubsection{陸面の水フラックスの計算 \texttt{MODULE:[LNDWFX]}}
+
+各層の水の容量 TERM00035 は, 
+\begin{verbatim}
+EQ=00004.
+\end{verbatim}
+ただし, 実際にはこれだけ水を蓄えることができない.
+最大蓄え得る容量, すなわち飽和容量は, TERM00036 を飽和含水率として,
+\begin{verbatim}
+EQ=00005.
+\end{verbatim}
+
+地中水フラックスの基本式は以下のように書ける. 
+\begin{verbatim}
+EQ=00006.
+\end{verbatim}
+ここで, TERM00037 は重力による効果を表す. 
+
+陸面の地中水フラックスの評価方法としては, 2通りの方法を考える.
+\begin{enumerate}
+\item 固定した拡散係数による方法
+\item 含水率依存の拡散係数による方法 \texttt{MODULE:[HYDFLX]}
+\end{enumerate}
+
+固定拡散係数の方法では, 簡単に以下のように表現する.
+TERM00038 は拡散係数, TERM00039 は液体水の密度である.
+ここで, (7) における 重力ポテンシャル項 TERM00040 は
+無視している. 
+\begin{verbatim}
+EQ=00007.
+\end{verbatim}
+\begin{verbatim}
+EQ=00008.
+\end{verbatim}
+
+一方, 含水率依存の拡散係数による方法では, 
+水理ポテンシャルを用いて以下のように求める.
+\begin{verbatim}
+EQ=00009.
+\end{verbatim}
+\begin{verbatim}
+EQ=00063.
+EQ=00063.
+\end{verbatim}
+ここで, TERM00041 は飽和透水係数, TERM00042 は飽和度, TERM00043 は圧力ポテンシャルで, 
+以下のように与えられる. 
+\begin{verbatim}
+EQ=00010.
+\end{verbatim}
+\begin{verbatim}
+EQ=00011.
+\end{verbatim}
+TERM00044, TERM00045, TERM00046 は定数で, 地表面タイプ TERM00047 と TERM00048 に依存しうる. 
+
+\subsubsection{陸面の流出の計算\texttt{MODULE:[LNDROF]}}
+
+流出の評価には以下の 3通りの方法を用いることができる. 
+\begin{enumerate}
+\item バケツモデル
+\item 新バケツモデル
+\item 浸透能を考慮した地表流出
+\end{enumerate}
+
+バケツモデルでは,
+\begin{verbatim}
+EQ=00012.
+\end{verbatim}
+を計算し, これが
+\begin{verbatim}
+EQ=00013.
+\end{verbatim}
+であった場合には, 流出を TERM00049 として,
+\begin{verbatim}
+EQ=00064.
+EQ=00064.
+\end{verbatim}
+とするものである.
+それ以外では, 
+\begin{verbatim}
+EQ=00065.
+EQ=00065.
+\end{verbatim}
+
+新バケツモデル(近藤,1993) は, 表層土壌の種類と深さが空間的に
+一様でない場合の平均的な地中への浸透量を見積もるモデルである. 
+もともと日平均の流出を見積もるために開発されたが, 
+ここでは時間ステップ毎に用いるように変更した. 
+%
+新バケツモデルでは, 降水浸透, 流出後の土壌水分量を以下のように見積もる. 
+\begin{verbatim}
+EQ=00014.
+\end{verbatim}
+ここで TERM00050 は時定数である(標準値 3600s). 
+%
+このとき流出量 TERM00051 は, 地表の水収支より
+\begin{verbatim}
+EQ=00066.
+EQ=00066.
+\end{verbatim}
+と見積もられる. 
+ただし,
+\begin{verbatim}
+EQ=00015.
+\end{verbatim}
+
+土壌の浸透能を考慮した地表流出 TERM00052 の評価は, 浸透能を TERM00053, 
+層雲性降雨の強度を TERM00054, 対流性降雨の強度を TERM00055 とすると, 
+以下で与えられる. 
+\begin{verbatim}
+EQ=00016.
+\end{verbatim}
+地表へ浸透する降水の入力量は以下のように修正される. 
+\begin{verbatim}
+EQ=00067.
+EQ=00067.
+\end{verbatim}
+式(25)の上の場合は, 対流性降雨の降水強度確率 TERM00056 に
+指数分布を仮定した以下の式より導かれる. 
+\begin{verbatim}
+EQ=00017.
+\end{verbatim}
+\begin{verbatim}
+EQ=00018.
+\end{verbatim}
+ただし, 層雲性降雨が一様に浸透すると考えて有効な浸透能を
+TERM00057 とした. 
+TERM00058 は, 対流性降雨の降水域が全グリッド面積に占める割合で, 
+定数である(標準で 0.6). 
+
+多層の土壌水分移動を考える場合, 
+透水係数に比例した各層からの排水を考えることもできる. 
+
+\subsubsection{陸面でのアルベドの評価\texttt{MODULE:[LNDALB]}}
+
+アルベドの評価は, 基本的に外部から与えた一定値を用いる. 
+与え方は以下の 2通りである. 
+\begin{enumerate}
+    \item ファイルで分布を与える
+    \item 地表面タイプ TERM00059 ごとの値を指定する
+\end{enumerate}
+
+波長帯ごとに, 可視域, 近赤外域の 2成分を与えることができる
+(標準では同じ値を用いている). 
+
+また, 地表湿潤度, 日射の天頂角の影響を以下のように考慮することも可能である
+(標準では考慮していない). 
+\begin{verbatim}
+EQ=00019.
+\end{verbatim}
+\begin{verbatim}
+EQ=00020.
+\end{verbatim}
+ここで, 湿潤度ファクター TERM00060, 天頂角ファクター TERM00061 は定数である. 
+
+\subsubsection{陸面での粗度の評価\texttt{MODULE:[LNDZ0]}}
+
+粗度の評価は, 基本的に外部から与えた一定値を用いる. 
+与え方は以下の 2通りである. 
+\begin{enumerate}
+    \item ファイルで分布を与える
+    \item 地表面タイプ TERM00062 ごとの値を指定する
+\end{enumerate}
+
+熱に対する粗度 TERM00063 と水蒸気に対する粗度 TERM00064 は, 
+特に与えない場合は運動量に対する粗度 TERM00065 の定数倍とする. 
+(標準では TERM00066)
+
+\subsubsection{陸面での地表湿潤度の評価\texttt{MODULE:[LNDBET]}}
+
+陸氷面では, TERM00067 は一定値 1 となる.
+氷でない陸面では, 以下のようないくつかの評価方法を用いることができる.
+\begin{enumerate}
+\item 外部から与えた一定値を用いる. 与え方として,
+      \begin{enumerate}
+      \item ファイルで分布を与える
+      \item 地表面タイプ TERM00068 ごとの値を指定する
+      \end{enumerate}
+      という2通りがありえる.
+
+\item 土壌水分 TERM00069 の関数として計算する.
+
+       飽和度 TERM00070 を定義し,
+       その関数として与える.
+
+      \begin{enumerate}
+      \item 関数タイプ1.
+            臨界飽和度 TERM00071 を越えれば1, それ以下は線形に依存するもの.
+
+        \begin{verbatim}
+EQ=00021.
+\end{verbatim}
+
+      \item 関数タイプ2. TERM00072 に非線形に依存するもの.
+
+        \begin{verbatim}
+EQ=00022.
+\end{verbatim}
+      \end{enumerate}
+
+\end{enumerate}
+
+  \begin{figure}[htbp]
+    \begin{center}
+      \leavevmode
+      \epsfile{file=beta.ps,width=70mm}      
+      \caption{TERM00073 の関数形}
+    \end{center}
+  \end{figure}
+
+
+\bigskip
+以下では, 海面での, 陸面の場合と異なった取扱いを記述する.
+\bigskip
+
+\subsubsection{海面の熱フラックスと熱容量の計算 \texttt{MODULE:[SEAFLX]}}
+
+海面においては, 海氷の存在によって熱容量が異なる.
+海水の体積比熱 TERM00074 と
+海氷の体積比熱 TERM00075 とを用いて, TERM00076 を海氷の厚さとして,
+\begin{verbatim}
+EQ=00023.
+\end{verbatim}
+
+海面においても, 熱伝導係数を一定とする(TERM00077 には依存しうる).
+\begin{verbatim}
+EQ=00024.
+\end{verbatim}
+\begin{verbatim}
+EQ=00025.
+\end{verbatim}
+
+ただし, 海氷が存在する領域では, 
+海氷と海水の境界の温度を TERM00078(TERM00079 271.15K)とし,
+熱伝導係数を海氷の値とする.
+\begin{verbatim}
+EQ=00026.
+\end{verbatim}
+
+海氷域以外の海洋の熱フラックスが意味を持つのは
+海洋混合層モデルを用いた場合のみである.
+
+\subsubsection{海面での地表湿潤度の評価\texttt{MODULE:[SEABET]}}
+
+蒸発の評価に用いる地表湿潤度 TERM00080 は,
+海面, 海氷面では, 一定値 1 となる.
+
+\subsubsection{海面でのアルベドと粗度}
+
+
+海氷に覆われない海面でのアルベドは, 放射ルーチンの中で,
+大気の光学的厚さと太陽入射角の関数として波長域ごとに計算する
+\texttt{MODULE:[SSRFC]} .
+
+海洋に覆われない海面の粗度は, 地表フラックスルーチンの中で,
+運動量フラックスの関数として計算する
+\texttt{MODULE:[SEAZ0F]} .
+
+海氷に覆われた海面のアルベドと粗度は
+一定値を与える.
+\texttt{MODULE:[SEAALB, SEAZ0]}.
+現在の標準値は, アルベド 0.7, 
+粗度は 1 TERM00081 m である.
+
+\bigskip
+以下では, 雪面での, 陸面の場合と異なった取扱いを記述する.
+\bigskip
+
+\subsubsection{雪面熱フラックス補正 \texttt{MODULE:[SNWFLX]}}
+
+
+雪は熱的には, 地表面第1層と同じ層として取り扱う.
+すなわち, 第1層の熱容量および熱拡散係数が
+雪の存在によって変更される形となる.
+
+熱容量は, 単純な和で表され,
+TERM00082 を雪の質量当たりの比熱, TERM00083 を雪の単位面積当たりの質量とすると,
+\begin{verbatim}
+EQ=00027.
+\end{verbatim}
+ただし, TERM00084 は, 雪がない場合の熱容量である.
+
+熱フラックスは, 雪と土壌の境界の仮想的な温度を TERM00085 とすると,
+\begin{verbatim}
+EQ=00028.
+\end{verbatim}
+ただし, TERM00086 は, 積雪深であり, 
+TERM00087 を雪の密度とすると, TERM00088 である.
+上式から TERM00089 を消去すると,
+\begin{verbatim}
+EQ=00068.
+EQ=00068.
+\end{verbatim}
+ただし, TERM00090 は, 雪がない場合のフラックスである.
+従って, これが既に計算してあれば,
+それと雪のみのフラックスの調和平均を取ることによって,
+雪が存在する場合のフラックスが求められる.
+また, フラックスの温度微分係数 TERM00091, TERM00092
+も, 同様に温度微分係数の調和平均によって求められる.
+
+積雪がある程度以上多い場合には, 
+温度 TERM00093 は, 土壌の温度よりも, 積雪の温度とみなすべきであろう.
+このような場合も考慮するために, 実際には, 
+上式で, TERM00094 のかわりに TERM00095 を用い, 
+さらに, TERM00096 だけでなく, TERM00097 も雪によって変化するという
+取り扱いをする.
+
+\begin{verbatim}
+EQ=00029.
+\end{verbatim}
+\begin{verbatim}
+EQ=00030.
+\end{verbatim}
+
+\subsubsection{積雪の昇華の計算\texttt{MODULE:[SNWSUB]}}
+
+昇華フラックスの分だけ積雪量を減少させる. 
+\begin{verbatim}
+EQ=00031.
+\end{verbatim}
+
+積雪が昇華しきってしまうときには, 不足分の水分フラックスを土壌から蒸発させる. 
+このとき地表のエネルギーバランスは地表水分フラックスがすべて昇華したとして
+計算されてしまっているので, 土壌温度の補正を行なう必要がある. 
+\begin{verbatim}
+EQ=00032.
+\end{verbatim}
+
+\subsubsection{降雪の計算\texttt{MODULE:[SNWFLP]}}
+
+降水が地表に到達したときに固体(雪)であるか, 液体(雨)であるかの判定を行なう. 
+
+大気第一層の湿球温度 TERM00098 を
+\begin{verbatim}
+EQ=00033.
+\end{verbatim}
+で評価し, TERM00099 が氷点 TERM00100 よりも低ければ雪, TERM00101 以上ならば雨とする. 
+湿球温度を用いるのは, 地表に到達した降水の温度が
+降水の落下途中での蒸発の起こりやすさに依存する効果を取り入れるためである. 
+
+ここで, 降雪の場合はその分だけ積雪量を増加させる. 
+\begin{verbatim}
+EQ=00034.
+\end{verbatim}
+TERM00102 は降雪フラックスである. 
+
+\subsubsection{融雪の計算\texttt{MODULE:[SNWMLP]}}
+
+地表エネルギーバランスの計算の結果, 地表エネルギーバランス TERM00103 が正の場合
+ and/or 積雪のある場所で土壌第一層(積雪を含む)
+の温度が氷点より高い場合, 融雪量を計算し, 融解の潜熱による土壌温度の
+補正を行なう. 
+
+補正前の土壌温度を TERM00104 とすると, 
+エネルギーバランスを解消する分だけ融雪が起こったとしたときの
+融雪量 TERM00105 と土壌温度 TERM00106 は, 
+
+TERM00107 のとき, 
+\begin{verbatim}
+EQ=00035.
+\end{verbatim}
+\begin{verbatim}
+EQ=00036.
+\end{verbatim}
+TERM00108 のとき, 
+\begin{verbatim}
+EQ=00037.
+\end{verbatim}
+\begin{verbatim}
+EQ=00038.
+\end{verbatim}
+TERM00109 のときは, エネルギーバランスで解ける雪以外の部分の温度は
+変化しないと仮定している. 
+TERM00110 は融解の潜熱, TERM00111 は氷点, TERM00112 は氷の比熱である. 
+
+実際の融雪量と土壌温度は, 現在の雪の量 TERM00113 が融けきる場合も考慮して, 
+\begin{verbatim}
+EQ=00039.
+\end{verbatim}
+\begin{verbatim}
+EQ=00040.
+\end{verbatim}
+
+\subsubsection{積雪面の流出の計算\texttt{MODULE:[SNWROF]}}
+ 
+積雪 TERM00114 がある場合, 陸面の流出の計算に先立って
+積雪の影響による流出 TERM00115 を以下のように評価して, 
+地表への水分入力から除いておく. 
+また, 融雪水 TERM00116 をここで地表への水分入力に加える. 
+\begin{verbatim}
+EQ=00041.
+\end{verbatim}
+\begin{verbatim}
+EQ=00069.
+EQ=00069.
+EQ=00069.
+\end{verbatim}
+ここで, TERM00117 は積雪の影響による地表の浸透率である. 
+浸透に関する臨界積雪量 TERM00118 の標準値は 200 kg/TERM00119 である. 
+
+\subsubsection{積雪面でのアルベドの評価\texttt{MODULE:[SNWALB]}}
+
+積雪 TERM00120 がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+アルベドは積雪の平方根に比例して雪の値 TERM00121 に近づく
+(臨界値 TERM00122 は, 標準で 200kg/TERM00123).
+%
+\begin{verbatim}
+EQ=00042.
+\end{verbatim}
+
+また, 融解が起こって積雪が湿っているとき雪のアルベドが
+小さくなる効果を以下のように考慮している. 
+\begin{verbatim}
+EQ=00043.
+\end{verbatim}
+ここで TERM00124 は地表温度である. 
+乾いた雪のアルベド TERM00125, 湿った雪のアルベド TERM00126
+の標準値はそれぞれ 0.7, 0.5. 
+臨界温度 TERM00127, TERM00128 はそれぞれ 258.15, 273.15 である. 
+
+さらに雪の無い場合と同様に日射の天頂角依存性の効果を考慮できる
+(標準では考慮しない). 
+
+\subsubsection{積雪面での地表粗度の評価\texttt{MODULE:[SNWZ0]}}
+
+積雪 TERM00129 がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+地表粗度は積雪の平方根に比例して雪の粗度に近づく
+(臨界値 TERM00130 は, 標準で 200kg/TERM00131).
+%
+\begin{verbatim}
+EQ=00044.
+\end{verbatim}
+%
+雪の粗度の標準値は, 運動量, 温度, 水蒸気に対してそれぞれ
+10 TERM00132, 10 TERM00133, 10 TERM00134 である. 
+
+\subsubsection{積雪面での地表湿潤度の評価\texttt{MODULE:[SNWBET]}}
+
+積雪 TERM00135 がある場合, 
+積雪の覆う比率が積雪の平方根に比例すると考え,
+地表湿潤度は積雪の平方根に比例して雪の湿潤度 1 に近づく
+(臨界値 TERM00136 は, 標準で 200kg/TERM00137).
+%
+\begin{verbatim}
+EQ=00045.
+\end{verbatim}
+
+\bigskip
+以下では, オプション的の地表過程について記述する.
+\bigskip
+
+\subsubsection{凍土過程の計算\texttt{MODULE:[LNDFRZ]}}
+
+このオプションを使うためには, 温度と水分に関する
+地中の鉛直層数と各層のレベルが等しいことが必要である. 
+
+熱拡散による地中温度の計算の後, 
+\begin{itemize}
+  \item 地中温度が氷点より低く, 液体の水分が存在すれば水分の凍結を
+  \item 地中温度が氷点より高く, 固体の水分が存在すれば水分の融解を
+\end{itemize}
+計算する. 
+
+第 TERM00138 層の含氷率を TERM00139 とすると, 凍結する水分 TERM00140 は, 
+\begin{verbatim}
+EQ=00046.
+\end{verbatim}
+ただし, 負の TERM00141 は融解する水分を表す. 
+TERM00142 は土壌温度が氷点になるまで凍結/融解が
+起こったとしたときの TERM00143 の値であり, 以下で与えられる. 
+\begin{verbatim}
+EQ=00047.
+\end{verbatim}
+TERM00144 は氷点 273.16K である. 
+
+土壌水分の相変化の潜熱による土壌温度の変化は以下で与えられる. 
+\begin{verbatim}
+EQ=00048.
+\end{verbatim}
+
+\subsubsection{海洋混合層モデル \texttt{MODULE:[SEAFRZ]}}
+
+海洋混合層モデルでは,
+海洋の熱収支を解くことにより, 海洋の温度と
+海氷の厚さの時間変化を求める.
+
+多層モデルも可能であるが,
+ここでは 厚さ TERM00145 の1層モデルを例にとり解説する.
+予報変数は, 温度 TERM00146 と海氷厚さ TERM00147 である.
+
+\begin{enumerate}
+\item  まず海洋の熱容量と表面のフラックスを求める
+       \texttt{MODULE:[SEAFLX]}
+海洋の熱容量は,
+水の比熱 TERM00148, 氷の比熱 TERM00149, 水と氷の密度を TERM00150 として,
+\begin{verbatim}
+EQ=00049.
+\end{verbatim}
+
+海氷がない場合, 熱伝導フラックスは,
+\begin{verbatim}
+EQ=00050.
+\end{verbatim}
+一方, 海氷がある場合は,
+\begin{verbatim}
+EQ=00051.
+\end{verbatim}
+となる. ここで, TERM00151 は海氷の氷結温度で, 271.35K である.
+
+TERM00152 での熱フラックス TERM00153 は通常 0 であるが,
+外部から与えることができる.
+これは, 海洋熱輸送を考えた flux correction をする場合に用いる.
+
+\item この熱フラックスと熱容量を用いて
+      陸面と同様に温度 TERM00154 の変化を求める.
+
+\item 海氷表層の融解は, 雪と同様に扱う.
+       \texttt{MODULE:[SEAFLX]}
+
+まず 融解量 TERM00155 を  \\
+TERM00156 のとき, 
+\begin{verbatim}
+EQ=00052.
+\end{verbatim}
+TERM00157 のとき, 
+\begin{verbatim}
+EQ=00053.
+\end{verbatim}
+で見積もり,
+ただし, 融けきった場合は, TERM00158 とし, その分の熱を補正する.
+\begin{verbatim}
+EQ=00054.
+\end{verbatim}
+氷の厚さを変化させ,
+\begin{verbatim}
+EQ=00055.
+\end{verbatim}
+次に, それに見合うだけ熱容量を変化させる.
+\begin{verbatim}
+EQ=00056.
+\end{verbatim}
+
+\item 次に, 海氷の底からの成長過程を考慮する.
+
+\begin{enumerate}
+\item 海氷が存在しないとき(TERM00159)
+
+TERM00160 のとき, 
+\begin{verbatim}
+EQ=00057.
+\end{verbatim}
+TERM00161 のとき, 
+\begin{verbatim}
+EQ=00058.
+\end{verbatim}
+で見積もる.
+これが正のときには, 海氷が生成される.
+ここで,  TERM00162 は, TERM00163 が TERM00164 K以下
+となるときに正となることに注意.
+\begin{verbatim}
+EQ=00070.
+EQ=00070.
+EQ=00070.
+\end{verbatim}
+
+\item 海氷が既に存在するとき(TERM00165)
+
+海氷の下の海水から海氷の底面までの熱フラックスを
+\begin{verbatim}
+EQ=00059.
+\end{verbatim}
+で見積もる.
+TERM00166 と 海洋から上への熱フラックス TERM00167 との差が
+海氷の成長または融解に使用される.
+\begin{verbatim}
+EQ=00060.
+\end{verbatim}
+よって,
+\begin{verbatim}
+EQ=00071.
+EQ=00071.
+EQ=00071.
+\end{verbatim}
+\end{enumerate}
+
+\item 外部から参照温度 TERM00168 を与えて,
+      それに nudging をかけることができる.
+%      
+      \begin{verbatim}
+EQ=00061.
+\end{verbatim}
+%
+      これは熱フラックス 
+      \begin{verbatim}
+EQ=00062.
+\end{verbatim}
+      を与えたことに相当する.
+
+      flux correction をするには,
+      適当な TERM00169 を与えて nudging を行ない,
+      TERM00170 を記憶しておいて,
+      それを TERM00171 として与えればよい.
+
+\end{enumerate}
+
+
+

@@ -1,0 +1,18 @@
+{
+    "imath": {
+        "TERM00078": {
+            "count": 2,
+            "text": "$\\tau^g$"
+        },
+        "TERM00105": {
+            "count": 2,
+            "text": "$<\\tau^*>$"
+        },
+        "TERM00117": {
+            "count": 2,
+            "text": "$R^-, T^-$"
+        }
+    },
+    "emath": {},
+    "tabular": {}
+}

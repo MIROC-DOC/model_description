@@ -1,0 +1,1347 @@
+\hypertarget{surface-processes.}{%
+\subsection{Surface Processes.}\label{surface-processes.}}
+
+\hypertarget{overview-of-surface-processes.}{%
+\subsubsection{Overview of Surface
+Processes.}\label{overview-of-surface-processes.}}
+
+The surface processes are the processes of momentum, heat, and water
+between the atmosphere and the earth's surface Giving boundary
+conditions at the lower end of the atmosphere through flux exchange.
+Surface processes are described in the Ground Temperature \(T_g\),
+Ground Moisture \(W_g\), Handle your own forecast variables, such as
+snow cover \(W_y\), Thermal inertia of the ground surface, water
+accumulation, snow accumulation, Evaluate the accumulation of sea ice
+and other factors. The main input data are the diffusion of geophysical
+quantities between the atmosphere and the surface and the fluxes due to
+radiation and precipitation. The output data are the surface temperature
+(\(T_s\)) and Various boundary condition parameters such as albedo and
+roughness.
+
+Surface processes are classified as follows.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  geothermal diffusion processes - Determining the geothermal
+  temperature structure
+\item
+  geological and hydrological processes - Determining the structure of
+  underground water, runoff, etc.
+\item
+  snow accumulation process - snow accumulation, snowmelt, etc.,
+  expression of snow-related processes
+\item
+  oceanic mixed layer processes - determining ocean temperature and sea
+  ice thickness (optional)
+\end{enumerate}
+
+We briefly list the characteristics of the CCSR/NIES AGCM surface
+processes:
+
+Evaluate the thermal conductivity and water diffusion (optional) of
+multiple layers in the ground.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  assessing the surface heat balance using the surface temperature.
+\item
+  diffusional conduction of heat and water is solved by the implicit
+  method.
+\end{enumerate}
+
+Snow is not treated as a separate layer, but is evaluated together with
+the first surface layer.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  assessing oceanic mixed layers and sea ice in multiple layers
+  (optional)
+\end{enumerate}
+
+The scheme is outlined in detail along the calculation flow. \where the
+part in the square brackets is the name of the corresponding subroutine
+and the part in ( ) is the file name. The entries enclosed in
+parentheses refer to the descriptions in other sections.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  (Evaluate surface fluxes \texttt{MODULE:{[}SFCFLX(psfcm){]}}) The
+  heat, water (evaporation), and momentum fluxes between the atmosphere
+  and the surface are Estimate in bulk. However, the evaporation
+  efficiency (\(\beta\)) is set to 1.
+\item
+  evaluate the surface roughness \texttt{MODULE:{[}GNDZ0(pgsfc){]}}
+  Basically, it depends on the file and the surface type. I can get it
+  from the outside, Change according to snowfall and other factors.
+\item
+  evaluate the heat flux and heat capacity within the ground surface .
+  \texttt{MODULE:{[}LNDFLX(pglnd),\ SEAFLX(pgsea),\ SNWFLX(pgsnw){]}}
+  Estimate the heat capacity of each layer of land and sea, The heat
+  flux at each layer boundary is estimated from the heat transfer
+  equation. If there is snowfall, change the heat capacity and flux.
+\item
+  evaluate the water flux and capacity of the land surface
+  \texttt{MODULE:{[}LNDWFX(pglnd){]}} Estimate the capacity of each
+  layer of water on land, Estimate the water flux at each layer boundary
+  from the water diffusion equation
+\item
+  evaluate the evaporation efficiency
+  \texttt{MODULE:{[}GNDBET(pgsfc){]}} For the land surface, the
+  calculation depends on soil moisture and stomatal resistance.
+\item
+  implicit solution of geo-thermal conduction up to the middle
+  \texttt{MODULE:{[}GNDHT1(pggnd){]}} Evaluate the temperature change
+  due to heat conduction in the ground. However, taking into account the
+  surface temperature changes Since it is done implicitly, only the
+  first step is done here.
+\item
+  solving the surface heat balance \texttt{MODULE:{[}SLVSFC(pgslv){]}}
+  Solving the equation for the heat balance between the surface
+  temperature and Time variation of temperature and specific humidity in
+  the first layer of the atmosphere. Using this, the heat/water
+  (evaporation) flux between the atmosphere and the ground surface and
+  compensate for the heat transfer flux at the surface. If there is snow
+  or ice and the surface temperature is above the freezing point, With
+  the surface temperature as the freezing point, Evaluate the residual
+  flux as the flux used for snowmelt.
+\item
+  implicit solution for geothermal conduction
+  \texttt{MODULE:{[}GNDHT2(pggnd){]}} Since the change in surface
+  temperature was obtained, we used it to determine Solving for changes
+  in ground temperature due to heat conduction in the ground.
+\item
+  evaluate snow reduction by snow sublimation
+  \texttt{MODULE:{[}SNWSUB(pgsnw){]}} For snow cover conditions, the
+  calculated evaporation (sublimation) fluxes allow Decrease the
+  snowpack.
+\item
+  assessing the increase in snow cover due to snowfall
+  \texttt{MODULE:{[}SNWFLP(pgsnw){]}} It discriminates between snowfall
+  and rainfall and increases the snowpack when it falls.
+\item
+  assessing snowfall reduction due to snowmelt
+  \texttt{MODULE:{[}SNWMLP(pgsnw){]}} If the surface temperature or
+  first layer temperature exceeds the freezing point during snowfall ,
+  If the snow melts, it will keep the temperature below the freezing
+  point, Decrease the snowpack.
+\item
+  implicit solution for groundwater diffusion
+  \texttt{MODULE:{[}GNDWTR(pggnd){]}} Solving changes in subsurface
+  moisture due to subsurface water fluxes.
+\item
+  evaluate precipitation interception by snowpack
+  \texttt{MODULE:{[}SNWROF(pgsnw){]}} Snowfall prevents precipitation
+  infiltration into the soil, Rainfall and snowmelt water (part of it)
+  will be runoff.
+\item
+  assessing surface runoff \texttt{MODULE:{[}LNDROF(pglnd){]}}
+  Calculating surface runoff of rainfall and snowmelt water. Bucket
+  Model, New Bucket Model, There are 3 evaluation methods to choose
+  from, including runoff evaluation using permeability.
+\item
+  evaluate the freezing process \texttt{MODULE:{[}LNDFRZ(pglnd){]}}
+  Freezing and thawing of groundwater and Calculate the temperature
+  change due to the latent heat release associated with it. However,
+  this routine is optional, Usually skipped.
+\item
+  assessing the growth of sea ice \texttt{MODULE:{[}SEAICE(pgsea){]}} If
+  you specify the marine mixed layer option , Calculate the increase or
+  decrease in the thickness of the sea ice due to heat conduction.
+\item
+  evaluate the melting of sea ice surface
+  \texttt{MODULE:{[}SEAMLT(pgsea){]}} If the surface temperature or
+  first layer temperature of the sea ice exceeds the freezing point, The
+  temperature is kept below the freezing point, Decrease the thickness
+  of the sea ice.
+\item
+  nudge the ocean temperature \texttt{MODULE:{[}SEANDG(pgsea){]}} With
+  the oceanic mixed layer option, the given Nudging to get closer to the
+  temperature. It can be added to the temperature of the sea surface.
+\item
+  evaluate the wind speed on the ground
+  \texttt{MODULE:{[}SLVWND(pggnd){]}} Solving for changes in wind speed
+  in the first layer of the atmosphere.
+\end{enumerate}
+
+Also, some of the routines mentioned above are In addition, the
+following subroutines for the evaluation of land, sea and snow surfaces
+are used There's a split.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  setting the boundary conditions \texttt{MODULE:{[}GNDSFC(pgbnd){]}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    read the surface conditions \texttt{MODULE:{[}GETIDX(pgbnd){]}}
+  \item
+    read the sea level condition \texttt{MODULE:{[}GETSEA(pgbnd){]}}
+  \item
+    set the condition of sea level \texttt{MODULE:{[}SEATMP(pgsea){]}}
+  \end{enumerate}
+\item
+  evaluate the surface albedo \texttt{MODULE:{[}GNDALB(pgsfc){]}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    load the albedo \texttt{MODULE:{[}GETALB(pgbnd){]}}
+  \item
+    change the land surface albedo \texttt{MODULE:{[}LNDALB(pglnd){]}}
+  \item
+    change the sea-surface albedo \texttt{MODULE:{[}SEAALB(pgsea){]}}
+  \item
+    change the snow albedo \texttt{MODULE:{[}SNWALB(pgsnw){]}}
+  \end{enumerate}
+\item
+  evaluate the surface roughness \texttt{MODULE:{[}GNDZ0(pgsfc){]}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    read the roughness \texttt{MODULE:{[}GETZ0(pgbnd){]}}
+  \item
+    change the land surface roughness \texttt{MODULE:{[}LNDZ0(pglnd){]}}
+  \item
+    change the sea surface roughness \texttt{MODULE:{[}SEAZ0(pgsea){]}}
+  \item
+    change the snow surface roughness \texttt{MODULE:{[}SNWZ0(pgsnw){]}}
+  \end{enumerate}
+\item
+  evaluate the surface wetness \texttt{MODULE:{[}GNDBET(pgsfc){]}}
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    read the degree of wetness \texttt{MODULE:{[}GETBET(pgbnd){]}}
+  \item
+    change the surface wetness \texttt{MODULE:{[}LNDBET(pglnd){]}}
+  \item
+    change the degree of sea surface wetness
+    \texttt{MODULE:{[}SEABET(pgsea){]}}
+  \item
+    change the snow surface wetness \texttt{MODULE:{[}SNWBET(pgsnw){]}}
+  \end{enumerate}
+\end{enumerate}
+
+\hypertarget{classification-of-the-ground-surface.}{%
+\subsubsection{classification of the ground
+surface.}\label{classification-of-the-ground-surface.}}
+
+The ground surface is a condition given by the outside world, According
+to the surface type \(m\), they are classified as follows.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+m\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+requirement\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+-I can't even begin to tell you what to do.\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+mixed-layered ocean\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+-I can't tell you how many times I've been in a row.\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Sea Ice (given from outside)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Sea level (providing temperature from outside)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+land ice\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\(\ge\) 2\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+land surface\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Furthermore, depending on the possible internal changes in the ice
+conditions, Take the following ground surface conditions \(n\).
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+n & state\tabularnewline
+0 & Sea surface without ice\tabularnewline
+1 & Sea Ice and Land Ice\tabularnewline
+\(\ge\) 2 & land surface\tabularnewline
+\bottomrule
+\end{longtable}
+
+These are defined in \texttt{MODULE:{[}GNDSFC(pgsfc){]}}.
+
+\hypertarget{surface-heat-balance.}{%
+\subsubsection{Surface Heat Balance.}\label{surface-heat-balance.}}
+
+The conditions of the surface heat balance are ,
+
+\begin{eqnarray}
+   F\theta(T_0,T_1) + L \beta Fq^P(T_0,q_1) + FR(T_0) - Fg(T_0,G_1) = 0
+\end{eqnarray}
+
+\begin{quote}
+\protect\hypertarget{p-sfc:sfc-balance}{}{\blazer[p-sfc:sfc-balance]}.
+\end{quote}
+
+It is. \(F\theta, Fq^P, FR, Fg\), \(F\theta, Fq^P, FR, Fg\) is ,
+Atmospheric and subsurface forecast variables before evaluating surface
+processes and , The evaluation is performed using the In the \(T_0\)
+used at that time, this balance is generally not met.
+
+There are several ways to solve this problem.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  how to consider only \(T_0\) as an unknown
+\item
+  how to consider \(T_0,T_1,q_1,G_1\) as unknown numbers
+\end{enumerate}
+
+The CCSR/NIES AGCM uses the latter method. In doing so, it is necessary
+to combine and solve for all the variables of the atmospheric and ground
+layers. The details are described in the section ``Solving the
+Diffusion-Based Budget Equations for Atmospheric Surface Systems''.
+
+There are two ways to evaluate the evaporation terms
+\(\beta Fq^P(T_0,q_1)\).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  as a \(\beta=1\) Solved for
+  ({[}\textbackslash p-sfc:sfc-balance{]}(\#p-sfc:sfc-balance)) \(Fq^P\)
+  (possible evaporation amount) multiplied by \(\beta\).
+\item
+  using \(\beta\).
+  (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}}) directly
+  solve.
+\end{enumerate}
+
+The temperatures used in the calculations in \(\beta Fq^P\) are
+different between the former and the latter. In the former case, the
+temperature in the case of \(\beta=1\), In the latter case, the actual
+temperature is used.
+
+The CCSR/NIES AGCM uses the former method as standard. The result of
+solving (with a
+\protect\hyperlink{p-sfc:sfc-balance}{\blind\blind\blind\blind\blind\blade\}(\#p-sfc:sfc-balance)}
+on a snow or ice surface If the \(T_0\) exceeds the freezing point, Or,
+when \(T_0\) divides the freezing temperature of seawater at the sea
+surface (in the case of oceanic mixed-layer model) by fixing the
+temperature of the \(T_0\) at the freezing point and calculating each
+flux, (\protect\hyperlink{p-sfc:sfc-balance}{p-sfc:sfc-balance{]}}) and
+the residuals (energy residuals) of the formula Suppose it is used for
+freezing and thawing snow and ice.
+
+\hypertarget{set-the-discrete-coordinate-system-modulesetglvsetwlvsetslv}{%
+\subsubsection{\texorpdfstring{Set the discrete coordinate system
+\texttt{MODULE:{[}SETGLV,SETWLV,SETSLV{]}}}{Set the discrete coordinate system MODULE:{[}SETGLV,SETWLV,SETSLV{]}}}\label{set-the-discrete-coordinate-system-modulesetglvsetwlvsetslv}}
+
+The ground is discretized with the \(z\) coordinate system. Land
+temperature is layer \(zg_l\), water content is layer \(zw_l\), Ocean
+temperature is defined in layer \(zs_l\). The \(l\) increases from the
+top to the bottom. The flux is defined by the layer boundary
+\(zg_{k-1/2}, zw_{k-1/2}\).
+
+Also, consider a layer of zero thickness on the \(z=0\), Define skin
+temperature \(T_s\). For convenience, it is represented by \(l=0\) and
+\(zg_{0} = zg_{1/2} = zg_{-1/2} = 0\).
+
+\hypertarget{calculating-land-heat-flux-and-heat-capacity-modulelndflx}{%
+\subsubsection{\texorpdfstring{Calculating land heat flux and heat
+capacity
+\texttt{MODULE:{[}LNDFLX{]}}}{Calculating land heat flux and heat capacity MODULE:{[}LNDFLX{]}}}\label{calculating-land-heat-flux-and-heat-capacity-modulelndflx}}
+
+Physical quantities, such as heat and moisture fluxes in the ground, and
+wetness The evaluation of surface characteristics is based on whether
+the surface is sea or land, and in the case of land surface This is done
+separately if there is snowfall or not. In the following, we will first
+evaluate the evaluation method for the land surface case without snow.
+We shall describe in brief. We will describe the difference between the
+case of sea level and snow surface in detail later.
+
+The heat capacity of the land surface is ,
+
+\begin{eqnarray}
+  Cg_{l}  = \tilde{C}g_{l}(zg_{l+1/2} - zg_{l-1/2})
+          = \tilde{C}g_{l} \Delta zg_{l} \; .
+\end{eqnarray}
+
+where \(\tilde{C}g_{l}\) is the volume specific heat.
+
+The land heat flux is treated as a constant heat transfer coefficient
+(which may depend on \(l\)).
+
+\begin{eqnarray}
+  Fg_{l-1/2} = Kg_{l-1/2} (G_l - G_{l-1})(zg_l - zg_{l-1}) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_{l-1}}
+ = Kg_{l-1/2}/(zg_l - zg_{l-1}) \; .
+\end{eqnarray}
+
+\hypertarget{calculating-the-water-flux-on-land-modulelndwfx}{%
+\subsubsection{\texorpdfstring{Calculating the water flux on land
+\texttt{MODULE:{[}LNDWFX{]}}}{Calculating the water flux on land MODULE:{[}LNDWFX{]}}}\label{calculating-the-water-flux-on-land-modulelndwfx}}
+
+The capacity of water in each layer \(C_w\) is ,
+
+\begin{eqnarray}
+  Cw_{l}  = \rho_w (zw_{l+1/2} - zw_{l-1/2}) 
+          = \rho_w \Delta zw_{l} \; .
+\end{eqnarray}
+
+However, in practice, it is not possible to store this much water. The
+maximum storage capacity, i.e., the saturation capacity, is defined as
+the saturation water content of \(ws\),
+
+\begin{eqnarray}
+  Cws_{l}  = ws_{l} \rho_w (zw_{l+1/2} - zw_{l-1/2})
+           = ws_{l} \rho_w \Delta zw_{l} \; .
+\end{eqnarray}
+
+The basic formula for the groundwater flux can be written as follows.
+
+\begin{eqnarray}
+  F{w} = - K_{w} \left( \frac{\partial w}{\partial z} + g_w \right)
+\end{eqnarray}
+
+\begin{quote}
+\protect\hypertarget{basic-Fw}{}{\textbackslash{[}basic-Fw{]}}
+\end{quote}
+
+Here, \(g_w\) represents the effect of gravity.
+
+There are two ways to evaluate the groundwater flux on land.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  fixed diffusion coefficient method
+\item
+  moisture content dependent diffusion coefficient method
+  \texttt{MODULE:{[}HYDFLX{]}}
+\end{enumerate}
+
+In the method of fixed diffusion coefficients, we simply express it as
+follows. \(K_w\) is the diffusion coefficient and \(\rho_w\) is the
+density of liquid water. where the gravitational potential term \(g_w\)
+in (\protect\hyperlink{basic-Fw}{basic-Fw{]}}) is Ignore it.
+
+\begin{eqnarray}
+  Fw_{l-1/2} = \rho_w Kw_{l-1/2} (w_l - w_{l-1})/(zw_l - zw_{l-1}) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial Fw_{l-1/2}}{\partial w_l} = - \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}}
+ = \rho_w Kw_{l-1/2}/(zw_l - zw_{l-1}) \; .
+\end{eqnarray}
+
+On the other hand, the method with the moisture content dependent
+diffusion coefficient is not applicable, Using the hydraulic potential,
+we obtain the following.
+
+\begin{eqnarray}
+  Fw_{l-1/2} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+             ( (\psi_{l} - \psi_{l-1})/(zw_{l} - zw_{l-1}) -1 ) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial Fw_{l-1/2}}{\partial w_l} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial \psi_{l}}{\partial w_l}/(zw_l - zw_{l-1}) \; ,\\
+- \frac{\partial Fw_{l-1/2}}{\partial w_{l-1}} = \rho_w Kw_{l-1/2} (W_{l-1/2})^{2B+3} 
+                     \frac{\partial \psi_{l-1}}{\partial w_{l-1}}/(zw_l - zw_{l-1}) \; .
+\end{eqnarray}
+
+where \(Kw\) is the saturated hydraulic conductivity, \(W\) is the
+saturation degree, and \(\psi\) is the pressure potential, It is given
+as follows.
+
+\begin{eqnarray}
+  W_l = w_l / ws_l \; , \;\;
+  W_{l-1/2} = (W_{l-1} + W_{l})/(Cw_{l-1} + Cw_{l}) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \psi_l = \psi s_l (W_l)^{-B}\; , \;\;
+  \frac{\partial \psi_l}{\partial w_l} = -B \psi_l W_l / ws \; .
+\end{eqnarray}
+
+\(Kw\), \(B\), and \(\psi s\) are constants and may depend on the ground
+surface types \(m\) and \(l\).
+
+\hypertarget{calculating-land-surface-spillmodulelndrof}{%
+\subsubsection{\texorpdfstring{Calculating land surface
+spill\texttt{MODULE:{[}LNDROF{]}}}{Calculating land surface spillMODULE:{[}LNDROF{]}}}\label{calculating-land-surface-spillmodulelndrof}}
+
+The following three methods can be used to evaluate runoff.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  bucket model
+\item
+  new bucket model
+\item
+  surface runoff with consideration of infiltration capacity
+\end{enumerate}
+
+In the bucket model ,
+
+\begin{eqnarray}
+w_1^{m+1,*} = w_1^{m+1} +  \frac{P - E}{Cw_1} \Delta t
+\end{eqnarray}
+
+and this is
+
+\begin{eqnarray}
+ w_1^{m+1,*} > w_s 
+\end{eqnarray}
+
+with the outflow as \(R_B\),
+
+\begin{eqnarray}
+  w_1^{m+1}  =  w_s \\
+  R_B   =   Cw_1 ( w_1^{m+1,*} - w_s )/\delta t
+\end{eqnarray}
+
+. Other than that ,
+
+\begin{eqnarray}
+  w_1^{m+1}  =   w_1^{m+1,*} \\
+  R_B        =   0                  \; .
+\end{eqnarray}
+
+The new bucket model (Kondo, 1993) is based on the idea that surface
+soil types and depths are spatially It is a model for estimating the
+average groundwater infiltration rate for non-uniform cases. It was
+originally developed to estimate the daily average outflow of , Here, we
+changed it to be used at each time step. In the new bucket model,
+precipitation infiltration and post-runoff soil moisture are estimated
+as follows.
+
+\begin{eqnarray}
+w_1^{m+1} = w_1^m + ( ws_1 - w_1^m ) 
+\tanh\left( \frac{(P-E)\tau_B}{Cw_1(ws_1 - w_1^m)} \right) 
+\Delta t / \tau_B \; .
+\end{eqnarray}
+
+Here, \(\tau_B\) is a time constant (standard value 3600s). In this
+case, the runoff volume (\(R_N\)) is calculated from the surface water
+balance
+
+\begin{eqnarray}
+     R_N  =  P - E - Cw_1 ( w_1^{m+1} - w_1^m ) / \Delta t \\
+          =  (P - E) \left( 1 - \frac{\tanh x}{x} \right)
+\end{eqnarray}
+
+It is estimated that . However,
+
+\begin{eqnarray}
+  x = \frac{(P-E)\tau_B}{Cw_1(ws_1 - w_1^m)} \; .
+\end{eqnarray}
+
+The evaluation of the surface runoff \(R_I\) considering soil
+infiltration capacity is based on the evaluation of the infiltration
+capacity of the \(C_I\), Assuming that the intensity of stratiform
+rainfall is \(P_l\) and that of convective rainfall is \(P_c\), Given
+below.
+
+\begin{eqnarray}
+  R_I = \left\{
+    \begin{array}{ll}
+       P_c \exp [ -(C_I-P_l) / (P_c/\kappa) ]  \;\; ( P_l \le C_I ) \\
+       P_l + P_c - C_I                         \;\; ( P_l > C_I ) 
+    \end{array}
+  \right. \; .
+\end{eqnarray}
+
+\begin{quote}
+\protect\hypertarget{inf-exs}{}{\blazer[inf-exs]}
+\end{quote}
+
+The amount of precipitation input percolating to the ground surface is
+modified as follows.
+
+\begin{eqnarray}
+  \widetilde{P_c} = \left\{
+    \begin{array}{ll}
+      P_c - R_I  \;\; ( P_l \le C_I ) \\
+      0             \;\; ( P_l > C_I )
+    \end{array}
+  \right. \; , \\
+  \widetilde{P_l} = \left\{
+    \begin{array}{ll}
+      P_l   \;\; ( P_l \le C_I ) \\
+      C_I  \;\; ( P_l > C_I )
+    \end{array}
+  \right. \; .
+\end{eqnarray}
+
+On the formula (\protect\hyperlink{inf-exs}{index{[}inf-exs{]}}),
+convective rainfall intensity probability \(f(P_c)\) It is derived from
+the following equation, which assumes an exponential distribution.
+
+\begin{eqnarray}
+  f(P_c) = \frac{\kappa}{\overline{P_c}} 
+            \exp\left[-\frac{\kappa}{\overline{P_c}}P_c\right] \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{R_I}{\kappa} = \int_{\widetilde{C_I}}^{\infty}
+                        (P_c-\widetilde{C_I})f(P_c) d(P_c) \; .
+\end{eqnarray}
+
+However, assuming that stratocumulus rainfall is uniformly infiltrating,
+the effective infiltration capacity of \(\widetilde{C_I} = C_I - P_l\).
+\(\kappa\) is the percentage of convective rainfall area in the total
+grid area, It is a constant (0.6 by default).
+
+When considering multi-layered soil moisture transfer, We can also
+consider the drainage from each layer proportional to the permeability
+coefficient.
+
+\hypertarget{evaluating-albedo-on-land-modulelndalb}{%
+\subsubsection{\texorpdfstring{Evaluating Albedo on land
+\texttt{MODULE:{[}LNDALB{]}}}{Evaluating Albedo on land MODULE:{[}LNDALB{]}}}\label{evaluating-albedo-on-land-modulelndalb}}
+
+The evaluation of albedo is basically based on a constant value given by
+an external source. There are two ways to give it.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  give a distribution in a file
+\item
+  specify a value for each surface type \(m\)
+\end{enumerate}
+
+For each wavelength band, we can give two components in the visible and
+near-infrared (The same values are used in the standard).
+
+We can also consider the effects of surface wetness and solar radiation
+zenith angle as follows (Not considered in the standard).
+
+\begin{eqnarray}
+  \alpha = \alpha - f_w \alpha w_1 \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \alpha = \alpha + \Delta f_{\zeta} (1 - \alpha)(1 - \cos^2 \zeta) \; .
+\end{eqnarray}
+
+Here, the wetness factor (\(f_w\)) and the zenith angle factor
+(\(f_{\zeta}\)) are constants.
+
+\hypertarget{evaluating-roughness-on-land-surfacemodulelndz0}{%
+\subsubsection{\texorpdfstring{Evaluating roughness on land
+surface\texttt{MODULE:{[}LNDZ0{]}}}{Evaluating roughness on land surfaceMODULE:{[}LNDZ0{]}}}\label{evaluating-roughness-on-land-surfacemodulelndz0}}
+
+The evaluation of roughness is basically based on a constant value given
+by an external source. There are two ways to give it.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  give a distribution in a file
+\item
+  specify a value for each surface type \(m\)
+\end{enumerate}
+
+The roughness \(z_{0H}\) for heat and the roughness \(z_{0E}\) for water
+vapor are If not given, the roughness to momentum is a constant multiple
+of \(z_{0M}\). (\(z_{0H} = z_{0E} = 0.1 z_{0M}\) by default)
+
+\hypertarget{evaluating-surface-wetness-on-landmodulelndbet}{%
+\subsubsection{\texorpdfstring{Evaluating surface wetness on
+land\texttt{MODULE:{[}LNDBET{]}}}{Evaluating surface wetness on landMODULE:{[}LNDBET{]}}}\label{evaluating-surface-wetness-on-landmodulelndbet}}
+
+On land ice, \(\beta\) has a constant value of 1. For non-icy land
+surfaces, we can use several evaluation methods as follows.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  using an externally given constant value. As a way of giving ,
+
+  \begin{enumerate}
+  \def\labelenumii{\arabic{enumii}.}
+  \item
+    give a distribution in a file
+  \item
+    specify a value for each surface type \(m\)
+  \end{enumerate}
+\end{enumerate}
+
+There are two possibilities.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  soil moisture calculated as a function of \(w\).
+\end{enumerate}
+
+Define the saturation degree \(W \equiv w/w_s\), We give it as a
+function.
+
+\begin{verbatim}
+ Function type 1.
+\end{verbatim}
+
+The critical saturation is 1 if it exceeds the critical saturation value
+of \(W_c\), and is linearly dependent below it.
+
+\begin{eqnarray}
+          \beta = \min \left( W/W_c, 1 \right)
+\end{eqnarray}
+
+\begin{verbatim}
+ 2. that depend nonlinearly on function type 2. $W$.
+\end{verbatim}
+
+\begin{eqnarray}
+          \beta = 1-\exp \left[-3(W/W_c)^{a} \right]
+\end{eqnarray}
+
+In the following, we describe the different treatment of the sea surface
+from that of the land surface.
+
+\hypertarget{calculating-heat-flux-and-heat-capacity-at-sea-level-moduleseaflx}{%
+\subsubsection{\texorpdfstring{Calculating heat flux and heat capacity
+at sea level
+\texttt{MODULE:{[}SEAFLX{]}}}{Calculating heat flux and heat capacity at sea level MODULE:{[}SEAFLX{]}}}\label{calculating-heat-flux-and-heat-capacity-at-sea-level-moduleseaflx}}
+
+At the sea surface, the heat capacity varies depending on the presence
+of sea ice. Volumetric Specific Heat of Seawater \(\tilde{C}_s\) and
+Using the volume specific heat of sea ice with \(\tilde{C}_i\), \(h_i\)
+is used as the thickness of the sea ice,
+
+\begin{eqnarray}
+  Cg_{l}  = \left\{ 
+    \begin{array}{ll}
+      \tilde{C}_s (zg_{l+1/2} - zg_{l-1/2})
+               ( h_i \le zg_{l-1/2} )\\
+      \tilde{C}_s (zg_{l+1/2} - h_i)
+    + \tilde{C}_i ( h_i - zg_{l-1/2} )
+               ( zg_{l-1/2} < h_i < zg_{l+1/2} )\\
+      \tilde{C}_i (zg_{l+1/2} - zg_{l-1/2})
+               ( h_i \ge zg_{l+1/2} ) \\
+    \end{array} 
+    \right. \; .
+\end{eqnarray}
+
+Even at sea level, the thermal conductivity is kept constant (depending
+on \(l\)).
+
+\begin{eqnarray}
+  Fg_{l-1/2} = Ks_{l-1/2} (G_l - G_{l-1})/(zs_l - zs_{l-1}) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial Fg_{l-1/2}}{\partial G_l} = - \frac{\partial Fg_{l-1/2}}{\partial G_l-1} 
+ = Ks_{l-1/2}/(zs_l - zs_{l-1}) \; .
+\end{eqnarray}
+
+However, in areas where there is sea ice, The temperature of the
+boundary between sea ice and seawater is set to \(T_i\) (\(=\) 271.15K),
+Let the thermal conductivity be the value of the sea ice.
+
+\begin{eqnarray}
+  Fg_{l-1/2}  = \left\{ 
+    \begin{array}{ll}
+      Ks_{l-1/2} (G_l - G_{l-1})/(zs_l - zs_{l-1}) \;\; 
+               (h_i < zg_{l-3/2} ) \\
+      Ks_{l-1/2} (G_l - T_i)/(zs_l - h_i) \;\; 
+               ( zg_{l-3/2} \le h_i < zg_{l-1/2} )\\
+      K_i (T_i - G_{l-1})/(h_i - zs_{l-1}) \;\; 
+               ( zg_{l-1/2} \le h_i < zg_{l+1/2} )\\
+      K_i (G_l - G_{l-1})(zs_l - zs_{l-1}) \;\; 
+               (h_i \ge zg_{l+1/2} )
+    \end{array} 
+    \right. \; .
+\end{eqnarray}
+
+Heat fluxes in the oceans outside the sea ice area are significant
+because This is only the case with the oceanic mixed layer model.
+
+\hypertarget{evaluating-surface-wetness-at-sea-level-moduleseabet}{%
+\subsubsection{\texorpdfstring{Evaluating surface wetness at sea level
+\texttt{MODULE:{[}SEABET{]}}}{Evaluating surface wetness at sea level MODULE:{[}SEABET{]}}}\label{evaluating-surface-wetness-at-sea-level-moduleseabet}}
+
+The surface moisture content of the \(\beta\) used to evaluate
+evaporation is , The constant value of 1 for the sea surface and sea
+ice.
+
+\hypertarget{albedo-and-roughness-at-sea-level}{%
+\subsubsection{albedo and roughness at sea
+level}\label{albedo-and-roughness-at-sea-level}}
+
+The albedo at the sea surface, which is not covered by sea ice, is in
+the radiation routine, Calculated at each wavelength as a function of
+atmospheric optical thickness and solar incidence angle
+\texttt{MODULE:{[}SSRFC{]}} .
+
+The roughness of the ocean surface that is not covered by the ocean is
+determined in the surface flux routine, Calculated as a function of
+momentum flux \texttt{MODULE:{[}SEAZ0F{]}} .
+
+The albedo and roughness of the sea surface covered with sea ice are
+Give a constant value. \texttt{MODULE:{[}SEAALB,\ SEAZ0{]}}. The current
+standard value is 0.7, albedo, The roughness is 1 \(\times10^{-3}\) m.
+
+In the following, we describe the different treatment of the snow
+surface from that of the land surface.
+
+\hypertarget{snow-heat-flux-correction-modulesnwflx}{%
+\subsubsection{\texorpdfstring{Snow Heat Flux Correction
+\texttt{MODULE:{[}SNWFLX{]}}}{Snow Heat Flux Correction MODULE:{[}SNWFLX{]}}}\label{snow-heat-flux-correction-modulesnwflx}}
+
+The snow is treated thermally as the same layer as the first layer of
+the ground surface. That is, the heat capacity and thermal diffusivity
+of the first layer are The shape will be changed by the presence of
+snow.
+
+The heat capacity is expressed as a simple sum of Let \(C_y\) be the
+specific heat per mass of snow and \(W_y\) be the mass per unit area of
+snow,
+
+\begin{eqnarray}
+  Cg_{l} = Cg'_{l} + C_y W_y \; .
+\end{eqnarray}
+
+However, \(Cg'_{l}\) is the heat capacity in the absence of snow.
+
+The heat flux is defined as the hypothetical temperature at the
+snow-soil interface, which is set to \(G_I\),
+
+\begin{eqnarray}
+  Fg_{1/2} = K_y (G_I-T_0)/h_y = Kg_{1/2} (G_1 - G_I)(zg_1 - zg_0) \; .
+\end{eqnarray}
+
+However, the depth of the snow cover in \(h_y\) is Let \(\rho_y\) be the
+density of snow, and \(h_y = W_y/\rho_y\) be the density of snow.
+Eliminating \(G_I\) from the equation above,
+
+\begin{eqnarray}
+  Fg_{1/2}  = \left[ \left( K_y/h_y \right)^{-1} 
+                   +  \left( K_g /(zg_1 - zg_0) \right)^{-1} 
+              \right]^{-1} (G_1-T_0)
+                    \\
+            = \left[ \left( K_y (G_1-T_0)/h_y \right)^{-1} 
+                    +  (Fg_{1/2})^{-1}
+                \right]^{-1} \; .
+\end{eqnarray}
+
+However, the \(Fg'_{1/2}\) is the flux when there is no snow. Therefore,
+if this has already been calculated, By taking the harmonic mean of that
+and the snow only flux, Fluxes are required in the presence of snow.
+Also, the temperature differential coefficient of the fluxes
+\(\frac{\partial Fg_{1/2}}{\partial G_1}\) and
+\(\frac{\partial Fg_{1/2}}{\partial T_0}\) is similarly obtained by the
+harmonic mean of the temperature differential coefficients.
+
+If there is more than a certain amount of snowfall , The temperature
+\(G_1\) should be regarded as the temperature of the snowpack rather
+than the temperature of the soil. To account for such cases, in fact,
+the In the above formula, instead of \(h_y\), \(h_y/2\) is used,
+Furthermore, not only \(F_{1/2}\), but also \(F_{3/2}\) is changed by
+snow Handling.
+
+\begin{eqnarray}
+  Fg_{1/2} = \left[ \left( K_y (G_1-T_0)/(h_y/2) \right)^{-1} 
+                    +  (Fg'_{1/2})^{-1}
+                \right]^{-1} \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  Fg_{3/2} = \left[ \left( K_y (G_2-G_1)/(h_y/2) \right)^{-1} 
+                    +  (Fg'_{3/2})^{-1}
+                \right]^{-1} \; .
+\end{eqnarray}
+
+\hypertarget{calculating-snow-sublimation-modulesnwsub}{%
+\subsubsection{\texorpdfstring{Calculating snow sublimation
+\texttt{MODULE:{[}SNWSUB{]}}}{Calculating snow sublimation MODULE:{[}SNWSUB{]}}}\label{calculating-snow-sublimation-modulesnwsub}}
+
+Decrease the snowpack by the amount of sublimation flux.
+
+\begin{eqnarray}
+  \tilde{Wy} = Wy - Fq_1 \Delta t \; .
+\end{eqnarray}
+
+When the snowfall is fully sublimated, the missing water flux is
+evaporated from the soil. The energy balance of the earth's surface is
+assumed to be the same as if the surface moisture flux were all
+sublimated We need to correct for the soil temperature because it has
+been calculated.
+
+\begin{eqnarray}
+  \tilde{G}_1 = G_1 + L_M ( Fq_1 \Delta t - Wy ) / Cg_1 \; .
+\end{eqnarray}
+
+\hypertarget{calculating-snowfall-modulesnwflp}{%
+\subsubsection{\texorpdfstring{Calculating snowfall
+\texttt{MODULE:{[}SNWFLP{]}}}{Calculating snowfall MODULE:{[}SNWFLP{]}}}\label{calculating-snowfall-modulesnwflp}}
+
+When precipitation arrives at the ground surface, it is judged whether
+it is solid (snow) or liquid (rain).
+
+Atmosphere First Layer Wet Bulb Temperature \(Tw_1\)
+
+\begin{eqnarray}
+Tw_1 = T_1 - L / Cp ( q^* - q_1 ) / ( 1 + L / Cp \frac{\partial q^*}{\partial T} )
+\end{eqnarray}
+
+If the freezing point (\(Tw_1\)) is lower than the freezing point
+(\(Tm\)), it is assumed to be snow, and if it is higher than the
+freezing point (\(Tm\)), it is assumed to be rain. The reason why the
+wet-ball temperature is used is that the temperature of precipitation
+reaching the surface is This is to incorporate effects that depend on
+the likelihood of evaporation during the fall of precipitation.
+
+In the case of snowfall, the snowpack is increased by the amount of
+snowfall.
+
+\begin{eqnarray}
+\tilde{Wy} = Wy + Py \Delta t \; .
+\end{eqnarray}
+
+\(Py\) is a snowfall flux.
+
+\hypertarget{snowmelt-calculation-modulesnwmlp}{%
+\subsubsection{\texorpdfstring{Snowmelt calculation
+\texttt{MODULE:{[}SNWMLP{]}}}{Snowmelt calculation MODULE:{[}SNWMLP{]}}}\label{snowmelt-calculation-modulesnwmlp}}
+
+If the surface energy balance (\(\Delta s\)) is positive, as a result of
+the calculation of the surface energy balance and/or Soil first layer in
+areas with snow cover (including snowpack) When the temperature of the
+soil is higher than the freezing point, the amount of snowmelt is
+calculated and the latent heat of melting is calculated. Make
+corrections.
+
+If the soil temperature before correction is set to \(\hat{G_1}\), If
+the snowmelt occurred to the extent that it would resolve the energy
+balance Snowmelt \(\tilde{My} \Delta t\) and soil temperature
+\(\tilde{G_1}\) are ,
+
+When the \(\hat{G_1} \ge Tm\) ,
+
+\begin{eqnarray}
+\tilde{My} \Delta t = ( Cg_1 ( \hat{G_1} - Tm ) + \Delta s \Delta t ) / L_M \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+\tilde{G_1} = Tm \, .
+\end{eqnarray}
+
+When the \(\hat{G_1} < Tm\) ,
+
+\begin{eqnarray}
+\tilde{My} \Delta t = \Delta s \Delta t / ( L_M + Cp_I ( Tm - \hat{G_1} ) ) \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+\tilde{G_1} = \hat{G_1} \; .
+\end{eqnarray}
+
+In the case of \(\hat{G_1} < Tm\), the temperature of the part of the
+snow that melts in the energy balance except for the snow is I'm
+assuming it doesn't change. \(L_M\) is the latent heat of melting,
+\(Tm\) is the freezing point, and \(Cp_I\) is the specific heat of ice.
+
+The actual snowmelt and soil temperature are based on the current amount
+of snow and soil temperature in the case of full melting of the \(Wy\),
+
+\begin{eqnarray}
+My \Delta t = \left\{
+   \begin{array}{ll}
+      \tilde{My} \Delta t  ( \tilde{My} \Delta t \le Wy ) \\
+      Wy                   ( \tilde{My} \Delta t >   Wy ) \\
+   \end{array}
+\right. \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+G_1 = \left\{
+   \begin{array}{ll}
+      \tilde{G_1}   ( \tilde{My} \Delta t \le Wy ) \\
+      \hat{G_1} + ( \Delta s \Delta t - L_M Wy - Cp_I Wy ( Tm - \hat{G_1} ) )
+                / ( Cg_1 - Cp_I Wy )
+                    ( \tilde{My} \Delta t >   Wy ) \\
+   \end{array}
+\right. \; .
+\end{eqnarray}
+
+\hypertarget{calculating-snow-surface-runoffmodulesnwrof}{%
+\subsubsection{\texorpdfstring{Calculating Snow Surface
+Runoff\texttt{MODULE:{[}SNWROF{]}}}{Calculating Snow Surface RunoffMODULE:{[}SNWROF{]}}}\label{calculating-snow-surface-runoffmodulesnwrof}}
+
+If there is a snow \(Wy\), prior to calculating the land surface runoff
+The runoff due to snow accumulation was evaluated as follows, Exclude
+moisture from the surface input. Snowmelt water (\(My\)) is added to the
+surface water input here.
+
+\begin{eqnarray}
+  Is = \left\{
+    \begin{array}{ll}
+      1 - Wy / Wy_{Ci}  \;\; ( Wy < Wy_{Ci} ) \\
+      0                 \;\; ( Wy \ge Wy_{Ci} )
+    \end{array}
+  \right. \; ,
+\end{eqnarray}
+
+\begin{eqnarray}
+  \widetilde{P_c} = Is P_c \; ,\\
+  \widetilde{P_l} = Is ( P_c + My ) \; ,\\
+  R_S        = ( 1 - Is )( P_c + P_l + My ) \; .
+\end{eqnarray}
+
+where \(Is\) is the surface infiltration rate due to snow cover. The
+standard value of critical snowpack for infiltration, \(Wy_{Ci}\), is
+200 kg/m\(^2\).
+
+\hypertarget{evaluating-albedo-on-snow-covered-surfacesmodulesnwalb}{%
+\subsubsection{\texorpdfstring{Evaluating albedo on snow-covered
+surfaces\texttt{MODULE:{[}SNWALB{]}}}{Evaluating albedo on snow-covered surfacesMODULE:{[}SNWALB{]}}}\label{evaluating-albedo-on-snow-covered-surfacesmodulesnwalb}}
+
+If you have a snow \(Wy\) , The ratio of snow cover is considered to be
+proportional to the square root of the snowpack, Albedo approaches the
+snow value \(\alpha s\) in proportion to the square root of the snowpack
+(The critical value of \(Wy_C\) is 200 kg/m\(^2\) in standard).
+
+\begin{eqnarray}
+  \alpha = \left\{ 
+  \begin{array}{ll}
+    \alpha' + (\alpha s-\alpha')\sqrt{Wy/Wy_{C}} \;\;   (Wy < Wy_{C}) \\
+    \alpha s                                            (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{eqnarray}
+
+Also, when melting occurs and the snowpack is wet, the snow albedo The
+smaller effect is considered as follows.
+
+\begin{eqnarray}
+  \alpha s = \left\{
+    \begin{array}{ll}
+      \alpha s_d                         \;\; (T_0 \le Td) \\
+      \alpha s_d - (\alpha s_m -\alpha s_d)
+                   (T_0 - Td)/(Td - Tm)  \;\; (Td < T_0 \le Tm) \\
+      \alpha s_m                         \;\; (T_0 > Tm)
+    \end{array}
+  \right. \; .
+\end{eqnarray}
+
+where \(T_0\) is the surface temperature. Dry Snow Albedo
+\(\alpha s_d\), Wet Snow Albedo \(\alpha s_m\) The standard values for
+The critical temperatures (\(Td\) and \(Tm\)) are 258.15 and 273.15,
+respectively.
+
+Furthermore, as in the absence of snow, we can take into account the
+effect of the zenith angle dependence of solar radiation (Not considered
+in the standard).
+
+\hypertarget{evaluating-surface-roughness-on-snow-covered-surfacesmodulesnwz0}{%
+\subsubsection{\texorpdfstring{Evaluating Surface Roughness on Snow
+Covered
+Surfaces\texttt{MODULE:{[}SNWZ0{]}}}{Evaluating Surface Roughness on Snow Covered SurfacesMODULE:{[}SNWZ0{]}}}\label{evaluating-surface-roughness-on-snow-covered-surfacesmodulesnwz0}}
+
+If you have a snow \(Wy\) , The ratio of snow cover is considered to be
+proportional to the square root of the snowpack, Surface roughness
+approaches snow roughness in proportion to the square root of the
+snowpack. (The critical value, \(Wy_C\), is 200 kg/m\(^2\) in standard).
+
+\begin{eqnarray}
+  z_0 = \left\{ 
+  \begin{array}{ll}
+    z_0' + (z_0s-z_0')\sqrt{Wy/Wy_{C}}  \;\;   (Wy < Wy_{C}) \\
+    z_0s                                       (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{eqnarray}
+
+The standard values for snow roughness are for momentum, temperature and
+water vapor, respectively. 10 \(^{-2}\), 10 \(^{-3}\), 10 \(^{-3}\).
+
+\hypertarget{evaluating-surface-wetness-on-snow-covered-surfacesmodulesnwbet}{%
+\subsubsection{\texorpdfstring{Evaluating Surface Wetness on Snow
+Covered
+Surfaces\texttt{MODULE:{[}SNWBET{]}}}{Evaluating Surface Wetness on Snow Covered SurfacesMODULE:{[}SNWBET{]}}}\label{evaluating-surface-wetness-on-snow-covered-surfacesmodulesnwbet}}
+
+If you have a snow \(Wy\) , The ratio of snow cover is considered to be
+proportional to the square root of the snowpack, Surface wetness
+approaches snow wetness 1 in proportion to the square root of the
+snowpack (The critical value of \(Wy_C\) is 200 kg/m\(^2\) in standard).
+
+\begin{eqnarray}
+  \beta = \left\{ 
+  \begin{array}{ll}
+    \beta' + (1-\beta')\sqrt{Wy/Wy_{C}}  \;\;   (Wy < Wy_{C}) \\
+    1                                           (Wy \ge Wy_{C})
+  \end{array}
+  \right. \; .
+\end{eqnarray}
+
+In the following section, we describe the optional surface processes.
+
+\hypertarget{calculating-the-freezing-process-modulelndfrz}{%
+\subsubsection{\texorpdfstring{Calculating the freezing process
+\texttt{MODULE:{[}LNDFRZ{]}}}{Calculating the freezing process MODULE:{[}LNDFRZ{]}}}\label{calculating-the-freezing-process-modulelndfrz}}
+
+To use this option, you must use the The number of vertical layers in
+the ground and the level of each layer must be equal.
+
+After calculating the ground temperature by thermal diffusion,
+
+\begin{itemize}
+\item
+  If the ground temperature is lower than the freezing point and liquid
+  moisture is present, the freezing of moisture will be
+\item
+  If the ground temperature is higher than the freezing point and solid
+  moisture is present, the water will melt.
+\end{itemize}
+
+Calculate.
+
+Assuming that the ice content of the \(l\) layer is \(w_{Fl}\), the
+freezing water (\(\Delta w_{Fl}\)) is
+
+\begin{eqnarray}
+  \Delta w_{Fl} = \left\{
+    \begin{array}{ll}
+      - w_{Fl}
+         \;\; ( \Delta_0 w_{Fl} \le - w_{Fl} ) \\
+      \Delta_0 w_{Fl}
+         \;\; ( - w_{Fl} < \Delta_0 w_{Fl} \le w_l - w_{Fl} ) \\
+      w_l - w_{Fl}
+         \;\; ( \Delta_0 w_{Fl} >  w_{Fl} )
+    \end{array}
+  \right. \; .
+\end{eqnarray}
+
+where the negative \(\Delta w_{Fl}\) represents the water to be melted.
+The \(\Delta_0 w_{Fl}\) will freeze/thaw until the soil temperature
+reaches the freezing point. This is the value of \(\Delta w_{Fl}\) if it
+were to occur, given by
+
+\begin{eqnarray}
+  \Delta_0 w_{Fl} = Cg_l (Tm - G_l)/(L_M Cw_l) \; .
+\end{eqnarray}
+
+\(Tm\) has an ice point of 273.16K.
+
+The change in soil temperature due to the latent heat of the soil
+moisture phase change is given by
+
+\begin{eqnarray}
+  \tilde{G}_l = G_l + L_M Cw_l \Delta w_{Fl} / Cg_l \; .
+\end{eqnarray}
+
+\hypertarget{oceanic-mixed-layer-model-moduleseafrz}{%
+\subsubsection{\texorpdfstring{oceanic mixed layer model
+\texttt{MODULE:{[}SEAFRZ{]}}}{oceanic mixed layer model MODULE:{[}SEAFRZ{]}}}\label{oceanic-mixed-layer-model-moduleseafrz}}
+
+In the oceanic mixed layer model , By solving for the heat balance of
+the oceans, the temperature of the oceans and Determine the time
+variation of sea ice thickness.
+
+Multi-layered models are possible, but, Here we will take a single layer
+model of thickness \(D\) as an example. The predictor variables are
+temperature (\(G\)) and sea ice thickness (\(h_I\)).
+
+First, determine the heat capacity and surface flux of the ocean.
+\texttt{MODULE:{[}SEAFLX{]}} The heat capacity of the oceans is , The
+specific heat of water \(C_w\), the specific heat of ice \(C_I\), and
+the density of water and ice as \(\rho_w\),
+
+\begin{eqnarray}
+  C_s  = C_I \rho_w h_I +   C_w \rho_w (D - h_I)
+\end{eqnarray}
+
+In the absence of sea ice, the heat transfer flux is
+
+\begin{eqnarray}
+  Fs_{1/2} = K_s \frac{ G - T_0 }{d/2}
+\end{eqnarray}
+
+On the other hand, if there is sea ice,
+
+\begin{eqnarray}
+ Fs_{1/2} = K_I \frac{ T_I - T_0 }{h_I}
+\end{eqnarray}
+
+where \(T_I\) is the freezing temperature of sea ice at 271.35 K. where
+\(T_I\) is the freezing temperature of sea ice at 271.35 K.
+
+Heat flux in the \(z=D\) is usually zero while the \(Fs_{1+1/2}\) is
+usually zero, It can be given from the outside. It is used in the case
+of flux correction considering oceanic heat transport.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  using this heat flux and heat capacity As with the land surface,
+  determine the change in temperature (\(G\)).
+\end{enumerate}
+
+The melting of the sea ice surface is treated in the same way as snow.
+\texttt{MODULE:{[}SEAFLX{]}}
+
+First, I'll set the melting value, \(\tilde{M_I}\), to When the
+\(G \ge T_I\) ,
+
+\begin{eqnarray}
+  M_I
+  =  \frac{C_s ( G - T_I ) + \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) T_I }
+\end{eqnarray}
+
+When the \(G < T_I\) ,
+
+\begin{eqnarray}
+  M_I
+  =  \frac{\Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) G}
+\end{eqnarray}
+
+Estimate in , However, if it has melted completely, set the value to
+\(M_I=h_I\) and compensate for the heat.
+
+\begin{eqnarray}
+  G \leftarrow G + \frac{ \Delta s \Delta t 
+                          - \rho_w ( C_w - C_I ) h_I G  }
+                        { C_w + \rho_w ( C_w - C_I ) h_I}
+\end{eqnarray}
+
+Varying the thickness of the ice,
+
+\begin{eqnarray}
+  h_I \leftarrow h_I - M_I 
+\end{eqnarray}
+
+Then, vary the heat capacity correspondingly.
+
+\begin{eqnarray}
+  C_s = C_s + \rho_w ( C_w - C_I ) h_I
+\end{eqnarray}
+
+The next step is to consider the growth process from the bottom of the
+sea ice.
+
+\begin{verbatim}
+ 1. when there is no sea ice ($h_I=0$)
+\end{verbatim}
+
+When the \(G < T_I\) ,
+
+\begin{eqnarray}
+  \tilde{f_I}
+  =  \frac{C_s ( T_I - G ) - \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) T_I }
+\end{eqnarray}
+
+When the \(G \ge T_I\) ,
+
+\begin{eqnarray}
+  \tilde{f_I}
+  =  \frac{- \Delta s \Delta t )}
+          {\rho_w ( C_w - C_I ) G}
+\end{eqnarray}
+
+Estimate in . When it is positive, sea ice is produced. Here,
+\(\Delta s\) is \(T_0\) is \(T_I=271.35\) K or less Note that it is
+positive when the
+
+\begin{eqnarray}
+  h_I  \leftarrow  f_I \\
+  C_s  \leftarrow  C_s - \rho_w ( C_w - C_I ) f_I \\
+  G    \leftarrow  \max( G, T_I )
+\end{eqnarray}
+
+\begin{verbatim}
+ 2. when the sea ice is already present ($h_I>0$)
+\end{verbatim}
+
+Heat fluxes from the seawater beneath the sea ice to the bottom of the
+sea ice.
+
+\begin{eqnarray}
+  F_b = K_s \frac{ G - T_I }{ D/2 - h_I }
+\end{eqnarray}
+
+Estimate in . The difference between \(F_b\) and the heat flux from the
+ocean to the top of \(Fs_{1/2}\) Used for the growth or melting of sea
+ice.
+
+\begin{eqnarray}
+  f_I = \frac{ Fs_{1/2} - F_b }
+             { \rho_w ( C_w - C_I ) G } \Delta t
+\end{eqnarray}
+
+So..,
+
+\begin{eqnarray}
+  h_I  \leftarrow  h_I + f_I \\
+  G    \leftarrow  G \frac{C_s}{C_s - \rho_w ( C_w - C_I ) f_I} \\
+  C_s  \leftarrow  C_s - \rho_w ( C_w - C_I ) f_I
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  give an external reference temperature of \(G_{ref}\) You can nudging
+  it.
+\end{enumerate}
+
+\begin{eqnarray}
+        G \leftarrow G + \frac{G_{ref} - G}{\tau} \Delta t
+\end{eqnarray}
+
+This is a heat flux
+
+\begin{eqnarray}
+        F_n = C_s \frac{G_{ref} - G}{\tau}
+\end{eqnarray}
+
+The equivalent of giving a .
+
+To do flux correction, Provide the appropriate \(\tau\) and perform
+nudging, Remember the \(F_n\), You can give it to me as \(Fs_{1+1/2}\).

@@ -1,0 +1,239 @@
+﻿
+\subsection{地表フラックス}
+
+\subsubsection{地表フラックススキームの概要}
+
+地表フラックススキームは, 
+接地境界層における乱流輸送による
+大気地表間の物理量のフラックスを評価する.
+主な入力データは, 風速 TERM00000,TERM00000, 気温 TERM00001, 比湿 TERM00002 であり,
+出力データは, 運動量, 熱, 水蒸気の鉛直フラックスと
+implicit 解を得るための微分値である.
+
+バルク係数は Louis(1979), Louis {\em et al.}(1982) に従って求める. 
+ただし, 運動量と熱に対する粗度の違いを考慮した補正を行なっている. 
+
+計算手順の概略は以下の通りである.
+\begin{enumerate}
+\item 大気の安定度として
+      Richardson 数を計算する.
+\item Richardson 数からバルク係数を計算する \texttt{MODULE:[PSFCL]}.
+\item バルク係数からフラックスとその微分を計算する.
+\item 必要であれば, 求められたフラックスを用いて
+      海面の粗度効果・自由対流の効果・風速補正を考慮した後に,
+      もう一度計算を行なう.
+\end{enumerate}
+
+\subsubsection{フラックス計算の基本式}
+
+地表フラックス TERM00003,TERM00003 は
+バルク係数 TERM00004,TERM00004 を用いて
+次のように表される.
+%
+\begin{verbatim}
+EQ=00000.
+\end{verbatim}
+\begin{verbatim}
+EQ=00001.
+\end{verbatim}
+\begin{verbatim}
+EQ=00002.
+\end{verbatim}
+\begin{verbatim}
+EQ=00003.
+\end{verbatim}
+%
+ただし, TERM00009 は可能蒸発量である.
+実蒸発量の計算は「地表過程」ならび
+「大気地表系の拡散型収支式の解法」の節で述べる.
+
+\subsubsection{Richardson 数}
+
+大気地表間の安定度の基準となる,
+バルクRichardson数 TERM00010 は
+%
+\begin{verbatim}
+EQ=00004.
+\end{verbatim}
+ここで, 
+\begin{verbatim}
+EQ=00005.
+\end{verbatim}
+は補正ファクターで, 補正前のバルク Richardson数から近似的に求めるが, 
+ここでは計算方法は略す. 
+
+\subsubsection{バルク係数}
+
+バルク係数 TERM00011,TERM00011 は
+Louis(1979), Louis {\em et al.}(1982) に従って求める. 
+ただし, 運動量と熱に対する粗度の違いを考慮した補正を行なっている. 
+すなわち, 運動量, 熱, 水蒸気に対する粗度を
+それぞれ TERM00012,TERM00012 とすると
+一般に TERM00013,TERM00013 であるが, 熱, 水蒸気についても
+TERM00014 の高さからのフラックスに対するバルク係数
+TERM00015, TERM00016 をまず求め, その後に補正する. 
+%
+\begin{verbatim}
+EQ=00006.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00007.
+\end{verbatim}
+\begin{verbatim}
+EQ=00008.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00009.
+\end{verbatim}
+\begin{verbatim}
+EQ=00010.
+\end{verbatim}
+
+TERM00017,TERM00017 は
+中立時の(TERM00018 からのフラックスに対する)バルク係数で,
+%
+\begin{verbatim}
+EQ=00011.
+\end{verbatim}
+
+補正ファクター TERM00019 は, 
+\begin{verbatim}
+EQ=00012.
+\end{verbatim}
+であるが, 計算方法は略す. 
+係数は, TERM00020,TERM00020 である. 
+
+バルク係数の TERM00021 依存性を図示すると,
+図\ref{p-sflx:cm}, 図\ref{p-sflx:ch}のようになる.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=sflx-cm.ps,width=70mm}
+    \caption{運動量に対する粗度}
+    \label{p-sflx:cm}
+  \end{center}
+\end{figure}
+\begin{figure}[htbp]
+  \begin{center}
+    \epsfile{file=sflx-ch.ps,width=70mm}
+    \caption{熱に対する粗度. TERM00022 の場合}
+    \label{p-sflx:ch}
+  \end{center}
+\end{figure}
+
+\subsubsection{フラックスの計算}
+
+これにより, フラックスが計算される.
+%
+\begin{verbatim}
+EQ=00013.
+\end{verbatim}
+\begin{verbatim}
+EQ=00014.
+\end{verbatim}
+\begin{verbatim}
+EQ=00015.
+\end{verbatim}
+\begin{verbatim}
+EQ=00016.
+\end{verbatim}
+
+微分項は, 以下のようになる.
+\begin{verbatim}
+EQ=00017.
+\end{verbatim}
+\begin{verbatim}
+EQ=00018.
+\end{verbatim}
+\begin{verbatim}
+EQ=00019.
+\end{verbatim}
+\begin{verbatim}
+EQ=00020.
+\end{verbatim}
+\begin{verbatim}
+EQ=00021.
+\end{verbatim}
+
+ここで, 注意したいのは,
+TERM00032 はこの時点では求められていない量であることである.
+表皮温度は, 
+地表熱バランスの条件
+\begin{verbatim}
+EQ=00022.
+\end{verbatim}
+を満たすように決まる.
+この時点では, TERM00033 としては前の時間ステップにおけるものを使って評価する.
+地表バランスを満たす本当のフラックスの値は,
+地表過程と結合してこの式を解いてから定まる.
+その意味で, 上のフラックスに TERM00034 をつけておいた.
+
+\subsubsection{海面における取扱い}
+
+海面では, Miller et al.(1992) に従い, 以下の2つの効果を考慮している.
+\begin{itemize}
+\item 風速が弱いときに自由対流運動が卓越すること
+\item 海面の粗度が風速によって変化すること
+\end{itemize}
+
+自由対流運動の効果は, 浮力フラックス TERM00035 を計算し,
+\begin{verbatim}
+EQ=00023.
+\end{verbatim}
+TERM00036 のときに,
+\begin{verbatim}
+EQ=00024.
+\end{verbatim}
+\begin{verbatim}
+EQ=00025.
+\end{verbatim}
+とすることで考慮する.  TERM00038 は混合層の厚さのスケールに対応する.
+現在の標準値は TERM00039 m である.
+% この自由対流運動の効果は, 海面以外でも考慮している.
+
+海面の粗度変化は, 摩擦速度 TERM00040
+\begin{verbatim}
+EQ=00026.
+\end{verbatim}
+を用いて,
+\begin{verbatim}
+EQ=00027.
+EQ=00027.
+EQ=00027.
+\end{verbatim}
+のように評価する. TERM00041 TERM00042 TERM00043 は
+大気の動粘性係数であり, 
+他の係数の標準値は
+TERM00044,TERM00044,
+TERM00045,TERM00045,
+TERM00046,TERM00046 である.
+
+以上の計算では, TERM00047,TERM00047 が必要であるため,
+逐次近似計算を行なう.
+
+\subsubsection{風速の補正}
+
+一般に粗度の大きな地表では, 粗度の小さな地表に比べて
+運動量の下向き輸送が効率的であるためにその直上の風が弱く,
+粗度による TERM00048 の違いを風速の違いによって打ち消す効果が働く.
+
+モデルにおいて地表フラックス計算に渡される風速は
+力学過程の時間積分によって計算された値であり,
+スペクトル展開によって平滑化された値となっている.
+そのために, 海面と陸面など, 粗度の大きく違う地表が
+小さなスケールで混在している領域では, 
+この補償効果がうまく表現できない.
+そのため, 一度運動量フラックスを計算し,
+大気最下層の風速をそれによって補正してから
+もういちど運動量・熱・水のフラックスを計算しなおす.
+
+\subsubsection{風速の最小値}
+
+小規模運動の効果を考え,
+地表フラックスの算出の際の地表風速
+TERM00049 の最小値を設定する.
+現在の標準値は, 各フラックスに共通で
+3m/s である.
+
