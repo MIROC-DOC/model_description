@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC d-basic</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC d-basic</h1>
+</header>
+<h1 id="mechanical-processes.">Mechanical Processes.</h1>
+<h2 id="basic-equations.">Basic Equations.</h2>
+<h3 id="basic-equations.-1">Basic Equations.</h3>
+<p>The basic equation is , It is a system of primitive equations at the spherical (<span class="math inline"><em>λ</em>, <em>φ</em></span>) and <span class="math inline"><em>σ</em></span> coordinates, It is given as follows ( Haltiner and Williams , 1980 ).</p>
+<ol type="1">
+<li>a series of expressions</li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial \pi}{\partial t} 
+    + \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi
+     =  - \nabla_{\sigma} \cdot \mathbf{v}_{H} 
+          - \frac{\partial \dot{\sigma}}{\partial \sigma}
+$$</span><br /></p>
+<pre><code>&gt; &lt;span id=&quot;mass&quot; label=&quot;mass&quot; label=&quot;mass&quot;&gt;\\\\blur[mass]&lt;/span&gt;</code></pre>
+<ol start="2" type="1">
+<li>hydrostatic pressure formula</li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial \Phi}{\partial \sigma} = - \frac{RT_v}{\sigma} 
+$$</span><br /></p>
+<pre><code>&gt; &lt;span id=&quot;hydrostatic&quot; label=&quot;hydrostatic&quot; label=&quot;hydrostatic pressure&quot;&gt;\blaze[hydrostatic pressure]&lt;/span&gt;.</code></pre>
+<ol start="3" type="1">
+<li>equation of motion</li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial \zeta}{\partial t} 
+     =   \frac{1}{a\cos\varphi}
+            \frac{\partial A_v}{\partial \lambda}
+          - \frac{1}{a\cos \varphi}
+            \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
+          - {\mathcal D}(\zeta) 
+$$</span><br /></p>
+<pre><code>&gt; &lt;span id=&quot;Vorticity&quot; label=&quot;Vorticity&quot; label=&quot;Vorticity&quot;&gt;\\\\.00002}&lt;/span&gt;</code></pre>
+<p><br /><span class="math display">$$
+  \frac{\partial D}{\partial t} 
+     =    \frac{1}{a\cos\varphi}
+            \frac{\partial A_u}{\partial \lambda}
+          + \frac{1}{a\cos\varphi}
+            \frac{\partial }{\partial \varphi} ( A_v \cos\varphi )
+          - \nabla^{2}_{\sigma}
+           ( \Phi + R \bar{T} \pi + E ) 
+          - {\mathcal D}(D) 
+$$</span><br /></p>
+<pre><code>&gt; &lt;span id=&quot;divergence&quot; label=&quot;divergence&quot;&gt;\\\[divergence]&lt;/span&gt;</code></pre>
+<ol start="4" type="1">
+<li><p>thermodynamic equation</p>
+<blockquote>
+<p><span id="Heat Power" label="Heat Power">\blind.com <br /><span class="math display">$$
+\frac{\partial T}{\partial t}
+=  - \frac{1}{a\cos\varphi}
+\frac{\partial uT'}{\partial \lambda}
+- \frac{1}{a}
+\frac{\partial }{\partial \varphi} ( vT' \cos\varphi )
++ T' D  \\
+- \dot{\sigma} 
+\frac{\partial T }{\partial \sigma}
++ \kappa T \left( \frac{\partial \pi}{\partial t}
++ \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi 
++ \frac{ \dot{\sigma} }{ \sigma } 
+\right)
++ \frac{Q}{C_{p}}
++ \frac{Q_{diff}}{C_{p}}
+- {\mathcal D}(T) 
+$$</span><br /></p>
+</blockquote></li>
+<li><p>water vapor formula</p></li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial q}{\partial t}
+   =  - \frac{1}{a\cos\varphi}
+               \frac{\partial uq}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} (vq \cos\varphi)
+          + q D  \\
+        - \dot{\sigma} \frac{\partial q }{\partial \sigma}
+          + S_{q}
+          - {\mathcal D}(q) 
+$$</span><br /></p>
+<p>Here,</p>
+<p><br /><span class="math display">$$
+\theta  \equiv  T \left( p/p_{0} \right)^{-\kappa} \\
+\kappa  \equiv  R/C_{p} \\
+  \Phi  \equiv  gz \\
+   \pi  \equiv  \ln p_{S} \\
+%
+ \dot{\sigma}  \equiv   \frac{d \sigma}{d t} \\
+%
+     T_v  \equiv  T ( 1+\epsilon_v q ) \\
+     T  \equiv   \bar{T}(\sigma) + T^{\prime} \\
+%
+ \zeta  \equiv  \frac{1}{a \cos\varphi }
+                    \frac{\partial v}{\partial \lambda} 
+             -    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( u \cos\varphi ) \\
+%
+     D  \equiv  \frac{1}{a \cos\varphi }
+                    \frac{\partial u}{\partial \lambda} 
+             +    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( v \cos\varphi ) \\
+%
+    A_u  \equiv   ( \zeta + f ) v
+             - \dot{\sigma} \frac{\partial u}{\partial \sigma} 
+             - \frac{RT^{\prime}}{a\cos\varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
+             + {\mathcal F}_x \\
+%
+    A_v  \equiv  - ( \zeta + f ) u
+             - \dot{\sigma} \frac{\partial v}{\partial \sigma} 
+             - \frac{RT^{\prime}}{a}
+                  \frac{\partial \pi}{\partial \varphi} 
+             + {\mathcal F}_y \\
+%
+     E  \equiv   \frac{u^{2}+v^{2}}{2} \\
+%
+ \mathbf{v}_{H} \cdot \nabla
+        \equiv  \frac{u}{a \cos \varphi} 
+         \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
+     + \frac{v}{a}
+         \left( \frac{\partial }{\partial \varphi} \right)_{\sigma} 
+            \\
+  \nabla^{2}_{\sigma}  
+        \equiv  
+               \frac{1}{a^{2}\cos^2\varphi} 
+                 \frac{\partial^{2} }{\partial \lambda^{2}} 
+             + \frac{1}{a^{2}\cos\varphi} 
+                 \frac{\partial }{\partial \varphi}
+                 \left[ \cos\varphi
+                       \frac{\partial }{\partial \varphi} \right]  .
+$$</span><br /></p>
+<blockquote>
+<p><span id="Vorticity definition" label="Vorticity definition">\.com.</p>
+</blockquote>
+<blockquote>
+<p><span id="Divergent Definitions" label="Divergent Definitions">\[Divergent Definitions]</span></p>
+</blockquote>
+<blockquote>
+<p><span id="Section B" label="Section B" label="Section B">\brachio[Section B]</span>.</p>
+</blockquote>
+<blockquote>
+<p><span id="Section A" label="Section A" label="Section A" label="Section A">\\\.} </span></p>
+</blockquote>
+<blockquote>
+<p><span id="Section E" label="Section E" label="Section E">\\\.}</p>
+</blockquote>
+<p><span class="math inline">𝒟(<em>ζ</em>), 𝒟(<em>D</em>), 𝒟(<em>T</em>), 𝒟(<em>q</em>)</span> is the horizontal diffusion term, <span class="math inline">ℱ<sub><em>λ</em></sub>, ℱ<sub><em>φ</em></sub></span> are forces due to small-scale kinetic processes (treated as ‘physical processes’), The <span class="math inline"><em>Q</em></span> is a process of ‘physical processes’ such as radiation, condensation, and small-scale kinetic processes Heating and temperature changes, The <span class="math inline"><em>S</em><sub><em>q</em></sub></span> is a system of ‘physical processes’ such as condensation and small-scale kinetic processes The <span class="math inline"><em>Q</em><sub><em>d</em><em>i</em><em>f</em><em>f</em></sub></span> is a water vapor source term. The <span class="math inline"><em>Q</em><sub><em>d</em><em>i</em><em>f</em><em>f</em></sub></span> is the frictional heat,</p>
+<p><br /><span class="math display">$$
+  Q_{diff}
+ = - \mathbf{v} \cdot  ( \frac{\partial \mathbf{v}}{\partial t} )_{diff} .
+$$</span><br /></p>
+<p>$(  )_{diff} $ is , The time-varying terms of <span class="math inline"><em>u</em>, <em>v</em></span> due to horizontal and vertical diffusion.</p>
+<h3 id="boundary-conditions.">Boundary conditions.</h3>
+<p>The boundary conditions for lead-direct current are</p>
+<p><br /><span class="math display"><em>σ̇</em> = 0   <em>a</em><em>t</em>  <em>σ</em> = 0, 1.</span><br /></p>
+<p>. Thus, from ([\0.25\0.25}(#mass)), The time-varying surface pressure equation and Diagnostic Formula for determining the vertical velocity (<span class="math inline"><em>σ̇</em></span>) in the <span class="math inline"><em>σ</em></span> system</p>
+<p><br /><span class="math display">$$
+   \frac{\partial \pi}{\partial t}
+   = - \int_{0}^{1} \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma
+     - \int_{0}^{1} D  d \sigma ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="barometric tendency" label="barometric tendency">tendency </span></p>
+</blockquote>
+<p><br /><span class="math display">$$
+   \dot{\sigma} 
+   = - \sigma 
+     \frac{\partial \pi}{\partial t}
+     - \int_{0}^{\sigma} D d \sigma
+     - \int_{0}^{\sigma} 
+         \mathbf{v}_{H} \cdot \nabla_{\sigma} \pi d \sigma ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="vertical speed" label="vertical speed"></span></p>
+</blockquote>
+<p>is led.</p>
+</body>
+</html>

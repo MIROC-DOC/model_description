@@ -1,0 +1,79 @@
+\hypertarget{drying-convection-regulation}{%
+\subsection{Drying convection
+regulation}\label{drying-convection-regulation}}
+
+\hypertarget{overview-of-drying-convective-regulation}{%
+\subsubsection{Overview of Drying Convective
+Regulation}\label{overview-of-drying-convective-regulation}}
+
+Drying convection control , Convective instability in the stratum
+between two successive levels, In other words, if the temperature decay
+rate is greater than the dry adiabatic decay rate The temperature
+reduction rate is adjusted to the dry adiabatic reduction rate. Water
+vapor and other substances are mixed in at this time. The main input
+data are temperature \(T\) and specific humidity \(q\), The output data
+is the adjusted air temperature \(T\) and specific humidity \(q\).
+
+Essentially, if vertical diffusion is efficient, then The vertical
+convective instability should be basically removed. However, it may be
+in short supply in the stratosphere, A convection adjustment has been
+added to stabilize the calculation.
+
+\hypertarget{drying-convection-regulation-procedures.}{%
+\subsubsection{Drying convection regulation
+procedures.}\label{drying-convection-regulation-procedures.}}
+
+The conditions for convective instability in the layers \((k-1,k)\) are
+
+\begin{eqnarray}
+\frac{T_{k-1} - T_{k}}{p_{k-1} - p_{k}} 
+  > \frac{R}{C_p} \bar{T_{k-1/2}}
+  = \frac{R}{C_p}
+    \frac{\Delta p_{k-1} T_{k-1} + \Delta p_{k} T_{k}}
+         {\Delta p_{k-1} + \Delta p_{k}} 
+\end{eqnarray}
+
+Namely,
+
+\begin{eqnarray}
+ S = T_{k-1} - T_{k}
+     - \frac{R}{C_p} 
+        \frac{\Delta p_{k-1} T_{k-1} + \Delta p_{k} T_{k}}
+         {\Delta p_{k-1} + \Delta p_{k}} 
+       (p_{k-1} - p_{k})
+   > 0 
+\end{eqnarray}
+
+\begin{quote}
+\protect\hypertarget{p-adj:cond}{}{ }.
+\end{quote}
+
+is a condition.
+
+When this is satisfied ,
+
+\begin{eqnarray}
+T_{k-1}  \leftarrow  \frac{\Delta p_{k}}{\Delta p_{k-1} + \Delta p_{k}} S \\
+T_{k}  \leftarrow  \frac{\Delta p_{k-1}}{\Delta p_{k-1} + \Delta p_{k}} S 
+\end{eqnarray}
+
+to compensate for the temperature. Furthermore,
+
+\begin{eqnarray}
+q_{k-1}, q_{k} \leftarrow
+     \frac{\Delta p_{k-1} q_{k-1} + \Delta p_{k} q_{k}}
+          {\Delta p_{k-1} + \Delta p_{k}} 
+\end{eqnarray}
+
+to average the values of specific humidity etc. in the two layers.
+
+When you do this, The layers above and below it may become unstable.
+That's why, Repeating this operation from the lower level to the upper
+level. Repeat until there is no more layer of convective instability.
+However, considering the calculation error and so on, (as a condition of
+\protect\hyperlink{p-adj:condo}{\textbackslash p{[}p-adj:condo{]}}), It
+is considered to have converged if S is less than or equal to some small
+finite value that is not zero.
+
+Currently, the standard adjustment is between the second and third layer
+from the bottom and above.

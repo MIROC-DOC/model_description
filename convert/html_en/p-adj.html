@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-adj</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-adj</h1>
+</header>
+<h2 id="drying-convection-regulation">Drying convection regulation</h2>
+<h3 id="overview-of-drying-convective-regulation">Overview of Drying Convective Regulation</h3>
+<p>Drying convection control , Convective instability in the stratum between two successive levels, In other words, if the temperature decay rate is greater than the dry adiabatic decay rate The temperature reduction rate is adjusted to the dry adiabatic reduction rate. Water vapor and other substances are mixed in at this time. The main input data are temperature <span class="math inline"><em>T</em></span> and specific humidity <span class="math inline"><em>q</em></span>, The output data is the adjusted air temperature <span class="math inline"><em>T</em></span> and specific humidity <span class="math inline"><em>q</em></span>.</p>
+<p>Essentially, if vertical diffusion is efficient, then The vertical convective instability should be basically removed. However, it may be in short supply in the stratosphere, A convection adjustment has been added to stabilize the calculation.</p>
+<h3 id="drying-convection-regulation-procedures.">Drying convection regulation procedures.</h3>
+<p>The conditions for convective instability in the layers <span class="math inline">(<em>k</em> − 1, <em>k</em>)</span> are</p>
+<p><br /><span class="math display">$$
+\frac{T_{k-1} - T_{k}}{p_{k-1} - p_{k}} 
+  &gt; \frac{R}{C_p} \bar{T_{k-1/2}}
+  = \frac{R}{C_p}
+    \frac{\Delta p_{k-1} T_{k-1} + \Delta p_{k} T_{k}}
+         {\Delta p_{k-1} + \Delta p_{k}} 
+$$</span><br /></p>
+<p>Namely,</p>
+<p><br /><span class="math display">$$
+ S = T_{k-1} - T_{k}
+     - \frac{R}{C_p} 
+        \frac{\Delta p_{k-1} T_{k-1} + \Delta p_{k} T_{k}}
+         {\Delta p_{k-1} + \Delta p_{k}} 
+       (p_{k-1} - p_{k})
+   &gt; 0 
+$$</span><br /></p>
+<blockquote>
+<p><span id="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond" label="p-adj:cond"> </span>.</p>
+</blockquote>
+<p>is a condition.</p>
+<p>When this is satisfied ,</p>
+<p><br /><span class="math display">$$
+T_{k-1}  \leftarrow  \frac{\Delta p_{k}}{\Delta p_{k-1} + \Delta p_{k}} S \\
+T_{k}  \leftarrow  \frac{\Delta p_{k-1}}{\Delta p_{k-1} + \Delta p_{k}} S 
+$$</span><br /></p>
+<p>to compensate for the temperature. Furthermore,</p>
+<p><br /><span class="math display">$$
+q_{k-1}, q_{k} \leftarrow
+     \frac{\Delta p_{k-1} q_{k-1} + \Delta p_{k} q_{k}}
+          {\Delta p_{k-1} + \Delta p_{k}} 
+$$</span><br /></p>
+<p>to average the values of specific humidity etc. in the two layers.</p>
+<p>When you do this, The layers above and below it may become unstable. That’s why, Repeating this operation from the lower level to the upper level. Repeat until there is no more layer of convective instability. However, considering the calculation error and so on, (as a condition of <a href="#p-adj:condo">\p[p-adj:condo]</a>), It is considered to have converged if S is less than or equal to some small finite value that is not zero.</p>
+<p>Currently, the standard adjustment is between the second and third layer from the bottom and above.</p>
+</body>
+</html>

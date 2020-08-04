@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC a-setup</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC a-setup</h1>
+</header>
+<h2 id="basic-settings.">Basic Settings.</h2>
+<p>Here we present the basic setup of the model.</p>
+<h3 id="coordinate-system.">Coordinate System.</h3>
+<p>The coordinate system is basically, Longitude <span class="math inline"><em>λ</em></span>, Latitude <span class="math inline"><em>φ</em></span>, Normalized Pressure <span class="math inline"><em>σ</em> = <em>p</em>/<em>p</em><sub><em>S</em></sub></span> (<span class="math inline"><em>p</em><sub><em>S</em></sub>(<em>λ</em>, <em>φ</em>)</span> are surface pressure.) and treat each as orthogonal. However, <span class="math inline"><em>z</em></span> is used as the vertical coordinates.</p>
+<p>Longitude is discretized at equal intervals <code>MODULE:[ASETL]</code>.</p>
+<p><br /><span class="math display">$$
+  \lambda_i = 2 \pi \frac{i-1}{I}  \;\;\; i = 1, \ldots I-1
+$$</span><br /></p>
+<p>Latitude is the Gauss latitude <span class="math inline"><em>φ</em><sub><em>j</em></sub></span> described in Mechanics, and <code>MODULE:[ASETL]</code>, Gauss-Legendre derived from the integral formula. This takes <span class="math inline"><em>μ</em> = sin <em>φ</em></span> as its argument J The zero point of the next Legendre polynomial <code>MODULE:[GAUSS]</code>.</p>
+<p>If J is large, we can approximate</p>
+<p><br /><span class="math display">$$
+  \varphi_j =  \pi ( \frac{1}{2}- \frac{j-1/2}{J} ) \;\;\; j = 1, \ldots J-1
+$$</span><br /></p>
+<p>Normally, the grid spacing of longitude and latitude is taken as <span class="math inline"><em>J</em> = <em>I</em>/2</span> almost equally. This is based on the triangular truncation of the spectral method.</p>
+<p>Normalized atmospheric pressure (<span class="math inline"><em>σ</em></span>) is designed to give a good representation of the vertical structure of the atmosphere, suitably discretized at unequal intervals <code>MODULE:[ASETS]</code>. As we will discuss later in Mechanics, the value of the layer boundaries Define the <span class="math inline"><em>σ</em><sub><em>k</em> − 1/2</sub></span> in <span class="math inline"><em>k</em> = 1…<em>K</em> + 1</span> and then ,</p>
+<p><br /><span class="math display">$$
+ \sigma_k = \left\{ \frac{1}{1+\kappa}
+                     \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
+                                  - \sigma^{\kappa +1}_{k+1/2}      }
+                                  { \sigma_{k-1/2} - \sigma_{k+1/2} }
+                     \right)
+              \right\}^{1/\kappa}
+$$</span><br /></p>
+<p>Find the <span class="math inline"><em>σ</em></span> representing the layer by Figure [a-setup:level]] (#a-setup:level) shows the 20 levels of the standard.</p>
+<p>Each forecast variable is all, <span class="math inline">(<em>λ</em><sub><em>i</em></sub>, <em>φ</em><sub><em>j</em></sub>, <em>σ</em><sub><em>k</em></sub>)</span> or defined on the grid of <span class="math inline">(<em>λ</em><sub><em>i</em></sub>, <em>φ</em><sub><em>j</em></sub>, <em>z</em><sub><em>l</em></sub>)</span>. (The underground level, <span class="math inline"><em>z</em><sub><em>l</em></sub></span>, is discussed in the Physical Processes section.)</p>
+<p>In the time direction, they are discretized at equally spaced <span class="math inline"><em>Δ</em><em>t</em></span>, The time integration of the forecasting equation is performed. However, if the stability of the time integration may be compromised <span class="math inline"><em>Δ</em><em>t</em></span> can change.</p>
+<h3 id="physical-constants.">Physical Constants.</h3>
+<p>The basic physical constants are shown below <code>MODULE:[APCON]</code>.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>earth radius</td>
+<td><span class="math inline"><em>a</em></span></td>
+<td>m</td>
+<td>6.37 <span class="math inline"> × 10<sup>6</sup></span></td>
+</tr>
+<tr class="even">
+<td>acceleration of gravity</td>
+<td><span class="math inline"><em>g</em></span></td>
+<td>ms<span class="math inline"><em></em><sup>−</sup>2</span></td>
+<td>9.8</td>
+</tr>
+<tr class="odd">
+<td>atmospheric pressure specific heat</td>
+<td><span class="math inline"><em>C</em><sub><em>p</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1004.6</td>
+</tr>
+<tr class="even">
+<td>Atmospheric gas constant</td>
+<td><span class="math inline"><em>R</em></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>287.04</td>
+</tr>
+<tr class="odd">
+<td>Latent heat of water evaporation</td>
+<td><span class="math inline"><em>L</em></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>2.5 <span class="math inline"> × 10<sup>6</sup></span></td>
+</tr>
+<tr class="even">
+<td>Water vapor constant pressure specific heat</td>
+<td><span class="math inline"><em>C</em><sub><em>v</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1810.</td>
+</tr>
+<tr class="odd">
+<td>Gas constant of water</td>
+<td><span class="math inline"><em>R</em><sub><em>v</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>461.</td>
+</tr>
+<tr class="even">
+<td>Density of liquid water</td>
+<td><span class="math inline"><em>d</em><sub><em>H</em><sub>2</sub><em>O</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span> K<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>1000.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline"><em>e</em><sup>*</sup></span>(273K)</td>
+<td>Pa.</td>
+<td>611</td>
+</tr>
+<tr class="even">
+<td>Stefan Bolzman</td>
+<td><span class="math inline"><em>σ</em><sub><em>S</em><em>B</em></sub></span></td>
+<td>W m<span class="math inline"><em></em><sup> − 2</sup></span> K<span class="math inline"><em></em><sup> − 4</sup></span></td>
+<td>5.67</td>
+</tr>
+<tr class="odd">
+<td>Kárman Constant</td>
+<td><span class="math inline"><em>k</em></span></td>
+<td></td>
+<td>0.4</td>
+</tr>
+<tr class="even">
+<td>Latent heat of ice melting</td>
+<td><span class="math inline"><em>L</em><sub><em>M</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>3.4 <span class="math inline"> × 10<sup>5</sup></span></td>
+</tr>
+<tr class="odd">
+<td>Water Freezing Point</td>
+<td><span class="math inline"><em>T</em><sub><em>M</em></sub></span></td>
+<td>K</td>
+<td>273.15</td>
+</tr>
+<tr class="even">
+<td>Constant pressure specific heat of water</td>
+<td><span class="math inline"><em>C</em><sub><em>w</em></sub></span></td>
+<td>J kg<span class="math inline"><em></em><sup> − 1</sup></span></td>
+<td>4,200.</td>
+</tr>
+<tr class="odd">
+<td>The freezing point of seawater</td>
+<td><span class="math inline"><em>T</em><sub><em>I</em></sub></span></td>
+<td>K</td>
+<td>271.35</td>
+</tr>
+<tr class="even">
+<td>Specific heat ratio of ice at constant pressure</td>
+<td><span class="math inline"><em>C</em><sub><em>I</em></sub> = <em>C</em><sub><em>w</em></sub> − <em>L</em><sub><em>M</em></sub>/<em>T</em><sub><em>M</em></sub></span></td>
+<td></td>
+<td>2397.</td>
+</tr>
+<tr class="odd">
+<td>water vapor molecular weight ratio</td>
+<td><span class="math inline"><em>ϵ</em> = <em>R</em>/<em>R</em><sub><em>v</em></sub></span></td>
+<td></td>
+<td>0.622</td>
+</tr>
+<tr class="even">
+<td>coefficient of provisional temperature</td>
+<td><span class="math inline"><em>ϵ</em><sub><em>v</em></sub> = <em>ϵ</em><sup> − 1</sup> − 1</span></td>
+<td></td>
+<td>0.606</td>
+</tr>
+<tr class="odd">
+<td>Ratio of specific heat to gas constant</td>
+<td><span class="math inline"><em>κ</em> = <em>R</em>/<em>C</em><sub><em>p</em></sub></span></td>
+<td></td>
+<td>0.286</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

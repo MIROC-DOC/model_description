@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-intro</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-intro</h1>
+</header>
+<h1 id="physical-processes.">Physical Processes.</h1>
+<h2 id="overview-of-physical-processes.">Overview of Physical Processes.</h2>
+<p>As a physical process, we can consider the following</p>
+<ul>
+<li><p>cumulus convection process</p></li>
+<li><p>large-scale condensation process</p></li>
+<li><p>radiation process</p></li>
+<li><p>vertical diffusion process</p></li>
+<li><p>surface flux</p></li>
+<li><p>Surface and underground processes</p></li>
+<li><p>gravitational wave resistance</p></li>
+</ul>
+<p>The time-varying terms of the forecast variables due to these processes Calculate <span class="math inline"><em>F</em><sub><em>x</em></sub>, <em>F</em><sub><em>y</em></sub>, <em>Q</em>, <em>M</em>, <em>S</em></span>, <span class="math inline"><em>F</em><sub><em>x</em></sub>, <em>F</em><sub><em>y</em></sub>, <em>Q</em>, <em>M</em>, <em>S</em></span> and do time integration. In addition, in order to evaluate the atmospheric and surface fluxes Using the surface sub-model. In the surface sub-model, Ground Temperature <span class="math inline"><em>T</em><sub><em>g</em></sub></span>, Ground Moisture <span class="math inline"><em>W</em><sub><em>g</em></sub></span>, Snowpack <span class="math inline"><em>W</em><sub><em>y</em></sub></span>, etc. It is used as a predictor variable.</p>
+<h3 id="fundamental-equations.">Fundamental Equations.</h3>
+<p>Equation of motion of the atmosphere in the <span class="math inline"><em>σ</em></span> coordinate system, thermodynamic equation, Consider the equation for a sequence of substances such as water vapor. The vertical fluxes of momentum, heat, water vapor, etc. are considered, Find the time variation due to its convergence. All vertical fluxes are positive upward.</p>
+<ol type="1">
+<li>equation of motion</li>
+</ol>
+<p><br /><span class="math display">$$
+  \rho \frac{du}{dt} = \frac{\partial Fu}{\partial \sigma}
+$$</span><br /></p>
+<pre><code> &gt; &lt;span id=&quot;u-eq.orig&quot; label=&quot;u-eq.orig&quot; label=&quot;u-eq.orig&quot;&gt;\\centric&lt;/span&gt;</code></pre>
+<p><br /><span class="math display">$$
+  \rho \frac{dv}{dt} = \frac{\partial Fv}{\partial \sigma}
+$$</span><br /></p>
+<pre><code> $u, v$: East-West, North-South Wind;
+ $Fu, Fv$: Their vertical flux.</code></pre>
+<ol start="2" type="1">
+<li>thermodynamic equation</li>
+</ol>
+<p><br /><span class="math display">$$
+  \rho \frac{dc_p T}{dt} = \frac{T}{\theta} \frac{\partial F{\theta}}{\partial \sigma} 
+                     + \frac{\partial F{R}}{\partial \sigma} 
+$$</span><br /></p>
+<pre><code> $T$: Temperature ;
+ $c_p$: Constant Pressure Specific Heat;
+ $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Hot Position;
+ $F\theta$: Vertical Sensible Heat Flux;
+ $FR$: Vertical Radiation Flux.</code></pre>
+<p>If we write <span class="math inline"><em>θ</em>′ = <em>T</em>(<em>p</em>/<em>p</em><sub><em>s</em></sub>)<sup> − <em>κ</em></sup> = <em>T</em><em>σ</em><sup> − <em>κ</em></sup></span>, then this is</p>
+<p><br /><span class="math display">$$
+  \rho \frac{dc_p T}{dt} = \sigma^\kappa \frac{\partial F{\theta'}}{\partial \sigma} 
+                     + \frac{\partial F{R}}{\partial \sigma} 
+$$</span><br /></p>
+<p>As far as vertical 1D processes are concerned, Instead of the <span class="math inline"><em>θ</em></span>, consider the <span class="math inline"><em>θ</em>′</span>. For the sake of simplicity, unless there is a risk of confusion, Write <span class="math inline"><em>θ</em>′</span> as <span class="math inline"><em>θ</em></span>.</p>
+<ol start="3" type="1">
+<li>water vapor continuity formula</li>
+</ol>
+<p><br /><span class="math display">$$
+  \rho \frac{dq}{dt} = \frac{\partial Fq}{\partial \sigma} 
+$$</span><br /></p>
+<pre><code> $q$: Specific Humidity;
+ $F{q}$: Vertical Steam Flux.
+
+ ### Fundamental Equations in the Ground</code></pre>
+<p>Considered in terms of <span class="math inline"><em>z</em></span> coordinates with the downward direction positive. After all, all vertical fluxes are positive upward.</p>
+<ol start="4" type="1">
+<li>thermal formula</li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial C_g G}{\partial t} = \frac{\partial Fg}{\partial z} + Sg
+$$</span><br /></p>
+<pre><code> $G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat;
+ $F{g}$: Vertical Heat Flux;
+ $Sg$; Heating term (due to phase change, etc.).</code></pre>
+<ol start="5" type="1">
+<li>formula for ground moisture</li>
+</ol>
+<p><br /><span class="math display">$$
+  C_w \frac{\partial w}{\partial t} = \frac{\partial Fw}{\partial z} + Sw
+$$</span><br /></p>
+<pre><code> $w$: Ground Moisture;
+ $F{w}$: Lead Water Flux;
+ $Sw$; Sources of water (spills, etc.).</code></pre>
+<ol start="6" type="1">
+<li>energy balance equation</li>
+</ol>
+<p>At the surface, an energy balance is established.</p>
+<p><br /><span class="math display"><em>F</em><em>θ</em> + <em>L</em><em>F</em><em>q</em> + <em>F</em><em>R</em> − <em>F</em><em>g</em> = <em>Δ</em><em>s</em>  (<em>σ</em> = 1, <em>z</em> = 0)</span><br /></p>
+<pre><code> $L$: Latent Heat of Evaporation;
+ $\Delta s$: Surface energy balance (due to phase change, etc.).</code></pre>
+<ol start="7" type="1">
+<li>surface water balance</li>
+</ol>
+<p><br /><span class="math display"><em>P</em><em>g</em> + <em>F</em><em>w</em> − <em>R</em><em>g</em> = 0</span><br /></p>
+<pre><code> $Pg$: Precipitation;
+ $Rg$: Surface Runoff.</code></pre>
+<ol start="8" type="1">
+<li>the snow balance</li>
+</ol>
+<p><br /><span class="math display">$$
+  \frac{\partial Wy}{\partial t} = Py - Fy - My
+$$</span><br /></p>
+<pre><code> $Wy$: Snow cover(kg/m$^2$);
+ $Py$: Snowfall;
+ $Fy$: Sublimation;
+ $My$: Snowmelt.</code></pre>
+<h3 id="time-integration-of-physical-processes.">Time integration of physical processes.</h3>
+<p>Classifying physical processes in terms of the time integration of predictor variables, The order of execution can be divided into the following three categories.</p>
+<ol type="1">
+<li><p>cumulus convection and large-scale condensation</p></li>
+<li><p>radiation, vertical diffusion, ground boundary layer and surface processes</p></li>
+<li><p>gravitational wave resistance, mass regulation, dry convection regulation</p></li>
+</ol>
+<p>Cumulus convection and large-scale condensation,</p>
+<p><br /><span class="math display"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (1)</sup> = <em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup> + 2<em>Δ</em><em>t</em><em>Q</em><sub><em>C</em><em>U</em><em>M</em></sub>(<em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em></sup>)</span><br /></p>
+<p><br /><span class="math display"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (2)</sup> = <em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (1)</sup> + 2<em>Δ</em><em>t</em><em>Q</em><sub><em>L</em><em>S</em><em>C</em></sub>(<em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (1)</sup>)</span><br /></p>
+<p>by the usual Euler difference. Large-scale condensation schemes include , Note that the updated values are passed on by the cumulus convection scheme. In practice, the output of the heating rate and so on are used in the routines for cumulus convection and large-scale condensation, Time integration is done by the immediately following <code>MODULE:[GDINTG]</code>.</p>
+<p>Radiation in the following groups, vertical diffusion, ground boundary layer and surface processes calculations are essentially all of these updated values ( <span class="math inline"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (1)</sup>, <em>q̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (2)</sup></span>, <span class="math inline"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (1)</sup>, <em>q̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (2)</sup></span>, etc. ) This is done by using However, in order to calculate some of the terms as implicit, the Calculate all of these terms together and calculate the heating rate, etc, Finally, we do time integration. In other words, symbolically,</p>
+<p><br /><span class="math display"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (3)</sup> = <em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (2)</sup> + 2<em>Δ</em><em>t</em><em>Q</em><sub><em>R</em><em>A</em><em>D</em>, <em>D</em><em>I</em><em>F</em>, <em>S</em><em>F</em><em>C</em></sub>(<em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (2)</sup>, <em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (3)</sup>)</span><br /></p>
+<p>That would be.</p>
+<p>As for gravitational wave resistance, mass regulation and dry convection regulation, It is similar to cumulus convection and large-scale condensation.</p>
+<p><br /><span class="math display"><em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (4)</sup> = <em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (3)</sup> + 2<em>Δ</em><em>t</em><em>Q</em><sub><em>A</em><em>D</em><em>J</em></sub>(<em>T̂</em><sup><em>t</em> + <em>Δ</em><em>t</em>, (3)</sup>)</span><br /></p>
+<h3 id="various-physical-quantities.">Various physical quantities.</h3>
+<p>A simple calculation from the predictive variables can be used to find Definitions of various physical quantities. Some of these are , Calculated with <code>MODULE:[PSETUP]</code>.</p>
+<ol type="1">
+<li>temporary temperature</li>
+</ol>
+<p>Provisional Temperature <span class="math inline"><em>T</em><sub><em>v</em></sub></span> is ,</p>
+<p><br /><span class="math display"><em>T</em><sub><em>v</em></sub> = <em>T</em>(1 + <em>ϵ</em><sub><em>v</em></sub><em>q</em> − <em>l</em>)</span><br /></p>
+<ol start="2" type="1">
+<li>air density</li>
+</ol>
+<p>The atmospheric density, <span class="math inline"><em>ρ</em></span>, is calculated as follows</p>
+<p><br /><span class="math display">$$
+  \rho = \frac{p}{RT_v}
+$$</span><br /></p>
+<ol start="3" type="1">
+<li>high degree</li>
+</ol>
+<p>The high degree <span class="math inline"><em>z</em></span> is a mechanical process The same method is used to calculate the geopotential.</p>
+<p><br /><span class="math display">$$
+  z = \frac{\Phi}{g} 
+$$</span><br /></p>
+<p><br /><span class="math display"><em>Φ</em><sub>1</sub> = <em>Φ</em><sub><em>s</em></sub> + <em>C</em><sub><em>p</em></sub>(<em>σ</em><sub>1</sub><sup> − <em>κ</em></sup> − 1)<em>T</em><sub><em>v</em>, 1</sub></span><br /></p>
+<p><br /><span class="math display">$$
+ \Phi_k - \Phi_{k-1} 
+   =  C_{p}
+   \left[ \left( \frac{ \sigma_{k-1/2} }{ \sigma_k } \right)^{\kappa}
+          - 1 \right] T_{v,k} 
+       + C_{p}
+   \left[ 1- 
+         \left( \frac{ \sigma_{k-1/2} }{ \sigma_{k-1} } \right)^{\kappa}
+              \right] T_{v,k-1}
+$$</span><br /></p>
+<ol start="4" type="1">
+<li>layer boundary temperature</li>
+</ol>
+<p>The temperature of the boundary of the layer is determined by the temperature of the <span class="math inline">ln <em>p</em></span>, i.e., the temperature of the boundary relative to the <span class="math inline">ln <em>σ</em></span> Perform a linear interpolation and calculate.</p>
+<p><br /><span class="math display">$$
+  T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_k
+            + \frac{\ln \sigma_{k-1/2} - \ln \sigma_k}
+                   {\ln \sigma_{k-1} - \ln \sigma_k      } T_{k-1}
+$$</span><br /></p>
+<ol start="5" type="1">
+<li>saturated specific humidity</li>
+</ol>
+<p>Saturation Specific Humidity <span class="math inline"><em>q</em><sup>*</sup>(<em>T</em>, <em>p</em>)</span> is approximated using the saturation vapor pressure <span class="math inline"><em>e</em><sup>*</sup>(<em>T</em>)</span>,</p>
+<p><br /><span class="math display">$$
+q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
+$$</span><br /></p>
+<p>Here, it is <span class="math inline"><em>ϵ</em> = 0.622</span>,</p>
+<p><br /><span class="math display">$$
+\frac{1}{e^*_v} \frac{\partial e^*_v}{\partial T} = \frac{L}{R_v T^2}
+$$</span><br /></p>
+<pre><code> &gt; &lt;span id=&quot;e-sat&quot; label=&quot;e-sat&quot;&gt;\\blade[e-sat]&lt; /span&gt;</code></pre>
+<p>Therefore, if the latent heat of evaporation (<span class="math inline"><em>L</em></span>) and the gas constant (<span class="math inline"><em>R</em><sub><em>v</em></sub></span>) of the water vapor are held constant, then the number of vapor particles will be reduced,</p>
+<p><br /><span class="math display">$$
+  e^*(T) = e^*(T=273{K}) 
+                      \exp \left[ \frac{L}{R_v} 
+                            \left( \frac{1}{273} - \frac{1}{T} \right)
+                       \right] ,
+$$</span><br /></p>
+<pre><code> $e^*(T=273{K}) = 611$ is a \\blank\blank\blank\blank\.com.
+
+ (From [\\\[e-sat\]] (#e-sat)),</code></pre>
+<p><br /><span class="math display">$$
+\frac{\partial q^*}{\partial T} = \frac{L}{R_v T^2} q^*(T,p) .
+$$</span><br /></p>
+<p>Here, if the temperature is lower than the freezing point 273.15 K Use the sublimation latent heat <span class="math inline"><em>L</em> + <em>L</em><sub><em>M</em></sub></span> as the latent heat <span class="math inline"><em>L</em></span>.</p>
+<ol start="6" type="1">
+<li>dry static energy, wet static energy</li>
+</ol>
+<p>Dry static energy <span class="math inline"><em>s</em></span> is</p>
+<p><br /><span class="math display"><em>s</em> = <em>C</em><sub><em>p</em></sub><em>T</em> + <em>g</em><em>z</em> ,</span><br /></p>
+<p>Wet Static Energy <span class="math inline"><em>h</em></span> is</p>
+<p><br /><span class="math display"><em>h</em> = <em>C</em><sub><em>p</em></sub><em>T</em> + <em>g</em><em>z</em> + <em>L</em><em>q</em> ,</span><br /></p>
+<p>. defined by .</p>
+</body>
+</html>

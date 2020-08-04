@@ -1,0 +1,638 @@
+\hypertarget{model-configuration.}{%
+\section{Model Configuration.}\label{model-configuration.}}
+
+\hypertarget{composition-overview.}{%
+\subsection{Composition Overview.}\label{composition-overview.}}
+
+The AGCM program body has a hierarchical structure, The files are
+maintained in multiple directories, each of which is divided into
+multiple files. A single file (package) can contain , In addition, there
+are several program modules (subroutines and functions) in the package,
+In some cases, there may be multiple entries in a module.
+
+Example:
+
+{\textbf{directory}}\textbf{dynamics: } {\textbf{File}} \textbf{dadmn.F:
+} \blanket* Package DADMN . {\textbf{File}} \textbf{dshpe.F: }
+\blanket* Package DSPHE ** Module DSETNM: \textbf{̄ {\textbf{Module
+W2G}} SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP } Module DSETNM:**
+SUBROUTINE DSETNM
+
+Currently, there are 10 directories as follows
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+admin\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules related to the structure of the entire model (coordinates, time,
+constants, etc.)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+dynamics\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules related to mechanical processes\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+physics\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules involved in physical processes\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+io\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Modules for data input/output\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+util\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+General-purpose operation libraries\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+sysdep\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+system dependent module\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+include\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Headers included by {\texttt{\#include}}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+nonstd\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Non-standard plug-in modules\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+test module\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+shalo\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Module for single layer barotropic shallow water models (under
+test)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Note that the files containing the main routines are located directly
+under {\texttt{src/}}.
+
+These dependencies are as follows.
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header3\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+MAIN\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Replica Hermes Handbags\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Dynamics\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- Physical properties\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- I'm not sure how to describe it.\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- You can't even tell me how to do it.\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+- I'm sure you'll be able to find out more about it in the next few
+days.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+That is, each of them is independent of the others in the same row, The
+one on the left is used to call the one on the right, but the reverse is
+not allowed.
+
+Several closely related routines in one file (package). Particularly in
+the physical process, the replacement of one or a few files with The use
+of parameterization is possible.
+
+\hypertarget{special-note-on-the-program.}{%
+\subsection{Special note on the
+program.}\label{special-note-on-the-program.}}
+
+There are several modules with multiple entries using the ENTRY
+statement. Its main purpose is the local storage of data. For example,
+in the case of the module W2G above, the variables PNM and DPNM are It
+is stored as a local variable in this module, Commonly used in W2G, G2W
+and SPSTUP. W2G and G2W are used in many places, but this structure
+makes it possible for them to be used in various ways, This avoids the
+complexity of having to use PNM and DPNM as arguments. The COMMON
+variable is usually used in such cases. Here, the COMMON variable is
+used as an inconvenience for management and debugging. We avoid this
+type of encapsulation structure as much as possible and instead use such
+an encapsulation structure.
+
+Only two COMMONs are in use.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+Header1\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+COMMON /COMCON/\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Standard physical constants (earth radius, gas constant, etc.)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+COMMON /COMWRK/\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+work area\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+COMCON contains the standard physical constants. This COMMON definition
+is in {\texttt{include/zccom.F}}, It is used to include as necessary.
+The value is set by calling the subroutine PCONST
+({\texttt{admin/apcon.F}}). COMWRK is used as a work area by many
+modules. It is used to reduce the overall memory consumption, It doesn't
+matter if you delete all applicable COMMON statements.
+\textbackslash0.1{[}1{]}.
+
+For include file inclusion and conditional compilation It uses the C
+preprocessor instruction.
+F\texttt{\textless{}/span\textgreater{}\ instead\ of\ \textless{}span\textgreater{}}.f\texttt{\textless{}/span\textgreater{},\ so\ the\ file\ name\ is\ \textless{}span\textgreater{}}.
+As a conditional compilation, Using selection by {\texttt{\#ifdef}} and
+{\texttt{\#ifndef}}. Files are imported from the {\texttt{inlcude}}
+directory, It is as follows.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+Array size parameter statements & zcdim.F\tabularnewline
+& zpdim.F\tabularnewline
+& zidim.F\tabularnewline
+& zsdim.F\tabularnewline
+& zhdim.F\tabularnewline
+& zradim.F\tabularnewline
+& zwdim.F\tabularnewline
+COMMON definition (physical constants) & zccom.F\tabularnewline
+Statement function definition (saturation ratio humidity) &
+zqsat.F\tabularnewline
+\bottomrule
+\end{longtable}
+
+FORTRAN 77 As a non-standard specification , I'm using NAMELIST reading,
+It seems to be able to be used in many processing systems without any
+problem. For the specifications of NAMELIST, please refer to the manual
+of each system.
+
+\hypertarget{program-writing.}{%
+\subsection{Program Writing.}\label{program-writing.}}
+
+End-of-line comments are used in various explanations. \texttt{!"} The
+end of the line below is a comment \textbackslash0.2{[}2{]}.
+
+The variables are all declared. IMPLICIT NONE (e.g., the {\texttt{u}}
+option for Sun) is set to It is a prerequisite for use.
+
+Each entry's argument is accompanied by a continuation line column to
+explain the function.
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header3\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+Header4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+symbol\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+meaning\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+input\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Outputs\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+function\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+O\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+output\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Generate values\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+M\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+modify\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Processing the input values and outputting them\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+I\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+input\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Input value (`variable')\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+C\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+constant\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Input value (`constant')\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+D\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+dimension\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+circle (e.g.~of friends)\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+-\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+Variables that determine the size of the matching array\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+W\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+work\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+work area\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+U\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+undefined\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+×impossibility\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+dummy\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Here, the meaning of the input and output columns is as follows \In the
+meantime, I'm going to be in a position to take a look at some of the
+things I've done in the past. \textbackslash begin\{array\}\{ll\}
+
+× x \& whatever is in it \{array\}
+
+\begin{verbatim}
+ \begin{array}{ll}   
+\end{verbatim}
+
+O O \& may be subject to change in the course of the event - \& the
+value will not change × x \& I can't guarantee what you'll find
+\{array\}
+
+The important ones are M,O,I, where M,O and I are important, and C,D are
+a type of I. The use of C, D, and I is not so neat.
+
+The contents of each file are as follows.
+
+\texttt{*"\ PACKAGE\ PSAVE\ save/load\ data\ (real\ memory\ version)} :̄
+Package Name \texttt{*"\ {[}HIS{]}\ 93/11/10(numaguti)\ AGCM5.3} Change
+log \texttt{SUBROUTINE\ PGSAVE\ \ \ \ \ !"\ Internal\ Data\ Save} :
+Module Declaration \texttt{*\ \ \ \ {[}PARAM{]}} The following,
+parameter statements are (included) followed by \texttt{*\ {[}MODIFY{]}}
+: Declarations of input and output variables \texttt{*\ {[}OUTPUT{]}} :
+the following, output variable declarations \texttt{*\ {[}INPUT{]}} :
+The following, Declarations of Input Variables
+\texttt{*\ {[}ENTRY\ OUTPUT{]}} : Declare output variables in the
+entry\ldots{} \texttt{*\ {[}INTERNAL\ WORK{]}} : Declarations of
+internal work variables \texttt{*\ \ \ \ {[}INTERNAL\ SAVE{]}}
+Declarations of internal variables (which should be kept after RETURN)
+\texttt{*\ \ \ \ {[}INTERNAL\ PARAM{]}} Declarations of internal
+parameters (to be read by NAMELIST, etc.) \texttt{*\ \ \ \ {[}ONCE{]}}
+The following is the part to be done only once on the first call
+
+Sentence numbers are assigned to each block in the thousands, I'm
+guessing as structurally as possible.
+
+\hypertarget{naming-rules.}{%
+\subsection{Naming Rules.}\label{naming-rules.}}
+
+The names of variables, entry names, etc. must be six characters or
+less.
+
+Variable name and type mapping
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Header0 & Header1\tabularnewline
+\midrule
+\endhead
+A-G, P-Z & Floating point number ({\texttt{REAL*8}})\tabularnewline
+H & String ({\texttt{CHARACTER}})\tabularnewline
+I-N. & Integer ({\texttt{INTEGER}})\tabularnewline
+O & Logical type ({\texttt{LOGICAL}})\tabularnewline
+\bottomrule
+\end{longtable}
+
+However, in the variables read by NAMELIST, This may not be met.
+
+Conventions on the Correspondence between Variable Names and Contents
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Header2\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Prefix:\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GA\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The grid point state quantity (\(t\))\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GB\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Grid point state quantity (\(t-\Delta t\))\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GD\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Grid State Quantity (for common use)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+GT\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Time differential term of the grid state quantity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+WD\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Spectral representation of state quantities\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+WT\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Spectral representation of the time differential term of the state
+quantity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+I\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Longitude index\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+J\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index of latitude\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index for vertical level\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+IJ\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+An index of all the latitudes and longitudes in one place\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NM.\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Index of the spectrum\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NM.\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+NAMELIST Name\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+COM\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+COMMON Name\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Tangent:\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+U\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+east-west wind\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+V\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+north-south wind\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+T\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+temperature\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+PS\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+surface pressure\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Q\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Specific humidity, various tracers\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+QL\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+cloud liquidity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+FLX,FLUX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+flux density\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+MTX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Matrices for implicit solutions\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+MAX\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+data length\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+DIM\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Size of the array region\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+For file names, see , The first letter is unified to the first letter of
+the directory. (However, {\texttt{include}} is {\texttt{z}}.) Also,
+{\texttt{-admn}}(admin) indicates the main module in it.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  this COMMON is actually a grammatical violation. The size of the
+  common block due to the COMMON statement is It has to be the same. (An
+  unnamed common block is acceptable.) . This area will be changed in
+  the near future.
+\end{enumerate}
+
+The reason for the use of two letters here, as well as
+\texttt{!\ I\ use\ two\ letters\ as\ well\ as}! Systems that use other
+end-of-line comment formats (e.g.~HITAC VOS3) to ensure substitution
+for, and The reason for this is that Sun's CPP will malfunction if you
+use only
+\texttt{!\ is\ because\ Sun\textquotesingle{}s\ CPP\ will\ malfunction\ if\ there\ is\ only}!

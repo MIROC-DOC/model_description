@@ -1,0 +1,492 @@
+﻿
+\subsection{大気・地表系の拡散型収支式の解法}
+
+\subsubsection{基本的な解法}
+
+放射, 鉛直拡散, 接地境界層・地表過程は
+一括して一部の項を implicit 扱いで
+時間変化項を計算し, 最後に時間積分を行なう.
+ベクトル量 {\boldmath q} の時間変化項として,
+Euler 法で扱う項 TERM00000 と implicit 法で扱う項 TERM00001 とに分けて考える.
+%
+\begin{verbatim}
+EQ=00000.
+\end{verbatim}
+%
+一般の場合にこれを解くことは困難であるが,
+近似的に TERM00002 を線形化することにより解くことが可能となる.
+\begin{verbatim}
+EQ=00001.
+\end{verbatim}
+のように行列 TERM00003 を用いて線形化する.
+ここで,
+\begin{verbatim}
+EQ=00002.
+\end{verbatim}
+である. 
+すると, 
+TERM00004
+と書けば,
+\begin{verbatim}
+EQ=00003.
+\end{verbatim}
+%
+これは, 行列演算で原理的には簡単に解くことができる.
+
+\subsubsection{基本方程式}
+
+放射, 鉛直拡散, 接地境界層・地表過程の
+方程式は, 基本的に以下のように表わされる.
+%
+\begin{verbatim}
+EQ=00051.
+EQ=00051.
+EQ=00051.
+EQ=00051.
+EQ=00051.
+\end{verbatim}
+%
+ここで, TERM00005,TERM00005 は
+鉛直拡散による, それぞれ TERM00006,TERM00006
+の鉛直上向きフラックス密度である.
+また, TERM00007 は放射による
+鉛直上向きエネルギーフラックス密度である.
+
+大気は, TERM00008 を座標系で離散化される.
+風速, 気温等は層 TERM00009 で定義される.
+フラックスは, 層の境界 TERM00010 で定義される.
+下層から上層に TERM00011 が増大する.
+また, TERM00012, 
+TERM00013 である.
+TERM00014 座標は, 鉛直1次元過程を考えている限りは, 
+定数(TERM00015)倍の違いを除いては TERM00016 座標と同じであると考えてよい.
+ここで,
+\begin{verbatim}
+EQ=00004.
+\end{verbatim}
+\begin{verbatim}
+EQ=00005.
+\end{verbatim}
+と書く.
+
+\subsubsection{implicit時間差分}
+
+鉛直拡散項などの線形化できる項に関しては, implicit法を用いる.
+拡散係数なども予報変数に依存するが,
+その係数は最初に求めるだけで, 反復的に解くことはしない.
+ただし, 安定性の向上のために時間ステップの扱いを工夫している(後述). 
+
+例えば, 離散化した TERM00017 の方程式(\ref{u-eq.orig})は,
+%
+\begin{verbatim}
+EQ=00006.
+\end{verbatim}
+ここで, TERM00018 は時間ステップである.
+TERM00019 等は, TERM00020 の関数であるから, その依存性を線形化して,
+%
+\begin{verbatim}
+EQ=00007.
+\end{verbatim}
+
+従って, TERM00021 と置くと,
+%
+\begin{verbatim}
+EQ=00008.
+\end{verbatim}
+%
+すなわち,
+\begin{verbatim}
+EQ=00009.
+\end{verbatim}
+
+これは, 以下のような行列形式で書くことができる.
+%
+\begin{verbatim}
+EQ=00010.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00011.
+\end{verbatim}
+%
+これを LU 分解などの方法で解けば良い.
+通常は, TERM00022 は3重対角となるので, 簡単に解ける.
+解いた後は, (13)を用いて
+この方法にコンシステントなフラックスを計算しておく.
+TERM00023 についても全く同様である.
+
+\subsubsection{implicit時間差分の結合}
+
+気温, 比湿, 地中温度については, 前節のように簡単にはいかない.
+%
+\begin{verbatim}
+EQ=00052.
+EQ=00052.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00012.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00013.
+\end{verbatim}
+%
+ここで, 上記の式における TERM00024, TERM00025 は
+TERM00026, TERM00027 から取っていることに注意. なぜならば,
+地表でのフラックスは, 以下のようになるからである.
+\begin{verbatim}
+EQ=00014.
+\end{verbatim}
+\begin{verbatim}
+EQ=00015.
+\end{verbatim}
+\begin{verbatim}
+EQ=00016.
+\end{verbatim}
+ここで, 地表面表皮温度を TERM00030 とすると,
+TERM00031, TERM00032 (飽和比湿), TERM00033 である.
+これらは, 全て, TERM00034 に依存する.
+また, TERM00035 は, 全ての TERM00036 での値が TERM00037 に依存する. 
+
+(17) と同様に, 行列 TERM00038,TERM00038 を用いて
+(18), (19), (20) を書き直すと, 
+%
+ TERM00039 (TERM00040,TERM00040 について) または TERM00041 (TERM00042 について) のとき, 
+%
+  \begin{verbatim}
+EQ=00053.
+EQ=00053.
+\end{verbatim}
+
+\begin{verbatim}
+EQ=00017.
+\end{verbatim}
+
+\begin{verbatim}
+EQ=00018.
+\end{verbatim}
+%
+ただし, 
+\begin{verbatim}
+EQ=00019.
+\end{verbatim}
+\begin{verbatim}
+EQ=00020.
+\end{verbatim}
+\begin{verbatim}
+EQ=00021.
+\end{verbatim}
+
+ TERM00043 (TERM00044,TERM00044 について) または TERM00045 (TERM00046 について) のとき, 
+%
+  \begin{verbatim}
+EQ=00054.
+EQ=00054.
+EQ=00054.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00022.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00055.
+EQ=00055.
+EQ=00055.
+\end{verbatim}
+%
+ただし, 
+\begin{verbatim}
+EQ=00023.
+\end{verbatim}
+\begin{verbatim}
+EQ=00024.
+\end{verbatim}
+\begin{verbatim}
+EQ=00025.
+\end{verbatim}
+%
+ただし, (32)は, 地表面のバランスの条件
+\begin{verbatim}
+EQ=00026.
+\end{verbatim}
+を, 土壌温度の式の TERM00047 の場合として扱ったもので, 
+(20)の表式には含まれていないことに注意. 
+
+これら,
+(24), (25), (26), 
+(30), (31), (32)
+を連立すると, TERM00048 個の未知変数に関して, 
+同数の方程式があるので, 解くことができる.
+実際の解法としては, LU分解を用いて行なうことができる.
+
+解いた後は, 
+(13) と同様に,
+コンシステントなフラックスを求めておく.
+
+\subsubsection{時間差分の結合式の解法}
+
+(30) などは, 以下のように書ける.
+%
+\begin{verbatim}
+EQ=00027.
+\end{verbatim}
+ここで, TERM00049,TERM00049
+の項は地表フラックスに伴う項,
+その他は鉛直拡散に伴う項である.
+%
+ここで, 上下を逆にして行列で表現すると, 以下のようになる.
+%
+\begin{verbatim}
+EQ=00028.
+\end{verbatim}
+
+いま, 表記の簡単のために, TERM00050 とする.  以後の議論は, これによって一般性
+を失うことはない.
+%
+\begin{verbatim}
+EQ=00029.
+\end{verbatim}
+%
+ここで,
+TERM00051,TERM00051 としたときの式,
+(地表でのフラックス交換を考えない場合にあたる)
+を LU 分解で解くことを考える.
+%
+\begin{verbatim}
+EQ=00030.
+\end{verbatim}
+
+LU 分解すると,
+%
+\begin{verbatim}
+EQ=00031.
+\end{verbatim}
+%
+これから, 
+%
+\begin{verbatim}
+EQ=00032.
+\end{verbatim}
+%
+を TERM00052 について解き(TERM00053 から出発すれば, 簡単に解ける), 
+それから,
+%
+\begin{verbatim}
+EQ=00033.
+\end{verbatim}
+%
+を, TERM00054 について, TERM00055 から出発して順に解くことができる.
+
+TERM00056,TERM00056 だと, LU 分解は, 
+%
+\begin{verbatim}
+EQ=00034.
+\end{verbatim}
+%
+これから, 
+%
+\begin{verbatim}
+EQ=00035.
+\end{verbatim}
+%
+だが, これと, (42) を見比べると, 以下の関係があることがわかる.
+%
+\begin{verbatim}
+EQ=00036.
+\end{verbatim}
+%
+これを用いると,
+%
+\begin{verbatim}
+EQ=00037.
+\end{verbatim}
+%
+となる. すなわち,
+%
+\begin{verbatim}
+EQ=00038.
+\end{verbatim}
+%
+ここで, TERM00057 および, TERM00058 は,
+TERM00059 とおいた式(40),
+すなわち, 地表フラックスの項を考慮しない式で
+LU分解を行なうことによって得られることに注意したい.
+これらの項の物理的な意味としては,
+地表面とのフラックス交換過程において,
+大気全体が, 熱容量 TERM00060 を持ち, 
+上からフラックス TERM00061 が
+供給される1つの層とみなすことができることを示す.
+
+(24)および(30), 
+(25)および(31), 
+(26)および(32)  のそれぞれにおいて
+(48) に対応する式が得られ, 以下のようになる.
+
+\begin{verbatim}
+EQ=00039.
+\end{verbatim}
+\begin{verbatim}
+EQ=00040.
+\end{verbatim}
+\begin{verbatim}
+EQ=00041.
+\end{verbatim}
+
+従って, 上の3式を連立させれば,
+未知変数 TERM00062,TERM00062 を解くことができる.
+これらが解ければ, 後は
+(47) を順次 TERM00063,TERM00063 と解くことができる.
+%
+その後, 得られた温度にコンシステントなフラックスを
+\begin{verbatim}
+EQ=00056.
+EQ=00056.
+\end{verbatim}
+として計算する.
+%
+ここでは, TERM00064 が一般行列の場合を示したが,
+実際には3重対角行列となるので, さらに簡単である.
+
+プログラム中においては,
+\texttt{MODULE:[VFTND1(pimtx.F)]} で大気部分について,
+\texttt{MODULE:[GNDHT1(pggnd.F)]} で地中部分について, LU分解解法の前半
+(TERM00065 を求めるところ)を行ない, 
+\texttt{MODULE:[SLVSFC(pgslv.F)]} において, TERM00066 の方程式を解き,
+TERM00067,TERM00067 を求めている.
+その後, \texttt{MODULE:[GNDHT2(pggnd.F)]} において
+LU分解解法の後半を行ない, 地中について温度変化率を解き, 
+収支が合うようにフラックスを補正する.
+また, \texttt{MODULE:[VFTND2(pimtx.F)]} において大気中について
+温度変化率を解き, 
+\texttt{MODULE:[FLXCOR(pimtx.F)]} でフラックスを補正している.
+
+\subsubsection{時間差分の結合式}
+
+TERM00068,TERM00068 を求める結合式は, 
+以下の様に条件を変えながら 3回解く. 
+\begin{enumerate}
+\item 地表湿潤度 TERM00069 を 1 として解く. 地表温度は変数. 
+\item \texttt{MODULE:[GNDBET]} で得られた地表湿潤度で解く. 
+      地表温度は変数.
+\item \texttt{MODULE:[GNDBET]} で得られた地表湿潤度で解く. 
+      融雪等の場合, 地表温度は氷点に固定. 
+\end{enumerate}
+
+1 回目の計算は, 可能蒸発量 TERM00070 を見積もるために行なわれる.
+(地表湿潤度が小さいときに, モデルのエネルギーバランスから
+得られた TERM00071 を用いて, 可能蒸発量を
+TERM00072
+として診断すると, 非現実的な大きな値になってしまう.)
+可能蒸発量は,
+\begin{verbatim}
+EQ=00057.
+\end{verbatim}
+となる.
+添字 TERM00073 は, 補正後の意味で, 
+これが得られた温度等にコンシステントなフラックスである.
+    
+2 回目以降の計算では, 
+\begin{enumerate}
+\item 1回めの計算で求めた可能蒸発量に
+      地表湿潤度(蒸発効率) TERM00074 を
+      かけたものを蒸発量 TERM00075 とする.
+      \begin{verbatim}
+EQ=00042.
+\end{verbatim}
+
+\item 蒸発量 TERM00076 は
+      \begin{verbatim}
+EQ=00043.
+\end{verbatim}
+      で求められるものとして, 
+      改めてエネルギーバランスを解き直す.
+\end{enumerate}
+の2通りの蒸発量の計算方法を用いることができる
+(標準では1.の方法を用いる).
+3 回目の計算は, 融雪, 融氷のときや, 混合層海洋で海氷が生成するときに
+地表温度を氷点などに固定してエネルギーバランスを解くために行なう. 
+このとき, 融雪などの水の相変化に使われるエネルギー量が診断的に求まり, 
+後で融雪量などを計算する際に用いられる. 
+
+結合式の具体的な形は以下の様である. 
+%
+\begin{verbatim}
+EQ=00058.
+EQ=00058.
+\end{verbatim}
+%
+ここで, TERM00078,TERM00078 および TERM00079,TERM00079 は, 
+LU分解解法の前半を行なって得られる, 行列およびベクトルの成分である. 
+地表面が雪または氷に覆われているときには, 潜熱 TERM00080 の代わりに
+昇華の潜熱 TERM00081 を用いる. TERM00082 は水の融解の潜熱である. 
+%
+ただし, 第2回めの計算で, 
+蒸発の見積もりとして第一の方法を用いた場合は, 以下のようになる.
+\begin{verbatim}
+EQ=00059.
+EQ=00059.
+\end{verbatim}
+
+3 回目の計算で, 地表温度を固定した場合の結合式は, 
+\begin{verbatim}
+EQ=00060.
+EQ=00060.
+\end{verbatim}
+ここで, TERM00083 は固定する温度までの変化率で, 
+\begin{verbatim}
+EQ=00044.
+\end{verbatim}
+TERM00084 は, 融雪, 融氷の場合は 273.15K, 
+海氷の生成の場合は 271.15K である. 
+また, 蒸発計算の第2の方法を用いる場合には,
+同様に TERM00085 のかわりに TERM00086 を用い,
+TERM00087 の微分項を 0 として計算する.
+このとき, 
+\begin{verbatim}
+EQ=00061.
+EQ=00061.
+\end{verbatim}
+で計算される TERM00088 は地表エネルギーバランスで, 
+水の相変化に使われる分のエネルギーである. 
+
+\subsubsection{implicit 時間差分における時間ステップの扱い}
+
+鉛直拡散項の時間差分には implicit 法を用いているが, 
+一般に拡散係数が非線形であり, この係数を explicit に評価している
+ことにより, 数値不安定の問題が生じ得る. 
+安定性の向上のために, Kalnay and Kanamitsu (19??) にならって
+時間ステップの扱いを工夫している. 
+
+簡単化のために以下の常微分方程式を例に取って説明する. 
+\begin{verbatim}
+EQ=00045.
+\end{verbatim}
+係数 TERM00089 が非線形性を表す. 
+係数のみ explicit に評価して素直に implicit 差分化すると次式のようになる. 
+\begin{verbatim}
+EQ=00046.
+\end{verbatim}
+ところが, ここでは 2ステップ先の TERM00090 の値 TERM00091 を考えて, 
+\begin{verbatim}
+EQ=00047.
+\end{verbatim}
+\begin{verbatim}
+EQ=00048.
+\end{verbatim}
+とする. 
+一般に, (64), (65) のようにする方が
+(63)よりも安定性が良いことが知られている. 
+
+(64), (65) を, 時間変化率を求める
+形に書き直すと以下を得る. 
+\begin{verbatim}
+EQ=00049.
+\end{verbatim}
+\begin{verbatim}
+EQ=00050.
+\end{verbatim}
+すなわち, 時間変化率を求める際の時間ステップには, 
+時間積分のステップの 2 倍を用いる. 
+

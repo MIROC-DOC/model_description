@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-grav</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-grav</h1>
+</header>
+<h2 id="gravitational-wave-resistance">Gravitational wave resistance</h2>
+<h3 id="gravitational-wave-resistance-scheme-overview">Gravitational Wave Resistance Scheme Overview</h3>
+<p>The gravitational wave resistance scheme is, Excited by sub-grid scale terrain The upward momentum flux of the gravitational wave is represented, The horizontal wind deceleration associated with its convergence is calculated. The main input data are: east-west wind <span class="math inline"><em>u</em></span>, north-south wind <span class="math inline"><em>v</em></span>, and temperature <span class="math inline"><em>T</em></span>, The output data is the time rate of change for the east-west and north-south winds, <span class="math inline">∂<em>u</em>/∂<em>t</em>, ∂<em>v</em>/∂<em>t</em></span>, is.</p>
+<p>The outline of the calculation procedure is as follows.</p>
+<ol type="1">
+<li><p>the momentum flux at the ground surface. Dispersion of surface altitude, The horizontal wind speed at the lowest level, stratification stability, etc.</p></li>
+<li><p>consider the upward propagation of gravitational waves with momentum fluxes. Momentum fluxes are determined from the critical fluid number If the critical flux is exceeded, Suppose a breaking wave occurs and the flux is at its critical value.</p></li>
+<li><p>according to the convergence of the momentum flux at each layer. Calculate the time variation of the horizontal wind.</p></li>
+</ol>
+<h3 id="relationship-between-local-fluid-number-and-momentum-flux">Relationship between local fluid number and momentum flux</h3>
+<p>The gravitational waves of surface origin Given the vertical flux of horizontal momentum, Flux at a certain altitude <span class="math inline"><em>τ</em></span> and Local Fluid Number <span class="math inline"><em>F</em><sub><em>L</em></sub> = <em>N</em><em>H</em>/<em>U</em></span> and ,</p>
+<p><br /><span class="math display">$$
+   F_L = \left(
+            \frac{\tau N}{E_f \rho U^3}
+           \right)^{1/2} \; ,
+$$</span><br /></p>
+<blockquote>
+<p><span id="p-grav:tau-fl" label="p-grav:tau-fl" label="p-grav:tau-fl">.</span> </span></p>
+</blockquote>
+<p>The relationship between the two is valid. Here, <span class="math inline"><em>N</em> = <em>g</em>/<em>θ</em>∂<em>θ</em>/∂<em>z</em></span> is Brandt Vaisala Frequency, <span class="math inline"><em>ρ</em></span> is the density of the atmosphere, <span class="math inline"><em>U</em></span> corresponds to the wind speed and <span class="math inline"><em>E</em><sub><em>f</em></sub></span> corresponds to the horizontal scale of the ripples on the ground surface It is a proportional constant . Now..,</p>
+<p><br /><span class="math display">$$
+  \tau = \frac{E_f F_L^2 \rho U^3}{N}
+$$</span><br /></p>
+<blockquote>
+<p><span id="p-grav:fl-tau" label="p-grav:fl-tau" label="p-grav:fl-tau"></span></p>
+</blockquote>
+<p>Local Fluid Number <span class="math inline"><em>F</em><sub><em>L</em></sub></span> is , Assume that a certain value, the critical fluid number <span class="math inline"><em>F</em><sub><em>c</em></sub></span>, cannot be exceeded. Calculated from (<a href="#p-grav:tau-fl">£p-grav:tau-fl]</a> If the local fluid number exceeds the critical fluid number <span class="math inline"><em>F</em><sub><em>c</em></sub></span> The gravitational waves are supersaturated, Up to the momentum flux corresponding to the critical fluid number Flux decreases.</p>
+<h3 id="momentum-fluxes-at-the-surface.">Momentum fluxes at the surface.</h3>
+<p>due to gravitational waves excited at the earth’s surface. The magnitude of the vertical flux of horizontal momentum <span class="math inline"><em>τ</em><sub>1/2</sub></span> is , except for the local fluid number at the surface <span class="math inline">(<em>F</em><sub><em>L</em></sub>)<sub>1/2</sub> = <em>N</em><sub>1</sub><em>h</em>/<em>U</em><sub>1</sub></span>. (<a href="#p-grav:fl-tau">p-grav:fl-tau]</a>) by substituting into ,</p>
+<p><br /><span class="math display"><em>τ</em><sub>1/2</sub> = <em>E</em><sub><em>f</em></sub><em>h</em><sup>2</sup><em>ρ</em><sub>1</sub><em>N</em><sub>1</sub><em>U</em><sub>1</sub> ,</span><br /></p>
+<p>It is estimated that . Here, The <span class="math inline"><em>U</em><sub>1</sub> = |<strong>v</strong><sub>1</sub>| = (<em>u</em><sub>1</sub><sup>2</sup> + <em>v</em><sub>1</sub><sup>2</sup>)<sup>1/2</sup></span> has a surface wind speed of , <span class="math inline"><em>N</em><sub>1</sub>, <em>ρ</em><sub>1</sub></span> are the two most common types of data in the atmosphere near the earth’s surface. It is stability and density. <span class="math inline"><em>h</em></span> is an indicator of the sub-grid surface elevation change, Assume that the standard deviation of the surface elevation is equal to <span class="math inline"><em>Z</em><sub><em>S</em><em>D</em></sub></span>.</p>
+<p>Here, the local fluid number at the surface If <span class="math inline">(<em>F</em><sub><em>L</em></sub>)<sub>1/2</sub> = <em>N</em><sub>1</sub><em>Z</em><sub><em>S</em><em>D</em></sub>/<em>U</em><sub>1</sub></span> is the critical fluid number When you exceed the <span class="math inline"><em>F</em><sub><em>c</em></sub></span>, The momentum flux is substituted for <span class="math inline"><em>F</em><sub><em>c</em></sub></span> into (<a href="#p-grav:fl-tau">p-grav:fl-tau]</a>) Let’s say it can be contained. Namely,</p>
+<p><br /><span class="math display">$$
+  \tau_{1/2} = \min \left(
+                   E_f Z_{SD}^{2} \rho_1 N_1 U_1, \; 
+                  \frac{E_f F_c^{2} \rho_1 U_1^3}{N_1}
+               \right)
+$$</span><br /></p>
+<h3 id="momentum-fluxes-in-the-upper-levels.">Momentum fluxes in the upper levels.</h3>
+<p>The momentum flux at level <span class="math inline"><em>k</em> − 1/2</span> is Suppose we are required to. <span class="math inline"><em>τ</em><sub><em>k</em> + 1/2</sub></span>, when no saturation occurs Equal to <span class="math inline"><em>τ</em><sub><em>k</em> − 1/2</sub></span>. This momentum flux, <span class="math inline"><em>τ</em><sub><em>k</em> − 1/2</sub></span>, is , Momentum fluxes calculated from the critical fluid number at the <span class="math inline"><em>k</em> + 1/2</span> level In the case of a wave breaking event that exceeds The momentum flux decreases to the flux corresponding to the criticality.</p>
+<p><br /><span class="math display">$$
+  \tau_{k+1/2} = \min \left( 
+               \tau_{k-1/2}, \;
+               \frac{E_f F_c^2 \rho_{k+1/2} U_{k+1/2}^3}{N_{k+1/2}}
+                      \right),
+$$</span><br /></p>
+<p>However, the <span class="math inline"><em>U</em><sub><em>k</em> + 1/2</sub></span>, . of the wind velocity vector at each layer, It is the magnitude of the projective component of the lowest level with respect to the direction of the horizontal wind,</p>
+<p><br /><span class="math display">$$
+  U_{k+1/2} = \frac{{\mathbf v}_{k+1/2} 
+                      \cdot {\mathbf v}_{1}}
+                   {|{\mathbf v}_{1}|       }
+$$</span><br /></p>
+<h3 id="the-magnitude-of-the-time-variation-of-horizontal-wind-due-to-momentum-convergence.">The magnitude of the time variation of horizontal wind due to momentum convergence.</h3>
+<p>The temporal rate of change of the projective component of the horizontal wind, <span class="math inline"><em>U</em><sub><em>k</em></sub></span>, is</p>
+<p><br /><span class="math display">$$
+  \frac{\partial U}{\partial t} 
+        = - \frac{1}{\rho} \frac{\partial \tau}{\partial z}
+        = g  \frac{\partial \tau}{\partial p}
+$$</span><br /></p>
+<p>as determined by i.e. ,</p>
+<p><br /><span class="math display">$$
+  \frac{\partial U_{k}}{\partial t} 
+        =  g  \frac{\tau_{k+1/2} - \tau{k-1/2}}{\Delta p}.
+$$</span><br /></p>
+<p>With this , The rate of change of the east-west and north-south winds over time is calculated as follows.</p>
+<p><br /><span class="math display">$$
+  \frac{\partial u_{k}}{\partial t}  = 
+           \frac{\partial U_{k}}{\partial t} \frac{u_{1}}{U_{1}} \\
+  \frac{\partial v_{k}}{\partial t}  = 
+           \frac{\partial U_{k}}{\partial t} \frac{v_{1}}{U_{1}}
+$$</span><br /></p>
+<h3 id="other-notes.">Other Notes.</h3>
+<ol type="1">
+<li>when the wind speed at the lowest level is small (<span class="math inline"><em>U</em><sub>1</sub> ≤ <em>v</em><sub><em>m</em><em>i</em><em>n</em></sub></span>) and In the case of small undulations in the earth’s surface (<span class="math inline"><em>Z</em><sub><em>S</em><em>D</em></sub> ≤ (<em>Z</em><sub><em>S</em><em>D</em></sub>)<sub><em>m</em><em>i</em><em>n</em></sub></span>), Assuming no gravitational waves are excited at the earth’s surface.</li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,254 @@
+\hypertarget{basic-settings.}{%
+\subsection{Basic Settings.}\label{basic-settings.}}
+
+Here we present the basic setup of the model.
+
+\hypertarget{coordinate-system.}{%
+\subsubsection{Coordinate System.}\label{coordinate-system.}}
+
+The coordinate system is basically, Longitude \(\lambda\), Latitude
+\(\varphi\), Normalized Pressure \(\sigma = p/p_S\)
+(\(p_S(\lambda,\varphi)\) are surface pressure.) and treat each as
+orthogonal. However, \(z\) is used as the vertical coordinates.
+
+Longitude is discretized at equal intervals \texttt{MODULE:{[}ASETL{]}}.
+
+\begin{eqnarray}
+  \lambda_i = 2 \pi \frac{i-1}{I}  \;\;\; i = 1, \ldots I-1
+\end{eqnarray}
+
+Latitude is the Gauss latitude \(\varphi_j\) described in Mechanics, and
+\texttt{MODULE:{[}ASETL{]}}, Gauss-Legendre derived from the integral
+formula. This takes \(\mu = \sin \varphi\) as its argument J The zero
+point of the next Legendre polynomial \texttt{MODULE:{[}GAUSS{]}}.
+
+If J is large, we can approximate
+
+\begin{eqnarray}
+  \varphi_j =  \pi ( \frac{1}{2}- \frac{j-1/2}{J} ) \;\;\; j = 1, \ldots J-1
+\end{eqnarray}
+
+Normally, the grid spacing of longitude and latitude is taken as
+\(J = I/2\) almost equally. This is based on the triangular truncation
+of the spectral method.
+
+Normalized atmospheric pressure (\(\sigma\)) is designed to give a good
+representation of the vertical structure of the atmosphere, suitably
+discretized at unequal intervals \texttt{MODULE:{[}ASETS{]}}. As we will
+discuss later in Mechanics, the value of the layer boundaries Define the
+\(\sigma_{k-1/2}\) in \(k = 1 \ldots K+1\) and then ,
+
+\begin{eqnarray}
+ \sigma_k = \left\{ \frac{1}{1+\kappa}
+                     \left( \frac{  \sigma^{\kappa +1}_{k-1/2}
+                                  - \sigma^{\kappa +1}_{k+1/2}      }
+                                  { \sigma_{k-1/2} - \sigma_{k+1/2} }
+                     \right)
+              \right\}^{1/\kappa}
+\end{eqnarray}
+
+Find the \(\sigma\) representing the layer by Figure
+{[}a-setup:level{]}{]} (\#a-setup:level) shows the 20 levels of the
+standard.
+
+Each forecast variable is all, \((\lambda_i, \varphi_j, \sigma_k)\) or
+defined on the grid of \((\lambda_i, \varphi_j, z_l)\). (The underground
+level, \(z_l\), is discussed in the Physical Processes section.)
+
+In the time direction, they are discretized at equally spaced
+\(\Delta t\), The time integration of the forecasting equation is
+performed. However, if the stability of the time integration may be
+compromised \(\Delta t\) can change.
+
+\hypertarget{physical-constants.}{%
+\subsubsection{Physical Constants.}\label{physical-constants.}}
+
+The basic physical constants are shown below
+\texttt{MODULE:{[}APCON{]}}.
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header0\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header1\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header2\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\raggedright
+Header3\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+earth radius\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(a\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+m\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+6.37 \(\times 10^6\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+acceleration of gravity\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(g\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+ms\(^-2\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+9.8\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+atmospheric pressure specific heat\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_p\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1004.6\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Atmospheric gas constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(R\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+287.04\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Latent heat of water evaporation\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(L\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2.5 \(\times 10^6\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Water vapor constant pressure specific heat\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1810\bsp.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Gas constant of water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(R_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+461.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Density of liquid water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(d_{H_2O}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\) K\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+1000.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(e^*\)(273K)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Pa.\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+611\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Stefan Bolzman\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\sigma_{SB}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+W m\(^{-2}\) K\(^{-4}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+5.67\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Kárman Constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(k\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.4\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Latent heat of ice melting\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(L_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+3.4 \(\times 10^5\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Water Freezing Point\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(T_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+273.15\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Constant pressure specific heat of water\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_w\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+J kg\(^{-1}\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+4,200.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+The freezing point of seawater\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(T_I\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+271.35\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Specific heat ratio of ice at constant pressure\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(C_I = C_w - L_M/T_M\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+2397.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+water vapor molecular weight ratio\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\epsilon = R/R_v\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.622\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+coefficient of provisional temperature\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\epsilon_v = \epsilon^{-1} - 1\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.606\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+Ratio of specific heat to gas constant\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\(\kappa = R/C_p\)\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+0.286\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}

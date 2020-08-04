@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-cum</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-cum</h1>
+</header>
+<h2 id="cumulus-convection">cumulus convection</h2>
+<h3 id="overview-of-the-cumulus-convection-scheme">Overview of the Cumulus Convection Scheme</h3>
+<p>The cumulus convection scheme is , This figure represents the condensation, precipitation and convection processes involved in cumulus convection, Due to the latent heat release and associated convective motion Calculate precipitation with temperature and with changes in water vapor content. We also calculate the cloud water content and cloud coverage involved in the radiation. The main input data are temperature <span class="math inline"><em>T</em></span> and specific humidity <span class="math inline"><em>q</em></span>, The output data is the time rate of change of temperature and specific humidity, <span class="math inline">∂<em>T</em>/∂<em>t</em>, ∂<em>q</em>/∂<em>t</em>, ∂<em>l</em>/∂<em>t</em></span>, The cloud water content of the cumulus clouds used for radiation is <span class="math inline"><em>l</em><sup><em>c</em><em>R</em></sup></span> Cloud volume <span class="math inline"><em>C</em><sup><em>c</em></sup></span>.</p>
+<p>The framework of the cumulus convection scheme is Basically based on Arakawa and Schubert (1974). Vertical air columns in one horizontal grid. Considered as the basic unit of parameterization. Clouds are determined by the temperature, specific humidity, cloud water content and Characterized by a vertical upward mass flux, Considering multiple clouds with different cloud tops within a single vertical air column. Clouds occupy part of the horizontal lattice, and the rest of the surrounding region is There is a downward flow equal to the cloud mass flux (compensating downward flow). This compensatory downward flow and outflow of air into the surrounding region in the clouds (detraining) The temperature and the specific humidity field in the surrounding region are changed by The area of the upwelling of the cumulus convection is assumed to be small, The lattice-averaged temperature and specific humidity fields and Since we treat the temperature and specific humidity fields in the surrounding area as the same, we are able to This gives the changes in the lattice mean temperature and specific humidity.</p>
+<p>It is the cloud model that determines the temperature, specific humidity and cloud water content in clouds. Here, we use an entrained-purume model, As with Moorthi and Suarez (1992) , We assume a linear mass flux increase with respect to height. The cloud base is used as the lifted condensation height of the surface atmosphere, of the percentage of air uptake (entrainment) in the surrounding area. Consider multiple cloud top altitudes depending on the difference. However, if a cloud with a cloud base cannot exist, then Consider the possibility of clouds with higher cloud bases.</p>
+<p>The mass flux of each cloud is diagnostically determined using the cloud work function. The cloud work function is defined as It is defined as the vertical integral of the work done by buoyancy. This cloud-work function is driven by the compensating downward motion of cumulus clouds, etc. It gives a mass flux that approaches zero at a certain relaxation time.</p>
+<p>In addition, the evaporation of precipitation and The effect of the downdrafting that goes with it. Consider in a very simple way .</p>
+<p>The outline of the calculation procedure is as follows. Parentheses are the names of the corresponding subroutines.</p>
+<ol type="1">
+<li><p>cloud-bottom height as the lifted condensation height of the surface atmosphere Evaluate .</p></li>
+<li><p>using a cloud model, Corresponding to each cloud top altitude of cloud temperature, specific humidity, cloud water content, and mass flux (relative value) Calculates the vertical distribution <code>MODULE:[UPDRF]</code>.</p></li>
+<li><p>calculate the cloud work function <code>MODULE:[CWF]</code>.</p></li>
+<li><p>due to a cloud of unit mass fluxes. Calculates the hypothetical change of temperature and specific humidity in the surrounding area <code>MODULE:[CLDTST]</code>.</p></li>
+<li><p>for a hypothetical change in temperature and specific humidity Calculate the cloud work function <code>MODULE:[CWF]</code>.</p></li>
+<li><p>using the cloud work function before and after the virtual change Calculates the cloud mass flux at the cloud base <code>MODULE:[CBFLX]</code>.</p></li>
+<li><p>the cloud mass flux detrainment. Calculate the vertical distribution and precipitation <code>MODULE:[CMFLX]</code>.</p></li>
+<li><p>evaluate cloud water and cloud cover due to cumulus clouds <code>MODULE:[CMCLD]</code>.</p></li>
+<li><p>by detainment. Calculate the change of temperature and specific humidity <code>MODULE:[CLDDET]</code>.</p></li>
+<li><p>by compensatory downstream flow. Calculate the change of temperature and specific humidity <code>MODULE:[CLDSBH]</code>.</p></li>
+<li><p>evaporation of precipitation and The downdraft. of cloud temperature, specific humidity and mass flux Calculates the vertical distribution <code>MODULE:[DWNEVP]</code>.</p></li>
+<li><p>by downdraft detrainment. Calculate the change of temperature and specific humidity <code>MODULE:[CLDDDE]</code>.</p></li>
+<li><p>by the compensatory upward flow of downdrafts. Calculate the change of temperature and specific humidity <code>MODULE:[CLDSBH]</code>.</p></li>
+</ol>
+<h3 id="the-basic-framework-of-the-arakawa-schubert-scheme">The Basic Framework of the Arakawa-Schubert Scheme</h3>
+<p>Cloud Mass Flux <span class="math inline"><em>M</em></span>, Detrainment <span class="math inline"><em>D</em></span> is,</p>
+<p><br /><span class="math display">$$
+  M(z)     =  M_B \eta(z) \; , \\
+  D(z)     =  M_B \eta(z_T) \delta (z-z_T) \; .
+$$</span><br /></p>
+<p>represented as . The mass flux at the cloud base (<span class="math inline"><em>M</em><sub><em>B</em></sub></span>) is the mass flux at <span class="math inline"><em>z</em><sub><em>B</em></sub></span>, <span class="math inline"><em>η</em></span> is a dimensionless mass flux in it.</p>
+<p>From this, the time variation of the mean field is calculated as</p>
+<p><br /><span class="math display">$$
+  \frac{\partial \bar{h}}{\partial t}  =  M \frac{\partial \bar{h}}{\partial z} 
+                       + D( h^t - \bar{h} ) \; , \\
+  \frac{\partial \bar{q}}{\partial t}  =  M\frac{\partial \bar{q}}{\partial z} 
+                       + D( q^t + l^t - \bar{q} ) \; .
+$$</span><br /></p>
+<p>However, <span class="math inline"><em>h̄</em>, <em>q̄</em></span> are based on the wet static energy of the mean field and the specific humidity, <span class="math inline"><em>h</em><sup><em>t</em></sup>, <em>q</em><sup><em>t</em></sup>, <em>l</em><sup><em>t</em></sup></span> are the air in the detrainment It is the wet static energy, specific humidity, and cloud water content.</p>
+<p><span class="math inline"><em>η</em>, <em>h</em><sup><em>t</em></sup>, <em>q</em><sup><em>t</em></sup>, <em>l</em><sup><em>t</em></sup></span> are required by the cloud model. <span class="math inline"><em>M</em><sub><em>B</em></sub></span> is obtained by the closure assumption using the cloud work function.</p>
+<h3 id="cloud-model.">Cloud Model.</h3>
+<p>The cloud model is essentially an entrained-purume model. Each type of cloud is characterized by an entrainment rate, It will have various cloud top heights accordingly. However, for the sake of later calculations, Here, you can specify the cloud top altitude, By finding the corresponding entrainment rate Find the vertical structure of clouds. By assuming a linear mass flux increase with respect to height. This calculation is simplified to a form that does not include a sequential approximation.</p>
+<p>Let’s set the cloudbase altitude at <span class="math inline"><em>z</em><sub><em>T</em></sub></span>, The lifted condensation altitude of the surface atmosphere, i.e., the height of condensation,</p>
+<p><br /><span class="math display">$$
+   \bar{q}(0) \geq
+                \bar{q}^*(z)
+                + \frac{\gamma}{L(1+\gamma)} 
+                    \left(\bar{h}(0)-\bar{h}(z) \right) \; , 
+$$</span><br /></p>
+<p>Define it as the minimum <span class="math inline"><em>z</em></span> that meets the following criteria</p>
+<p>The dimensionless mass flux <span class="math inline"><em>η</em></span> is, The entrainment rate is set to <span class="math inline"><em>λ</em></span>,</p>
+<p><br /><span class="math display">$$
+  \frac{\partial \eta}{\partial z} = \lambda \; ,
+$$</span><br /></p>
+<p>Namely,</p>
+<p><br /><span class="math display">$$
+  \eta (z)  =  1 + \lambda ( z - z_B ) \\
+            \equiv  1 + \lambda \hat{\eta}(z)  \; .
+$$</span><br /></p>
+<p>The balance on wet static energy <span class="math inline"><em>h</em><sup><em>c</em></sup></span> and total water content <span class="math inline"><em>w</em><sup><em>c</em></sup></span> in the clouds is,</p>
+<p><br /><span class="math display">$$
+  \frac{\partial }{\partial z}( \eta h^c   )  =  \lambda \bar{h}      \; , \\
+  \frac{\partial }{\partial z}( \eta w^c   )  =  \lambda \bar{q} - \pi  \; .
+$$</span><br /></p>
+<p>Here, <span class="math inline"><em>h̄</em>, <em>q̄</em>, <em>π</em></span> are respectively, <span class="math inline"><em>h</em></span> and <span class="math inline"><em>q</em></span>, in mean field, are precipitation generation.</p>
+<p>Integrating,</p>
+<p><br /><span class="math display">$$
+   \eta (z) h^c(z)  =  h^c(z_B)
+                         + \lambda \int_{z_B}^{z} \bar{h}(\xi) d\xi \\
+                    \equiv  h^c(z_B) + \lambda \hat{h}^c(z) \; ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+   \eta (z) w^c(z)  =  w^c(z_B)
+                         + \lambda \int_{z_B}^{z} \bar{q}(\xi) d\xi
+                         - R(z) \\
+                    \equiv  w^c(z_B) + \lambda \hat{w}^c(z) 
+                              - R(z)             \\
+                    \equiv  \eta(z) w^a(z) - R(z)  \; . 
+$$</span><br /></p>
+<p>The mass flux is assumed to be zero at the surface, It is assumed to increase linearly below the cloud base,</p>
+<p><br /><span class="math display">$$
+ \eta (z) =   \frac{z}{z_B} \; \; \; ( z&lt;z_B ) \; .
+$$</span><br /></p>
+<p>By calculating the entrainment below this cloud base, <span class="math inline"><em>h</em><sup><em>c</em></sup>, <em>w</em><sup><em>c</em></sup></span> are required at cloudbase. That is, ,</p>
+<p><br /><span class="math display">$$
+  h^c(z_B)  =  \frac{1}{z_B} \int_0^{z_B} \bar{h}(z) dz \; , \\
+  w^c(z_B)  =  \frac{1}{z_B} \int_0^{z_B} \bar{q}(z) dz \; .
+$$</span><br /></p>
+<p>The buoyancy per unit mass flux due to clouds is ,</p>
+<p><br /><span class="math display">$$
+   B  =   \frac{g}{\bar{T}} ( T_v^c - \bar{T}_v ) \\
+      =   \frac{g}{\bar{T}} 
+            \left[ T^c ( 1+\epsilon q^c-l^c ) 
+                      - \bar{T} ( 1+\epsilon \bar{q} ) \right] \\
+      \simeq  \frac{g}{\bar{T}} 
+               \left[ ( T^c - \bar{T} ) 
+               - \bar{T} \left( \epsilon(q^c-\bar{q}) -l^c \right) 
+                                                     \right] \\
+      \simeq  \frac{g}{\bar{T}} 
+                \left[ \frac{1}{C_p(1+\gamma)} (h^c-\bar{h}^*)
+                       + \bar{T} \left( \epsilon \frac{\gamma}{L(1+\gamma)} 
+                                                     (h^c-\bar{h}^*)
+                               + \epsilon (\bar{q}^* - \bar{q} ) 
+                               - l^c                      \right) \right] \; .
+$$</span><br /></p>
+<p>where <span class="math inline"><em>T</em><sub><em>v</em></sub></span> is the provisional temperature and <span class="math inline"><em>q</em><sup>*</sup></span> is the saturation specific humidity, <span class="math inline"><em>ϵ</em> = <em>R</em><sub><em>H</em><sub>2</sub><em>O</em></sub>/<em>R</em><sub><em>a</em><em>i</em><em>r</em></sub> − 1</span>, It is <span class="math inline"><em>γ</em> = <em>L</em>/<em>C</em><sub><em>p</em></sub>∂<em>q</em><sup>*</sup>/∂<em>T</em></span>, <span class="math inline"><em>q̄</em><sup>*</sup>, <em>h̄</em><sup>*</sup></span> indicate the values at mean-field saturation, respectively. <span class="math inline"><em>q</em><sup><em>c</em></sup>, <em>l</em><sup><em>c</em></sup></span> are the amounts of cloud water vapor and cloud water,</p>
+<p><br /><span class="math display">$$
+  q^c  =  q^*(T^c) \, \simeq \,
+           \bar{q}^* + \frac{1}{L(1+\gamma)} ( h^c - \bar{h}^* ) \; , \\  
+  l^c  =  w^c - q^c \; .
+$$</span><br /></p>
+<p>For the cloud top <span class="math inline"><em>z</em><sub><em>T</em></sub></span>, the buoyancy <span class="math inline"><em>B</em></span> is assumed to be zero. Thus, solving the <span class="math inline"><em>B</em>(<em>z</em><sub><em>T</em></sub>) = 0</span> corresponds to the given cloud top height of <span class="math inline"><em>z</em><sub><em>T</em></sub></span> <span class="math inline"><em>λ</em></span> can be obtained. Here, for precipitation rate <span class="math inline"><em>R</em>(<em>z</em>)</span> integrated from the ground upward, we have a problem, Using the known function <span class="math inline"><em>r</em>(<em>z</em>)</span> Assume that it is represented.</p>
+<p><br /><span class="math display"><em>R</em>(<em>z</em>) = <em>η</em>(<em>z</em>)<em>r</em>(<em>z</em>)[<em>w</em><sup><em>a</em></sup>(<em>z</em>)−<em>q</em><sup><em>c</em></sup>(<em>z</em>)] .</span><br /></p>
+<p>So..,</p>
+<p><br /><span class="math display">$$
+\frac{\bar{T}}{g} B \simeq 
+ \frac{1}{1+\gamma} 
+ \left[ \frac{1}{C_p} + \bar{T} (\epsilon+1-r) \frac{\gamma}{L} \right]
+  (h^c-\bar{h}^*)
+  + (\epsilon+1-r) \bar{T} \bar{q}^* 
+  - \epsilon  \bar{T} \bar{q}
+  - \bar{T} (1-r) w^a \; .
+$$</span><br /></p>
+<p>$B(z_T) =0 $ is easy to solve and,</p>
+<p><br /><span class="math display">$$
+  \lambda = \frac{ a\left[ h^c(z_B)-\bar{h}^*(z_T) \right]
+                  +\bar{T}(z_T)\left[ b -(1-r(z_T))q^c(z_B) \right] }
+                 { a\left[ \hat{\eta}(z_T) \bar{h}^*(z_T) 
+                               - \hat{h}^c(z_T) \right]
+                  -\bar{T}(z_T)\left[ b \hat{\eta}(z_T) 
+                                     - (1-r(z_T))\hat{q}_t^c(z_T) \right] }
+$$</span><br /></p>
+<p>However,</p>
+<p><br /><span class="math display">$$
+a  \equiv  \frac{1}{1+\gamma}
+             \left[ \frac{1}{C_p} 
+                + \bar{T}(z_T) 
+                  \left( \epsilon+1-r(z_T) \right) 
+               \frac{\gamma}{L}                \right] \; ,\\
+b  \equiv  \left(\epsilon+1-r(z_T) \right) \bar{q}^*(z_T) 
+                    - \epsilon \bar{q}(z_T) \; .
+$$</span><br /></p>
+<p>As mentioned above, you should specify <span class="math inline"><em>λ</em></span> to obtain <span class="math inline"><em>z</em><sub><em>T</em></sub></span>, A physically meaningful <span class="math inline"><em>λ</em></span> for a given <span class="math inline"><em>z</em><sub><em>T</em></sub></span> There is no guarantee that we will seek it. That scrutiny is necessary, but here it is, The smaller the <span class="math inline"><em>λ</em></span> is, the more the <span class="math inline"><em>z</em><sub><em>T</em></sub></span> is Take into account that it should be lower.</p>
+<p><br /><span class="math display">$$
+  \frac{\partial \lambda}{\partial z_T} &lt; 0
+$$</span><br /></p>
+<p>We will examine whether or not the If the value is not satisfied, assume that the cloud with cloud top <span class="math inline"><em>z</em><sub><em>T</em></sub></span> does not exist. Also, a minimum value has been set for <span class="math inline"><em>λ</em></span>, We assume that there are no smaller <span class="math inline"><em>λ</em></span> clouds. This means that the entrainment rate can be reduced by Given the inverse proportions , The equivalent of having a maximum in the size of the plume.</p>
+<p>Cloud water content <span class="math inline"><em>l</em><sup><em>c</em></sup>(<em>z</em>)</span> is ,</p>
+<p><br /><span class="math display">$$
+  l^c(z)  =  w^a(z)-q^c(z)-R(z)/\eta(z)   \\
+          =  \left( 1-r(z) \right) \left[ w^a(z)-q^c(z) \right] \; .
+$$</span><br /></p>
+<p>However, in the case of <span class="math inline"><em>w</em><sup><em>a</em></sup>(<em>z</em>) &lt; <em>q</em><sup><em>c</em></sup>(<em>z</em>)</span>, it is <span class="math inline"><em>l</em><sup><em>c</em></sup>(<em>z</em>) = 0</span>. Furthermore, it is unlikely that a precipitation event will be followed by cloudy water, <span class="math inline"><em>R</em>(<em>z</em>)</span> must be an increasing function of <span class="math inline"><em>z</em></span>. This will limit the <span class="math inline"><em>r</em>(<em>z</em>)</span>.</p>
+<p>The characteristic value of the detrainment air is ,</p>
+<p><br /><span class="math display">$$
+  h^t  =  h^c(z_T) \; , \\
+  q^t  =  q^c(z_T) \; , \\
+  l^t  =  l^c(z_T) \; .
+$$</span><br /></p>
+<p>In the case of $ h^c(z_B) &lt; {h}^* (z_T) $, Suppose that clouds do not exist. In this case,</p>
+<p><br /><span class="math display"><em>h̄</em>(<em>z</em>′<sub><em>B</em></sub>) &gt; <em>h̄</em><sup>*</sup>(<em>z</em><sub><em>T</em></sub>) ,   <em>z</em><sub><em>B</em></sub> &lt; <em>z</em> &lt; <em>z</em><sub><em>T</em></sub></span><br /></p>
+<p>If there is a <span class="math inline"><em>z</em>′<sub><em>B</em></sub></span> that satisfies , The area directly above it has been renamed <span class="math inline"><em>z</em><sub><em>B</em></sub></span>,</p>
+<p><br /><span class="math display">$$
+  h^c(z_B)  =  \bar{h}(z'_B) \; , \\
+  w^c(z_B)  =  \bar{q}(z'_B) \; 
+$$</span><br /></p>
+<p>Seek as .</p>
+<h3 id="cloud-work-function-cwf">Cloud Work Function (CWF)</h3>
+<p>The cloud work function (CWF), <span class="math inline"><em>A</em></span> is,</p>
+<p><br /><span class="math display"><em>A</em> ≡ ∫<sub><em>z</em><sub><em>B</em></sub></sub><sup><em>z</em><sub><em>T</em></sub></sup><em>B</em><em>η</em><em>d</em><em>z</em></span><br /></p>
+<p>It is,</p>
+<p><br /><span class="math display">$$
+A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
+        (T^c-\bar{T})
+      + \bar{T} \left\{ \epsilon (q^c - \bar{q} ) 
+                     - l^c                 \right\}
+       \right] \eta dz \; .
+$$</span><br /></p>
+<blockquote>
+<p><span id="p-cum:cwf" label="p-cum:cwf" label="p-cum:cwf"></span></p>
+</blockquote>
+<p>Essentially, the work associated with the downdraft, discussed below, should be It should be accounted for, but we’ll ignore it here for simplicity’s sake.</p>
+<p>In this calculation, we start at the bottom and Once a positively buoyant cloud is negatively buoyant, if , Since there should be cloud tops where they are supposed to be negative, Assume that the cloud with the cloud top we are considering does not exist.</p>
+<h3 id="cloud-mass-flux-at-cloudbase">Cloud Mass Flux at Cloudbase</h3>
+<p>The cloud mass flux at the cloud base is , On some time scale <span class="math inline"><em>τ</em><sub><em>a</em></sub></span>, Cloud action determines the cloud work function to be close to zero I make the assumption that.</p>
+<p>In order to estimate it, we firstly estimated the unit cloud-bottom mass flux of <span class="math inline"><em>M</em><sub>0</sub></span> Find the time variation of the mean field.</p>
+<p><br /><span class="math display">$$
+  \frac{\partial \bar{h}'}{\partial t}  =  M_0 \eta \frac{\partial \bar{h}}{\partial z} 
+                       + \eta(z_T) \delta(z-z_T) ( h^t - \bar{h} ) \; , \\
+  \frac{\partial \bar{q}'}{\partial t}  =  M_0 \eta \frac{\partial \bar{q}}{\partial z} 
+                       + \eta(z_T) \delta(z-z_T) ( q^t + l^t - \bar{q} ) \; .
+$$</span><br /></p>
+<p>With this,</p>
+<p><br /><span class="math display">$$
+  \bar{h}'  =  \bar{h} + \frac{\partial \bar{h}'}{\partial t} \delta t \; , \\
+  \bar{q}'  =  \bar{q} + \frac{\partial \bar{q}'}{\partial t} \delta t 
+$$</span><br /></p>
+<p>and using <span class="math inline"><em>h̄</em>′, <em>q̄</em>′</span> Let <span class="math inline"><em>A</em>′</span> be the cloud work function calculated from (<a href="#p-cum:cwf">p-cum:cwf]</a>).</p>
+<p>So..,</p>
+<p><br /><span class="math display">$$
+  M_B = \frac{A}{A-A'} \frac{\delta t}{\tau_a} M_0 
+$$</span><br /></p>
+<p>That would be. Here, when obtaining <span class="math inline"><em>A</em>′</span>, the original <span class="math inline"><em>h̄</em>′, <em>q̄</em>′</span> were used I should recalculate the vertical structure of the clouds, Now we are using the same cloud structure.</p>
+<h3 id="cloud-mass-flux-precipitation">Cloud Mass Flux, Precipitation</h3>
+<p>The sum of the clouds at each cloud top altitude, Cloud Mass Flux <span class="math inline"><em>M</em></span></p>
+<p><br /><span class="math display"><em>M</em>(<em>z</em>) = ∫<sup><em>i</em></sup><em>M</em><sub><em>B</em></sub><sup><em>i</em></sup><em>η</em><sup><em>i</em></sup>(<em>z</em>) .</span><br /></p>
+<p>Also, precipitation flux <span class="math inline"><em>P</em>(<em>z</em>)</span> is</p>
+<p><br /><span class="math display"><em>P</em>(<em>z</em>) = ∫<sub><em>i</em></sub><em>M</em><sub><em>B</em></sub><sup><em>i</em></sup>[<em>R</em><sup><em>i</em></sup>(<em>z</em><sub><em>T</em></sub>)−<em>R</em><sup><em>i</em></sup>(<em>z</em>)] .</span><br /></p>
+<h3 id="time-variation-of-the-average-field">Time variation of the average field</h3>
+<p>by compensated downstream flow and detraining. The time variation of the mean field is calculated as follows</p>
+<p><br /><span class="math display">$$
+  \frac{\partial \bar{h}}{\partial t}  =  M \frac{\partial \bar{h}}{\partial z} 
+                    + \int_i D^i ( (h^t)^i - \bar{h} ) \; , \\
+  \frac{\partial \bar{q}}{\partial t}  =  M\frac{\partial \bar{q}}{\partial z} 
+                    + \int_i D^i ( (q^t)^i + (l^t)^i - \bar{q}(z_T^i) ) \; .
+$$</span><br /></p>
+<p>However, it is <span class="math inline"><em>D</em><sup><em>i</em></sup> = <em>M</em><sub><em>B</em></sub><sup><em>i</em></sup><em>η</em><sup><em>i</em></sup>(<em>z</em><sub><em>T</em></sub><sup><em>i</em></sup>)</span>.</p>
+<h3 id="evaporation-and-downdrafting-of-precipitation">Evaporation and downdrafting of precipitation</h3>
+<p>Precipitation falls through the unsaturated atmosphere, while some of it evaporates. In addition, some of them form a downdraft.</p>
+<p>Evaporation Rate <span class="math inline"><em>E</em></span> is ,</p>
+<p><br /><span class="math display"><em>E</em> = <em>ρ</em><em>a</em><sub><em>e</em></sub><em>ρ</em><sub><em>p</em></sub><sup><em>b</em><sub><em>e</em></sub></sup>(<em>q̄</em><sub><em>w</em></sub>−<em>q̄</em>) ,</span><br /></p>
+<p>Note that <span class="math inline"><em>q̄</em><sub><em>w</em></sub></span> is the saturation specific humidity corresponding to the wet bulb temperature,</p>
+<p><br /><span class="math display">$$
+  \bar{q}_w = \bar{q} 
+            + \frac{\bar{q}^* - \bar{q}}{1+ \frac{L}{C_P}\frac{\partial q^*}{\partial T}} \; .
+$$</span><br /></p>
+<p><span class="math inline"><em>a</em><sub><em>e</em></sub>, <em>b</em><sub><em>e</em></sub></span> is a parameter of the microphysics. <span class="math inline"><em>ρ</em><sub><em>p</em></sub></span> is the density of precipitation particles and <span class="math inline"><em>V</em><sub><em>T</em></sub></span> is the terminal velocity of precipitation,</p>
+<p><br /><span class="math display">$$
+  \rho_p = \frac{P}{V_T} \; .
+$$</span><br /></p>
+<p>The current standard values are <span class="math inline"><em>a</em><sub><em>e</em></sub> = 0.25</span>, <span class="math inline"><em>b</em><sub><em>e</em></sub> = 1</span> and <span class="math inline"><em>V</em><sub><em>T</em></sub> = 10</span> m/s.</p>
+<p>For downdrafting, we make the following assumptions.</p>
+<ul>
+<li><p><span class="math inline"><em>h̄</em></span> decreases monotonically with altitude above cloudbase If the upper end of the region is set to <span class="math inline"><em>z</em><sub><em>d</em></sub></span>, the downdraft is It occurs in the region of <span class="math inline"><em>z</em> &lt; <em>z</em><sub><em>d</em></sub></span>.</p></li>
+<li><p>A certain percentage of the precipitation evaporation that occurs at each altitude It is used to form downdrafts. Evaporation of precipitation has just saturated it. The air in the surrounding area. Taken into the downdraft (Entrainment).</p></li>
+<li><p>In <span class="math inline"><em>z</em> &lt; <em>z</em><sub><em>B</em></sub></span>, detraining occurs, The mass flux decreases linearly.</p></li>
+</ul>
+<p>That is, in <span class="math inline"><em>z</em><sub><em>B</em></sub> &lt; <em>z</em> &lt; <em>z</em><sub><em>d</em></sub></span>, the mass flux <span class="math inline"><em>M</em><sup><em>d</em></sup>(<em>z</em>)</span>, The downdraft air masses <span class="math inline"><em>h</em><sup><em>d</em></sup>(<em>z</em>), <em>q</em><sup><em>d</em></sup>(<em>z</em>)</span> follow the following equation. Upon evaporation of precipitation, the wet static energy should be conserved, and the specific humidity when saturated by evaporation. Note that this is <span class="math inline"><em>q̄</em><sub><em>w</em></sub></span>.</p>
+<p><br /><span class="math display">$$
+  \frac{\partial M^d}{\partial z} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  \frac{\partial }{\partial z} ( M^d h^d )  =  \bar{h}     \frac{\partial M^d}{\partial z} \; ,\\
+  \frac{\partial }{\partial z} ( M^d q^d )  =  \bar{q}_{w} \frac{\partial M^d}{\partial z} \; .
+$$</span><br /></p>
+<p>In the above equation, <span class="math inline"><em>f</em><sub><em>d</em></sub></span> is the portion of the evaporation that is taken up by the downdraft, <span class="math inline">(1 − <em>f</em><sub><em>d</em></sub>)</span> evaporates directly into the mean field. However, the downdraft mass flux <span class="math inline"><em>M</em><sup><em>d</em></sup></span> is The total mass flux of cloud base shall not exceed the <span class="math inline"><em>f</em><sub><em>m</em></sub></span> of <span class="math inline"><em>M</em></span>. The current standard value is <span class="math inline"><em>f</em><sub><em>d</em></sub> = 0.5, <em>f</em><sub><em>m</em></sub> = 1.0</span>.</p>
+<h3 id="cloud-water-and-cloud-cover">cloud water and cloud cover</h3>
+<p>The lattice-averaged cloud water content used for radiation, <span class="math inline"><em>l</em><sup><em>c</em><em>R</em></sup></span>, is Strong upwelling areas of cumulus clouds, including cloud water <span class="math inline"><em>l</em><sup><em>c</em></sup></span> If the ratio of the ratio to the <span class="math inline"><em>δ</em><sup><em>c</em></sup></span> ,</p>
+<p><br /><span class="math display"><em>l</em><sup><em>c</em><em>R</em></sup> = <em>δ</em><sup><em>c</em></sup><em>l</em><sup><em>c</em></sup> .</span><br /></p>
+<p>The mass flux <span class="math inline"><em>M</em><sup><em>c</em></sup></span> is the same as this <span class="math inline"><em>δ</em><sup><em>c</em></sup></span> Using the vertical velocity of the upstream stream, <span class="math inline"><em>v</em><sup><em>c</em></sup></span></p>
+<p><br /><span class="math display"><em>M</em> = <em>δ</em><sup><em>c</em></sup><em>ρ</em><em>v</em><sup><em>c</em></sup></span><br /></p>
+<p>So, in the end,</p>
+<p><br /><span class="math display">$$
+  l^{cR} = \frac{M^c}{\rho v^c} l^c = \alpha M^c l^c \; .
+$$</span><br /></p>
+<p>The cloud cover used to estimate radiation, <span class="math inline"><em>C</em><sup><em>c</em></sup></span>, is , that there is actually a horizontal spread in the distribution of upwelling and cloud water. It is reasonable to take a larger value than this <span class="math inline"><em>δ</em><sup><em>c</em></sup></span>. Here, in brief,</p>
+<p><br /><span class="math display"><em>C</em><sup><em>c</em></sup> = <em>β</em><em>M</em><sub><em>B</em></sub></span><br /></p>
+<p>. The current standard values are <span class="math inline"><em>α</em> = 0.3</span> and <span class="math inline"><em>β</em> = 10</span>.</p>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-sflx</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-sflx</h1>
+</header>
+<h2 id="surface-flux.">Surface Flux.</h2>
+<h3 id="overview-of-the-surface-flux-scheme">Overview of the Surface Flux Scheme</h3>
+<p>The surface flux scheme is , due to turbulent transport in the ground boundary layer. Assessing the flux of physical quantities between atmospheric surfaces. The main input data are wind speed <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, temperature <span class="math inline"><em>T</em></span>, and specific humidity <span class="math inline"><em>q</em></span>, The output data are the vertical fluxes of momentum, heat, water vapor and It is the differential value for obtaining an implicit solution.</p>
+<p>Bulk coefficients are obtained according to Louis(1979), Louis <span><em>et al.</em></span>(1982). However, we take into account the difference between the momentum and heat roughness in the correction.</p>
+<p>The outline of the calculation procedure is as follows.</p>
+<ol type="1">
+<li><p>as the stability of the atmosphere. Richardson numbers.</p></li>
+<li><p>calculate the bulk coefficient from Richardson number <code>MODULE:[PSFCL]</code>.</p></li>
+<li><p>calculate the flux and its derivative from the bulk coefficient.</p></li>
+<li><p>if necessary, using the required flux After taking into account the roughness effect of sea level, the effect of free convection, and wind speed correction, Do the math again.</p></li>
+</ol>
+<h3 id="basic-formula-for-flux-calculations">Basic Formula for Flux Calculations</h3>
+<p>Surface Flux $ Fu, Fv, F, Fq$ are Using the bulk coefficients <span class="math inline"><em>C</em><sub><em>M</em></sub>, <em>C</em><sub><em>H</em></sub>, <em>C</em><sub><em>E</em></sub></span> It is expressed as follows.</p>
+<p><br /><span class="math display"><em>F</em><em>u</em> =  − <em>ρ</em><em>C</em><sub><em>M</em></sub>|<strong>v</strong>|<em>u</em></span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>v</em> =  − <em>ρ</em><em>C</em><sub><em>M</em></sub>|<strong>v</strong>|<em>v</em></span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>θ</em> = <em>ρ</em><em>c</em><sub><em>p</em></sub><em>C</em><sub><em>H</em></sub>|<strong>v</strong>|(<em>θ</em><sub><em>g</em></sub> − <em>θ</em>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>q</em><sup><em>P</em></sup> = <em>ρ</em><em>C</em><sub><em>E</em></sub>|<strong>v</strong>|(<em>q</em><sub><em>g</em></sub> − <em>q</em>)</span><br /></p>
+<p>However, the <span class="math inline"><em>F</em><em>q</em><sup><em>P</em></sup></span> is the amount of possible evaporation. The calculation of actual evaporation is a combination of “surface processes” and We will discuss this in the section “Solving Diffusion-Based Budget Equations for Atmospheric Surface Systems”.</p>
+<h3 id="richardson-number.">Richardson Number.</h3>
+<p>The standard of stability between atmospheric surfaces, Bulk Richardson number <span class="math inline"><em>R</em><sub><em>i</em><em>B</em></sub></span> is</p>
+<p><br /><span class="math display">$$
+R_{iB} = \frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
+              { (u_1/z_1)^2                                  }
+       = \frac{g}{\theta_s} 
+         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T .
+$$</span><br /></p>
+<p>Here,</p>
+<p><br /><span class="math display"><em>f</em><sub><em>T</em></sub> = (<em>θ</em><sub>1</sub> − <em>θ</em>(<em>z</em><sub>0</sub>))/(<em>θ</em><sub>1</sub> − <em>θ</em><sub>0</sub>)</span><br /></p>
+<p>is a correction factor and is approximated from the uncorrected bulk Richardson number, while Here, the calculation method is abbreviated.</p>
+<h3 id="bulk-factor.">Bulk factor.</h3>
+<p>The bulk coefficients <span class="math inline"><em>C</em><sub><em>M</em></sub>, <em>C</em><sub><em>H</em></sub>, <em>C</em><sub><em>E</em></sub></span> are Louis(1979), Louis <span><em>et al.</em></span>(1982). However, we take into account the difference between the momentum and heat roughness in the correction. i.e., the roughness to momentum, heat, and water vapor. <span class="math inline"><em>z</em><sub>0<em>M</em></sub>, <em>z</em><sub>0<em>H</em></sub>, <em>z</em><sub>0<em>E</em></sub></span> respectively In general, it is <span class="math inline"><em>z</em><sub>0<em>M</em></sub> &gt; <em>z</em><sub>0<em>H</em></sub>, <em>z</em><sub>0<em>E</em></sub></span>, but heat and water vapor are also Bulk factor for flux from the height of the <span class="math inline"><em>z</em><sub>0<em>M</em></sub></span> First find the <span class="math inline">$\widetilde{C_H}$</span> and <span class="math inline">$\widetilde{C_E}$</span> and then correct them.</p>
+<p><br /><span class="math display">$$
+C_M = \left\{ 
+      \begin{array}{lr}
+      C_{0M} [ 1 + (b_M/e_M) R_{iB} ]^{-e_M} 
+          R_{iB} \geq 0 \\
+      C_{0M} \left[ 1 - b_M R_{iB} \left( 1+ d_M b_M C_{0M}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+          R_{iB} &lt; 0 \\
+      \end{array} \right.
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\widetilde{C_H} = \left\{ 
+      \begin{array}{lr}
+      \widetilde{C_{0H}} [ 1 + (b_H/e_H) R_{iB} ]^{-e_H} 
+          R_{iB} \geq 0 \\
+      \widetilde{C_{0H}} \left[ 1 - b_H R_{iB} 
+                                  \left( 1+ d_H b_H \widetilde{C_{0H}}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+          R_{iB} &lt; 0 \\
+      \end{array} \right.
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+C_H = \widetilde{C_H} f_T 
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\widetilde{C_E} = \left\{ 
+      \begin{array}{lr}
+      \widetilde{C_{0E}} [ 1 + (b_E/e_E) R_{iB} ]^{-e_E} 
+          R_{iB} \geq 0 \\
+      \widetilde{C_{0E}} \left[ 1 - b_E R_{iB} 
+                                  \left( 1+ d_E b_E \widetilde{C_{0E}}
+                                  \sqrt{\frac{z_1}{z_{0M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+          R_{iB} &lt; 0 \\
+      \end{array} \right.
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+C_E = \widetilde{C_E} f_q 
+$$</span><br /></p>
+<p>The <span class="math inline">$C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$</span> are The bulk coefficient (for fluxes from <span class="math inline"><em>z</em><sub>0<em>M</em></sub></span>) at neutral,</p>
+<p><br /><span class="math display">$$
+C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  = 
+       \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 } .
+$$</span><br /></p>
+<p>Correction Factor <span class="math inline"><em>f</em><sub><em>q</em></sub></span> is ,</p>
+<p><br /><span class="math display"><em>f</em><sub><em>q</em></sub> = (<em>q</em><sub>1</sub> − <em>q</em>(<em>z</em><sub>0</sub>))/(<em>q</em><sub>1</sub> − <em>q</em><sup>*</sup>(<em>θ</em><sub>0</sub>))</span><br /></p>
+<p>but the method of calculation is abbreviated. The coefficient is <span class="math inline">(<em>b</em><sub><em>M</em></sub>, <em>d</em><sub><em>M</em></sub>, <em>e</em><sub><em>M</em></sub>) = (9.4, 7.4, 2.0), (<em>b</em><sub><em>H</em></sub>, <em>d</em><sub><em>H</em></sub>, <em>e</em><sub><em>H</em></sub>) = (<em>b</em><sub><em>E</em></sub>, <em>d</em><sub><em>E</em></sub>, <em>e</em><sub><em>E</em></sub>) = (9.4, 5.3, 2.0)</span>.</p>
+<p>The dependence of the bulk coefficients on <span class="math inline"><em>R</em><em>i</em><sub><em>B</em></sub></span> is illustrated in Fig, Figure [p-sflx:cm] (#p-sflx:cm), Figure [p-sflx:ch] (#p-sflx:ch).</p>
+<h3 id="calculating-flux.">Calculating Flux.</h3>
+<p>This will calculate the flux.</p>
+<p><br /><span class="math display"><em>F̂</em><em>u</em><sub>1/2</sub> =  − <em>ρ</em><sub>1/2</sub><em>C</em><sub><em>M</em></sub>|<strong>v</strong><sub>1</sub>|<em>u</em><sub>1</sub></span><br /></p>
+<p><br /><span class="math display"><em>F̂</em><em>v</em><sub>1/2</sub> =  − <em>ρ</em><sub>1/2</sub><em>C</em><sub><em>M</em></sub>|<strong>v</strong><sub>1</sub>|<em>v</em><sub>1</sub></span><br /></p>
+<p><br /><span class="math display"><em>F̂</em><em>θ</em><sub>1/2</sub> = <em>ρ</em><sub>1/2</sub><em>c</em><sub><em>p</em></sub><em>C</em><sub><em>H</em></sub>|<strong>v</strong><sub>1</sub>|(<em>T</em><sub>0</sub>−<em>σ</em><sub>1</sub><sup> − <em>κ</em></sup><em>T</em><sub>1</sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F̂</em><em>q</em><sub>1/2</sub><sup><em>P</em></sup> = <em>ρ</em><sub>1/2</sub><em>C</em><sub><em>E</em></sub>|<strong>v</strong><sub>1</sub>|(<em>q</em><sup>*</sup>(<em>T</em><sub>0</sub>)−<em>q</em><sub>1</sub>)</span><br /></p>
+<p>The differential term is as follows</p>
+<p><br /><span class="math display">$$
+\frac{\partial Fu_{1/2}}{\partial u_1} = \frac{\partial Fv_{1/2}}{\partial v_1} 
+= - \rho_{1/2} C_M |\mathbf{v}_1|
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\frac{\partial F\theta_{1/2}}{\partial T_1} 
+= - \rho_{1/2} c_p C_H |\mathbf{v}_1| \sigma_1^{-\kappa}
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\frac{\partial F\theta_{1/2}}{\partial T_0} 
+= \rho_{1/2} c_p C_H |\mathbf{v}_1|
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\frac{\partial Fq_{1/2}}{\partial q_1} 
+ =  - \beta \rho_{1/2} C_E |\mathbf{v}_1| 
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\frac{\partial Fq^P_{1/2}}{\partial T_0} 
+ =  \beta \rho_{1/2} C_E |\mathbf{v}_1| \left( \frac{dq^*}{dT} \right)_{1/2}
+$$</span><br /></p>
+<p>Here, it’s important to note, <span class="math inline"><em>T</em><sub>0</sub></span> is a quantity that is not required at this time. Epidermal temperature is , Conditions for surface heat balance</p>
+<p><br /><span class="math display"><em>F</em><em>θ</em>(<em>T</em><sub>0</sub>, <em>T</em><sub>1</sub>) + <em>L</em><em>β</em><em>F</em><em>q</em><sup><em>P</em></sup>(<em>T</em><sub>0</sub>, <em>q</em><sub>1</sub>) + <em>F</em><em>R</em>(<em>T</em><sub>0</sub>) − <em>F</em><em>g</em>(<em>T</em><sub>0</sub>, <em>G</em><sub>1</sub>) = 0</span><br /></p>
+<p>Determined to meet. At this point, for <span class="math inline"><em>T</em><sub>0</sub></span>, we use the one from the previous time step for evaluation. The true flux value that meets the surface balance is , It is determined by solving this equation in conjunction with surface processes. In that sense, I have added <span class="math inline">$\hat{{}}$</span> to the flux above.</p>
+<h3 id="handling-at-sea-level.">handling at sea level.</h3>
+<p>At sea level, we follow Miller et al. (1992) and consider the following two effects.</p>
+<ul>
+<li><p>Free convection is preeminent when the wind speed is low</p></li>
+<li><p>The roughness of the sea surface varies with the wind speed.</p></li>
+</ul>
+<p>The effect of free convection is calculated using the buoyancy flux <span class="math inline"><em>F</em><sub><em>B</em></sub></span>,</p>
+<p><br /><span class="math display"><em>F</em><sub><em>B</em></sub> = <em>F</em><em>θ</em>/<em>c</em><sub><em>p</em></sub> + <em>ϵ</em><em>T</em><sub>0</sub><em>F</em><sub><em>q</em></sub><sup><em>P</em></sup></span><br /></p>
+<p>When I was in <span class="math inline"><em>F</em><sub><em>B</em></sub> &gt; 0</span>,</p>
+<p><br /><span class="math display"><em>w</em><sup>*</sup> = (<em>H</em><sub><em>B</em></sub><em>F</em><sub><em>B</em></sub>)<sup>1/3</sup></span><br /></p>
+<p><br /><span class="math display">|<strong>v</strong><sub>1</sub>| = (<em>u</em><sub>1</sub><sup>2</sup>+<em>v</em><sub>1</sub><sup>2</sup>+(<em>w</em><sup>*</sup>)<sup>2</sup>)<sup>1/2</sup></span><br /></p>
+<p>to be considered by making <span class="math inline"><em>H</em><sub><em>B</em></sub></span> corresponds to the thickness scale of the mixing layer. The current standard value is <span class="math inline"><em>H</em><sub><em>B</em></sub> = 2000</span> m.</p>
+<p>The roughness variation of the sea surface is represented by the friction velocity <span class="math inline"><em>u</em><sup>*</sup></span></p>
+<p><br /><span class="math display">$$
+  u^* = \left( \sqrt{Fu^2 + Fv^2}/\rho \right)^{1/2}
+$$</span><br /></p>
+<p>with ,</p>
+<p><br /><span class="math display">$$
+  Z_{0M}  =  A_M + B_M (u^*)^2/g + C_M \nu/u^* \\
+  Z_{0H}  =  A_H + B_H (u^*)^2/g + C_H \nu/u^* \\
+  Z_{0E}  =  A_E + B_E (u^*)^2/g + C_E \nu/u^* 
+$$</span><br /></p>
+<p>Evaluate as follows. <span class="math inline"><em>ν</em> = 1.5 × 10<sup> − 5</sup></span> m<span class="math inline"><em></em><sup>2</sup></span> s<span class="math inline"><em></em><sup> − 1</sup></span> is It is the kinematic viscosity of the atmosphere, The standard values for the other coefficients are $(A_M, B_M, C_M) = (0, 0.018, 0.11) $, $(A_H, B_H, C_H) = (1.4^{-5}, 0, 0.4) $, $(A_E, B_E, C_E) = (1.3^{-4}, 0, 0.62) $.</p>
+<p>For the above calculations, <span class="math inline"><em>F</em><em>u</em>, <em>F</em><em>v</em>, <em>F</em><em>θ</em>, <em>F</em><em>q</em></span> are required, Perform successive approximation calculations.</p>
+<h3 id="wind-speed-correction">Wind Speed Correction</h3>
+<p>In general, the roughness of the ground surface is greater on large surfaces than on small surfaces. The downward transport of momentum is so efficient that the wind just above it is weak, The difference in wind speed cancels out the difference in roughness in <span class="math inline"><em>C</em><sub><em>D</em></sub></span>.</p>
+<p>In the model, the wind speed passed to the surface flux calculation is It is a value calculated by time integration of the mechanical processes, The values are smoothed by spectral expansion. This is the reason why the surface of the ground with widely different roughnesses, such as sea level and land level, is In an area that is mixed on a small scale , I can’t describe this compensation effect well. Therefore, once the momentum flux is calculated and The wind speed in the lowest layer of the atmosphere is corrected for by it, and then Recalculate the momentum, heat, and water fluxes again.</p>
+<h3 id="minimum-wind-speed.">Minimum wind speed.</h3>
+<p>Consider the effects of small-scale exercise, Surface wind speed in the calculation of surface flux Set the minimum value of <span class="math inline">|<strong>v</strong><sub>1</sub>|</span>. The current standard values are the same for all fluxes and It is 3 m/s.</p>
+</body>
+</html>

@@ -1,0 +1,198 @@
+﻿\subsection{水平離散化}
+
+水平方向の離散化は
+スペクトル変換法を用いる(Bourke, 1988).
+経度, 緯度に関する微分の項は直交関数展開によって評価し,
+一方, 非線型項は格子点上で計算する.
+
+\subsubsection{スペクトル展開}
+
+展開関数系としては球面上の Laplacianの固有関数系である
+球面調和関数 TERM00000,TERM00000 を用いる.
+ただし, TERM00001 である.
+TERM00002 は次のような方程式を満たし,
+%
+\begin{verbatim}
+EQ=00000.
+\end{verbatim}
+%
+Legendre 陪関数 TERM00003 を用いて次のように書き表される.
+%
+\begin{verbatim}
+EQ=00001.
+\end{verbatim}
+%
+ただし, TERM00004 である.
+
+球面調和関数による展開は \footnotemark ,
+\begin{verbatim}
+EQ=00002.
+\end{verbatim}
+と書くと,
+%
+\footnotetext{ここでは三角形切断を用いている.
+              平行四辺形切断の場合には, 
+              TERM00005
+              と置き換えること.}
+%
+\begin{verbatim}
+EQ=00003.
+\end{verbatim}
+%
+その逆変換は,
+\begin{verbatim}
+EQ=00017.
+EQ=00017.
+\end{verbatim}
+%
+のように表される.
+%
+積分を和に置き換えて評価する際には,
+TERM00007 積分については Gauss の台形公式を,
+TERM00008 積分については Gauss-Legendre 積分公式を用いる.
+TERM00009 は Gauss 緯度, TERM00010 は Gauss 荷重である.
+また, TERM00011 は等間隔の格子である.
+
+スペクトル展開を用いれば,
+微分を含む項の格子点値は次のように求められる.
+%
+\begin{verbatim}
+EQ=00004.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00005.
+\end{verbatim}
+%
+さらに,
+TERM00014, TERM00015 のスペクトル成分から, 
+TERM00016,TERM00016 の格子点値が以下のように得られる.
+%
+\begin{verbatim}
+EQ=00006.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00007.
+\end{verbatim}
+
+方程式の移流項に現れる微分は,
+次のように求められる.
+%
+\begin{verbatim}
+EQ=00018.
+EQ=00018.
+EQ=00018.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00019.
+EQ=00019.
+EQ=00019.
+\end{verbatim}
+%
+さらに,
+\begin{verbatim}
+EQ=00008.
+\end{verbatim}
+を TERM00019 の項の評価のために用いる.
+
+\subsubsection{水平拡散項}
+
+水平拡散項は, 次のように TERM00020 の形で入れる.
+%
+\begin{verbatim}
+EQ=00009.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00010.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00011.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00012.
+\end{verbatim}
+%
+この水平拡散項は計算の安定化のための意味合いが強い.
+小さなスケールに選択的な水平拡散を表すため,
+TERM00021 としては, 4 TERM00022 16を用いる.
+ここで, 渦度および発散の拡散についている余分な項は,
+TERM00023 の剛体回転の項が減衰しないことを表したものである.
+
+\subsubsection{方程式のスペクトル表現}
+
+
+\begin{enumerate}
+\item 連続の式
+
+\begin{verbatim}
+EQ=00020.
+EQ=00020.
+\end{verbatim}
+%
+ここで,
+\begin{verbatim}
+EQ=00013.
+\end{verbatim}
+
+\item 運動方程式
+
+\begin{verbatim}
+EQ=00021.
+EQ=00021.
+EQ=00021.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00022.
+EQ=00022.
+EQ=00022.
+EQ=00022.
+\end{verbatim}
+%
+ただし,
+%
+\begin{verbatim}
+EQ=00014.
+\end{verbatim}
+
+\item 熱力学の式
+
+\begin{verbatim}
+EQ=00023.
+EQ=00023.
+EQ=00023.
+EQ=00023.
+\end{verbatim}
+%
+ただし,
+%
+\begin{verbatim}
+EQ=00015.
+\end{verbatim}
+
+
+
+\item 水蒸気の式
+
+\begin{verbatim}
+EQ=00024.
+EQ=00024.
+EQ=00024.
+EQ=00024.
+\end{verbatim}
+
+ただし,
+%
+\begin{verbatim}
+EQ=00016.
+\end{verbatim}
+
+
+
+\end{enumerate}
+

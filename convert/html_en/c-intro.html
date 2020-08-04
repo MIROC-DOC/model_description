@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC c-intro</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC c-intro</h1>
+</header>
+<h1 id="description-of-the-program-code">Description of the program code</h1>
+<h2 id="the-basics-of-reading-programs.">The Basics of Reading Programs.</h2>
+<h3 id="configuration-overview.">Configuration Overview.</h3>
+<p>The AGCM program body has a hierarchical structure, The files are maintained in multiple directories, each of which is divided into multiple files. A single file (package) can contain , In addition, there are several program modules (subroutines and functions) in the package, In some cases, there may be multiple entries in a module.</p>
+<p>Example:</p>
+<p><span><strong>directory</strong></span><strong>dynamics: </strong> <span><strong>File</strong></span> <strong>dadmn.F: </strong> Package DADMN . <span><strong>File</strong></span> <strong>dshpe.F: </strong> Package DSPHE <span>** Module DSETNM: <strong></span>̄ <span><strong>Module W2G</strong></span> SUBROUTINE W2G ENTRY G2W ENTRY SPSTUP <span></strong> Module DSETNM:**</span> SUBROUTINE DSETNM</p>
+<h3 id="directory-structure.">Directory Structure.</h3>
+<p>Currently, there are 9 directories as follows</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>admin</td>
+<td>Modules related to the structure of the entire model (coordinates, time, constants, etc.)</td>
+</tr>
+<tr class="even">
+<td>dynamics</td>
+<td>Modules related to mechanical processes</td>
+</tr>
+<tr class="odd">
+<td>physics</td>
+<td>Modules involved in physical processes</td>
+</tr>
+<tr class="even">
+<td>io</td>
+<td>Modules for data input/output</td>
+</tr>
+<tr class="odd">
+<td>util</td>
+<td>General-purpose operation libraries</td>
+</tr>
+<tr class="even">
+<td>sysdep</td>
+<td>system dependent module</td>
+</tr>
+<tr class="odd">
+<td>include</td>
+<td>Headers included by <span><code>#include</code></span></td>
+</tr>
+<tr class="even">
+<td>nonstd</td>
+<td>Non-standard plug-in modules</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>test module</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the files containing the main routines are located directly under <span><code>src/</code></span>.</p>
+<p>These dependencies are as follows.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+<th>Header4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MAIN</td>
+<td>- Replica Hermes Handbags</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>- Dynamics</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>- Physical properties</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>- I’m not sure how to describe it.</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td>- You can’t even tell me how to do it.</td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>- I’m sure you’ll be able to find out more about it in the next few days.</td>
+</tr>
+</tbody>
+</table>
+<p>That is, each of them is independent of the others in the same row, The one on the left is used to call the one on the right, but the reverse is not allowed.</p>
+<p>Several closely related routines in one file (package). Particularly in the physical process, the replacement of one or a few files with The use of parameterization is possible.</p>
+<h3 id="special-notes-on-the-program.">Special Notes on the Program.</h3>
+<p>There are several modules that have multiple entries using the ENTRY statement. Its main purpose is the local storage of data. For example, in the case of the module W2G above, the variables PNM and DPNM are It is stored as a local variable in this module, Commonly used in W2G, G2W and SPSTUP. W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways, This avoids the complexity of having to use PNM and DPNM as arguments. The COMMON variable is usually used in such cases. Here, the COMMON variable is used as an inconvenience for management and debugging. We avoid this type of encapsulation structure as much as possible and instead use such an encapsulation structure.</p>
+<p>Only two COMMONs are in use.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>COMMON /COMCON/</td>
+<td>Standard physical constants (earth radius, gas constant, etc.)</td>
+</tr>
+<tr class="even">
+<td>Anonymous COMMON</td>
+<td>work area</td>
+</tr>
+</tbody>
+</table>
+<pre><code> COMCON contains the standard physical constants.</code></pre>
+<p>This COMMON definition is in <span><code>include/zccom.F</code></span>, It is used to include as necessary. The value is set by calling the subroutine PCONST (<span><code>admin/apcon.F</code></span>). An unnamed COMMON block is used as a work area from many modules. It is used to reduce the overall memory consumption. Deleting all the relevant COMMON statements does not have a problem as it only affects the amount of memory.</p>
+<p>For include file inclusion and conditional compilation It uses the C preprocessor instruction. F<code>&lt;/span&gt; instead of &lt;span&gt;</code>.f<code>&lt;/span&gt;, so the file name is &lt;span&gt;</code>. As a conditional compilation, Using selection by <span><code>#ifdef</code></span> and <span><code>#ifndef</code></span>. Files are imported from the <span><code>inlcude</code></span> directory, It is as follows.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Array size parameter statements</td>
+<td>zcdim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zpdim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zidim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zsdim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zhdim.F</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>zradim.F</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>zwdim.F</td>
+</tr>
+<tr class="even">
+<td>COMMON definition (physical constants)</td>
+<td>zccom.F</td>
+</tr>
+<tr class="odd">
+<td>Statement function definition (saturation ratio humidity)</td>
+<td>zqsat.F</td>
+</tr>
+</tbody>
+</table>
+<p>FORTRAN 77 As a non-standard specification , I’m using NAMELIST reading, It seems to be able to be used in many processing systems without any problem. For the specifications of NAMELIST, please refer to the manual of each system.</p>
+<h3 id="program-writing.">Program Writing.</h3>
+<ol type="1">
+<li>end-of-line comments are used in various explanations. <code>!"</code> The end of the line below is a comment \0.1[1].</li>
+</ol>
+<p>All variables are declared. 2. IMPLICIT NONE (e.g., the <span><code>u</code></span> option for Sun) is set to It is a prerequisite for use.</p>
+<p>Each entry’s argument is accompanied by a continuation line column to explain the function.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+<th>Header3</th>
+<th>Header4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>symbol</td>
+<td>meaning</td>
+<td>input</td>
+<td>Outputs</td>
+<td>function</td>
+</tr>
+<tr class="even">
+<td>O</td>
+<td>output</td>
+<td>×impossibility</td>
+<td>circle (e.g. of friends)</td>
+<td>Generate values</td>
+</tr>
+<tr class="odd">
+<td>M</td>
+<td>modify</td>
+<td>circle (e.g. of friends)</td>
+<td>circle (e.g. of friends)</td>
+<td>Processing the input values and outputting them</td>
+</tr>
+<tr class="even">
+<td>I</td>
+<td>input</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Input value (‘variable’)</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>constant</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Input value (‘constant’)</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>dimension</td>
+<td>circle (e.g. of friends)</td>
+<td>-</td>
+<td>Variables that determine the size of the matching array</td>
+</tr>
+<tr class="odd">
+<td>W</td>
+<td>work</td>
+<td>×impossibility</td>
+<td>×impossibility</td>
+<td>work area</td>
+</tr>
+<tr class="even">
+<td>U</td>
+<td>undefined</td>
+<td>×impossibility</td>
+<td>×impossibility</td>
+<td>dummy</td>
+</tr>
+</tbody>
+</table>
+<p>Here, the meaning of the input and output columns is as follows the meantime, I’m going to be in a position to take a look at some of the things I’ve done in the past. \begin{array}{ll}</p>
+<p>× x &amp; whatever is in it {array}</p>
+<pre><code>     \begin{array}{ll}   </code></pre>
+<p>O O &amp; may be subject to change in the course of the event - &amp; the value will not change × x &amp; I can’t guarantee what you’ll find {array}</p>
+<p>The important ones are M,O,I, where M,O and I are important, and C,D are a type of I. The use of C, D, and I is not so neat.</p>
+<p>The contents of each file are as follows.</p>
+<pre><code> ` *&quot; PACKAGE PSAVE save/load data (real memory version) ` 
+ :̄ Package Name 
+ `*&quot; [HIS] 93/11/10(numaguti) AGCM5.3` 
+ Change log 
+ `        SUBROUTINE PGSAVE     !&quot; Internal Data Save ` 
+ : Module Declaration 
+ `*    [PARAM]` 
+ The following, parameter statements are (included) followed by 
+ `    * [MODIFY] ` 
+ : Declarations of input and output variables 
+ `    * [OUTPUT] ` 
+ : the following, output variable declarations 
+ `    * [INPUT] ` 
+ : The following, Declarations of Input Variables 
+ `    * [ENTRY OUTPUT] ` 
+ : Declare output variables in the entry... 
+ `    * [INTERNAL WORK] ` 
+ : Declarations of internal work variables 
+ `*    [INTERNAL SAVE]` 
+ Declarations of internal variables (which should be kept after RETURN) 
+ `*    [INTERNAL PARAM]` 
+ Declarations of internal parameters (to be read by NAMELIST, etc.) 
+ `*    [ONCE]` </code></pre>
+<p>The following is the part to be done only once on the first call</p>
+<p>Sentence numbers are assigned to each block in the thousands, I’m guessing as structurally as possible.</p>
+<h3 id="naming-conventions.">Naming Conventions.</h3>
+<p>The names of variables, entry names, etc. must be six characters or less.</p>
+<ol start="2" type="1">
+<li>variable name and type mapping</li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A-G, P-Z</td>
+<td>Floating point number (<span><code>REAL*8</code></span>)</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>String (<span><code>CHARACTER</code></span>)</td>
+</tr>
+<tr class="odd">
+<td>I-N.</td>
+<td>Integer (<span><code>INTEGER</code></span>)</td>
+</tr>
+<tr class="even">
+<td>O</td>
+<td>Logical type (<span><code>LOGICAL</code></span>)</td>
+</tr>
+</tbody>
+</table>
+<p>However, in the variables read by NAMELIST, This may not be met.</p>
+<p>Conventions on the correspondence between variable names and contents</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Header0</th>
+<th>Header1</th>
+<th>Header2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prefix:</td>
+<td>GA</td>
+<td>The grid point state quantity (<span class="math inline"><em>t</em></span>)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>GB</td>
+<td>Grid point state quantity (<span class="math inline"><em>t</em> − <em>Δ</em><em>t</em></span>)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>GD</td>
+<td>Grid State Quantity (for common use)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>GT</td>
+<td>Time differential term of the grid state quantity</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>WD</td>
+<td>Spectral representation of state quantities</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>WT</td>
+<td>Spectral representation of the time differential term of the state quantity</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>I</td>
+<td>Longitude index</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>J</td>
+<td>Index of latitude</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>K</td>
+<td>Index for vertical level</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>IJ</td>
+<td>An index of all the latitudes and longitudes in one place</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>NM.</td>
+<td>Index of the spectrum</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>NM.</td>
+<td>NAMELIST Name</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>COM</td>
+<td>COMMON Name</td>
+</tr>
+<tr class="even">
+<td>Tangent:</td>
+<td>U</td>
+<td>east-west wind</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>V</td>
+<td>north-south wind</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>T</td>
+<td>temperature</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>PS</td>
+<td>surface pressure</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Q</td>
+<td>Specific humidity, various tracers</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>QL</td>
+<td>cloud liquidity</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>FLX,FLUX</td>
+<td>flux density</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>MTX</td>
+<td>Matrices for implicit solutions</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>MAX</td>
+<td>data length</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>DIM</td>
+<td>Size of the array region</td>
+</tr>
+</tbody>
+</table>
+<p>For file names, The first letter is unified to the first letter of the directory. (However, <span><code>include</code></span> is <span><code>z</code></span>.) Also, <span><code>-admn</code></span>(admin) indicates the main module in it.</p>
+<p>&lt;! – end list –&gt;!</p>
+<p>The reason for the use of two characters here, not just <code>! I use two letters as well as</code>! Systems that use other end-of-line comment formats (e.g. HITAC VOS3) to ensure substitution for, and The reason for this is that Sun’s CPP will malfunction if you use only <code>! is because Sun's CPP will malfunction if there is only</code>!</p>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MIROC-DOC p-dif</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github-markdown.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+
+<link rel="stylesheet" href="github.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {locale: "ja"},
+    extensions: ["tex2jax.js", "MathMenu.js", "MathZoom.js"],
+    TeX: {
+      extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"],
+      noErrors: {disabled: true},
+      noUndefined: {disabled: true}
+    },
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [["$","$"] ],
+      displayMath: [["$$","$$"]],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MIROC-DOC p-dif</h1>
+</header>
+<h2 id="vertical-diffusion.">Vertical Diffusion.</h2>
+<h3 id="vertical-diffusion-scheme-overview.">Vertical Diffusion Scheme Overview.</h3>
+<p>The vertical diffusion scheme, due to sub-grid scale turbulent diffusion. Evaluating the vertical flux of physical quantities. The main input data are wind speed, <span class="math inline"><em>u</em>, <em>v</em></span>, <span class="math inline"><em>u</em>, <em>v</em></span>, temperature <span class="math inline"><em>T</em></span>, specific humidity <span class="math inline"><em>q</em></span>, and cloud cover <span class="math inline"><em>l</em></span>, The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and It is the differential value for obtaining an implicit solution.</p>
+<p>To estimate the vertical diffusion coefficient, the Mellor and Yamada (1974, 1982). The turbulent closure model. Using level 2 parameterization.</p>
+<p>The outline of the calculation procedure is as follows.</p>
+<ol type="1">
+<li><p>as the stability of the atmosphere. Richardson numbers.</p></li>
+<li><p>calculate the diffusion coefficient from Richardson number <code>MODULE:[VDFCOF]</code>.</p></li>
+<li><p>calculate the flux and its derivative from the diffusion coefficient.</p></li>
+</ol>
+<h3 id="basic-formula-for-flux-calculations">Basic Formula for Flux Calculations</h3>
+<p>The vertical diffuse flux in the atmosphere is , Using the diffusion coefficient <span class="math inline"><em>K</em></span>, it is evaluated as follows.</p>
+<p><br /><span class="math display">$$
+  F{u} = K_{M} \frac{\partial u}{\partial \sigma} 
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  F{v} = K_M \frac{\partial v}{\partial \sigma} 
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  F{\theta} = K_H \frac{\partial \theta}{\partial \sigma} 
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  F{q} = K_q \frac{\partial q}{\partial \sigma} 
+$$</span><br /></p>
+<h3 id="richardson-number.">Richardson Number.</h3>
+<p>The standard for atmospheric stratospheric stability, Bulk Richardson number <span class="math inline"><em>R</em><sub><em>i</em><em>B</em></sub></span> is</p>
+<p><br /><span class="math display">$$
+R_{iB} = \frac{\displaystyle 
+               \frac{g}{\theta_s} \frac{\Delta \theta}{\Delta z} }
+              {\displaystyle
+                  \left( \frac{\Delta u}{\Delta z} \right)^2 
+                + \left( \frac{\Delta v}{\Delta z} \right)^2      }
+$$</span><br /></p>
+<p>. defined by . Here, <span class="math inline">(<em>Δ</em><em>A</em>)<sub><em>k</em> − 1/2</sub></span> represents <span class="math inline"><em>A</em><sub><em>k</em></sub> − <em>A</em><sub><em>k</em> − 1</sub></span>. The <span class="math inline">(<em>Δ</em><em>z</em>)<sub><em>k</em> − 1/2</sub></span> is based on the hydrostatic pressure equation,</p>
+<p><br /><span class="math display">$$
+(\Delta z)_{k-1/2} = \frac{R Tv_{k}}{g} 
+                     \frac{(\Delta \sigma)_{k-1/2}}{\sigma_{k-1/2}}
+$$</span><br /></p>
+<p>The flux Ricahrdson number <span class="math inline"><em>R</em><sub><em>i</em><em>f</em></sub></span> is ,</p>
+<p><br /><span class="math display">$$
+R_{if} = \frac{1}{2 \beta_2}
+      \left[ \beta_1 + \beta_4 R_{iB}
+              - \sqrt{ ( \beta_1 + \beta_4 R_{iB} )^2 
+                       - 4 \beta_2 \beta_3 R_{iB} }
+              \right] ,
+$$</span><br /></p>
+<p>However,</p>
+<p><br /><span class="math display">$$
+\alpha_1  =  3 A_2 \gamma_1  \\
+\alpha_2  =  3 A_2 (\gamma_1+\gamma_2) \\
+\beta_1   =  A_1 B_1 ( \gamma_1 - C_1 ) \\
+\beta_2   =  A_1 [ B_1 ( \gamma_1 - C_1 ) + 6 A_1 + 3 A_2 ] \\
+\beta_3   =  A_2 B_1 \gamma_1 \\
+\beta_4   =  A_2 [ B_1 ( \gamma_1 + \gamma_2 ) - 3 A_1 ] ,
+$$</span><br /></p>
+<p><br /><span class="math display">(<em>A</em><sub>1</sub>, <em>B</em><sub>1</sub>, <em>A</em><sub>2</sub>, <em>B</em><sub>2</sub>, <em>C</em><sub>1</sub>) = (0.92, 16.6, 0.74, 10.1, 0.08),</span><br /></p>
+<p><br /><span class="math display">$$
+\gamma_1 = \frac{1}{3} - \frac{2 A_1}{B_1}\, , \, \, \, 
+\gamma_2 = \frac{B_2}{B_1} + 6\frac{A_1}{B_1} .
+$$</span><br /></p>
+<p>The relationship between the <span class="math inline"><em>R</em><sub><em>i</em><em>B</em></sub></span> and the <span class="math inline"><em>R</em><sub><em>i</em><em>f</em></sub></span> is illustrated in this figure, Figure [p-dif:rib-rif]] (#p-dif:rib-rif).</p>
+<h3 id="diffusion-coefficient.">Diffusion Coefficient.</h3>
+<p>The diffusion coefficient is , For each layer boundary (<span class="math inline"><em>k</em> − 1/2</span> level) , It is given as follows.</p>
+<p><br /><span class="math display">$$
+K_M        =  l^2 \frac{\Delta |\mathbf{v}|}{\Delta z} S_M  \\
+K_H = K_q  =  l^2 \frac{\Delta |\mathbf{v}|}{\Delta z} S_H 
+$$</span><br /></p>
+<p>Here, <span class="math inline"><em>S</em><sub><em>M</em></sub>, <em>S</em><sub><em>H</em></sub></span> are,</p>
+<p><br /><span class="math display">$$
+\widetilde{S_H} = \frac{ \alpha_1-\alpha_2 R_{if} }{ 1-R_{if} }
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+\widetilde{S_M} = \frac{ \beta_1-\beta_2 R_{if} }{ \beta_3-\beta_4 R_{if} } 
+                  \widetilde{S_H} ,
+$$</span><br /></p>
+<p>with ,</p>
+<p><br /><span class="math display">$$
+S_M  =  B_1^{1/2} ( 1- R_{if} )^{1/2} 
+          \widetilde{S_M}^{3/2} \\
+S_H  =  B_1^{1/2} ( 1- R_{if} )^{1/2} 
+          \widetilde{S_M}^{1/2} \widetilde{S_H} .
+$$</span><br /></p>
+<p><span class="math inline"><em>l</em></span> is a mixing distance, according to Blakadar (1962),</p>
+<p><br /><span class="math display">$$
+l = \frac{kz}{1+kz/l_0}
+$$</span><br /></p>
+<p>Take. <span class="math inline"><em>k</em></span> is a Kárman constant. The current standard value is <span class="math inline"><em>l</em><sub>0</sub> = 200</span> m.</p>
+<p>If <span class="math inline"><em>S</em><sub><em>H</em></sub>, <em>S</em><sub><em>M</em></sub></span> are shown as functions of <span class="math inline"><em>R</em><sub><em>i</em><em>f</em></sub></span>, Figure [p-dif:smsh-rif]] (#p-dif:smsh-rif).</p>
+<h3 id="calculating-flux.">Calculating Flux.</h3>
+<p>Using the above, we calculate the fluxes and flux derivatives.</p>
+<p><br /><span class="math display"><em>F</em><em>u</em><sub><em>k</em> − 1/2</sub> = <em>K</em><sub><em>M</em>, <em>k</em> − 1/2</sub>(<em>u</em><sub><em>k</em> − 1</sub> − <em>u</em><sub><em>k</em></sub>)/(<em>σ</em><sub><em>k</em> − 1</sub> − <em>σ</em><sub><em>k</em></sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>v</em><sub><em>k</em> − 1/2</sub> = <em>K</em><sub><em>M</em>, <em>k</em> − 1/2</sub>(<em>v</em><sub><em>k</em> − 1</sub> − <em>v</em><sub><em>k</em></sub>)/(<em>σ</em><sub><em>k</em> − 1</sub> − <em>σ</em><sub><em>k</em></sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>θ</em><sub><em>k</em> − 1/2</sub> = <em>K</em><sub><em>H</em>, <em>k</em> − 1/2</sub>(<em>θ</em><sub><em>k</em> − 1</sub> − <em>θ</em><sub><em>k</em></sub>)/(<em>σ</em><sub><em>k</em> − 1</sub> − <em>σ</em><sub><em>k</em></sub>)</span><br /></p>
+<p><br /><span class="math display"><em>F</em><em>q</em><sub><em>k</em> − 1/2</sub> = <em>K</em><sub><em>q</em>, <em>k</em> − 1/2</sub>(<em>q</em><sub><em>k</em> − 1</sub> − <em>q</em><sub><em>k</em></sub>)/(<em>σ</em><sub><em>k</em> − 1</sub> − <em>σ</em><sub><em>k</em></sub>)</span><br /></p>
+<p><br /><span class="math display">$$
+     \frac{\partial Fu_{k-1/2}}{\partial u_{k-1}} =   \frac{\partial Fv_{k-1/2}}{\partial v_{k-1}} 
+  = -\frac{\partial Fu_{k-1/2}}{\partial u_{k}} = - \frac{\partial Fv_{k-1/2}}{\partial v_{k}}  
+  = K_{M,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  \frac{\partial F\theta_{k-1/2}}{\partial T_{k-1}}
+  = \sigma_{k-1}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  \frac{\partial F\theta_{k-1/2}}{\partial T_{k}}
+ = \sigma_{k}^{-\kappa} K_{H,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+$$</span><br /></p>
+<p><br /><span class="math display">$$
+  \frac{\partial Fq_{k-1/2}}{\partial u_{k-1}}
+ = - \frac{\partial Fq_{k-1/2}}{\partial u_{k}}
+ = K_{q,k-1/2}/(\sigma_{k-1}-\sigma_{k})
+$$</span><br /></p>
+<h3 id="minimum-diffusion-coefficient.">Minimum Diffusion Coefficient.</h3>
+<p>In the very stable case, the above estimate gives zero as the diffusion coefficient. As it is, the model’s behavior can be modified in various ways Set a suitable minimum value as it will have a negative effect. The current standard values are the same for all fluxes and <span class="math inline"><em>K</em><sub><em>m</em><em>i</em><em>n</em></sub>=</span> 0.15 m<span class="math inline"><em></em><sup>2</sup></span>/s</p>
+<h3 id="other-notes.">Other Notes.</h3>
+<p>I’m calling the shallow cumulus convection <code>MODULE:[SHLCOF]</code>, By default, this is a dummy.</p>
+</body>
+</html>
