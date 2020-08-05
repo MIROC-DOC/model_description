@@ -8,21 +8,24 @@ import pprint
 
 def main():
     argv = sys.argv
-    if len(argv) == 1:
-        for filepath in glob.glob("md_enorg/*.md"):
-            base = os.path.basename(filepath).split(".")[0]
-            sub(base)
-    elif len(argv) == 2:
-        base = argv[1]
-        sub(base)
-    else:
-        message = f"usage: python {argv[0]} basename"
-        print(message)
+    json = None
+    exe = argv[0]
+    argv.pop(0)
+    if argv:
+        if os.path.splitext(argv[0])[1] == '.json':
+            json = argv[0]
+            argv.pop(0)
+    files = argv
+    if not files:
+        files = [os.path.splitext(os.path.basename(f))[0]
+                 for f in glob.glob("md_enorg/*.md")]
+    for base in files:
+        sub(base, json)
 
 
-def sub(base):
+def sub(base, json_path=None):
     input_path = f"md_enorg/{base}.md"
-    json_path = f"tex_jpx/{base}.json"
+    json_path = json_path or f"tex_jpx/{base}.json"
     output_path = f"md_en/{base}.md"
     log_path = f"embed_log/{base}.json"
     print(f"{base}")
