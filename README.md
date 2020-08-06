@@ -1,8 +1,6 @@
-**このリポジトリ内の資料は全て公開予定です(ライセンス検討中)**
-
 # プロジェクトの目標
 
-**統合の 2020 年度後半の予算をつかって、年度末までに MIROC6 agcm の英語ドキュメント完成**
+**年度末までに MIROC6 agcm の英語ドキュメント完成**
 -> 詳細は[POCKIE の芳村先生資料](https://atm-phys.nies.go.jp/~fswiki/miroc/wiki.cgi?page=POCKIE%A5%DF%A1%BC%A5%C6%A5%A3%A5%F3%A5%B0+%282020%2D06%2D26%29&file=20200626%5FPOCKIE%5FMIROCdescription%2Epptx&action=ATTACH)
 
 ## タスクリスト
