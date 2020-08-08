@@ -323,6 +323,13 @@ python embed.py a-intro
 
 # ディレクトリ内の全ファイル実行
 python embed.py
+
+# parse_jp.sh で subfile inclusion を指定した場合(全ファイル実行)
+python embed.py tex_jpx/agcm.json
+
+# parse_jp.sh で subfile inclusion を指定した場合(1ファイルのみ)
+python embed.py tex_jpx/agcm.json a-intro
+
 ```
 
 -   `org/md_enorg/*.md` 入力元の英訳ファイル
