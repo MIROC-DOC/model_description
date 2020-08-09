@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import re
 import sys
@@ -18,7 +20,7 @@ def main():
     files = argv
     if not files:
         files = [os.path.splitext(os.path.basename(f))[0]
-                 for f in glob.glob("md_enorg/*.md")]
+                 for f in sorted(glob.glob("md_enorg/*.md"))]
     for base in files:
         sub(base, json)
 
@@ -59,22 +61,26 @@ def replace_imath(doc, dic, log):
         text = math2str(value[0])
 
         # "TERM00000 and TERM00000" と "TERM00000,TERM00000" を置換
-        pattern = key + r"(,|\s+and\s)\s*" + key
+        pattern = key + r"(?:(,|,?\s+and\s)\s*" + key + ")+"
         count = len(re.findall(pattern, doc))
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
         if count >= 1:
             doc = re.sub(pattern, escape(text), doc)
-            continue
+            # # uncomment below to leave orphaned terms
+            # continue
 
         # "TERM00000" を置換
+        mcount = count
         pattern = key
         count = len(re.findall(pattern, doc))
+        if count >= 1 and mcount >= 1:
+            print(f"Warning: possibly inconsitent translation around {key}={text}.")
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
         if count >= 1:
             doc = re.sub(pattern, escape(text), doc)
-        else:
+        elif mcount == 0:
             log[key] = {"count": count, "text": text}  # マッチしなかった
     return doc
 
