@@ -6,7 +6,7 @@
 鉛直拡散スキームは,
 サブグリッドスケールの乱流拡散による
 物理量の鉛直フラックスを評価する.
-主な入力データは, 風速, TERM00000,TERM00000, 気温 TERM00001, 比湿 TERM00002, 雲水量 TERM00003, であり,
+主な入力データは, 風速, TERM00826,TERM00826, 気温 TERM00827, 比湿 TERM00828, 雲水量 TERM00829, であり,
 出力データは, 運動量, 熱, 水蒸気, 雲水の鉛直フラックスと
 implicit 解を得るための微分値である.
 
@@ -26,60 +26,60 @@ level 2 のパラメタリゼーションを用いる.
 \subsubsection{フラックス計算の基本式}
 
 大気中の鉛直拡散フラックスは, 
-拡散係数 TERM00004 を用いて, 以下のように評価される.
+拡散係数 TERM00830 を用いて, 以下のように評価される.
 
 \begin{verbatim}
-EQ=00000.
+EQ=00305.
 \end{verbatim}
 \begin{verbatim}
-EQ=00001.
+EQ=00306.
 \end{verbatim}
 \begin{verbatim}
-EQ=00002.
+EQ=00307.
 \end{verbatim}
 \begin{verbatim}
-EQ=00003.
+EQ=00308.
 \end{verbatim}
 
 \subsubsection{Richardson 数}
 
 大気の成層安定度の基準となる,
-バルクRichardson数 TERM00005 は
+バルクRichardson数 TERM00831 は
 
 \begin{verbatim}
-EQ=00004.
+EQ=00309.
 \end{verbatim}
 で定義される.
-ここで, TERM00006 は TERM00007 を表す.
-また, TERM00008 は, 静水圧の式より,
+ここで, TERM00832 は TERM00833 を表す.
+また, TERM00834 は, 静水圧の式より,
 \begin{verbatim}
-EQ=00005.
+EQ=00310.
 \end{verbatim}
 
-フラックスRicahrdson数 TERM00009 は,
+フラックスRicahrdson数 TERM00835 は,
 
 \begin{verbatim}
-EQ=00006.
+EQ=00311.
 \end{verbatim}
 ただし, 
 
 \begin{verbatim}
-EQ=00020.
-EQ=00020.
-EQ=00020.
-EQ=00020.
-EQ=00020.
-EQ=00020.
+EQ=00325.
+EQ=00325.
+EQ=00325.
+EQ=00325.
+EQ=00325.
+EQ=00325.
 \end{verbatim}
 \begin{verbatim}
-EQ=00007.
+EQ=00312.
 \end{verbatim}
 
 \begin{verbatim}
-EQ=00008.
+EQ=00313.
 \end{verbatim}
 
-TERM00010 と TERM00011 の関係を図示すると,
+TERM00836 と TERM00837 の関係を図示すると,
 図\ref{p-dif:rib-rif} のようになる.
 
 \begin{figure}[htbp]
@@ -93,34 +93,34 @@ TERM00010 と TERM00011 の関係を図示すると,
 \subsubsection{拡散係数}
 
 拡散係数は,
-各層の境界(TERM00012 レベル)ごとに,
+各層の境界(TERM00838 レベル)ごとに,
 次のように与えられる.
 
 \begin{verbatim}
-EQ=00021.
-EQ=00021.
+EQ=00326.
+EQ=00326.
 \end{verbatim}
 
-ここで, TERM00015,TERM00015 は,
+ここで, TERM00841,TERM00841 は,
 \begin{verbatim}
-EQ=00009.
+EQ=00314.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00010.
+EQ=00315.
 \end{verbatim}
 を用いて,
 \begin{verbatim}
-EQ=00022.
-EQ=00022.
+EQ=00327.
+EQ=00327.
 \end{verbatim} 
 
-TERM00016 は混合距離であり, Blakadar(1962)に従って,
+TERM00842 は混合距離であり, Blakadar(1962)に従って,
 \begin{verbatim}
-EQ=00011.
+EQ=00316.
 \end{verbatim}
 ととる. 
-TERM00017 は K\'{a}rman 定数である. 
+TERM00843 は K\'{a}rman 定数である. 
 % 漸近混合距離$l_0$は, 
 % $R_{iB} > R_{iBC}$ となるような最大の$\sigma$ を
 % 境界層の上端$\sigma_B$と考え, それ以上と以下で異なる値を与える.
@@ -139,15 +139,15 @@ TERM00017 は K\'{a}rman 定数である.
 % 
 % 現在の標準値は, 
 % $R_{iBC}=2, l_{0B}=1000\mbox{m}, l_{0F}=10\mbox{m}$ である.
-現在の標準値は, TERM00018 m である.
+現在の標準値は, TERM00844 m である.
 
-TERM00019,TERM00019 を TERM00020 の関数として示すと,
+TERM00845,TERM00845 を TERM00846 の関数として示すと,
 図\ref{p-dif:smsh-rif} のようになる.
 
 \begin{figure}[htbp]
   \begin{center}
     \epsfile{file=dif-smsh.ps,width=70mm}
-    \caption{フラックスRichardson数と TERM00021,TERM00021 の関係}
+    \caption{フラックスRichardson数と TERM00847,TERM00847 の関係}
     \label{p-dif:smsh-rif}
   \end{center}
 \end{figure}
@@ -158,29 +158,29 @@ TERM00019,TERM00019 を TERM00020 の関数として示すと,
 以上を用い, フラックスおよびフラックス微分を計算する.
 
 \begin{verbatim}
-EQ=00012.
+EQ=00317.
 \end{verbatim}
 \begin{verbatim}
-EQ=00013.
+EQ=00318.
 \end{verbatim}
 \begin{verbatim}
-EQ=00014.
+EQ=00319.
 \end{verbatim}
 \begin{verbatim}
-EQ=00015.
+EQ=00320.
 \end{verbatim}
 
 \begin{verbatim}
-EQ=00016.
+EQ=00321.
 \end{verbatim}
 \begin{verbatim}
-EQ=00017.
+EQ=00322.
 \end{verbatim}
 \begin{verbatim}
-EQ=00018.
+EQ=00323.
 \end{verbatim}
 \begin{verbatim}
-EQ=00019.
+EQ=00324.
 \end{verbatim}
 
 \subsubsection{拡散係数の最小値}
@@ -189,7 +189,7 @@ EQ=00019.
 これをそのまま用いるとモデルの振舞いにさまざまな
 悪影響をもたらすので, 適当な最小値を置く.
 現在の標準値は, 全てのフラックスに共通で
-TERM00022 0.15 TERM00023/s である.
+TERM00848 0.15 TERM00849/s である.
 
 \subsubsection{その他の留意点}
 

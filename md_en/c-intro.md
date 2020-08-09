@@ -4,23 +4,15 @@
 
 ### Configuration Overview.
 
-The AGCM program body has a hierarchical structure,
-The files are maintained in multiple directories, each of which is divided into multiple files.
-A single file (package) can contain ,
-In addition, there are several program modules (subroutines and functions) in the package,
-In some cases, there may be multiple entries in a module.
+The AGCM programs are organized in a hierarchical structure, and are managed in several directories, each of which is divided into several files. Each file (package) contains several program modules (subroutines and functions), and in some cases, each module has several entries.
 
 Example:
 
 <span>**directory**</span>**dynamics: **
-<span>**File**</span> **dadmn.F: **
-\blanket* Package DADMN
+<span>**File**</span>**dadmn.F: **DADMN.F: ** PACKAGE DADMN
 .
-<span>**File**</span> **dshpe.F: **
-\blanket* Package DSPHE
-<span>** Module DSETNM: **</span>̄
-<span>**Module W2G**</span>
-SUBROUTINE W2G
+<span>**File**</span> **dshpe.F: ** dshpe.F: ** PACKAGE DSPHE
+<span>**Module DSETNM: **</span> ̄ <span>**Module W2G**</span> SUBROUTINE W2G
 ENTRY G2W
 ENTRY SPSTUP
 <span>** Module DSETNM:**</span> SUBROUTINE DSETNM
@@ -39,7 +31,7 @@ Currently, there are 9 directories as follows
 | sysdep | system dependent module |
 | include | Headers included     by <span>`#include`</span> |
 | nonstd | Non-standard plug-in modules |
-|  | test module |
+| special | test module |
 
 Note that the files containing the main routines are located directly under <span>`src/`</span>.
 
@@ -54,25 +46,13 @@ These dependencies are as follows.
 |  |  |  | \- You can't even tell me how to do it. |  |
 |  |  |  |  | \- I'm sure you'll be able to find out more about it in the next few days. |
 
-That is, each of them is independent of the others in the same row,
-The one on the left is used to call the one on the right, but the reverse is not allowed.
+That is, they are independent of each other, and the one on the left is used to call the one on the right, but not the other way around.
 
-Several closely related routines in one file (package).
-Particularly in the physical process, the replacement of one or a few files with
-The use of parameterization is possible.
+The package contains several closely related routines in a single file. Particularly for the physical processes, it is possible to replace the parameterization by replacing one or a few files.
 
 ### Special Notes on the Program.
 
-There are several modules that have multiple entries using the ENTRY statement.
- Its main purpose is the local storage of data.
- For example, in the case of the module W2G above, the variables PNM and DPNM are
- It is stored as a local variable in this module,
- Commonly used in     W2G, G2W and SPSTUP.
-     W2G and G2W are used in many places, but this structure makes it possible for them to be used in various ways,
- This avoids the complexity of having to use     PNM and DPNM as arguments.
- The COMMON variable is usually used in such cases.
- Here, the COMMON variable is used as an inconvenience for management and debugging.
- We avoid this type of encapsulation structure as much as possible and instead use such an encapsulated structure.
+There are several modules that have multiple entries using ENTRY statement. Its main purpose is to keep the data local. For example, in the case of the above mentioned module W2G, variables such as PNM and DPNM are stored as local variables in this module and are commonly used in W2G, G2W, and SPSTUP. Although W2G and G2W are used in many places, this structure avoids the complexity of having to use PNM and DPNM as arguments. Common variables are usually used in such a case. Here, we avoid the COMMON variables as much as possible due to their inconvenience in management and debugging, and use this encapsulation structure instead.
 
 Only two COMMONs are in use.
 
@@ -81,21 +61,9 @@ Only two COMMONs are in use.
 | COMMON /COMCON/ | Standard physical constants (earth radius, gas constant, etc.) |
 | Anonymous COMMON | work area |
 
-     COMCON contains the standard physical constants.
- This COMMON definition is in <span>`include/zccom.F`</span>,
- It is used to include as necessary.
- The value is set by calling the subroutine PCONST (<span>`admin/apcon.F`</span>).
- An unnamed COMMON block is used as a work area from many modules.
- It is used to reduce the overall memory consumption.
- Deleting all the relevant COMMON statements does not have a problem as it only affects the amount of memory.
+     COMCON contains the standard definition of physical constants. This COMMON definition is included in <span>`include/zccom.F`</span>, and is included as necessary. The value is set by calling the subroutine PCONST (<span>`admin/apcon.F`</span>). An unnamed COMMON block is used as a work area by many modules. It is used to reduce the overall memory consumption. Removing all the corresponding COMMON statements does not have a problem as it only affects the amount of memory.
 
-For include file inclusion and conditional compilation
- It uses the     C preprocessor instruction.
- F`</span> instead of <span>`.f`</span>, so the file name is <span>`.
- As a conditional compilation,
- Using selection by     <span>`#ifdef`</span> and <span>`#ifndef`</span>.
- Files are imported from the <span>`inlcude`</span> directory,
- It is as follows.
+The C preprocessor instruction is used for include file inclusion and conditional compilation. F`</span> instead of <span>`.f`</span>. F`&lt;/span&gt;. As a conditional compilation, the selection by <span>`#ifdef`</span> and <span>`#ifndef`</span> is used. The files are fetched from the <span>`inlcude`</span> directory and are as follows.
 
 | Header0 | Header1 |
 | ------- | ------- |
@@ -109,20 +77,13 @@ For include file inclusion and conditional compilation
 | COMMON definition (physical constants) | zccom.F |
 | Statement function definition (saturation ratio humidity) | zqsat.F |
 
-FORTRAN 77 As a non-standard specification ,
- I'm using     NAMELIST reading,
- It seems to be able to be used in many processing systems without any problem.
- For the specifications of     NAMELIST, please refer to the manual of each system.
+Although the specification of FORTRAN 77 is not in the standard, we use the NAMELIST reading method, it seems to be usable in many systems. For the specification of NAMELIST, please refer to the manual of each system.
 
 ### Program Writing.
 
-1. end-of-line comments are used in various explanations.
-     `!" ` The end of the line below is a comment
-     \0.1[1\].
+1. end-of-line comments are used for various explanations. `!" The following comments are at the end of the line
 
-All variables are declared. 2.
-     IMPLICIT NONE (e.g., the <span>`u`</span> option for Sun) is set to
- It is a prerequisite for use.
+All variables are declared. It is assumed that the IMPLICIT NONE (e.g. <span>`-u`</span> option in Sun's case) is used.
 
 Each entry's argument is accompanied by a continuation line column to explain the function.
 
@@ -137,22 +98,18 @@ Each entry's argument is accompanied by a continuation line column to explain th
 | W | work | ×impossibility | ×impossibility | work area |
 | U | undefined | ×impossibility | ×impossibility | dummy |
 
- Here, the meaning of the input and output columns is as follows
-     \In the meantime, I'm going to be in a position to take a look at some of the things I've done in the past.
+ where the meaning of the input and output columns is as follows \The entry of a certain type of event in the event of a certain type of event.
          \begin{array}{ll}
 
  × x & whatever is in it
          \{array}
-
-
+ \A lot of people could be in a position to be in a position to do something about it         .
          \begin{array}{ll}
  O O & may be subject to change in the course of the event
            - & the value will not change
  × x & I can't guarantee what you'll find
          \{array}
-
- The important ones are M,O,I, where M,O and I are important, and C,D are a type of I.
- The use of     C, D, and I is not so neat.
+          \The important ones are M,O,I, where the key ones are M,O,I and C,D are a type of I. The use of C,D and I is not so neat. The usage of C,D,I is not so correct.
 
 The contents of each file are as follows.
 
@@ -181,8 +138,7 @@ The contents of each file are as follows.
      `*    [ONCE]`
  The following is     the part to be done only once on the first call
 
-Sentence numbers are assigned to each block in the thousands,
- I'm guessing as structurally as possible.
+Sentence numbers are assigned to each block in the thousands, and are applied as structurally as possible.
 
 ### Naming Conventions.
 
@@ -197,15 +153,14 @@ The names of variables, entry names, etc. must be six characters or less.
 | I-N. | Integer (<span>`INTEGER`</span>) |
 | O | Logical type (<span>`LOGICAL`</span>) |
 
- However, in the variables read by NAMELIST,
- This may not be met.
+ However, this may not be the case for variables read by NAMELIST.
 
 Conventions on the correspondence between variable names and contents
 
 | Header0 | Header1 | Header2 |
 | ------- | ------- | ------- |
-| Prefix: | GA | The grid point state quantity ($t$) |
-|  | GB | Grid point state quantity ($t-\Delta t$) |
+| Prefix: | GA | Grid State Quantity ($t$) |
+|  | GB | Grid State Quantity ($t-\Delta t$) |
 |  | GD | Grid State Quantity (for common use) |
 |  | GT | Time differential term of the grid state quantity |
 |  | WD | Spectral representation of state quantities |
@@ -228,14 +183,8 @@ Conventions on the correspondence between variable names and contents
 |  | MAX | data length |
 |  | DIM | Size of the array region |
 
-For file names,
- The     first letter is unified to the first letter of the directory.
-     (However, <span>`include`</span> is <span>`z`</span>.)
- Also, <span>`-admn`</span>(admin) indicates the main module in it.
+As for the file names, the first letter is the first letter of the directory (although <span>`include`</span> is <span>`z`</span>). Also, <span>`-admn`</span>(admin) indicates the main module in it.
 
 <! -- end list -->!
 
-The reason for the use of two characters here, not just `! I use two letters as well as `!
- Systems that use other end-of-line comment formats (e.g. HITAC VOS3)
- to ensure substitution for, and
-     The reason for this is that Sun's CPP will malfunction if you use only `! is because Sun's CPP will malfunction if there is only `!
+The reason for using two characters here, not just `! The reason for using two characters and not just `! ` to ensure substitution for systems with other end-of-line comment formats (e.g., HITAC VOS3), and because Sun's CPP will malfunction if there is only

@@ -2,11 +2,7 @@
 
 ### Basic Solutions.
 
-Radiative, vertical diffusion, ground boundary layer and surface processes are
-Some terms are treated as implicit in the
-Compute the time-varying term and do time integration at the end.
-As a time-varying term for the vector quantity <span>q</span>,
-The term ${\mathcal A}$ for the Euler method and the term ${\mathcal B}$ for the implicit method are considered separately.
+Some of the terms in the radiation, vertical diffusion, and boundary layer and surface processes are treated as implicit terms, and the time integration is performed at the end of the calculation. As the time-varying term for the vector quantity <span>q</span>, we divide it into two terms, ${\mathcal A}$ for the Euler method and ${\mathcal B}$ for the implicit method.
 
 $$
   {\mathbf q}^+ 
@@ -15,8 +11,7 @@ $$
 $$
 
 
-It is difficult to solve this in the general case, but,
-It can be solved by linearizing $B$ in an approximate manner.
+Although this is difficult to solve in the general case, it can be approximated by linearizing $B$.
 
 $$
   {\mathcal B}( {\mathbf q}^+ ) 
@@ -25,18 +20,14 @@ $$
 $$
 
 
-using the matrix $B$ as
-Here,
+and linearize it using the matrix $B$ as where ,
 
 $$
   B_{ij} = \frac{\partial{{\cal B}_i}}{\partial {q_j}}
 $$
 
 
-It is.
-So..,
-$\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
-And then you can write,
+but if you write $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$ Then write $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$,
 
 $$
   ( I - 2 \Delta t B ) \Delta {\mathbf q} 
@@ -49,8 +40,7 @@ It is easy to solve in principle by matrix operations.
 
 ### Fundamental Equations.
 
-Radiation, vertical diffusion, ground boundary layer and surface processes
-The equations are basically expressed as follows.
+The equations for radiation, vertical diffusion, and ground boundary layer/surface processes are basically expressed as follows.
 
 $$
      \frac{\partial{u}}{\partial {t}}   =   - g \frac{\partial{}}{\partial {p}} F_u \; , \\
@@ -65,21 +55,9 @@ $$
 
 
 
-where $F_u, F_v, F_T, F_q$ are
-By vertical diffusion, $u, v, c_p T, q$, respectively
-is the vertical upward flux density of
-Also, the $F_R$ is a radiant
-It is a vertical upward energy flux density.
+where $F_u, F_v, F_T, F_q$ are the vertical energy flux densities of the vertical diffusion fluxes of $u, v, c_p T, q$, respectively. $F_R$ is the vertical upward energy flux density of the vertical diffuse flux density of $u, v, c_p T, q$, respectively.
 
-The atmosphere is discretized in the $\sigma=p/p_S$ coordinate system.
-Wind speed, temperature, etc. are defined in layer $\sigma_k$.
-The flux is defined by the layer boundary $\sigma_{k-1/2}$.
-$k$ increases from lower to higher levels.
-Also, $\sigma_{1/2} = 1$,
-This is the $\sigma_{k} \simeq (\sigma_{k-1/2} + \sigma_{k+1/2})/2$.
-$\sigma$ The coordinates are only available when we consider a one-dimensional vertical process,
-It can be considered to be the same as the $p$ coordinates except for the difference in the constant ($p_S$) times.
-Here,
+The atmosphere is discretized using the $\sigma=p/p_S$ coordinate system. Wind speed, temperature, etc. are defined by the layer $\sigma_k$. The flux is defined by the layer boundary $\sigma_{k-1/2}$. $k$ increases from the lower levels to the upper levels. Also, $\sigma_{1/2} = 1$ and $\sigma_{k} \simeq (\sigma_{k-1/2} + \sigma_{k+1/2})/2$ are defined in the upper levels. The $\sigma$ coordinates can be considered to be the same as those of $p$ except for the difference by a constant ($p_S$) factor, as long as we consider a one-dimensional vertical process. Here,
 
 $$
   \Delta \sigma_{k} = \sigma_{k-1/2} - \sigma_{k+1/2} \; , 
@@ -96,12 +74,9 @@ And write .
 
 ### implicit time difference
 
-For terms that can be linearized, such as the vertical diffusion term, we use the implicit method.
-Diffusion coefficients and other factors also depend on the forecast variables,
-The coefficients are only calculated first, not iteratively.
-However, the treatment of the time step is devised to improve the stability (see below).
+For terms that can be linearized, such as the vertical diffusion term, we use the implicit method. Although the diffusion coefficients depend on the forecast variables, we only obtain the coefficients first and do not solve them iteratively. However, in order to improve the stability of the method, the time step is treated differently (see below).
 
-For example, the discretized equation of $u$ ([\[u-eq.orig]](#u-eq.orig)) is
+For example, the discretized equation of $u$ (178) is
 
 $$
   (u_k^{m+1} - u_k^{m})/\Delta t 
@@ -109,8 +84,7 @@ $$
 $$
 
 
-Here, $m$ is a time step.
-Since $Fu_{k-1/2}$ etc. is a function of $u_k$, its dependency is linearized and the
+Here, $m$ is a time step. Since $Fu_{k-1/2}$ etc. is a function of $u_k$, we can linearize its dependence on
 
 $$
    Fu^{m+1}_{k-1/2} 
@@ -159,11 +133,7 @@ M^u_{k,k'} \equiv \Delta m_k \delta_{k,k'}
 $$
 
 
-This can be solved by LU decomposition or some other method.
-Normally, $M^u_{k,k'}$ is easy to solve since it is a triple diagonal.
-After solving the problem, (13) is used to compute
-We calculate the consistent flux to this method.
-The same is true for $v$.
+This can be solved by methods such as LU decomposition. Since $M^u_{k,k'}$ is usually a triple diagonal, it can be solved easily. After solving the problem, the consistent fluxes are calculated using (534). The same is true for $v$.
 
 ### implicit time difference coupling
 
@@ -203,9 +173,7 @@ $$
 $$
 
 
-Here, $\sum_{k'}$ and $\sum_{l'}$ in the above equations are
-Note that I took this from $k'=0$, $l'=0$. because,
-This is because the flux at the surface is as follows
+Note that $\sum_{k'}$ and $\sum_{l'}$ in the above equations are taken from $k'=0$ and $l'=0$. This is because the flux at the earth's surface is as follows.
 
 $$
   F\theta_{1/2} =  c_p C_H |{$\mathbf{v}$}_{1/2}| (\theta_0 - \theta_1)
@@ -222,14 +190,9 @@ $$
 $$
 
 
-If the surface skin temperature is set to $T_0$,
-$\theta_0 = T_0$, $q_0 = q^*(T_0)$ (saturated specific humidity), $G_0 = T_0$.
-They all depend on $T_0$.
-Also, in $FR_{k}$, all values in $k$ depend on $T_0$.
+Assuming that the surface skin temperature is set to $T_0$, $\theta_0 = T_0$, $q_0 = q^*(T_0)$ (saturated specific humidity), and $G_0 = T_0$ are all dependent on $T_0$. All of these values depend on the $T_0$. Also, all of the values of $FR_{k}$ depend on the $T_0$.
 
-Similarly to (17), using the matrices $M^{\theta}, M^q, M^g$
-(18), (19), and (20) are rewritten as,
-In case of $k \ge 2$ (for $\theta, q$) or $l \ge 1$ (for $G$),
+As with (538), rewriting (539), (540) and (541) using the matrices $M^{\theta}, M^q, M^g$, in $k \ge 2$ (for $\theta, q$) or $l \ge 1$ (for $G$),
 
 $$
     \sum_{k'=1}^{K}  M^\theta_{k,k'} \delta T_{k'}
@@ -278,7 +241,7 @@ M^{g}_{l,l'} \equiv Cg_l \Delta z_l \delta_{l,l'}
 $$
 
 
-In $k=1$ (for $\theta, q$) or $l=0$ (for $G$),
+In case of $k=1$ (for $\theta, q$) or $l=0$ (for $G$),
 
 $$
     \sum_{k'=1}^{K}  M^\theta_{1,k'} \delta T_{k'}
@@ -344,30 +307,22 @@ M^{g}_{0,l'} \equiv
 $$
 
 
-However, (32) is a condition of surface balance
+However, (553) is a condition for the balance of the ground surface
 
 $$
    F\theta^{m+1} + L Fq^{m+1} + FR^{m+1} - Fg^{m+1} = 0
 $$
 
 
-as the case of $l=0$ in the soil temperature equation,
-Note that it is not included in the table of (20).
+Note that we have treated the case of $l=0$ in the soil temperature equation, which is not included in the table of (541).
 
-These,
-(24), (25), (26),
-(30), (31), (32)
-for the $2K+L+1$ unknowns,
-There are equations of equality that can be solved.
-In practice, the LU decomposition can be used to solve the problem.
+Taking these, (545), (546), (547), (551), (552), and (553) together, we can solve the equations for the $2K+L+1$ unknowns since we have the same number of equations. In practice, the LU decomposition can be used to solve this problem.
 
-Once you're untied,
-(13) as well as ,
-Consistent flux should be sought.
+After solving the problem, the consistent fluxes should be obtained as in (534).
 
 ### Solving the Coupling Formula for Time Difference
 
-(30), etc., can be written as follows.
+(551), etc., can be written as follows.
 
 $$
   \sum_{k'=1}^{K} ( M_{k,k'} + \delta_{1,k} \delta_{1,k'} \alpha)
@@ -375,10 +330,7 @@ $$
 $$
 
 
-Where, $F_s, \alpha, \gamma$
-The term in Section 3.1 is a term associated with surface flux,
-The others are terms associated with vertical diffusion.
-Here, if we reverse the top and bottom and represent it as a matrix, we get the following.
+Here, the terms $F_s, \alpha, \gamma$ are associated with surface fluxes, and the other terms are associated with vertical diffusion. If we reverse the upside-down matrix, we get the following results.
 
 $$
   \left( \begin{array}{lll} M_{KK}  \cdots  M_{K1} \\ \vdots  
@@ -391,8 +343,7 @@ $$
 $$
 
 
-For the sake of brevity, we shall now refer to this document as $K=3$. For the sake of notation simplicity, we will now refer to it as $K=3$.
-You can't lose the.
+For the sake of brevity, we shall now refer to this document as $K=3$. The following discussion will not lose its generality.
 
 $$
   \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23} 
@@ -405,10 +356,7 @@ $$
 $$
 
 
-Here,
-The expression for $F_s = 0, \alpha=0, \gamma=0$,
-(This corresponds to the case where flux replacement at the surface is not considered.)
-by LU decomposition.
+Let us consider the equation for $F_s = 0, \alpha=0, \gamma=0$ (which corresponds to the case where flux exchange at the surface is not considered), which is solved by the LU decomposition.
 
 $$
   \left( \begin{array}{lll} M_{33}  M_{32}  M_{31} \\ M_{23} 
@@ -465,8 +413,7 @@ $$
 $$
 
 
-for $f'$ (which can be easily solved by starting from $f'_3=F_3$),
-And then..,
+for $f'$ (which can be easily solved by starting from $f'_3=F_3$), and then,
 
 $$
   \left( \begin{array}{lll}
@@ -484,7 +431,7 @@ $$
 $$
 
 
-for $f'$, starting from $x'_1=z'_1/U_{11}$ and solving in sequence.
+for $f'$, starting from $x'_1=z'_1/U_{11}$, and solving in sequence.
 
 For $\alpha \neq 0, \gamma \neq 0$, the LU decomposition is
 
@@ -527,7 +474,7 @@ $$
 $$
 
 
-However, comparing this with (42), we can see the following relationship.
+However, comparing this with (563), we see the following relationship.
 
 $$
   \left( \begin{array}{l}
@@ -565,20 +512,9 @@ $$
 $$
 
 
-Here, $U_{k,k'}$ and $f'_k$ are,
-Equation (40) with $\alpha=\gamma=0$,
-In other words, without considering the surface flux term
-Note that this can be obtained by performing LU decomposition.
-The physical meaning of these terms is ,
-During the flux exchange process with the ground surface,
-The entire atmosphere has a heat capacity of $U_{11}$,
-Top: Flux $f'_1$
-Indicates that it can be regarded as one layer to be supplied.
+Note that $U_{k,k'}$ and $f'_k$ can be obtained by the LU decomposition with the equation (561) of $\alpha=\gamma=0$, i.e., without considering the surface flux term. The physical meaning of these terms is that in the flux exchange process with the ground surface, the entire atmosphere has a heat capacity $U_{11}$, and can be regarded as a layer whose flux $f'_1$ is supplied from above.
 
-(24) and (30),
-(25) and (31),
-(26) and (32), respectively.
-(48), which yields the equation corresponding to
+In (545) and (551), (546) and (552), (547) and (553), respectively, the equation corresponding to (569) is obtained, which is as follows.
 
 $$
   ( U^{T}_{11} +  \alpha^{T}  ) \delta T_1 - \gamma^{T} \delta T_0 
@@ -599,11 +535,7 @@ $$
 $$
 
 
-Therefore, if we concatenate the three equations above, we get
-We can solve for the unknown variables $\delta T_1, \delta q_1, \delta T_0$.
-If we can solve these problems, we can then
-(47) can be solved with $x_2,x_3$ in sequence.
-Afterwards, the consistuous flux is applied to the obtained temperature
+Therefore, by concatenating the above three expressions, we can solve for the unknown variables $\delta T_1, \delta q_1, \delta T_0$. Once these are solved, we can then solve for (568) as $x_2,x_3$. After that, we can apply a consistent flux to the obtained temperatures and
 
 $$
   F\theta_c  =  F\theta_{1/2} 
@@ -614,42 +546,21 @@ $$
 
 
 
-Calculate as.
-We show the case where $M$ is a general matrix,
-It is even simpler since it is actually a triple diagonal matrix.
+and compute it as Although we have shown that $M$ is a general matrix, it is simpler since it is actually a triple-diagonal matrix.
 
-During the program,
-For atmospheric parts in `MODULE:[VFTND1(pimtx.F)]`,
-MODULE:[GNDHT1(pggnd.F)]` for the underground part, the first half of the LU decomposition method.
-(where the $f'_k$ is obtained),
-In `MODULE:[SLVSFC(pgslv.F)]`, solve the equation of $3\times 3$,
-Seeking $\delta q_1, \delta G_1, \delta T_0$.
-Then, in `MODULE:[GNDHT2(pggnd.F)]`
-The second half of the LU decomposition method is performed and the rate of change of temperature in the ground is solved,
-Correct the fluxes so that the balance is matched.
-Also, in `MODULE:[VFTND2(pimtx.F)]`, for the atmosphere
-Solving the rate of temperature change,
-Fluxes are corrected with `MODULE:[FLXCOR(pimtx.F)]`.
+In the program, `MODULE:[VFTND1(pimtx.F)]` for the atmospheric part and `MODULE:[GNDHT1(pggnd.F)]` for the underground part, the first half of the LU decomposition method (where $f'_k$ is obtained) is performed, and in `MODULE:[ SLVSFC(pgslv.F)]`, the equation of $3\times 3$ is solved, and $\delta q_1, \delta G_1, \delta T_0$ are obtained. Then, in `MODULE:[GNDHT2(pggnd.F)]`, we perform the latter half of the LU decomposition method, solve for the temperature coefficient of variation for the ground, and correct the fluxes so that the convergence of the two equations agrees with each other. In `MODULE:[VFTND2(pimtx.F)]`, the temperature coefficient of variation is solved for the atmosphere, and the fluxes are corrected with `MODULE:[FLXCOR(pimtx.F)]`.
 
 ### Combined expression for time difference
 
-The coupling formula for finding $\delta T_1, \delta q_1, \delta T_0$ is,
-Solve three times under different conditions as follows.
+The concatenation formula for $\delta T_1, \delta q_1, \delta T_0$ is solved three times with different conditions as follows.
 
 Solve for surface wetness $\beta$ as 1. Surface temperature is a variable.
 
-2. the surface wetness obtained by `MODULE:[GNDBET]`.
- Surface temperature is a variable .
+2. the solution is based on the surface moisture content obtained by `MODULE:[GNDBET]`. The surface temperature is a variable.
 
-3. the surface wetness obtained by `MODULE:[GNDBET]`.
- In case of snowmelt, the surface temperature is fixed at the freezing point.
+3. the solution is given by the surface moisture content obtained by `MODULE:[GNDBET]`. In the case of snow melting, etc., the surface temperature is fixed at the freezing point.
 
-The first calculation is performed to estimate the possible evaporation rate, $Fq^P$.
-(When the surface wetness is small, the energy balance of the model indicates that
-Using the obtained $Fq$, the possible evaporation rate can be calculated by
-$\widetilde{Fq^P} = Fq / \beta$
-diagnosed as, would result in unrealistically large values).
-Possible evaporation rate is ,
+The first calculation is performed to estimate the possible evaporation rate ($Fq^P$). (When the surface wetness is small, diagnosing the possible evaporation rate as $\widetilde{Fq^P} = Fq / \beta$ using $Fq$ obtained from the model energy balance will result in an unrealistically large value.) The possible evaporation rate is defined as,
 
 $$
   Fq^P_c = Fq^P_{1/2}
@@ -658,37 +569,27 @@ $$
 $$
 
 
-That would be.
-The subscript $c$ means after correction,
-This is a consistent flux to the obtained temperature etc.
+It becomes The subscript $c$ means, after correction, that this is a consistent flux for the temperature etc. obtained.
 
 In the second and subsequent calculations ,
 
-1. to the amount of possible evaporation found in the first calculation
- Surface wetness (evaporation efficiency) $\beta$
- Multiply the value multiplied by the amount of evaporation ($Fq_1$).
+The value of evaporation ($\beta$) multiplied by the value of possible evaporation determined in the first calculation is the value of evaporation ($Fq_1$).
 
 $$
         Fq = \beta Fq^P
 $$
 
 
-2. evaporation quantity $Fq_1$ is
+2. evaporation rate $Fq_1$ is
 
 $$
         \beta \rho C_E |{$\mathbf{v}$}| ( q_*(T_0) - q )
 $$
 
 
- As required by ,
- Once again, rebalancing the energy.
+ The energy balance is again rebalanced as required by
 
-Two methods of calculating the amount of evaporation can be used
-(The standard uses the method in 1.).
-The third calculation is performed during snow and ice melt and sea ice formation in the mixed layer ocean.
-This is done in order to fix the surface temperature at the freezing point, for example, to unbalance the energy.
-In this case, the amount of energy used for the phase change of water, such as snowmelt, is diagnostically determined,
-It will be used later to calculate the amount of snow melt, etc.
+There are two ways of calculating the evaporation rate, i.e., (1) and (2) (the standard method is used in this case). The third calculation is performed in order to fix the surface temperature at the freezing point, etc. during snow and ice melt or sea ice formation in the mixed layer oceans in order to solve the energy balance. The amount of energy used for the phase change of water is diagnostically determined and is used to calculate the amount of snowmelt later.
 
 The concrete form of the coupling formula is as follows.
 
@@ -720,12 +621,7 @@ $$
 
 
 
-Here, $U_{11}^T, U_{11}^q, U_{00}^g$ and $f_1^T, f_1^q, f_0^g$ are,
-The components of the matrices and vectors obtained by doing the first half of the LU decomposition method.
-When the ground surface is covered with snow or ice, instead of the latent heat $L$
-Using the Latent Heat of Sublimation $Ls = L + L_M$. $L_M$ is the latent heat of melting of water.
-However, in the second calculation,
-If the first method is used as an estimate of evaporation, we get the following.
+Here, $U_{11}^T, U_{11}^q, U_{00}^g$, and $f_1^T, f_1^q, f_0^g$ are components of the matrices and vectors obtained by the first half of the LU decomposition method. When the ground surface is covered with snow or ice, the sublimation latent heat $Ls = L + L_M$ is used instead of the latent heat $L$. $L_M$ is the latent heat of the melting of water. However, in the second calculation, if the first method is used to estimate evaporation, the result will be as follows.
 
 $$
  \renewcommand{\arraystretch}{1.5}
@@ -778,19 +674,14 @@ $$
 
 
 
-where $\delta_0 T_0$ is the rate of change to the temperature to be fixed,
+Here, $\delta_0 T_0$ is the rate of change to the temperature to be fixed,
 
 $$
    \delta_0 T_0 = ( T_0^{fix} - T_0 ) / \Delta t \; .
 $$
 
 
-$T_0^{fix}$ is 273.15K for snow and ice melting,
-In the case of sea ice production it is 271.15K.
-If the second method of evaporation calculation is used, then
-Similarly, instead of $Fq^P_{1/2}$, use $Fq^P_c$,
-Calculate the differential term of $F_q$ as 0.
-In this case,
+The value of $T_0^{fix}$ is 273.15 K for snow and ice melt, and 271.15 K for sea ice formation. When the second method of evaporation calculation is used, $Fq^P_c$ is used instead of $Fq^P_{1/2}$, and the differential term of $F_q$ is set to zero. In this case, the differential term of $F_q$ is set to zero,
 
 $$
 \Delta s  =  f_0^g - F\theta_{1/2} - L \beta Fq^P_{1/2} - U_{00}^g
@@ -804,16 +695,11 @@ $$
 
 
 
-$\Delta s$, calculated by the Surface Energy Balance,
-It is the amount of energy used for the phase change of water.
+$\Delta s$, which is calculated by $\Delta s$, is the surface energy balance and is the energy used for the water phase change.
 
 ### implicit Treatment of Time Steps in Time Differences
 
-Although the implicit method is used for the time difference of the vertical diffusion term,
-In general, the diffusion coefficients are nonlinear, and we explicitly evaluate these coefficients
-This can cause problems of numerical instability.
-To improve stability, Kalnay and Kanamitsu (19?) following the
-I'm working on how to handle the time steps.
+Although the implicit method is used for the time difference of the vertical diffusion term, the diffusion coefficients are generally nonlinear, and the explicit evaluation of these coefficients may lead to numerical instability problems. In order to improve the stability, we follow Kalnay and Kanamitsu (19?) in treating the time step as in Kalnay and Kanamitsu (19?). In order to improve the stability, we follow Kalnay and Kanamitsu (19?) in treating the time step.
 
 For simplicity, we will take the following ordinary differential equations as an example.
 
@@ -822,8 +708,7 @@ $$
 $$
 
 
-The coefficient $K(X)$ represents the nonlinearity.
-If we evaluate only the coefficients explicitly and make them implicitly different, we get the following equation.
+The coefficient $K(X)$ expresses the nonlinearity. Evaluating only the coefficients explicitly and making them implicitly differential, we obtain the following equation.
 
 $$
   \frac{X^{m+1} - X^m}{\Delta t} = - K( X^m ) X^{m+1}
@@ -842,12 +727,9 @@ $$
 $$
 
 
-.
-In general, it is better to use (64), (65)
-(63), which is known to have better stability than (63).
+and (586). In general, (585) and (586) are known to be more stable than (584).
 
-(64), (65) to find the rate of change over time
-Rewriting it into a form yields the following.
+By rewriting (585) and (586) into a form for determining the rate of change over time, we obtain the following.
 
 $$
   \left(\frac{\Delta X}{\Delta t}\right)^{\ast} = 
@@ -862,5 +744,4 @@ $$
 $$
 
 
-That is, the time step in determining the rate of change of the rate of change of time includes the following,
-Using twice the time integration step.
+In other words, the time step in determining the rate of change is twice the time integration step.

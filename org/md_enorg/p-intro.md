@@ -18,107 +18,77 @@ As a physical process, we can consider the following
 
  - gravitational wave resistance
 
-The time-varying terms of the forecast variables due to these processes
-Calculate TERM00000, TERM00000 and do time integration.
-In addition, in order to evaluate the atmospheric and surface fluxes
-Using the surface sub-model.
-In the surface sub-model,
-Ground Temperature TERM00001, Ground Moisture TERM00002, Snowpack TERM00003, etc.
-It is used as a predictor variable.
+We compute the time-varying terms TERM00436 and TERM00436 for the forecast variables from these processes, and perform time integration. In order to evaluate the atmospheric and surface fluxes, the ground surface sub-model is used. The ground surface sub-model uses such predictors as the ground temperature (TERM00437), ground moisture (TERM00438), and snow cover (TERM00439) as predictor variables.
 
 ### Fundamental Equations.
 
-Equation of motion of the atmosphere in the TERM00004 coordinate system, thermodynamic equation,
-Consider the equation for a sequence of substances such as water vapor.
-The vertical fluxes of momentum, heat, water vapor, etc. are considered,
-Find the time variation due to its convergence.
-All vertical fluxes are positive upward.
+Considering the equation of motion of the atmosphere in TERM00440 coordinate system, thermodynamic equations, and equations for continuity of materials such as water vapor etc. Considering the vertical fluxes of momentum, heat, water vapor, etc., the time variation of the fluxes is determined by their convergence. All the vertical fluxes are assumed to be positive for the upward direction.
 
 1. equation of motion
 
-         EQ=00000.
+         EQ=00157.
 
-         EQ=00001.
+         EQ=00158.
 
-     TERM00005,TERM00005: East-West, North-South Wind;
-     TERM00006,TERM00006: Their vertical flux.
+     TERM00441,TERM00441: East-West, North-South Wind; TERM00442,TERM00442: Their Vertical Flux.
 
 2. thermodynamic equation
 
-         EQ=00002.
+         EQ=00159.
 
-     TERM00007: Temperature ;
-     TERM00008: Constant Pressure Specific Heat;
-     TERM00009: Hot Position;
-     TERM00010: Vertical Sensible Heat Flux;
-     TERM00011: Vertical Radiation Flux.
+     TERM00443: Temperature; TERM00444: Constant Pressure Specific Heat; TERM00445: Temperature Level; TERM00446: Vertical Sensible Heat Flux; TERM00447: Vertical Radiation Flux.
 
- If we write TERM00012, then this is
+ Here, with TERM00448, this is,
 
-         EQ=00003.
+         EQ=00160.
 
- As far as vertical 1D processes are concerned,
- Instead of the     TERM00013, consider the TERM00014.
- For the sake of simplicity, unless there is a risk of confusion,
- Write     TERM00015 as TERM00016.
+ As far as one-dimensional vertical processes are concerned, instead of TERM00449, we can consider TERM00450. For simplicity, unless there is a risk of confusion, TERM00451 should be written as TERM00452 below.
 
 3. water vapor continuity formula
 
-         EQ=00004.
+         EQ=00161.
 
-     TERM00017: Specific Humidity;
-     TERM00018: Vertical Steam Flux.
+     TERM00453: Specific Humidity; TERM00454: Vertical Water Vapor Flux.
 
      ### Fundamental Equations in the Ground
 
- Considered in terms of TERM00019 coordinates with the downward direction positive.
- After all, all vertical fluxes are positive upward.
+ Consider the TERM00455 coordinates with the downward direction positive. As expected, the vertical fluxes are all positive in the upward direction.
 
 4. thermal formula
 
-         EQ=00005.
+         EQ=00162.
 
-     TERM00020: Ground Temperature; TERM00021: Constant Pressure Specific Heat;
-     TERM00022: Vertical Heat Flux;
-     TERM00023; Heating term (due to phase change, etc.).
+     TERM00456: Ground Temperature; TERM00457: Constant Pressure Specific Heat; TERM00458: Vertical Heat Flux; TERM00459; Heating Term (due to phase change etc.).
 
 5. formula for ground moisture
 
-         EQ=00006.
+         EQ=00163.
 
-     TERM00024: Ground Moisture;
-     TERM00025: Lead Water Flux;
-     TERM00026; Sources of water (spills, etc.).
+     TERM00460: Ground moisture; TERM00461: Vertical water flux; TERM00462; Water sources (e.g., runoff).
 
 6. energy balance equation
 
  At the surface, an energy balance is established.
 
-         EQ=00007.
+         EQ=00164.
 
-     TERM00027: Latent Heat of Evaporation;
-     TERM00028: Surface energy balance (due to phase change, etc.).
+     TERM00463: Latent heat of evaporation; TERM00464: Surface energy balance (associated with phase change, etc.).
 
 7. surface water balance
 
-         EQ=00008.
+         EQ=00165.
 
-     TERM00029: Precipitation;
-     TERM00030: Surface Runoff.
+     TERM00465: Precipitation; TERM00466: Surface Runoff.
 
 8. the snow balance
 
-         EQ=00009.
+         EQ=00166.
 
-     TERM00031: Snow cover(kg/TERM00032);
-     TERM00033: Snowfall;
-     TERM00034: Sublimation;
-     TERM00035: Snowmelt.
+     TERM00467: Snow cover (kg/TERM00468); TERM00469: Snowfall; TERM00470: Sublimation; TERM00471: Snowmelt.
 
 ### Time integration of physical processes.
 
-Classifying physical processes in terms of the time integration of predictor variables,
-The order of execution can be divided into the following three categories.
+In terms of time integration of predictors, we can classify the physical processes in the following three orders of execution.
 
 1. cumulus convection and large-scale condensation
 
@@ -128,103 +98,84 @@ The order of execution can be divided into the following three categories.
 
 Cumulus convection and large-scale condensation,
 
-     EQ=00010.
+     EQ=00167.
 
-     EQ=00011.
+     EQ=00168.
 
-by the usual Euler difference.
-Large-scale condensation schemes include ,
-Note that the updated values are passed on by the cumulus convection scheme.
-In practice, the output of the heating rate and so on are used in the routines for cumulus convection and large-scale condensation,
-Time integration is done by the immediately following `MODULE:[GDINTG]`.
+where the values are updated by the usual Euler difference Note that the large-scale condensation scheme is updated by the cumulus convection scheme. In practice, the routines of cumulus convection and large-scale condensation output the heating rates and so on, and the time integration is performed immediately afterwards by `MODULE:[GDINTG]`.
 
-Radiation in the following groups, vertical diffusion, ground boundary layer and surface processes
-calculations are essentially all of these updated values
-( TERM00036, TERM00036, etc. )
-This is done by using
-However, in order to calculate some of the terms as implicit, the
-Calculate all of these terms together and calculate the heating rate, etc,
-Finally, we do time integration.
-In other words, symbolically,
+The calculations of the radiative, vertical diffusion, ground boundary layer and surface processes in the following groups are basically performed with these updated values (TERM00472, TERM00472, etc.). However, in order to calculate some of the terms as implicit, we calculate the heating rates and so on for all of these terms together, and then perform time integration at the end. In other words, if we write symbolically
 
-     EQ=00012.
+     EQ=00169.
 
 That would be.
 
-As for gravitational wave resistance, mass regulation and dry convection regulation,
-It is similar to cumulus convection and large-scale condensation.
+The gravitational wave resistance, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
 
-     EQ=00013.
+     EQ=00170.
 
 ### Various physical quantities.
 
-A simple calculation from the predictive variables can be used to find
-Definitions of various physical quantities.
-Some of these are ,
-Calculated with `MODULE:[PSETUP]`.
+Here are definitions of various geophysical quantities that can be computed simply from the predictors. Some of them are calculated with `MODULE:[PSETUP]`.
 
 1. temporary temperature
 
- Provisional Temperature TERM00037 is ,
+ Provisional Temperature TERM00473 is ,
 
-         EQ=00014.
+         EQ=00171.
 
 2. air density
 
- The atmospheric density, TERM00038, is calculated as follows
+ The atmospheric density TERM00474 is calculated as follows
 
-         EQ=00015.
+         EQ=00172.
 
 3. high degree
 
- The high degree TERM00039 is a mechanical process
- The same method is used to calculate the geopotential.
+ The altitude TERM00475 is evaluated in the same way as the calculation of the geopotential for mechanical processes.
 
-         EQ=00016.
+         EQ=00173.
 
-         EQ=00017.
+         EQ=00174.
 
-         EQ=00018.
+         EQ=00175.
 
 4. layer boundary temperature
 
- The temperature of the boundary of the layer is determined by the temperature of the TERM00040, i.e., the temperature of the boundary relative to the TERM00041
- Do a linear interpolation and calculate.
+ The temperature at the boundary of the layer is calculated by performing a linear interpolation on TERM00476, i.e., TERM00477.
 
-         EQ=00019.
+         EQ=00176.
 
 5. saturated specific humidity
 
- Saturation Specific Humidity TERM00042,TERM00042
- is approximated using the saturation vapor pressure TERM00043,
+ The saturated specific humidity TERM00478 and TERM00478 are approximated using the saturated vapor pressure TERM00479,
 
-         EQ=00020.
+         EQ=00177.
 
- Here, it is TERM00044,
+ Here, it is TERM00480,
 
-         EQ=00021.
+         EQ=00178.
 
- Therefore, if the latent heat of evaporation (TERM00045) and the gas constant (TERM00046) of the water vapor are held constant, then the number of vapor particles will be reduced,
+ Therefore, if the latent heat of evaporation (TERM00481) and the gas constant of water vapor (TERM00482) are held constant, the number of vaporized materials will be reduced,
 
-         EQ=00022.
+         EQ=00179.
 
-     TERM00047 is a \\blank\blank\blank\blank\.com.
+     .....
 
-     (22) From ,
+     (199) from ,
 
-         EQ=00023.
+         EQ=00180.
 
- Here, if the temperature is lower than the freezing point 273.15 K
- Use the sublimation latent heat TERM00049 as the latent heat TERM00048.
+ Here, if the temperature is lower than the freezing point 273.15K, the sublimation latent heat TERM00485 is used as the latent heat TERM00484.
 
 6. dry static energy, wet static energy
 
- Dry static energy TERM00050 is
+ Dry static energy TERM00486 is
 
-         EQ=00024.
+         EQ=00181.
 
- Wet Static Energy TERM00051 is
+ Wet Static Energy TERM00487 is
 
-         EQ=00025.
+         EQ=00182.
 
  . defined by .

@@ -2,404 +2,271 @@
 
 ### Overview of the Cumulus Convection Scheme
 
-The cumulus convection scheme is ,
-This figure represents the condensation, precipitation and convection processes involved in cumulus convection,
-Due to the latent heat release and associated convective motion
-Calculate precipitation with temperature and with changes in water vapor content.
-We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature TERM00000 and specific humidity TERM00001,
-The output data is the time rate of change of temperature and specific humidity,
-TERM00002,TERM00002,
-The cloud water content of the cumulus clouds used for radiation is TERM00003 Cloud volume TERM00004.
+The cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates changes in temperature and water vapor content and precipitation due to latent heat release and associated convective motion. It also calculates the cloud water content and cloud coverage involved in radiation. The main input data are temperature (TERM00488) and specific humidity (TERM00489), and the output data are the time rate of change of temperature and specific humidity, TERM00490, TERM00490, and cloud cover (TERM00491) of cumulus clouds used for radiation (TERM00492).
 
-The framework of the cumulus convection scheme is
-Basically based on Arakawa and Schubert (1974).
-Vertical air columns in one horizontal grid.
-Considered as the basic unit of parameterization.
-Clouds are determined by the temperature, specific humidity, cloud water content and
-Characterized by a vertical upward mass flux,
-Considering multiple clouds with different cloud tops within a single vertical air column.
-Clouds occupy part of the horizontal lattice, and the rest of the surrounding region is
-There is a downward flow equal to the cloud mass flux (compensating downward flow).
-This compensatory downward flow and outflow of air into the surrounding region in the clouds (detraining)
-The temperature and the specific humidity field in the surrounding region are changed by
-The area of the upwelling of the cumulus convection is assumed to be small,
-The lattice-averaged temperature and specific humidity fields and
-Since we treat the temperature and specific humidity fields in the surrounding area as the same, we are able to
-This gives the changes in the lattice mean temperature and specific humidity.
+The framework of the cumulus convection scheme is basically based on Arakawa and Schubert (1974). The vertical air column on a horizontal grid is considered as the basic unit of parameterization. Clouds are characterized by temperature, specific humidity, cloud water content, and vertical mass fluxes of clouds, and several clouds with different cloud tops are considered in a single vertical column. The clouds occupy part of the horizontal grid, and in the rest of the surrounding area, there is a downward motion equal to the cloud mass flux (the compensating downward motion). This compensatory downward motion and the outflow of air into the surrounding region (detraining) cause changes in the temperature and specific humidity fields in the surrounding region. Since we assume that the area of the upwelling is small and treat the grid-averaged temperature and specific humidity fields as the same as that of the surrounding region, this gives us the change in the grid-averaged temperature and specific humidity.
 
-It is the cloud model that determines the temperature, specific humidity and cloud water content in clouds.
-Here, we use an entrained-purume model,
-As with Moorthi and Suarez (1992) ,
-We assume a linear mass flux increase with respect to height.
-The cloud base is used as the lifted condensation height of the surface atmosphere,
-of the percentage of air uptake (entrainment) in the surrounding area.
-Consider multiple cloud top altitudes depending on the difference.
-However, if a cloud with a cloud base cannot exist, then
-Consider the possibility of clouds with higher cloud bases.
+The cloud model determines the temperature, specific humidity, and cloud water content in clouds. Here, an entrainment-prime model is used, as in Moorthi and Suarez (1992), which assumes a linear increase in mass flux with respect to height. The cloud bases are defined as the lifted condensation height of the surface air, and several cloud tops are considered depending on the fraction of entrainment in the surrounding region. However, if no cloud base exists, then the possibility of clouds with higher cloud bases is also considered.
 
-The mass flux of each cloud is diagnostically determined using the cloud work function.
-The cloud work function is defined as
-It is defined as the vertical integral of the work done by buoyancy.
-This cloud-work function is driven by the compensating downward motion of cumulus clouds, etc.
-It gives a mass flux that approaches zero at a certain relaxation time.
+The mass flux of each cloud is diagnostically determined using the cloud work function. The cloud work function is defined as the vertical integration of the buoyant work per unit mass flux. The cloud work function gives a mass flux that approaches zero at a certain relaxation time due to the compensating downward motion of the cumulus, etc. The cloud work function is defined as the vertical integral of the buoyant work per unit mass flux.
 
-In addition, the evaporation of precipitation and
-The effect of the downdrafting that goes with it.
-Consider in a very simple way .
+In addition, the evaporation of precipitation and the associated downdraft effects are considered in a very simple way.
 
-The outline of the calculation procedure is as follows.
-Parentheses are the names of the corresponding subroutines.
+The outline of the calculation procedure is as follows. In parentheses are the names of the corresponding subroutines.
 
-1. cloud-bottom height as the lifted condensation height of the surface atmosphere
- Evaluate .
+1) Evaluate the cloud base height as the lifted condensation height of the surface atmosphere.
 
-2. using a cloud model,
- Corresponding to each cloud top altitude
- of cloud temperature, specific humidity, cloud water content, and mass flux (relative value)
- Calculates the vertical distribution `MODULE:[UPDRF]`.
+2. to obtain vertical distributions of cloud temperature, specific humidity, cloud water content, and mass fluxes (relative values) for cloud tops, using a cloud model `MODULE:[UPDRF]`.
 
 3. calculate the cloud work function `MODULE:[CWF]`.
 
-4. due to a cloud of unit mass fluxes.
- Calculates the hypothetical change of temperature and specific humidity in the surrounding area `MODULE:[CLDTST]`.
+4. find the hypothetical change of temperature and specific humidity in the surrounding region due to a unit mass flux cloud `MODULE:[CLDTST]`.
 
-5. for a hypothetical change in temperature and specific humidity
- Calculate the cloud work function `MODULE:[CWF]`.
+5. calculate the cloud-work function for the virtual change of temperature and specific humidity `MODULE:[CWF]`.
 
-6. using the cloud work function before and after the virtual change
- Calculates the cloud mass flux at the cloud base `MODULE:[CBFLX]`.
+6. calculate cloud mass fluxes at the cloud base using the cloud work function before and after the virtual change `MODULE:[CBFLX]`.
 
-7. the cloud mass flux detrainment.
- Calculate the vertical distribution and precipitation `MODULE:[CMFLX]`.
+7. calculate the vertical distribution of cloud mass flux detrainment and precipitation `MODULE:[CMFLX]`.
 
 8. evaluate cloud water and cloud cover due to cumulus clouds `MODULE:[CMCLD]`.
 
-9. by detainment.
- Calculate the change of temperature and specific humidity `MODULE:[CLDDET]`.
+9. find the change of temperature and specific humidity by detraining `MODULE:[CLDDET]`.
 
-10. by compensatory downstream flow.
- Calculate the change of temperature and specific humidity `MODULE:[CLDSBH]`.
+10. get the change of temperature and specific humidity by compensated descent `MODULE:[CLDSBH]`.
 
-11. evaporation of precipitation and
- The downdraft.
- of cloud temperature, specific humidity and mass flux
- Calculates the vertical distribution `MODULE:[DWNEVP]`.
+11. find vertical distributions of cloud temperature, specific humidity, and mass flux of precipitation evaporation and downdraft `MODULE:[DWNEVP]`.
 
-12. by downdraft detrainment.
- Calculate the change of temperature and specific humidity `MODULE:[CLDDDE]`.
+12. find the change of temperature and specific humidity by detraining the downdraft `MODULE:[CLDDDE]`.
 
-13. by the compensatory upward flow of downdrafts.
- Calculate the change of temperature and specific humidity `MODULE:[CLDSBH]`.
+13. find the change of temperature and specific humidity due to the compensated upward flow of downdraft `MODULE:[CLDSBH]`.
 
 ### The Basic Framework of the Arakawa-Schubert Scheme
 
-Cloud Mass Flux TERM00005, Detrainment TERM00006 is,
+The cloud mass flux TERM00493, detraining TERM00494 is ,
 
-     EQ=00021.
-     EQ=00021.
+     EQ=00204.
+     EQ=00204.
 
-represented as .
-The mass flux at the cloud base (TERM00007) is the mass flux at TERM00008,
-TERM00009 is a dimensionless mass flux in it.
+expressed as where TERM00495 is the mass flux at the cloud base TERM00496 and TERM00497 is the dimensionless mass flux at that point.
 
 From this, the time variation of the mean field is calculated as
 
-     EQ=00022.
-     EQ=00022.
+     EQ=00205.
+     EQ=00205.
 
-However, TERM00010 and TERM00010 are based on the wet static energy of the mean field and the specific humidity,
-TERM00011,TERM00011 are the air in the detrainment
-It is the wet static energy, specific humidity, and cloud water content.
+where TERM00498 and TERM00498 are the wet static energy and specific humidity of the mean field, and TERM00499 and TERM00499 are the wet static energy, specific humidity and cloud water content of the air in the detrainment.
 
-TERM00012,TERM00012 are required by the cloud model.
-TERM00013 is obtained by the closure assumption using the cloud work function.
+TERM00500 and TERM00500 are determined by the cloud model. TERM00501 is obtained by closure assumptions using the cloud work function.
 
 ### Cloud Model.
 
-The cloud model is essentially an entrained-purume model.
-Each type of cloud is characterized by an entrainment rate,
-It will have various cloud top heights accordingly.
-However, for the sake of later calculations,
-Here, you can specify the cloud top altitude,
-By finding the corresponding entrainment rate
-Find the vertical structure of clouds.
-By assuming a linear mass flux increase with respect to height.
-This calculation is simplified to a form that does not include a sequential approximation.
+The cloud model is essentially an entrained-purume model. Each cloud is characterized by an entrainment rate, and has various cloud-top heights, depending on the entrainment rate. For the sake of the sake of later computation, we will specify the cloud top height and obtain the corresponding entrainment rate to obtain the vertical structure of the clouds. By assuming a linear increase in mass flux with respect to height, we can obtain the vertical structure of the cloud. This calculation is simplified to a form that does not include a sequential approximation.
 
-Let's set the cloudbase altitude at TERM00014,
-The lifted condensation altitude of the surface atmosphere, i.e., the height of condensation,
+The cloud base altitude (TERM00502) is defined as the lifted condensation height of the surface atmosphere, i.e,
 
-     EQ=00000.
+     EQ=00183.
 
-Define it as the minimum TERM00015 that meets the following criteria
+Define it as the lowest TERM00503 that meets the requirements of the
 
-The dimensionless mass flux TERM00016 is,
-The entrainment rate is set to TERM00017,
+The dimensionless mass flux TERM00504 has the entrainment rate as TERM00505,
 
-     EQ=00001.
+     EQ=00184.
 
 Namely,
 
-     EQ=00023.
-     EQ=00023.
+     EQ=00206.
+     EQ=00206.
 
-The balance on wet static energy TERM00018 and total water content TERM00019 in the clouds is,
+The balance of payments for wet static energy TERM00506 and total water volume TERM00507 in the clouds is,
 
-     EQ=00024.
-     EQ=00024.
+     EQ=00207.
+     EQ=00207.
 
-Here, TERM00020 and TERM00020 are respectively,
-TERM00021 and TERM00022, in mean field, are precipitation generation.
+where TERM00508 and TERM00508 are mean field TERM00509 and TERM00510, precipitation production, respectively.
 
 Integrating,
 
-     EQ=00025.
-     EQ=00025.
+     EQ=00208.
+     EQ=00208.
 
-     EQ=00026.
-     EQ=00026.
-     EQ=00026.
+     EQ=00209.
+     EQ=00209.
+     EQ=00209.
 
-The mass flux is assumed to be zero at the surface,
-It is assumed to increase linearly below the cloud base,
+The mass flux is assumed to be zero at the surface and to increase linearly below the cloud base,
 
-     EQ=00002.
+     EQ=00185.
 
-By calculating the entrainment below this cloud base,
-TERM00023 and TERM00023 are required at cloudbase. That is, ,
+By calculating the entrainment below the cloud base, we can obtain the values of TERM00511 and TERM00511 at the cloud base. In other words,
 
-     EQ=00027.
-     EQ=00027.
+     EQ=00210.
+     EQ=00210.
 
 The buoyancy per unit mass flux due to clouds is ,
 
-     EQ=00028.
-     EQ=00028.
-     EQ=00028.
-     EQ=00028.
+     EQ=00211.
+     EQ=00211.
+     EQ=00211.
+     EQ=00211.
 
-where TERM00024 is the provisional temperature and TERM00025 is the saturation specific humidity,
-TERM00026,
-It is TERM00027,
-TERM00028 and TERM00028 indicate the values at mean-field saturation, respectively.
-TERM00029 and TERM00029 are the amounts of cloud water vapor and cloud water,
+Here, TERM00512 is the provisional temperature, TERM00513 is the saturated specific humidity, TERM00514, and TERM00515, and TERM00516 and TERM00516 represent the values at the saturation of the mean field, respectively. TERM00517 and TERM00517 are the cloud water vapor and cloud water content, respectively,
 
-     EQ=00029.
-     EQ=00029.
+     EQ=00212.
+     EQ=00212.
 
-For the cloud top TERM00030, the buoyancy TERM00031 is assumed to be zero.
-Thus, solving the TERM00032 corresponds to the given cloud top height of TERM00033
-TERM00034 can be obtained.
-Here, for precipitation rate TERM00035 integrated from the ground upward, we have a problem,
-Using the known function TERM00036
-Assume that it is represented.
+For the cloud top (TERM00518), the buoyancy TERM00519 is zero. Therefore, solving for TERM00520 yields TERM00522, which corresponds to a given cloud top height (TERM00521). Here, the precipitation rate (TERM00523) integrated upward from the ground surface is assumed to be expressed by the well-known function TERM00524 as follows
 
-     EQ=00003.
+     EQ=00186.
 
 So..,
 
-     EQ=00004.
+     EQ=00187.
 
-TERM00037 is easy to solve and,
+TERM00525 is easy to solve and,
 
-     EQ=00005.
+     EQ=00188.
 
 However,
 
-     EQ=00030.
-     EQ=00030.
+     EQ=00213.
+     EQ=00213.
 
-As mentioned above, you should specify TERM00038 to obtain TERM00039,
-A physically meaningful TERM00041 for a given TERM00040
-There is no guarantee that we will seek it.
-That scrutiny is necessary, but here it is,
-The smaller the TERM00042 is, the more the TERM00043 is
-Take into account that it should be lower.
+As mentioned above, we originally set TERM00526 to obtain TERM00527 and there is no guarantee that a physically meaningful TERM00529 can be obtained for a given TERM00528. Although this needs to be examined, we will take into account that the smaller the value of TERM00530, the lower the value of TERM00531 should be.
 
-     EQ=00006.
+     EQ=00189.
 
-We will examine whether or not the
-If the value is not satisfied, assume that the cloud with cloud top TERM00044 does not exist.
-Also, a minimum value has been set for TERM00045,
-We assume that there are no smaller TERM00046 clouds.
-This means that the entrainment rate can be reduced by
-Given the inverse proportions ,
-The equivalent of having a maximum in the size of the plume.
+If not, we assume that there are no clouds with a cloud top (TERM00532). A minimum value is set for TERM00533, and no cloud with a TERM00534 smaller than this value is assumed to exist. This corresponds to the fact that there is a maximum value for the size of the cloud, considering that the entrainment rate is inversely proportional to the size of the cloud.
 
-Cloud water content TERM00047 is ,
+Cloud water content TERM00535 is ,
 
-     EQ=00031.
-     EQ=00031.
+     EQ=00214.
+     EQ=00214.
 
-However, in the case of TERM00048, it is TERM00049.
-Furthermore, it is unlikely that a precipitation event will be followed by cloudy water,
-TERM00050 must be an increasing function of TERM00051.
-This will limit the TERM00052.
+In the case of TERM00536, however, it must be TERM00537. Furthermore, since it is unlikely that a precipitation event will change to cloud water after it rises, TERM00538 must be an increasing function of TERM00539. This leads to a limitation on TERM00540.
 
 The characteristic value of the detrainment air is ,
 
-     EQ=00032.
-     EQ=00032.
-     EQ=00032.
+     EQ=00215.
+     EQ=00215.
+     EQ=00215.
 
-In the case of TERM00053,
-Suppose that clouds do not exist. In this case,
+In the case of TERM00541, it is assumed that there are no clouds. In this case, we assume that the cloud does not exist,
 
-     EQ=00007.
+     EQ=00190.
 
-If there is a TERM00054 that satisfies ,
-The area directly above it has been renamed TERM00055,
+If there is a TERM00542 that satisfies the above condition, the immediate area above it is newly designated as TERM00543,
 
-     EQ=00033.
-     EQ=00033.
+     EQ=00216.
+     EQ=00216.
 
 Seek as .
 
 ### Cloud Work Function (CWF)
 
-The cloud work function (CWF), TERM00056 is,
+The cloud work function (CWF), TERM00544 is,
 
-     EQ=00008.
+     EQ=00191.
 
 It is,
 
-     EQ=00009.
+     EQ=00192.
 
-Essentially, the work associated with the downdraft, discussed below, should be
-It should be accounted for, but we'll ignore it here for simplicity's sake.
+We should account for the work associated with downdrafting, which we will discuss below, but we ignore it here for the sake of simplicity.
 
-In this calculation, we start at the bottom and
-Once a positively buoyant cloud is negatively buoyant, if ,
-Since there should be cloud tops where they are supposed to be negative,
-Assume that the cloud with the cloud top we are considering does not exist.
+If the cloud has negative buoyancy once it has positive buoyancy, starting from the bottom, then the cloud top should exist at the point where it becomes negative, and we assume that the cloud top we are considering does not exist.
 
 ### Cloud Mass Flux at Cloudbase
 
-The cloud mass flux at the cloud base is ,
-On some time scale TERM00057,
-Cloud action determines the cloud work function to be close to zero
-I make the assumption that.
+We assume that the cloud mass flux at the cloud base is determined on a certain time scale (TERM00545) such that the cloud action causes the cloud work function to approach zero.
 
-In order to estimate it, we firstly estimated the unit cloud-bottom mass flux of TERM00058
-Find the time variation of the mean field.
+In order to estimate this, we first calculate the time variation of the mean field in the unit cloud mass flux TERM00546.
 
-     EQ=00034.
-     EQ=00034.
+     EQ=00217.
+     EQ=00217.
 
 With this,
 
-     EQ=00035.
-     EQ=00035.
+     EQ=00218.
+     EQ=00218.
 
-and using TERM00059 and TERM00059
-Let TERM00060 be the one calculated from (32) for the cloud work function.
+and the cloud work function calculated from (235) using TERM00547 and TERM00547 is defined as TERM00548.
 
 So..,
 
-     EQ=00010.
+     EQ=00193.
 
-That would be.
-Here, when obtaining TERM00061, the original TERM00062 and TERM00062 were used
-I should recalculate the vertical structure of the clouds,
-Now we are using the same cloud structure.
+The results of this calculation are as follows. Although the vertical cloud structures corresponding to TERM00550 and TERM00550 should have been re-calculated in order to obtain TERM00549, the same cloud structures were used in the present study.
 
 ### Cloud Mass Flux, Precipitation
 
-The sum of the clouds at each cloud top altitude,
-Cloud Mass Flux TERM00063
+The cloud mass flux of the sum of clouds at each cloud-top altitude, TERM00551, is
 
-     EQ=00011.
+     EQ=00194.
 
-Also, precipitation flux TERM00064 is
+Also, precipitation flux TERM00552 is
 
-     EQ=00012.
+     EQ=00195.
 
 ### Time variation of the average field
 
-by compensated downstream flow and detraining.
-The time variation of the mean field is calculated as follows
+The time variation of the mean field due to the compensated downward motion and detrainment is calculated as follows.
 
-     EQ=00036.
-     EQ=00036.
+     EQ=00219.
+     EQ=00219.
 
-However, it is TERM00065.
+However, it is TERM00553.
 
 ### Evaporation and downdrafting of precipitation
 
-Precipitation falls through the unsaturated atmosphere, while some of it evaporates.
-In addition, some of them form a downdraft.
+The precipitation falls through the unsaturated atmosphere, while some of it evaporates. Some of it also forms a downdraft.
 
-Evaporation Rate TERM00066 is ,
+Evaporation Rate TERM00554 is ,
 
-     EQ=00013.
+     EQ=00196.
 
-Note that TERM00067 is the saturation specific humidity corresponding to the wet bulb temperature,
+However, TERM00555 is the saturation specific humidity corresponding to the wet bulb temperature,
 
-     EQ=00014.
+     EQ=00197.
 
-TERM00068,TERM00068 is a parameter of the microphysics.
-TERM00069 is the density of precipitation particles and TERM00070 is the terminal velocity of precipitation,
+TERM00556 and TERM00556 are parameters of microphysics. TERM00557 is the density of precipitation particles and TERM00558 is the terminal velocity of precipitation,
 
-     EQ=00015.
+     EQ=00198.
 
-The current standard values are TERM00071, TERM00072 and TERM00073 m/s.
+The current standard values are TERM00559, TERM00560 and TERM00561 m/s.
 
 For downdrafting, we make the following assumptions.
 
- - TERM00074 decreases monotonically with altitude above cloudbase
- If the upper end of the region is set to TERM00075, the downdraft is
- It occurs in the region of     TERM00076.
+ - If TERM00563 is set at the top of the region where TERM00562 decreases monotonically with height above the cloud base, then the downdraft occurs in the region of TERM00564.
 
- - A certain percentage of the precipitation evaporation that occurs at each altitude
- It is used to form downdrafts.
- Evaporation of precipitation has just saturated it.
- The air in the surrounding area.
- Taken into the downdraft (Entrainment).
+ - A certain percentage of the precipitation evaporation that occurs at each altitude is used to form a downdraft. The air in the surrounding area, which has just become saturated by the evaporation of precipitation, is drawn into the downdraft (entrainment).
 
- - In TERM00077, detraining occurs,
- The mass flux decreases linearly.
+ - In TERM00565, detraining occurs and the mass flux decreases linearly.
 
-That is, in TERM00078, the mass flux TERM00079,
-The downdraft air masses TERM00080 and TERM00080 follow the following equation.
-Upon evaporation of precipitation, the wet static energy should be conserved,
-and the specific humidity when saturated by evaporation.
-Note that this is TERM00081.
+That is, in TERM00566, the mass flux TERM00567, TERM00568, and TERM00568 of the downdrafted air mass follow the following equation. Note that the wet static energy is conserved during evaporation, and the specific humidity when saturated by evaporation is TERM00569.
 
-     EQ=00016.
+     EQ=00199.
 
-     EQ=00037.
-     EQ=00037.
+     EQ=00220.
+     EQ=00220.
 
-In the above equation, TERM00082 is the portion of the evaporation that is taken up by the downdraft,
-TERM00083 evaporates directly into the mean field.
-However, the downdraft mass flux TERM00084
-The total mass flux of cloud base shall not exceed the TERM00086 of TERM00085.
-The current standard value is TERM00087,TERM00087.
+In the above equation, TERM00570 is the part of the evaporation that is captured in the downdraft, and TERM00571 evaporates directly into the mean field. It is assumed that the mass flux of the downdraft (TERM00572) does not exceed the total mass flux of the cloud base (TERM00573) by a factor of TERM00574. The current standard values are TERM00575 and TERM00575.
 
 ### cloud water and cloud cover
 
-The lattice-averaged cloud water content used for radiation, TERM00088, is
-Strong upwelling areas of cumulus clouds, including cloud water TERM00089
-If the ratio of the ratio to the TERM00090 ,
+Assuming that the grid-averaged cloud cover used for radiation (TERM00576) is defined as the ratio of the strong upward area of cumulus clouds including the cloud cover (TERM00577) to TERM00578,
 
-     EQ=00017.
+     EQ=00200.
 
-The mass flux TERM00091 is the same as this TERM00092
-Using the vertical velocity of the upstream stream, TERM00093
+The mass flux (TERM00579) is determined by using this TERM00580 and the upstream vertical velocity (TERM00581)
 
-     EQ=00018.
+     EQ=00201.
 
 So, in the end,
 
-     EQ=00019.
+     EQ=00202.
 
-The cloud cover used to estimate radiation, TERM00094, is ,
-that there is actually a horizontal spread in the distribution of upwelling and cloud water.
-It is reasonable to take a larger value than this TERM00095.
-Here, in brief,
+The cloud cover used in the estimation of radiation, TERM00582, is more reasonable than TERM00583, considering that the actual distribution of upwelling and cloud water has a horizontal extent. In this section, we will briefly consider the following,
 
-     EQ=00020.
+     EQ=00203.
 
-.
-The current standard values are TERM00096 and TERM00097.
+The current standard values are TERM00584 and TERM00585. The current standard values are TERM00584 and TERM00585.

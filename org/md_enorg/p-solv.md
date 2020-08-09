@@ -2,410 +2,291 @@
 
 ### Basic Solutions.
 
-Radiative, vertical diffusion, ground boundary layer and surface processes are
-Some terms are treated as implicit in the
-Compute the time-varying term and do time integration at the end.
-As a time-varying term for the vector quantity <span>q</span>,
-The term TERM00000 for the Euler method and the term TERM00001 for the implicit method are considered separately.
+Some of the terms in the radiation, vertical diffusion, and boundary layer and surface processes are treated as implicit terms, and the time integration is performed at the end of the calculation. As the time-varying term for the vector quantity <span>q</span>, we divide it into two terms, TERM01072 for the Euler method and TERM01073 for the implicit method.
 
-     EQ=00000.
+     EQ=00428.
 
-It is difficult to solve this in the general case, but,
-It can be solved by linearizing TERM00002 in an approximate manner.
+Although this is difficult to solve in the general case, it can be approximated by linearizing TERM01074.
 
-     EQ=00001.
+     EQ=00429.
 
-using the matrix TERM00003 as
-Here,
+and linearize it using the matrix TERM01075 as where ,
 
-     EQ=00002.
+     EQ=00430.
 
-It is.
-So..,
-TERM00004
-And then you can write,
+but if you write TERM01076 Then write TERM01076,
 
-     EQ=00003.
+     EQ=00431.
 
 It is easy to solve in principle by matrix operations.
 
 ### Fundamental Equations.
 
-Radiation, vertical diffusion, ground boundary layer and surface processes
-The equations are basically expressed as follows.
+The equations for radiation, vertical diffusion, and ground boundary layer/surface processes are basically expressed as follows.
 
-     EQ=00051.
-     EQ=00051.
-     EQ=00051.
-     EQ=00051.
-     EQ=00051.
+     EQ=00479.
+     EQ=00479.
+     EQ=00479.
+     EQ=00479.
+     EQ=00479.
 
-where TERM00005 and TERM00005 are
-By vertical diffusion, TERM00006 and TERM00006, respectively
-is the vertical upward flux density of
-Also, the TERM00007 is a radiant
-It is a vertical upward energy flux density.
+where TERM01077 and TERM01077 are the vertical energy flux densities of the vertical diffusion fluxes of TERM01078 and TERM01078, respectively. TERM01079 is the vertical upward energy flux density of the vertical diffuse flux density of TERM01078 and TERM01078, respectively.
 
-The atmosphere is discretized in the TERM00008 coordinate system.
-Wind speed, temperature, etc. are defined in layer TERM00009.
-The flux is defined by the layer boundary TERM00010.
-TERM00011 increases from lower to higher levels.
-Also, TERM00012,
-This is the TERM00013.
-TERM00014 The coordinates are only available when we consider a one-dimensional vertical process,
-It can be considered to be the same as the TERM00016 coordinates except for the difference in the constant (TERM00015) times.
-Here,
+The atmosphere is discretized using the TERM01080 coordinate system. Wind speed, temperature, etc. are defined by the layer TERM01081. The flux is defined by the layer boundary TERM01082. TERM01083 increases from the lower levels to the upper levels. Also, TERM01084 and TERM01085 are defined in the upper levels. The TERM01086 coordinates can be considered to be the same as those of TERM01088 except for the difference by a constant (TERM01087) factor, as long as we consider a one-dimensional vertical process. Here,
 
-     EQ=00004.
+     EQ=00432.
 
-     EQ=00005.
+     EQ=00433.
 
 And write .
 
 ### implicit time difference
 
-For terms that can be linearized, such as the vertical diffusion term, we use the implicit method.
-Diffusion coefficients and other factors also depend on the forecast variables,
-The coefficients are only calculated first, not iteratively.
-However, the treatment of the time step is devised to improve the stability (see below).
+For terms that can be linearized, such as the vertical diffusion term, we use the implicit method. Although the diffusion coefficients depend on the forecast variables, we only obtain the coefficients first and do not solve them iteratively. However, in order to improve the stability of the method, the time step is treated differently (see below).
 
-For example, the discretized equation of TERM00017 ([\[u-eq.orig]](#u-eq.orig)) is
+For example, the discretized equation of TERM01089 (178) is
 
-     EQ=00006.
+     EQ=00434.
 
-Here, TERM00018 is a time step.
-Since TERM00019 etc. is a function of TERM00020, its dependency is linearized and the
+Here, TERM01090 is a time step. Since TERM01091 etc. is a function of TERM01092, we can linearize its dependence on
 
-     EQ=00007.
+     EQ=00435.
 
-Thus, if you put TERM00021,
+Thus, if you put TERM01093,
 
-     EQ=00008.
+     EQ=00436.
 
 Namely,
 
-     EQ=00009.
+     EQ=00437.
 
 It can be written in the following matrix form
 
-     EQ=00010.
+     EQ=00438.
 
-     EQ=00011.
+     EQ=00439.
 
-This can be solved by LU decomposition or some other method.
-Normally, TERM00022 is easy to solve since it is a triple diagonal.
-After solving the problem, (13) is used to compute
-We calculate the consistent flux to this method.
-The same is true for TERM00023.
+This can be solved by methods such as LU decomposition. Since TERM01094 is usually a triple diagonal, it can be solved easily. After solving the problem, the consistent fluxes are calculated using (534). The same is true for TERM01095.
 
 ### implicit time difference coupling
 
 Temperature, specific humidity, and ground temperature are not as simple as those in the previous section.
 
-     EQ=00052.
-     EQ=00052.
+     EQ=00480.
+     EQ=00480.
 
-     EQ=00012.
+     EQ=00440.
 
-     EQ=00013.
+     EQ=00441.
 
-Here, TERM00024 and TERM00025 in the above equations are
-Note that I took this from TERM00026, TERM00027. because,
-This is because the flux at the surface is as follows
+Note that TERM01096 and TERM01097 in the above equations are taken from TERM01098 and TERM01099. This is because the flux at the earth's surface is as follows.
 
-     EQ=00014.
+     EQ=00442.
 
-     EQ=00015.
+     EQ=00443.
 
-     EQ=00016.
+     EQ=00444.
 
-If the surface skin temperature is set to TERM00030,
-TERM00031, TERM00032 (saturated specific humidity), TERM00033.
-They all depend on TERM00034.
-Also, in TERM00035, all values in TERM00036 depend on TERM00037.
+Assuming that the surface skin temperature is set to TERM01102, TERM01103, TERM01104 (saturated specific humidity), and TERM01105 are all dependent on TERM01106. All of these values depend on the TERM01106. Also, all of the values of TERM01107 depend on the TERM01109.
 
-Similarly to (17), using the matrices TERM00038 and TERM00038
-(18), (19), and (20) are rewritten as,
-In case of TERM00039 (for TERM00040,TERM00040) or TERM00041 (for TERM00042),
+As with (538), rewriting (539), (540) and (541) using the matrices TERM01110 and TERM01110, in TERM01111 (for TERM01112 and TERM01112) or TERM01113 (for TERM01114),
 
-     EQ=00053.
-     EQ=00053.
+     EQ=00481.
+     EQ=00481.
 
-     EQ=00017.
+     EQ=00445.
 
-     EQ=00018.
+     EQ=00446.
 
 However,
 
-     EQ=00019.
+     EQ=00447.
 
-     EQ=00020.
+     EQ=00448.
 
-     EQ=00021.
+     EQ=00449.
 
-In TERM00043 (for TERM00044 and TERM00044) or TERM00045 (for TERM00046),
+In case of TERM01115 (for TERM01116 and TERM01116) or TERM01117 (for TERM01118),
 
-     EQ=00054.
-     EQ=00054.
-     EQ=00054.
+     EQ=00482.
+     EQ=00482.
+     EQ=00482.
 
-     EQ=00022.
+     EQ=00450.
 
-     EQ=00055.
-     EQ=00055.
-     EQ=00055.
+     EQ=00483.
+     EQ=00483.
+     EQ=00483.
 
 However,
 
-     EQ=00023.
+     EQ=00451.
 
-     EQ=00024.
+     EQ=00452.
 
-     EQ=00025.
+     EQ=00453.
 
-However, (32) is a condition of surface balance
+However, (553) is a condition for the balance of the ground surface
 
-     EQ=00026.
+     EQ=00454.
 
-as the case of TERM00047 in the soil temperature equation,
-Note that it is not included in the table of (20).
+Note that we have treated the case of TERM01119 in the soil temperature equation, which is not included in the table of (541).
 
-These,
-(24), (25), (26),
-(30), (31), (32)
-for the TERM00048 unknowns,
-There are equations of equality that can be solved.
-In practice, the LU decomposition can be used to solve the problem.
+Taking these, (545), (546), (547), (551), (552), and (553) together, we can solve the equations for the TERM01120 unknowns since we have the same number of equations. In practice, the LU decomposition can be used to solve this problem.
 
-Once you're untied,
-(13) as well as ,
-Consistent flux should be sought.
+After solving the problem, the consistent fluxes should be obtained as in (534).
 
 ### Solving the Coupling Formula for Time Difference
 
-(30), etc., can be written as follows.
+(551), etc., can be written as follows.
 
-     EQ=00027.
+     EQ=00455.
 
-Where, TERM00049,TERM00049
-The term in Section 3.1 is a term associated with surface flux,
-The others are terms associated with vertical diffusion.
-Here, if we reverse the top and bottom and represent it as a matrix, we get the following.
+Here, the terms TERM01121 and TERM01121 are associated with surface fluxes, and the other terms are associated with vertical diffusion. If we reverse the upside-down matrix, we get the following results.
 
-     EQ=00028.
+     EQ=00456.
 
-For the sake of brevity, we shall now refer to this document as TERM00050. For the sake of notation simplicity, we will now refer to it as TERM00050.
-You can't lose the.
+For the sake of brevity, we shall now refer to this document as TERM01122. The following discussion will not lose its generality.
 
-     EQ=00029.
+     EQ=00457.
 
-Here,
-The expression for TERM00051,TERM00051,
-(This corresponds to the case where flux replacement at the surface is not considered.)
-by LU decomposition.
+Let us consider the equation for TERM01123 and TERM01123 (which corresponds to the case where flux exchange at the surface is not considered), which is solved by the LU decomposition.
 
-     EQ=00030.
+     EQ=00458.
 
 LU. Take it apart,
 
-     EQ=00031.
+     EQ=00459.
 
 Now..,
 
-     EQ=00032.
+     EQ=00460.
 
-for TERM00052 (which can be easily solved by starting from TERM00053),
-And then..,
+for TERM01124 (which can be easily solved by starting from TERM01125), and then,
 
-     EQ=00033.
+     EQ=00461.
 
-for TERM00054, starting from TERM00055 and solving in sequence.
+for TERM01126, starting from TERM01127, and solving in sequence.
 
-For TERM00056 and TERM00056, the LU decomposition is
+For TERM01128 and TERM01128, the LU decomposition is
 
-     EQ=00034.
+     EQ=00462.
 
 Now..,
 
-     EQ=00035.
+     EQ=00463.
 
-However, comparing this with (42), we can see the following relationship.
+However, comparing this with (563), we see the following relationship.
 
-     EQ=00036.
+     EQ=00464.
 
 With this,
 
-     EQ=00037.
+     EQ=00465.
 
 The result is That is, ,
 
-     EQ=00038.
+     EQ=00466.
 
-Here, TERM00057 and TERM00058 are,
-Equation (40) with TERM00059,
-In other words, without considering the surface flux term
-Note that this can be obtained by performing LU decomposition.
-The physical meaning of these terms is ,
-During the flux exchange process with the ground surface,
-The entire atmosphere has a heat capacity of TERM00060,
-Top: Flux TERM00061
-Indicates that it can be regarded as one layer to be supplied.
+Note that TERM01129 and TERM01130 can be obtained by the LU decomposition with the equation (561) of TERM01131, i.e., without considering the surface flux term. The physical meaning of these terms is that in the flux exchange process with the ground surface, the entire atmosphere has a heat capacity TERM01132, and can be regarded as a layer whose flux TERM01133 is supplied from above.
 
-(24) and (30),
-(25) and (31),
-(26) and (32), respectively.
-(48), which yields the equation corresponding to
+In (545) and (551), (546) and (552), (547) and (553), respectively, the equation corresponding to (569) is obtained, which is as follows.
 
-     EQ=00039.
+     EQ=00467.
 
-     EQ=00040.
+     EQ=00468.
 
-     EQ=00041.
+     EQ=00469.
 
-Therefore, if we concatenate the three equations above, we get
-We can solve for the unknown variables TERM00062 and TERM00062.
-If we can solve these problems, we can then
-(47) can be solved with TERM00063 and TERM00063 in sequence.
-Afterwards, the consistuous flux is applied to the obtained temperature
+Therefore, by concatenating the above three expressions, we can solve for the unknown variables TERM01134 and TERM01134. Once these are solved, we can then solve for (568) as TERM01135 and TERM01135. After that, we can apply a consistent flux to the obtained temperatures and
 
-     EQ=00056.
-     EQ=00056.
+     EQ=00484.
+     EQ=00484.
 
-Calculate as.
-We show the case where TERM00064 is a general matrix,
-It is even simpler since it is actually a triple diagonal matrix.
+and compute it as Although we have shown that TERM01136 is a general matrix, it is simpler since it is actually a triple-diagonal matrix.
 
-During the program,
-For atmospheric parts in `MODULE:[VFTND1(pimtx.F)]`,
-MODULE:[GNDHT1(pggnd.F)]` for the underground part, the first half of the LU decomposition method.
-(where the TERM00065 is obtained),
-In `MODULE:[SLVSFC(pgslv.F)]`, solve the equation of TERM00066,
-Seeking TERM00067,TERM00067.
-Then, in `MODULE:[GNDHT2(pggnd.F)]`
-The second half of the LU decomposition method is performed and the rate of change of temperature in the ground is solved,
-Correct the fluxes so that the balance is matched.
-Also, in `MODULE:[VFTND2(pimtx.F)]`, for the atmosphere
-Solving the rate of temperature change,
-Fluxes are corrected with `MODULE:[FLXCOR(pimtx.F)]`.
+In the program, `MODULE:[VFTND1(pimtx.F)]` for the atmospheric part and `MODULE:[GNDHT1(pggnd.F)]` for the underground part, the first half of the LU decomposition method (where TERM01137 is obtained) is performed, and in `MODULE:[ SLVSFC(pgslv.F)]`, the equation of TERM01138 is solved, and TERM01139 and TERM01139 are obtained. Then, in `MODULE:[GNDHT2(pggnd.F)]`, we perform the latter half of the LU decomposition method, solve for the temperature coefficient of variation for the ground, and correct the fluxes so that the convergence of the two equations agrees with each other. In `MODULE:[VFTND2(pimtx.F)]`, the temperature coefficient of variation is solved for the atmosphere, and the fluxes are corrected with `MODULE:[FLXCOR(pimtx.F)]`.
 
 ### Combined expression for time difference
 
-The coupling formula for finding TERM00068, TERM00068 is,
-Solve three times under different conditions as follows.
+The concatenation formula for TERM01140 and TERM01140 is solved three times with different conditions as follows.
 
-Solve for surface wetness TERM00069 as 1. Surface temperature is a variable.
+Solve for surface wetness TERM01141 as 1. Surface temperature is a variable.
 
-2. the surface wetness obtained by `MODULE:[GNDBET]`.
- Surface temperature is a variable .
+2. the solution is based on the surface moisture content obtained by `MODULE:[GNDBET]`. The surface temperature is a variable.
 
-3. the surface wetness obtained by `MODULE:[GNDBET]`.
- In case of snowmelt, the surface temperature is fixed at the freezing point.
+3. the solution is given by the surface moisture content obtained by `MODULE:[GNDBET]`. In the case of snow melting, etc., the surface temperature is fixed at the freezing point.
 
-The first calculation is performed to estimate the possible evaporation rate, TERM00070.
-(When the surface wetness is small, the energy balance of the model indicates that
-Using the obtained TERM00071, the possible evaporation rate can be calculated by
-TERM00072
-diagnosed as, would result in unrealistically large values).
-Possible evaporation rate is ,
+The first calculation is performed to estimate the possible evaporation rate (TERM01142). (When the surface wetness is small, diagnosing the possible evaporation rate as TERM01144 using TERM01143 obtained from the model energy balance will result in an unrealistically large value.) The possible evaporation rate is defined as,
 
-     EQ=00057.
+     EQ=00485.
 
-That would be.
-The subscript TERM00073 means after correction,
-This is a consistent flux to the obtained temperature etc.
+It becomes The subscript TERM01145 means, after correction, that this is a consistent flux for the temperature etc. obtained.
 
 In the second and subsequent calculations ,
 
-1. to the amount of possible evaporation found in the first calculation
- Surface wetness (evaporation efficiency) TERM00074
- Multiply the value multiplied by the amount of evaporation (TERM00075).
+The value of evaporation (TERM01146) multiplied by the value of possible evaporation determined in the first calculation is the value of evaporation (TERM01147).
 
-         EQ=00042.
+         EQ=00470.
 
-2. evaporation quantity TERM00076 is
+2. evaporation rate TERM01148 is
 
-         EQ=00043.
+         EQ=00471.
 
- As required by ,
- Once again, rebalancing the energy.
+ The energy balance is again rebalanced as required by
 
-Two methods of calculating the amount of evaporation can be used
-(The standard uses the method in 1.).
-The third calculation is performed during snow and ice melt and sea ice formation in the mixed layer ocean.
-This is done in order to fix the surface temperature at the freezing point, for example, to unbalance the energy.
-In this case, the amount of energy used for the phase change of water, such as snowmelt, is diagnostically determined,
-It will be used later to calculate the amount of snow melt, etc.
+There are two ways of calculating the evaporation rate, i.e., (1) and (2) (the standard method is used in this case). The third calculation is performed in order to fix the surface temperature at the freezing point, etc. during snow and ice melt or sea ice formation in the mixed layer oceans in order to solve the energy balance. The amount of energy used for the phase change of water is diagnostically determined and is used to calculate the amount of snowmelt later.
 
 The concrete form of the coupling formula is as follows.
 
-     EQ=00058.
-     EQ=00058.
+     EQ=00486.
+     EQ=00486.
 
-Here, TERM00078, TERM00078 and TERM00079, TERM00079 are,
-The components of the matrices and vectors obtained by doing the first half of the LU decomposition method.
-When the ground surface is covered with snow or ice, instead of the latent heat TERM00080
-Using the Latent Heat of Sublimation TERM00081. TERM00082 is the latent heat of melting of water.
-However, in the second calculation,
-If the first method is used as an estimate of evaporation, we get the following.
+Here, TERM01150, TERM01150, and TERM01151 and TERM01151 are components of the matrices and vectors obtained by the first half of the LU decomposition method. When the ground surface is covered with snow or ice, the sublimation latent heat TERM01153 is used instead of the latent heat TERM01152. TERM01154 is the latent heat of the melting of water. However, in the second calculation, if the first method is used to estimate evaporation, the result will be as follows.
 
-     EQ=00059.
-     EQ=00059.
+     EQ=00487.
+     EQ=00487.
 
 In the third calculation, the concatenation equation for a fixed surface temperature is
 
-     EQ=00060.
-     EQ=00060.
+     EQ=00488.
+     EQ=00488.
 
-where TERM00083 is the rate of change to the temperature to be fixed,
+Here, TERM01155 is the rate of change to the temperature to be fixed,
 
-     EQ=00044.
+     EQ=00472.
 
-TERM00084 is 273.15K for snow and ice melting,
-In the case of sea ice production it is 271.15K.
-If the second method of evaporation calculation is used, then
-Similarly, instead of TERM00085, use TERM00086,
-Calculate the differential term of TERM00087 as 0.
-In this case,
+The value of TERM01156 is 273.15 K for snow and ice melt, and 271.15 K for sea ice formation. When the second method of evaporation calculation is used, TERM01158 is used instead of TERM01157, and the differential term of TERM01159 is set to zero. In this case, the differential term of TERM01159 is set to zero,
 
-     EQ=00061.
-     EQ=00061.
+     EQ=00489.
+     EQ=00489.
 
-TERM00088, calculated by the Surface Energy Balance,
-It is the amount of energy used for the phase change of water.
+TERM01160, which is calculated by TERM01160, is the surface energy balance and is the energy used for the water phase change.
 
 ### implicit Treatment of Time Steps in Time Differences
 
-Although the implicit method is used for the time difference of the vertical diffusion term,
-In general, the diffusion coefficients are nonlinear, and we explicitly evaluate these coefficients
-This can cause problems of numerical instability.
-To improve stability, Kalnay and Kanamitsu (19?) following the
-I'm working on how to handle the time steps.
+Although the implicit method is used for the time difference of the vertical diffusion term, the diffusion coefficients are generally nonlinear, and the explicit evaluation of these coefficients may lead to numerical instability problems. In order to improve the stability, we follow Kalnay and Kanamitsu (19?) in treating the time step as in Kalnay and Kanamitsu (19?). In order to improve the stability, we follow Kalnay and Kanamitsu (19?) in treating the time step.
 
 For simplicity, we will take the following ordinary differential equations as an example.
 
-     EQ=00045.
+     EQ=00473.
 
-The coefficient TERM00089 represents the nonlinearity.
-If we evaluate only the coefficients explicitly and make them implicitly different, we get the following equation.
+The coefficient TERM01161 expresses the nonlinearity. Evaluating only the coefficients explicitly and making them implicitly differential, we obtain the following equation.
 
-     EQ=00046.
+     EQ=00474.
 
-However, consider the value of TERM00090 two steps ahead, TERM00091,
+However, consider the value of TERM01162 two steps ahead, TERM01163,
 
-     EQ=00047.
+     EQ=00475.
 
-     EQ=00048.
+     EQ=00476.
 
-.
-In general, it is better to use (64), (65)
-(63), which is known to have better stability than (63).
+and (586). In general, (585) and (586) are known to be more stable than (584).
 
-(64), (65) to find the rate of change over time
-Rewriting it into a form yields the following.
+By rewriting (585) and (586) into a form for determining the rate of change over time, we obtain the following.
 
-     EQ=00049.
+     EQ=00477.
 
-     EQ=00050.
+     EQ=00478.
 
-That is, the time step in determining the rate of change of the rate of change of time includes the following,
-Using twice the time integration step.
+In other words, the time step in determining the rate of change is twice the time integration step.

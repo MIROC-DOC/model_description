@@ -4,46 +4,29 @@ Here we present the basic setup of the model.
 
 ### Coordinate System.
 
-The coordinate system is basically,
-Longitude TERM00134, Latitude TERM00135, Normalized Pressure TERM00136
-(TERM00137,TERM00137 is surface pressure.)
-and treat each as orthogonal.
-However, the vertical coordinate of TERM00138 is used as the vertical coordinate.
+The coordinate system is basically based on the longitude TERM00134, latitude TERM00135, and normalized atmospheric pressure TERM00136 (TERM00137 and TERM00137 being surface atmospheric pressure), which are treated as orthogonal to each other. However, the vertical coordinates of the underground coordinate system (TERM00138) are used.
 
 Longitude is discretized at equal intervals `MODULE:[ASETL]`.
 
      EQ=00005.
 
-Latitude is the Gauss latitude TERM00139 described in Mechanics, and `MODULE:[ASETL]`,
-Gauss-Legendre derived from the integral formula.
-This takes TERM00140 as its argument
-J The zero point of the next Legendre polynomial `MODULE:[GAUSS]`.
+The latitude is the Gauss latitude TERM00139 described in Mechanics, and it is derived from `MODULE:[ASETL]`, the Gauss-Legendre integral formula. This is the zero point of the Legendre polynomial of order J with TERM00140 as the argument, `MODULE:[GAUSS]`.
 
 If J is large, we can approximate
 
      EQ=00006.
 
-Normally, the grid spacing of longitude and latitude is almost equal to TERM00141.
-This is based on the triangular truncation of the spectral method.
+Usually, the grid spacing of longitude and latitude is taken to be approximately equal to TERM00141. This is based on the triangular truncation of the spectral method.
 
-Normalized atmospheric pressure (TERM00142) is designed to give a good representation of the vertical structure of the atmosphere,
-suitably discretized at unequal intervals `MODULE:[ASETS]`.
-As we will discuss later in Mechanics, the value of the layer boundaries
-After defining the TERM00143 in TERM00144 ,
+The normalized atmospheric pressure TERM00142 is discretized appropriately at unequal intervals so as to better represent the vertical structure of the atmosphere `MODULE:[ASETS]`. As described later in Mechanics, the value of the layer boundaries (TERM00143) is defined in TERM00144, and then
 
      EQ=00007.
 
-Find the TERM00145 representing the layer by
-Figure [a-setup:level\]] (#a-setup:level) shows the 20 levels of the standard.
+to find the TERM00145 that represents the layers by Figure [a-setup:level\]] (#a-setup:level) shows the standard 20 levels of layers used.
 
-Each forecast variable is all, TERM00146,TERM00146
-or defined on the TERM00147,TERM00147 grid.
-(The subterranean level, TERM00148, is discussed in the Physical Processes section.)
+Each predictor is entirely defined on a grid of TERM00146,TERM00146 or TERM00147,TERM00147. (The underground level, TERM00148, is described in the section on physical processes.)
 
-In the time direction, it is discretized with an equally spaced TERM00149,
-The time integration of the forecasting equation is performed.
-However, if the stability of the time integration may be compromised
-TERM00150 can vary.
+In the time direction, the predictive equations are discretized at evenly spaced TERM00149 and time integration is performed. However, if the stability of the time integration may be impaired, the TERM00150 may change.
 
 ### Physical Constants.
 
@@ -146,8 +129,7 @@ The basic physical constants are shown below `MODULE:[APCON]`.
      1000.
 
  - TAB00002:8.0
-     0 in TERM00173.
- saturation vapor
+     0 Saturated vapor at 0 TERM00173
 
  - TAB00002:8.1
      TERM00174(273K)
@@ -159,8 +141,7 @@ The basic physical constants are shown below `MODULE:[APCON]`.
      611
 
  - TAB00002:9.0
-     Stefan Bolzman
- constant
+     Stefan Bolzman Constant
 
  - TAB00002:9.1
      TERM00175
@@ -169,8 +150,7 @@ The basic physical constants are shown below `MODULE:[APCON]`.
      W TERM00176 TERM00177
 
  - TAB00002:9.3
-     5.67
-     TERM00178
+     5.67 TERM00178
 
  - TAB00002:10.0
      Kárman Constant

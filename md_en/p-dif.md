@@ -2,22 +2,13 @@
 
 ### Vertical Diffusion Scheme Overview.
 
-The vertical diffusion scheme,
-due to sub-grid scale turbulent diffusion.
-Evaluating the vertical flux of physical quantities.
-The main input data are wind speed, $u, v$, temperature $T$, specific humidity $q$, and cloud cover $l$,
-The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and
-It is the differential value for obtaining an implicit solution.
+The vertical diffusion scheme evaluates the vertical flux of physical quantities due to sub-grid scale turbulent diffusion. The main input data are wind speed, $u, v$, air temperature, $T$, specific humidity, $q$, and cloud water, $l$, and the output data are the vertical fluxes of momentum, heat, water vapor, and cloud water, as well as the derivative values for obtaining the implicit solution.
 
-To estimate the vertical diffusion coefficient, the
-Mellor and Yamada (1974, 1982).
-The turbulent closure model.
-Using level 2 parameterization.
+The vertical diffusion coefficients are estimated using the level 2 parameterization of the Mellor and Yamada (1974, 1982) turbulent flow closure model.
 
 The outline of the calculation procedure is as follows.
 
-1. as the stability of the atmosphere.
-     Richardson numbers.
+Calculate the Richardson number as the stability of the atmosphere.
 
 2. calculate the diffusion coefficient from Richardson number `MODULE:[VDFCOF]`.
 
@@ -25,8 +16,7 @@ The outline of the calculation procedure is as follows.
 
 ### Basic Formula for Flux Calculations
 
-The vertical diffuse flux in the atmosphere is ,
-Using the diffusion coefficient $K$, it is evaluated as follows.
+The vertical diffuse flux in the atmosphere is evaluated by using the diffusion coefficient $K$ as follows
 
 $$
   F{u} = K_{M} \frac{\partial{u}}{\partial {\sigma}} 
@@ -50,8 +40,7 @@ $$
 
 ### Richardson Number.
 
-The standard for atmospheric stratospheric stability,
-Bulk Richardson number $R_{iB}$ is
+The bulk Richardson number ($R_{iB}$), which is the benchmark for atmospheric stratification stability, is
 
 $$
 R_{iB} = \frac{\displaystyle 
@@ -62,9 +51,7 @@ R_{iB} = \frac{\displaystyle
 $$
 
 
-. defined by .
-Here, $(\Delta A)_{k-1/2}$ represents $A_{k} - A_{k-1}$.
-The $(\Delta z)_{k-1/2}$ is based on the hydrostatic pressure equation,
+defined by Here, $(\Delta A)_{k-1/2}$ represents $A_{k} - A_{k-1}$. Also, $(\Delta z)_{k-1/2}$ is defined by the hydrostatic pressure equation,
 
 $$
 (\Delta z)_{k-1/2} = \frac{R Tv_{k}}{g} 
@@ -72,7 +59,7 @@ $$
 $$
 
 
-The flux Ricahrdson number $R_{if}$ is ,
+Flux Ricahrdson number $R_{if}$ is ,
 
 $$
 R_{if} = \frac{1}{2 \beta_2}
@@ -111,14 +98,11 @@ $$
 $$
 
 
-The relationship between the $R_{iB}$ and the $R_{if}$ is illustrated in this figure,
-Figure [p-dif:rib-rif\]] (#p-dif:rib-rif).
+The relationship between $R_{iB}$ and $R_{if}$ is illustrated in the figure[#p-dif:rib-rif]](#p-dif:rib-rif).
 
 ### Diffusion Coefficient.
 
-The diffusion coefficient is ,
-For each layer boundary ($k-1/2$ level) ,
-It is given as follows.
+The diffusion coefficients are given for each layer boundary ($k-1/2$ level) as follows.
 
 $$
 K_M        =  l^2 \frac{\Delta |{$\mathbf{v}$}|}{\Delta z} S_M  \\
@@ -127,7 +111,7 @@ $$
 
 
 
-Here, $S_M, S_H$ are,
+Here, $S_M, S_H$ are
 
 $$
 \widetilde{S_H} = \frac{ \alpha_1-\alpha_2 R_{if} }{ 1-R_{if} }
@@ -158,12 +142,9 @@ l = \frac{kz}{1+kz/l_0}
 $$
 
 
-Take.
-$k$ is a Kárman constant.
-The current standard value is $l_0=200$ m.
+Take the following. $k$ is the Kárman constant. The current standard value is $l_0=200$ m.
 
-If $S_H, S_M$ are shown as functions of $R_{if}$,
-Figure [p-dif:smsh-rif\]] (#p-dif:smsh-rif).
+
 
 ### Calculating Flux.
 
@@ -218,13 +199,8 @@ $$
 
 ### Minimum Diffusion Coefficient.
 
-In the very stable case, the above estimate gives zero as the diffusion coefficient.
-As it is, the model's behavior can be modified in various ways
-Set a suitable minimum value as it will have a negative effect.
-The current standard values are the same for all fluxes and
-$K_{min}=$ 0.15 m$^{2}$/s
+In the very stable case, the above estimate gives zero as the diffusion coefficient. If this value is used as it is, various adverse effects on the behavior of the model are observed. The current standard value is $K_{min}=$ 0.15 m$^{2}$/s, which is common to all fluxes.
 
 ### Other Notes.
 
-I'm calling the shallow cumulus convection `MODULE:[SHLCOF]`,
-By default, this is a dummy.
+We call shallow cumulus convection `MODULE:[SHLCOF]`, which is a dummy by default.

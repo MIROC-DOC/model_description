@@ -2,34 +2,19 @@
 
 ### Gravitational Wave Resistance Scheme Overview
 
-The gravitational wave resistance scheme is,
-Excited by sub-grid scale terrain
-The upward momentum flux of the gravitational wave is represented,
-The horizontal wind deceleration associated with its convergence is calculated.
-The main input data are: east-west wind $u$, north-south wind $v$, and temperature $T$,
-The output data is the time rate of change for the east-west and north-south winds,
-$\partial u/\partial t, \partial v/\partial t$, is.
+The gravitational wave resistance scheme represents the upward momentum flux of the gravitational waves induced by sub-grid scale topography and calculates the horizontal wind deceleration associated with its convergence. The main input data are east-west wind ($u$), north-south wind ($v$), and temperature ($T$), and the output data are the rates of temporal variation of east-west wind and north-south wind, $\partial u/\partial t, \partial v/\partial t$.
 
 The outline of the calculation procedure is as follows.
 
-1. the momentum flux at the ground surface.
- Dispersion of surface altitude,
- The horizontal wind speed at the lowest level, stratification stability, etc.
+The momentum flux at the ground surface is calculated from the dispersion of surface height, the horizontal wind speed at the lowest level, and the stratification stability.
 
-2. consider the upward propagation of gravitational waves with momentum fluxes.
- Momentum fluxes are determined from the critical fluid number
- If the critical flux is exceeded,
- Suppose a breaking wave occurs and the flux is at its critical value.
+We consider the upward propagation of gravitational waves with momentum fluxes. If the momentum flux exceeds the critical fluid number, the momentum flux is determined by the critical fluid number, then breaking waves occur and the flux becomes the critical value of the momentum flux.
 
-3. according to the convergence of the momentum flux at each layer.
- Calculate the time variation of the horizontal wind.
+3. compute the time evolution of the horizontal wind as the momentum flux converges in each layer.
 
 ### Relationship between local fluid number and momentum flux
 
-The gravitational waves of surface origin
-Given the vertical flux of horizontal momentum,
-Flux at a certain altitude $\tau$ and
-Local Fluid Number $F_L = NH/U$ and ,
+Considering the vertical flux of horizontal momentum due to surface-derived gravitational waves, the difference between the flux ($\tau$) and the local fluid number ($F_L = NH/U$) at a certain altitude is
 
 $$
    F_L = \left(
@@ -38,54 +23,27 @@ $$
 $$
 
 
-The relationship between the two is valid.
-Here, $N = g/\theta \partial \theta/\partial z$ is
-Brandt Vaisala Frequency,
-$\rho$ is the density of the atmosphere,
-$U$ corresponds to the wind speed and $E_f$ corresponds to the horizontal scale of the ripples on the ground surface
-It is a proportional constant .
-Now..,
+This relationship holds for the following cases where $N = g/\theta \partial \theta/\partial z$ is the Brant-Visala frequency, $\rho$ is the density of the atmosphere, $U$ is the wind speed, and $E_f$ is the proportional constant corresponding to the horizontal scale of the rippling at the surface. From now on,
 
 $$
   \tau = \frac{E_f F_L^2 \rho U^3}{N}
 $$
 
 
-Local Fluid Number $F_L$ is ,
-Assume that a certain value, the critical fluid number $F_{c}$, cannot be exceeded.
-Calculated from (1)
-If the local fluid number exceeds the critical fluid number $F_{c}$
-The gravitational waves are supersaturated,
-Up to the momentum flux corresponding to the critical fluid number
-Flux decreases.
+The local fluid number ($F_L$) cannot exceed the critical fluid number ($F_{c}$) at a certain value. If the local fluid number calculated from (589) exceeds the critical fluid number $F_{c}$, the gravitational wave becomes supersaturated and the flux decreases to the momentum flux corresponding to the critical fluid number.
 
 ### Momentum fluxes at the surface.
 
-due to gravitational waves excited at the earth's surface.
-The magnitude of the vertical flux of horizontal momentum $\tau_{1/2}$ is ,
-except for the local fluid number at the surface
-$(F_L)_{1/2} = N_1 h/U_1$.
-(2) by substituting (2) for ,
+The magnitude of the vertical flux of horizontal momentum due to gravitational waves excited at the earth's surface, $\tau_{1/2}$, is calculated by substituting the local fluid number $(F_L)_{1/2} = N_1 h/U_1$ into (590),
 
 $$
   \tau_{1/2} = E_f h^2 \rho_1 N_1 U_1 \; ,
 $$
 
 
-It is estimated that .
-Here,
-The $U_1 = |{\mathbf v}_1| = (u_1^2 + v_1^2)^{1/2}$ has a surface wind speed of ,
-$N_1, \rho_1$ are the two most common types of data in the atmosphere near the earth's surface.
-It is stability and density.
-$h$ is an indicator of the sub-grid surface elevation change,
-Assume that the standard deviation of the surface elevation is equal to $Z_{SD}$.
+where $U_1 = |{\mathbf v}_1| = (u_1^2 + v_1^2)^{1/2}$ is the surface wind speed, $N_1, \rho_1$ are estimated to be the stability and density of the atmosphere near the earth's surface, respectively. where $U_1 = |{\mathbf v}_1| = (u_1^2 + v_1^2)^{1/2}$ is the surface wind speed, and $N_1, \rho_1$ are the stability and density of the atmosphere near the earth's surface, respectively. $h$ is an indicator of the change in the surface height of the sub-grid and is assumed to be equal to the standard deviation of the surface height ($Z_{SD}$).
 
-Here, the local fluid number at the surface
-If $(F_L)_{1/2} = N_1 Z_{SD}/U_1$ is the critical fluid number
-When you exceed the $F_c$,
-The momentum flux is calculated by substituting $F_c$ into (2) and
-Let's say it can be contained.
-Namely,
+Here, when the local fluid number ($(F_L)_{1/2} = N_1 Z_{SD}/U_1$) exceeds the critical fluid number ($F_c$), the momentum flux is suppressed to the value obtained by substituting (590) for $F_c$. In other words,
 
 $$
   \tau_{1/2} = \min \left(
@@ -97,14 +55,7 @@ $$
 
 ### Momentum fluxes in the upper levels.
 
-The momentum flux at level $k-1/2$ is
-Suppose we are required to.
-$\tau_{k+1/2}$, when no saturation occurs
-Equal to $\tau_{k-1/2}$.
-This momentum flux, $\tau_{k-1/2}$, is ,
-Momentum fluxes calculated from the critical fluid number at the $k+1/2$ level
-In the case of a wave breaking event that exceeds
-The momentum flux decreases to the flux corresponding to the criticality.
+Suppose that the momentum flux $\tau_{k-1/2}$ is required for level $k-1/2$. When no saturation occurs, $\tau_{k+1/2}$ is equal to $\tau_{k-1/2}$. If the momentum flux ($\tau_{k-1/2}$) exceeds the momentum flux calculated from the critical fluid number at the $k+1/2$ level, wave breaking occurs in the $k$ layer and the momentum flux decreases to the critical flux.
 
 $$
   \tau_{k+1/2} = \min \left( 
@@ -114,9 +65,7 @@ $$
 $$
 
 
-However, the $U_{k+1/2}$,
-. of the wind velocity vector at each layer,
-It is the magnitude of the projective component of the lowest level with respect to the direction of the horizontal wind,
+Note that $U_{k+1/2}$ is the magnitude of the projective component of the wind speed vectors for each layer relative to the direction of the lowest level of the horizontal wind,
 
 $$
   U_{k+1/2} = \frac{{\mathbf v}_{k+1/2} 
@@ -127,7 +76,7 @@ $$
 
 ### The magnitude of the time variation of horizontal wind due to momentum convergence.
 
-The temporal rate of change of the projective component of the horizontal wind, $U_{k}$, is
+The temporal rate of change of the projective component of the horizontal wind, $U_{k}$, is ,
 
 $$
   \frac{\partial U}{\partial t} 
@@ -144,8 +93,7 @@ $$
 $$
 
 
-With this ,
-The rate of change of the east-west and north-south winds over time is calculated as follows.
+Using this, the temporal rates of change for the east-west and north-south winds are calculated as follows
 
 $$
   \frac{\partial u_{k}}{\partial t}  = 
@@ -158,6 +106,4 @@ $$
 
 ### Other Notes.
 
-1. when the wind speed at the lowest level is small ($U_{1} \le v_{min}$) and
- In the case of small undulations in the earth's surface ($Z_{SD} \le (Z_{SD})_{min}$),
- Assuming no gravitational waves are excited at the earth's surface.
+1. it is assumed that no gravitational waves are excited at the ground surface when the wind speed is small ($U_{1} \le v_{min}$) and when the undulations at the surface are small ($Z_{SD} \le (Z_{SD})_{min}$).

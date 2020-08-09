@@ -1,7 +1,6 @@
 ## Summary of the mechanics part
 
-Here, we duplicate the previous description,
-Enumerate the calculations performed in the Mechanical Process Department.
+In this section, we enumerate the calculations performed in the Mechanical Engineering Department, although they overlap with the previous descriptions.
 
 ### Summary of Calculations for the Mechanics Portion
 
@@ -25,7 +24,7 @@ The mechanical processes are calculated in the following order.
 
 9. convert the predictive variables to grid values `MODULE:[GENGD(dgeng)]`
 
-10. pseudo etc. $p$ plane spreading correction `MODULE:[CORDIF(ddifc)]`
+10. pseudo etc. $p$ surface diffusion correction `MODULE:[CORDIF(ddifc)]`
 
 11. consideration of frictional heat by diffusion `MODULE:[CORFRC(ddifc)]`
 
@@ -37,10 +36,7 @@ The mechanical processes are calculated in the following order.
 
 ### Conversion of Horizontal Wind to Vorticity and Divergence
 
-Grid point values for horizontal wind $u_{ij}, v_{ij}$
-from the grid values of vorticity and divergence $\zeta_{ij}, D_{ij}$.
-First, the spectra of vorticity and divergence
-Ask for $\zeta_n^m, D_n^m$,
+Obtain grid values of vorticity and divergence from the grid values of $u_{ij}, v_{ij}$ for horizontal wind. First, we obtain the spectra of vorticity and divergence from $\zeta_n^m, D_n^m$,
 
 $$
 \zeta_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -88,17 +84,11 @@ $$
 $$
 
 
-However, it is $\epsilon_v = R_v/R - 1$,
-$R_v$ is a gas constant for water vapor
-(461 Jkg$^{-1}$K$^{-1}$)
-$R$ is a gas constant of air
-(287.04 Jkg$^{-1}$K$^{-1}$)
-It is.
+However, it is $\epsilon_v = R_v/R - 1$ and $R_v$ is the gas constant for water vapor (461 Jkg$^{-1}$K$^{-1}$) and $R$ is the gas constant for air (287.04 Jkg$^{-1}$K$^{-1}$).
 
 ### Calculating the Barometric gradient term
 
-The barometric gradient term $\nabla \pi = \frac{1}{p_S} \nabla p_S$ is ,
-First, we need to get the $\pi_n^m$
+The barometric gradient term $\nabla \pi = \frac{1}{p_S} \nabla p_S$ is first used to define the $\pi_n^m$
 
 $$
   \pi_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -272,15 +262,9 @@ $$
 
 ### Conversion of Predictive Variables into Spectra
 
-(1) and
-(2).
+(122) and (123).
 
-$u_{ij}^{t-\Delta t}, v_{ij}^{t-\Delta t}$
-Spectral representation of vorticity and divergence
-Convert to $\zeta_n^m, D_n^m$.
-Furthermore,
-Temperature $T^{t-\Delta t}$, Specific Humidity $q^{t-\Delta t}$,
-$\pi = \ln p_S^{t-\Delta t}$.
+Convert $u_{ij}^{t-\Delta t}, v_{ij}^{t-\Delta t}$ to a spectral representation of vorticity and divergence $\zeta_n^m, D_n^m$. Furthermore, converting the temperature $T^{t-\Delta t}$, specific humidity $q^{t-\Delta t}$, and $\pi = \ln p_S^{t-\Delta t}$ to
 
 $$
   X_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
@@ -426,8 +410,7 @@ $$
 
 
 
-by using LU decomposition to solve for
-Ask for $\bar{D}$,
+Using LU decomposition, $\bar{D}$ is obtained by solving for
 
 $$
   \frac{\partial {$\mathbf{T}$}}{\partial t} 
@@ -445,10 +428,7 @@ $$
 $$
 
 
-due to
-$\partial {$\mathbf{T}$}/\partial t$,
-$\partial \pi/\partial t$
-and calculate the value of the spectrum in $t+\Delta t$.
+Calculate the value of the spectrum in $\partial {$\mathbf{T}$}/\partial t$, $\partial \pi/\partial t$ and then calculate the value of the spectrum in $t+\Delta t$ using
 
 $$
   \zeta^{t+\Delta t}  =  \left( \zeta^{t-\Delta t}
@@ -472,8 +452,7 @@ $$
 
 ### Conversion of Predictive Variables to Grid Values
 
-Spectral values of vorticity and divergence from $\zeta_n^m, D_n^m$
-Find the horizontal wind speed grid values $u_{ij}, v_{ij}$.
+Obtain grid values of horizontal wind speed from the spectral values of vorticity and divergence ($\zeta_n^m, D_n^m$) $u_{ij}, v_{ij}$.
 
 $$
   u_{ij}
@@ -510,7 +489,7 @@ $$
 $$
 
 
-$T_{ij}, \pi_{ij}, q_{ij}$ are obtained by such methods as
+$T_{ij}, \pi_{ij}, q_{ij}$, and so on,
 
 $$
   {p_S}_{ij} = \exp \pi_{ij} 
@@ -521,11 +500,7 @@ to calculate.
 
 ### Pseudo etc. $p$ Surface Diffusion Correction
 
-Horizontal diffusion is applied on the $\sigma$ surface and so on,
-In large areas of mountain slopes, water vapor is transported uphill,
-Causing problems such as bringing false precipitation at the top of the mountain.
-To mitigate that, etc. $p$ close to the diffusion of the surface
-Insert corrections for $T,q,l$.
+The horizontal diffusion is applied on the surface of $\sigma$, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for TERM00412.
 
 $$
   {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
@@ -554,12 +529,9 @@ $$
 $$
 
 
-And so on.
-${\mathcal D}(\pi)$ has been replaced by the spectral value of $pi$, $\pi_n^m$
-The spectral representation of the diffusion coefficient multiplied by
-It is used to convert to a grid value.
+and so on. In ${\mathcal D}(\pi)$, the spectral value of $pi$ is converted to a grid by multiplying the spectral value of $\pi_n^m$ by the spectral representation of the diffusion coefficient.
 
-### Consideration of frictional heat from diffusion
+### Consideration of frictional heat from diffusion.
 
 Frictional heat from diffusion is ,
 
@@ -569,8 +541,7 @@ $$
 $$
 
 
-It is estimated that .
-Therefore,
+It is estimated that Therefore,
 
 $$
   T_k \leftarrow  T_k 
@@ -582,17 +553,9 @@ $$
 
 ### Correction for conservation of mass
 
-The spectral method is not used,
-The global integration of the $\pi = \ln p_S$ is preserved except for rounding errors,
-The conservation of the mass, i.e. the global integration of $p_S$, is not guaranteed.
-Also, with the expiration of the spectral wavenumber, the
-Negative values of the grid points of water vapor are sometimes observed.
-For these reasons ,
-Let the mass of dry air and water vapor, the mass of cloud water be preserved,
-In addition, corrections are made to remove areas with negative water vapor content.
+In the spectral method, the global integral of $\pi = \ln p_S$ is preserved with rounding errors removed, but the preservation of the mass, i.e. the global integral of $p_S$ is not guaranteed. Moreover, a wavenumber break in the spectra sometimes results in negative values of the water vapor grid points. For this reason, we perform a correction to preserve the masses of dry air, water vapor, and cloud water, and to remove the regions with negative water vapor content.
 
-First, at the beginning of the mechanics calculation, `MODULE:[FIXMAS]`,
-Calculate the global integral of each component of water vapor and cloud water, $M_q, M_l$.
+At the beginning of the dynamics calculations, the global integrals of `MODULE:[FIXMAS]`, water vapor, and cloud water are calculated for $M_q, M_l$.
 
 $$
   M_q^0  =  \sum_{ijk} q p_S  \Delta\lambda_i w_j \Delta\sigma_k  \\
@@ -601,21 +564,16 @@ $$
 
 
 
-Also, in the first step of the calculation
-Calculate and memorize the dry mass $M_d$.
+In the first step of the calculation, the dry mass $M_d$ is calculated and stored.
 
 $$
   M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k 
 $$
 
 
-At the end of the dynamics calculation, `MODULE:[MASFIX]`,
-The following procedure is used to make the correction.
+At the end of the calculation, `MODULE:[MASFIX]`, the following procedure is followed.
 
-First, we discuss the grid points with negative water vapor content,
- The water vapor is distributed from the grid points directly below,
- Remove the negative water vapor.
- If this is     $q_k < 0 $,
+First, negative water vapor is removed by dividing the water vapor from the grid points immediately below the grid points. Suppose that $q_k < 0 $ is used,
 
 $$
         q_k'      =  0          \\
@@ -628,17 +586,14 @@ $$
 
 Next, set the value to zero for the grid points not removed by the above procedure.
 
-3. calculate the global integration value $M_q$,
- Make sure this is consistent with $M_q^0$,
- Multiply the global water vapor content by a certain percentage.
+3. calculate the global integral value of $M_q$ and multiply the global water vapor content by a fixed percentage so that it is the same as that of $M_q^0$.
 
 $$
         q'' = \frac{M_q^0}{M_q} q' 
 $$
 
 
-4. perform dry air mass correction.
- Similarly, calculate the $M_d$,
+4. correct for dry air mass Likewise calculate $M_d$,
 
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
@@ -668,32 +623,25 @@ $$
 $$
 
 
-The $K_R$ is the Rayleigh coefficient of friction.
-The Rayleigh coefficient of friction is
+$K_R$ is the Rayleigh coefficient of friction. The Rayleigh coefficient of friction is
 
 $$
   K_R = K_R^0 \left[ 1+\tanh \left( \frac{z-z_R}{H_R} \right) \right]
 $$
 
 
-given in profiles like
-However,
+However, the profile is given in the same way as However,
 
 $$
   z = - H \ln \sigma 
 $$
 
 
-Approximate to .
-Standard value is, $K_R^0 = {(30day)}^{-1}$,
-$z_R = -H \ln \sigma_{top}$ ($\sigma_{top}$ : top level of the model),
-$H = 8000$ m,
-$H_R = 7000$ m.
+The results are approximate to those of $K_R^0 = {(30day)}^{-1}$ and $z_R = -H \ln \sigma_{top}$. The standard values are $K_R^0 = {(30day)}^{-1}$, $z_R = -H \ln \sigma_{top}$ ($\sigma_{top}$: top level of the model), $H = 8000$ m, and $H_R = 7000$ m.
 
 ### Time Filter.
 
-To remove the computation mode in leap frog
-Apply the time filter of Asselin (1972) at every step.
+Apply the time filter of Asselin (1972) to remove computational modes in leap frog at every step.
 
 $$
   \bar{T}^{t}
@@ -703,13 +651,9 @@ $$
 $$
 
 
-and $\bar{T}$.
-The $T^{t-\Delta t}$ used in the next step of the mechanical process is
-Using this $\bar{T}^t$.
-For a $\epsilon_f$, the standard value of 0.05 should be used.
+and $\bar{T}$ are obtained. This $\bar{T}^t$ is used as the $T^{t-\Delta t}$ for the next step of the mechanical process. As a rule, 0.05 is used for $\epsilon_f$.
 
-In fact.
-First, in the `MODULE:[GENGD]` conversion of the predictor to a grid of values, the following variables are used,
+In fact, the first step is to convert the predictor to a grid value at the `MODULE:[GENGD]`,
 
 $$
   \bar{T}^{t*}
@@ -719,8 +663,7 @@ $$
 $$
 
 
-and when the physical process is done
-After fixing the value of $T^{t+\Delta t}$, you can use `MODULE:[TFILT]` to determine the value of $T^{t+\Delta t}$,
+and after the physical process is finished and the value of $T^{t+\Delta t}$ is fixed, the `MODULE:[TFILT]` can be used to determine
 
 $$
  \bar{T}^{t}

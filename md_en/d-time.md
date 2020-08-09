@@ -1,21 +1,10 @@
 ## Time integration.
 
-The time difference scheme is basically a leap frog.
-However, the terms of the diffusion terms and physical processes are backward or forward differences.
-A time filter (Asselin, 1972) is used to suppress the computational mode.
-And to make the $\Delta t$ larger,
-Applying the semi-implicit method to the term gravitational wave (Bourke, 1988).
+The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Asselin, 1972) is used to suppress the computational modes. A semi-implicit method is applied to the gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
 
 ### Time integration and time filtering with leap frog
 
-The leap frog is used as a time integration scheme for advection terms and so on.
-The backward difference of $2 \Delta t$ is used for the horizontal diffusion term.
-In addition, the pseudo $p$ surface correction of the diffusion term and the frictional heat term by horizontal diffusion are
-treated as a correction and becomes the forward difference in $2 \Delta t$.
-The physical process section (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) is ,
-I still use the forward differential of $2 \Delta t$.
-(However, we treat the calculation of the time varying term of vertical diffusion as a backward difference.
-See the chapter on physical processes for details.)
+We use leap frog as a time integration scheme for advection terms and so on. A backward difference of $2 \Delta t$ is used for the horizontal diffusion term. The pseudo $p$ surface correction of the diffusion term and the frictional heat due to horizontal diffusion term are treated as corrections, which are forward differences of $2 \Delta t$. The physical process terms (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) still use the forward difference of $2 \Delta t$ (except for the vertical diffusion term, which uses the forward difference of TERM00258). (However, the calculation of the time-varying term of vertical diffusion is treated as a backward difference. Please refer to the chapter on physical processes for details.)
 
 Expressed as ${X}$ on behalf of each forecast variable,
 
@@ -29,13 +18,9 @@ $$
 $$
 
 
-$ \dot{X}_{adv} $ is an advection term etc,
-$ \dot{X}_{dif} $ is a horizontal diffusion term.
+$ \dot{X}_{adv} $ is the advection term etc., and $ \dot{X}_{dif} $ is the horizontal diffusion term.
 
-$ \hat{X}^{t+\Delta t} $ has a ,
-Pseudo, etc. $p$ Correction of frictional heat ($ \dot{X}_{dis} $) by surface and horizontal diffusion
-and physical processes ($ \dot{X}_{phy} $) have been added,
-$ {X}^{t+\Delta t} $.
+To $ \hat{X}^{t+\Delta t} $, the term $ {X}^{t+\Delta t} $ has been added with corrections for the heat of friction ($ \dot{X}_{dis} $) and physical processes ($ \dot{X}_{phy} $) for pseudo-equivalent $p$ surface diffusion and horizontal diffusion.
 
 $$
   {X}^{t+\Delta t} 
@@ -47,9 +32,7 @@ $$
 $$
 
 
-To remove the computation mode in leap frog
-Apply the time filter of Asselin (1972) at every step.
-Namely,
+The time filter of Asselin (1972) is applied every step to remove computational modes in leap frog. I.e., the time filter of Asselin(1972) is applied every step of the way to remove the computation mode in
 
 $$
   \bar{X}^{t}
@@ -59,25 +42,11 @@ $$
 $$
 
 
-and $\bar{X}$.
-For $\epsilon_f$ it is standard to use 0.05.
+and $\bar{X}$. Normally, 0.05 is used as the $\epsilon_f$.
 
 ### semi-implicit time integration
 
-For mechanics calculations, the leap frog is basically used,
-Compute some terms as implicit.
-Here, implicit considers a trapezoidal implicit.
-Regarding the vector quantity ${\mathbf q}$,
-The value in $t$ is converted to ${\mathbf q}$,
-The value in $t+\Delta t$ was converted to ${\mathbf q}^+$,
-If you write the value of $t-\Delta t$ as ${\mathbf q}^-$,
-What is trapezoidal implicit?
-$({\mathbf q}^+ +  {\mathbf q}^- )/2$.
-The solution is done by using the time-varying terms evaluated by using
-Now, as a time-varying term in <span>q</span>,
-The term A is treated in the leap forg method and the term B is treated in the trapezoidal implicit method.
-Assume that A is nonlinear for <span>q</span>, but B is linear.
-Namely,
+Basically, the leap frog is used in mechanics calculations, but some terms are treated as implicit. Here, we consider the trapezoidal implicit as the implicit. For the vector quantity ${\mathbf q}$, the value of $t$ is written as ${\mathbf q}$, the value of $t+\Delta t$ as ${\mathbf q}^+$, and the value of $t-\Delta t$ as ${\mathbf q}^-$, then the trapezoidal implicit means that the time change term evaluated by $({\mathbf q}^+ +  {\mathbf q}^- )/2$ is This is the solution of the problem by using the leap forg method. We now divide <span>q</span> into two time varying terms, one for the leap forg method and the other for the trapezoidal implicit method, B. We assume that A is nonlinear to <span>q</span>, while B is linear. In other words,
 
 $$
   {\mathbf q}^+ 
@@ -88,9 +57,7 @@ $$
 $$
 
 
-Note that $B$ is a square matrix. Then,
-$\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$
-And then you can write,
+However, $B$ is a square matrix. Then write $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$ and you will get
 
 $$
   ( I - \Delta t B ) \Delta {\mathbf q} 
@@ -103,13 +70,9 @@ This can be easily solved by matrix operations.
 
 ### Applying semi-implicit time integration
 
-So we apply this method and treat the term of linear gravity waves as implicit.
-This makes the time step $\Delta t$ smaller.
+Then, we apply this method and treat the term of linear gravity waves as implicit. This allows us to reduce the time step $\Delta t$.
 
-In a system of equations, the basic field is such that $T=\bar{T}_k$
-Separation of the linear gravitational wave term and the other terms (with the index $NG$).
-Vertical Vector Representation
-Using ${$\mathbf{D}$}=\{ D_{k} \}$, ${$\mathbf{T}$}=\{ T_{k} \}$,
+In the system of equations, we divide the equation into a linear gravitational wave term ($T=\bar{T}_k$) with a stationary field as the basic field and other terms (with the indices $NG$). Using a vector representation of vertical direction (${$\mathbf{D}$}=\{ D_{k} \}$ and ${$\mathbf{T}$}=\{ T_{k} \}$)
 
 $$
    \frac{\partial \pi}{\partial t} = 
@@ -267,8 +230,7 @@ $$
 $$
 
 
-Here, for example, $\delta_{k \leq l}$ is
-A function that is 1 if $ k \leq l$ is valid and 0 otherwise.
+Here, for example, $\delta_{k \leq l}$ is 1 if $ k \leq l$ is valid and 0 otherwise.
 
 Using the following expression ,
 
@@ -360,19 +322,14 @@ $$
 
 
 
-Since the spherical harmonic expansion is used,
-
-and the above equation can be solved for $\overline{ {$\mathbf{D}$}_n^m }^{t}$.
-And then..,
+Since the spherical harmonic expansion is used, we can solve the above equation for $\overline{ {$\mathbf{D}$}_n^m }^{t}$ with the result that it is in fact, a spherical harmonic expansion is used. After that,
 
 $$
    D^{t+\Delta t} = 2\overline{ {$\mathbf{D}$} }^{t} - D^{t-\Delta t}
 $$
 
 
-and, (24), (26)
-The value in $t+\Delta t$ according to $\hat{X}^{t+\Delta t}$
-is required.
+and, (109), (111) to obtain the value $\hat{X}^{t+\Delta t}$ in $t+\Delta t$.
 
 ### Time scheme properties and time step estimates
 
@@ -383,8 +340,7 @@ $$
 $$
 
 
-Considering the stability of the discretization in the leap frog in
-Now,
+Considering the stability of the discretization in the leap frog in Now,
 
 $$
   X = X_0 \exp(ikx)
@@ -398,8 +354,7 @@ $$
 $$
 
 
-That would be.
-Here,
+That would be. Here,
 
 $$
   \lambda = X^{n+1}/X^n = X^n/X^{n-1} 
@@ -432,25 +387,11 @@ $$
 $$
 
 
-and in the case of $|p|>1$, it is $|\lambda| > 1$,
-It is a solution whose absolute value increases exponentially with time.
-This indicates that the computation is unstable.
+and in the case of $|p|>1$, we get $|\lambda| > 1$, and the absolute value of the solution increases exponentially with time. This indicates that the computation is unstable.
 
-On the other hand, in the case of $|p| \le 1$, because it is $|\lambda| = 1$,
-The calculation is neutral.
-However, there are two solutions to the value of $\lambda$,
-One of them is $\Delta t \rightarrow 1$, and the other is
-This is $\lambda \rightarrow 1$, but ,
-The other would be $\lambda \rightarrow -1$.
-This indicates that the solution oscillates strongly in time.
-This mode is called calculation mode,
-One of the problems with the leap frog method.
-This mode can be used by applying a time filter to the
-It can be attenuated.
+In the case of $|p| \le 1$, however, the calculation is neutral since the value of $|\lambda| = 1$. However, there are two solutions to $\lambda$, one of which, when set to $\Delta t \rightarrow 1$, leads to $\lambda \rightarrow 1$, while the other leads to $\lambda \rightarrow -1$. This indicates a time-varying solution. This mode is called "computational mode" and is one of the problems of the leap frog method. This mode can be degraded by applying a time filter.
 
-The terms of the $|p|=kc \Delta t \le 1$ are ,
-Given the horizontal discretization lattice interval $\Delta x$, if
-This will cause the maximum value of $k$ to be
+The condition for $|p|=kc \Delta t \le 1$ is that given the horizontal discretization grid spacing $\Delta x$, it causes the maximum value of $k$ to be
 
 $$
   \max k = \frac{\pi}{\Delta x}
@@ -464,9 +405,7 @@ $$
 $$
 
 
-That would be.
-In the case of spectral models, the maximum wavenumber is determined by $N$,
-Earth radius is set to $a$,
+In the case of the spectral model, the In the case of the spectral model, the Earth's radius is defined as $a$ by the maximum wavenumber, $N$,
 
 $$
    \Delta t \le \frac{a}{N c}  
@@ -475,32 +414,20 @@ $$
 
 This is a condition for stability.
 
-To guarantee the stability of the integration,
-As for $c$, it has the fastest advection and propagation speed,
-You can use a smaller time step than $\Delta t$ determined by that.
-When semi-implicit is not used, the propagation speed of gravity wave
-($c \sim 300m/s$) is the criterion for stability, but ,
-When semi-implicit is used, advection by the east-west wind is usually
-Limiting factors.
-Thus, $\Delta t$ assumes that $U_{max}$ is the maximum value of the east-west wind,
+In order to guarantee the stability of the integral, for $c$, the fastest advection and propagation speed can be adopted and a time step smaller than $\Delta t$, which is determined by this speed, can be used. When the semi-implicit method is not used, the propagation speed of the gravity wave ($c \sim 300m/s$) is the criterion for stability, but when the semi-implicit method is used, the advection caused by the easterly wind is usually a limiting factor. Therefore, $\Delta t$ assumes that $U_{max}$ is the maximum value of zonal wind,
 
 $$
    \Delta t \le \frac{a}{N U_{max}}  
 $$
 
 
-Take to meet the .
-In practice, this is multiplied by a safety factor.
+In practice, this is multiplied by a safety factor. In practice, this is multiplied by a safety factor.
 
 ### Handling of the Initiation of Time Integration
 
-Not calculated by AGCM,
-If you start with an appropriate initial value, you can use a model-consistent
-You cannot give two physical quantities of time in $t$ and $t-\Delta t$.
-However, if you give an inconsistent value for $t-\Delta t$
-A large calculation mode occurs.
+When starting from a suitable initial value that is not calculated by AGCM, it is not possible to give two physical quantities of time, $t$ and $t-\Delta t$, that are consistent with the model. However, giving an inconsistent value for $t-\Delta t$ will result in a large computation mode.
 
-So, first, as $X^{\Delta t/4} = X^0$, in the time step of $1/4$
+So, firstly, as $X^{\Delta t/4} = X^0$, in the time step of $1/4$
 
 $$
   X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
@@ -522,5 +449,4 @@ $$
 $$
 
 
-and then perform the calculation with leap frog as usual,
-The occurrence of computation modes is reduced.
+and use leap frog as usual, it prevents the occurrence of the calculation mode.
