@@ -2,20 +2,11 @@
 
 ### Overview of Surface Processes.
 
-The surface processes are the processes of momentum, heat, and water between the atmosphere and the earth's surface
-Giving boundary conditions at the lower end of the atmosphere through flux exchange.
-Surface processes are described in the Ground Temperature TERM00000, Ground Moisture TERM00001,
-Handle your own forecast variables, such as snow cover TERM00002,
-Thermal inertia of the ground surface, water accumulation, snow accumulation,
-Evaluate the accumulation of sea ice and other factors.
-The main input data are the diffusion of geophysical quantities between the atmosphere and the surface
-and the fluxes due to radiation and precipitation.
-The output data are the surface temperature (TERM00003) and
-Various boundary condition parameters such as albedo and roughness.
+Surface processes provide boundary conditions at the lower edge of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. The surface process evaluates the thermal inertia of the earth's surface, water accumulation, snow accumulation, sea ice accumulation, etc. by using original forecast variables such as temperature (TERM00900), moisture (TERM00901), and snow cover (TERM00902). The main input data are the diffusion of geophysical quantities between the atmosphere and the earth's surface, as well as radiation and precipitation fluxes. The output data consist of surface temperature (TERM00903) and various boundary condition parameters such as albedo and roughness.
 
 Surface processes are classified as follows.
 
-1. geothermal diffusion processes - Determining the geothermal temperature structure
+1. geothermal diffusion processes - Determining the geothermal structure
 
 2. geological and hydrological processes - Determining the structure of underground water, runoff, etc.
 
@@ -35,101 +26,66 @@ Snow is not treated as a separate layer, but is evaluated together with the firs
 
 5. assessing oceanic mixed layers and sea ice in multiple layers (optional)
 
-The scheme is outlined in detail along the calculation flow.
-\where the part in the square brackets is the name of the corresponding subroutine and the part in ( ) is the file name.
-The entries enclosed in parentheses refer to the descriptions in other sections.
+We follow the flow of the calculations and give a brief description of the scheme. \The entries in the square brackets are the names of the corresponding subroutines and the ones in parentheses are the file names. The entries enclosed in parentheses refer to the description in other sections.
 
 1. (Evaluate surface fluxes `MODULE:[SFCFLX(psfcm)]`)
- The heat, water (evaporation), and momentum fluxes between the atmosphere and the surface are
- Estimate in bulk.
- However, the evaporation efficiency (TERM00004) is set to 1.
+ The heat, water (evaporation), and momentum fluxes between the atmosphere and the earth's surface are estimated using the bulk formula. However, the evaporation efficiency (TERM00904) is set to 1.
 
 2. evaluate the surface roughness `MODULE:[GNDZ0(pgsfc)]`
- Basically, it depends on the file and the surface type.
- I can get it from the outside,
- Change according to snowfall and other factors.
+ Basically, it is given from the outside, depending on the file and surface type, but it can be changed depending on the amount of snowfall and other factors.
 
-3. evaluate the heat flux and heat capacity within the ground surface .
-     `MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)]`
- Estimate the heat capacity of each layer of land and sea,
- The heat flux at each layer boundary is estimated from the heat transfer equation.
- If there is snowfall, change the heat capacity and flux.
+3. assessing the heat flux and heat capacity within the ground surface . `MODULE:[LNDFLX(pglnd), SEAFLX(pgsea), SNWFLX(pgsnw)]`
+ The heat capacity of the land and sea layers is estimated, and the heat fluxes at the boundary of each layer are estimated from the heat conduction equation. When snowfall is present, the heat capacity and fluxes are changed.
 
 4. evaluate the water flux and capacity of the land surface `MODULE:[LNDWFX(pglnd)]`
- Estimate the capacity of each layer of water on land,
- Estimate the water flux at each layer boundary from the water diffusion equation
+ Estimate the capacity of water in each layer of land and the water flux at the boundary of each layer from the water diffusion equation
 
 5. evaluate the evaporation efficiency `MODULE:[GNDBET(pgsfc)]`
  For the land surface, the calculation depends on soil moisture and stomatal resistance.
 
 6. implicit solution of geo-thermal conduction up to the middle `MODULE:[GNDHT1(pggnd)]`
- Evaluate the temperature change due to heat conduction in the ground.
- However, taking into account the surface temperature changes
- Since it is done     implicitly, only the first step is done here.
+ We evaluate the temperature change due to heat conduction in the ground. However, since the evaluation is done implicitly including the change in surface temperature, we only perform the first stage of the evaluation here.
 
 7. solving the surface heat balance `MODULE:[SLVSFC(pgslv)]`
- Solving the equation for the heat balance between the surface temperature and
- Time variation of temperature and specific humidity in the first layer of the atmosphere.
- Using this, the heat/water (evaporation) flux between the atmosphere and the ground surface
- and compensate for the heat transfer flux at the surface.
- If there is snow or ice and the surface temperature is above the freezing point,
- With the surface temperature as the freezing point,
- Evaluate the residual flux as the flux used for snowmelt.
+ Solves the equation for the heat balance at the earth's surface and obtains the temporal variation of temperature at the earth's surface and temperature and specific humidity in the first layer of the atmosphere. These equations are used to correct the heat/water (evaporation) fluxes between the atmosphere and the ground surface and the heat conduction fluxes at the ground surface. When there is snow or ice cover and the surface temperature exceeds the freezing point, the surface temperature is used as the freezing point, and the residual flux is evaluated as the flux used for snow melting.
 
 8. implicit solution for geothermal conduction `MODULE:[GNDHT2(pggnd)]`
- Since the change in surface temperature was obtained, we used it to determine
- Solving for changes in ground temperature due to heat conduction in the ground.
+ Since the change in surface temperature was obtained, it is used to solve for the change in underground temperature due to heat conduction.
 
 9. evaluate snow reduction by snow sublimation `MODULE:[SNWSUB(pgsnw)]`
- For snow cover conditions, the calculated evaporation (sublimation) fluxes allow
- Decrease the snowpack.
+ For snow accumulation conditions, the evaporation (sublimation) flux reduces the snow accumulation by the calculated flux.
 
 10. assessing the increase in snow cover due to snowfall `MODULE:[SNWFLP(pgsnw)]`
  It discriminates between snowfall and rainfall and increases the snowpack when it falls.
 
 11. assessing snowfall reduction due to snowmelt `MODULE:[SNWMLP(pgsnw)]`
- If the surface temperature or first layer temperature exceeds the freezing point during snowfall ,
- If the snow melts, it will keep the temperature below the freezing point,
- Decrease the snowpack.
+ When the surface temperature or the first layer temperature is above the freezing point during snow accumulation, snowmelt is assumed to occur and the snow accumulation is reduced by keeping the temperature below the freezing point.
 
 12. implicit solution for groundwater diffusion `MODULE:[GNDWTR(pggnd)]`
  Solving changes in subsurface moisture due to subsurface water fluxes.
 
 13. evaluate precipitation interception by snowpack `MODULE:[SNWROF(pgsnw)]`
- Snowfall prevents precipitation infiltration into the soil,
- Rainfall and snowmelt water (part of it) will be runoff.
+ When there is snowfall, the infiltration of precipitation into the soil is prevented and rainfall and snowmelt water (part of it) become runoff.
 
 14. assessing surface runoff `MODULE:[LNDROF(pglnd)]`
- Calculating surface runoff of rainfall and snowmelt water.
- Bucket Model, New Bucket Model,
- There are 3 evaluation methods to choose from, including runoff evaluation using permeability.
+ Calculation of surface runoff of rainfall and snowmelt. Three evaluation methods can be selected: the bucket model, the new bucket model, and runoff evaluation using infiltration capacity.
 
 15. evaluate the freezing process `MODULE:[LNDFRZ(pglnd)]`
- Freezing and thawing of groundwater and
- Calculate the temperature change due to the latent heat release associated with it.
- However, this routine is optional,
- Usually skipped.
+ Calculates the temperature change due to the freezing and thawing of the ground moisture and the resulting latent heat release. However, this routine is optional and is usually skipped.
 
 16. assessing the growth of sea ice `MODULE:[SEAICE(pgsea)]`
- If you specify the marine mixed layer option ,
- Calculate the increase or decrease in the thickness of the sea ice due to heat conduction.
+ With the oceanic mixed layer option, the increase or decrease in the thickness of the sea ice due to heat transfer is calculated.
 
 17. evaluate the melting of sea ice surface `MODULE:[SEAMLT(pgsea)]`
- If the surface temperature or first layer temperature of the sea ice exceeds the freezing point,
- The temperature is kept below the freezing point,
- Decrease the thickness of the sea ice.
+ If the surface temperature or the first layer temperature of the sea ice is above the freezing point, melting is assumed to occur and the temperature is kept below the freezing point to reduce the thickness of the sea ice.
 
 18. nudge the ocean temperature `MODULE:[SEANDG(pgsea)]`
- With the oceanic mixed layer option, the given
- Nudging to get closer to the temperature.
- It can be added to the temperature of the sea surface.
+ With the oceanic mixed layer option, nudging can be added to the sea surface temperature to bring it closer to a given temperature.
 
 19. evaluate the wind speed on the ground `MODULE:[SLVWND(pggnd)]`
  Solving for changes in wind speed in the first layer of the atmosphere.
 
-Also, some of the routines mentioned above are
-In addition, the following subroutines for the evaluation of land, sea and snow surfaces are used
-There's a split.
+Some of the above routines are further subdivided into subroutines for the evaluation of land, sea and snow surfaces as follows
 
 1. setting the boundary conditions `MODULE:[GNDSFC(pgbnd)]`
 
@@ -171,70 +127,68 @@ There's a split.
 
 ### classification of the ground surface.
 
-The ground surface is a condition given by the outside world,
-According to the surface type TERM00005, they are classified as follows.
+The ground surface is classified according to the externally given conditions as follows, according to the surface type TERM00905.
 
- - TAB00000:0.0
+ - TAB00003:0.0
      m
 
- - TAB00000:0.1
+ - TAB00003:0.1
  requirement
 
- - TAB00000:1.0
+ - TAB00003:1.0
      \-I can't even begin to tell you what to do.
 
- - TAB00000:1.1
+ - TAB00003:1.1
  mixed-layered ocean
 
- - TAB00000:2.0
+ - TAB00003:2.0
      \-I can't tell you how many times I've been in a row.
 
- - TAB00000:2.1
+ - TAB00003:2.1
  Sea Ice (given from outside)
 
- - TAB00000:3.0
+ - TAB00003:3.0
      0
 
- - TAB00000:3.1
+ - TAB00003:3.1
  Sea level (providing temperature from outside)
 
- - TAB00000:4.0
+ - TAB00003:4.0
      1
 
- - TAB00000:4.1
+ - TAB00003:4.1
  land ice
 
- - TAB00000:5.0
-     TERM00006 2
+ - TAB00003:5.0
+     TERM00906 2
 
- - TAB00000:5.1
+ - TAB00003:5.1
  land surface
 
-Furthermore, depending on the possible internal changes in the ice conditions,
-Take the following ground surface conditions TERM00007.
+In addition, depending on the internally variable ice conditions, we have the following surface conditions (TERM00907).
 
- - TAB00001:0.0
+ - TAB00004:0.0
      n
 
- - TAB00001:0.1
+ - TAB00004:0.1
  state
 
- - TAB00001:1.0
+ - TAB00004:1.0
      0
 
- - TAB00001:1.1
+ - TAB00004:1.1
  Sea surface without ice
 
- - TAB00001:2.0
+ - TAB00004:2.0
      1
 
- - TAB00001:2.1
+ - TAB00004:2.1
  Sea Ice and Land Ice
 
- - TAB00001:3.0
-     TERM00008 2
+ - TAB00004:3.0
+     TERM00908 2
 
- - TAB00001:3.1
+ - TAB00004:3.1
  land surface
 
 These are defined in `MODULE:[GNDSFC(pgsfc)]`.
@@ -243,93 +197,65 @@ These are defined in `MODULE:[GNDSFC(pgsfc)]`.
 
 The conditions of the surface heat balance are ,
 
-     EQ=00000.
+     EQ=00356.
 
-It is.
-TERM00009, TERM00009 is ,
-Atmospheric and subsurface forecast variables before evaluating surface processes and ,
-The evaluation is performed using the
-In the TERM00010 used at that time, this balance is generally not met.
+in TERM00909 and TERM00909. TERM00909 and TERM00909 use atmospheric and subsurface predicted variables and the atmospheric and subsurface predicted variables prior to the evaluation of surface processes, but this balance is generally not satisfied in TERM00910, which was used at that time.
 
 There are several ways to solve this problem.
 
-1. how to consider only TERM00011 as an unknown
+1. how to consider only TERM00911 as an unknown
 
-2. how to consider TERM00012 and TERM00012 as unknown numbers
+2. how to consider TERM00912 and TERM00912 as unknowns
 
-The CCSR/NIES AGCM uses the latter method.
-In doing so, it is necessary to combine and solve for all the variables of the atmospheric and ground layers.
-The details are described in the section "Solving the Diffusion-Based Budget Equations for Atmospheric Surface Systems".
+The latter method is used in the CCSR/NIES AGCM. It is necessary to combine all the variables in all layers of the atmosphere and ground to solve the problem. The details will be described in the section "Solving the diffuse balance equation for atmospheric and ground systems".
 
-There are two ways to evaluate the evaporation terms TERM00013 and TERM00013.
+There are two ways to evaluate the evaporation term TERM00913 and TERM00913.
 
-1. as a TERM00014
- TERM00015 obtained by solving     (1)
-     (possible evaporation amount) multiplied by TERM00016.
+1. as TERM00914, multiply TERM00915 (possible evaporation rate) obtained by solving (439) by TERM00916.
 
-2. using TERM00017.
- Solve     (1) directly.
+Solve (439) directly using TERM00917.
 
-The temperatures used in the calculations in TERM00018 are different between the former and the latter.
-In the former case, the temperature in the case of TERM00019,
-In the latter case, the actual temperature is used.
+The temperature used in the calculation of TERM00918 is different between the former and the latter. In the former case, the temperature in the case of TERM00919 is used, while in the latter case the actual temperature is used.
 
-The CCSR/NIES AGCM uses the former method as standard.
-The result of solving (1) on a snow or ice surface
-If the TERM00020 exceeds the freezing point,
-Or, when TERM00021 divides the freezing temperature of seawater at the sea surface (in the case of oceanic mixed-layer model)
-by fixing the temperature of the TERM00022 at the freezing point and calculating each flux,
-The residuals (energy residuals) in equation (1) are
-Suppose it is used for freezing and thawing snow and ice.
+In the CCSR/NIES AGCM, the former method is used as the standard method. When TERM00920 resulting from the solution of (439) on a snow or ice surface exceeds the freezing point, or TERM00921 on a sea surface divides the freezing temperature of seawater (in the case of the oceanic mixed layer model), the temperature of TERM00922 is fixed to the freezing point and each flux is calculated by fixing the temperature of TERM00922 to the freezing point, and the residuals of the equation in (439) ( energy residuals) will be used to freeze and thaw the snow and ice.
 
 ### Set the discrete coordinate system `MODULE:[SETGLV,SETWLV,SETSLV]`
 
-The ground is discretized with the TERM00023 coordinate system.
-Land temperature is layer TERM00024, water content is layer TERM00025,
-Ocean temperature is defined in layer TERM00026.
-The TERM00027 increases from the top to the bottom.
-The flux is defined by the layer boundary TERM00028,TERM00028.
+The subsurface is discretized in the TERM00923 coordinate system. Land temperature is defined by the TERM00924 layer, water content by the TERM00925 layer, and ocean temperature by the TERM00926 layer. TERM00927 increases from the upper to the lower levels. The flux is defined by the layer boundary TERM00928 and TERM00928.
 
-Also, consider a layer of zero thickness on the TERM00029,
-Define skin temperature TERM00030.
-For convenience, it is represented by TERM00031 and TERM00032.
+In addition, a layer with a thickness of zero is considered in TERM00929 and the skin temperature is defined as TERM00930. For convenience, it is represented by TERM00931 and set to TERM00932.
 
 ### Calculating land heat flux and heat capacity `MODULE:[LNDFLX]`
 
-Physical quantities, such as heat and moisture fluxes in the ground, and wetness
-The evaluation of surface characteristics is based on whether the surface is sea or land, and in the case of land surface
-This is done separately if there is snowfall or not.
-In the following section, we will first evaluate the evaluation method for the land surface case without snow.
-We shall describe in brief. We will describe the difference between the case of sea level and snow surface in detail later.
+The evaluation of physical properties such as heat and moisture fluxes in the ground and wetness is carried out separately according to whether the ground surface is sea or land surface, and in the case of land surface, whether or not there is snow cover. In the following, we firstly describe the evaluation method for the case of land surface without snow. The differences in the evaluation methods for the cases of sea and snow surfaces will be described later.
 
 The heat capacity of the land surface is ,
 
-     EQ=00001.
+     EQ=00357.
 
-where TERM00033 is the volume specific heat.
+where TERM00933 is the volume specific heat.
 
-The land heat flux is treated as a constant heat transfer coefficient (which may depend on TERM00034).
+The land heat flux is treated as a constant heat transfer coefficient (which may depend on the TERM00934).
 
-     EQ=00002.
+     EQ=00358.
 
-     EQ=00003.
+     EQ=00359.
 
 ### Calculating the water flux on land `MODULE:[LNDWFX]`
 
-The capacity of water in each layer TERM00035 is ,
+The capacity of water in each layer TERM00935 is ,
 
-     EQ=00004.
+     EQ=00360.
 
-However, in practice, it is not possible to store this much water.
-The maximum storage capacity, i.e., the saturation capacity, is defined as the saturation water content of TERM00036,
+However, in practice, it is not possible to store this much water. The maximum storage capacity, i.e., the saturation capacity, is defined as the saturation water content of TERM00936,
 
-     EQ=00005.
+     EQ=00361.
 
 The basic formula for the groundwater flux can be written as follows.
 
-     EQ=00006.
+     EQ=00362.
 
-Here, TERM00037 represents the effect of gravity.
+Here, TERM00937 represents the effect of gravity.
 
 There are two ways to evaluate the groundwater flux on land.
 
@@ -337,31 +263,26 @@ There are two ways to evaluate the groundwater flux on land.
 
 2. moisture content dependent diffusion coefficient method `MODULE:[HYDFLX]`
 
-In the method of fixed diffusion coefficients, we simply express it as follows.
-TERM00038 is the diffusion coefficient and TERM00039 is the density of liquid water.
-where the gravitational potential term TERM00040 in (7) is
-Ignore it.
+In the method of fixed diffusion coefficients, it is simply expressed as follows. TERM00938 is the diffusion coefficient and TERM00939 is the density of liquid water. Here, the gravitational potential term TERM00940 in (445) is neglected.
 
-     EQ=00007.
+     EQ=00363.
 
-     EQ=00008.
+     EQ=00364.
 
-On the other hand, the method with the moisture content dependent diffusion coefficient is not applicable,
-Using the hydraulic potential, we obtain the following.
+On the other hand, in the method with the moisture content-dependent diffusion coefficients, the hydraulic potential is obtained as follows.
 
-     EQ=00009.
+     EQ=00365.
 
-     EQ=00063.
-     EQ=00063.
+     EQ=00419.
+     EQ=00419.
 
-where TERM00041 is the saturated hydraulic conductivity, TERM00042 is the saturation degree, and TERM00043 is the pressure potential,
-It is given as follows.
+where TERM00941 is the saturated hydraulic conductivity, TERM00942 is the saturation degree, and TERM00943 is the pressure potential, which is given as follows
 
-     EQ=00010.
+     EQ=00366.
 
-     EQ=00011.
+     EQ=00367.
 
-TERM00044, TERM00045, and TERM00046 are constants and may depend on the ground surface types TERM00047 and TERM00048.
+TERM00944, TERM00945, and TERM00946 are constants and may depend on the ground surface types TERM00947 and TERM00948.
 
 ### Calculating land surface spill`MODULE:[LNDROF]`
 
@@ -375,347 +296,264 @@ The following three methods can be used to evaluate runoff.
 
 In the bucket model ,
 
-     EQ=00012.
+     EQ=00368.
 
 and this is
 
-     EQ=00013.
+     EQ=00369.
 
-with the outflow as TERM00049,
+with the outflow as TERM00949,
 
-     EQ=00064.
-     EQ=00064.
+     EQ=00420.
+     EQ=00420.
 
-.
-Other than that ,
+The other two are Otherwise ,
 
-     EQ=00065.
-     EQ=00065.
+     EQ=00421.
+     EQ=00421.
 
-The new bucket model (Kondo, 1993) is based on the idea that surface soil types and depths are spatially
-It is a model for estimating the average groundwater infiltration rate for non-uniform cases.
-It was originally developed to estimate the daily average outflow of ,
-Here, we changed it to be used at each time step.
-In the new bucket model, precipitation infiltration and post-runoff soil moisture are estimated as follows.
+The new bucket model (Kondo, 1993) is a model for estimating the average groundwater infiltration rate for spatially non-uniform surface soil types and depths. The model was originally developed to estimate the daily average runoff, but it was modified to use the model at each time step. In the new bucket model, precipitation infiltration and post-runoff soil moisture are estimated as follows.
 
-     EQ=00014.
+     EQ=00370.
 
-Here, TERM00050 is a time constant (standard value 3600s).
-In this case, the runoff volume (TERM00051) is calculated from the surface water balance
+Here, TERM00950 is a time constant (standard value of 3600s). The runoff rate (TERM00951) is calculated from the surface water balance
 
-     EQ=00066.
-     EQ=00066.
+     EQ=00422.
+     EQ=00422.
 
-It is estimated that .
-However,
+It is estimated that However,
 
-     EQ=00015.
+     EQ=00371.
 
-The evaluation of the surface runoff TERM00052 considering soil infiltration capacity is based on the evaluation of the infiltration capacity of the TERM00053,
-Assuming that the intensity of stratiform rainfall is TERM00054 and that of convective rainfall is TERM00055,
-Given below.
+The evaluation of surface runoff (TERM00952) considering infiltration capacity is given by TERM00953 for infiltration capacity, TERM00954 for stratiform rainfall intensity, and TERM00955 for convective rainfall intensity, as follows
 
-     EQ=00016.
+     EQ=00372.
 
 The amount of precipitation input percolating to the ground surface is modified as follows.
 
-     EQ=00067.
-     EQ=00067.
+     EQ=00423.
+     EQ=00423.
 
-On top of equation (25), the precipitation intensity probability of convective rainfall is given by TERM00056
-It is derived from the following equation, which assumes an exponential distribution.
+In the case above equation (463), the exponential distribution of the precipitation intensity probability of convective rainfall is assumed in the rainfall intensity probability TERM00956, which is derived from the following equation
 
-     EQ=00017.
+     EQ=00373.
 
-     EQ=00018.
+     EQ=00374.
 
-However, assuming that stratocumulus rainfall is uniformly infiltrating, the effective infiltration capacity of
-TERM00057.
-TERM00058 is the percentage of convective rainfall area in the total grid area,
-It is a constant (0.6 by default).
+However, the effective infiltration capacity is set to TERM00957 based on the assumption that stratiform rainfall infiltration is uniform. The value of TERM00958 is a constant (typically 0.6) for the fraction of convective rainfall area in the total grid area.
 
-When considering multi-layered soil moisture transfer,
-We can also consider the drainage from each layer proportional to the permeability coefficient.
+When considering multi-layered soil water transfer, we can also consider the drainage from each layer in proportion to the permeability coefficient.
 
 ### Evaluating Albedo on land `MODULE:[LNDALB]`
 
-The evaluation of albedo is basically based on a constant value given by an external source.
-There are two ways to give it.
+The evaluation of albedo is basically based on a constant value given by an external source. There are two ways to give them.
 
 1. give a distribution in a file
 
-2. specify a value for each surface type TERM00059
+2. specify a value for each surface type TERM00959
 
-For each wavelength band, we can give two components in the visible and near-infrared
-(The same values are used in the standard).
+For each wavelength band, two components are given in the visible and near-infrared regions (the same values are used in the standard).
 
-We can also consider the effects of surface wetness and solar radiation zenith angle as follows
-(Not considered in the standard).
+It is also possible to take into account the effects of surface wetness and the zenith angle of solar radiation as follows (not taken into account in the standard).
 
-     EQ=00019.
+     EQ=00375.
 
-     EQ=00020.
+     EQ=00376.
 
-Here, the wetness factor (TERM00060) and the zenith angle factor (TERM00061) are constants.
+Here, the wetness factor (TERM00960) and the zenith angle factor (TERM00961) are constants.
 
-### Evaluating roughness on land surface `MODULE:[LNDZ0]`
+### Evaluating roughness on land surface`MODULE:[LNDZ0]`
 
-The evaluation of roughness is basically based on a constant value given by an external source.
-There are two ways to give it.
+The evaluation of roughness is basically based on a constant value given by an external source. The two methods of evaluation are as follows.
 
 1. give a distribution in a file
 
-2. specify a value for each surface type TERM00062
+2. specify a value for each ground surface type TERM00962
 
-The roughness TERM00063 for heat and the roughness TERM00064 for water vapor are
-If not given, the roughness to momentum is a constant multiple of TERM00065.
-(TERM00066 by default)
+The roughness TERM00963 for heat and the roughness TERM00964 for water vapor should be a constant multiple of the roughness TERM00965 for momentum if not given. (TERM00966 by default)
 
 ### Evaluating surface wetness on land`MODULE:[LNDBET]`
 
-On land ice, TERM00067 has a constant value of 1.
-For non-icy land surfaces, we can use several evaluation methods as follows.
+On the land surface, TERM00967 has a constant value of 1. For the non-ice surface, there are several evaluation methods that can be used for the non-ice surface as follows.
 
 1. using an externally given constant value. As a way of giving ,
 
      1. give a distribution in a file
 
-     2. specify a value for each surface type TERM00068
+     2. specify a value for each ground surface type TERM00968
 
  There are two possibilities.
 
-2. soil moisture calculated as a function of TERM00069.
+2. soil moisture Calculated as a function of TERM00969.
 
- Define the saturation degree TERM00070,
- We give it as a function.
+ Define the saturation degree TERM00970 and give it as a function.
 
-     Function type 1.
- The critical saturation is 1 if it exceeds the critical saturation value of TERM00071, and is linearly dependent below it.
+     Function type 1. 1 if critical saturation exceeds TERM00971, below that depends on a linearity.
 
-             EQ=00021.
+             EQ=00377.
 
-     2. that depend nonlinearly on function type 2. TERM00072.
+     2. that depend nonlinearly on function type 2. TERM00972.
 
-             EQ=00022.
+             EQ=00378.
 
 In the following, we describe the different treatment of the sea surface from that of the land surface.
 
 ### Calculating heat flux and heat capacity at sea level `MODULE:[SEAFLX]`
 
-At the sea surface, the heat capacity varies depending on the presence of sea ice.
-Volumetric Specific Heat of Seawater TERM00074 and
-Using the volume specific heat of sea ice with TERM00075, TERM00076 is used as the thickness of the sea ice,
+At sea level, the heat capacity varies depending on the presence of sea ice. Using the volume specific heat of seawater (TERM00974) and the volume specific heat of sea ice (TERM00975), TERM00976 is used as the thickness of sea ice,
 
-     EQ=00023.
+     EQ=00379.
 
-Even at sea level, the thermal conductivity is kept constant (depending on TERM00077).
+Even at sea level, the thermal conductivity is kept constant (depending on TERM00977).
 
-     EQ=00024.
+     EQ=00380.
 
-     EQ=00025.
+     EQ=00381.
 
-However, in areas where there is sea ice,
-The temperature of the boundary between sea ice and seawater is set to TERM00078 (TERM00079 271.15K),
-Let the thermal conductivity be the value of the sea ice.
+However, in the area where sea ice exists, the temperature between sea ice and seawater is set to TERM00978 (TERM00979 271.15K), and the thermal conductivity is set to the value of the sea ice.
 
-     EQ=00026.
+     EQ=00382.
 
-Heat fluxes in the oceans outside the sea ice area are significant because
-This is only the case with the oceanic mixed layer model.
+Heat fluxes in the oceans outside the sea ice area are only meaningful when using an oceanic mixed layer model.
 
 ### Evaluating surface wetness at sea level `MODULE:[SEABET]`
 
-The surface moisture content of the TERM00080 used to evaluate evaporation is ,
-The constant value of 1 for the sea surface and sea ice.
+The surface moisture content (TERM00980) used to evaluate evaporation is a constant value of 1 for the sea surface and sea ice.
 
 ### albedo and roughness at sea level
 
-The albedo at the sea surface, which is not covered by sea ice, is in the radiation routine,
-Calculated at each wavelength as a function of atmospheric optical thickness and solar incidence angle
-`MODULE:[SSRFC]` .
+The albedo at the sea surface not covered by sea ice is calculated in the radiation routine for each wavelength range as a function of the optical thickness of the atmosphere and the solar incidence angle in `MODULE:[SSRFC]` .
 
-The roughness of the ocean surface that is not covered by the ocean is determined in the surface flux routine,
-Calculated as a function of momentum flux
-`MODULE:[SEAZ0F]` .
+The roughness of the sea surface not covered by the ocean is calculated as a function of the momentum flux in the surface flux routine `MODULE:[SEAZ0F]` .
 
-The albedo and roughness of the sea surface covered with sea ice are
-Give a constant value.
-`MODULE:[SEAALB, SEAZ0]`.
-The current standard value is 0.7, albedo,
-The roughness is 1 TERM00081 m.
+The albedo and roughness of the sea surface covered with sea ice are given as constant values. `MODULE:[SEAALB, SEAZ0]`. The current standard values are albedo 0.7 and roughness 1 TERM00981 m.
 
 In the following, we describe the different treatment of the snow surface from that of the land surface.
 
 ### Snow Heat Flux Correction `MODULE:[SNWFLX]`
 
-The snow is treated thermally as the same layer as the first layer of the ground surface.
-That is, the heat capacity and thermal diffusivity of the first layer are
-The shape will be changed by the presence of snow.
+The snow is treated as the same thermal layer as the first layer of the ground surface. In other words, the heat capacity and thermal diffusivity of the first layer are modified by the presence of snow.
 
-The heat capacity is expressed as a simple sum of
-Let TERM00082 be the specific heat per mass of snow and TERM00083 be the mass per unit area of snow,
+The heat capacity can be simply summed, where TERM00982 is the specific heat per mass of snow and TERM00983 is the mass per unit area of snow,
 
-     EQ=00027.
+     EQ=00383.
 
-However, TERM00084 is the heat capacity in the absence of snow.
+However, TERM00984 is the heat capacity for the case without snow.
 
-The heat flux is defined as the hypothetical temperature at the snow-soil interface, which is set to TERM00085,
+The heat flux is defined as the hypothetical temperature at the snow-soil interface of TERM00985,
 
-     EQ=00028.
+     EQ=00384.
 
-However, the depth of the snow cover in TERM00086 is
-Let TERM00087 be the density of snow, and TERM00088 be the density of snow.
-Eliminating TERM00089 from the equation above,
+However, if TERM00986 is the snow depth and TERM00987 is the snow density, then the value of TERM00988 is obtained. Removing TERM00989 from the above equation results in
 
-     EQ=00068.
-     EQ=00068.
+     EQ=00424.
+     EQ=00424.
 
-However, the TERM00090 is the flux when there is no snow.
-Therefore, if this has already been calculated,
-By taking the harmonic mean of that and the snow only flux,
-Fluxes are required in the presence of snow.
-Also, the temperature differential coefficient of the fluxes TERM00091 and TERM00092
-is similarly obtained by the harmonic mean of the temperature differential coefficients.
+However, TERM00990 is the flux for the case without snow. Therefore, if this has already been calculated, the fluxes for the case with snow can be obtained by taking the harmonic mean of that and the fluxes for snow only. The temperature differential coefficients TERM00991 and TERM00992 can also be obtained by taking the harmonic mean of the temperature differential coefficients.
 
-If there is more than a certain amount of snowfall ,
-The temperature TERM00093 should be regarded as the temperature of the snowpack rather than the temperature of the soil.
-To account for such cases, in fact, the
-In the above formula, instead of TERM00094, TERM00095 is used,
-Furthermore, not only TERM00096, but also TERM00097 is changed by snow
-Handling.
+If there is more than a certain amount of snow cover, the temperature of TERM00993 should be regarded as the temperature of snow cover rather than the temperature of the soil. To account for such a case, in the above equation, TERM00995 is actually used instead of TERM00994, and not only TERM00996 but also TERM00997 is treated as being affected by snow cover.
 
-     EQ=00029.
+     EQ=00385.
 
-     EQ=00030.
+     EQ=00386.
 
 ### Calculating snow sublimation `MODULE:[SNWSUB]`
 
 Decrease the snowpack by the amount of sublimation flux.
 
-     EQ=00031.
+     EQ=00387.
 
-When the snowfall is fully sublimated, the missing water flux is evaporated from the soil.
-The energy balance of the earth's surface is assumed to be the same as if the surface moisture flux were all sublimated
-We need to correct for the soil temperature because it has been calculated.
+When the snow accumulation is fully sublimated, the shortage of water flux is evaporated from the soil. In this case, the surface energy balance is calculated on the assumption that all the surface moisture fluxes have sublimated, and it is necessary to correct the soil temperature.
 
-     EQ=00032.
+     EQ=00388.
 
 ### Calculating snowfall `MODULE:[SNWFLP]`
 
 When precipitation arrives at the ground surface, it is judged whether it is solid (snow) or liquid (rain).
 
-Atmosphere First Layer Wet Bulb Temperature TERM00098
+Atmosphere First Layer Wet Bulb Temperature TERM00998
 
-     EQ=00033.
+     EQ=00389.
 
-If the freezing point (TERM00099) is lower than the freezing point (TERM00100), it is assumed to be snow, and if it is higher than the freezing point (TERM00101), it is assumed to be rain.
-The reason why the wet-ball temperature is used is that the temperature of precipitation reaching the surface is
-This is to incorporate effects that depend on the likelihood of evaporation during the fall of precipitation.
+If the freezing point (TERM00999) is lower than the freezing point (TERM01000), the temperature is regarded as snow, and if it is higher than the freezing point (TERM01001), the temperature is regarded as rain. The purpose of using the wet-ball temperature is to incorporate the effect of the temperature of precipitation reaching the earth's surface depending on the evaporation rate of precipitation during its fall.
 
 In the case of snowfall, the snowpack is increased by the amount of snowfall.
 
-     EQ=00034.
+     EQ=00390.
 
-TERM00102 is a snowfall flux.
+TERM01002 is a snowfall flux.
 
 ### Snowmelt calculation `MODULE:[SNWMLP]`
 
-If the surface energy balance (TERM00103) is positive, as a result of the calculation of the surface energy balance
-and/or Soil first layer in areas with snow cover (including snowpack)
-When the temperature of the soil is higher than the freezing point, the amount of snowmelt is calculated and the latent heat of melting is calculated.
-Make corrections.
+If the surface energy balance (TERM01003) is positive and/or the temperature of the first layer of soil (including snow) is higher than the freezing point at a snow location, the amount of snowmelt is calculated and the latent heat of melting is corrected for the soil temperature.
 
-If the soil temperature before correction is set to TERM00104,
-If the snowmelt occurred to the extent that it would resolve the energy balance
-Snowmelt TERM00105 and soil temperature TERM00106 are ,
+Assuming that the soil temperature before the correction is set to TERM01004, the amount of snow melt (TERM01005) and the soil temperature (TERM01006) when snow melt is assumed to be equal to the amount of energy balance removed is
 
-When the TERM00107 ,
+In TERM01007,
 
-     EQ=00035.
+     EQ=00391.
 
-     EQ=00036.
+     EQ=00392.
 
-When the TERM00108 ,
+When using TERM01008 ,
 
-     EQ=00037.
+     EQ=00393.
 
-     EQ=00038.
+     EQ=00394.
 
-In the case of TERM00109, the temperature of the part of the snow that melts in the energy balance except for the snow is
-I'm assuming it doesn't change.
-TERM00110 is the latent heat of melting, TERM00111 is the freezing point, and TERM00112 is the specific heat of ice.
+In the case of TERM01009, it is assumed that the temperature of the snow part other than the melting snow does not change due to the energy balance. TERM01010 is the latent heat of melting, TERM01011 is the freezing point, and TERM01012 is the specific heat of ice.
 
-The actual snowmelt and soil temperature are based on the current amount of snow and soil temperature in the case of full melting of the TERM00113,
+The actual snowmelt and soil temperature are based on the current amount of snow melt and the case where the TERM01013 melts completely,
 
-     EQ=00039.
+     EQ=00395.
 
-     EQ=00040.
+     EQ=00396.
 
 ### Calculating Snow Surface Runoff`MODULE:[SNWROF]`
 
-If there is a snow TERM00114, prior to calculating the land surface runoff
-The runoff due to snow accumulation was evaluated as follows,
-Exclude moisture from the surface input.
-Snowmelt water (TERM00116) is added to the surface water input here.
+If there is a snow accumulation (TERM01014), prior to calculating the snow runoff, the snow runoff (TERM01015) is evaluated as follows and excluded from the surface moisture input. Also, snowmelt water (TERM01016) is added to the surface moisture input at this point.
 
-     EQ=00041.
+     EQ=00397.
 
-     EQ=00069.
-     EQ=00069.
-     EQ=00069.
+     EQ=00425.
+     EQ=00425.
+     EQ=00425.
 
-where TERM00117 is the surface infiltration rate due to snow cover.
-The standard value of critical snowpack for infiltration, TERM00118, is 200 kg/TERM00119.
+Here, TERM01017 is the surface infiltration rate due to snow cover. The standard value of the critical snowpack (TERM01018) for infiltration is 200 kg/TERM01019.
 
 ### Evaluating albedo on snow-covered surfaces`MODULE:[SNWALB]`
 
-If you have a snow TERM00120 ,
-The ratio of snow cover is considered to be proportional to the square root of the snowpack,
-Albedo approaches the snow value TERM00121 in proportion to the square root of the snowpack
-(The critical value of TERM00122 is 200 kg/TERM00123 in standard).
+If snow TERM01020 is present, the snow cover ratio is considered to be proportional to the square root of the snowpack, and the albedo approaches the snow value TERM01021 in proportion to the square root of the snowpack (the critical value TERM01022 is 200kg/TERM01023 in standard).
 
-     EQ=00042.
+     EQ=00398.
 
-Also, when melting occurs and the snowpack is wet, the snow albedo
-The smaller effect is considered as follows.
+In addition, the effect of snow albedo reduction during melting and wet snow cover is taken into account as follows.
 
-     EQ=00043.
+     EQ=00399.
 
-where TERM00124 is the surface temperature.
-Dry Snow Albedo TERM00125, Wet Snow Albedo TERM00126
-The standard values for
-The critical temperatures (TERM00127 and TERM00128) are 258.15 and 273.15, respectively.
+where TERM01024 is the surface temperature. The standard values for dry snow albedo (TERM01025) and wet snow albedo (TERM01026) are 0.7 and 0.5, respectively. The critical temperatures (TERM01027 and TERM01028) are 258.15 and 273.15, respectively.
 
-Furthermore, as in the absence of snow, we can take into account the effect of the zenith angle dependence of solar radiation
-(Not considered in the standard).
+Furthermore, we can take into account the effect of the zenith angle dependence of solar radiation as in the absence of snow (not taken into account in the standard).
 
 ### Evaluating Surface Roughness on Snow Covered Surfaces`MODULE:[SNWZ0]`
 
-If you have a snow TERM00129 ,
-The ratio of snow cover is considered to be proportional to the square root of the snowpack,
-Surface roughness approaches snow roughness in proportion to the square root of the snowpack.
-(The critical value, TERM00130, is 200 kg/TERM00131 in standard).
+When the snow cover is TERM01029, the ratio of snow cover is considered to be proportional to the square root of the snowpack, and the surface roughness approaches the snow roughness in proportion to the square root of the snowpack (the critical value of TERM01030 is 200kg/TERM01031 in standard).
 
-     EQ=00044.
+     EQ=00400.
 
-The standard values for snow roughness are for momentum, temperature and water vapor, respectively.
-10 TERM00132, 10 TERM00133, 10 TERM00134.
+The standard values for snow roughness are 10 TERM01032, 10 TERM01033, and 10 TERM01034 for momentum, temperature, and water vapor, respectively.
 
 ### Evaluating Surface Wetness on Snow Covered Surfaces`MODULE:[SNWBET]`
 
-If you have a snow TERM00135 ,
-The ratio of snow cover is considered to be proportional to the square root of the snowpack,
-Surface wetness approaches snow wetness 1 in proportion to the square root of the snowpack
-(The critical value of TERM00136 is 200 kg/TERM00137 in standard).
+In the case of snow cover (TERM01035), the snow cover ratio is considered to be proportional to the square root of the snow cover, and the surface wetness approaches snow wetness 1 in proportion to the square root of the snow cover (the critical value of TERM01036 is 200kg/TERM01037 in standard).
 
-     EQ=00045.
+     EQ=00401.
 
 In the following section, we describe the optional surface processes.
 
 ### Calculating the freezing process `MODULE:[LNDFRZ]`
 
-To use this option, you must use the
-The number of vertical layers in the ground and the level of each layer must be equal.
+To use this option, the number of vertical layers in terms of temperature and moisture must be equal to the level of each layer.
 
 After calculating the ground temperature by thermal diffusion,
 
@@ -725,132 +563,109 @@ After calculating the ground temperature by thermal diffusion,
 
 Calculate.
 
-Assuming that the ice content of the TERM00138 layer is TERM00139, the freezing water (TERM00140) is
+Assuming that the freezing rate of the TERM01038 layer is TERM01039, the freezing moisture TERM01040 is
 
-     EQ=00046.
+     EQ=00402.
 
-where the negative TERM00141 represents the water to be melted.
-The TERM00142 will freeze/thaw until the soil temperature reaches the freezing point.
-This is the value of TERM00143 if it were to occur, given by
+However, a negative value of TERM01041 represents the water to be melted. TERM01042 is the value of TERM01043 when freezing/thawing occurs until the soil temperature reaches the freezing point, and is given by
 
-     EQ=00047.
+     EQ=00403.
 
-TERM00144 has an ice point of 273.16K.
+TERM01044 has an ice point of 273.16K.
 
 The change in soil temperature due to the latent heat of the soil moisture phase change is given by
 
-     EQ=00048.
+     EQ=00404.
 
 ### oceanic mixed layer model `MODULE:[SEAFRZ]`
 
-In the oceanic mixed layer model ,
-By solving for the heat balance of the oceans, the temperature of the oceans and
-Determine the time variation of sea ice thickness.
+In the mixed layer model, the temporal variation of ocean temperature and sea ice thickness is calculated by solving the heat budget of the ocean.
 
-Multi-layered models are possible, but,
-Here we will take a single layer model of thickness TERM00145 as an example.
-The predictor variables are temperature (TERM00146) and sea ice thickness (TERM00147).
+Although a multi-layered model is also possible, we will take a single-layer model of thickness (TERM01045) as an example here. The predictor variables are temperature (TERM01046) and sea ice thickness (TERM01047).
 
-First, determine the heat capacity and surface flux of the ocean.
-     `MODULE:[SEAFLX]`
- The heat capacity of the oceans is ,
- The specific heat of water TERM00148, the specific heat of ice TERM00149, and the density of water and ice as TERM00150,
+First, the heat capacity of the oceans and surface fluxes are determined by `MODULE:[SEAFLX]` The heat capacity of the oceans is defined as the specific heat of water (TERM01048), the specific heat of ice (TERM01049), and the density of water and ice (TERM01050),
 
-         EQ=00049.
+         EQ=00405.
 
  In the absence of sea ice, the heat transfer flux is
 
-         EQ=00050.
+         EQ=00406.
 
  On the other hand, if there is sea ice,
 
-         EQ=00051.
+         EQ=00407.
 
- where TERM00151 is the freezing temperature of sea ice at 271.35 K. where TERM00151 is the freezing temperature of sea ice at 271.35 K.
+ where TERM01051 is the freezing temperature of sea ice at 271.35 K. where TERM01051 is the freezing temperature of sea ice at 271.35K.
 
- Heat flux in the     TERM00152 is usually zero while the TERM00153 is usually zero,
- It can be given from the outside.
- It is used in the case of flux correction for oceanic heat transport.
+     The heat flux in the TERM01052 is usually zero, but it can be provided by an external source. This is used for flux correction considering ocean heat transport.
 
-2. using this heat flux and heat capacity
- As with the land surface, determine the change in temperature (TERM00154).
+Using this heat flux and heat capacity, we can determine the change in temperature (TERM01054) as well as the land surface.
 
-The melting of the sea ice surface is treated in the same way as snow.
-     `MODULE:[SEAFLX]`
+3. the melting of the sea ice surface is treated in the same way as snow. `MODULE:[SEAFLX]`
 
- First, I'll set the melting value, TERM00155, to
- When the     TERM00156 ,
+ First, let's get the melting value (TERM01055)
+ When the     TERM01056 ,
 
-         EQ=00052.
+         EQ=00408.
 
- When the     TERM00157 ,
+ When the     TERM01057 ,
 
-         EQ=00053.
+         EQ=00409.
 
- Estimate in ,
- However, if it has melted completely, set the value to TERM00158 and compensate for the heat.
+ In the case of full melting, however, the value is set to TERM01058 and the heat is corrected for the difference.
 
-         EQ=00054.
+         EQ=00410.
 
  Varying the thickness of the ice,
 
-         EQ=00055.
+         EQ=00411.
 
  Then, vary the heat capacity correspondingly.
 
-         EQ=00056.
+         EQ=00412.
 
 The next step is to consider the growth process from the bottom of the sea ice.
 
-     1. when there is no sea ice (TERM00159)
+     1. when there is no sea ice (TERM01059)
 
- When the         TERM00160 ,
+ When         TERM01060 ,
 
-             EQ=00057.
+             EQ=00413.
 
- When the         TERM00161 ,
+ When the         TERM01061 ,
 
-             EQ=00058.
+             EQ=00414.
 
- Estimate in .
- When it is positive, sea ice is produced.
- Here, TERM00162 is TERM00163 is TERM00164 K or less
- Note that it is positive when the
+ If this is positive, the sea ice is produced. If this value is positive, sea ice is produced. Note that TERM01062 becomes positive when TERM01063 becomes less than or equal to TERM01064 K.
 
-             EQ=00070.
-             EQ=00070.
-             EQ=00070.
+             EQ=00426.
+             EQ=00426.
+             EQ=00426.
 
-     2. when the sea ice is already present (TERM00165)
+     2. when the sea ice already exists (TERM01065)
 
  Heat fluxes from the seawater beneath the sea ice to the bottom of the sea ice.
 
-             EQ=00059.
+             EQ=00415.
 
- Estimate in .
- The difference between         TERM00166 and the heat flux from the ocean to the top of TERM00167
- Used for the growth or melting of sea ice.
+ Estimated by The difference between TERM01066 and the heat flux from the ocean upward to TERM01067 is used for the growth or melting of sea ice.
 
-             EQ=00060.
+             EQ=00416.
 
  So..,
 
-             EQ=00071.
-             EQ=00071.
-             EQ=00071.
+             EQ=00427.
+             EQ=00427.
+             EQ=00427.
 
-5. give an external reference temperature of TERM00168
- You can nudging it.
+5. you can externally give the reference temperature TERM01068 and apply nudging to it.
 
-         EQ=00061.
+         EQ=00417.
 
  This is a heat flux
 
-         EQ=00062.
+         EQ=00418.
 
  The equivalent of giving a .
 
- To do     flux correction,
- Provide the appropriate TERM00169 and perform nudging,
- Remember the     TERM00170,
- You can give it to me as TERM00171.
+ To perform     flux correction, you can perform nudging by giving an appropriate TERM01069, memorize TERM01070, and give it as TERM01071.

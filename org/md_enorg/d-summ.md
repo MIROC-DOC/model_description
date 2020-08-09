@@ -1,7 +1,6 @@
 ## Summary of the mechanics part
 
-Here, we duplicate the previous description,
-Enumerate the calculations performed in the Mechanical Process Department.
+In this section, we enumerate the calculations performed in the Mechanical Engineering Department, although they overlap with the previous descriptions.
 
 ### Summary of Calculations for the Mechanics Portion
 
@@ -25,7 +24,7 @@ The mechanical processes are calculated in the following order.
 
 9. convert the predictive variables to grid values `MODULE:[GENGD(dgeng)]`
 
-10. pseudo etc. TERM00000 plane spreading correction `MODULE:[CORDIF(ddifc)]`
+10. pseudo etc. TERM00356 surface diffusion correction `MODULE:[CORDIF(ddifc)]`
 
 11. consideration of frictional heat by diffusion `MODULE:[CORFRC(ddifc)]`
 
@@ -37,109 +36,94 @@ The mechanical processes are calculated in the following order.
 
 ### Conversion of Horizontal Wind to Vorticity and Divergence
 
-Grid point values for horizontal wind TERM00001,TERM00001
-from the grid values of vorticity and divergence TERM00002 and TERM00002.
-First, the spectra of vorticity and divergence
-Ask for TERM00003,TERM00003,
+Obtain grid values of vorticity and divergence from the grid values of TERM00357 and TERM00357 for horizontal wind. First, we obtain the spectra of vorticity and divergence from TERM00359 and TERM00359,
 
-     EQ=00033.
-     EQ=00033.
+     EQ=00140.
+     EQ=00140.
 
-     EQ=00034.
-     EQ=00034.
+     EQ=00141.
+     EQ=00141.
 
 I'll take that further,
 
-     EQ=00000.
+     EQ=00107.
 
 and so on.
 
 ### Calculating a Provisional Temperature
 
-Provisional Temperature TERM00005 is ,
+Provisional Temperature TERM00361 is ,
 
-     EQ=00035.
+     EQ=00142.
 
-However, it is TERM00006,
-TERM00007 is a gas constant for water vapor
-(461 TERM00008TERM00009)
-TERM00010 is a gas constant of air
-(287.04 TERM00011TERM00012)
-It is.
+However, it is TERM00362 and TERM00363 is the gas constant for water vapor (461 TERM00364TERM00365) and TERM00366 is the gas constant for air (287.04 TERM00367TERM00368).
 
 ### Calculating the Barometric gradient term
 
-The barometric gradient term TERM00013 is ,
-First, we need to get the TERM00014
+The barometric gradient term TERM00369 is first used to define the TERM00370
 
-     EQ=00001.
+     EQ=00108.
 
 to a spectral representation and then ,
 
-     EQ=00002.
+     EQ=00109.
 
-     EQ=00003.
+     EQ=00110.
 
 ### Diagnostic calculations of vertical flow.
 
 Barometric pressure change term, and lead DC,
 
-     EQ=00004.
+     EQ=00111.
 
-     EQ=00005.
+     EQ=00112.
 
 and its non-gravity components.
 
-     EQ=00006.
+     EQ=00113.
 
-     EQ=00007.
+     EQ=00114.
 
 ### Time change term due to advection.
 
 Momentum advection term:
 
-     EQ=00036.
-     EQ=00036.
+     EQ=00143.
+     EQ=00143.
 
-     EQ=00037.
-     EQ=00037.
+     EQ=00144.
+     EQ=00144.
 
-     EQ=00008.
+     EQ=00115.
 
 Temperature advection term:
 
-     EQ=00009.
+     EQ=00116.
 
-     EQ=00010.
+     EQ=00117.
 
-     EQ=00038.
-     EQ=00038.
-     EQ=00038.
-     EQ=00038.
-     EQ=00038.
-     EQ=00038.
+     EQ=00145.
+     EQ=00145.
+     EQ=00145.
+     EQ=00145.
+     EQ=00145.
+     EQ=00145.
 
 Water vapor advection term:
 
-     EQ=00011.
+     EQ=00118.
 
-     EQ=00012.
+     EQ=00119.
 
-     EQ=00013.
+     EQ=00120.
 
 ### Conversion of Predictive Variables into Spectra
 
-(1) and
-(2).
+(122) and (123).
 
-TERM00024,TERM00024
-Spectral representation of vorticity and divergence
-Convert to TERM00025,TERM00025.
-Furthermore,
-Temperature TERM00026, Specific Humidity TERM00027,
-TERM00028.
+Convert TERM00380 and TERM00380 to a spectral representation of vorticity and divergence TERM00381 and TERM00381. Furthermore, converting the temperature TERM00382, specific humidity TERM00383, and TERM00384 to
 
-     EQ=00014.
+     EQ=00121.
 
 to a spectral representation.
 
@@ -147,201 +131,160 @@ to a spectral representation.
 
 Time Variation Term of Vorticity
 
-     EQ=00039.
-     EQ=00039.
-     EQ=00039.
+     EQ=00146.
+     EQ=00146.
+     EQ=00146.
 
 The non-gravity wave component of the time-varying term of the divergence
 
-     EQ=00040.
-     EQ=00040.
-     EQ=00040.
-     EQ=00040.
+     EQ=00147.
+     EQ=00147.
+     EQ=00147.
+     EQ=00147.
 
 The non-gravity wave component of the time-varying term of temperature
 
-     EQ=00041.
-     EQ=00041.
-     EQ=00041.
+     EQ=00148.
+     EQ=00148.
+     EQ=00148.
 
 Time-varying term of water vapor
 
-     EQ=00042.
-     EQ=00042.
-     EQ=00042.
+     EQ=00149.
+     EQ=00149.
+     EQ=00149.
 
 ### Spectral value time integration
 
 Equations in matrix form
 
-     EQ=00043.
-     EQ=00043.
-     EQ=00043.
-     EQ=00043.
+     EQ=00150.
+     EQ=00150.
+     EQ=00150.
+     EQ=00150.
 
-by using LU decomposition to solve for
-Ask for TERM00038,
+Using LU decomposition, TERM00394 is obtained by solving for
 
-     EQ=00015.
+     EQ=00122.
 
-     EQ=00016.
+     EQ=00123.
 
-due to
-TERM00044,
-TERM00045
-and calculate the value of the spectrum in TERM00046.
+Calculate the value of the spectrum in TERM00400, TERM00401 and then calculate the value of the spectrum in TERM00402 using
 
-     EQ=00044.
-     EQ=00044.
-     EQ=00044.
-     EQ=00044.
-     EQ=00044.
+     EQ=00151.
+     EQ=00151.
+     EQ=00151.
+     EQ=00151.
+     EQ=00151.
 
 ### Conversion of Predictive Variables to Grid Values
 
-Spectral values of vorticity and divergence from TERM00047 and TERM00047
-Find the horizontal wind speed grid values TERM00048 and TERM00048.
+Obtain grid values of horizontal wind speed from the spectral values of vorticity and divergence (TERM00403 and TERM00403) TERM00404 and TERM00404.
 
-     EQ=00017.
+     EQ=00124.
 
-     EQ=00018.
+     EQ=00125.
 
 Furthermore,
 
-     EQ=00019.
+     EQ=00126.
 
-TERM00052 and TERM00052 are obtained by such methods as
+TERM00408, TERM00408, and so on,
 
-     EQ=00045.
+     EQ=00152.
 
 to calculate.
 
-### Pseudo etc. TERM00053 Surface Diffusion Correction
+### Pseudo etc. TERM00409 Surface Diffusion Correction
 
-Horizontal diffusion is applied on the TERM00054 surface and so on,
-In large areas of mountain slopes, water vapor is transported uphill,
-Causing problems such as bringing false precipitation at the top of the mountain.
-To mitigate that, etc. TERM00055 close to the diffusion of the surface
-Insert corrections for TERM00056 and TERM00056.
+The horizontal diffusion is applied on the surface of TERM00410, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for TERM00412 and TERM00412 to make the diffusion closer to that of the TERM00411 surface, e.g., for TERM00412.
 
-     EQ=00046.
-     EQ=00046.
-     EQ=00046.
+     EQ=00153.
+     EQ=00153.
+     EQ=00153.
 
 So,
 
-     EQ=00020.
+     EQ=00127.
 
-And so on.
-TERM00057 has been replaced by the spectral value of TERM00058, TERM00059
-The spectral representation of the diffusion coefficient multiplied by
-It is used to convert to a grid value.
+and so on. In TERM00413, the spectral value of TERM00414 is converted to a grid by multiplying the spectral value of TERM00415 by the spectral representation of the diffusion coefficient.
 
-### Consideration of frictional heat from diffusion
+### Consideration of frictional heat from diffusion.
 
 Frictional heat from diffusion is ,
 
-     EQ=00021.
+     EQ=00128.
 
-It is estimated that .
-Therefore,
+It is estimated that Therefore,
 
-     EQ=00022.
+     EQ=00129.
 
 ### Correction for conservation of mass
 
-The spectral method is not used,
-The global integration of the TERM00060 is preserved except for rounding errors,
-The conservation of the mass, i.e. the global integration of TERM00061, is not guaranteed.
-Also, with the expiration of the spectral wavenumber, the
-Negative values of the grid points of water vapor are sometimes observed.
-For these reasons ,
-Let the mass of dry air and water vapor, the mass of cloud water be preserved,
-In addition, corrections are made to remove areas with negative water vapor content.
+In the spectral method, the global integral of TERM00416 is preserved with rounding errors removed, but the preservation of the mass, i.e. the global integral of TERM00417 is not guaranteed. Moreover, a wavenumber break in the spectra sometimes results in negative values of the water vapor grid points. For this reason, we perform a correction to preserve the masses of dry air, water vapor, and cloud water, and to remove the regions with negative water vapor content.
 
-First, at the beginning of the mechanics calculation, `MODULE:[FIXMAS]`,
-Calculate the global integral of each component of water vapor and cloud water, TERM00062 and TERM00062.
+At the beginning of the dynamics calculations, the global integrals of `MODULE:[FIXMAS]`, water vapor, and cloud water are calculated for TERM00418 and TERM00418.
 
-     EQ=00047.
-     EQ=00047.
+     EQ=00154.
+     EQ=00154.
 
-Also, in the first step of the calculation
-Calculate and memorize the dry mass TERM00063.
+In the first step of the calculation, the dry mass TERM00419 is calculated and stored.
 
-     EQ=00048.
+     EQ=00155.
 
-At the end of the dynamics calculation, `MODULE:[MASFIX]`,
-The following procedure is used to make the correction.
+At the end of the calculation, `MODULE:[MASFIX]`, the following procedure is followed.
 
-First, we discuss the grid points with negative water vapor content,
- The water vapor is distributed from the grid points directly below,
- Remove the negative water vapor.
- If this is     TERM00064,
+First, negative water vapor is removed by dividing the water vapor from the grid points immediately below the grid points. Suppose that TERM00420 is used,
 
-         EQ=00049.
-         EQ=00049.
+         EQ=00156.
+         EQ=00156.
 
- However, this should only be done if it is TERM00065.
+ However, this should only be done if it is TERM00421.
 
 Next, set the value to zero for the grid points not removed by the above procedure.
 
-3. calculate the global integration value TERM00066,
- Make sure this is consistent with TERM00067,
- Multiply the global water vapor content by a certain percentage.
+3. calculate the global integral value of TERM00422 and multiply the global water vapor content by a fixed percentage so that it is the same as that of TERM00423.
 
-         EQ=00023.
+         EQ=00130.
 
-4. perform dry air mass correction.
- Similarly, calculate the TERM00068,
+4. correct for dry air mass Likewise calculate TERM00424,
 
-         EQ=00024.
+         EQ=00131.
 
 ### Horizontal Diffusion and Rayleigh Friction
 
 The coefficients of horizontal diffusion can be expressed spectrally,
 
-     EQ=00025.
+     EQ=00132.
 
-     EQ=00026.
+     EQ=00133.
 
-     EQ=00027.
+     EQ=00134.
 
-The TERM00069 is the Rayleigh coefficient of friction.
-The Rayleigh coefficient of friction is
+TERM00425 is the Rayleigh coefficient of friction. The Rayleigh coefficient of friction is
 
-     EQ=00028.
+     EQ=00135.
 
-given in profiles like
-However,
+However, the profile is given in the same way as However,
 
-     EQ=00029.
+     EQ=00136.
 
-Approximate to .
-Standard value is, TERM00070,
-TERM00071 (TERM00072 : top level of the model),
-TERM00073 m,
-TERM00074 m.
+The results are approximate to those of TERM00426 and TERM00427. The standard values are TERM00426, TERM00427 (TERM00428: top level of the model), TERM00429 m, and TERM00430 m.
 
 ### Time Filter.
 
-To remove the computation mode in leap frog
-Apply the time filter of Asselin (1972) at every step.
+Apply the time filter of Asselin (1972) to remove computational modes in leap frog at every step.
 
-     EQ=00030.
+     EQ=00137.
 
-and TERM00075.
-The TERM00076 used in the next step of the mechanical process is
-Using this TERM00077.
-For a TERM00078, the standard value of 0.05 should be used.
+and TERM00431 are obtained. This TERM00433 is used as the TERM00432 for the next step of the mechanical process. As a rule, 0.05 is used for TERM00434.
 
-In fact.
-First, in the `MODULE:[GENGD]` conversion of the predictor to a grid of values, the following variables are used,
+In fact, the first step is to convert the predictor to a grid value at the `MODULE:[GENGD]`,
 
-     EQ=00031.
+     EQ=00138.
 
-and when the physical process is done
-After fixing the value of TERM00079, you can use `MODULE:[TFILT]` to determine the value of TERM00079,
+and after the physical process is finished and the value of TERM00435 is fixed, the `MODULE:[TFILT]` can be used to determine
 
-     EQ=00032.
+     EQ=00139.
 
 .

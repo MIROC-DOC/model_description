@@ -2,119 +2,65 @@
 
 ### Gravitational Wave Resistance Scheme Overview
 
-The gravitational wave resistance scheme is,
-Excited by sub-grid scale terrain
-The upward momentum flux of the gravitational wave is represented,
-The horizontal wind deceleration associated with its convergence is calculated.
-The main input data are: east-west wind TERM00000, north-south wind TERM00001, and temperature TERM00002,
-The output data is the time rate of change for the east-west and north-south winds,
-TERM00003,TERM00003, is.
+The gravitational wave resistance scheme represents the upward momentum flux of the gravitational waves induced by sub-grid scale topography and calculates the horizontal wind deceleration associated with its convergence. The main input data are east-west wind (TERM01164), north-south wind (TERM01165), and temperature (TERM01166), and the output data are the rates of temporal variation of east-west wind and north-south wind, TERM01167 and TERM01167.
 
 The outline of the calculation procedure is as follows.
 
-1. the momentum flux at the ground surface.
- Dispersion of surface altitude,
- The horizontal wind speed at the lowest level, stratification stability, etc.
+The momentum flux at the ground surface is calculated from the dispersion of surface height, the horizontal wind speed at the lowest level, and the stratification stability.
 
-2. consider the upward propagation of gravitational waves with momentum fluxes.
- Momentum fluxes are determined from the critical fluid number
- If the critical flux is exceeded,
- Suppose a breaking wave occurs and the flux is at its critical value.
+We consider the upward propagation of gravitational waves with momentum fluxes. If the momentum flux exceeds the critical fluid number, the momentum flux is determined by the critical fluid number, then breaking waves occur and the flux becomes the critical value of the momentum flux.
 
-3. according to the convergence of the momentum flux at each layer.
- Calculate the time variation of the horizontal wind.
+3. compute the time evolution of the horizontal wind as the momentum flux converges in each layer.
 
 ### Relationship between local fluid number and momentum flux
 
-The gravitational waves of surface origin
-Given the vertical flux of horizontal momentum,
-Flux at a certain altitude TERM00004 and
-Local Fluid Number TERM00005 and ,
+Considering the vertical flux of horizontal momentum due to surface-derived gravitational waves, the difference between the flux (TERM01168) and the local fluid number (TERM01169) at a certain altitude is
 
-     EQ=00000.
+     EQ=00490.
 
-The relationship between the two is valid.
-Here, TERM00006 is
-Brandt Vaisala Frequency,
-TERM00007 is the density of the atmosphere,
-TERM00008 corresponds to the wind speed and TERM00009 corresponds to the horizontal scale of the ripples on the ground surface
-It is a proportional constant .
-Now..,
+This relationship holds for the following cases where TERM01170 is the Brant-Visala frequency, TERM01171 is the density of the atmosphere, TERM01172 is the wind speed, and TERM01173 is the proportional constant corresponding to the horizontal scale of the rippling at the surface. From now on,
 
-     EQ=00001.
+     EQ=00491.
 
-Local Fluid Number TERM00010 is ,
-Assume that a certain value, the critical fluid number TERM00011, cannot be exceeded.
-Calculated from (1)
-If the local fluid number exceeds the critical fluid number TERM00012
-The gravitational waves are supersaturated,
-Up to the momentum flux corresponding to the critical fluid number
-Flux decreases.
+The local fluid number (TERM01174) cannot exceed the critical fluid number (TERM01175) at a certain value. If the local fluid number calculated from (589) exceeds the critical fluid number TERM01176, the gravitational wave becomes supersaturated and the flux decreases to the momentum flux corresponding to the critical fluid number.
 
 ### Momentum fluxes at the surface.
 
-due to gravitational waves excited at the earth's surface.
-The magnitude of the vertical flux of horizontal momentum TERM00013 is ,
-except for the local fluid number at the surface
-TERM00014.
-(2) by substituting (2) for ,
+The magnitude of the vertical flux of horizontal momentum due to gravitational waves excited at the earth's surface, TERM01177, is calculated by substituting the local fluid number TERM01178 into (590),
 
-     EQ=00002.
+     EQ=00492.
 
-It is estimated that .
-Here,
-The TERM00015 has a surface wind speed of ,
-TERM00016 and TERM00016 are the two most common types of data in the atmosphere near the earth's surface.
-It is stability and density.
-TERM00017 is an indicator of the sub-grid surface elevation change,
-Assume that the standard deviation of the surface elevation is equal to TERM00018.
+where TERM01179 is the surface wind speed, TERM01180 and TERM01180 are estimated to be the stability and density of the atmosphere near the earth's surface, respectively. where TERM01179 is the surface wind speed, and TERM01180 and TERM01180 are the stability and density of the atmosphere near the earth's surface, respectively. TERM01181 is an indicator of the change in the surface height of the sub-grid and is assumed to be equal to the standard deviation of the surface height (TERM01182).
 
-Here, the local fluid number at the surface
-If TERM00019 is the critical fluid number
-When you exceed the TERM00020,
-The momentum flux is calculated by substituting TERM00021 into (2) and
-Let's say it can be contained.
-Namely,
+Here, when the local fluid number (TERM01183) exceeds the critical fluid number (TERM01184), the momentum flux is suppressed to the value obtained by substituting (590) for TERM01185. In other words,
 
-     EQ=00003.
+     EQ=00493.
 
 ### Momentum fluxes in the upper levels.
 
-The momentum flux at level TERM00022 is
-Suppose we are required to.
-TERM00024, when no saturation occurs
-Equal to TERM00025.
-This momentum flux, TERM00026, is ,
-Momentum fluxes calculated from the critical fluid number at the TERM00027 level
-In the case of a wave breaking event that exceeds
-The momentum flux decreases to the flux corresponding to the criticality.
+Suppose that the momentum flux TERM01187 is required for level TERM01186. When no saturation occurs, TERM01188 is equal to TERM01189. If the momentum flux (TERM01190) exceeds the momentum flux calculated from the critical fluid number at the TERM01191 level, wave breaking occurs in the TERM01192 layer and the momentum flux decreases to the critical flux.
 
-     EQ=00004.
+     EQ=00494.
 
-However, the TERM00029,
-. of the wind velocity vector at each layer,
-It is the magnitude of the projective component of the lowest level with respect to the direction of the horizontal wind,
+Note that TERM01193 is the magnitude of the projective component of the wind speed vectors for each layer relative to the direction of the lowest level of the horizontal wind,
 
-     EQ=00005.
+     EQ=00495.
 
 ### The magnitude of the time variation of horizontal wind due to momentum convergence.
 
-The temporal rate of change of the projective component of the horizontal wind, TERM00030, is
+The temporal rate of change of the projective component of the horizontal wind, TERM01194, is ,
 
-     EQ=00006.
+     EQ=00496.
 
 as determined by i.e. ,
 
-     EQ=00007.
+     EQ=00497.
 
-With this ,
-The rate of change of the east-west and north-south winds over time is calculated as follows.
+Using this, the temporal rates of change for the east-west and north-south winds are calculated as follows
 
-     EQ=00008.
-     EQ=00008.
+     EQ=00498.
+     EQ=00498.
 
 ### Other Notes.
 
-1. when the wind speed at the lowest level is small (TERM00031) and
- In the case of small undulations in the earth's surface (TERM00032),
- Assuming no gravitational waves are excited at the earth's surface.
+1. it is assumed that no gravitational waves are excited at the ground surface when the wind speed is small (TERM01195) and when the undulations at the surface are small (TERM01196).

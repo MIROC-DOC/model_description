@@ -2,38 +2,17 @@
 
 ### Overview of Large Scale Condensation Schemes.
 
-Large-scale condensation schemes are ,
-This is a representation of the condensation processes involved in clouds other than cumulus convection,
-Calculating latent heat release and water vapor reduction, precipitation.
-We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature $T$, specific humidity $q$, and cloud cover $l$,
-The output data is the time rate of change of temperature, specific humidity and cloud water content,
-$\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$,
-The cloud cover is $C$.
+The large-scale condensation scheme is used to represent cloud-related condensation processes other than cumulus convection, and to calculate the latent heat release, water vapor loss, and precipitation. The amount of cloud water and cloud coverage involved in the radiation are also calculated. The main input data are temperature ($T$), specific humidity ($q$), and cloud water content ($l$), and the output data are the rate of change of temperature, specific humidity, and cloud water content over time ($\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$), $\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$, and cloud cover ($C$).
 
-In the CCSR/NIES AGCM, in addition to the water-vapor mixture ratio (specific humidity $q$), the
-Cloud water content ($l$) is also a forecast variable in the model.
-In fact, in this large-scale condensation routine
-First, calculate the sum of the two, the total amount of water ($q^t = q+l$),
-We are dividing it again into cloud water and water vapor,
-In effect, the forecast variable is a single total water volume ($q^t$).
-By assuming the distribution of the variation of $q^t$ in the grid,
-Diagnosis of the cloud cover and cloud water content in each grid.
-The conversion of cloud water into precipitation and the evaporation of precipitation during its fall are also considered.
+In addition to the water-vapor mixing ratio (specific humidity $q$), cloud water content ($l$) is also predicted in the CCSR/NIES AGCM model. In practice, the large-scale condensation routine first calculates the sum of these two variables, total water ($q^t = q+l$), and then divides the sum into cloud water and water vapor, so that the model has only one predictor, total water ($q^t$). By assuming the distribution of the variation of $q^t$ within a grid, the cloud cover (horizontal cloud coverage) and cloud water content within each grid is diagnosed. The conversion of cloud water into precipitation and the evaporation of precipitation during its fall are also considered.
 
 The outline of the calculation procedure is as follows.
 
-1. add the amount of water vapor ($q$) and the amount of cloud water ($l$)
- Total water volume $q^t$
- The temperature has evaporated the cloud water,
- Set the     liquid water temperature $T_l$.
+1. add the amount of water vapor ($q$) and the amount of cloud water ($l$) to obtain the total amount of water ($q^t$). The air temperature is obtained by evaporating cloud water, liquid water temperature $T_l$
 
-2. assuming the distribution of the variation in $q^t$,
- Find the cloud cover and separate it again into cloud water and water vapor.
+2. assume the distribution of the variation of $q^t$, obtain the cloud cover and separate it into cloud water and water vapor again.
 
-3. considering the temperature change due to condensation,
- By successive approximation
- Determine the cloud cover, cloud water content, and water vapor distribution.
+The distribution of cloud cover, cloud water content, and water vapor is determined by successive approximations, taking into account the temperature variation caused by condensation.
 
 4. evaluate the conversion of cloud water to precipitation.
 
@@ -43,10 +22,7 @@ The outline of the calculation procedure is as follows.
 
 ### Diagnosis of cloud water levels
 
-When the grid-averaged total water volume $\bar{q}^t = \bar{q} + \bar{l}$ is given,
-Distribution of the total water volume $q^t$ in the grid,
-Between $(1-b)\bar{q}^t$ and $(1+b)\bar{q}^t$
-It is assumed to be uniformly distributed. That is, the probability density function is ,
+Given a grid-averaged total water volume ($\bar{q}^t = \bar{q} + \bar{l}$), the total water volume ($q^t$) is assumed to be uniformly distributed between $(1-b)\bar{q}^t$ and $(1+b)\bar{q}^t$. In other words, the probability density function is defined as
 
 $$
   F(q^t) = \left\{ 
@@ -59,14 +35,11 @@ $$
 $$
 
 
-We consider this distribution to be a horizontal distribution.
-On the other hand, the saturation specific humidity is based on the grid average of $\bar{q}^*$.
+This distribution is considered to be a horizontal distribution. On the other hand, the lattice mean of $\bar{q}^*$ is used for the saturated specific humidity.
 
-In the grid,
-Consider the presence of a cloud in a region in $q^t > q^*$ (Figure [lsc[lsc:fig-cloud\]](#lsc:fig-cloud)).
+Consider a cloud in a grid point, in the region of $q^t > q^*$ (Figure [lsc:fig-cloud\]](#lsc:fig-cloud).
 
-Then, as shown by the shading in the figure, the
-The horizontal ratio of the portion of the total water volume exceeding saturation $C$ is ,
+Then, as shown in the shading of the figure, the horizontal ratio of the area where the total water volume exceeds the saturation, $C$, is
 
 $$
   C = \left\{ 
@@ -84,8 +57,7 @@ $$
 
 and this is the cloud cover (horizontal cloud coverage).
 
-In addition, the cloud cover of $l$ is in the region of $q^t > q^*$
-This is an integral of $q^t - q^*$,
+The cloud cover ($l$) is the result of integrating $q^t - q^*$ in the region where $q^t > q^*$ is found,
 
 $$
   l = \left\{ 
@@ -105,8 +77,7 @@ $$
 
 ### Determination by successive approximation
 
-First, from the Water Vapor $q$ and Cloud Water $l$ and the Temperature $T$,
-Find the total water volume $q^t$ and liquid water temperature $T_l$.
+First, find the total water volume ($q^t$) and liquid water temperature ($T_l$) from the steam $q$ and the cloud water $l$ and the temperature ($T$).
 
 $$
   q^t   =  q + l \; , \\
@@ -115,22 +86,16 @@ $$
 
 
 
-The $T_l$ corresponds to the temperature at which all cloud water is evaporated.
-$T^{(0)} = T_l$, $l^{(0)} = 0$
+$T_l$ corresponds to the temperature at which all cloud water is evaporated. $T^{(0)} = T_l$ and $l^{(0)} = 0$ are defined as follows.
 
-By saturation specific humidity relative to temperature $T_l$,
-Assuming that the cloud water content evaluated by the aforementioned method is $l^{(1)}$,
-It changes the temperature,
+Assuming that $l^{(1)}$ is the amount of cloud water evaluated by the aforementioned method as a function of the saturation specific humidity relative to the temperature ($T_l$), the temperature will change,
 
 $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} \; .
 $$
 
 
-The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from $l^{(2)}$,
-The resulting temperature change is solved by successive approximation as $T^{(2)}$ ...
-In order to speed up this sequential convergence, we use the Newton method.
-That is, instead of (6)
+This temperature is solved by successive approximations to $l^{(2)}$ as the evaluated cloud water content and $T^{(2)}$ as the temperature changed by the saturation specific humidity. In order to accelerate this successive convergence, the Newton method is employed. In other words, instead of (260), we use
 
 $$
   T^{(1)} = T_l +  \frac{L}{C_P} l^{(1)} 
@@ -138,20 +103,18 @@ $$
 $$
 
 
-.
-$dl/dT$ can be obtained analytically using (3).
+We assume that $dl/dT$ can be obtained analytically using (257).
 
 ### precipitation process.
 
-Precipitation occurs dependent on the amount of cloud water diagnosed.
-If the precipitation rate (in 1/s) is set to $P$,
+Precipitation depends on the diagnosed cloud water content. If the precipitation rate (in 1/s) is set to $P$,
 
 $$
   P = l / \tau_P \; .
 $$
 
 
-$\tau_P$ is the time scale of precipitation,
+$\tau_P$ is a precipitation time scale,
 
 $$
   \tau_P  = \tau_0 \left\{ 1 - \exp\left[ - \left(\frac{l}{l_C}\right)^2  
@@ -159,8 +122,7 @@ $$
 $$
 
 
-where $l_C$ is the critical cloud water content,
-In view of the Bergeron-Findeisen effect ,
+Here, $l_C$ is the critical cloud water content, taking into account the Bergeron-Findeisen effect,
 
 $$
   l_C = \left\{ 
@@ -176,8 +138,7 @@ $$
 $$
 
 
-$l_C^0=10^{-4}$, $\alpha=50$, $\beta=0.03$,
-$T_0=273.15$ K, $T_c=258.15$ K
+$l_C^0=10^{-4}$, $\alpha=50$, $\beta=0.03$, $T_0=273.15$ K, $T_c=258.15$ K.
 
 Precipitation results in a decrease in $l$.
 
@@ -195,8 +156,7 @@ $$
 $$
 
 
-Precipitation flux at a certain height, $p$
-If (unit kg m$^{-2}$ s$^{-1}$) is set to $F_P$
+If the precipitation flux (in kg m$^{-2}$ s$^{-1}$) at a certain height ($p$) is defined as $F_P$,
 
 $$
   F_P(p) = \int_0^p P \frac{dp}{g} \; .
@@ -205,26 +165,21 @@ $$
 
 ### Ice Falling Process.
 
-Cloud water is divided into ice and water clouds depending on the temperature.
-The ice cloud ratio is
+The cloud water is divided into ice clouds and water clouds depending on the temperature. The ratio of ice clouds is
 
 $$
    f_I = \frac{ T_0 - T }{ T_0 - T_1 }
 $$
 
 
-(but with a maximum value of 1 and a minimum value of 0). Also,
-$T_0 = 273.15{K}, T_1 = 258.15{K}$.
-The ice cloud will fall at a slow speed,
-Consider the effect. Rate of descent $V_S$ is,
+(with a maximum value of 1 and a minimum value of 0). We also consider the effect of the ice cloud in $T_0 = 273.15{K}, T_1 = 258.15{K}$, assuming that it descends slowly. The rate of descent ($V_S$) is
 
 $$
   V_S = V_S^0 ( \rho_a f_I l )^\gamma \; .
 $$
 
 
-However, $V_S^0=3$ m/s, $\gamma=0.17$.
-So..,
+However, $V_S^0=3$ m/s, $\gamma=0.17$,
 
 $$
   \tau_S = \frac{\Delta p}{\rho g V_S} 
@@ -235,15 +190,14 @@ as well as precipitation.
 
 ### Evaporation process of precipitation.
 
-Evaporation of precipitation The evaporation of precipitation, $E$, is estimated as follows.
+Evaporation of precipitation $E$ is estimated to be as follows.
 
 $$
 E = k_E (q^w - q) \frac{F_P}{V_T} \; .
 $$
 
 
-However, if $q^w < q$ is set, this should be zero.
-The $q_w$ is the saturation specific humidity corresponding to the wet bulb temperature,
+If $q^w < q$ is set to 0, however, it is set to 0. $q_w$ is the saturation specific humidity corresponding to the wet bulb temperature,
 
 $$
   q^w = q + \frac{q^* - q}{1+ \frac{L}{C_P}\frac{\partial{q^*}}{\partial {T}}} \; .
@@ -266,10 +220,6 @@ $$
 
 ### Other Notes.
 
-Calculations are made from the topmost layer down.
- For convenience, the calculation is based on the precipitation from the upper layers of the
- We start by evaluating evaporation in that layer.
+The calculations are performed from the topmost layer down. For convenience, the calculation starts from evaluating the evaporation of precipitation from the layer above the precipitation layer.
 
-2. fallen ice in the layer just below.
- It will be treated the same as the cloud water that already exists in that layer,
- incorporated into the total water volume.
+Falling ice is treated as cloud water already in the layer below, and is included in the total water volume.
