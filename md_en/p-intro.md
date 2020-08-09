@@ -18,21 +18,11 @@ As a physical process, we can consider the following
 
  - gravitational wave resistance
 
-The time-varying terms of the forecast variables due to these processes
-Calculate $F_x, F_y, Q, M, S$ and do time integration.
-In addition, in order to evaluate the atmospheric and surface fluxes
-Using the surface sub-model.
-In the surface sub-model,
-Ground Temperature $T_g$, Ground Moisture $W_g$, Snowpack $W_y$, etc.
-It is used as a predictor variable.
+We compute the time-varying terms $F_x, F_y, Q, M, S$ for the forecast variables from these processes, and perform time integration. In order to evaluate the atmospheric and surface fluxes, the ground surface sub-model is used. The ground surface sub-model uses such predictors as the ground temperature ($T_g$), ground moisture ($W_g$), and snow cover ($W_y$) as predictor variables.
 
 ### Fundamental Equations.
 
-Equation of motion of the atmosphere in the $\sigma$ coordinate system, thermodynamic equation,
-Consider the equation for a sequence of substances such as water vapor.
-The vertical fluxes of momentum, heat, water vapor, etc. are considered,
-Find the time variation due to its convergence.
-All vertical fluxes are positive upward.
+Considering the equation of motion of the atmosphere in $\sigma$ coordinate system, thermodynamic equations, and equations for continuity of materials such as water vapor etc. Considering the vertical fluxes of momentum, heat, water vapor, etc., the time variation of the fluxes is determined by their convergence. All the vertical fluxes are assumed to be positive for the upward direction.
 
 1. equation of motion
 
@@ -46,8 +36,7 @@ $$
 $$
 
 
-     $u, v$: East-West, North-South Wind;
-     $Fu, Fv$: Their vertical flux.
+     $u, v$: East-West, North-South Wind; $Fu, Fv$: Their Vertical Flux.
 
 2. thermodynamic equation
 
@@ -57,13 +46,9 @@ $$
 $$
 
 
-     $T$: Temperature ;
-     $c_p$: Constant Pressure Specific Heat;
-     $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Hot Position;
-     $F\theta$: Vertical Sensible Heat Flux;
-     $FR$: Vertical Radiation Flux.
+     $T$: Temperature; $c_p$: Constant Pressure Specific Heat; $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Temperature Level; $F\theta$: Vertical Sensible Heat Flux; $FR$: Vertical Radiation Flux.
 
- If we write $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, then this is
+ Here, with $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, this is,
 
 $$
   \rho \frac{d {c_p T}}{d {t}} = \sigma^\kappa \frac{\partial{F{\theta'}}}{\partial {\sigma}} 
@@ -71,10 +56,7 @@ $$
 $$
 
 
- As far as vertical 1D processes are concerned,
- Instead of the     $\theta$, consider the $\theta'$.
- For the sake of simplicity, unless there is a risk of confusion,
- Write     $\theta'$ as $\theta$.
+ As far as one-dimensional vertical processes are concerned, instead of $\theta$, we can consider $\theta'$. For simplicity, unless there is a risk of confusion, $\theta'$ should be written as $\theta$ below.
 
 3. water vapor continuity formula
 
@@ -83,13 +65,11 @@ $$
 $$
 
 
-     $q$: Specific Humidity;
-     $F{q}$: Vertical Steam Flux.
+     $q$: Specific Humidity; $F{q}$: Vertical Water Vapor Flux.
 
      ### Fundamental Equations in the Ground
 
- Considered in terms of $z$ coordinates with the downward direction positive.
- After all, all vertical fluxes are positive upward.
+ Consider the $z$ coordinates with the downward direction positive. As expected, the vertical fluxes are all positive in the upward direction.
 
 4. thermal formula
 
@@ -98,9 +78,7 @@ $$
 $$
 
 
-     $G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat;
-     $F{g}$: Vertical Heat Flux;
-     $Sg$; Heating term (due to phase change, etc.).
+     $G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat; $F{g}$: Vertical Heat Flux; $Sg$; Heating Term (due to phase change etc.).
 
 5. formula for ground moisture
 
@@ -109,9 +87,7 @@ $$
 $$
 
 
-     $w$: Ground Moisture;
-     $F{w}$: Lead Water Flux;
-     $Sw$; Sources of water (spills, etc.).
+     $w$: Ground moisture; $F{w}$: Vertical water flux; $Sw$; Water sources (e.g., runoff).
 
 6. energy balance equation
 
@@ -122,8 +98,7 @@ $$
 $$
 
 
-     $L$: Latent Heat of Evaporation;
-     $\Delta s$: Surface energy balance (due to phase change, etc.).
+     $L$: Latent heat of evaporation; $\Delta s$: Surface energy balance (associated with phase change, etc.).
 
 7. surface water balance
 
@@ -132,8 +107,7 @@ $$
 $$
 
 
-     $Pg$: Precipitation;
-     $Rg$: Surface Runoff.
+     $Pg$: Precipitation; $Rg$: Surface Runoff.
 
 8. the snow balance
 
@@ -142,15 +116,11 @@ $$
 $$
 
 
-     $Wy$: Snow cover(kg/m$^2$);
-     $Py$: Snowfall;
-     $Fy$: Sublimation;
-     $My$: Snowmelt.
+     $Wy$: Snow cover (kg/m$^2$); $Py$: Snowfall; $Fy$: Sublimation; $My$: Snowmelt.
 
 ### Time integration of physical processes.
 
-Classifying physical processes in terms of the time integration of predictor variables,
-The order of execution can be divided into the following three categories.
+In terms of time integration of predictors, we can classify the physical processes in the following three orders of execution.
 
 1. cumulus convection and large-scale condensation
 
@@ -172,20 +142,9 @@ $$
 $$
 
 
-by the usual Euler difference.
-Large-scale condensation schemes include ,
-Note that the updated values are passed on by the cumulus convection scheme.
-In practice, the output of the heating rate and so on are used in the routines for cumulus convection and large-scale condensation,
-Time integration is done by the immediately following `MODULE:[GDINTG]`.
+where the values are updated by the usual Euler difference Note that the large-scale condensation scheme is updated by the cumulus convection scheme. In practice, the routines of cumulus convection and large-scale condensation output the heating rates and so on, and the time integration is performed immediately afterwards by `MODULE:[GDINTG]`.
 
-Radiation in the following groups, vertical diffusion, ground boundary layer and surface processes
-calculations are essentially all of these updated values
-( $\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, etc. )
-This is done by using
-However, in order to calculate some of the terms as implicit, the
-Calculate all of these terms together and calculate the heating rate, etc,
-Finally, we do time integration.
-In other words, symbolically,
+The calculations of the radiative, vertical diffusion, ground boundary layer and surface processes in the following groups are basically performed with these updated values ($\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, etc.). However, in order to calculate some of the terms as implicit, we calculate the heating rates and so on for all of these terms together, and then perform time integration at the end. In other words, if we write symbolically
 
 $$
   \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)} 
@@ -196,8 +155,7 @@ $$
 
 That would be.
 
-As for gravitational wave resistance, mass regulation and dry convection regulation,
-It is similar to cumulus convection and large-scale condensation.
+The gravitational wave resistance, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
 
 $$
   \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)} 
@@ -207,10 +165,7 @@ $$
 
 ### Various physical quantities.
 
-A simple calculation from the predictive variables can be used to find
-Definitions of various physical quantities.
-Some of these are ,
-Calculated with `MODULE:[PSETUP]`.
+Here are definitions of various geophysical quantities that can be computed simply from the predictors. Some of them are calculated with `MODULE:[PSETUP]`.
 
 1. temporary temperature
 
@@ -223,7 +178,7 @@ $$
 
 2. air density
 
- The atmospheric density, $\rho$, is calculated as follows
+ The atmospheric density $\rho$ is calculated as follows
 
 $$
   \rho = \frac{p}{RT_v}
@@ -232,8 +187,7 @@ $$
 
 3. high degree
 
- The high degree $z$ is a mechanical process
- The same method is used to calculate the geopotential.
+ The altitude $z$ is evaluated in the same way as the calculation of the geopotential for mechanical processes.
 
 $$
   z = \frac{\Phi}{g} 
@@ -259,8 +213,7 @@ $$
 
 4. layer boundary temperature
 
- The temperature of the boundary of the layer is determined by the temperature of the $\ln p$, i.e., the temperature of the boundary relative to the $\ln \sigma$
- Do a linear interpolation and calculate.
+ The temperature at the boundary of the layer is calculated by performing a linear interpolation on $\ln p$, i.e., $\ln \sigma$.
 
 $$
   T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
@@ -272,8 +225,7 @@ $$
 
 5. saturated specific humidity
 
- Saturation Specific Humidity $q^*(T,p)$
- is approximated using the saturation vapor pressure $e^*(T)$,
+ The saturated specific humidity $q^*(T,p)$ are approximated using the saturated vapor pressure $e^*(T)$,
 
 $$
 q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
@@ -287,7 +239,7 @@ $$
 $$
 
 
- Therefore, if the latent heat of evaporation ($L$) and the gas constant ($R_v$) of the water vapor are held constant, then the number of vapor particles will be reduced,
+ Therefore, if the latent heat of evaporation ($L$) and the gas constant of water vapor ($R_v$) are held constant, the number of vaporized materials will be reduced,
 
 $$
   e^*(T) = e^*(T=273{K}) 
@@ -297,17 +249,16 @@ $$
 $$
 
 
-     $e^*(T=273{K}) = 611$ is a \\blank\blank\blank\blank\.com.
+     .....
 
-     (22) From ,
+     (199) from ,
 
 $$
 \frac{\partial{q^*}}{\partial {T}} = \frac{L}{R_v T^2} q^*(T,p) .
 $$
 
 
- Here, if the temperature is lower than the freezing point 273.15 K
- Use the sublimation latent heat $L+L_M$ as the latent heat $L$.
+ Here, if the temperature is lower than the freezing point 273.15K, the sublimation latent heat $L+L_M$ is used as the latent heat $L$.
 
 6. dry static energy, wet static energy
 

@@ -2,10 +2,7 @@
 
 ## Characteristics of CCSR/NIES AGCM
 
-AGCM5.4 was developed in collaboration with the Center for Climate System Research (CCSR) at the University of Tokyo.
-Prepared in collaboration with the National Institute for Environmental Studies (NIES) ,
-A global three-dimensional general circulation model of the atmosphere.
-The characteristics of the model are listed below.
+AGCM5.4 is a three-dimensional global general circulation model developed by the Center for Climate System Research (CCSR) of the University of Tokyo and the National Institute for Environmental Studies (NIES). The features of the model are described below.
 
  - TAB00000:0.0
  system of equations
@@ -23,8 +20,7 @@ The characteristics of the model are listed below.
  predictive variable
 
  - TAB00000:2.1
- Horizontal wind speed, temperature, surface pressure, specific humidity, cloud cover,
- Land surface temperature, Soil moisture
+ Horizontal wind speed, Temperature, Surface pressure, Specific humidity, Cloud water content, Land surface temperature, Soil moisture
 
  - TAB00000:3.0
  horizontal discretization
@@ -110,8 +106,7 @@ The characteristics of the model are listed below.
  option
 
  - TAB00000:17.1
- North-south vertical and east-west vertical two-dimensional models.
- A vertical 1D model.
+ North-south vertical and east-west vertical two-dimensional models. Vertical 1D model.
 
  - TAB00000:18.0
 

@@ -2,22 +2,13 @@
 
 ### Vertical Diffusion Scheme Overview.
 
-The vertical diffusion scheme,
-due to sub-grid scale turbulent diffusion.
-Evaluating the vertical flux of physical quantities.
-The main input data are wind speed, TERM00000, TERM00000, temperature TERM00001, specific humidity TERM00002, and cloud cover TERM00003,
-The output data are the vertical fluxes of momentum, heat, water vapor, cloud water and
-It is the differential value for obtaining an implicit solution.
+The vertical diffusion scheme evaluates the vertical flux of physical quantities due to sub-grid scale turbulent diffusion. The main input data are wind speed, TERM00826, TERM00826, air temperature, TERM00827, specific humidity, TERM00828, and cloud water, TERM00829, and the output data are the vertical fluxes of momentum, heat, water vapor, and cloud water, as well as the derivative values for obtaining the implicit solution.
 
-To estimate the vertical diffusion coefficient, the
-Mellor and Yamada (1974, 1982).
-The turbulent closure model.
-Using level 2 parameterization.
+The vertical diffusion coefficients are estimated using the level 2 parameterization of the Mellor and Yamada (1974, 1982) turbulent flow closure model.
 
 The outline of the calculation procedure is as follows.
 
-1. as the stability of the atmosphere.
-     Richardson numbers.
+Calculate the Richardson number as the stability of the atmosphere.
 
 2. calculate the diffusion coefficient from Richardson number `MODULE:[VDFCOF]`.
 
@@ -25,110 +16,95 @@ The outline of the calculation procedure is as follows.
 
 ### Basic Formula for Flux Calculations
 
-The vertical diffuse flux in the atmosphere is ,
-Using the diffusion coefficient TERM00004, it is evaluated as follows.
+The vertical diffuse flux in the atmosphere is evaluated by using the diffusion coefficient TERM00830 as follows
 
-     EQ=00000.
+     EQ=00305.
 
-     EQ=00001.
+     EQ=00306.
 
-     EQ=00002.
+     EQ=00307.
 
-     EQ=00003.
+     EQ=00308.
 
 ### Richardson Number.
 
-The standard for atmospheric stratospheric stability,
-Bulk Richardson number TERM00005 is
+The bulk Richardson number (TERM00831), which is the benchmark for atmospheric stratification stability, is
 
-     EQ=00004.
+     EQ=00309.
 
-. defined by .
-Here, TERM00006 represents TERM00007.
-The TERM00008 is based on the hydrostatic pressure equation,
+defined by Here, TERM00832 represents TERM00833. Also, TERM00834 is defined by the hydrostatic pressure equation,
 
-     EQ=00005.
+     EQ=00310.
 
-The flux Ricahrdson number TERM00009 is ,
+Flux Ricahrdson number TERM00835 is ,
 
-     EQ=00006.
+     EQ=00311.
 
 However,
 
-     EQ=00020.
-     EQ=00020.
-     EQ=00020.
-     EQ=00020.
-     EQ=00020.
-     EQ=00020.
+     EQ=00325.
+     EQ=00325.
+     EQ=00325.
+     EQ=00325.
+     EQ=00325.
+     EQ=00325.
 
-     EQ=00007.
+     EQ=00312.
 
-     EQ=00008.
+     EQ=00313.
 
-The relationship between the TERM00010 and the TERM00011 is illustrated in this figure,
-Figure [p-dif:rib-rif\]] (#p-dif:rib-rif).
+The relationship between TERM00836 and TERM00837 is illustrated in the figure[#p-dif:rib-rif]](#p-dif:rib-rif).
 
 ### Diffusion Coefficient.
 
-The diffusion coefficient is ,
-For each layer boundary (TERM00012 level) ,
-It is given as follows.
+The diffusion coefficients are given for each layer boundary (TERM00838 level) as follows.
 
-     EQ=00021.
-     EQ=00021.
+     EQ=00326.
+     EQ=00326.
 
-Here, TERM00015 and TERM00015 are,
+Here, TERM00841 and TERM00841 are
 
-     EQ=00009.
+     EQ=00314.
 
-     EQ=00010.
+     EQ=00315.
 
 with ,
 
-     EQ=00022.
-     EQ=00022.
+     EQ=00327.
+     EQ=00327.
 
-TERM00016 is a mixing distance, according to Blakadar (1962),
+TERM00842 is a mixing distance, according to Blakadar (1962),
 
-     EQ=00011.
+     EQ=00316.
 
-Take.
-TERM00017 is a Kárman constant.
-The current standard value is TERM00018 m.
+Take the following. TERM00843 is the Kárman constant. The current standard value is TERM00844 m.
 
-If TERM00019 and TERM00019 are shown as functions of TERM00020,
-Figure [p-dif:smsh-rif\]] (#p-dif:smsh-rif).
+
 
 ### Calculating Flux.
 
 Using the above, we calculate the fluxes and flux derivatives.
 
-     EQ=00012.
+     EQ=00317.
 
-     EQ=00013.
+     EQ=00318.
 
-     EQ=00014.
+     EQ=00319.
 
-     EQ=00015.
+     EQ=00320.
 
-     EQ=00016.
+     EQ=00321.
 
-     EQ=00017.
+     EQ=00322.
 
-     EQ=00018.
+     EQ=00323.
 
-     EQ=00019.
+     EQ=00324.
 
 ### Minimum Diffusion Coefficient.
 
-In the very stable case, the above estimate gives zero as the diffusion coefficient.
-As it is, the model's behavior can be modified in various ways
-Set a suitable minimum value as it will have a negative effect.
-The current standard values are the same for all fluxes and
-TERM00022 0.15 TERM00023/s
+In the very stable case, the above estimate gives zero as the diffusion coefficient. If this value is used as it is, various adverse effects on the behavior of the model are observed. The current standard value is TERM00848 0.15 TERM00849/s, which is common to all fluxes.
 
 ### Other Notes.
 
-I'm calling the shallow cumulus convection `MODULE:[SHLCOF]`,
-By default, this is a dummy.
+We call shallow cumulus convection `MODULE:[SHLCOF]`, which is a dummy by default.

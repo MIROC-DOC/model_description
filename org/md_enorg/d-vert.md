@@ -1,8 +1,6 @@
 ## Vertical discretization
 
-According to Arakawa and Suarez (1983),
-Discretize the basic equations vertically by differences.
-The scheme has the following characteristics.
+Following Arakawa and Suarez (1983), the basic equations are discretized vertically by differences. This scheme has the following characteristics.
 
  - Save the total integrated mass
 
@@ -14,31 +12,21 @@ The scheme has the following characteristics.
 
  - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
 
- - Constant in the horizontal direction, for a given temperature distribution,
- The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
+ - For a given temperature distribution, constant in the horizontal direction, the hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
 
  - Isothermal atmosphere stays isothermal forever
 
 ### How to take a level.
 
-Number the layers from bottom to top.
-Assume that the physical quantity of TERM00000 and TERM00000 is defined at the integer level (layer).
-On the other hand, TERM00001 is defined at the half-integer level.
-First, the value of TERM00002 at a half-integer level
-TERM00003,TERM00003
-Define the .
-However, level TERM00004 is the lower end (TERM00005),
-Level TERM00006 should be the upper end (TERM00007).
+Number the layers from the bottom to the top. We assume that the physical quantity in TERM00210 and TERM00210 is defined in terms of integer levels (layers). On the other hand, TERM00211 is defined at the half-integer level (level). First, define the value of TERM00212 at a half-integer level TERM00213,TERM00213. However, the level TERM00214 is the lower end (TERM00215) and the level TERM00216 is the upper end (TERM00217).
 
-Value of TERM00008 in integer level
-TERM00009,TERM00009
-is obtained from the following equation.
+The value of TERM00218 at the integer level TERM00219,TERM00219 is calculated by the following formula.
 
-     EQ=00000.
+     EQ=00019.
 
 Furthermore,
 
-     EQ=00001.
+     EQ=00020.
 
 .
 
@@ -48,68 +36,68 @@ The discretized representation of each equation is as follows.
 
 1. continuity formula, vertical velocity
 
-         EQ=00002.
+         EQ=00021.
 
-         EQ=00003.
+         EQ=00022.
 
-         EQ=00004.
+         EQ=00023.
 
 2. hydrostatic pressure formula
 
-         EQ=00010.
-         EQ=00010.
+         EQ=00029.
+         EQ=00029.
 
-         EQ=00011.
-         EQ=00011.
+         EQ=00030.
+         EQ=00030.
 
  Here,
 
-         EQ=00012.
-         EQ=00012.
+         EQ=00031.
+         EQ=00031.
 
 3. equation of motion
 
-         EQ=00005.
+         EQ=00024.
 
-         EQ=00006.
+         EQ=00025.
 
  Here,
 
-         EQ=00013.
-         EQ=00013.
+         EQ=00032.
+         EQ=00032.
 
-         EQ=00014.
-         EQ=00014.
+         EQ=00033.
+         EQ=00033.
 
-         EQ=00015.
-         EQ=00015.
+         EQ=00034.
+         EQ=00034.
 
-         EQ=00007.
+         EQ=00026.
 
 4. thermodynamic equation
 
-         EQ=00016.
-         EQ=00016.
-         EQ=00016.
+         EQ=00035.
+         EQ=00035.
+         EQ=00035.
 
  Here,
 
-         EQ=00017.
-         EQ=00017.
-         EQ=00017.
-         EQ=00017.
-         EQ=00017.
-         EQ=00017.
-         EQ=00017.
+         EQ=00036.
+         EQ=00036.
+         EQ=00036.
+         EQ=00036.
+         EQ=00036.
+         EQ=00036.
+         EQ=00036.
 
-         EQ=00018.
-         EQ=00018.
+         EQ=00037.
+         EQ=00037.
 
-         EQ=00019.
-         EQ=00019.
+         EQ=00038.
+         EQ=00038.
 
 5. water vapor formula
 
-         EQ=00008.
+         EQ=00027.
 
-         EQ=00009.
+         EQ=00028.
