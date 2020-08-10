@@ -403,7 +403,7 @@ For downdrafting, we make the following assumptions.
 
  - In $z < z_B$, detraining occurs and the mass flux decreases linearly.
 
-That is, in $z_B < z < z_d$, the mass flux $M^d(z)$, $h^d(z),q^d(z)$, and $h^d(z),q^d(z)$ of the downdrafted air mass follow the following equation. Note that the wet static energy is conserved during evaporation, and the specific humidity when saturated by evaporation is $\bar{q}_{w}$.
+That is, in $z_B < z < z_d$, the mass flux $M^d(z)$, $h^d(z),q^d(z)$ of the downdrafted air mass follow the following equation. Note that the wet static energy is conserved during evaporation, and the specific humidity when saturated by evaporation is $\bar{q}_{w}$.
 
 $$
   \frac{\partial{M^d}}{\partial {z}} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
