@@ -75,7 +75,7 @@ def replace_imath(doc, dic, log):
         pattern = key
         count = len(re.findall(pattern, doc))
         if count >= 1 and mcount >= 1:
-            print(f"Warning: possibly inconsitent translation around {key}={text}.")
+            print(f"Warning: possibly inconsistent translation around {key}={text}.")
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
         if count >= 1:
