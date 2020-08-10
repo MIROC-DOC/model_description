@@ -4,7 +4,7 @@ The time difference scheme is essentially a leap frog. However, the diffusion te
 
 ### Time integration and time filtering with leap frog
 
-We use leap frog as a time integration scheme for advection terms and so on. A backward difference of $2 \Delta t$ is used for the horizontal diffusion term. The pseudo $p$ surface correction of the diffusion term and the frictional heat due to horizontal diffusion term are treated as corrections, which are forward differences of $2 \Delta t$. The physical process terms (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) still use the forward difference of $2 \Delta t$ (except for the vertical diffusion term, which uses the forward difference of TERM00258). (However, the calculation of the time-varying term of vertical diffusion is treated as a backward difference. Please refer to the chapter on physical processes for details.)
+We use leap frog as a time integration scheme for advection terms and so on. A backward difference of $2 \Delta t$ is used for the horizontal diffusion term. The pseudo $p$ surface correction of the diffusion term and the frictional heat due to horizontal diffusion term are treated as corrections, which are forward differences of $2 \Delta t$. The physical process terms (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) still use the forward difference of $2 \Delta t$ (except for the vertical diffusion term, which uses the forward difference of ${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$). (However, the calculation of the time-varying term of vertical diffusion is treated as a backward difference. Please refer to the chapter on physical processes for details.)
 
 Expressed as ${X}$ on behalf of each forecast variable,
 

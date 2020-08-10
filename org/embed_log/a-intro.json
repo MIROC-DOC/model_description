@@ -16,10 +16,6 @@
             "count": 0,
             "text": "m$^2$"
         },
-        "TERM00057": {
-            "count": 2,
-            "text": "$u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$"
-        },
         "TERM00066": {
             "count": 2,
             "text": "$u, v, T, p_S, q, l$"

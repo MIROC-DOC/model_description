@@ -716,4 +716,4 @@ $$
 $$
 
 
-     (but with a maximum value of 1 and a minimum value of 0). Let $T_0 = 273.15{K}, T_1 = 258.15{K}$ be set to TERM00825.
+     (but with a maximum value of 1 and a minimum value of 0). Let $T_0 = 273.15{K}, T_1 = 258.15{K}$ be set to $T_0 = 273.15{K}, T_1 = 258.15{K}$.

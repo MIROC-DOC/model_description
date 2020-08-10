@@ -145,7 +145,7 @@ T_g^{t}, W_g^{t}, W_y^{t}$
 
 Set the output of the predictor variable `MODULE:[AHSTIN]`
 
- In the atmospheric forecast variables, what is usually output is the value of time $t$ at this stage, $u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$, and $u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$. The actual output is done at the later timing of `MODULE:[HISTOU]`, but it is sent to the buffer at this point.
+ In the atmospheric forecast variables, what is usually output is the value of time $t$ at this stage, $u^{t}, v^{t}, T^{t}, p_S^{t}, q^{t}, l^{t}$. The actual output is done at the later timing of `MODULE:[HISTOU]`, but it is sent to the buffer at this point.
 
 4. mechanical processes `MODULE:[DYNMCS]`
 
@@ -281,4 +281,4 @@ q^{t+\Delta t}, l^{t+\Delta t}$
 
 6. time filter `MODULE:[TFILT]`
 
- A time filter is applied to suppress the occurrence of calculation modes by     leap frog. With the time data of $u^{t-\Delta t}, u^{t}, u^{t+\Delta t}$, and TERM00131, smoothing operations are applied to each variable to convert them to $u^{t}$. (Actually, since the information on $u^{t-\Delta t}$ is deleted at `MODULE:[TFILT]` stage, this operation is performed in two steps. The first operation is performed in the mechanical process.)
+ A time filter is applied to suppress the occurrence of calculation modes by     leap frog. With the time data of $u^{t-\Delta t}, u^{t}, u^{t+\Delta t}$, smoothing operations are applied to each variable to convert them to $u^{t}$. (Actually, since the information on $u^{t-\Delta t}$ is deleted at `MODULE:[TFILT]` stage, this operation is performed in two steps. The first operation is performed in the mechanical process.)
