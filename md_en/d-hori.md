@@ -1,16 +1,10 @@
 ## Horizontal discretization
 
-The horizontal discretization of the
-Using the spectral transformation method (Bourke, 1988).
-The differential terms for longitude and latitude are evaluated by the orthogonal function expansion,
-On the other hand, the nonlinear term is computed on the grid points.
+The horizontal discretization is based on the spectral transformation method (Bourke, 1988). The differential terms for longitude and latitude are evaluated by the orthogonal function expansion, while the non-linear terms are calculated on the grid.
 
 ### Spectral Expansion.
 
-As an expansion function system, it is a Laplacian eigenfunction system on a sphere
-Using the spherical harmonic functions $Y_n^m(\lambda,\mu)$.
-However, it is $\mu \equiv \sin\varphi$.
-$Y_n^m$ satisfies the following equation,
+As an expansion function, the spherical harmonic functions $Y_n^m(\lambda,\mu)$, which are eigenfunction of Laplacian on a sphere, are used. However, $\mu \equiv \sin\varphi$ is used. $Y_n^m$ satisfies the following equation,
 
 $$
 \nabla^{2}_{\sigma} Y_n^m(\lambda,\mu) 
@@ -56,15 +50,9 @@ $$
 
 
 
-expressed as follows.
-When evaluating the summation of the integral,
-See Gauss's trapezoidal formula for the $\lambda$ integral,
-Use the Gauss-Legendre integral formula for the $\mu$ integral.
-$\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load.
-The $\lambda_i$ is an evenly spaced grid.
+The formula is expressed as To evaluate by replacing the integral with a sum, we use the Gauss trapezoidal formula for the $\lambda$ integral and the Gauss-Legendre integral formula for the $\mu$ integral. $\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load. Also, $\lambda_i$ is a grid of evenly spaced Gauss loads.
 
-Using spectral expansion,
-The grid point values for the terms containing the derivatives are found as follows.
+Using spectral expansion, the grid point values of the terms containing the derivatives can be calculated as follows.
 
 $$
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
@@ -82,9 +70,7 @@ $$
 $$
 
 
-Furthermore,
-From the spectral components of $\zeta$ and $D$,
-The grid point values for $u,v$ are obtained as follows.
+Furthermore, the grid point values of $u,v$ can be obtained from the spectral components of $\zeta$ and $D$ as follows
 
 $$
   u_{ij}
@@ -112,8 +98,7 @@ $$
 $$
 
 
-The derivative that appears in the advection term of the equation is,
-The following is required.
+The derivative appearing in the advection term of the equation is calculated as
 
 $$
   \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m 
@@ -158,7 +143,7 @@ $$
 $$
 
 
-for the evaluation in $\nabla^2$.
+to be used for the evaluation of the $\nabla^2$ section.
 
 ### Horizontal Diffusion Term
 
@@ -192,11 +177,7 @@ $$
 $$
 
 
-This horizontal diffusion term has strong implications for computational stability.
-To represent selective horizontal diffusion on small scales,
-For $N_D$, use 4 $\sim$ 16.
-Here, the extra terms on vorticity and divergence diffusion are
-This shows that the term for rigid body rotation in $n=1$ is not damped.
+This horizontal diffusion term has strong implications for computational stability. In order to represent selective horizontal diffusion on small scales, 4 $\sim$ 16 is used as $N_D$. Here, the extra term for vorticity and divergence diffusion indicates that the term of rigid body rotation in $n=1$ does not decay.
 
 ### Spectral representation of equations
 

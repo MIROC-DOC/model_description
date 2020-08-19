@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import re
 import sys
@@ -8,21 +10,24 @@ import pprint
 
 def main():
     argv = sys.argv
-    if len(argv) == 1:
-        for filepath in glob.glob("md_enorg/*.md"):
-            base = os.path.basename(filepath).split(".")[0]
-            sub(base)
-    elif len(argv) == 2:
-        base = argv[1]
-        sub(base)
-    else:
-        message = f"usage: python {argv[0]} basename"
-        print(message)
+    json = None
+    exe = argv[0]
+    argv.pop(0)
+    if argv:
+        if os.path.splitext(argv[0])[1] == '.json':
+            json = argv[0]
+            argv.pop(0)
+    files = argv
+    if not files:
+        files = [os.path.splitext(os.path.basename(f))[0]
+                 for f in sorted(glob.glob("md_enorg/*.md"))]
+    for base in files:
+        sub(base, json)
 
 
-def sub(base):
+def sub(base, json_path=None):
     input_path = f"md_enorg/{base}.md"
-    json_path = f"tex_jpx/{base}.json"
+    json_path = json_path or f"tex_jpx/{base}.json"
     output_path = f"md_en/{base}.md"
     log_path = f"embed_log/{base}.json"
     print(f"{base}")
@@ -56,22 +61,26 @@ def replace_imath(doc, dic, log):
         text = math2str(value[0])
 
         # "TERM00000 and TERM00000" と "TERM00000,TERM00000" を置換
-        pattern = key + r"(,|\s+and\s)\s*" + key
+        pattern = key + r"(?:(,|,?\s+and\s)\s*" + key + ")+"
         count = len(re.findall(pattern, doc))
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
         if count >= 1:
             doc = re.sub(pattern, escape(text), doc)
-            continue
+            # # uncomment below to leave orphaned terms
+            # continue
 
         # "TERM00000" を置換
+        mcount = count
         pattern = key
         count = len(re.findall(pattern, doc))
+        if count >= 1 and mcount >= 1:
+            print(f"Warning: possibly inconsistent translation around {key}={text}.")
         if count >= 2:
             log[key] = {"count": count, "text": text}  # 複数個マッチした
         if count >= 1:
             doc = re.sub(pattern, escape(text), doc)
-        else:
+        elif mcount == 0:
             log[key] = {"count": count, "text": text}  # マッチしなかった
     return doc
 

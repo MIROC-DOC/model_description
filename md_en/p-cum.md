@@ -2,99 +2,47 @@
 
 ### Overview of the Cumulus Convection Scheme
 
-The cumulus convection scheme is ,
-This figure represents the condensation, precipitation and convection processes involved in cumulus convection,
-Due to the latent heat release and associated convective motion
-Calculate precipitation with temperature and with changes in water vapor content.
-We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature $T$ and specific humidity $q$,
-The output data is the time rate of change of temperature and specific humidity,
-$\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$,
-The cloud water content of the cumulus clouds used for radiation is $l^{cR}$ Cloud volume $C^c$.
+The cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates changes in temperature and water vapor content and precipitation due to latent heat release and associated convective motion. It also calculates the cloud water content and cloud coverage involved in radiation. The main input data are temperature ($T$) and specific humidity ($q$), and the output data are the time rate of change of temperature and specific humidity, $\partial T/\partial t, \partial q/\partial t, \partial l/\partial t$, and cloud cover ($l^{cR}$) of cumulus clouds used for radiation ($C^c$).
 
-The framework of the cumulus convection scheme is
-Basically based on Arakawa and Schubert (1974).
-Vertical air columns in one horizontal grid.
-Considered as the basic unit of parameterization.
-Clouds are determined by the temperature, specific humidity, cloud water content and
-Characterized by a vertical upward mass flux,
-Considering multiple clouds with different cloud tops within a single vertical air column.
-Clouds occupy part of the horizontal lattice, and the rest of the surrounding region is
-There is a downward flow equal to the cloud mass flux (compensating downward flow).
-This compensatory downward flow and outflow of air into the surrounding region in the clouds (detraining)
-The temperature and the specific humidity field in the surrounding region are changed by
-The area of the upwelling of the cumulus convection is assumed to be small,
-The lattice-averaged temperature and specific humidity fields and
-Since we treat the temperature and specific humidity fields in the surrounding area as the same, we are able to
-This gives the changes in the lattice mean temperature and specific humidity.
+The framework of the cumulus convection scheme is basically based on Arakawa and Schubert (1974). The vertical air column on a horizontal grid is considered as the basic unit of parameterization. Clouds are characterized by temperature, specific humidity, cloud water content, and vertical mass fluxes of clouds, and several clouds with different cloud tops are considered in a single vertical column. The clouds occupy part of the horizontal grid, and in the rest of the surrounding area, there is a downward motion equal to the cloud mass flux (the compensating downward motion). This compensatory downward motion and the outflow of air into the surrounding region (detraining) cause changes in the temperature and specific humidity fields in the surrounding region. Since we assume that the area of the upwelling is small and treat the grid-averaged temperature and specific humidity fields as the same as that of the surrounding region, this gives us the change in the grid-averaged temperature and specific humidity.
 
-It is the cloud model that determines the temperature, specific humidity and cloud water content in clouds.
-Here, we use an entrained-purume model,
-As with Moorthi and Suarez (1992) ,
-We assume a linear mass flux increase with respect to height.
-The cloud base is used as the lifted condensation height of the surface atmosphere,
-of the percentage of air uptake (entrainment) in the surrounding area.
-Consider multiple cloud top altitudes depending on the difference.
-However, if a cloud with a cloud base cannot exist, then
-Consider the possibility of clouds with higher cloud bases.
+The cloud model determines the temperature, specific humidity, and cloud water content in clouds. Here, an entrainment-prime model is used, as in Moorthi and Suarez (1992), which assumes a linear increase in mass flux with respect to height. The cloud bases are defined as the lifted condensation height of the surface air, and several cloud tops are considered depending on the fraction of entrainment in the surrounding region. However, if no cloud base exists, then the possibility of clouds with higher cloud bases is also considered.
 
-The mass flux of each cloud is diagnostically determined using the cloud work function.
-The cloud work function is defined as
-It is defined as the vertical integral of the work done by buoyancy.
-This cloud-work function is driven by the compensating downward motion of cumulus clouds, etc.
-It gives a mass flux that approaches zero at a certain relaxation time.
+The mass flux of each cloud is diagnostically determined using the cloud work function. The cloud work function is defined as the vertical integration of the buoyant work per unit mass flux. The cloud work function gives a mass flux that approaches zero at a certain relaxation time due to the compensating downward motion of the cumulus, etc. The cloud work function is defined as the vertical integral of the buoyant work per unit mass flux.
 
-In addition, the evaporation of precipitation and
-The effect of the downdrafting that goes with it.
-Consider in a very simple way .
+In addition, the evaporation of precipitation and the associated downdraft effects are considered in a very simple way.
 
-The outline of the calculation procedure is as follows.
-Parentheses are the names of the corresponding subroutines.
+The outline of the calculation procedure is as follows. In parentheses are the names of the corresponding subroutines.
 
-1. cloud-bottom height as the lifted condensation height of the surface atmosphere
- Evaluate .
+1) Evaluate the cloud base height as the lifted condensation height of the surface atmosphere.
 
-2. using a cloud model,
- Corresponding to each cloud top altitude
- of cloud temperature, specific humidity, cloud water content, and mass flux (relative value)
- Calculates the vertical distribution `MODULE:[UPDRF]`.
+2. to obtain vertical distributions of cloud temperature, specific humidity, cloud water content, and mass fluxes (relative values) for cloud tops, using a cloud model `MODULE:[UPDRF]`.
 
 3. calculate the cloud work function `MODULE:[CWF]`.
 
-4. due to a cloud of unit mass fluxes.
- Calculates the hypothetical change of temperature and specific humidity in the surrounding area `MODULE:[CLDTST]`.
+4. find the hypothetical change of temperature and specific humidity in the surrounding region due to a unit mass flux cloud `MODULE:[CLDTST]`.
 
-5. for a hypothetical change in temperature and specific humidity
- Calculate the cloud work function `MODULE:[CWF]`.
+5. calculate the cloud-work function for the virtual change of temperature and specific humidity `MODULE:[CWF]`.
 
-6. using the cloud work function before and after the virtual change
- Calculates the cloud mass flux at the cloud base `MODULE:[CBFLX]`.
+6. calculate cloud mass fluxes at the cloud base using the cloud work function before and after the virtual change `MODULE:[CBFLX]`.
 
-7. the cloud mass flux detrainment.
- Calculate the vertical distribution and precipitation `MODULE:[CMFLX]`.
+7. calculate the vertical distribution of cloud mass flux detrainment and precipitation `MODULE:[CMFLX]`.
 
 8. evaluate cloud water and cloud cover due to cumulus clouds `MODULE:[CMCLD]`.
 
-9. by detainment.
- Calculate the change of temperature and specific humidity `MODULE:[CLDDET]`.
+9. find the change of temperature and specific humidity by detraining `MODULE:[CLDDET]`.
 
-10. by compensatory downstream flow.
- Calculate the change of temperature and specific humidity `MODULE:[CLDSBH]`.
+10. get the change of temperature and specific humidity by compensated descent `MODULE:[CLDSBH]`.
 
-11. evaporation of precipitation and
- The downdraft.
- of cloud temperature, specific humidity and mass flux
- Calculates the vertical distribution `MODULE:[DWNEVP]`.
+11. find vertical distributions of cloud temperature, specific humidity, and mass flux of precipitation evaporation and downdraft `MODULE:[DWNEVP]`.
 
-12. by downdraft detrainment.
- Calculate the change of temperature and specific humidity `MODULE:[CLDDDE]`.
+12. find the change of temperature and specific humidity by detraining the downdraft `MODULE:[CLDDDE]`.
 
-13. by the compensatory upward flow of downdrafts.
- Calculate the change of temperature and specific humidity `MODULE:[CLDSBH]`.
+13. find the change of temperature and specific humidity due to the compensated upward flow of downdraft `MODULE:[CLDSBH]`.
 
 ### The Basic Framework of the Arakawa-Schubert Scheme
 
-Cloud Mass Flux $M$, Detrainment $D$ is,
+The cloud mass flux $M$, detraining $D$ is ,
 
 $$
   M(z)     =  M_B \eta(z) \; , \\
@@ -103,9 +51,7 @@ $$
 
 
 
-represented as .
-The mass flux at the cloud base ($M_B$) is the mass flux at $z_B$,
-$\eta$ is a dimensionless mass flux in it.
+expressed as where $M_B$ is the mass flux at the cloud base $z_B$ and $\eta$ is the dimensionless mass flux at that point.
 
 From this, the time variation of the mean field is calculated as
 
@@ -118,27 +64,15 @@ $$
 
 
 
-However, $\bar{h}, \bar{q}$ are based on the wet static energy of the mean field and the specific humidity,
-$h^t, q^t, l^t$ are the air in the detrainment
-It is the wet static energy, specific humidity, and cloud water content.
+where $\bar{h}, \bar{q}$ are the wet static energy and specific humidity of the mean field, and $h^t, q^t, l^t$ are the wet static energy, specific humidity and cloud water content of the air in the detrainment.
 
-$\eta, h^t, q^t, l^t$ are required by the cloud model.
-$M_B$ is obtained by the closure assumption using the cloud work function.
+$\eta, h^t, q^t, l^t$ are determined by the cloud model. $M_B$ is obtained by closure assumptions using the cloud work function.
 
 ### Cloud Model.
 
-The cloud model is essentially an entrained-purume model.
-Each type of cloud is characterized by an entrainment rate,
-It will have various cloud top heights accordingly.
-However, for the sake of later calculations,
-Here, you can specify the cloud top altitude,
-By finding the corresponding entrainment rate
-Find the vertical structure of clouds.
-By assuming a linear mass flux increase with respect to height.
-This calculation is simplified to a form that does not include a sequential approximation.
+The cloud model is essentially an entrained-purume model. Each cloud is characterized by an entrainment rate, and has various cloud-top heights, depending on the entrainment rate. For the sake of the sake of later computation, we will specify the cloud top height and obtain the corresponding entrainment rate to obtain the vertical structure of the clouds. By assuming a linear increase in mass flux with respect to height, we can obtain the vertical structure of the cloud. This calculation is simplified to a form that does not include a sequential approximation.
 
-Let's set the cloudbase altitude at $z_T$,
-The lifted condensation altitude of the surface atmosphere, i.e., the height of condensation,
+The cloud base altitude ($z_T$) is defined as the lifted condensation height of the surface atmosphere, i.e,
 
 $$
    \bar{q}(0) \geq
@@ -148,10 +82,9 @@ $$
 $$
 
 
-Define it as the minimum $z$ that meets the following criteria
+Define it as the lowest $z$ that meets the requirements of the
 
-The dimensionless mass flux $\eta$ is,
-The entrainment rate is set to $\lambda$,
+The dimensionless mass flux $\eta$ has the entrainment rate as $\lambda$,
 
 $$
   \frac{\partial{\eta}}{\partial {z}} = \lambda \; ,
@@ -167,7 +100,7 @@ $$
 
 
 
-The balance on wet static energy $h^c$ and total water content $w^c$ in the clouds is,
+The balance of payments for wet static energy $h^c$ and total water volume $w^c$ in the clouds is,
 
 $$
   \frac{\partial{}}{\partial {z}}( \eta h^c   )  =  \lambda \bar{h}      \; , \\
@@ -176,8 +109,7 @@ $$
 
 
 
-Here, $\bar{h}, \bar{q}, \pi$ are respectively,
-$h$ and $q$, in mean field, are precipitation generation.
+where $\bar{h}, \bar{q}, \pi$ are mean field $h$ and $q$, precipitation production, respectively.
 
 Integrating,
 
@@ -201,16 +133,14 @@ $$
 
 
 
-The mass flux is assumed to be zero at the surface,
-It is assumed to increase linearly below the cloud base,
+The mass flux is assumed to be zero at the surface and to increase linearly below the cloud base,
 
 $$
  \eta (z) =   \frac{z}{z_B} \; \; \; ( z<z_B ) \; .
 $$
 
 
-By calculating the entrainment below this cloud base,
-$h^c,w^c$ are required at cloudbase. That is, ,
+By calculating the entrainment below the cloud base, we can obtain the values of $h^c,w^c$ at the cloud base. In other words,
 
 $$
   h^c(z_B)  =  \frac{1}{z_B} \int_0^{z_B} \bar{h}(z) dz \; , \\
@@ -242,11 +172,7 @@ $$
 
 
 
-where $T_v$ is the provisional temperature and $q^*$ is the saturation specific humidity,
-$\epsilon = R_{{H}_2{O}}/R_{{air}} -1$,
-It is $\gamma = L/C_p \partial q^*/\partial T$,
-$\bar{q}^*, \bar{h}^*$ indicate the values at mean-field saturation, respectively.
-$q^c, l^c$ are the amounts of cloud water vapor and cloud water,
+Here, $T_v$ is the provisional temperature, $q^*$ is the saturated specific humidity, $\epsilon = R_{{H}_2{O}}/R_{{air}} -1$, and $\gamma = L/C_p \partial q^*/\partial T$, and $\bar{q}^*, \bar{h}^*$ represent the values at the saturation of the mean field, respectively. $q^c, l^c$ are the cloud water vapor and cloud water content, respectively,
 
 $$
   q^c  =  q^*(T^c) \, \simeq \,
@@ -256,12 +182,7 @@ $$
 
 
 
-For the cloud top $z_T$, the buoyancy $B$ is assumed to be zero.
-Thus, solving the $B(z_T)=0$ corresponds to the given cloud top height of $z_T$
-$\lambda$ can be obtained.
-Here, for precipitation rate $R(z)$ integrated from the ground upward, we have a problem,
-Using the known function $r(z)$
-Assume that it is represented.
+For the cloud top ($z_T$), the buoyancy $B$ is zero. Therefore, solving for $B(z_T)=0$ yields $\lambda$, which corresponds to a given cloud top height ($z_T$). Here, the precipitation rate ($R(z)$) integrated upward from the ground surface is assumed to be expressed by the well-known function $r(z)$ as follows
 
 $$
   R(z)   = \eta(z) r(z) \left[ w^a(z) - q^c(z) \right] \; .
@@ -307,25 +228,14 @@ $$
 
 
 
-As mentioned above, you should specify $\lambda$ to obtain $z_T$,
-A physically meaningful $\lambda$ for a given $z_T$
-There is no guarantee that we will seek it.
-That scrutiny is necessary, but here it is,
-The smaller the $\lambda$ is, the more the $z_T$ is
-Take into account that it should be lower.
+As mentioned above, we originally set $\lambda$ to obtain $z_T$ and there is no guarantee that a physically meaningful $\lambda$ can be obtained for a given $z_T$. Although this needs to be examined, we will take into account that the smaller the value of $\lambda$, the lower the value of $z_T$ should be.
 
 $$
   \frac{\partial{\lambda}}{\partial {z_T}} < 0
 $$
 
 
-We will examine whether or not the
-If the value is not satisfied, assume that the cloud with cloud top $z_T$ does not exist.
-Also, a minimum value has been set for $\lambda$,
-We assume that there are no smaller $\lambda$ clouds.
-This means that the entrainment rate can be reduced by
-Given the inverse proportions ,
-The equivalent of having a maximum in the size of the plume.
+If not, we assume that there are no clouds with a cloud top ($z_T$). A minimum value is set for $\lambda$, and no cloud with a $\lambda$ smaller than this value is assumed to exist. This corresponds to the fact that there is a maximum value for the size of the cloud, considering that the entrainment rate is inversely proportional to the size of the cloud.
 
 Cloud water content $l^c(z)$ is ,
 
@@ -336,10 +246,7 @@ $$
 
 
 
-However, in the case of $w^a(z) < q^c(z)$, it is $l^c(z)=0$.
-Furthermore, it is unlikely that a precipitation event will be followed by cloudy water,
-$R(z)$ must be an increasing function of $z$.
-This will limit the $r(z)$.
+In the case of $w^a(z) < q^c(z)$, however, it must be $l^c(z)=0$. Furthermore, since it is unlikely that a precipitation event will change to cloud water after it rises, $R(z)$ must be an increasing function of $z$. This leads to a limitation on $r(z)$.
 
 The characteristic value of the detrainment air is ,
 
@@ -352,16 +259,14 @@ $$
 
 
 
-In the case of $ h^c(z_B) < \bar{h}^* (z_T) $,
-Suppose that clouds do not exist. In this case,
+In the case of $ h^c(z_B) < \bar{h}^* (z_T) $, it is assumed that there are no clouds. In this case, we assume that the cloud does not exist,
 
 $$
   \bar{h}(z'_B) > \bar{h}^* (z_T) \; , \;\;\; z_B < z < z_T 
 $$
 
 
-If there is a $z'_B$ that satisfies ,
-The area directly above it has been renamed $z_B$,
+If there is a $z'_B$ that satisfies the above condition, the immediate area above it is newly designated as $z_B$,
 
 $$
   h^c(z_B)  =  \bar{h}(z'_B) \; , \\
@@ -392,23 +297,15 @@ A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
 $$
 
 
-Essentially, the work associated with the downdraft, discussed below, should be
-It should be accounted for, but we'll ignore it here for simplicity's sake.
+We should account for the work associated with downdrafting, which we will discuss below, but we ignore it here for the sake of simplicity.
 
-In this calculation, we start at the bottom and
-Once a positively buoyant cloud is negatively buoyant, if ,
-Since there should be cloud tops where they are supposed to be negative,
-Assume that the cloud with the cloud top we are considering does not exist.
+If the cloud has negative buoyancy once it has positive buoyancy, starting from the bottom, then the cloud top should exist at the point where it becomes negative, and we assume that the cloud top we are considering does not exist.
 
 ### Cloud Mass Flux at Cloudbase
 
-The cloud mass flux at the cloud base is ,
-On some time scale $\tau_a$,
-Cloud action determines the cloud work function to be close to zero
-I make the assumption that.
+We assume that the cloud mass flux at the cloud base is determined on a certain time scale ($\tau_a$) such that the cloud action causes the cloud work function to approach zero.
 
-In order to estimate it, we firstly estimated the unit cloud-bottom mass flux of $M_0$
-Find the time variation of the mean field.
+In order to estimate this, we first calculate the time variation of the mean field in the unit cloud mass flux $M_0$.
 
 $$
   \frac{\partial{\bar{h}'}}{\partial {t}}  =  M_0 \eta \frac{\partial{\bar{h}}}{\partial {z}} 
@@ -428,8 +325,7 @@ $$
 
 
 
-and using $\bar{h}', \bar{q}'$
-Let $A'$ be the one calculated from (32) for the cloud work function.
+and the cloud work function calculated from (235) using $\bar{h}', \bar{q}'$ is defined as $A'$.
 
 So..,
 
@@ -438,15 +334,11 @@ $$
 $$
 
 
-That would be.
-Here, when obtaining $A'$, the original $\bar{h}', \bar{q}'$ were used
-I should recalculate the vertical structure of the clouds,
-Now we are using the same cloud structure.
+The results of this calculation are as follows. Although the vertical cloud structures corresponding to $\bar{h}', \bar{q}'$ should have been re-calculated in order to obtain $A'$, the same cloud structures were used in the present study.
 
 ### Cloud Mass Flux, Precipitation
 
-The sum of the clouds at each cloud top altitude,
-Cloud Mass Flux $M$
+The cloud mass flux of the sum of clouds at each cloud-top altitude, $M$, is
 
 $$
   M(z)   = \int^i M_B^i \eta^i(z) \; .
@@ -462,8 +354,7 @@ $$
 
 ### Time variation of the average field
 
-by compensated downstream flow and detraining.
-The time variation of the mean field is calculated as follows
+The time variation of the mean field due to the compensated downward motion and detrainment is calculated as follows.
 
 $$
   \frac{\partial{\bar{h}}}{\partial {t}}  =  M \frac{\partial{\bar{h}}}{\partial {z}} 
@@ -478,8 +369,7 @@ However, it is $D^i = M_B^i \eta^i(z_T^i)$.
 
 ### Evaporation and downdrafting of precipitation
 
-Precipitation falls through the unsaturated atmosphere, while some of it evaporates.
-In addition, some of them form a downdraft.
+The precipitation falls through the unsaturated atmosphere, while some of it evaporates. Some of it also forms a downdraft.
 
 Evaporation Rate $E$ is ,
 
@@ -488,7 +378,7 @@ $$
 $$
 
 
-Note that $\bar{q}_{w}$ is the saturation specific humidity corresponding to the wet bulb temperature,
+However, $\bar{q}_{w}$ is the saturation specific humidity corresponding to the wet bulb temperature,
 
 $$
   \bar{q}_w = \bar{q} 
@@ -496,8 +386,7 @@ $$
 $$
 
 
-$a_e, b_e$ is a parameter of the microphysics.
-$\rho_p$ is the density of precipitation particles and $V_T$ is the terminal velocity of precipitation,
+$a_e, b_e$ are parameters of microphysics. $\rho_p$ is the density of precipitation particles and $V_T$ is the terminal velocity of precipitation,
 
 $$
   \rho_p = \frac{P}{V_T} \; .
@@ -508,24 +397,13 @@ The current standard values are $a_e=0.25$, $b_e=1$ and $V_T=10$ m/s.
 
 For downdrafting, we make the following assumptions.
 
- - $\bar{h}$ decreases monotonically with altitude above cloudbase
- If the upper end of the region is set to $z_d$, the downdraft is
- It occurs in the region of     $z < z_d$.
+ - If $z_d$ is set at the top of the region where $\bar{h}$ decreases monotonically with height above the cloud base, then the downdraft occurs in the region of $z < z_d$.
 
- - A certain percentage of the precipitation evaporation that occurs at each altitude
- It is used to form downdrafts.
- Evaporation of precipitation has just saturated it.
- The air in the surrounding area.
- Taken into the downdraft (Entrainment).
+ - A certain percentage of the precipitation evaporation that occurs at each altitude is used to form a downdraft. The air in the surrounding area, which has just become saturated by the evaporation of precipitation, is drawn into the downdraft (entrainment).
 
- - In $z < z_B$, detraining occurs,
- The mass flux decreases linearly.
+ - In $z < z_B$, detraining occurs and the mass flux decreases linearly.
 
-That is, in $z_B < z < z_d$, the mass flux $M^d(z)$,
-The downdraft air masses $h^d(z),q^d(z)$ follow the following equation.
-Upon evaporation of precipitation, the wet static energy should be conserved,
-and the specific humidity when saturated by evaporation.
-Note that this is $\bar{q}_{w}$.
+That is, in $z_B < z < z_d$, the mass flux $M^d(z)$, $h^d(z),q^d(z)$ of the downdrafted air mass follow the following equation. Note that the wet static energy is conserved during evaporation, and the specific humidity when saturated by evaporation is $\bar{q}_{w}$.
 
 $$
   \frac{\partial{M^d}}{\partial {z}} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
@@ -539,25 +417,18 @@ $$
 
 
 
-In the above equation, $f_d$ is the portion of the evaporation that is taken up by the downdraft,
-$(1-f_d)$ evaporates directly into the mean field.
-However, the downdraft mass flux $M^d$
-The total mass flux of cloud base shall not exceed the $f_m$ of $M$.
-The current standard value is $f_d=0.5, f_m=1.0$.
+In the above equation, $f_d$ is the part of the evaporation that is captured in the downdraft, and $(1-f_d)$ evaporates directly into the mean field. It is assumed that the mass flux of the downdraft ($M^d$) does not exceed the total mass flux of the cloud base ($M$) by a factor of $f_m$. The current standard values are $f_d=0.5, f_m=1.0$.
 
 ### cloud water and cloud cover
 
-The lattice-averaged cloud water content used for radiation, $l^{cR}$, is
-Strong upwelling areas of cumulus clouds, including cloud water $l^c$
-If the ratio of the ratio to the $\delta^c$ ,
+Assuming that the grid-averaged cloud cover used for radiation ($l^{cR}$) is defined as the ratio of the strong upward area of cumulus clouds including the cloud cover ($l^c$) to $\delta^c$,
 
 $$
   l^{cR} = \delta^c l^c \; .
 $$
 
 
-The mass flux $M^c$ is the same as this $\delta^c$
-Using the vertical velocity of the upstream stream, $v^c$
+The mass flux ($M^c$) is determined by using this $\delta^c$ and the upstream vertical velocity ($v^c$)
 
 $$
   M = \delta^c \rho v^c 
@@ -571,15 +442,11 @@ $$
 $$
 
 
-The cloud cover used to estimate radiation, $C^c$, is ,
-that there is actually a horizontal spread in the distribution of upwelling and cloud water.
-It is reasonable to take a larger value than this $\delta^c$.
-Here, in brief,
+The cloud cover used in the estimation of radiation, $C^c$, is more reasonable than $\delta^c$, considering that the actual distribution of upwelling and cloud water has a horizontal extent. In this section, we will briefly consider the following,
 
 $$
   C^c = \beta M_B
 $$
 
 
-.
-The current standard values are $\alpha=0.3$ and $\beta=10$.
+The current standard values are $\alpha=0.3$ and $\beta=10$. The current standard values are $\alpha=0.3$ and $\beta=10$.
