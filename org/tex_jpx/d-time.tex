@@ -3,36 +3,36 @@
 時間差分スキームは基本的に leap frog である.
 ただし, 拡散項および物理過程の項は後方差分もしくは前方差分とする.
 計算モードを抑えるために時間フィルター(Asselin, 1972)を用いる.
-さらに TERM00000 を大きくとるために,
+さらに TERM00254 を大きくとるために,
 重力波の項に semi-implicit の手法を適用する(Bourke, 1988).
 
 \subsubsection{leap frog による時間積分と時間フィルター}
 
 移流項等の時間積分スキームとして leap frog を用いる.
-水平拡散項には TERM00001 の後方差分を使用する.
-また, 拡散項の疑似 TERM00002 面補正と水平拡散による摩擦熱の項とは
-補正として扱い, TERM00003 の前方差分となる.
-物理過程の項(TERM00004,TERM00004)は,
-やはり TERM00005 の前方差分を使用する.
+水平拡散項には TERM00255 の後方差分を使用する.
+また, 拡散項の疑似 TERM00256 面補正と水平拡散による摩擦熱の項とは
+補正として扱い, TERM00257 の前方差分となる.
+物理過程の項(TERM00258,TERM00258)は,
+やはり TERM00259 の前方差分を使用する.
 (ただし, 鉛直拡散の時間変化項の計算に関しては後方差分的な取扱いをする.
 詳しくは物理過程の章を参照のこと.)
 
-各予報変数を代表して TERM00006 と表すと,
+各予報変数を代表して TERM00260 と表すと,
 %
 \begin{verbatim}
-EQ=00000.
+EQ=00064.
 \end{verbatim}
 %
-TERM00007 は移流項等,
-TERM00008 は水平拡散項である.
+TERM00261 は移流項等,
+TERM00262 は水平拡散項である.
 
-TERM00009 には, 
-疑似等 TERM00010 面拡散と水平拡散による摩擦熱(TERM00011)の補正
-および物理過程(TERM00012)の項が加えられ,
-TERM00013 となる.
+TERM00263 には, 
+疑似等 TERM00264 面拡散と水平拡散による摩擦熱(TERM00265)の補正
+および物理過程(TERM00266)の項が加えられ,
+TERM00267 となる.
 %
 \begin{verbatim}
-EQ=00001.
+EQ=00065.
 \end{verbatim}
 
 leap frog における計算モードの除去のために 
@@ -40,23 +40,23 @@ Asselin(1972) の時間フィルターを毎ステップ適用する.
 すなわち, 
 %
 \begin{verbatim}
-EQ=00002.
+EQ=00066.
 \end{verbatim}
 %
-と TERM00014 を求める.
-TERM00015 としては標準的に 0.05 を使用する. 
+と TERM00268 を求める.
+TERM00269 としては標準的に 0.05 を使用する. 
 
 \subsubsection{semi-implicit 時間積分}
 
 力学の計算では, 基本的に leap frog を用いるが,
 一部の項を implicit 扱いで計算する.
 ここで, implicit は, 台形 implicit を考える.
-ベクトル量 TERM00016 に関して,
-TERM00017 での値を TERM00018,
-TERM00019 での値を TERM00020,
-TERM00021 での値を TERM00022 と書くと,
+ベクトル量 TERM00270 に関して,
+TERM00271 での値を TERM00272,
+TERM00273 での値を TERM00274,
+TERM00275 での値を TERM00276 と書くと,
 台形 implicit とは,
-TERM00023 を
+TERM00277 を
 用いて評価した時間変化項をを用いて解くことにあたる.
 %
 今, {\boldmath q} の時間変化項として,
@@ -65,14 +65,14 @@ A は {\boldmath q} に対して非線形であるが, B は線形であると�
 すなわち,
 %
 \begin{verbatim}
-EQ=00003.
+EQ=00067.
 \end{verbatim}
 %
-ただし, TERM00024 は正方行列である. すると,
-TERM00025
+ただし, TERM00278 は正方行列である. すると,
+TERM00279
 と書けば,
 \begin{verbatim}
-EQ=00004.
+EQ=00068.
 \end{verbatim}
 %
 これは, 行列演算で簡単に解くことができる.
@@ -80,217 +80,217 @@ EQ=00004.
 \subsubsection{semi-implicit 時間積分の適用}
 
 そこで, この方法を適用し, 線形重力波の項を implicit 扱いする.
-これにより, 時間ステップ TERM00026 を小さくとることができる.
+これにより, 時間ステップ TERM00280 を小さくとることができる.
 
-方程式系において, TERM00027 であるような静止場を基本場とする
-線型重力波項とそれ以外の項(添字 TERM00028 を付ける)に分離する.
+方程式系において, TERM00281 であるような静止場を基本場とする
+線型重力波項とそれ以外の項(添字 TERM00282 を付ける)に分離する.
 鉛直方向のベクトル表現
-TERM00029, TERM00030 を用いて,
+TERM00283, TERM00284 を用いて,
 %
 \begin{verbatim}
-EQ=00005.
+EQ=00069.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00006.
+EQ=00070.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00038.
+EQ=00102.
 \end{verbatim}
 
 ここで, 非重力波項は,
 %
 \begin{verbatim}
-EQ=00007.
+EQ=00071.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00008.
+EQ=00072.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00009.
+EQ=00073.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00010.
+EQ=00074.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00039.
-EQ=00039.
-EQ=00039.
-EQ=00039.
-EQ=00039.
-EQ=00039.
-EQ=00039.
+EQ=00103.
+EQ=00103.
+EQ=00103.
+EQ=00103.
+EQ=00103.
+EQ=00103.
+EQ=00103.
 \end{verbatim}
 \begin{verbatim}
-EQ=00011.
+EQ=00075.
 \end{verbatim}
 
 ここで, 重力波項のベクトルおよび行列(下線で表示)は,
 %
 \begin{verbatim}
-EQ=00012.
+EQ=00076.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00013.
+EQ=00077.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00014.
+EQ=00078.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00015.
+EQ=00079.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00016.
+EQ=00080.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00017.
+EQ=00081.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00018.
+EQ=00082.
 \end{verbatim}
 %
-ここで, 例えば TERM00048 は,
-TERM00049 が成り立つとき 1, そうでないとき 0 となる関数である.
+ここで, 例えば TERM00302 は,
+TERM00303 が成り立つとき 1, そうでないとき 0 となる関数である.
 
 次のような表現を使用して,
 %
 \begin{verbatim}
-EQ=00019.
+EQ=00083.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00040.
-EQ=00040.
+EQ=00104.
+EQ=00104.
 \end{verbatim}
 %
 方程式系に semi-implicit 法を適用すると,
 %
 \begin{verbatim}
-EQ=00020.
+EQ=00084.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00021.
+EQ=00085.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00022.
+EQ=00086.
 \end{verbatim}
 
 
 すると, 
 %
 \begin{verbatim}
-EQ=00041.
-EQ=00041.
-EQ=00041.
-EQ=00041.
+EQ=00105.
+EQ=00105.
+EQ=00105.
+EQ=00105.
 \end{verbatim}
 
 球面調和関数展開を用いているので,
 \[
-EQ=00042.
+EQ=00106.
 \]
-であり上式を TERM00073 について解くことができる.
+であり上式を TERM00327 について解くことができる.
 %
 その後,
 %
 \begin{verbatim}
-EQ=00023.
+EQ=00087.
 \end{verbatim}
 %
-および, (24), (26)
-により TERM00075 における値 TERM00076
+および, (109), (111)
+により TERM00329 における値 TERM00330
 が求められる.
 
 \subsubsection{時間スキームの特性と時間ステップの見積り}
 
 移流型方程式 
 \begin{verbatim}
-EQ=00024.
+EQ=00088.
 \end{verbatim}
 において,  leap frog で離散化した場合の安定性を考える.
 今, 
 \begin{verbatim}
-EQ=00025.
+EQ=00089.
 \end{verbatim}
 と置き差分化すると, 上式は,
 \begin{verbatim}
-EQ=00026.
+EQ=00090.
 \end{verbatim}
 となる.
 ここで,
 \begin{verbatim}
-EQ=00027.
+EQ=00091.
 \end{verbatim}
 とすると,
 \begin{verbatim}
-EQ=00028.
+EQ=00092.
 \end{verbatim}
-この解は TERM00077 とおいて,
+この解は TERM00331 とおいて,
 \begin{verbatim}
-EQ=00029.
+EQ=00093.
 \end{verbatim}
 
 この絶対値は
 \begin{verbatim}
-EQ=00030.
+EQ=00094.
 \end{verbatim}
-であり, TERM00078 の場合には, TERM00079 となり,
+であり, TERM00332 の場合には, TERM00333 となり,
 時間とともに絶対値が指数的に大きくなる解となる.
 これは計算が不安定であることを示す.
 
-一方, TERM00080 の場合は TERM00081 であるため,
+一方, TERM00334 の場合は TERM00335 であるため,
 計算は中立である.
-ただし, TERM00082 の値として2つの解があり,
-そのうち一方は, TERM00083 としたときに
-TERM00084 であるが, 
-他方は TERM00085 となる.
+ただし, TERM00336 の値として2つの解があり,
+そのうち一方は, TERM00337 としたときに
+TERM00338 であるが, 
+他方は TERM00339 となる.
 これは, 時間的に大きく振動する解を示す.
 このモードは計算モードと呼ばれ, 
 leap frog 法の問題点の一つである.
 このモードは時間フィルターを施すことによって
 減衰させることができる.
 
-TERM00086 の条件は,
-水平離散化の格子間隔 TERM00087 が与えられている場合には
-それによって TERM00088 の最大値が
+TERM00340 の条件は,
+水平離散化の格子間隔 TERM00341 が与えられている場合には
+それによって TERM00342 の最大値が
 \begin{verbatim}
-EQ=00031.
+EQ=00095.
 \end{verbatim}
 となることより,
 \begin{verbatim}
-EQ=00032.
+EQ=00096.
 \end{verbatim}
 となる.
-スペクトルモデルの場合は, 最大波数 TERM00089 により,
-地球半径を TERM00090 として,
+スペクトルモデルの場合は, 最大波数 TERM00343 により,
+地球半径を TERM00344 として,
 \begin{verbatim}
-EQ=00033.
+EQ=00097.
 \end{verbatim}
 これが安定性の条件である.
 
 積分の安定性を保証するには,
-TERM00091 としては, もっとも速い移流・伝播の速度をとり,
-それによって決まる TERM00092 よりも小さな時間ステップを用いればよい.
+TERM00345 としては, もっとも速い移流・伝播の速度をとり,
+それによって決まる TERM00346 よりも小さな時間ステップを用いればよい.
 semi-implicit を用いない場合には, 重力波の伝播速度
-(TERM00093) が安定性の基準となるが,
+(TERM00347) が安定性の基準となるが,
 semi-implicit を用いた場合には, 通常, 東西風による移流が
 制限要因となる.
-従って, TERM00094 は TERM00095 を東西風の最大値として,
+従って, TERM00348 は TERM00349 を東西風の最大値として,
 \begin{verbatim}
-EQ=00034.
+EQ=00098.
 \end{verbatim}
 を満たすようにとる.
 実際にはこれに安全のための係数をかけたものを用いる.
@@ -299,21 +299,21 @@ EQ=00034.
 
 AGCM で計算されたものではない, 
 適当な初期値から始める場合には, モデルに整合的な
-TERM00096 および TERM00097 の2つの時刻の物理量を与えることはできない.
-しかし, TERM00098 の値として不整合な値を与えると,
+TERM00350 および TERM00351 の2つの時刻の物理量を与えることはできない.
+しかし, TERM00352 の値として不整合な値を与えると,
 大きな計算モードが発生する.
 
-そこで, まず TERM00099 として, TERM00100 の時間ステップで
+そこで, まず TERM00353 として, TERM00354 の時間ステップで
 \begin{verbatim}
-EQ=00035.
+EQ=00099.
 \end{verbatim}
-を求め, さらに, TERM00101 の時間ステップで,
+を求め, さらに, TERM00355 の時間ステップで,
 \begin{verbatim}
-EQ=00036.
+EQ=00100.
 \end{verbatim}
 そして, 本来の時間ステップで,
 \begin{verbatim}
-EQ=00037.
+EQ=00101.
 \end{verbatim}
 として, 以後普通に leap frog で計算を行なうようにすると,
 計算モードの発生が抑えられる.

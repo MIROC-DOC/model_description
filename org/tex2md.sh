@@ -6,5 +6,5 @@ cd ..
 
 for name in ${filelist}
 do
-	pandoc -f latex -t markdown -t gfm --wrap=preserve -o md_jpx/${name}.md tex_jpx/${name}.tex
+	pandoc -f latex -t markdown -t gfm --wrap=none -o md_jpx/${name}.md tex_jpx/${name}.tex
 done

@@ -4,78 +4,65 @@
 
 ### Basic Equations.
 
-The basic equation is ,
-It is a system of primitive equations at the spherical (TERM00000,TERM00000) and TERM00001 coordinates,
-It is given as follows ( Haltiner and Williams , 1980 ).
+The fundamental equations are a system of primitive equations at the spherical (TERM00191,TERM00191) and TERM00192 coordinates, given as follows ( Haltiner and Williams , 1980 ).
 
 1. a series of equations
 
-         EQ=00000.
+         EQ=00008.
 
 2. hydrostatic pressure formula
 
-         EQ=00001.
+         EQ=00009.
 
 3. equation of motion
 
-         EQ=00002.
+         EQ=00010.
 
-         EQ=00003.
+         EQ=00011.
 
 4. thermodynamic equation
 
-         EQ=00008.
-         EQ=00008.
+         EQ=00016.
+         EQ=00016.
 
 5. water vapor formula
 
-         EQ=00009.
-         EQ=00009.
+         EQ=00017.
+         EQ=00017.
 
 Here,
 
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
-     EQ=00010.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
+     EQ=00018.
 
-TERM00006,TERM00006
-is the horizontal diffusion term,
-TERM00007,TERM00007
-are forces due to small-scale kinetic processes (treated as 'physical processes'),
-The TERM00008 is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
-Heating and temperature changes,
-The TERM00009 is a process that involves physical processes such as condensation and small-scale motion
-It is a water vapor source term.
-Also, the TERM00010 is a frictional heat,
+TERM00197 and TERM00197 are horizontal diffusion terms, TERM00198 and TERM00198 are forces due to small-scale kinetic processes (treated as 'physical processes'), TERM00199 are forces due to radiation, condensation, small-scale kinetic processes, etc. Heating and temperature change due to 'physical processes', and TERM00200 is a water vapor source term due to 'physical processes' such as condensation and small-scale motion. TERM00201 is the heat of friction and
 
-     EQ=00004.
+     EQ=00012.
 
-TERM00013 is ,
-It is a time-varying term of TERM00014,TERM00014 due to horizontal and vertical diffusion.
+TERM00204 is a time-varying term of TERM00205 and TERM00205 due to horizontal and vertical diffusion.
 
 ### Boundary Conditions.
 
 The boundary conditions for lead-direct current are
 
-     EQ=00005.
+     EQ=00013.
 
-Therefore, from (1) Therefore, from (1),
-The time-varying surface pressure equation and
-Diagnostic Formula for determining the vertical velocity (TERM00016) in the TERM00015 system
+Therefore, from (14), we can calculate the time variation of surface pressure and the vertical velocity of the TERM00206 system. Therefore, from (14), the equation for the time variation of surface pressure and the diagnostic equation for vertical velocity (TERM00207) in the TERM00206 system
 
-     EQ=00006.
+     EQ=00014.
 
-     EQ=00007.
+     EQ=00015.
 
 is led.

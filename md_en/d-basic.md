@@ -4,9 +4,7 @@
 
 ### Basic Equations.
 
-The basic equation is ,
-It is a system of primitive equations at the spherical ($\lambda,\varphi$) and $\sigma$ coordinates,
-It is given as follows ( Haltiner and Williams , 1980 ).
+The fundamental equations are a system of primitive equations at the spherical ($\lambda,\varphi$) and $\sigma$ coordinates, given as follows ( Haltiner and Williams , 1980 ).
 
 1. a series of equations
 
@@ -156,15 +154,7 @@ $$
 
 
 
-${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$
-is the horizontal diffusion term,
-${\mathcal F}_\lambda, {\mathcal F}_\varphi$
-are forces due to small-scale kinetic processes (treated as 'physical processes'),
-The $Q$ is a process of 'physical processes' such as radiation, condensation, and small-scale kinetic processes
-Heating and temperature changes,
-The $S_q$ is a process that involves physical processes such as condensation and small-scale motion
-It is a water vapor source term.
-Also, the $Q_{diff}$ is a frictional heat,
+${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$ are horizontal diffusion terms, ${\mathcal F}_\lambda, {\mathcal F}_\varphi$ are forces due to small-scale kinetic processes (treated as 'physical processes'), $Q$ are forces due to radiation, condensation, small-scale kinetic processes, etc. Heating and temperature change due to 'physical processes', and $S_q$ is a water vapor source term due to 'physical processes' such as condensation and small-scale motion. $Q_{diff}$ is the heat of friction and
 
 $$
   Q_{diff}
@@ -172,8 +162,7 @@ $$
 $$
 
 
-$( \frac{\partial {$\mathbf{v}$}}{\partial t} )_{diff} $ is ,
-It is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
+$( \frac{\partial {$\mathbf{v}$}}{\partial t} )_{diff} $ is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
 
 ### Boundary Conditions.
 
@@ -184,9 +173,7 @@ $$
 $$
 
 
-Therefore, from (1) Therefore, from (1),
-The time-varying surface pressure equation and
-Diagnostic Formula for determining the vertical velocity ($\dot{\sigma}$) in the $\sigma$ system
+Therefore, from (14), we can calculate the time variation of surface pressure and the vertical velocity of the $\sigma$ system. Therefore, from (14), the equation for the time variation of surface pressure and the diagnostic equation for vertical velocity ($\dot{\sigma}$) in the $\sigma$ system
 
 $$
    \frac{\partial \pi}{\partial t}

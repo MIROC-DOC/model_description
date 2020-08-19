@@ -1,8 +1,6 @@
 ## Vertical discretization
 
-According to Arakawa and Suarez (1983),
-Discretize the basic equations vertically by differences.
-The scheme has the following characteristics.
+Following Arakawa and Suarez (1983), the basic equations are discretized vertically by differences. This scheme has the following characteristics.
 
  - Save the total integrated mass
 
@@ -14,25 +12,15 @@ The scheme has the following characteristics.
 
  - The hydrostatic pressure equation comes down to local (the altitude of the lower level is independent of the temperature of the upper level)
 
- - Constant in the horizontal direction, for a given temperature distribution,
- The hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
+ - For a given temperature distribution, constant in the horizontal direction, the hydrostatic pressure equation becomes accurate and the barometric gradient force becomes zero.
 
  - Isothermal atmosphere stays isothermal forever
 
 ### How to take a level.
 
-Number the layers from bottom to top.
-Assume that the physical quantity of $\zeta,D,T,q$ is defined at the integer level (layer).
-On the other hand, $\dot{\sigma}$ is defined at the half-integer level.
-First, the value of $\sigma$ at a half-integer level
-$\sigma_{k-1/2}, (k=1,2,\ldots K)$
-Define the .
-However, level $\frac{1}{2}$ is the lower end ($\sigma=1$),
-Level $K+\frac{1}{2}$ should be the upper end ($\sigma=0$).
+Number the layers from the bottom to the top. We assume that the physical quantity in $\zeta,D,T,q$ is defined in terms of integer levels (layers). On the other hand, $\dot{\sigma}$ is defined at the half-integer level (level). First, define the value of $\sigma$ at a half-integer level $\sigma_{k-1/2}, (k=1,2,\ldots K)$. However, the level $\frac{1}{2}$ is the lower end ($\sigma=1$) and the level $K+\frac{1}{2}$ is the upper end ($\sigma=0$).
 
-Value of $\sigma$ in integer level
-$\sigma_k, (k=1,2,\ldots K)$
-is obtained from the following equation.
+The value of $\sigma$ at the integer level $\sigma_k, (k=1,2,\ldots K)$ is calculated by the following formula.
 
 $$
  \sigma_k = \left\{ \frac{1}{1+\kappa}

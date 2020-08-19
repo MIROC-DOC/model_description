@@ -2,38 +2,17 @@
 
 ### Overview of Large Scale Condensation Schemes.
 
-Large-scale condensation schemes are ,
-This is a representation of the condensation processes involved in clouds other than cumulus convection,
-Calculating latent heat release and water vapor reduction, precipitation.
-We also calculate the cloud water content and cloud coverage involved in the radiation.
-The main input data are temperature TERM00000, specific humidity TERM00001, and cloud cover TERM00002,
-The output data is the time rate of change of temperature, specific humidity and cloud water content,
-TERM00003,TERM00003,
-The cloud cover is TERM00004.
+The large-scale condensation scheme is used to represent cloud-related condensation processes other than cumulus convection, and to calculate the latent heat release, water vapor loss, and precipitation. The amount of cloud water and cloud coverage involved in the radiation are also calculated. The main input data are temperature (TERM00586), specific humidity (TERM00587), and cloud water content (TERM00588), and the output data are the rate of change of temperature, specific humidity, and cloud water content over time (TERM00589), TERM00589, and cloud cover (TERM00590).
 
-In the CCSR/NIES AGCM, in addition to the water-vapor mixture ratio (specific humidity TERM00005), the
-Cloud water content (TERM00006) is also a forecast variable in the model.
-In fact, in this large-scale condensation routine
-First, calculate the sum of the two, the total amount of water (TERM00007),
-We are dividing it again into cloud water and water vapor,
-In effect, the forecast variable is a single total water volume (TERM00008).
-By assuming the distribution of the variation of TERM00009 in the grid,
-Diagnosis of the cloud cover and cloud water content in each grid.
-The conversion of cloud water into precipitation and the evaporation of precipitation during its fall are also considered.
+In addition to the water-vapor mixing ratio (specific humidity TERM00591), cloud water content (TERM00592) is also predicted in the CCSR/NIES AGCM model. In practice, the large-scale condensation routine first calculates the sum of these two variables, total water (TERM00593), and then divides the sum into cloud water and water vapor, so that the model has only one predictor, total water (TERM00594). By assuming the distribution of the variation of TERM00595 within a grid, the cloud cover (horizontal cloud coverage) and cloud water content within each grid is diagnosed. The conversion of cloud water into precipitation and the evaporation of precipitation during its fall are also considered.
 
 The outline of the calculation procedure is as follows.
 
-1. add the amount of water vapor (TERM00010) and the amount of cloud water (TERM00011)
- Total water volume TERM00012
- The temperature has evaporated the cloud water,
- Set the     liquid water temperature TERM00013.
+1. add the amount of water vapor (TERM00596) and the amount of cloud water (TERM00597) to obtain the total amount of water (TERM00598). The air temperature is obtained by evaporating cloud water, liquid water temperature TERM00599
 
-2. assuming the distribution of the variation in TERM00014,
- Find the cloud cover and separate it again into cloud water and water vapor.
+2. assume the distribution of the variation of TERM00600, obtain the cloud cover and separate it into cloud water and water vapor again.
 
-3. considering the temperature change due to condensation,
- By successive approximation
- Determine the cloud cover, cloud water content, and water vapor distribution.
+The distribution of cloud cover, cloud water content, and water vapor is determined by successive approximations, taking into account the temperature variation caused by condensation.
 
 4. evaluate the conversion of cloud water to precipitation.
 
@@ -43,137 +22,108 @@ The outline of the calculation procedure is as follows.
 
 ### Diagnosis of cloud water levels
 
-When the grid-averaged total water volume TERM00015 is given,
-Distribution of the total water volume TERM00016 in the grid,
-Between TERM00017 and TERM00018
-It is assumed to be uniformly distributed. That is, the probability density function is ,
+Given a grid-averaged total water volume (TERM00601), the total water volume (TERM00602) is assumed to be uniformly distributed between TERM00603 and TERM00604. In other words, the probability density function is defined as
 
-     EQ=00000.
+     EQ=00221.
 
-We consider this distribution to be a horizontal distribution.
-On the other hand, the saturation specific humidity is based on the grid average of TERM00019.
+This distribution is considered to be a horizontal distribution. On the other hand, the lattice mean of TERM00605 is used for the saturated specific humidity.
 
-In the grid,
-Consider the presence of a cloud in a region in TERM00020 (Figure [lsc[lsc:fig-cloud\]](#lsc:fig-cloud)).
+Consider a cloud in a grid point, in the region of TERM00606 (Figure [lsc:fig-cloud\]](#lsc:fig-cloud).
 
-Then, as shown by the shading in the figure, the
-The horizontal ratio of the portion of the total water volume exceeding saturation TERM00021 is ,
+Then, as shown in the shading of the figure, the horizontal ratio of the area where the total water volume exceeds the saturation, TERM00607, is
 
-     EQ=00001.
+     EQ=00222.
 
 and this is the cloud cover (horizontal cloud coverage).
 
-In addition, the cloud cover of TERM00022 is in the region of TERM00023
-This is an integral of TERM00024,
+The cloud cover (TERM00608) is the result of integrating TERM00610 in the region where TERM00609 is found,
 
-     EQ=00002.
+     EQ=00223.
 
 ### Determination by successive approximation
 
-First, from the Water Vapor TERM00025 and Cloud Water TERM00026 and the Temperature TERM00027,
-Find the total water volume TERM00028 and liquid water temperature TERM00029.
+First, find the total water volume (TERM00614) and liquid water temperature (TERM00615) from the steam TERM00611 and the cloud water TERM00612 and the temperature (TERM00613).
 
-     EQ=00017.
-     EQ=00017.
+     EQ=00238.
+     EQ=00238.
 
-The TERM00030 corresponds to the temperature at which all cloud water is evaporated.
-TERM00031, TERM00032
+TERM00616 corresponds to the temperature at which all cloud water is evaporated. TERM00617 and TERM00618 are defined as follows.
 
-By saturation specific humidity relative to temperature TERM00033,
-Assuming that the cloud water content evaluated by the aforementioned method is TERM00034,
-It changes the temperature,
+Assuming that TERM00620 is the amount of cloud water evaluated by the aforementioned method as a function of the saturation specific humidity relative to the temperature (TERM00619), the temperature will change,
 
-     EQ=00003.
+     EQ=00224.
 
-The cloud water content evaluated using the saturation specific humidity versus temperature was estimated from TERM00035,
-The resulting temperature change is solved by successive approximation as TERM00036 ...
-In order to speed up this sequential convergence, we use the Newton method.
-That is, instead of (6)
+This temperature is solved by successive approximations to TERM00621 as the evaluated cloud water content and TERM00622 as the temperature changed by the saturation specific humidity. In order to accelerate this successive convergence, the Newton method is employed. In other words, instead of (260), we use
 
-     EQ=00004.
+     EQ=00225.
 
-.
-TERM00037 can be obtained analytically using (3).
+We assume that TERM00623 can be obtained analytically using (257).
 
 ### precipitation process.
 
-Precipitation occurs dependent on the amount of cloud water diagnosed.
-If the precipitation rate (in 1/s) is set to TERM00038,
+Precipitation depends on the diagnosed cloud water content. If the precipitation rate (in 1/s) is set to TERM00624,
 
-     EQ=00005.
+     EQ=00226.
 
-TERM00039 is the time scale of precipitation,
+TERM00625 is a precipitation time scale,
 
-     EQ=00006.
+     EQ=00227.
 
-where TERM00040 is the critical cloud water content,
-In view of the Bergeron-Findeisen effect ,
+Here, TERM00626 is the critical cloud water content, taking into account the Bergeron-Findeisen effect,
 
-     EQ=00007.
+     EQ=00228.
 
-TERM00041, TERM00042, TERM00043,
-TERM00044 K, TERM00045 K
+TERM00627, TERM00628, TERM00629, TERM00630 K, TERM00631 K.
 
-Precipitation results in a decrease in TERM00046.
+Precipitation results in a decrease in TERM00632.
 
-     EQ=00018.
-     EQ=00018.
+     EQ=00239.
+     EQ=00239.
 
-Integrating this during TERM00047,
+Integrating this during TERM00633,
 
-     EQ=00008.
+     EQ=00229.
 
-Precipitation flux at a certain height, TERM00048
-If (unit kg TERM00049 TERM00050) is set to TERM00051
+If the precipitation flux (in kg TERM00635 TERM00636) at a certain height (TERM00634) is defined as TERM00637,
 
-     EQ=00009.
+     EQ=00230.
 
 ### Ice Falling Process.
 
-Cloud water is divided into ice and water clouds depending on the temperature.
-The ice cloud ratio is
+The cloud water is divided into ice clouds and water clouds depending on the temperature. The ratio of ice clouds is
 
-     EQ=00010.
+     EQ=00231.
 
-(but with a maximum value of 1 and a minimum value of 0). Also,
-TERM00052,TERM00052.
-The ice cloud will fall at a slow speed,
-Consider the effect. Rate of descent TERM00053 is,
+(with a maximum value of 1 and a minimum value of 0). We also consider the effect of the ice cloud in TERM00638 and TERM00638, assuming that it descends slowly. The rate of descent (TERM00639) is
 
-     EQ=00011.
+     EQ=00232.
 
-However, TERM00054 m/s, TERM00055.
-So..,
+However, TERM00640 m/s, TERM00641,
 
-     EQ=00012.
+     EQ=00233.
 
 as well as precipitation.
 
 ### Evaporation process of precipitation.
 
-Evaporation of precipitation The evaporation of precipitation, TERM00056, is estimated as follows.
+Evaporation of precipitation TERM00642 is estimated to be as follows.
 
-     EQ=00013.
+     EQ=00234.
 
-However, if TERM00057 is set, this should be zero.
-The TERM00058 is the saturation specific humidity corresponding to the wet bulb temperature,
+If TERM00643 is set to 0, however, it is set to 0. TERM00644 is the saturation specific humidity corresponding to the wet bulb temperature,
 
-     EQ=00014.
+     EQ=00235.
 
 This means that precipitation is
 
-     EQ=00015.
+     EQ=00236.
 
 The temperature drop due to evaporation is estimated to be We also estimate the temperature drop due to evaporation.
 
-     EQ=00016.
+     EQ=00237.
 
 ### Other Notes.
 
-Calculations are made from the topmost layer down.
- For convenience, the calculation is based on the precipitation from the upper layers of the
- We start by evaluating evaporation in that layer.
+The calculations are performed from the topmost layer down. For convenience, the calculation starts from evaluating the evaporation of precipitation from the layer above the precipitation layer.
 
-2. fallen ice in the layer just below.
- It will be treated the same as the cloud water that already exists in that layer,
- incorporated into the total water volume.
+Falling ice is treated as cloud water already in the layer below, and is included in the total water volume.

@@ -6,7 +6,7 @@
 地表フラックススキームは, 
 接地境界層における乱流輸送による
 大気地表間の物理量のフラックスを評価する.
-主な入力データは, 風速 TERM00000,TERM00000, 気温 TERM00001, 比湿 TERM00002 であり,
+主な入力データは, 風速 TERM00850,TERM00850, 気温 TERM00851, 比湿 TERM00852 であり,
 出力データは, 運動量, 熱, 水蒸気の鉛直フラックスと
 implicit 解を得るための微分値である.
 
@@ -26,86 +26,86 @@ implicit 解を得るための微分値である.
 
 \subsubsection{フラックス計算の基本式}
 
-地表フラックス TERM00003,TERM00003 は
-バルク係数 TERM00004,TERM00004 を用いて
+地表フラックス TERM00853,TERM00853 は
+バルク係数 TERM00854,TERM00854 を用いて
 次のように表される.
 %
 \begin{verbatim}
-EQ=00000.
+EQ=00328.
 \end{verbatim}
 \begin{verbatim}
-EQ=00001.
+EQ=00329.
 \end{verbatim}
 \begin{verbatim}
-EQ=00002.
+EQ=00330.
 \end{verbatim}
 \begin{verbatim}
-EQ=00003.
+EQ=00331.
 \end{verbatim}
 %
-ただし, TERM00009 は可能蒸発量である.
+ただし, TERM00859 は可能蒸発量である.
 実蒸発量の計算は「地表過程」ならび
 「大気地表系の拡散型収支式の解法」の節で述べる.
 
 \subsubsection{Richardson 数}
 
 大気地表間の安定度の基準となる,
-バルクRichardson数 TERM00010 は
+バルクRichardson数 TERM00860 は
 %
 \begin{verbatim}
-EQ=00004.
+EQ=00332.
 \end{verbatim}
 ここで, 
 \begin{verbatim}
-EQ=00005.
+EQ=00333.
 \end{verbatim}
 は補正ファクターで, 補正前のバルク Richardson数から近似的に求めるが, 
 ここでは計算方法は略す. 
 
 \subsubsection{バルク係数}
 
-バルク係数 TERM00011,TERM00011 は
+バルク係数 TERM00861,TERM00861 は
 Louis(1979), Louis {\em et al.}(1982) に従って求める. 
 ただし, 運動量と熱に対する粗度の違いを考慮した補正を行なっている. 
 すなわち, 運動量, 熱, 水蒸気に対する粗度を
-それぞれ TERM00012,TERM00012 とすると
-一般に TERM00013,TERM00013 であるが, 熱, 水蒸気についても
-TERM00014 の高さからのフラックスに対するバルク係数
-TERM00015, TERM00016 をまず求め, その後に補正する. 
+それぞれ TERM00862,TERM00862 とすると
+一般に TERM00863,TERM00863 であるが, 熱, 水蒸気についても
+TERM00864 の高さからのフラックスに対するバルク係数
+TERM00865, TERM00866 をまず求め, その後に補正する. 
 %
 \begin{verbatim}
-EQ=00006.
-\end{verbatim}
-%
-\begin{verbatim}
-EQ=00007.
-\end{verbatim}
-\begin{verbatim}
-EQ=00008.
+EQ=00334.
 \end{verbatim}
 %
 \begin{verbatim}
-EQ=00009.
+EQ=00335.
 \end{verbatim}
 \begin{verbatim}
-EQ=00010.
+EQ=00336.
+\end{verbatim}
+%
+\begin{verbatim}
+EQ=00337.
+\end{verbatim}
+\begin{verbatim}
+EQ=00338.
 \end{verbatim}
 
-TERM00017,TERM00017 は
-中立時の(TERM00018 からのフラックスに対する)バルク係数で,
+TERM00867,TERM00867 は
+中立時の(TERM00868 からのフラックスに対する)バルク係数で,
 %
 \begin{verbatim}
-EQ=00011.
+EQ=00339.
 \end{verbatim}
 
-補正ファクター TERM00019 は, 
+補正ファクター TERM00869 は, 
 \begin{verbatim}
-EQ=00012.
+EQ=00340.
 \end{verbatim}
 であるが, 計算方法は略す. 
-係数は, TERM00020,TERM00020 である. 
+係数は, TERM00870,TERM00870 である. 
 
-バルク係数の TERM00021 依存性を図示すると,
+バルク係数の TERM00871 依存性を図示すると,
 図\ref{p-sflx:cm}, 図\ref{p-sflx:ch}のようになる.
 
 \begin{figure}[htbp]
@@ -118,7 +118,7 @@ EQ=00012.
 \begin{figure}[htbp]
   \begin{center}
     \epsfile{file=sflx-ch.ps,width=70mm}
-    \caption{熱に対する粗度. TERM00022 の場合}
+    \caption{熱に対する粗度. TERM00872 の場合}
     \label{p-sflx:ch}
   \end{center}
 \end{figure}
@@ -128,47 +128,47 @@ EQ=00012.
 これにより, フラックスが計算される.
 %
 \begin{verbatim}
-EQ=00013.
+EQ=00341.
 \end{verbatim}
 \begin{verbatim}
-EQ=00014.
+EQ=00342.
 \end{verbatim}
 \begin{verbatim}
-EQ=00015.
+EQ=00343.
 \end{verbatim}
 \begin{verbatim}
-EQ=00016.
+EQ=00344.
 \end{verbatim}
 
 微分項は, 以下のようになる.
 \begin{verbatim}
-EQ=00017.
+EQ=00345.
 \end{verbatim}
 \begin{verbatim}
-EQ=00018.
+EQ=00346.
 \end{verbatim}
 \begin{verbatim}
-EQ=00019.
+EQ=00347.
 \end{verbatim}
 \begin{verbatim}
-EQ=00020.
+EQ=00348.
 \end{verbatim}
 \begin{verbatim}
-EQ=00021.
+EQ=00349.
 \end{verbatim}
 
 ここで, 注意したいのは,
-TERM00032 はこの時点では求められていない量であることである.
+TERM00882 はこの時点では求められていない量であることである.
 表皮温度は, 
 地表熱バランスの条件
 \begin{verbatim}
-EQ=00022.
+EQ=00350.
 \end{verbatim}
 を満たすように決まる.
-この時点では, TERM00033 としては前の時間ステップにおけるものを使って評価する.
+この時点では, TERM00883 としては前の時間ステップにおけるものを使って評価する.
 地表バランスを満たす本当のフラックスの値は,
 地表過程と結合してこの式を解いてから定まる.
-その意味で, 上のフラックスに TERM00034 をつけておいた.
+その意味で, 上のフラックスに TERM00884 をつけておいた.
 
 \subsubsection{海面における取扱い}
 
@@ -178,46 +178,46 @@ EQ=00022.
 \item 海面の粗度が風速によって変化すること
 \end{itemize}
 
-自由対流運動の効果は, 浮力フラックス TERM00035 を計算し,
+自由対流運動の効果は, 浮力フラックス TERM00885 を計算し,
 \begin{verbatim}
-EQ=00023.
+EQ=00351.
 \end{verbatim}
-TERM00036 のときに,
+TERM00886 のときに,
 \begin{verbatim}
-EQ=00024.
+EQ=00352.
 \end{verbatim}
 \begin{verbatim}
-EQ=00025.
+EQ=00353.
 \end{verbatim}
-とすることで考慮する.  TERM00038 は混合層の厚さのスケールに対応する.
-現在の標準値は TERM00039 m である.
+とすることで考慮する.  TERM00888 は混合層の厚さのスケールに対応する.
+現在の標準値は TERM00889 m である.
 % この自由対流運動の効果は, 海面以外でも考慮している.
 
-海面の粗度変化は, 摩擦速度 TERM00040
+海面の粗度変化は, 摩擦速度 TERM00890
 \begin{verbatim}
-EQ=00026.
+EQ=00354.
 \end{verbatim}
 を用いて,
 \begin{verbatim}
-EQ=00027.
-EQ=00027.
-EQ=00027.
+EQ=00355.
+EQ=00355.
+EQ=00355.
 \end{verbatim}
-のように評価する. TERM00041 TERM00042 TERM00043 は
+のように評価する. TERM00891 TERM00892 TERM00893 は
 大気の動粘性係数であり, 
 他の係数の標準値は
-TERM00044,TERM00044,
-TERM00045,TERM00045,
-TERM00046,TERM00046 である.
+TERM00894,TERM00894,
+TERM00895,TERM00895,
+TERM00896,TERM00896 である.
 
-以上の計算では, TERM00047,TERM00047 が必要であるため,
+以上の計算では, TERM00897,TERM00897 が必要であるため,
 逐次近似計算を行なう.
 
 \subsubsection{風速の補正}
 
 一般に粗度の大きな地表では, 粗度の小さな地表に比べて
 運動量の下向き輸送が効率的であるためにその直上の風が弱く,
-粗度による TERM00048 の違いを風速の違いによって打ち消す効果が働く.
+粗度による TERM00898 の違いを風速の違いによって打ち消す効果が働く.
 
 モデルにおいて地表フラックス計算に渡される風速は
 力学過程の時間積分によって計算された値であり,
@@ -233,7 +233,7 @@ TERM00046,TERM00046 である.
 
 小規模運動の効果を考え,
 地表フラックスの算出の際の地表風速
-TERM00049 の最小値を設定する.
+TERM00899 の最小値を設定する.
 現在の標準値は, 各フラックスに共通で
 3m/s である.
 

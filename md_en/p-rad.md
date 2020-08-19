@@ -2,73 +2,40 @@
 
 ### Summary of Radiation Flux Calculations
 
-The CCSR/NIES AGCM radiation calculation scheme is ,
-Discrete Ordinate Method and
-It was created based on the k-Distribution Method.
-by gases and clouds/aerosols
-Considering the absorption, emission, and scattering processes of solar and terrestrial radiation,
-Calculate the value of the radiation flux at each level.
-The main input data are temperature $T$, specific humidity $q$, cloud cover $l$, and cloud cover $C$,
-The output data are upward and downward radiation fluxes, $F^-, F^+$,
-and the differential coefficient of upward radiation flux with respect to surface temperature
-This is a $dF^-/dT_g$.
+The CCSR/NIES AGCM radiation calculation scheme is based on the Discrete Ordinate Method and the k-Distribution Method. Considering the absorption, emission, and scattering processes of solar and terrestrial radiation due to gases, clouds, and aerosols, the values of radiation flux at each level are calculated. The main input data are air temperature ($T$), specific humidity ($q$), cloud water content ($l$), and cloud cover ($C$), and the output data are upward and downward radiation fluxes, $F^-, F^+$, and the derivative of upward radiation fluxes on the surface temperature The coefficient is $dF^-/dT_g$.
 
-The calculation is done for several wavelengths.
-Each wavelength range is based on the k-distribution method,
-It is further divided into several sub-channels.
-As for gaseous absorption,
-Band Absorption in H$_2$O, CO$_2$, O$_3$, N$_2$O, CH$_4$ and ,
-Continuous absorption of H$_2$O, O$_2$, O$_3$
-and CFC absorption is incorporated.
-As for the scattering, we can use Rayleigh scattering of gases and
-Scattering by cloud and aerosol particles is incorporated.
+The computation is divided into several spectral regions. Each wavelength range is further divided into several subchannels based on the k-distribution method. For gas absorption, we adopt the band absorption of H$_2$O, CO$_2$, O$_3$, N$_2$O, CH$_4$, and the continuous absorption of H$_2$O, O$_2$, O$_3$, and CFC. As for scattering, the Rayleigh scattering of gases and scattering by cloud and aerosol particles are adopted.
 
 The outline of the calculation procedure is as follows (subroutine names in parentheses).
 
 1. calculate the Planck function from atmospheric temperature `MODULE:[PLANKS]`.
 
-2. in each subchannel,
- Calculates the optical thickness due to gas absorption `MODULE:[PTFIT]`.
+Calculates the optical thickness due to gas absorption in each subchannel `MODULE:[PTFIT]`.
 
-3. by continuous absorption and CFC absorption
- calculate the optical thickness `MODULE:[CNTCFC]`.
+3. calculate the optical thickness by continuous absorption and CFC absorption `MODULE:[CNTCFC]`.
 
-4. of Rayleigh scattering and particle scattering
- Calculates the optical thickness and scattering moment `MODULE:[SCATMM]`.
+4. calculate the optical thickness and scattering moments for Rayleigh scattering and particle scattering `MODULE:[SCATMM]`.
 
-5. from the optical thickness and solar zenith angle of the scattering,
- Seeking sea-level albedo `MODULE:[SSRFC]`.
+From the optical thickness and solar zenith angle of the scattering, we obtain the albedo of the sea surface `MODULE:[SSRFC]`.
 
-6. for each sub-channel,
- Expand the Planck function by optical thickness `MODULE:[PLKEXP]`.
+6. for each subchannel, expand the Planck function by optical thickness `MODULE:[PLKEXP]`.
 
-7. for each sub-channel,
- Calculates the transmission coefficient, reflection coefficient, and source function for each layer `MODULE:[TWST]`
+7. for each subchannel, calculate the transmission coefficient, reflection coefficient, and source function for each layer `MODULE:[TWST]`
 
-8. by adding method, the
- calculate the radiation flux `MODULE:[ADDING]`
+8. calculate the radiative flux at the boundary of each layer by the adding method `MODULE:[ADDING]`
 
-To account for the partial coverage of clouds,
-The transmission coefficients, reflection coefficients and source functions for each layer are
-Calculated separately for cloud cover and cloud-free conditions,
-Multiply the cloud cover by the weight of the cloud cover and take the average.
-We also consider the cloud cover of the cumulus clouds.
-In addition, we also perform several additions and calculate the clear-sky radiation flux.
+In order to take into account the partial cloud coverage, the transmission coefficients, reflection coefficients, and source functions are calculated separately for the cloud-covered and cloud-free cases, and averaged by multiplying the cloud cover weights. The cloud cover case and the cloud cover case are computed separately, and the cloud cover weight is multiplied by the weight of the cloud cover. We also calculate the clear sky radiation flux by adding several times.
 
 ### Wavelengths and Subchannels.
 
-The basics of radiative flux calculations are ,
-Beer-Lambert's Law
+The basis of the radiative flux calculation is the Beer-Lambert's law
 
 $$
   F^\lambda(z) = F^\lambda(0) exp (-k^\lambda z)
 $$
 
 
-. where $F^\lambda$ is the radiant flux density at the wavelength of $\lambda$.
-$k^\lambda$ is the absorption coefficient.
-In order to calculate the radiative fluxes related to the heating rate, we need to calculate the
-An integration operation with respect to the wavelength is required.
+. $F^\lambda$ is the radiant flux density at the wavelength $\lambda$. $k^\lambda$ is the absorption coefficient. In order to calculate the heating rate of the radiation flux, an integral operation for wavelengths is necessary.
 
 $$
   F(z) = \int F^\lambda(z) d \lambda 
@@ -76,14 +43,7 @@ $$
 $$
 
 
-However, the absorption and emission of radiation by gas molecules is not
-Due to the complicated wavelength dependence of the absorption line structure of the molecule,
-It is not easy to evaluate this integration precisely.
-The method designed to make the relatively precise calculation easier is
-It is a k-distribution method.
-Within a certain wavelength range, the absorption coefficient of $k$
-Consider the density function $F(k)$ for $\lambda$,
-(2)
+However, it is not easy to evaluate the integration of the absorption and emission of gas molecules in a precise manner because of the complicated wavelength dependence of the absorption line structure of the molecules. The k-distribution method has been developed for the purpose. Considering the density function $F(k)$ for the absorption coefficient $\lambda$ in the absorption coefficient $k$ in a certain wavelength range, (277) is calculated by
 
 $$
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
@@ -91,11 +51,7 @@ $$
 $$
 
 
-which is approximated by where $bar{F}^k(0)$ is
-In the $z=0$, the absorption coefficient in this wavelength range has a value of $k$
-It is a flux averaged over a wavelength.
-This expression shows that $\bar{F}_k, F(k)$ are the same as the $k$
-If you have a relatively smooth function,
+which is approximated by where $bar{F}^k(0)$ is the flux averaged over a wavelength of $z=0$ with an absorption coefficient of $k$ in this wavelength range. This equation works well if $\bar{F}_k, F(k)$ are relatively smooth functions of $k$,
 
 $$
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda 
@@ -103,27 +59,13 @@ $$
 $$
 
 
-with the addition of a finite number of exponential terms (subchannels), such that
-It is possible to calculate relatively precisely.
-This method is furthermore ,
-It has the advantage that it is easy to consider absorption and scattering at the same time.
+We can compute relatively precisely the summation of a finite number of exponential terms (subchannels), as shown in This method has the additional advantage that it is easy to take into account absorption and scattering at the same time.
 
-In the CCSR/NIES AGCM ,
-By changing the radiation parameter data, the
-Calculations can be performed at various wavelengths.
-Not currently used as a standard,
-The wavelength range is divided into 18 parts.
-In addition, each wavelength range is divided into one to six sub-channels (corresponding to the $i$ in the above formula),
-There will be 37 channels in total.
-The wavelength range is the wavenumber (cm$^{-1}$)
-50, 250, 400, 550, 770, 990, 1100, 1400, 2000,
-2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, 50000
-Divided by.
+The CCSR/NIES AGCM can be run at various wavelengths by changing the radiation parameter data. In the current standard AGCM, the wavelength region is divided into 18 spectral divisions. Each wavelength region is divided into one to six subchannels (corresponding to the $i$ in the above equation), and the total number of subchannels is 37. The wavelength range is divided into 50, 250, 400, 400, 550, 770, 990, 1100, 1400, 2000, 2500, 4000, 14500, 31500, 33000, 34500, 36000, 43000, 46000, and 50000 in wavenumber (cm$^{-1}$).
 
 ### Calculating the Planck function `MODULE:[PLANKS]`
 
-The Planck function $\overline{B}^w(T)$ integrated in each wavelength range is,
-Evaluate by the following formula.
+The Planck function $\overline{B}^w(T)$ integrated in each wavelength range is evaluated by the following equation.
 
 $$
   \overline{B}^w(T) 
@@ -132,17 +74,13 @@ $$
 $$
 
 
-$\bar{\lambda}^w$ is the average wavelength of the wavelength range,
-$B^w_n$ is a parameter defined by function fitting.
-This is the atmospheric temperature of each layer, $T_l$, and the boundary atmospheric temperature of each layer, $T_{l+1/2}$
-and surface temperature $T_g$.
+$\bar{\lambda}^w$ is the average wavelength in the wavelength range, and $B^w_n$ is a parameter determined by function fitting. It is calculated for the atmospheric temperature ($T_l$) of each layer, the atmospheric temperature ($T_{l+1/2}$) of the boundary of each layer, and the surface temperature ($T_g$) of the ground surface.
 
-In the following, the index $w$ is basically abbreviated for the wavelength range.
+In the following, the term $w$ for the wavelength range is basically omitted.
 
 ### Calculating the optical thickness by gas absorption `MODULE:[PTFIT]`
 
-The optical thickness of the gas absorption is determined by using the index $m$ as the type of molecule,
-It looks like the following.
+The optical thickness of the gas absorption is given by the index $m$ as follows
 
 $$
   \tau^g = \sum_{m=1}{N_m} k^{(m)} C^{(m)}
@@ -158,49 +96,34 @@ $$
 $$
 
 
-as a function of temperature $T$(K) and atmospheric pressure $p$(hPa).
-$C^{(m)}$ is the amount of gas in the layer represented by mol cm$^{-2}$,
-Volume Mixing Ratio $r$ (in ppmv) to ,
+as a function of temperature $T$(K) and atmospheric pressure $p$(hPa). $C^{(m)}$ is the quantity of gas in the layer represented by mol cm$^{-2}$ and is given by the volume mixing ratio $r$ (in ppmv),
 
 $$
   C = 1\times 10^{-5} \frac{p}{R_u T} \Delta z \cdot r
 $$
 
 
-And it can be calculated that .
-Note that $R_u$ is the gas constant per mole (8.31 J mol$_{-1}$ K$^{-1}$),
-The unit of air layer thickness $\Delta z$ is in km.
-The volume mixing ratio $r$ at ppmv is
-Mass Mixture Ratio $q$ to ,
+This can be calculated as follows. Note that $R_u$ is the gas constant per mole (8.31 J mol$_{-1}$ K$^{-1}$) and the thickness of the gas layer ($\Delta z$) is measured in km. The volumetric mixing ratio ($r$) in ppmv can be calculated from the mass mixing ratio ($q$),
 
 $$
   r = 10^6 R^{(m)}/R^{(air)} q = 10^6 M^{(air)}/M^{(m)}
 $$
 
 
-This can be converted by .
-$R^{(m)},R^{(air)}$ are
-Gas constant per target molecule and atmospheric mass, respectively,
-$M^{(m)},M^{(air)}$ is
-It is the average molecular weight of the target molecule and the atmosphere, respectively.
+which can be converted by $R^{(m)},R^{(air)}$ are the gas constants per mass of the target molecule and atmosphere, respectively, and $M^{(m)},M^{(air)}$ are the average molecular weights of the target molecule and atmosphere, respectively.
 
 This calculation is done for each sub-channel and each layer.
 
 ### Optical Thickness by Continuous Absorption and CFC Absorption `MODULE:[CNTCFC]`
 
-The optical thickness of the H$_2$O continuous absorption $\tau^{H_2O}$ is ,
-Think of it as a dimer,
-Basically, it is evaluated in proportion to the square of the volume mixing ratio of water vapor.
+The optical thickness of the optical thickness of H$_2$O by continuous absorption in $\tau^{H_2O}$ is considered to be due to the dimer and is basically evaluated in proportion to the square of the volume mixing ratio of the water vapor.
 
 $$
 \tau^{H_2O} = ( A^{H_2O} + f(T) \hat{A}^{H_2O} ) (r^{H_2O})^2 \rho \Delta z
 $$
 
 
-The $f(T)$ for the $\hat{A}$ section is ,
-The temperature dependence of the absorption of the dimer.
-Furthermore, in the wavelength range where normal gas absorption is ignored, the
-Incorporate a contribution proportional to the square of the volume mixing ratio of water vapor.
+$f(T)$ in $\hat{A}$ expresses the temperature dependence of absorption of the dimer. In addition, a contribution proportional to the square of the volume mixing ratio of water vapor is incorporated in the wavelength range where normal gas absorption is ignored.
 
 The continuous absorption of O$_2$ is assumed to be constant in the mixing ratio,
 
@@ -211,7 +134,7 @@ $$
 
 .
 
-The continuous absorption of O$_3$ is based on the mixing ratio $r^{O_3}$ and incorporates a temperature dependence,
+Continuous absorption of O$_3$ is achieved by using the mixing ratio $r^{O_3}$ and incorporating the temperature dependence,
 
 $$
 \tau^{O_3} = \sum_{n=0}{2} A^{O_3}_n r^{O_3} \frac{T}{T_{STD}}^n \rho \Delta z
@@ -244,13 +167,9 @@ $$
 $$
 
 
-where $e^R$ is the dissipation coefficient of Rayleigh scattering,
-The $e^{(p)}$ is the dissipation factor of the particle $p$,
-$r^{(p)}$ converted to standard conditions
-It is the volume mixing ratio of the particle $p$.
+where $e^R$ is the dissipation coefficient of Rayleigh scattering, $e^{(p)}$ is the dissipation coefficient of the particle $p$, and $r^{(p)}$ is the volume mixing ratio of the particle $p$ converted to the standard state.
 
-Here, the mass mixing ratio of cloud water from $l$
-The conversion of cloud grains to standard state-conversion volume mixing ratios (ppmv) is as follows.
+The conversion from the mass mixing ratio of cloud water ($l$) to the standard state-change volume mixing ratio of cloud particles (ppmv) is as follows
 
 $$
   r = 10^6 \frac{p_{STD}}{R T_{STD}}/\rho_w
@@ -267,11 +186,9 @@ $$
 $$
 
 
-where $s^R$ is the scattering coefficient of Rayleigh scattering,
-$s^{(p)}$ is the scattering coefficient for the particle $p$.
+where $s^R$ is the scattering coefficient for Rayleigh scattering and $s^{(p)}$ is the scattering coefficient for the particle $p$.
 
-Also, the standardized scattering moments
-$g$ (asymmetry factor) and $f$ (forward scattering factor) were not
+The normalized scattering moments $g$ (asymmetric factor) and $f$ (forward scattering factor) are not the same as those of the
 
 $$
 g = \frac{1}{\tau_s} \left[
@@ -287,23 +204,20 @@ f = \frac{1}{\tau_s} \left[
 $$
 
 
-Here, $g^R, f^R$ are the scattering moments of Rayleigh scattering,
-$g^{(p)}, f^{(p)}$ is the scattering moment of the particle $p$.
+where $g^R, f^R$ are the scattering moments of Rayleigh scattering, and $g^{(p)}, f^{(p)}$ are the scattering moments of the particles $p$.
 
 This calculation is performed for each wavelength range and each layer.
 
 ### Albedo at Sea Level `MODULE:[SSRFC]`
 
-Albedo $\alpha_s$ at sea level is the vertical addition of the optical thickness of the scattering
-Using $<\tau^{s}>$ and the solar incidence angle factor $\mu_0$,
+Albedo $\alpha_s$ at sea level is obtained by adding the optical thickness of the scattered signal vertically to $<\tau^{s}>$ and using the solar incidence angle factor $\mu_0$,
 
 $$
   \alpha_s = \exp\left\{ \sum_{i,j} C_{ij} {\mathcal T}^j {\mu_0}^j \right\}
 $$
 
 
-expressed as follows.
-However,
+However, it is expressed as However,
 
 $$
  {\mathcal T} = ( 4 <\tau^{s}>/\mu )^{-1}
@@ -316,16 +230,14 @@ This calculation is done for each wavelength.
 
 ### Total Optical Thickness.
 
-Gaseous band absorption, continuous absorption, Rayleigh scattering, particle scattering and absorption
-All things considered, the optical thickness is ,
+The optical thickness, taking into account all gas band absorption, continuous absorption, Rayleigh scattering, and particle scattering and absorption, is about
 
 $$
   \tau = \tau^g + \tau^{CON} + \tau^{s}
 $$
 
 
-where $\tau^g$ is different for each subchannel. Here, since $\tau^g$ is different for each subchannel,
-The calculation is done for each sub-channel and each layer.
+where $\tau^g$ is different for each subchannel and each layer is calculated separately. Here, since $\tau^g$ is different for each subchannel, the calculation is performed for each subchannel and each layer.
 
 ### Planck function expansion `MODULE:[PLKEXP]`
 
@@ -336,11 +248,7 @@ $$
 $$
 
 
-and obtain the expansion coefficients $b_0, b_1, b,2$.
-Here, as $B(0)$
-$B$ at the top of each layer (bordering the top layer),
-As $B(\tau)$, $B$ at the bottom edge of each layer (the boundary with the layer below),
-As $B(\tau/2)$, use the $B$ at the representative level of each layer.
+and obtain the expansion coefficients $b_0, b_1, b,2$. Here, $B$ at the upper end of each layer (the boundary with the upper layer) is used as $B(0)$, $B$ at the lower end of each layer (the boundary with the lower layer) is used as $B(\tau)$, and $B$ at the representative level of each layer is used as $B(\tau/2)$.
 
 $$
   b_0  =  B(0)  \\
@@ -355,23 +263,16 @@ This calculation is done for each sub-channel and each layer.
 
 ### Transmission and reflection coefficients of each layer, the source function `MODULE:[TWST]`
 
-So far obtained, optical thickness $\tau$, optical thickness of scattering $\tau^s$,
-Scattering Moments $g, f$, Expansion Coefficient for Planck Function $b_0, b_1, b_2$,
-Using the solar incidence angle factor $\mu_0$,
-Assuming a uniform layer, and using the two-stream approximation
-Transmission Coefficient $R$, Reflection Coefficient $T$, Downward Radiation Source Function $\epsilon^+$,
-Find the upward radiation source function $\epsilon^-$.
+Using the obtained optical thickness $\tau$, the scattering optical thickness $\tau^s$, the scattering moments $g, f$, the expansion coefficients of the Planck function $b_0, b_1, b_2$, and the solar incidence angle factor $\mu_0$, we obtain a uniform layer of Assuming that the transmission coefficient ($R$), the reflection coefficient ($T$), the downward radiation source function ($\epsilon^+$), and the upward radiation source function ($\epsilon^-$) are obtained by the two-stream approximation.
 
-The single-scattering albedo $\omega$ is,
+The single-scattering albedo $\omega$ is a ,
 
 $$
   \omega = \tau_s^s/\tau
 $$
 
 
-The contribution from the forward scattering factor $f$ is
-Corrected Optical Thickness $\tau^*$,
-The single-scattering albedo $\omega^*$, asymmetric factor $g^*$ is,
+The optical thickness corrected for contributions from the forward scattering factor $f$ $\tau^*$, the single-scattering albedo $\omega^*$, and the asymmetry factor $g^*$ are all in the same order,
 
 $$
   \tau^*  =  \frac{\tau}{1-\omega f} \\
@@ -391,7 +292,7 @@ $$
 
 
 
-However, $\mu$ is a two-stream directional cosine, and
+However, $\mu$ is a two-stream directional cosine,
 
 $$
   \mu \equiv \left\{ \begin{array}{ll}
@@ -420,7 +321,7 @@ $$
 
 
 
-the reflectance $R$ and transmission $T$ become
+the reflection coefficient ($R$) and the transmission coefficient ($T$) are
 
 $$
  \frac{A^+{\tau^*}}{A^-{\tau^*}}
@@ -509,8 +410,7 @@ This calculation is done for each sub-channel and each layer.
 
 ### Combinations of source functions for each layer.
 
-The Planck function origin and solar-induced origin
-The combined source function is
+The source functions of both Planck's and solar-induced origins are
 
 $$
   \epsilon^\pm  = 
@@ -518,43 +418,21 @@ $$
 $$
 
 
-However, the $<\tau^*>$ is not a good match for the upper atmosphere. However, $<\tau^*>$ has a value of
-to the top of the layer we're considering now.
-It is the total optical thickness of the $\tau^*$,
-It is the incident flux in the wavelength range under consideration in $F_0$.
-In other words, $e^{-<\tau^*>/\mu_0} F_0$ is
-It is the incident flux at the top of the layer under consideration.
-This calculation is actually ,
+This value is the total optical thickness of $<\tau^*>$ from the top of the atmosphere to the top of the layer under consideration, where $F_0$ is the incident flux in the wavelength range under consideration. Note that the $<\tau^*>$ is the total optical thickness of the $\tau^*$ from the top of the atmosphere to the top of the layer under consideration, and the $F_0$ is the incident flux in the considered wavelength range. That is, $e^{-<\tau^*>/\mu_0} F_0$ is the incident flux at the top of the layer under consideration. This calculation does not actually work in practice,
 
 $$
   e^{-<\tau^*>/\mu_0} = \Pi' e^{-\tau^*/\mu_0}
 $$
 
 
-The procedure is as follows. $\Pi'$ will be taken from the uppermost layer of the atmosphere by
-Represents the product up to one layer above the layer we're considering now.
+We do as follows. $\Pi'$ is the product of the topmost layer of the atmosphere to the layer above the one we are considering.
 
 This calculation is done for each sub-channel and each layer.
 
 ### Radiation flux at each layer boundary `MODULE:[ADDING]`
 
-Transmission coefficient of each layer $R_l$, Reflection coefficient $T_l$, Radiation source function $\epsilon^\pm_l$
-is required in all layers of $l$,
-The radiation fluxes at each layer boundary can be obtained by using the adding method.
-This means that the two layers of $R,T,\epsilon$ are known,
-The $R,T,\epsilon$ of the whole combined layer of the two layers can be easily calculated by
-It is an exploitation of what is required .
-In a homogeneous layer, the reflectance of the incident light from above, the transmission coefficient and the
-It is the same as the reflectance and transmittance of the incident light from below,
-Because it is different in heterogeneous layers composed of multiple layers,
-The reflectance, transmittance and transmittance of the incident light from above ($R^+, T^+$)
-Distinguish between the reflectance and the transmittance of the incident light from below ($R^-, T^-$) and the reflectance of the incident light from below ($R^-, T^-$).
-Now, in layer 1 above and layer 2 below, these
-If $R^\pm_1, T\pm_1, \epsilon^\pm_1,
- R^\pm_2, T\pm_2, \epsilon^\pm_2$ are known,
-Value in the composite layer
-$R^\pm_{1,2}, T\pm_{1,2}, \epsilon^\pm_{1,2}$ is
-It looks like the following.
+Once the transmission coefficient ($R_l$), reflection coefficient ($T_l$), and source function ($\epsilon^\pm_l$) of each layer are obtained for all layers ($l$), the radiation flux at the boundary of each layer can be calculated using the adding method. This is based on the fact that, if the $R,T,\epsilon$ of the two layers are known, the total $R,T,\epsilon$ of the combined layer can be obtained by a simple calculation. In the homogeneous layer, the reflectance and transmittance of the upper incident layer are the same as that of the lower incident layer, and the transmittance and reflectance of the lower incident layer are the same as those in the homogeneous layer, but in the heterogeneous layer composed of multiple layers, the reflectance and transmittance of the upper incident layer ($R^+, T^+$) and the reflectance and transmittance of the lower incident layer ($R^+, T^+$) are different, so that we can obtain Distinguish between $R^-, T^-$. Now, if these values of $R^\pm_1, T\pm_1, \epsilon^\pm_1,
+ R^\pm_2, T\pm_2, \epsilon^\pm_2$ are known in the upper layer1 and the lower layer2, the combined layer values of $R^\pm_{1,2}, T\pm_{1,2}, \epsilon^\pm_{1,2}$ are as follows.
 
 $$
   R^+_{1,2}  =  R^+_1 + T^-_1 ( 1- R^+_2 R^-_1 )^{-1} R^+_2 T^+_1 \\
@@ -573,10 +451,7 @@ $$
 
 
 
-Let's say there are layers 1, 2, ...$N$ from the top.
-However, the surface is considered to be a single layer and is the $N$ layer.
-Reflectance and source function of the layers from the $n$ to the $N$ layer as a single layer
-Given the $R^+_{n,N}, \epsilon^-_{n,N}$ ,
+It is assumed that there are layers 1, 2, ...and $N$ from the top. However, the surface is considered to be a single layer, and the $N$ is assumed to be the first $N$ layer. Considering the reflection coefficient and the radiation source functions ($R^+_{n,N}, \epsilon^-_{n,N}$) of the $n$ to $N$ layers as a single layer, we assume that the surface of the Earth is a single layer and is defined as the $N$ layer,
 
 $$
   R^+_{n,N}  =  R^+_n 
@@ -600,16 +475,14 @@ $$
 
 
 
-It can be solved by $n=N-1, \ldots 1$ in sequence, starting from
-However,
+and can be solved by $n=N-1, \ldots 1$ in sequence, starting from However,
 
 $$
   W^+ \equiv \mu^{1/2}
 $$
 
 
-In the next section, we consider the reflectance and source function of the layers from the first to the $n$ as a single layer
-Given the $R^-_{1,n}, \epsilon^+_{1,n}$ ,
+Next, considering the reflectance and the emissivity functions ($R^-_{1,n}, \epsilon^+_{1,n}$) for the layers from the first to the $n$st layer as a single layer, we find that
 
 $$
   R^-_{1,n}  =  R^-_n 
@@ -621,14 +494,9 @@ $$
 
 
 
-and this is also $R^-_{1,1} = R^-_1, \epsilon^+_{1,1} = \epsilon^+_1$
-It can be solved by $n=2, \ldots N$, starting from
+and this can also be solved by $n=2, \ldots N$ starting from $R^-_{1,1} = R^-_1, \epsilon^+_{1,1} = \epsilon^+_1$.
 
-With these ,
-Downward flux at the boundary between layers $n$ and $n+1$ $u^+_{n,n+1}$
-and upward flux $u^-_{n,n+1}$ is ,
-$1\sim n$ The combination of layers and
-$n+1\sim N$ Reduced to a matter between two layers of combined layers,
+Using these, the downward flux $u^+_{n,n+1}$ and the upward flux $u^-_{n,n+1}$ at the boundary between layers $n$ and $n+1$ are reduced to a problem between the two layers, the combined layer $1\sim n$ and the combined layer $n+1\sim N$,
 
 $$
  u^+_{n+1/2} = (1-R^-_{1,n} R^+_{n+1,N})^{-1}
@@ -638,8 +506,7 @@ $$
 
 
 
-It can be written as.
-However, the flux at the top of the atmosphere is not
+which can be written as However, the flux at the upper end of the atmosphere can be written as
 
 $$
  u^+_{1/2}  =  0 \\
@@ -648,9 +515,7 @@ $$
 
 
 
-Finally, since this flux is scaled ,
-We rescaled and added direct solar incidence to the
-Find the radiation flux.
+Finally, since this flux is scaled, we rescale it and add direct solar incidence to obtain the radiative flux.
 
 $$
   F^+_{n+1/2}  =  \frac{W^+}{\bar{W}} u^+_{n+1/2} 
@@ -666,72 +531,42 @@ This calculation is done for each sub-channel.
 
 ### Add in the flux.
 
-If the radiation flux $F^\pm_c$ is found for each subchannel in each layer, the
-It corresponds to a wavelength representative of the subchannel
-By applying a weight ($w_c$) and adding them together,
-The wavelength-integrated flux is found.
+Once the radiation flux ($F^\pm_c$) for each subchannel of each layer is obtained, the wavelength-integrated flux is obtained by multiplying the flux by the weight ($w_c$) corresponding to the wavelength of the representative subchannel and adding them together.
 
 $$
   \bar{F}^\pm = \sum_c w_c F^\pm
 $$
 
 
-In practice, the short wavelength range (solar region),
-Divided into long wavelengths (earth's radiation region) and added together.
-In addition, a part of the short wavelength region (shorter than the wavelength of $0.7\mu$)
-The downward flux at the surface is obtained as PAR (photosynthetically active radiation).
+In practice, we add the fluxes in the short wavelength region (solar region) and the long wavelength region (terrestrial radiation region) to each other. In addition, we obtain PAR (photosynthetically active radiation) as the downward flux at the earth's surface in a part of the short wavelength region (shorter than the wavelength of $0.7\mu$).
 
 ### The temperature derivative of the flux
 
-To solve for surface temperature by implicit,
-Differential term of upward flux with respect to surface temperature
-Calculating $dF^-/dT_g$.
-Therefore, the value for temperatures 1K higher than $T_g$
-We also obtained $\overline{B}^w(T_g+1)$ and used it to
-Redo the flux calculation using the addition method,
-The difference from the original value is set to $dF^-/dT_g$.
-This is a meaningful value only in the long-wavelength region (earth's radiation region).
+In order to solve the surface temperature by implicitly, we calculate the differential term $dF^-/dT_g$ of the upward-flowing flux to the surface temperature. For this purpose, we also obtain the value of $\overline{B}^w(T_g+1)$, which is 1K higher than that of $T_g$, and recalculate the flux by the addition method using that value, and obtain the difference from the original value as $dF^-/dT_g$. This value is meaningful only in the long wavelength region (earth's radiation region).
 
 ### Handling of cloud cover
 
-In the CCSR/NIES AGCM ,
-Considering the horizontal coverage of clouds in a single grid.
-There are two types of clouds
+The CCSR/NIES AGCM considers the horizontal coverage of clouds in a grid. The two types of clouds are as follows.
 
-1. stratus cloud. Diagnosed by the large scale condensation scheme `MODULE:[LSCOND]`.
- For each layer ($n$), the lattice-averaged cloud water content of $l^l_n$ and
- The horizontal coverage factor (cloud cover) $C^l_n$ is defined.
+1. stratus cloud. The large-scale condensation scheme `MODULE:[LSCOND]` is used to diagnose these clouds. For each layer ($n$) the grid-averaged cloud water content ($l^l_n$) and the horizontal coverage (cloud cover) ($C^l_n$) are defined for each layer ($n$).
 
-2. cumulus clouds. Diagnosed by the cumulus convection scheme `MODULE:[CUMLUS]`.
- For each layer ($n$) the lattice-averaged cloud water content $l^c_n$ is defined, but
- Horizontal coverage (cloud cover) $C^c$ shall be constant in the vertical direction.
+2. cumulus clouds. Diagnosed with the cumulus convection scheme `MODULE:[CUMLUS]`. For each layer ($n$) the grid-averaged cloud cover ($l^c_n$) is defined, but the horizontal coverage (cloud cover) $C^c$ is assumed to be constant in the vertical direction.
 
-In these treatments, we assume that the stratocumulus clouds overlap randomly in a vertical direction,
-Assuming that the cumulus cloud always occupies the same area in the upper and lower layers
-(Assume that the cloud cover is 0 or 1 if it is confined to that region).
-To do so, we perform the following calculations.
+In these treatments, it is assumed that the stratocumulus clouds randomly overlap vertically, and that the cumulus clouds always occupy the same area in the upper and lower layers (and that the cloud cover is assumed to be zero or one if it is restricted to that area). For this purpose, the calculation is performed as follows.
 
-1. optical thickness of Rayleigh and particle scattering/absorption, etc.
-     $\tau^s, \tau_s^s, g, f$,
+1. optical thickness of Rayleigh and particle scattering/absorption etc. $\tau^s, \tau_s^s, g, f$,
 
-     1. when cloud water of the $l^l_n/C^l_n$ exists (stratocumulus)
+     1. the presence of clouds and water in the cloud cover of $l^l_n/C^l_n$ (stratocumulus)
 
      2. when there are no clouds at all
 
-     3. when cloud water in the cloud cover of $l^c_n/C^c$ is present (cumulus clouds)
+     3. when cloud water of $l^c_n/C^c$ is present (cumulus clouds)
 
  Calculate for.
 
-2. reflection and transmission coefficients for each layer,
- The radiant source function (Planck function origin, insolation origin) is
- Calculate for each of the three cases above.
- The values for no clouds.
-     $R^\circ$, in the case of stratus clouds $R^l$, in the case of cumulus clouds
-     $R^c$ and so on.
+We calculate the reflection coefficient, transmission coefficient, and radiation function (origin of Planck's function and origin of solar radiation) for each layer for the three cases above. The value for the case without clouds is set to $R^\circ$, the case with stratus clouds is set to $R^l$, the case with cumulus clouds is set to $R^c$, and so on.
 
-3. reflection and transmission coefficients for each layer,
- The source function is averaged with the weight of the cloud cover of the stratocumulus, $C^l$.
- The averages are expressed by adding the $\bar{}$,
+3. the reflection coefficient, transmission coefficient, and radiative function of each layer are averaged with the weight of the cloud cover of the stratocumulus ($C^l$). Expressing the averaged values with the $\bar{}$
 
 $$
         \bar{R}  =  ( 1 - C^l ) R^\circ + C^l R^l \\
@@ -756,8 +591,7 @@ $$
 $$
 
 
- It is.
- Also,
+ It is. Also ,
 
 $$
         \epsilon^\circ  =  \epsilon_A^\circ +
@@ -772,11 +606,7 @@ $$
 
  Seek also.
 
-4. when the characteristic values of the average (e.g., $\bar{R}$) are used,
- When using a characteristic value without clouds (e.g., $R^\circ$),
- When the characteristic values of cumulus clouds (e.g., $R^c$) are used,
- fluxes by adding, respectively.
- Find     $\bar{F}, F^\circ, F^c$.
+Fluxes $\bar{F}, F^\circ, F^c$ are calculated for the cases with the characteristic values of average (e.g., $\bar{R}$), without clouds (e.g., $R^\circ$), and cumulus (e.g., $R^c$) by using the ading method, respectively.
 
 5. the final flux we seek is
 
@@ -785,22 +615,18 @@ $$
 $$
 
 
-     ($F^\circ$ is used to estimate cloud radiative forcing
- I'm doing the math.)
+     ($F^\circ$ is calculated to estimate cloud radiative forcing.)
 
 ### Incidence flux and angle of incidence `MODULE:[SHTINS]`
 
-Incident Flux $F_0$ is ,
-Solar constant, $F_{00}$,
-The distance between the sun and the earth,
-The ratio of the ratio to the time average is $r_s$.
+The incident flux $F_0$ is defined as the ratio of the solar constant ($F_{00}$) and the distance between the sun and the earth to the time-averaged value ($r_s$).
 
 $$
 F_0 = F_00 r_s^-2 
 $$
 
 
-Here, $r_s$ asks for the following.
+Here, $r_s$ asks the following.
 
 $$
   M \equiv 2 \pi ( d - d_0 ) 
@@ -814,10 +640,9 @@ $$
 $$
 
 
-Note that $d$ is the time in days since the beginning of the year.
+Note that $d$ is expressed in days from the beginning of the year.
 
-The angle of incidence is obtained as follows.
-Solar angle position $\omega_s$
+The angle of incidence is obtained as follows. Find the angular position of the sun, $\omega_s$, as
 
 $$
   \omega_s = M + b_1 \sin M + b_2 \sin 2M + b_3 \sin 3M
@@ -831,7 +656,7 @@ $$
 $$
 
 
-Then the angle of incidence factor $\mu = \cos \zeta$ (where $\zeta$ is the zenith angle) is
+Then the angle of incidence factor $\mu = \cos \zeta$ ($\zeta$ is the zenith angle) is
 
 $$
 \mu = \cos \zeta = \cos \varphi \cos \delta_s \cos h
@@ -839,8 +664,7 @@ $$
 $$
 
 
-$\varphi$ is a latitude,
-$h$ is the time angle (local time minus $\pi$).
+$\varphi$ is the latitude and $h$ is the time angle (local time minus $\pi$).
 
 Assuming that the eccentricity of the Earth's orbit is $e$ (Katayama, 1974),
 
@@ -862,9 +686,7 @@ $$
 
 
 
-It is also possible to give average annual insolation.
-In this case, the annual mean incidence and the annual mean angle of incidence are
-It approximates to be as follows.
+It is also possible to give the annual mean solar radiation. In this case, the mean annual incidence and the mean annual angle of incidence are approximately as follows
 
 $$
 \overline{F} = F_{00}/\pi
@@ -878,13 +700,7 @@ $$
 
 ### Other Notes.
 
-The calculation of the radiation is usually not done at every step.
- To do so, we have to save the radiation flux,
- If the time is not used for radiation calculation, it is used.
- As for the shortwave radiation,
- Percentage of time (time that is $\mu_0>0$) between next calculation time ($f$) and
- Using the solar incidence angle factor ($\bar{\mu_0}$) averaged over the daylight hours
- Seeking Flux $\bar{F}$,
+The calculation of the radiation is usually not done at every step. For this reason, we save the radiation flux and use it for the time when the radiation calculation is not performed. For the short-wave radiation, the flux ($\bar{F}$) is calculated by using the ratio of the time of daylight between the next calculation time and the time of the next calculation ($\mu_0>0$) as a percentage of the time of daylight (the time of $\mu_0>0$) and the solar incidence angle factor ($\bar{\mu_0}$) averaged over the daylight period,
 
 $$
         F =  f \frac{\mu_0}{\bar{\mu_0}} \bar{F}
@@ -893,14 +709,11 @@ $$
 
  .
 
-2. cloud water depends on the temperature,
- Treated as water and ice cloud particles.
- Percentage treated as ice clouds $f_I$ is ,
+Cloud water is treated as water and ice clouds depending on the temperature. The fraction treated as ice clouds $f_I$ is
 
 $$
         f_I = \frac{ T_0 - T }{ T_0 - T_1 }
 $$
 
 
-     (but with a maximum value of 1 and a minimum value of 0). Also,
-     $T_0 = 273.15{K}, T_1 = 258.15{K}$.
+     (but with a maximum value of 1 and a minimum value of 0). Let $T_0 = 273.15{K}, T_1 = 258.15{K}$ be set to $T_0 = 273.15{K}, T_1 = 258.15{K}$.
