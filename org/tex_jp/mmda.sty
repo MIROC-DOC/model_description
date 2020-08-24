@@ -1,0 +1,27 @@
+% minimum macro definition for agcm document
+\ProvidesPackage{mmda}[2020/08/08 minimum macro def for miroc-doc]
+
+\DeclareOption{demo}{\PassOptionsToPackage{\CurrentOption}{graphicx}}
+\ExecuteOptions{}
+\ProcessOptions\relax
+
+\RequirePackage{graphicx}
+\RequirePackage{xparse}
+\RequirePackage{physics}
+\RequirePackage{xkeyval}
+
+\NewDocumentCommand{\DP}{O{}omm}%
+{\IfNoValueTF{#2}
+    {\pdv[#1]{#3}{#4}}
+    {\qty(\pdv[#1]{#3}{#4})_{#2}}}
+
+\newcommand{\Dvect}[1]{\ensuremath{\vectorbold*{#1}}}
+\newcommand{\DD}[3][]{\dv[#1]{#2}{#3}}
+
+\define@cmdkey{mmda}{width}{}
+\define@cmdkey{mmda}{file}{}
+
+\newcommand{\epsfile}[1]{%
+  \setkeys{mmda}{#1}%
+  \includegraphics[width=\cmdKV@mmda@width]{\cmdKV@mmda@file}}
+\endinput
