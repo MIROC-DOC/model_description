@@ -1,151 +1,151 @@
-\contentsline {section}{\numberline {1}モデルの概要}{1}
-\contentsline {subsection}{\numberline {1.1}CCSR/NIES AGCM の特徴}{1}
-\contentsline {subsection}{\numberline {1.2}モデルの機能と構造}{2}
-\contentsline {subsubsection}{\numberline {1.2.1}モデルの基本的な機能}{2}
-\contentsline {subsubsection}{\numberline {1.2.2}モデル実行の流れ}{3}
-\contentsline {subsubsection}{\numberline {1.2.3}予報変数}{4}
-\contentsline {subsubsection}{\numberline {1.2.4}変数の時間発展の流れ}{4}
-\contentsline {subsection}{\numberline {1.3}基本的な設定}{9}
-\contentsline {subsubsection}{\numberline {1.3.1}座標系}{9}
-\contentsline {subsubsection}{\numberline {1.3.2}物理定数}{9}
-\contentsline {section}{\numberline {2}力学過程}{11}
-\contentsline {subsection}{\numberline {2.1}基礎方程式}{11}
-\contentsline {subsubsection}{\numberline {2.1.1}基礎方程式}{11}
-\contentsline {subsubsection}{\numberline {2.1.2}境界条件}{12}
-\contentsline {subsection}{\numberline {2.2}鉛直離散化}{13}
-\contentsline {subsubsection}{\numberline {2.2.1}レベルのとりかた}{13}
-\contentsline {subsubsection}{\numberline {2.2.2}鉛直離散化表現}{13}
-\contentsline {subsection}{\numberline {2.3}水平離散化}{16}
-\contentsline {subsubsection}{\numberline {2.3.1}スペクトル展開}{16}
-\contentsline {subsubsection}{\numberline {2.3.2}水平拡散項}{17}
-\contentsline {subsubsection}{\numberline {2.3.3}方程式のスペクトル表現}{18}
-\contentsline {subsection}{\numberline {2.4}時間積分}{20}
-\contentsline {subsubsection}{\numberline {2.4.1}leap frog による時間積分と時間フィルター}{20}
-\contentsline {subsubsection}{\numberline {2.4.2}semi-implicit 時間積分}{20}
-\contentsline {subsubsection}{\numberline {2.4.3}semi-implicit 時間積分の適用}{21}
-\contentsline {subsubsection}{\numberline {2.4.4}時間スキームの特性と時間ステップの見積り}{23}
-\contentsline {subsubsection}{\numberline {2.4.5}時間積分の開始における取扱い}{24}
-\contentsline {subsection}{\numberline {2.5}力学部分のまとめ}{25}
-\contentsline {subsubsection}{\numberline {2.5.1}力学部分の計算の概要}{25}
-\contentsline {subsubsection}{\numberline {2.5.2}水平風の渦度・発散への変換}{25}
-\contentsline {subsubsection}{\numberline {2.5.3}仮温度の計算}{26}
-\contentsline {subsubsection}{\numberline {2.5.4}気圧傾度項の計算}{26}
-\contentsline {subsubsection}{\numberline {2.5.5}鉛直流の診断的計算}{26}
-\contentsline {subsubsection}{\numberline {2.5.6}移流による時間変化項}{27}
-\contentsline {subsubsection}{\numberline {2.5.7}予報変数のスペクトルへの変換}{28}
-\contentsline {subsubsection}{\numberline {2.5.8}時間変化項のスペクトルへの変換}{28}
-\contentsline {subsubsection}{\numberline {2.5.9}スペクトル値時間積分}{29}
-\contentsline {subsubsection}{\numberline {2.5.10}予報変数の格子点値への変換}{29}
-\contentsline {subsubsection}{\numberline {2.5.11}疑似等$p$面拡散補正}{30}
-\contentsline {subsubsection}{\numberline {2.5.12}拡散による摩擦熱の考慮}{30}
-\contentsline {subsubsection}{\numberline {2.5.13}質量の保存の補正}{31}
-\contentsline {subsubsection}{\numberline {2.5.14}水平拡散とレーリー摩擦}{32}
-\contentsline {subsubsection}{\numberline {2.5.15}時間フィルター}{32}
-\contentsline {section}{\numberline {3}物理過程}{33}
-\contentsline {subsection}{\numberline {3.1}物理過程の概要}{33}
-\contentsline {subsubsection}{\numberline {3.1.1}基本方程式}{33}
-\contentsline {subsubsection}{\numberline {3.1.2}地中の基本方程式}{34}
-\contentsline {subsubsection}{\numberline {3.1.3}物理過程の時間積分法}{35}
-\contentsline {subsubsection}{\numberline {3.1.4}各種の物理量}{35}
-\contentsline {subsection}{\numberline {3.2}積雲対流}{38}
-\contentsline {subsubsection}{\numberline {3.2.1}積雲対流スキームの概要}{38}
-\contentsline {subsubsection}{\numberline {3.2.2}Arakawa-Schubertスキームの基本的枠組}{39}
-\contentsline {subsubsection}{\numberline {3.2.3}雲モデル}{39}
-\contentsline {subsubsection}{\numberline {3.2.4}雲仕事関数(CWF)}{42}
-\contentsline {subsubsection}{\numberline {3.2.5}雲底での雲質量フラックス}{42}
-\contentsline {subsubsection}{\numberline {3.2.6}雲の質量フラックス, 降水}{43}
-\contentsline {subsubsection}{\numberline {3.2.7}平均場の時間変化}{43}
-\contentsline {subsubsection}{\numberline {3.2.8}降水の蒸発とダウンドラフト}{43}
-\contentsline {subsubsection}{\numberline {3.2.9}雲水量と雲量}{44}
-\contentsline {subsection}{\numberline {3.3}大規模凝結}{46}
-\contentsline {subsubsection}{\numberline {3.3.1}大規模凝結スキームの概要}{46}
-\contentsline {subsubsection}{\numberline {3.3.2}雲水量の診断}{46}
-\contentsline {subsubsection}{\numberline {3.3.3}逐次近似による決定}{47}
-\contentsline {subsubsection}{\numberline {3.3.4}降水過程}{47}
-\contentsline {subsubsection}{\numberline {3.3.5}氷の落下過程}{48}
-\contentsline {subsubsection}{\numberline {3.3.6}降水の蒸発過程}{48}
-\contentsline {subsubsection}{\numberline {3.3.7}その他の留意点}{49}
-\contentsline {subsection}{\numberline {3.4}放射フラックス}{50}
-\contentsline {subsubsection}{\numberline {3.4.1}放射フラックス計算の概要}{50}
-\contentsline {subsubsection}{\numberline {3.4.2}波長域とサブチャネル}{50}
-\contentsline {subsubsection}{\numberline {3.4.3}プランク関数の計算 {[\tt PLANKS]}}{51}
-\contentsline {subsubsection}{\numberline {3.4.4}気体吸収による光学的厚さの計算 {[\tt PTFIT]}}{51}
-\contentsline {subsubsection}{\numberline {3.4.5}連続吸収およびCFCの吸収による光学的厚さ {[\tt CNTCFC]}}{52}
-\contentsline {subsubsection}{\numberline {3.4.6}散乱の光学的厚さと散乱モーメント {[\tt SCATMM]}}{52}
-\contentsline {subsubsection}{\numberline {3.4.7}海面のアルベド {[\tt SSRFC]}}{53}
-\contentsline {subsubsection}{\numberline {3.4.8}光学的厚さの総計}{53}
-\contentsline {subsubsection}{\numberline {3.4.9}プランク関数の展開 {[\tt PLKEXP]}}{54}
-\contentsline {subsubsection}{\numberline {3.4.10}各層の透過・反射係数, 放射源関数 {[\tt TWST]}}{54}
-\contentsline {subsubsection}{\numberline {3.4.11}各層の放射源関数の組み合わせ}{56}
-\contentsline {subsubsection}{\numberline {3.4.12}各層境界での放射フラックス {[\tt ADDING]}}{56}
-\contentsline {subsubsection}{\numberline {3.4.13}フラックスの足し込み}{58}
-\contentsline {subsubsection}{\numberline {3.4.14}フラックスの温度微分}{58}
-\contentsline {subsubsection}{\numberline {3.4.15}雲量の取扱い}{58}
-\contentsline {subsubsection}{\numberline {3.4.16}入射フラックスと入射角 {[\tt SHTINS]}}{59}
-\contentsline {subsubsection}{\numberline {3.4.17}その他の留意点}{60}
-\contentsline {subsection}{\numberline {3.5}鉛直拡散}{61}
-\contentsline {subsubsection}{\numberline {3.5.1}鉛直拡散スキームの概要}{61}
-\contentsline {subsubsection}{\numberline {3.5.2}フラックス計算の基本式}{61}
-\contentsline {subsubsection}{\numberline {3.5.3}Richardson 数}{61}
-\contentsline {subsubsection}{\numberline {3.5.4}拡散係数}{62}
-\contentsline {subsubsection}{\numberline {3.5.5}フラックスの計算}{63}
-\contentsline {subsubsection}{\numberline {3.5.6}拡散係数の最小値}{63}
-\contentsline {subsubsection}{\numberline {3.5.7}その他の留意点}{63}
-\contentsline {subsection}{\numberline {3.6}地表フラックス}{64}
-\contentsline {subsubsection}{\numberline {3.6.1}地表フラックススキームの概要}{64}
-\contentsline {subsubsection}{\numberline {3.6.2}フラックス計算の基本式}{64}
-\contentsline {subsubsection}{\numberline {3.6.3}Richardson 数}{64}
-\contentsline {subsubsection}{\numberline {3.6.4}バルク係数}{65}
-\contentsline {subsubsection}{\numberline {3.6.5}フラックスの計算}{66}
-\contentsline {subsubsection}{\numberline {3.6.6}海面における取扱い}{66}
-\contentsline {subsubsection}{\numberline {3.6.7}風速の補正}{67}
-\contentsline {subsubsection}{\numberline {3.6.8}風速の最小値}{67}
-\contentsline {subsection}{\numberline {3.7}地表過程}{68}
-\contentsline {subsubsection}{\numberline {3.7.1}地表過程の概要}{68}
-\contentsline {subsubsection}{\numberline {3.7.2}地表面の分類}{71}
-\contentsline {subsubsection}{\numberline {3.7.3}地表熱バランス}{71}
-\contentsline {subsubsection}{\numberline {3.7.4}離散座標系の設定 {[\tt SETGLV,SETWLV,SETSLV]}}{72}
-\contentsline {subsubsection}{\numberline {3.7.5}陸面の熱フラックスと熱容量の計算 {[\tt LNDFLX]}}{72}
-\contentsline {subsubsection}{\numberline {3.7.6}陸面の水フラックスの計算 {[\tt LNDWFX]}}{72}
-\contentsline {subsubsection}{\numberline {3.7.7}陸面の流出の計算{[\tt LNDROF]}}{73}
-\contentsline {subsubsection}{\numberline {3.7.8}陸面でのアルベドの評価{[\tt LNDALB]}}{75}
-\contentsline {subsubsection}{\numberline {3.7.9}陸面での粗度の評価{[\tt LNDZ0]}}{75}
-\contentsline {subsubsection}{\numberline {3.7.10}陸面での地表湿潤度の評価{[\tt LNDBET]}}{75}
-\contentsline {subsubsection}{\numberline {3.7.11}海面の熱フラックスと熱容量の計算 {[\tt SEAFLX]}}{76}
-\contentsline {subsubsection}{\numberline {3.7.12}海面での地表湿潤度の評価{[\tt SEABET]}}{76}
-\contentsline {subsubsection}{\numberline {3.7.13}海面でのアルベドと粗度}{77}
-\contentsline {subsubsection}{\numberline {3.7.14}雪面熱フラックス補正 {[\tt SNWFLX]}}{77}
-\contentsline {subsubsection}{\numberline {3.7.15}積雪の昇華の計算{[\tt SNWSUB]}}{78}
-\contentsline {subsubsection}{\numberline {3.7.16}降雪の計算{[\tt SNWFLP]}}{78}
-\contentsline {subsubsection}{\numberline {3.7.17}融雪の計算{[\tt SNWMLP]}}{78}
-\contentsline {subsubsection}{\numberline {3.7.18}積雪面の流出の計算{[\tt SNWROF]}}{79}
-\contentsline {subsubsection}{\numberline {3.7.19}積雪面でのアルベドの評価{[\tt SNWALB]}}{79}
-\contentsline {subsubsection}{\numberline {3.7.20}積雪面での地表粗度の評価{[\tt SNWZ0]}}{80}
-\contentsline {subsubsection}{\numberline {3.7.21}積雪面での地表湿潤度の評価{[\tt SNWBET]}}{80}
-\contentsline {subsubsection}{\numberline {3.7.22}凍土過程の計算{[\tt LNDFRZ]}}{80}
-\contentsline {subsubsection}{\numberline {3.7.23}海洋混合層モデル {[\tt SEAFRZ]}}{81}
-\contentsline {subsection}{\numberline {3.8}大気・地表系の拡散型収支式の解法}{83}
-\contentsline {subsubsection}{\numberline {3.8.1}基本的な解法}{83}
-\contentsline {subsubsection}{\numberline {3.8.2}基本方程式}{83}
-\contentsline {subsubsection}{\numberline {3.8.3}implicit時間差分}{84}
-\contentsline {subsubsection}{\numberline {3.8.4}implicit時間差分の結合}{84}
-\contentsline {subsubsection}{\numberline {3.8.5}時間差分の結合式の解法}{86}
-\contentsline {subsubsection}{\numberline {3.8.6}時間差分の結合式}{88}
-\contentsline {subsubsection}{\numberline {3.8.7}implicit 時間差分における時間ステップの扱い}{90}
-\contentsline {subsection}{\numberline {3.9}重力波抵抗}{92}
-\contentsline {subsubsection}{\numberline {3.9.1}重力波抵抗スキームの概要}{92}
-\contentsline {subsubsection}{\numberline {3.9.2}局所フルード数と運動量フラックスの関係}{92}
-\contentsline {subsubsection}{\numberline {3.9.3}地表での運動量フラックス}{92}
-\contentsline {subsubsection}{\numberline {3.9.4}上層での運動量フラックス}{93}
-\contentsline {subsubsection}{\numberline {3.9.5}運動量収束による水平風の時間変化の大きさ}{93}
-\contentsline {subsubsection}{\numberline {3.9.6}その他の留意点}{93}
-\contentsline {subsection}{\numberline {3.10}乾燥対流調節}{94}
-\contentsline {subsubsection}{\numberline {3.10.1}乾燥対流調節の概要}{94}
-\contentsline {subsubsection}{\numberline {3.10.2}乾燥対流調節の手続き}{94}
-\contentsline {section}{\numberline {4}プログラムコードの解説}{95}
-\contentsline {subsection}{\numberline {4.1}プログラムを読むための基礎知識}{95}
-\contentsline {subsubsection}{\numberline {4.1.1}構成の概略}{95}
-\contentsline {subsubsection}{\numberline {4.1.2}ディレクトリ構成}{95}
-\contentsline {subsubsection}{\numberline {4.1.3}プログラムにおける特記事項}{96}
-\contentsline {subsubsection}{\numberline {4.1.4}プログラム書法}{97}
-\contentsline {subsubsection}{\numberline {4.1.5}命名規則}{98}
+\contentsline {section}{\numberline {1}モデルの概要}{1}%
+\contentsline {subsection}{\numberline {1.1}CCSR/NIES AGCM の特徴}{1}%
+\contentsline {subsection}{\numberline {1.2}モデルの機能と構造}{2}%
+\contentsline {subsubsection}{\numberline {1.2.1}モデルの基本的な機能}{2}%
+\contentsline {subsubsection}{\numberline {1.2.2}モデル実行の流れ}{3}%
+\contentsline {subsubsection}{\numberline {1.2.3}予報変数}{4}%
+\contentsline {subsubsection}{\numberline {1.2.4}変数の時間発展の流れ}{4}%
+\contentsline {subsection}{\numberline {1.3}基本的な設定}{10}%
+\contentsline {subsubsection}{\numberline {1.3.1}座標系}{10}%
+\contentsline {subsubsection}{\numberline {1.3.2}物理定数}{11}%
+\contentsline {section}{\numberline {2}力学過程}{12}%
+\contentsline {subsection}{\numberline {2.1}基礎方程式}{12}%
+\contentsline {subsubsection}{\numberline {2.1.1}基礎方程式}{12}%
+\contentsline {subsubsection}{\numberline {2.1.2}境界条件}{13}%
+\contentsline {subsection}{\numberline {2.2}鉛直離散化}{15}%
+\contentsline {subsubsection}{\numberline {2.2.1}レベルのとりかた}{15}%
+\contentsline {subsubsection}{\numberline {2.2.2}鉛直離散化表現}{15}%
+\contentsline {subsection}{\numberline {2.3}水平離散化}{19}%
+\contentsline {subsubsection}{\numberline {2.3.1}スペクトル展開}{19}%
+\contentsline {subsubsection}{\numberline {2.3.2}水平拡散項}{20}%
+\contentsline {subsubsection}{\numberline {2.3.3}方程式のスペクトル表現}{21}%
+\contentsline {subsection}{\numberline {2.4}時間積分}{24}%
+\contentsline {subsubsection}{\numberline {2.4.1}leap frog による時間積分と時間フィルター}{24}%
+\contentsline {subsubsection}{\numberline {2.4.2}semi-implicit 時間積分}{24}%
+\contentsline {subsubsection}{\numberline {2.4.3}semi-implicit 時間積分の適用}{25}%
+\contentsline {subsubsection}{\numberline {2.4.4}時間スキームの特性と時間ステップの見積り}{27}%
+\contentsline {subsubsection}{\numberline {2.4.5}時間積分の開始における取扱い}{28}%
+\contentsline {subsection}{\numberline {2.5}力学部分のまとめ}{30}%
+\contentsline {subsubsection}{\numberline {2.5.1}力学部分の計算の概要}{30}%
+\contentsline {subsubsection}{\numberline {2.5.2}水平風の渦度・発散への変換}{30}%
+\contentsline {subsubsection}{\numberline {2.5.3}仮温度の計算}{31}%
+\contentsline {subsubsection}{\numberline {2.5.4}気圧傾度項の計算}{31}%
+\contentsline {subsubsection}{\numberline {2.5.5}鉛直流の診断的計算}{31}%
+\contentsline {subsubsection}{\numberline {2.5.6}移流による時間変化項}{32}%
+\contentsline {subsubsection}{\numberline {2.5.7}予報変数のスペクトルへの変換}{33}%
+\contentsline {subsubsection}{\numberline {2.5.8}時間変化項のスペクトルへの変換}{33}%
+\contentsline {subsubsection}{\numberline {2.5.9}スペクトル値時間積分}{34}%
+\contentsline {subsubsection}{\numberline {2.5.10}予報変数の格子点値への変換}{35}%
+\contentsline {subsubsection}{\numberline {2.5.11}疑似等$p$面拡散補正}{35}%
+\contentsline {subsubsection}{\numberline {2.5.12}拡散による摩擦熱の考慮}{36}%
+\contentsline {subsubsection}{\numberline {2.5.13}質量の保存の補正}{36}%
+\contentsline {subsubsection}{\numberline {2.5.14}水平拡散とレーリー摩擦}{37}%
+\contentsline {subsubsection}{\numberline {2.5.15}時間フィルター}{38}%
+\contentsline {section}{\numberline {3}物理過程}{39}%
+\contentsline {subsection}{\numberline {3.1}物理過程の概要}{39}%
+\contentsline {subsubsection}{\numberline {3.1.1}基本方程式}{39}%
+\contentsline {subsubsection}{\numberline {3.1.2}地中の基本方程式}{40}%
+\contentsline {subsubsection}{\numberline {3.1.3}物理過程の時間積分法}{41}%
+\contentsline {subsubsection}{\numberline {3.1.4}各種の物理量}{42}%
+\contentsline {subsection}{\numberline {3.2}積雲対流}{44}%
+\contentsline {subsubsection}{\numberline {3.2.1}積雲対流スキームの概要}{44}%
+\contentsline {subsubsection}{\numberline {3.2.2}Arakawa-Schubertスキームの基本的枠組}{45}%
+\contentsline {subsubsection}{\numberline {3.2.3}雲モデル}{46}%
+\contentsline {subsubsection}{\numberline {3.2.4}雲仕事関数(CWF)}{48}%
+\contentsline {subsubsection}{\numberline {3.2.5}雲底での雲質量フラックス}{49}%
+\contentsline {subsubsection}{\numberline {3.2.6}雲の質量フラックス, 降水}{49}%
+\contentsline {subsubsection}{\numberline {3.2.7}平均場の時間変化}{50}%
+\contentsline {subsubsection}{\numberline {3.2.8}降水の蒸発とダウンドラフト}{50}%
+\contentsline {subsubsection}{\numberline {3.2.9}雲水量と雲量}{51}%
+\contentsline {subsection}{\numberline {3.3}大規模凝結}{52}%
+\contentsline {subsubsection}{\numberline {3.3.1}大規模凝結スキームの概要}{52}%
+\contentsline {subsubsection}{\numberline {3.3.2}雲水量の診断}{52}%
+\contentsline {subsubsection}{\numberline {3.3.3}逐次近似による決定}{53}%
+\contentsline {subsubsection}{\numberline {3.3.4}降水過程}{54}%
+\contentsline {subsubsection}{\numberline {3.3.5}氷の落下過程}{54}%
+\contentsline {subsubsection}{\numberline {3.3.6}降水の蒸発過程}{55}%
+\contentsline {subsubsection}{\numberline {3.3.7}その他の留意点}{55}%
+\contentsline {subsection}{\numberline {3.4}放射フラックス}{56}%
+\contentsline {subsubsection}{\numberline {3.4.1}放射フラックス計算の概要}{56}%
+\contentsline {subsubsection}{\numberline {3.4.2}波長域とサブチャネル}{56}%
+\contentsline {subsubsection}{\numberline {3.4.3}プランク関数の計算 {[\tt PLANKS]}}{57}%
+\contentsline {subsubsection}{\numberline {3.4.4}気体吸収による光学的厚さの計算 {[\tt PTFIT]}}{58}%
+\contentsline {subsubsection}{\numberline {3.4.5}連続吸収およびCFCの吸収による光学的厚さ {[\tt CNTCFC]}}{58}%
+\contentsline {subsubsection}{\numberline {3.4.6}散乱の光学的厚さと散乱モーメント {[\tt SCATMM]}}{59}%
+\contentsline {subsubsection}{\numberline {3.4.7}海面のアルベド {[\tt SSRFC]}}{60}%
+\contentsline {subsubsection}{\numberline {3.4.8}光学的厚さの総計}{60}%
+\contentsline {subsubsection}{\numberline {3.4.9}プランク関数の展開 {[\tt PLKEXP]}}{60}%
+\contentsline {subsubsection}{\numberline {3.4.10}各層の透過・反射係数, 放射源関数 {[\tt TWST]}}{61}%
+\contentsline {subsubsection}{\numberline {3.4.11}各層の放射源関数の組み合わせ}{63}%
+\contentsline {subsubsection}{\numberline {3.4.12}各層境界での放射フラックス {[\tt ADDING]}}{63}%
+\contentsline {subsubsection}{\numberline {3.4.13}フラックスの足し込み}{65}%
+\contentsline {subsubsection}{\numberline {3.4.14}フラックスの温度微分}{65}%
+\contentsline {subsubsection}{\numberline {3.4.15}雲量の取扱い}{65}%
+\contentsline {subsubsection}{\numberline {3.4.16}入射フラックスと入射角 {[\tt SHTINS]}}{66}%
+\contentsline {subsubsection}{\numberline {3.4.17}その他の留意点}{67}%
+\contentsline {subsection}{\numberline {3.5}鉛直拡散}{69}%
+\contentsline {subsubsection}{\numberline {3.5.1}鉛直拡散スキームの概要}{69}%
+\contentsline {subsubsection}{\numberline {3.5.2}フラックス計算の基本式}{69}%
+\contentsline {subsubsection}{\numberline {3.5.3}Richardson 数}{69}%
+\contentsline {subsubsection}{\numberline {3.5.4}拡散係数}{70}%
+\contentsline {subsubsection}{\numberline {3.5.5}フラックスの計算}{71}%
+\contentsline {subsubsection}{\numberline {3.5.6}拡散係数の最小値}{72}%
+\contentsline {subsubsection}{\numberline {3.5.7}その他の留意点}{72}%
+\contentsline {subsection}{\numberline {3.6}地表フラックス}{73}%
+\contentsline {subsubsection}{\numberline {3.6.1}地表フラックススキームの概要}{73}%
+\contentsline {subsubsection}{\numberline {3.6.2}フラックス計算の基本式}{73}%
+\contentsline {subsubsection}{\numberline {3.6.3}Richardson 数}{73}%
+\contentsline {subsubsection}{\numberline {3.6.4}バルク係数}{74}%
+\contentsline {subsubsection}{\numberline {3.6.5}フラックスの計算}{74}%
+\contentsline {subsubsection}{\numberline {3.6.6}海面における取扱い}{76}%
+\contentsline {subsubsection}{\numberline {3.6.7}風速の補正}{76}%
+\contentsline {subsubsection}{\numberline {3.6.8}風速の最小値}{77}%
+\contentsline {subsection}{\numberline {3.7}地表過程}{78}%
+\contentsline {subsubsection}{\numberline {3.7.1}地表過程の概要}{78}%
+\contentsline {subsubsection}{\numberline {3.7.2}地表面の分類}{81}%
+\contentsline {subsubsection}{\numberline {3.7.3}地表熱バランス}{81}%
+\contentsline {subsubsection}{\numberline {3.7.4}離散座標系の設定 {[\tt SETGLV,SETWLV,SETSLV]}}{82}%
+\contentsline {subsubsection}{\numberline {3.7.5}陸面の熱フラックスと熱容量の計算 {[\tt LNDFLX]}}{82}%
+\contentsline {subsubsection}{\numberline {3.7.6}陸面の水フラックスの計算 {[\tt LNDWFX]}}{83}%
+\contentsline {subsubsection}{\numberline {3.7.7}陸面の流出の計算{[\tt LNDROF]}}{84}%
+\contentsline {subsubsection}{\numberline {3.7.8}陸面でのアルベドの評価{[\tt LNDALB]}}{85}%
+\contentsline {subsubsection}{\numberline {3.7.9}陸面での粗度の評価{[\tt LNDZ0]}}{86}%
+\contentsline {subsubsection}{\numberline {3.7.10}陸面での地表湿潤度の評価{[\tt LNDBET]}}{86}%
+\contentsline {subsubsection}{\numberline {3.7.11}海面の熱フラックスと熱容量の計算 {[\tt SEAFLX]}}{87}%
+\contentsline {subsubsection}{\numberline {3.7.12}海面での地表湿潤度の評価{[\tt SEABET]}}{87}%
+\contentsline {subsubsection}{\numberline {3.7.13}海面でのアルベドと粗度}{88}%
+\contentsline {subsubsection}{\numberline {3.7.14}雪面熱フラックス補正 {[\tt SNWFLX]}}{88}%
+\contentsline {subsubsection}{\numberline {3.7.15}積雪の昇華の計算{[\tt SNWSUB]}}{89}%
+\contentsline {subsubsection}{\numberline {3.7.16}降雪の計算{[\tt SNWFLP]}}{89}%
+\contentsline {subsubsection}{\numberline {3.7.17}融雪の計算{[\tt SNWMLP]}}{89}%
+\contentsline {subsubsection}{\numberline {3.7.18}積雪面の流出の計算{[\tt SNWROF]}}{90}%
+\contentsline {subsubsection}{\numberline {3.7.19}積雪面でのアルベドの評価{[\tt SNWALB]}}{90}%
+\contentsline {subsubsection}{\numberline {3.7.20}積雪面での地表粗度の評価{[\tt SNWZ0]}}{91}%
+\contentsline {subsubsection}{\numberline {3.7.21}積雪面での地表湿潤度の評価{[\tt SNWBET]}}{91}%
+\contentsline {subsubsection}{\numberline {3.7.22}凍土過程の計算{[\tt LNDFRZ]}}{91}%
+\contentsline {subsubsection}{\numberline {3.7.23}海洋混合層モデル {[\tt SEAFRZ]}}{92}%
+\contentsline {subsection}{\numberline {3.8}大気・地表系の拡散型収支式の解法}{95}%
+\contentsline {subsubsection}{\numberline {3.8.1}基本的な解法}{95}%
+\contentsline {subsubsection}{\numberline {3.8.2}基本方程式}{95}%
+\contentsline {subsubsection}{\numberline {3.8.3}implicit時間差分}{96}%
+\contentsline {subsubsection}{\numberline {3.8.4}implicit時間差分の結合}{97}%
+\contentsline {subsubsection}{\numberline {3.8.5}時間差分の結合式の解法}{99}%
+\contentsline {subsubsection}{\numberline {3.8.6}時間差分の結合式}{101}%
+\contentsline {subsubsection}{\numberline {3.8.7}implicit 時間差分における時間ステップの扱い}{103}%
+\contentsline {subsection}{\numberline {3.9}重力波抵抗}{104}%
+\contentsline {subsubsection}{\numberline {3.9.1}重力波抵抗スキームの概要}{104}%
+\contentsline {subsubsection}{\numberline {3.9.2}局所フルード数と運動量フラックスの関係}{104}%
+\contentsline {subsubsection}{\numberline {3.9.3}地表での運動量フラックス}{104}%
+\contentsline {subsubsection}{\numberline {3.9.4}上層での運動量フラックス}{105}%
+\contentsline {subsubsection}{\numberline {3.9.5}運動量収束による水平風の時間変化の大きさ}{105}%
+\contentsline {subsubsection}{\numberline {3.9.6}その他の留意点}{106}%
+\contentsline {subsection}{\numberline {3.10}乾燥対流調節}{107}%
+\contentsline {subsubsection}{\numberline {3.10.1}乾燥対流調節の概要}{107}%
+\contentsline {subsubsection}{\numberline {3.10.2}乾燥対流調節の手続き}{107}%
+\contentsline {section}{\numberline {4}プログラムコードの解説}{108}%
+\contentsline {subsection}{\numberline {4.1}プログラムを読むための基礎知識}{108}%
+\contentsline {subsubsection}{\numberline {4.1.1}構成の概略}{108}%
+\contentsline {subsubsection}{\numberline {4.1.2}ディレクトリ構成}{108}%
+\contentsline {subsubsection}{\numberline {4.1.3}プログラムにおける特記事項}{109}%
+\contentsline {subsubsection}{\numberline {4.1.4}プログラム書法}{110}%
+\contentsline {subsubsection}{\numberline {4.1.5}命名規則}{111}%
