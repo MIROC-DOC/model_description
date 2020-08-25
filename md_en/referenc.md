@@ -1,5 +1,9 @@
 # Reference list
 
+Asselin, R. A., 1972:
+Frequency filter for time integrations.
+<span>*Mon. Weather Rev.*</span>, <span>**100**</span>, 487–490.
+
 Arakawa, A. and W.H. Schubert, 1974:
 Interactions of cumulus cloud ensemble with the large-scale
 environment. Part I. <span>*J. Atmos. Sci.,*</span> <span>**31,**</span> 671–701.
@@ -9,6 +13,10 @@ Vertical differencing of the primitive equations
 in sigma coodinates.
 <span>*Mon. Weather Rev.*</span>, <span>**111**</span>, 34–45.
 
+Blackadar, A. K., 1962:
+The vertical distribution of wind and turbulent exchange in neutral atmosphere.
+<span>*J. Geophys. Res.*<span>, <span>**67**<span>, 3095–3102.
+
 Bourke, W., 1988:
 Spectral methods in global climate and weather prediction models.
 <span>*in Physically-Based Modelling and Simulation of Climate
@@ -17,6 +25,11 @@ and Climatic Change. Part I.*</span>, 169–220., Kluwer.
 Haltiner, G.J. and R.T. Williams, 1980:
 Numerical Prediction and Dynamic Meteorology (2nd ed.),
 John Wiley & Sons, 477pp.
+
+Katayama A., 1972:
+A Simplified Scheme for Computing Radiative Transfer
+in the Troposphere, Numerical Simulation of Weather and Climate.
+<span>*Technical Report No. 6, University of California, Los Angeles*<span>, 77 pp.
 
 Kondo J., 1993:
 A new bucket model for predicting water content
@@ -39,10 +52,11 @@ A short history of the PBL parameterization at ECMWF.
 <span>*Workshop on Planetary Boundary layer Parameterization*</span>,
 59-80, ECMWF, Reading U.K.
 
-Manabe, S., J. Smagorinsky and R.F. Strickler, 1965:
-Simulated climatology of a general circulation model
-with a hydrologic cycle.
-<span>*Mon. Weather Rev.*</span> , <span>**93**</span>, 769–798.
+McFarlane, N. A., 1987:
+The effect of orographically excited gravity wave drag
+on the general circulation of
+the lower stratosphere and troposphere.
+<span>*J. Atmos. Sci*.<span>, <span>**44**<span>, 1775–1800.
 
 Miller, M.J., A.C.M. Beljaars and T.N. Palmer, 1992:
 The sensitivity of the ECMWF model
@@ -69,8 +83,4 @@ Matrix formulation for the transfer of solar radiation
 in a plane-parallel scattering atmosphere.
 <span>*J. Quant. Spectrosc. Radiat. Transfer*</span>, <span>**35**</span>, 13-21.
 
-Randall D.A., Pan D-.M., 1993:
-Imprementation of the Arakawa-Schubert cumulus parameterization
-with a prognostic closure.
-<span>Meteorological Monograph.</span>
 
