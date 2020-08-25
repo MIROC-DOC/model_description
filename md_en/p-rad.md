@@ -103,7 +103,7 @@ $$
 $$
 
 
-This can be calculated as follows. Note that $R_u$ is the gas constant per mole (8.31 J mol$_{-1}$ K$^{-1}$) and the thickness of the gas layer ($\Delta z$) is measured in km. The volumetric mixing ratio ($r$) in ppmv can be calculated from the mass mixing ratio ($q$),
+This can be calculated as follows. Note that $R_u$ is the gas constant per mole (8.31 J mol$^{-1}$ K$^{-1}$) and the thickness of the gas layer ($\Delta z$) is measured in km. The volumetric mixing ratio ($r$) in ppmv can be calculated from the mass mixing ratio ($q$),
 
 $$
   r = 10^6 R^{(m)}/R^{(air)} q = 10^6 M^{(air)}/M^{(m)}
@@ -622,7 +622,7 @@ $$
 The incident flux $F_0$ is defined as the ratio of the solar constant ($F_{00}$) and the distance between the sun and the earth to the time-averaged value ($r_s$).
 
 $$
-F_0 = F_00 r_s^-2 
+F_0 = F_{00} r_s^-2 
 $$
 
 
