@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Maintainer: SAITO Fuyuki <saitofuyuki@jamstec.go.jp>
-# 'Time-stamp: <2020/07/25 14:37:59 fuyuki lexer.py>'
+# 'Time-stamp: <2020/08/26 13:15:19 fuyuki lexer.py>'
 
 import sys
 import pprint as ppr
@@ -1025,8 +1025,10 @@ class ParserStd(LexerBase):
 
     def action_include(self, s, loc, toks):
         r"""Perform \include FILE."""
-        # print(toks.dump())
-        incf = self.unparse(toks.P['#1']['C'])
+        e = ''
+        if toks['M'] == r'include':
+            e = '.tex'
+        incf = self.unparse(toks.P['#1']['C']) + e
         if not os.path.exists(incf):
             parent = os.path.dirname(self.ftree.file)
             incf = os.path.join(parent, os.path.basename(incf))
