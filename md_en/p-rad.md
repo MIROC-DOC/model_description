@@ -364,8 +364,8 @@ $$
 
 
 $$
-  D^\pm(0)       =  D_0^pm \\
-  D^\pm(\tau^*)  =  D_0^pm + D_1^pm \tau^* + D_2^pm {\tau^*}^2
+  D^\pm(0)       =  D_0^{\pm} \\
+  D^\pm(\tau^*)  =  D_0^{\pm} + D_1^{\pm} \tau^* + D_2^{\pm} {\tau^*}^2
 $$
 
 
