@@ -75,11 +75,13 @@
 - 使用フォーマット
 
   - 新たに書く原稿は、基本的に Markdown or Latex
-  - 形式で迷ったら、[Markdown原稿](./org/md_en/)や[Latex原稿](./org/tex_en/)を参照
+  - 形式で迷ったら、[Markdown原稿](../org/md_en/)や[Latex原稿](../org/tex_jp/)を参照
   - Markdownで書く場合
     - エディタ上でリアルタイムにプレビューできる
+    - [Chrome拡張](https://chrome.google.com/webstore/detail/mathjax-3-plugin-for-gith/peoghobgdhejhcmgoppjpjcidngdfkod)を入れるとブラウザのGitHubから数式プレビューできる
     - [pandoc](https://pandoc.org/) を使って LaTeX に translate する → [Pandoc メモ](./pandoc.md)
   - LaTeX ファイルは、章ごとあるいは全体をまとめてタイプセットできるようにする
+  - [Mathpix Snip](https://gigazine.net/news/20200106-mathpix-snip/)は数式画像をLatex形式に変換してくれる
 
 - 使用言語
 
@@ -88,12 +90,9 @@
 
 - ディレクトリ構成
 
-  - md/ Markdown 形式の原稿ファイルを置く
-  - tex/ LaTeX 形式の原稿ファイルを置く
-    - markdown から変換された LaTeX はここに出力される
-  - pdf/ 変換された PDF を置く
+  - draft/ 原稿ファイルを置く
   - memo/ 主に Markdown で書かれたプロジェクトに関するメモ書き
-  - org/ CCSR/NIES AGCMマニュアルやその英訳
+  - org/ 既存のCCSR/NIES AGCMマニュアルやその英訳
   - reference/ 公開しても問題ない、既存の参考資料
 
 - 開発フロー("GitHub flow"にならう)
