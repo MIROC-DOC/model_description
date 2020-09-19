@@ -2,11 +2,11 @@
 ## 本章でとりあげる or 関連するプログラム
 **contents** are just quoted by the programs.
 
-| module name      | file name            | contents                          | subroutines |
+| module name      | file name            | contents                                        |
 |:-----------------|:---------------------|:------------------------------------------------|
 | `MODULE:[PLAND]` | `./physics/pglnd.F ` | land surface                                    |
 | `MODULE:[POCEN]` | `./physics/pgocn.F`  | mixed layer/fixed SST ocean                     |
-| `MODULE:[PGRIV]` | `./physics/pgriv.F ` | |river routing submodel                         |
+| `MODULE:[PGRIV]` | `./physics/pgriv.F ` | river routing submodel                          |
 | `MODULE:[PGSFC]` | `./physics/pgsfc.F ` | surface driver                                  |
 | `MODULE:[PSFCL]` | `./physics/psfcl.F`  | surface bulk transfer coefficient               |
 | `MODULE:[PSFCM]` | `./physics/psfcm.F`  | surface fluxes                                  |
