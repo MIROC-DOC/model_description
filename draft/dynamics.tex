@@ -1,4 +1,5 @@
 \documentclass{jsbook}
+%% \usepackage{amsmath} %% for better placement of second accent
 \setlength{\textwidth}{\fullwidth}
 \setlength{\evensidemargin}{\oddsidemargin}
 \usepackage{color}
@@ -18,11 +19,11 @@ Williams(2009)の時間フィルターを毎ステップごとに適用する。
 は以下の式で与えられる。バーは時間フィルターがかかっていることを意味す
 る。
 $$
-\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - 2 \
-\bar{X}^{t} + X^{t+\Delta t}] \eqno(2.1)
+\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha \left[\bar{\bar{X}}^{t-\Delta t} - 2 \
+\bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.1)
 $$
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
 $$
 ただし、$\nu=0.05$かつ、$\alpha=0.5$である。
 \section{semi-Lagrangeスキーム}
@@ -58,18 +59,18 @@ MIROC6は力学フレームとして球面調和関数展開に基づくスペ�
 \subsection{semi-Lagrangeスキームの手順}
 球面上の$\eta$座標での輸送方程式は
 \begin{eqnarray*}
-  \frac{\partial mq}{\partial t} &=& - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mvq cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
-  &=& \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
+  \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
+  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray*}
 $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial eta}$と
 定義される。qはトレイサーの量である(ex. 混合比for水蒸気量)。
 連続の式は$q=1$の時を考えて
 \begin{equation}
-  \frac{\partial m}{\partial t} = - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mv cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})
+  \frac{\partial m}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mv \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})
 \end{equation}
 ここで、離散化を考えると輸送方程式は
 \begin{equation}
-  \frac{\partial m_{i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}[(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k})+(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}))+(G^{\eta}_{i,j,k-\frac{1}{2}}-G^{\eta}_{i,j,k+\frac{1}{2}})]
+  \frac{\partial m_{i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}\left[\left(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k}\right)+\left(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}\right)+\left(G^{\eta}_{i,j,k-\frac{1}{2}}-G^{\eta}_{i,j,k+\frac{1}{2}}\right)\right]
 \end{equation}
 と表される。ただし、
 \begin{equation}
@@ -83,7 +84,7 @@ $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial et
 \end{equation}
 また、
 \begin{equation}
-  \Delta D_{j,k}=a cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
+  \Delta D_{j,k}=a \cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a \cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
 \end{equation}
 である。このようなフラックス形式を基本とすると、保存性は自動的に満たさ
 れる。精度及び単調性を満たすか否かは$F^{\lambda}_{i-\frac{1}{2},j,k}$の決定法などに依存する。
@@ -92,12 +93,12 @@ $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial et
 ていく。スペクトルモデルでは、変換格子$(i,j,k)$上の同じ点(整数点)で、
 u,vおよびスカラー量が計算される。スペクトル逆変換を用いれば、格子の境
 界におけるu,vの値、すなわち
-$u_{i-/frac{1}{2},j,k},v_{i,j-/frac{1}{2},k}$を求める事が可能であるが、
-そのようにして求めた$u_{i-/frac{1}{2},j,k},v_{i,j-/frac{1}{2},k}$は連
+$u_{i-\frac{1}{2},j,k},v_{i,j-\frac{1}{2},k}$を求める事が可能であるが、
+そのようにして求めた$u_{i-\frac{1}{2},j,k},v_{i,j-\frac{1}{2},k}$は連
 続の式の必ずしも差分系を満たさない。連続の式の差分系は離散化された移流
 方程式で$q=1$の時を考えて
 \begin{equation}
-  \frac{\partial m_{i,j,k} }{\partial t}=\frac{1}{\Delta D_{j,k}}[(V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k})+(V^{\varphi}_{i,j-\frac{1}{2},k}-V^{\varphi}_{i,j+\frac{1}{2},k}))+(V^{\eta}_{i,j,k-\frac{1}{2}}-V^{\eta}_{i,j,k+\frac{1}{2}})]
+  \frac{\partial m_{i,j,k} }{\partial t}=\frac{1}{\Delta D_{j,k}}\left[\left(V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k})+(V^{\varphi}_{i,j-\frac{1}{2},k}-V^{\varphi}_{i,j+\frac{1}{2},k}\right)+\left(V^{\eta}_{i,j,k-\frac{1}{2}}-V^{\eta}_{i,j,k+\frac{1}{2}}\right)\right]
 \end{equation}
 で与えられる。ただし、
 \begin{equation}
@@ -126,18 +127,18 @@ leap frogにおける計算モードの影響を緩和するために、時間�
 がかかっていることを意味する。現行の改良型時間フィルターでは時間フィル
 ターは二重にかかる。
 $$
-\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - 2 \
-\bar{X}^{t} + X^{t+\Delta t}] \eqno(2.1)
+\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha \left[\bar{\bar{X}}^{t-\Delta t} - 2 \
+\bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.1)
 $$
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
 $$
 ただし、$\nu=0.05$かつ、$\alpha=0.5$である。
 $\alpha$が1の時は旧式のAsselin Time Filterと一致する。
 
 実際のモデルではまず、予報変数の格子点値への変換の箇所で
 $$
-\bar{\bar{X}}^{t\ast}=(1-\nu \alpha)^{-1}[(1-2 \nu \alpha)\bar{X}^{t}+\nu \alpha \bar{\bar{X}}^{t-\Delta t}] \eqno(2.3)
+\bar{\bar{X}}^{t\ast}=(1-\nu \alpha)^{-1}\left[(1-2 \nu \alpha)\bar{X}^{t}+\nu \alpha \bar{\bar{X}}^{t-\Delta t}\right] \eqno(2.3)
 $$
 を求めておき、$\bar{\bar{X}}^{t-\Delta t}-2\bar{X}^{t}$を保存する
 [DADVNC]。その後の処理で$X^{t+\Delta t}$が確定したのち、[TFILT]にて
@@ -145,7 +146,7 @@ $$
 \bar{\bar{X}}^{t} = (1-\nu \alpha) \bar{\bar{X}}^{t\ast}+\nu \alpha X^{t+\Delta t} \eqno(2.4)
 $$
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
 $$
 を計算し時間フィルターをかける。
 
