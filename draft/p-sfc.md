@@ -80,70 +80,188 @@
 
 
 
-## 2. Calculation of bulk coefficient with respect to momentum and heat
+## Overview of the Surface Flux Scheme
 
-After Watanabe (1994), the bulk coefficient is also calculated using Monin-Obukhov similarity as
+The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input data are wind speed ($u, v$),  temperature ($T$), and specific humidity ($q$), and the output data are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
-$$
- C_M = k^2 \left[ \ln \frac{z_a-d}{z_0} + \Psi_m(\zeta) \right]^{-2} \\
- C_H = k^2 \left[ \ln \frac{z_a-d}{z_0} + \Psi_m(\zeta) \right]^{-1}
-             \left[ \ln \frac{z_a-d}{z_T} + \Psi_h(\zeta) \right]^{-1} \\
- C_{Hs} = k^2 \left[ \ln \frac{z_a-d}{z_0} + \Psi_m(\zeta_g) \right]^{-1}
-             \left[ \ln \frac{z_a-d}{z_T^{\dagger}} + \Psi_h(\zeta_g) \right]^{-1} \\
- C_{Hc} = C_H - C_{Hs}
-$$
+The bulk coefficients are obtained according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf), except for the correction for the difference in roughness between momentum and heat. However, corrections are made to take into account the difference between momentum and heat roughness.
+
+The outline of the calculation procedure is as follows.
 
 
-where $C_M$ and $C_H$ are the bulk coefficients of the overall canopy (leaf surface + forest floor) with respect to momentum and heat, respectively; $C_{Hs}$ is the bulk coefficient of the ground surface (forest floor) flux with respect to heat; $C_{Hc}$ is the bulk coefficient of the canopy (leaf surface) flux with respect to heat; $\Psi_m$ and $\Psi_h$ are Monin-Obukhov shear functions with respect to momentum and heat, respectively; and $z_a$ is the reference height of the atmosphere (height of the troposphere). Using the Monin-Obukhov lengths $\zeta$ and $\zeta_g$ related to the overall canopy and ground surface (forest floor), respectively, $L$ and $L_g$ are respectively expressed as:
+1. calculate the roughness including modifications by ice and snow. `MODULE:[SEAZ0F]`
+2. Calculate the Richardson number as the stability of the atmosphere. `MODULE:[PSFCL]`
+3. calculate the bulk coefficient from Richardson number.  `MODULE:[PSFCL]`
+4. calculate the flux and its derivative from the bulk coefficient. `MODULE:[PSFCM]`
+5. If necessary, the calculated fluxes are re-calculated after taking into account the roughness effect, the free flow effect, and the wind speed correction.
+
+### Roughness `MODULE:[SEAZ0F]`
+
+At sea level, we follow [Miller et al. 1992](./paper/Millers1992_Measuring_dynamic_surface\ and_interfacial_tensions.pdf) and consider the following two effects.
+
+- Free convection is preeminent when the wind speed is low The roughness of the sea surface varies with the wind speed.
+- Roughness of sea surface is caulculated following
 
 
-$$
- \zeta = \frac{z_a - d}{L} \\
- \zeta_g = \frac{z_a - d}{L_g}
-$$
-
-and the Monin-Obukhov lengths are expressed as:
-
-$$
- L = \frac{\Theta_0 C_M^{3/2}|V_a|^2}{kg(C_{Hs}(T_s - T_a) + C_{Hc}(T_c - T_a))} \\
- L_s = \frac{\Theta_0 C_M^{3/2}|V_a|^2}{kg C_{Hs}(T_s - T_a)}
-$$
-
-
-where $\Theta_0$ =300K; $|V_a|$ is the absolute value of the surface wind speed; $k$ is the Karman constant; $g$ is the gravitational acceleration; and $T_a,$T_c$ and $T_s$ are the temperature of the troposphere, canopy (leaf surface), and ground surface (forest floor), respectively.
-
-Since the bulk coefficient is necessary for calculation of the Monin-Obukhov length, and the Monin-Obukhov length is necessary for calculation of the bulk coefficient, the calculation is iterated (twice as a standard) with a neutral bulk coefficient as the initial value.
-
-Prior to this calculation, the snow depth in the snow-covered portion is added to the zero-plane displacement. However, the upper limit is set so that the zero-plane displacement does not exceed the value of $z_a$:
-
+The effect of free convective motion is estimated by calculating the buoyancy flux $F_B$,
 
 $$
- d = \min( d + D_{Sn} ,\  f_{\max} \cdot z_a )
+F_B = F_\theta/c_p + \epsilon T_0 F_q^P
+$$
+
+When $F_B > 0$,
+
+$$
+	w^* = (H_B F_B)^{1/3}\\
+	| \mathbf{v} _1 | = \big( {u_1}^2 + {v_1}^2 + (w^*)^2 \big) ^{1/2}
 $$
 
 
-As a standard, $f_${\max}$ is set at 0.5.
+The $H_B$ corresponds to the mixed layer thickness scale. $H_B$ corresponds to the thickness scale of the mixing layer. The current standard value is $H_B=2000 \mathrm{m}$.
 
-## 4.3 Calculation of bulk coefficient with respect to vapor
-
-This calculation is performed after the calculation of stomatal resistance, described later.
-
-When the stomatal resistance ($r_{st}$)  and ground surface evaporation resistance　($r_{soil}$)  have been solved, the bulk coefficient with respect to vapor is solved as:
+he roughness variation of the sea surface is determined by the friction velocity $u^*$
 
 $$
- C_{Ec} |V_a| = \left[ (C_{Hc} |V_a|)^{-1} + r_{st} / LAI\right]^{-1} \\
- C_{Es} |V_a| = \left[ (C_{Hs} |V_a|)^{-1} + r_{soil}\right]^{-1}
+u^{\star} = \sqrt{C_{M_0} ({U_0}^2  +{V_0}^2)}
 $$
 
-(Previously, this parameter was solved by converting stomatal resistance, etc. into a decrease of the exchange coefficient via roughness. However, since this approach seems to be problematic, a simpler method had been adopted in its place.)
+We perform successive approximation calculation of ${C_{M_0}}$, because $F_u,F_v,F_\theta,F_q$ are required.
 
-In addition, when there is no stomatal resistance, etc. (such as evaporation from wet surfaces), the same value as for the bulk coefficient of heat is used for the bulk coefficient of vapor.
+$$
+	r_{0,M} = z_{0,M_0} + z_{0,M_R} + \frac{z_{0,M_R} {u^\star }^2 }{g} + \frac{z_{0,M_S}\nu }{u^\star}\\
+	r_{0,H} = z_{0,H_0} + z_{0,H_R} + \frac{z_{0,H_R} {u^\star }^2 }{g} + \frac{z_{0,H_S}\nu }{u^\star}\\
+	r_{0,E} = z_{0,E_0} + z_{0,E_R} + \frac{z_{0,E_R} {u^\star }^2 }{g} + \frac{z_{0,E_S}\nu }{u^\star}
+$$
+
+Here, $\nu = 1.5 \times 10^{-5} \mathrm{m^2/s}$ is the kinetic viscosity of the atmosphere.
+$z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and vapor, respectively.
+$z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$) and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$) are taken into account.
+
+When the sea ice exists,
+
+$$
+	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  \alpha_{ice}\\
+	z_{0,H} = z_{0,H} + ( z_{0,ice,H} - z_{0,H})  \alpha_{ice}\\
+	z_{0,E} = z_{0,E} + ( z_{0,ice,E} - z_{0,E})  \alpha_{ice}
+$$
+
+Here, $r_{0,ice,*}$ is roughness of sea ice, $\alpha_{ice}$ is the sea ice concentration.
+
+When the snow even exists,
+
+$$
+	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  \alpha_{snow}\\
+	z_{0,H} = z_{0,H} + ( z_{0,snow,H} - z_{0,H})  \alpha_{snow}\\
+	z_{0,E} = z_{0,E} + ( z_{0,snow,E} - z_{0,E})  \alpha_{snow}
+$$
+
+Here, $r_{0,snow,*}$ is roughness of sea ice, $\alpha_{snow}$ is the sea ice concentration.
+
+### Richardson Number `MODULE:[PSFCL]`
+
+The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
+
+$$
+R_{iB} =
+			\frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
+              { (u_1/z_1)^2                                  }\\
+       = \frac{g}{\theta_s}
+         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T .
+$$
 
 
-## 2. Calculation of surface turbulent fluxes (地表フラックス)
+Here, $g$ is the gravitational accerelation\, $\theta_s$ ($\Theta_0$ in MATSIRO description) is the basic potential temperature, $T_1$ is the atmospheric temperature of the 1st layer, $T_0$ is the surface skin temperature, $p_s$ is the surface pressure, $p_1$ is the pressure of the 1st layer, $\kappa $ ($k$ in MATSIRO description) is the Karman constant, and
+
+$$
+f_T = (\theta_1 - \theta(z_0))/(\theta_1 - \theta_0)
+$$
 
 
-The turbulent fluxes at the ground surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) and canopy temperature ($T_c$) are updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$ and $T_c$, the differential with respect to $T_s$ and $T_c$ of each flux is calculated beforehand.
+is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
+
+### Bulk factor `MODULE:[PSFCL]`
+
+The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$ first, and then corrected.
+
+$$
+C_M = \left\{
+      \begin{array}{lr}
+      C_{0,M} [ 1 + (b_M/e_M)  R_{iB} ]^{-e_M}
+			&,
+          R_{iB} \geq 0 \\
+      C_{0,M} \left[ 1 - b_M R_{iB} \left( 1+ d_M b_M C_{0,M}
+                                  \sqrt{\frac{z_1}{z_{0,M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]     
+		  &,
+          R_{iB} < 0 \\
+      \end{array} \right.
+$$
+
+
+$$
+\widetilde{C_H} = \left\{
+      \begin{array}{lr}
+      \widetilde{C_{0,H}} [ 1 + (b_H/e_H) R_{iB} ]^{-e_H}
+			&,
+          R_{iB} \geq 0 \\
+      \widetilde{C_{0,H}} \left[ 1 - b_H R_{iB}
+                                  \left( 1+ d_H b_H \widetilde{C_{0,H}}
+                                  \sqrt{\frac{z_1}{z_{0,M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]
+			 &,     
+          R_{iB} < 0 \\
+      \end{array} \right.
+$$
+
+
+$$
+C_H = \widetilde{C_H} f_T
+$$
+
+
+$$
+\widetilde{C_E} = \left\{
+      \begin{array}{lr}
+      \widetilde{C_{0,E}} [ 1 + (b_E/e_E) R_{iB} ]^{-e_E}
+			&,
+          R_{iB} \geq 0 \\
+      \widetilde{C_{0,E}} \left[ 1 - b_E R_{iB}
+                                  \left( 1+ d_E b_E \widetilde{C_{0,E}}
+                                  \sqrt{\frac{z_1}{z_{0,M}}| R_{iB}|} \,
+                                  \right)^{-1} \right]      
+		  &,
+          R_{iB} < 0 \\
+      \end{array} \right.
+$$
+
+
+$$
+C_E = \widetilde{C_E} f_q
+$$
+
+
+$C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ is the bulk coefficient (for fluxes from $z_{0M}$) at neutral,
+
+$$
+C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  =
+       \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 } .
+$$
+
+
+Correction Factor $f_q$ is ,
+
+$$
+  f_q = (q_1 - q(z_0))/(q_1 - q^{\ast}(\theta_0))
+$$
+
+
+but the method of calculation is omitted. The coefficients of Louis factors are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 )$, $( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
+
+
+### Calculation of surface turbulent fluxes (地表フラックス)
+
+
+The turbulent fluxes at the ground surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
 
 - Momentum flux
 
@@ -158,383 +276,13 @@ where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zon
 - Sensible heat flux
 
 $$
- H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a) \tag{eq107}
-  \\
- H_c = c_p \rho C_{Hc}|V_a| (T_c - (P_s/P_a)^{\kappa}T_a) \\
- \partial H_s/\partial T_s = c_p \rho C_{Hs}|V_a| \\
- \partial H_c/\partial T_c = c_p \rho C_{Hc}|V_a|
-$$
+ H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)\\
+ $$
 
-where $H_s$ and $H_c$ are the sensible heat flux from the ground surface (forest floor) and canopy (leaf surface), respectively; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
+where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
 
-- Bare soil surface (forest floor) evaporation flux
+- Bare sea surface evaporation flux
 
 $$
- Et_{(1,1)} = (1-A_{Sn})(1-f_{ice})\cdot
-           \rho \widetilde{C_{Es}}|V_a|(h_{soil}q^*(T_s) - q_a) \\
- Et_{(2,1)} = (1-A_{Sn})f_{ice}\cdot
-           \rho \widetilde{C_{Es}}|V_a|(h_{soil}q^*(T_s) - q_a) \\
- \partial Et_{(1,1)}/\partial T_s = (1-A_{Sn})(1-f_{ice})\cdot
-           \rho \widetilde{C_{Es}}|V_a|h_{soil}\cdot dq^*/dT |_{T_s} \\
- \partial Et_{(2,1)}/\partial T_s = (1-A_{Sn})f_{ice}\cdot
-           \rho \widetilde{C_{Es}}|V_a|h_{soil}\cdot dq^*/dT |_{T_s}
+\hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^*(T_0) - q_1 \right)
 $$
-
-where $Et_{(1,1)}$ and $Et_{(2,1)}$ are the water evaporation and ice sublimation fluxes at the bare soil surface, respectively; $q^*(T_s)$ is the saturation specific humidity at the ground surface temperature; $h_{soil}$ is the relative humidity at the soil surface layer; $A_{Sn}$ is the snow-covered ratio; and $f_{ice}$ is the ratio of ice in the uppermost soil layer, expressed as
-
-$$
-  f_{ice} = w_{i(1)}/w_{(1)}
-$$
-
-Since the snow-free portion and snow-covered portion are calculated separately, it should be noted that $A_{Sn}$ takes the value of either 0 (snow-free portion) or 1 (snow-covered portion). When the flux is downward (i.e., dew formation), there is no soil moisture resistance; therefore, the bulk coefficient is taken as:
-
-$$
-  \widetilde{C_{Es}} = \left\{
-  \begin{array}{ll}
-   C_{Es} (h_{soil}q^*(T_s) - q_a > 0 {のとき})\\
-   C_{Hs} (h_{soil}q^*(T_s) - q_a \leq 0 {のとき})
-  \end{array}
-  \right.
-$$
-
-- Transpiration flux
-
-$$
- Et_{(1,2)} = (1-f_{cwet}) \cdot \rho \widetilde{C_{Ec}}|V_a|(q^*(T_c) - q_a) \\
- Et_{(2,2)} = 0 \\
- \partial Et_{(1,2)}/\partial T_c =
-  (1-f_{cwet}) \cdot \rho \widetilde{C_{Ec}}|V_a|\cdot dq^*/dT|_{T_c} \\
- \partial Et_{(2,2)}/\partial T_c = 0
-$$
-
-where $Et_{(1,2)}$ and $Et_{(2,2)}$ are transpiration of water and ice, respectively; and $Et_{(2,2)}$ is always 0. $f_{cwet} = w_c / w_{c,cap}$ is the wet fraction of the canopy. When the flux is downward, which is considered to be dew formation on the dry part of the leaf, the bulk coefficient is taken as:
-
-$$
-  \widetilde{C_{Ec}} = \left\{
-  \begin{array}{ll}
-   C_{Ec} (q^*(T_c) - q_a > 0 {のとき})\\
-   C_{Hc} (q^*(T_c) - q_a \leq 0 {のとき})
-  \end{array}
-  \right.
-$$
-
-- Canopy evaporation flux
-
-When      $T_c$ $\geq$ 0 $^{\circ}$ C:
-
-
-$$
- Et_{(1,3)} =
-  f_{cwet} \cdot \rho C_{Hc}|V_a|(q^*(T_c) - q_a) \\
- Et_{(2,3)} = 0 \\
- \partial Et_{(1,3)} \partial T_c =
-  f_{cwet} \cdot \rho C_{Hc}|V_a|\cdot dq^*/dT|_{T_c} \\
- \partial Et_{(2,3)} \partial T_c = 0
-$$
-
-when  $T_c$ $<$ 0 $^{\circ}$ In case of C:
-
-$$
- Et_{(1,3)} = 0 \\
- Et_{(2,3)} =
-  f_{cwet} \cdot \rho C_{Hc}|V_a|(q^*(T_c) - q_a) \\
- \partial Et_{(1,3)} \partial T_c = 0 \\
- \partial Et_{(2,3)} \partial T_c =
-  f_{cwet} \cdot \rho C_{Hc}|V_a|\cdot dq^*/dT|_{T_c}
-$$
-
-where $Et_{(1,3)}$ and $Et_{(2,3)}$ are the evaporation of water and the sublimation of ice at the canopy surface, respectively.
-
-- Snow sublimation flux
-
-$$
- E_{Sn} = A_{Sn}\cdot \rho C_{Hs}|V_a|(q^*(T_s) - q_a) \\
- \partial E_{Sn}/\partial T_s = A_{Sn}\cdot \rho C_{Hs}|V_a|
- \cdot dq^*/dT|_{T_s}
-$$
-
-where $E_{Sn}$ is the snow sublimation flux. Since the snow-free portion and snow-covered portion are calculated separately, it should also be noted here that $A_{Sn}$ takes the value of either 0 (snow-free portion) or 1 (snow-covered portion).
-
-
-## 3. Calculation of heat conduction fluxes
-
-The heat conduction fluxes in the snow-free and snow-covered portions are calculated. Similarly to the turbulent fluxes, when the energy balance is solved later and the surface temperature is updated, the heat conduction flux values are updated with respect to that value.
-
-In addition, it should also be noted here that since the snow-free portion and snow-covered portion are calculated separately, $A_{Sn}$ takes the value of either 0 (snow-free portion) or 1 (snow-covered portion).
-
-- Heat conduction flux in the snow-free portion
-
-$$
-  F_{g(1/2)} = (1 - A_{Sn}) \cdot k_{g(1/2)} / \Delta z_{g(1/2)} (T_{g(1)} - T_s) \\
-  \partial F_{g(1/2)}/\partial T_s =
-  - (1 - A_{Sn}) \cdot k_{g(1/2)} / \Delta z_{g(1/2)}
-$$
-where $F_{g(1/2)}$ is the heat conduction flux, $k_{g(1/2)}$ is the soil heat conductivity, $\Delta z_{g(1/2)}$  is the thickness from the temperature definition point of the uppermost soil layer to the ground surface, and $T_{g(1)}$ is the temperature of the uppermost soil layer.
-
-- Heat conduction flux in the snow-covered portion　
-
-$$
-  F_{Sn(1/2)} = A_{Sn} \cdot k_{Sn(1/2)} / \Delta z_{Sn(1/2)} (T_{Sn(1)} - T_s)
- \\
-  \partial F_{Sn(1/2)}/\partial T_s =
-  - A_{Sn} \cdot k_{Sn(1/2)} / \Delta z_{Sn(1/2)} \tag{eq135}
-$$
-
-where $F_{Sn(1/2)}$ is the heat conduction flux, $k_{Sn(1/2)}$ is the snow heat conductivity, $\Delta z_{Sn(1/2)}$ is the thickness from the temperature definition point of the uppermost snow layer to the ground surface, and $T_{Sn(1)}$ is the temperature of the uppermost snow layer.
-
-## 4. Solution of energy balance at ground surface and canopy
-
-The energy balance is solved for two cases: (1) when there is no melting at the ground surface, and (2) when there is melting at the ground surface. In case (2), the solution is obtained by fixing the ground surface temperature ($T_s$) at 0°C, and the energy available for use in melting is diagnosed from the energy balance. Snowmelt on vegetation is treated by correction later on; therefore, that case is not solved separately here. Moreover, the case of the snow completely melting within the time steps is also treated by correction later on.
-
-### 4.1 Energy balance at ground surface and canopy
-
-The energy divergence at the ground surface (forest floor) is
-
-$$
- \Delta F_s =
-  H_s + R^{net}_s + l Et_{(1,1)} + l_s ( Et_{(2,1)} + E_{Sn} )
-  - F_{g(1/2)} - F_{Sn(1/2)} \tag{eq136}
-$$
-
-where  $l$ and $l_s$  are the latent heat of evaporation and sublimation, respectively; and $R^{net}_s$ is the net radiation divergence at the ground surface, given by
-
-$$
-  R^{net}_s = -(R^{\downarrow}_S - R^{\uparrow}_S) {\mathcal{T}}_{cS}
-              - \epsilon R^{\downarrow}_L {\mathcal{T}}_{cL}
-              + \epsilon \sigma T_s^4
-              - \epsilon \sigma T_c^4 (1 - {\mathcal{T}}_{cL})
-$$
-
-where $\sigma$ is the Stefan-Boltzmann constant.
-
-The energy divergence at the canopy (leaf surface) is
-
-$$
-  \Delta F_c =
-  H_c + R^{net}_c + l ( Et_{(1,2)} + Et_{(1,3)} )
-  + l_s ( Et_{(2,2)} + Et_{(2,3)} )
-$$
-
-where $R^{net}_c$ is the net radiation divergence at the canopy, given by
-
-$$
-  R^{net}_c = -(R^{\downarrow}_S - R^{\uparrow}_S) (1-{\mathcal{T}}_{cS})
-              - \epsilon R^{\downarrow}_L (1-{\mathcal{T}}_{cL})
-              + ( 2 \epsilon \sigma T_c^4
-              - \epsilon \sigma T_s^4 ) (1 - {\mathcal{T}}_{cL}) \tag{eq139}
-$$
-
-
-### 4.2 Case 1: When there is no melting at the ground surface
-
-When there is no melting at the ground surface, $\Delta F_s=\Delta F_c=0$ are solved so that $T_s$ and $T_c$ holds true for the energy balance at the ground surface and canopy.
-
-The energy balance equation linearizing each term with respect to $T_s$ and $T_c$ can be expressed as
-
-
-$$
- \left(
-\begin{array}{l}
- \Delta F_s \\
- \Delta F_c \\
-\end{array}
-\right)^{current}
-=
-\left(
-\begin{array}{l}
- \Delta F_s \\
- \Delta F_c \\
-\end{array}
-\right)^{past}
-+
-\left(
-\begin{array}{ll}
- {\partial \Delta F_s}/{\partial T_s}
- {\partial \Delta F_s}/{\partial T_c} \\
- {\partial \Delta F_c}/{\partial T_s}
- {\partial \Delta F_c}/{\partial T_c} \\
-\end{array}
-\right)
-\left(
-\begin{array}{l}
- \Delta T_s \\
- \Delta T_c \\
-\end{array}
-\right)
-=
-\left(
-\begin{array}{l}
- 0 \\
- 0 \\
-\end{array}
-\right) \tag{eq140}
-$$
-
-The part with $pst$ on the right-hand side is where the fluxes calculated [Eq. (107)](eq107) to [Eq. (135)](#eq135) are substituted into [Eq. (136)](eq136) to [Eq. (139)](#eq139) using the values of $T_s$ and $T_c$ obtained in the previous step.
-
-The differential terms are as follows:
-
-$$
- \frac{\partial \Delta F_s}{\partial T_s} =
- \frac{\partial H_s}{\partial T_s}
-+\frac{\partial R^{net}_s}{\partial T_s}
-+l\frac{\partial Et_{(1,1)}}{\partial T_s}
-+l_s\left(\frac{\partial Et_{(2,1)}}{\partial T_s}
-+    \frac{\partial E_{Sn}}{\partial T_s}\right)
--\frac{\partial F_{g(1/2)}}{\partial T_s}
--\frac{\partial F_{Sn(1/2)}}{\partial T_s} \\
- \frac{\partial \Delta F_s}{\partial T_c} =
- \frac{\partial R^{net}_s}{\partial T_c} \\
- \frac{\partial \Delta F_c}{\partial T_s} =
- \frac{\partial R^{net}_c}{\partial T_s} \\
- \frac{\partial \Delta F_c}{\partial T_c} =
- \frac{\partial H_c}{\partial T_c}
-+\frac{\partial R^{net}_c}{\partial T_c}
-+l  \left(\frac{\partial Et_{(1,2)}}{\partial T_c}
-+         \frac{\partial Et_{(1,3)}}{\partial T_c}\right)
-+l_s\left(\frac{\partial Et_{(2,2)}}{\partial T_c}
-+         \frac{\partial Et_{(2,3)}}{\partial T_c}\right)
-$$
-
-where
-
-
-$$
- \frac{\partial R^{net}_s}{\partial T_s} =
- \epsilon 4 \sigma T_s^3 \\
- \frac{\partial R^{net}_s}{\partial T_c} =
- - ( 1 - {\mathcal{T}}_{cL} ) \epsilon 4 \sigma T_c^3 \\
- \frac{\partial R^{net}_c}{\partial T_s} =
- - ( 1 - {\mathcal{T}}_{cL} ) \epsilon 4 \sigma T_s^3 \\
- \frac{\partial R^{net}_c}{\partial T_c} =
-  2( 1 - {\mathcal{T}}_{cL} ) \epsilon 4 \sigma T_c^3
-$$
-
-Using the above equations, [Eq. (140)]($eq140) is solved for $T_s$ and $T_c$.
-
-### 4.3 Case 2: When there is melting at the ground surface
-
-When either there is snow on the ground surface or the land cover type is ice sheet, and also the ground surface temperature solved in case 1, $T_s^{current} = T_s^{past}+\Delta T_s$, is higher than 0°C, melting at the ground surface occurs. When there is melting at the ground surface, the ground surface temperature is fixed at 0°C. That is:
-
-$$
- \Delta T_s = \Delta T_s^{melt} = T_{melt} - T_s^{past}
-$$
-
-where $T_{melt}$ is the melting point (0°C) of ice.
-
-With $T_c$ known, $\Delta T_s$ is solved by the following equation similarly to [Eq. (140)](#eq140):
-
-$$
- \Delta T_c = \left( - \Delta F_c^{past}
-            - \frac{\partial \Delta F_c}{\partial T_s} \Delta T_s^{melt}
-              \right) \Bigm/ \frac{\partial \Delta F_c}{\partial T_c}
-$$
-
-Thus, $\Delta T_s$ and $\Delta T_c$ are determined, and the energy convergence at the ground surface to be used for melting is solved by the following equation:
-
-$$
- \Delta F_{conv} =
- - \Delta F_s^{current} = - \Delta F_s^{past}
- - \frac{\partial \Delta F_s}{\partial T_s} \Delta T_s^{melt}
- - \frac{\partial \Delta F_s}{\partial T_c} \Delta T_c
-$$
-
-### 4.4 Conditions for solutions
-
-Several conditions are set for the solution of the ground surface energy balance. After solving the energy balance, if any of the conditions are not followed, the flux that has contravened the conditions is fixed at the limit value that satisfies the conditions, and the energy balance is solved again.
-
-1. Vapor in the troposphere should not be excessively removed.
-
-Due to the instability of temporal calculations, it is possible that large downward latent heat is produced. The conditions are set so that even in such a case, the vapor in the troposphere from the surface is not completely removed; that is,
-
-$$
-  Et_{(i,j)}^{current} > - q_a ( P_s - P_a ) / (g \Delta t)
-   \ \ \ \ \ (i=1,2 ; j=1,2,3) \\
-  E_{Sn}^{current} > - q_a ( P_s - P_a ) / (g \Delta t)
-$$
-
-
-where $g$ is the gravitational acceleration and $\Delta t$ denotes the time steps of the atmospheric model. For the values of $Et$ etc. to be used for judgment, the updated flux values ($current$) with respect to the values of $T_s$ and $T_c$that have been updated so as to satisfy the energy balance are used. The same applies to all of the other conditions listed below. Updating of the flux values is described later.
-
-2. Soil moisture should not take a negative value.
-
-Soil moisture should not take a negative value due to transpiration; that is,
-
-$$
-   Et_{(1,2)}^{current} <
-     \sum_{k\in rootzone} \rho_w w_{k}\Delta z_{g(k)} /\Delta t_L
-$$
-
-where $\rho_w$  is the water density and $\Delta t_L$ denotes the time steps of the land surface model.
-
-3. Canopy water should not take a negative value.
-
-Canopy water should not take a negative value due to evaporation; that is,
-
-$$
-   Et_{(i,3)}^{current} < \rho_w w_c /\Delta t_L
-   \ \ \ \ \ (i=1,2)
-$$
-
-4. The snow water equivalent should not take a negative value.
-
-The snow water equivalent should not take a negative value due to sublimation of snow; that is,
-
-$$
-   E_{Sn}^{current} < Sn /\Delta t_L
-$$
-
-### 4.5 Updating of ground surface and canopy temperatures
-
-The ground surface temperature and canopy temperature are updated as follows:
-
-$$
- T_s^{current} = T_s^{past} + \Delta T_s \\
- T_c^{current} = T_c^{past} + \Delta T_c
-$$
-
-Based on the updated canopy temperature, the canopy water is diagnosed in advance as being either liquid or solid. This information is used when treating freezing and melting of the canopy water, as follows:
-
-
-$$
- A_{Snc} = \left\{
-\begin{array}{ll}
- 0 (T_c \geq T_{melt})\\
- 1 (T_c <    T_{melt})
-\end{array}
-\right.
-$$
-
-where $A_{Snc}$ is the frozen fraction on the canopy.
-
-### 4.6 Updating of flux values
-
-The flux values are updated with respect to the updated values of $T_s$ and $T_c$. When $F$ denotes any given flux, updating of the values is performed as follows:
-
-$$
- F^{current} = F^{past} + \frac{\partial F}{\partial T_s} \Delta T_s
-                        + \frac{\partial F}{\partial T_c} \Delta T_c
-$$
-
-Using the updated flux values, the fluxes output into the atmosphere, etc. are calculated as follows:
-
-
-$$
- H = H_s + H_c \\
- E = \sum_{j=1}^3 \sum_{i=1}^2 Et_{(i,j)} + E_{Sn} \\
- R^{\uparrow}_L = {\mathcal{T}}_{cL} \epsilon \sigma T_s^4
- + (1 - {\mathcal{T}}_{cL}) \epsilon \sigma T_c^4
- + (1 - \epsilon) R^{\downarrow}_L \\
- T_{sR} = ( R^{\uparrow}_L / \sigma )^{1/4}
-$$
-
-
-where $T_{sR}$ is the radiation temperature at the ground surface.
-
-The root uptake flux in each soil layer is then calculated as follows:
-
-$$
- F_{root(k)} = f_{rootup(k)} Et_{(1,2)} \ \ \ \ (k=1,\ldots,K_g)
-$$
-
-where $F_{root(k)}$ is the root uptake flux and  $f_{rootup(k)}$ is the weighting for distribution of the transpiration to the root uptake flux in each layer.
