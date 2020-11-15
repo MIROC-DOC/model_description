@@ -1,4 +1,5 @@
 Table of contents
+
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
 - [1. Surface Flux](#1-surface-flux)
 	- [1.1. 本章でとりあげるプログラム [済 10月]](#11-本章でとりあげるプログラム-済-10月)
@@ -9,9 +10,11 @@ Table of contents
 		- [1.3.2. PSFCL: Richardson Number](#132-psfcl-richardson-number)
 		- [1.3.3. PSFCL: Bulk factor](#133-psfcl-bulk-factor)
 		- [1.3.4. PSFCM: Calculation of surface turbulent fluxes](#134-psfcm-calculation-of-surface-turbulent-fluxes)
-	- [2. POECN: SST & Sea ice for AGCM [未 11月下旬作業予定]](#2-poecn-sst--sea-ice-for-agcm-未-11月下旬作業予定)
-		- [2.1. fixed sea surface](#21-fixed-sea-surface)
+- [2. POECN: Sea surface conditions for AGCM [未 11月下旬作業予定]](#2-poecn-sea-surface-conditions-for-agcm-未-11月下旬作業予定)
+	- [2.1. fixed sea surface](#21-fixed-sea-surface)
 <!-- TOC END -->
+
+
 
 # 1. Surface Flux
 ## 1.1. 本章でとりあげるプログラム [済 10月]
@@ -274,5 +277,5 @@ $$
 \hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^*(T_0) - q_1 \right)
 $$
 
-## 2. POECN: SST & Sea ice for AGCM [未 11月下旬作業予定]
-### 2.1. fixed sea surface
+# 2. POECN: Sea surface conditions for AGCM [未 11月下旬作業予定]
+## 2.1. fixed sea surface
