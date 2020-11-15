@@ -1,37 +1,51 @@
-# Sea Surface Flux (海表面フラックス)
-## 1. 本章でとりあげる or 関連するプログラム
-**contents** are just quoted by the programs.
+<!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
+- [1. Surface Flux](#1-surface-flux)
+	- [1.1. 本章でとりあげるプログラム](#11-本章でとりあげるプログラム)
+	- [1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し](#12-pgsfc-agcmと陸面海水面スキーム間での変数の受け渡し)
+	- [1.3. Surface Flux Scheme](#13-surface-flux-scheme)
+		- [1.3.1. Overview](#131-overview)
+		- [1.3.1. SEAZ0F: Roughness](#131-seaz0f-roughness)
+		- [1.3.2. PSFCL: Richardson Number](#132-psfcl-richardson-number)
+		- [1.3.3. PSFCL: Bulk factor](#133-psfcl-bulk-factor)
+		- [1.3.4. PSFCM: Calculation of surface turbulent fluxes](#134-psfcm-calculation-of-surface-turbulent-fluxes)
+	- [1.4. POECN: SST & Sea ice for AGCM](#14-poecn-sst--sea-ice-for-agcm)
+		- [1.4.1. fixed](#141-fixed)
+		- [1.4.2. slab ocean (not standard)](#142-slab-ocean-not-standard)
+<!-- TOC END -->
+
+# 1. Surface Flux
+## 1.1. 本章でとりあげるプログラム
+メモ的に書き出したセクションなので、今後削除するかもしれません。
 
 | module name      | file name            | contents                          |
 |:-----------------|:---------------------|:----------------------------------|
-| `MODULE:[PLAND]` | `./physics/pglnd.F ` | land surface                      |
-| `MODULE:[POCEN]` | `./physics/pgocn.F`  | mixed layer/fixed SST ocean       |
-| `MODULE:[PGRIV]` | `./physics/pgriv.F ` | river routing submodel            |
 | `MODULE:[PGSFC]` | `./physics/pgsfc.F ` | surface driver                    |
 | `MODULE:[PSFCL]` | `./physics/psfcl.F`  | surface bulk transfer coefficient |
 | `MODULE:[PSFCM]` | `./physics/psfcm.F`  | surface fluxes                    |
+| `MODULE:[POCEN]` | `./physics/pgocn.F`  | mixed layer/fixed SST ocean       |
 
-### SUBROUTINES
+- `MODULE:[PGSFC]` (./physics/pgsfc.F)
 
-#### `MODULE:[PLAND]` (./physics/pglnd.F)
-
-| routine name | contents                           |
-|:-------------|:-----------------------------------|
-| `LAND`       | land driver                        |
-| `LNDSLV`     | surface temperature                |
-| `LNDSUB`     | land surface                       |
-| `LNDIMP`     | change in underground values       |
-| `GRWNML`     | file of surface parameter          |
-| `PGPGET`     | set surface parameters             |
-| `LSETCO`     | coordinates of submodel            |
-| `SETGLV`     | set land vartical coordinates      |
-| `SETGL`      | vertical coordinates               |
-| `LRSTRT`     | read land initial values           |
-| `LCHKV`      | valid range monitor                |
-| `SETDTL`     | land time step (dummy for matsiro) |
+| routine name | contents       |
+|:-------------|:---------------|
+| `SURFCE`     | surface driver |
+| `RADSFC`     | --             |
 
 
-#### `MODULE:[POCEN]` (./physics/pgocn.F)
+- `MODULE:[PSFCL]` (./physics/psfcl.F)
+
+| routine name | contents                  |
+|:-------------|:--------------------------|
+| `BLKCOF`     | bulk transfer coefficient |
+
+- `MODULE:[PSFCM]` (./physics/psfcm.F)
+
+| routine name | contents     |
+|:-------------|:-------------|
+| `SFCFLX`     | surface flux |
+
+
+- `MODULE:[POCEN]` (./physics/pgocn.F)
 
 | routine name  | contents                               |
 |:--------------|:---------------------------------------|
@@ -49,38 +63,12 @@
 | `OCEAN_DUMMY` | --                                     |
 
 
-#### `MODULE:[PGRIV]` (./physics/pgriv.F)
+## 1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し
 
-| routine name | contents          |
-|:-------------|:------------------|
-| `RIVER`      | river routing     |
-| `RIVDST`     | river destination |
+海面については`PGOCN`、陸面についてはMATSIROモデルの`LNDFLX` をそれぞれ呼び出す。
 
-
-
-#### `MODULE:[PGSFC]` (./physics/pgsfc.F)
-
-| routine name | contents       |
-|:-------------|:---------------|
-| `SURFCE`     | surface driver |
-| `RADSFC`     | --             |
-
-
-#### `MODULE:[PSFCL]` (./physics/psfcl.F)
-
-| routine name | contents                  |
-|:-------------|:--------------------------|
-| `BLKCOF`     | bulk transfer coefficient |
-
-#### `MODULE:[PSFCM]` (./physics/psfcm.F)
-
-| routine name | contents     |
-|:-------------|:-------------|
-| `SFCFLX`     | surface flux |
-
-
-
-## Overview of the Surface Flux Scheme
+## 1.3. Surface Flux Scheme
+### 1.3.1. Overview
 
 The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input data are wind speed ($u, v$),  temperature ($T$), and specific humidity ($q$), and the output data are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
@@ -95,7 +83,7 @@ The outline of the calculation procedure is as follows.
 4. calculate the flux and its derivative from the bulk coefficient. `MODULE:[PSFCM]`
 5. If necessary, the calculated fluxes are re-calculated after taking into account the roughness effect, the free flow effect, and the wind speed correction.
 
-### Roughness `MODULE:[SEAZ0F]`
+### 1.3.1. SEAZ0F: Roughness
 
 At sea level, we follow [Miller et al. 1992](./paper/Millers1992_Measuring_dynamic_surface\ and_interfacial_tensions.pdf) and consider the following two effects.
 
@@ -157,7 +145,7 @@ $$
 
 Here, $r_{0,snow,*}$ is roughness of sea ice, $\alpha_{snow}$ is the sea ice concentration.
 
-### Richardson Number `MODULE:[PSFCL]`
+### 1.3.2. PSFCL: Richardson Number
 
 The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
 
@@ -179,7 +167,7 @@ $$
 
 is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
 
-### Bulk factor `MODULE:[PSFCL]`
+### 1.3.3. PSFCL: Bulk factor
 
 The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$ first, and then corrected.
 
@@ -258,8 +246,7 @@ $$
 but the method of calculation is omitted. The coefficients of Louis factors are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 )$, $( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
 
 
-### Calculation of surface turbulent fluxes (地表フラックス)
-
+### 1.3.4. PSFCM: Calculation of surface turbulent fluxes
 
 The turbulent fluxes at the ground surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
 
@@ -286,3 +273,7 @@ where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / 
 $$
 \hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^*(T_0) - q_1 \right)
 $$
+
+## 1.4. POECN: SST & Sea ice for AGCM
+### 1.4.1. fixed
+### 1.4.2. slab ocean (not standard)
