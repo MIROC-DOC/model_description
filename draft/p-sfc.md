@@ -1,38 +1,20 @@
-<<<<<<< HEAD
-<!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [1. Surface Flux](#1-surface-flux)
-	- [1.1. 本章でとりあげるプログラム](#11-本章でとりあげるプログラム)
-	- [1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し](#12-pgsfc-agcmと陸面海水面スキーム間での変数の受け渡し)
-	- [1.3. Surface Flux Scheme](#13-surface-flux-scheme)
-=======
 Table of contents
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
 - [1. Surface Flux](#1-surface-flux)
 	- [1.1. 本章でとりあげるプログラム [済 10月]](#11-本章でとりあげるプログラム-済-10月)
 	- [1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 11月下旬作業予定]](#12-pgsfc-agcmと陸面海水面スキーム間での変数の受け渡し-未-11月下旬作業予定)
 	- [1.3. Surface Flux Scheme [8割済 12月中旬に追加作業予定]](#13-surface-flux-scheme-8割済-12月中旬に追加作業予定)
->>>>>>> 9c64af6... 目次作成（未着手項目含む）、今後の作業予定かきこみ
 		- [1.3.1. Overview](#131-overview)
 		- [1.3.1. SEAZ0F: Roughness](#131-seaz0f-roughness)
 		- [1.3.2. PSFCL: Richardson Number](#132-psfcl-richardson-number)
 		- [1.3.3. PSFCL: Bulk factor](#133-psfcl-bulk-factor)
 		- [1.3.4. PSFCM: Calculation of surface turbulent fluxes](#134-psfcm-calculation-of-surface-turbulent-fluxes)
-<<<<<<< HEAD
-	- [1.4. POECN: SST & Sea ice for AGCM](#14-poecn-sst--sea-ice-for-agcm)
-		- [1.4.1. fixed](#141-fixed)
-		- [1.4.2. slab ocean (not standard)](#142-slab-ocean-not-standard)
-<!-- TOC END -->
-
-# 1. Surface Flux
-## 1.1. 本章でとりあげるプログラム
-=======
 	- [2. POECN: SST & Sea ice for AGCM [未 11月下旬作業予定]](#2-poecn-sst--sea-ice-for-agcm-未-11月下旬作業予定)
 		- [2.1. fixed sea surface](#21-fixed-sea-surface)
 <!-- TOC END -->
 
 # 1. Surface Flux
 ## 1.1. 本章でとりあげるプログラム [済 10月]
->>>>>>> 9c64af6... 目次作成（未着手項目含む）、今後の作業予定かきこみ
 メモ的に書き出したセクションなので、今後削除するかもしれません。
 
 | module name      | file name            | contents                          |
@@ -81,19 +63,11 @@ Table of contents
 | `OCEAN_DUMMY` | --                                     |
 
 
-<<<<<<< HEAD
-## 1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し
-
-海面については`PGOCN`、陸面についてはMATSIROモデルの`LNDFLX` をそれぞれ呼び出す。
-
-## 1.3. Surface Flux Scheme
-=======
 ## 1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 11月下旬作業予定]
 
 海面については`PGOCN`、陸面についてはMATSIROモデルの`LNDFLX` をそれぞれ呼び出す。
 
 ## 1.3. Surface Flux Scheme [8割済 12月中旬に追加作業予定]
->>>>>>> 9c64af6... 目次作成（未着手項目含む）、今後の作業予定かきこみ
 ### 1.3.1. Overview
 
 The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input data are wind speed ($u, v$),  temperature ($T$), and specific humidity ($q$), and the output data are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
@@ -300,11 +274,5 @@ $$
 \hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^*(T_0) - q_1 \right)
 $$
 
-<<<<<<< HEAD
-## 1.4. POECN: SST & Sea ice for AGCM
-### 1.4.1. fixed
-### 1.4.2. slab ocean (not standard)
-=======
 ## 2. POECN: SST & Sea ice for AGCM [未 11月下旬作業予定]
 ### 2.1. fixed sea surface
->>>>>>> 9c64af6... 目次作成（未着手項目含む）、今後の作業予定かきこみ
