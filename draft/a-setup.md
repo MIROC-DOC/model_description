@@ -1,8 +1,14 @@
-## Basic Settings.
+Table of contents
+
+- Basic Settings
+  - Coordinate System (数式をハイブリッド化済)
+  - Physical Constants (変更なし)
+
+## Basic Settings
 
 Here we present the basic setup of the model.
 
-### Coordinate System.
+### Coordinate System
 
 座標系は、基本的に、経度$\lambda$、緯度$\varphi$、正規化気圧$\eta$ (定義は後述)
 を用い、それぞれは直交するとして扱う。ただし、地中の鉛直座標は$z$を用いる。
@@ -64,7 +70,7 @@ Each predictor is entirely defined on a grid of $(\lambda_i, \varphi_j, \sigma_k
 
 In the time direction, the predictive equations are discretized at evenly spaced $\Delta t$ and time integration is performed. However, if the stability of the time integration may be impaired, the $\Delta t$ may change.
 
-### Physical Constants.
+### Physical Constants
 
 The basic physical constants are shown below `MODULE:[APCON]`.
 

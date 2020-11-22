@@ -1,26 +1,32 @@
-# Mechanical Processes.
+Table of contents
 
-## Basic Equations.
+- Mechanical Processes
+  - Basic Equations
+    - Basic Equations (数式をハイブリッド化済)
+    - Boundary Conditions (数式をハイブリッド化済。$\partial\pi/\partial t,\dot{\eta}$の方程式の導出は$\sigma$座標に比べて煩雑なため、今のところ省略)
 
-### Basic Equations.
+# Mechanical Processes
+
+## Basic Equations
+
+### Basic Equations
 
 The fundamental equations are a system of primitive equations at the spherical ($\lambda,\varphi$) and $\eta$ coordinates, given as follows (Arakawa and Konor 1996).
 
-1. a series of equations
+1. Continuity equation
 
 $$
   \frac{\partial m}{\partial t}
     + \nabla_{\eta} \cdot (m\mathbf{v}_H)+ \frac{\partial (m\dot{\eta})}{\partial \eta} = 0
 $$
 
-2. hydrostatic pressure formula
+2. Hydrostatic equation
 
 $$
   \frac{\partial \Phi}{\partial \eta} = - \frac{RT_v}{p} m
 $$
 
-
-3. equation of motion
+3. Equation of motion
 
 $$
   \frac{\partial \zeta}{\partial t} 
@@ -42,7 +48,7 @@ $$
           - {\mathcal D}(D) 
 $$
 
-4. thermodynamic equation
+4. Thermodynamic equation
 
 コメント：$B$は離散化後だけに出てくる変数だと思っていたが、ここでは使わざるを得ない($\dot{p}$を使っていいなら不要だが)
 
@@ -64,7 +70,9 @@ $$
           - {\mathcal D}(T) 
 $$
 
-5. water vapor formula
+5. Tracers
+
+ここでは水蒸気の移流方程式を示す。他のトレーサーも同様の方程式に従う。
 
 $$
   \frac{\partial q}{\partial t}
@@ -77,8 +85,6 @@ $$
           + S_{q}
           - {\mathcal D}(q) 
 $$
-
-
 
 Here,
 
@@ -146,7 +152,7 @@ $$
 
 $( \frac{\partial {\mathbf{v}}}{\partial t} )_{diff}$ is a time-varying term of $u,v$ due to horizontal and vertical diffusion.
 
-### 境界条件
+### Boundary Conditions
 
 鉛直流に関する上下端の境界条件は以下の通りである：
 

@@ -1,4 +1,11 @@
-## Vertical discretization
+Table of contents
+
+- Vertical Discretization
+  - Model levels (数式・説明をハイブリッド化済)
+  - Vertical discretization (数式をハイブリッド化済)
+  - Differences from $\sigma$-coordinate (新規追加)
+
+## Vertical Discretization
 
 Following Arakawa and Konor (1996) but in the Lorentz grid, the basic equations are discretized vertically by differences. This scheme has the following characteristics.
 
@@ -16,7 +23,7 @@ Following Arakawa and Konor (1996) but in the Lorentz grid, the basic equations 
 
  - Isothermal atmosphere stays isothermal forever
 
-### レベルのとりかた
+### Model levels
 
 下の層から上へと層の番号をつける。$\zeta,D,T,q$の物理量は整数レベル(layer)で定義されるとし、鉛直速度$\dot{\eta}$は半整数レベルにおいて定義する。ただし、$\frac{1}{2}$は下端($\eta=1$)、$K+\frac{1}{2}$は上端($\eta=0$)である。さらに、半整数レベルにおける気圧$p$を以下の式で定義する。
 
@@ -56,7 +63,7 @@ $$
 
 を定義しておく。
 
-### 鉛直離散化表現
+### Vertical discretization
 
 各方程式のハイブリッド座標における離散化表現は次のようになる。
 
@@ -242,7 +249,7 @@ R_k  =  q_k D_k
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 $$
 
-## $\sigma$座標系との対応
+### Differences from $\sigma$-coordinate
 
 ここではハイブリッド座標を、できるだけ$\sigma$座標に近い表式で離散化したため、両者の差は比較的少ない。重要な対応関係を以下に挙げる。
 
