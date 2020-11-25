@@ -4,7 +4,7 @@
 
 The deep cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates temperature and water vapor changes and precipitation due to latent heat release and associated convective motion. Although this scheme deals with the effects of cumulus clouds of various heights, we will refer to it as the "deep" cumulus convection scheme to distinguish it from the "shallow" cumulus convection scheme for clouds at the top of the boundary layer discussed in the next section.
 
-The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the [$ \sigma] coordinates, altitude,  pressure, and cloud cover.
+The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the $\sigma$ coordinates, altitude,  pressure, and cloud cover.
 
 The output variables are as follows. To calculate the time evolution of the atmospheric variables, the tendency of temperature $\partial T/\partial t$, specific humidity$\partial q/\partial t$, zonal wind $\partial u/\partial t$, and meridional wind $\partial v/\partial t$ are output. Surface rainfall and surface snowfall are output as external forces on the ocean and land surface models. Cloud water content $l^{cR}$ and cloud cover $C^c$ of cumulus clouds are output for the radiative processes. For the satellite simulator COSP, full-level cloud water content, cloud ice content, rainfall flux, and snowfall flux are output. For the aerosol transport model SPRINTARS, half-level precipitation fluxes are output. For the chemical model CHASER, half-level precipitation and snow fluxes are output, as well as full-level cumulus cloud top flags, cloud area fraction, and evaporation rate. For the shallow cumulus convection scheme, cloud base pressure and cloud top pressure are output.
 
@@ -61,7 +61,7 @@ $\eta, h^t, q^t,$ and $l^t$ are determined with the entraining plume model. $M_B
 
 ###  Cloud base
 
-Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest [$ z] such that
+Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest $z$ such that
 
 $$
   \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\;, 
@@ -92,7 +92,11 @@ $$
 
 where $\hat{w}$ and $B$ are the updraft velocity and the buoyancy of cloud air parcel, respectively, and $a$ is a dimensionless
 constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate mean updraft velocity. Here, $a$is set at 0.15. The other part of the force is used for the energy of perturbation. The second term on the right-hand side represents reduction in the upward momentum of cloud air parcel through the entrainment process. Then it is assumed that
-[$ \epsilon \hat{w}^2 \simeq C_\epsilon a B],
+
+$$
+ \epsilon \hat{w}^2 \simeq C_\epsilon a B, 
+$$
+
 where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. Here, $C_\epsilon$ is set at 0.6. This expression denotes that a certain fraction of buoyancy-generated energy is reduced by entrainment, which is identical to the fraction used to accelerate entrained air to the mean updraft velocity. Thus, entrainment rate is written as
 
 $$
