@@ -1,497 +1,334 @@
-## 深い積雲対流
-
-### 深い積雲対流スキームの概要
-
-深い積雲対流スキームは,積雲対流にかかわる凝結・降水・対流過程を表現し,
-潜熱の放出とそれにともなう対流運動による温度と水蒸気量の変化と降水を計算する.
-このスキームでは様々な高さの積雲による効果を取り扱っているが、次節で扱う境界層上端に形成される雲を対象とした"浅い"積雲対流スキームと区別するため、
-ここでは便宜的に"深い"積雲対流スキームと呼ぶことにする。
-
-入力される変数は気温$T$, 比湿$q$, 東西風$u$, 南北風$v$, $\sigma$座標での鉛直速度, 高度, 気圧, 雲量である。
-
-大気モデルの予報変数の時間発展を計算するため、気温,比湿,東西風,南北風の時間変化率
-$\partial T/\partial t, \partial q/\partial t, \partial u/\partial t, \partial v/\partial t$が出力される。
-海洋や陸面モデルへの外力として、地表面降雨と地表面降雪が出力される。
-放射過程用に積雲の雲水量$l^{cR}$、雲量$C^c$が出力される。
-衛星シミュレーター COSP 用に、フルレベルの雲水量、雲氷量、降雨フラックス、降雪フラックスが出力される。
-エアロゾル輸送モデル SPRINTARS 用に、ハーフレベルの降水フラックスが出力される。
-化学モデル CHASER 用に、ハーフレベルの降雨フラックスと降雪フラックス、および、フルレベルの積雲雲頂フラグ、雲の面積割合、蒸発率が出力される。
-浅い積雲対流スキーム用に、雲底気圧と雲頂気圧が出力される。
+## Deep Cumulus Convection 
 
-深い積雲対流スキームの枠組は Arakawa and Schubert (1974) を改良した Chikira and Sugiyama (2010)に基づく.
-1 つの水平格子での鉛直気柱をパラメタリゼーションの基本単位として考える.
-雲は雲内の温度,比湿,雲水量と鉛直上向き質量フラックスで特徴づけられ,一つの鉛直気柱内で雲頂の違う複数の雲を考慮する.
-雲は水平格子の中の一部を占め, 残りの周囲領域には雲の質量フラックスに等しい下降流(補償下降流)が存在する.
-この補償下降流と雲の中の空気の周囲領域への流出(デトレインメント)
-によって, 周囲領域の温度・比湿場が変化する.
-積雲対流の上昇流域の面積は小さいとし,
-格子平均の温度・比湿場と
-周囲領域の温度・比湿場を同一視して扱うので,
-これによって格子平均の温度・比湿の変化が求まる.
+###  Outline of deep cumulus convection scheme
 
-雲内の温度,比湿,雲水量を決めるのは雲モデルである.
-ここでは, エントレイン・プリューム型のモデルを用い,
-Moorthi and Suarez (1992) と同様に,
-高さに関して直線的な質量フラックスの増大を仮定する.
-雲底は, 地表大気の持ち上げ凝結高度とし,
-周囲領域の空気の取り込み(エントレインメント)の割合の
-違いによって複数の雲頂高度の雲を考慮する.
-ただし, その雲底を持つ雲が存在し得ないような場合には,
-より高い雲底を持つ雲の可能性も考慮する.
+The deep cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates temperature and water vapor changes and precipitation due to latent heat release and associated convective motion. Although this scheme deals with the effects of cumulus clouds of various heights, we will refer to it as the "deep" cumulus convection scheme to distinguish it from the "shallow" cumulus convection scheme for clouds at the top of the boundary layer discussed in the next section.
 
-各雲の質量フラックスは雲仕事関数を用いて診断的に求める.
-雲仕事関数は, 単位質量フラックスあたりの
-浮力による仕事の鉛直積分として定義される.
-この雲仕事関数が, 積雲の補償下降流等の作用によって
-ある緩和時間で 0 に近付けるような質量フラックスを与える.
+The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the [$ \sigma] coordinates, altitude,  pressure, and cloud cover.
 
-さらに, 降水の蒸発と
-それにともなうダウンドラフトの効果を
-非常に簡単な形で考慮する.
+The output variables are as follows. To calculate the time evolution of the atmospheric variables, the tendency of temperature $\partial T/\partial t$, specific humidity$\partial q/\partial t$, zonal wind $\partial u/\partial t$, and meridional wind $\partial v/\partial t$ are output. Surface rainfall and surface snowfall are output as external forces on the ocean and land surface models. Cloud water content $l^{cR}$ and cloud cover $C^c$ of cumulus clouds are output for the radiative processes. For the satellite simulator COSP, full-level cloud water content, cloud ice content, rainfall flux, and snowfall flux are output. For the aerosol transport model SPRINTARS, half-level precipitation fluxes are output. For the chemical model CHASER, half-level precipitation and snow fluxes are output, as well as full-level cumulus cloud top flags, cloud area fraction, and evaporation rate. For the shallow cumulus convection scheme, cloud base pressure and cloud top pressure are output.
 
-計算手順の概略は以下の通りである.
-括弧内は対応するサブルーチン名である.
+The framework of the deep cumulus convection scheme is based on Chikira and Sugiyama (2010), which is an improvement on the Arakawa–Schubert scheme (Arakawa and Schubert, 1974). The vertical air column in a horizontal grid is considered as the basic unit of parameterization. The cumulus is characterized by the temperature, specific humidity, cloud water content, and vertical mass fluxes in the clouds, and several cumulus clouds with different cloud tops are considered in a single vertical column. The cumulus occupies a part of the horizontal grid, and in the rest of the surrounding area, there is a downward motion equal to the mass flux in the cloud (the compensating subsidence). This compensatory subsidence and the outflow of air into the surrounding region (detrainment) cause changes in the temperature and specific humidity fields in the surrounding region. Assuming that the upwelling area of the cumulus convection is assumed to be small and the grid-mean temperature and specific humidity are treated as the same as the temperature and specific humidity fields in the surrounding region, the changes in the grid-mean temperature and specific humidity can be obtained.
 
-1. 雲底高度を地表大気の持ち上げ凝結高度として評価する `CUMBAS`
-2. 雲モデルを用いて,各雲頂高度に対応する雲の温度,比湿,雲水量,質量フラックス(相対値)の鉛直分布を求める `UPDRF`.
-3. 雲仕事関数を計算する `CWF`.
-4. 単位質量フラックスの雲による周囲領域の温度・比湿の仮想的な変化を求める `CLDTST`.
-5. 仮想変化した温度・比湿に対する雲仕事関数を計算する `CWF`.
-6. 仮想変化前後の雲仕事関数を用いて雲底での雲質量フラックスを計算する `CBFLX`.
-7. 雲質量フラックス・デトレインメントの鉛直分布と降水量を計算する `CMFLX`.
-8. 積雲による雲水量・雲量を評価する `CMCLD`.
-9. デトレインメントによる温度・比湿の変化を求める `CLDDET`.
-10. 補償下降流による温度・比湿の変化を求める `CLDSBH`.
-11. 降水の蒸発とダウンドラフトの雲の温度,比湿,質量フラックスの鉛直分布を求める `DWNEVP`.
-12. ダウンドラフトのデトレインメントによる温度・比湿の変化を求める `CLDDDE`.
-13. ダウンドラフトの補償上昇流による温度・比湿の変化を求める `CLDSBH`.
+The temperature, specific humidity, and cloud water content in the clouds are determined with the entraining plume model. The cloud base is defined as the lifted condensation level of the air parcel at the surface, and the vertical velocity at the cloud base is used to spectrally represent the cloud ensemble. Furthermore, the effects of precipitation evaporation and associated downdrafts are taken into account in a simple way.
 
-### Arakawa-Schubert スキームの基本的枠組
+A summary of the calculation procedure is given below, along with the subroutine names.
+1. calculation of cloud base `CUMBAS`.
+2. calculation of in-cloud properties `CUMUP`.
+3. calculation of cloud base mass flux `CUMBMX`.
+4. calculation of cloud mass flux, detrainment, and precipitation `CUMFLX`.
+5. evaluation of cloud water and cloud cover by cumulus `CUMCLD`.
+6. calculation of the change in temperature and specific humidity by detrainment `CLDDET`.
+7. calculation of freezing, melting, and evaporation `CUMDWN`.
+8. calculation of the change in temperature and specific humidity by compensating subsidence `CLDSBH`.
+9. calculation of cumulus momentum transport `CUMCMT`.
+10. calculation of tracer updraft `CUMUPR`.
+11. calculation of tracer downdraft `CUMDNR`.
+12. calculation of tracer subsidence `CUMSBR`.
+13. fixing tracer mass `CUMFXR` .
 
-雲の質量フラックス$M$, デトレインメント$D$ は,
 
+###  Basic framework
+
+The tendency of large-scale environmental properties by the deep cumulus convection scheme is calculated as
+
+$$
+ \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ), 
+$$
+
+
 $$
-M(z) = M_B \eta(z) \; , \\
-D(z) = M_B \eta(z_T) \delta (z-z_T) \; .
+ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) \; 
 $$
+
+where $M$ is cloud mass flux, $D$ is detrainment, $h, q, l$ is moist static energy, cloud water content, and specific humidity, respectively. The hats denote in-cloud properties, and the overbars denote large-scale environmental properties.
 
-と表される.
-$M_B$ を雲底 $z_B$ での質量フラックスであり,
-$\eta$ はそれで無次元化された質量フラックスである.
+Cloud mass flux $M$ and  detrainment $D$ are represented by
+
+$$
+ M(z) = M_B \eta(z) \; ,
+$$
 
-これにより, 平均場の時間変化は, 以下のように求められる.
 
 $$
-\frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ) \; , \\
-\frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) \; .
+ D(z) = M_B \eta(z_T) \delta (z-z_T)\; ,
 $$
 
-ただし, $\bar{h}, \bar{q}$ は平均場の湿潤静的エネルギーと比湿,
-$h^t, q^t, l^t$ はデトレインメントに含まれる空気の
-湿潤静的エネルギー, 比湿, 雲水量である.
+respectively, where $z_T$ is cloud top height, $z_B$ is cloud base height, $M_B$ is mass flux at $z_B$, $\eta$ is normalized mass flux, and $\delta$ is the Dirac delta function.
 
-$\eta, h^t, q^t, l^t$ は雲モデルによって求められる.
-$M_B$ は雲仕事関数を用いたクロージャの仮定によって求める.
+$\eta, h^t, q^t,$ and $l^t$ are determined with the entraining plume model. $M_B$ is determined with the prognostic convective kinetic energy closure.
 
-### 雲モデル
 
-雲モデルは, 基本的にエントレイン・プリュームモデルである.
-各種の雲はエントレインメント率で特徴づけられ,
-それに応じてさまざまな雲頂高度を持つことになる.
-ただし, 後の計算の都合のため,
-ここではまず雲頂高度を指定し,
-それに対応するエントレインメント率を求めることにより
-雲の鉛直構造を求める.
-高さに関して直線的な質量フラックスの増大を仮定することにより.
-この計算は逐次近似を含まない形に簡単化される.
+###  Cloud base
 
-雲底高度 $z_T$を,
-地表大気の持ち上げ凝結高度, すなわち,
+Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest [$ z] such that
 
 $$
-\bar{q}(0) \geq
-\bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)}
-\left(\bar{h}(0)-\bar{h}(z) \right) \; ,
+  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\;, 
 $$
 
-をみたす最低の $z$ として定義する. ここで
+where
 
 $$
-\gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right)
+ \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right). 
 $$
 
-である。
+The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$
 
-無次元化された質量フラックス$\eta$は,
-エントレインメント率を$\lambda$として,
 
+###  Updraft velocity and entrainment rate
+
+The entrainment rate is defined by
+
 $$
-\frac{\partial \eta}{\partial z} = \lambda \; ,
+ \epsilon = \frac{1}{M}\frac{\partial M}{\partial z} 
 $$
 
-すなわち,
+where $M$ is mass flux of cumulus updraft and is allowed to vary vertically.  Based on the formulation of Gregory (2001), the rate of change of updraft velocity with height is
 
 $$
-\eta (z) = 1 + \lambda ( z - z_B ) \\
-\equiv 1 + \lambda \hat{\eta}(z) \; .
+ \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \qquad\tag{1}
 $$
 
-雲の中の湿潤静的エネルギー $h^c$, 総水量 $w^c$ に関する収支は,
+where $\hat{w}$ and $B$ are the updraft velocity and the buoyancy of cloud air parcel, respectively, and $a$ is a dimensionless
+constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate mean updraft velocity. Here, $a$is set at 0.15. The other part of the force is used for the energy of perturbation. The second term on the right-hand side represents reduction in the upward momentum of cloud air parcel through the entrainment process. Then it is assumed that
+[$ \epsilon \hat{w}^2 \simeq C_\epsilon a B],
+where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. Here, $C_\epsilon$ is set at 0.6. This expression denotes that a certain fraction of buoyancy-generated energy is reduced by entrainment, which is identical to the fraction used to accelerate entrained air to the mean updraft velocity. Thus, entrainment rate is written as
 
 $$
-\frac{\partial}{\partial z}( \eta h^c ) = \lambda \bar{h} \; , \\
-\frac{\partial}{\partial z}( \eta w^c ) = \lambda \bar{q} - \pi \; .
+ \epsilon = C_\epsilon\frac{aB}{\hat{w}^2}. \qquad\tag{2}
 $$
 
-ここで, $\bar{h}, \bar{q}, \pi$ はそれぞれ,
-平均場の$h$および$q$, 降水生成である.
 
-積分すると,
+Eqs. (1) and (2) lead to
 
 $$
-\eta (z) h^c(z) = h^c(z*B) + \lambda \int*{z*B}^{z} \bar{h}(\xi) d\xi \\
-\equiv h^c(z_B) + \lambda \hat{h}^c(z) \; ,
+ \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B
 $$
 
+which shows that $\hat{w}$ is continuously accelerated upward when buoyancy is positive. Many CRM and LES results show, however, that updraft velocity is often reduced if the parcel approaches cloud top. For this reason, an additional term is added when used with Eq. (2), and the equation becomes
+
 $$
-\eta (z) w^c(z) = w^c(z_B) + \lambda \int*{z_B}^{z} \bar{q}(\xi) d\xi - R(z) \\
-\equiv w^c(z_B) + \lambda \hat{w}^c(z) - R(z) \\
-\equiv \eta(z) w^a(z) - R(z) \; .
+ \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}^2}{2}\qquad\tag{4}
 $$
 
-質量フラックスは地表で 0 であるとし,
-雲底より下においても直線的に増大すると仮定する,
+where the last term denotes that the energy of the updraft velocity is relaxed to zero with a height scale $z_0$. Here, $z_0$ is set at 2 km. Eq. (4) is discretized as
 
 $$
-\eta (z) = \frac{z}{z_B} \; \; \; ( z<z_B ) \; .
+ \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \qquad\quad\tag{A5}
 $$
 
-この雲底より下のエントレインメントを計算することにより,
-雲底での $h^c,w^c$ が求められる. すなわち,
+Note that the equation is solved with respect to $\hat{w}^2$ rather than $\hat{w}$.
 
+Buoyancy of cloud air parcel is determined by
+
 $$
-h^c(z_B) = \frac{1}{z_B} \int_0^{z_B} \bar{h}(z) dz \; , \\
-w^c(z_B) = \frac{1}{z_B} \int_0^{z_B} \bar{q}(z) dz \; .
+ B  =   \frac{g}{\bar{T}} ( \hat{T}_v - \bar{T}_v ) 
 $$
 
-雲による単位質量フラックスあたりの浮力は,
 
 $$
-   B  =   \frac{g}{\bar{T}} ( T_v^c - \bar{T}_v ) \\
-      =   \frac{g}{\bar{T}}
-            \left[ T^c ( 1+\epsilon q^c-l^c )
-                      - \bar{T} ( 1+\epsilon \bar{q} ) \right] \\
-      \simeq  \frac{g}{\bar{T}}
-               \left[ ( T^c - \bar{T} )
-               - \bar{T} \left( \epsilon(q^c-\bar{q}) -l^c \right)
-                                                     \right] \\
-      \simeq  \frac{g}{\bar{T}}
-                \left[ \frac{1}{C_p(1+\gamma)} (h^c-\bar{h}^*)
-                       + \bar{T} \left( \epsilon \frac{\gamma}{L(1+\gamma)}
-                                                     (h^c-\bar{h}^*)
-                               + \epsilon (\bar{q}^* - \bar{q} )
-                               - l^c                      \right) \right] \; .
+ =   \frac{g}{\bar{T}} \left[ \hat{T} ( 1+\varepsilon \hat{q}-\hat{l} ) - \bar{T} ( 1+\varepsilon \bar{q} - \bar{l}) \right] 
 $$
 
-ここで, $T_v$ は仮温度, $q^*$ は飽和比湿,
-$\epsilon = R_{{H}_2{O}}/R_{{air}} -1$,
-$\gamma = L/C_p \partial q^*/\partial T$であり,
-$\bar{q}^*, \bar{h}^*$ は, それぞれ平均場の飽和時の値を示す.
-また, $q^c, l^c$ は雲の水蒸気量, 雲水量であり,
 
 $$
-  q^c  =  q^*(T^c) \, \simeq \,
-           \bar{q}^* + \frac{1}{L(1+\gamma)} ( h^c - \bar{h}^* ) \; , \\
-  l^c  =  w^c - q^c \; .
+ \simeq  g \left[ \frac{\hat{T} - \bar{T}}{\bar{T}} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right] 
 $$
 
-雲頂$z_T$においては, 浮力$B$が 0 であるとする.
-従って, $B(z_T)=0$ を解けば, 与えられた雲頂高度$z_T$に対応する
-$\lambda$を求めることができる.
-ここで, 地表面から上に積分した降水率 $R(z)$ に関しては,
-既知の関数 $r(z)$ を用いて以下のように
 
 $$
-  R(z)   = \eta(z) r(z) \left[ w^a(z) - q^c(z) \right] \; .
+ \simeq g \left[ \frac{1}{\bar{T}}\frac{\hat{h} - \bar{h}^*}{C_p (1 + \gamma)} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right] 
 $$
 
-すると,
+where $\varepsilon = R_\mathrm{{H}_2{O}}/R_\mathrm{air} - 1$.
 
-$$
-\frac{\bar{T}}{g} B \simeq
- \frac{1}{1+\gamma}
- \left[ \frac{1}{C_p} + \bar{T} (\epsilon+1-r) \frac{\gamma}{L} \right]
-  (h^c-\bar{h}^*)
-  + (\epsilon+1-r) \bar{T} \bar{q}^*
-  - \epsilon  \bar{T} \bar{q}
-  - \bar{T} (1-r) w^a \; .
-$$
 
-$B(z_T) =0$ は簡単に解くことができて,
+###  Normalized mass flux and In-cloud properties
 
+In-cloud properties are determined by
+
 $$
-  \lambda = \frac{ a\left[ h^c(z_B)-\bar{h}^*(z_T) \right]
-                  +\bar{T}(z_T)\left[ b -(1-r(z_T))q^c(z_B) \right] }
-                 { a\left[ \hat{\eta}(z_T) \bar{h}^*(z_T)
-                               - \hat{h}^c(z_T) \right]
-                  -\bar{T}(z_T)\left[ b \hat{\eta}(z_T)
-                                     - (1-r(z_T))\hat{q}_t^c(z_T) \right] }
+ \frac{\partial \eta \hat{h}}{\partial z} = \epsilon \eta \bar{h} + Q_i, \qquad\tag{5}
 $$
 
-ただし,
 
 $$
-a  \equiv  \frac{1}{1+\gamma}
-             \left[ \frac{1}{C_p}
-                + \bar{T}(z_T)
-                  \left( \epsilon+1-r(z_T) \right)
-               \frac{\gamma}{L}                \right] \; ,\\
-b  \equiv  \left(\epsilon+1-r(z_T) \right) \bar{q}^*(z_T)
-                    - \epsilon \bar{q}(z_T) \; .
+ \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P,\,\mathrm{and} \qquad\tag{6}
 $$
 
-前述のように本来は $\lambda$ を指定して$z_T$ を求めるのであり,
-ある $z_T$ に対して物理的に意味のある $\lambda$ が
-求まるかどうかの保証はない.
-その吟味が必要であるが, ここでは,
-$\lambda$ が小さくなるほど $z_T$ が
-低くなるべきであることを考慮に入れる.
 
 $$
-  \frac{\partial{\lambda}}{\partial {z_T}} < 0
+ \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7} 
 $$
 
-が満たされるかどうかの吟味を行ない,
-満たされない場合は雲頂$z_T$を持つ雲は存在しないとして処理を行なう.
-また, $\lambda$ に最小値を設け,
-これより小さい $\lambda$ の雲は存在しないとする.
-これは, エントレインメント率がプリュームの大きさに
-反比例することから考えると,
-プリュームの大きさに最大があることに相当する.
+where $h$ and $q_t$ are moist static energy and total water, respectively. Also, $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation, respectively. All other variables such as temperature, specific humidity, and liquid and ice cloud water are computed by these quantities; the details are described in appendix B. Tracers such as aerosols are determined by a method identical to that for $\hat{q}_t$. Following Arakawa and Schubert (1974), detrainment occurs only at cloud top.
 
-雲水量 $l^c(z)$ は,
+Equation (7) leads to
 
 $$
-  l^c(z)  =  w^a(z)-q^c(z)-R(z)/\eta(z)   \\
-          =  \left( 1-r(z) \right) \left[ w^a(z)-q^c(z) \right] \; .
+ \frac{\partial \ln \eta}{\partial z} = \epsilon. 
 $$
-
-ただし, $w^a(z) < q^c(z)$ の場合には $l^c(z)=0$ である.
-さらに, 一度降水したものが上昇後雲水になることは考えられないので,
-$R(z)$ は$z$の増加関数でなければならない.
-これにより$r(z)$に制限がつくことになる.
 
-デトレインメントの空気の特性値は,
+Then, $\eta$ and $\epsilon$ are discretized as
 
 $$
-  h^t  =  h^c(z_T) \; , \\
-  q^t  =  q^c(z_T) \; , \\
-  l^t  =  l^c(z_T) \; .
+ \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k \qquad\quad\tag{A1}
 $$
 
-$h^c(z_B) < \bar{h}^* (z_T)$ の場合は,
-雲は存在しないとする. この場合,
+where the subscript $k$ is an index of full levels. Here, $k + 1/2$ and $k - 1/2$ are the adjacent half levels above and below the level $k$, respectively, and $\Delta z_k$ is a vertical length of the level $k$. Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3}$ is applied.
 
+Equations (5) and (6) are written as
+$\frac{\partial \eta \hat{h}}{\partial z} = E \bar{h} + Q_i,$ and
+
 $$
-  \bar{h}(z'_B) > \bar{h}^* (z_T) \; , \;\;\; z_B < z < z_T
+ \frac{\partial \eta \hat{q}_t}{\partial z} = E \bar{q}_t -P, 
 $$
 
-を満たす $z'_B$ が存在するときには,
-その直上を新たに $z_B$ とし,
+where $E = \epsilon\eta$. These are discretized as
 
 $$
-  h^c(z_B)  =  \bar{h}(z'_B) \; , \\
-  w^c(z_B)  =  \bar{q}(z'_B) \;
+ \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_i}_k  \qquad\quad\tag{A2}
 $$
 
-として求める.
 
-### 雲仕事関数(CWF)
+$$
+ \frac{\eta_{k+1/2} {\hat{q}_t}_{k+1/2} - \eta_{k-1/2} {\hat{q}_t}_{k-1/2}}{\Delta z_k} = E_k {\bar{q}_t}_k - P_k  \qquad\quad\tag{A3}
+$$
 
-雲仕事関数(CWF), $A$ は,
+Considering the relation that $\partial h/\partial z = \epsilon\eta$, $E_k$ is expressed by
 
 $$
-  A \equiv \int_{z_B}^{z_T} B \eta dz
+ E_k = \frac{\eta_{k+1/2} - \eta_{k-1/2}}{\Delta z_k}  \qquad\quad\tag{A4}
 $$
 
-であり,
+Note that conservation of mass, energy, and water is guaranteed with Eqs. (A1)–(A4). This set of equations leads to exact solutions of $\hat{h}$ under the special case that $\epsilon$ and $\bar{h}$ are vertically constant and $Q_i$ is zero. From Eqs. (A1), (A2), and (A4), assuming $Q_i$ is zero,
 
 $$
-A = \int_{z_B}^{z_T} \frac{g}{\bar{T}} \left[
-        (T^c-\bar{T})
-      + \bar{T} \left\{ \epsilon (q^c - \bar{q} )
-                     - l^c                 \right\}
-       \right] \eta dz \; .
+ \hat{h}_{k+1/2} = e^{-\epsilon_k \Delta z_k} \hat{h}_{k - 1/2} + (1 - e^{-\epsilon_k \Delta z_k}) \bar{h}_k,
 $$
 
-本来は, 後述するダウンドラフトにともなう仕事も
-勘定に入れるべきだが, ここでは簡単のために無視する.
+which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$and$\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same concept is applied to $\hat{q}_t$ as well when assuming $P$ is zero.
 
-この計算の際, 下から出発して
-一度正の浮力を持った雲が負の浮力を持つ場合には,
-本来負になるところで雲頂が存在するべきであるので,
-現在考慮している雲頂を持つ雲は存在しないとして処理を行なう.
+Properties in detrained air parcel are determined by
 
-### 雲底での雲質量フラックス
-
-雲底での雲質量フラックスは,
-ある時間スケール $\tau_a$ で,
-雲の作用によって雲仕事関数が 0 に近付くように決まる
-という仮定を置く.
+$$
+ h^t  =  \hat{h}(z_T) \; ,
+$$
 
-それを見積もるために, まず, 単位雲底質量フラックス $M_0$ の雲による
-平均場の時間変化を求める.
 
 $$
-  \frac{\partial{\bar{h}'}}{\partial {t}}  =  M_0 \eta \frac{\partial{\bar{h}}}{\partial {z}}
-                       + \eta(z_T) \delta(z-z_T) ( h^t - \bar{h} ) \; , \\
-  \frac{\partial{\bar{q}'}}{\partial {t}}  =  M_0 \eta \frac{\partial{\bar{q}}}{\partial {z}}
-                       + \eta(z_T) \delta(z-z_T) ( q^t + l^t - \bar{q} ) \; .
+ q^t  =  \hat{q}(z_T) \; , \mathrm{and}
 $$
 
-これにより,
 
 $$
-  \bar{h}'  =  \bar{h} + \frac{\partial{\bar{h}'}}{\partial {t}} \delta t \; , \\
-  \bar{q}'  =  \bar{q} + \frac{\partial{\bar{q}'}}{\partial {t}} \delta t
+ l^t  =  \hat{l}(z_T) \;, 
 $$
 
-を計算し, $\bar{h}', \bar{q}'$ を用いて
-(\ref{p-cum:cwf}) から雲仕事関数を計算したものを $A'$ とおく.
+where superscript $t$ denote detrained properties.
 
-すると,
 
-$$
-  M_B = \frac{A}{A-A'} \frac{\delta t}{\tau_a} M_0
-$$
+###  Spectral representation
 
-となる.
-ここで, $A'$ を求める際に本来は$\bar{h}', \bar{q}'$ に対応した
-雲の鉛直構造を計算しなおすべきであるが,
-現在は同じ雲の構造を用いて行なっている.
+Following the spirit of the Arakawa–Schubert scheme, cloud types are spectrally represented. The Arakawa–Schubert scheme considered different types of clouds according to different values of the entrainment rate. In the scheme developed here, however, the entrainment rate is calculated using Eq. (2).
 
-### 雲の質量フラックス, 降水
+In the Arakawa–Schubert scheme, a cloud-top level is first given and then the entrainment rate corresponding to the level is inversely solved. Since the formulation of entrainment rate is more complicated here, mathematically there is no guarantee that cloud-base updraft velocity that corresponds to the midst of a given cloud-top level always exists. Therefore, different values of cloud-base updraft velocity are first given from the minimum to the maximum with a fixed interval. The minimum and maximum values are set at 0.1 and 1.4 m/s2, with an interval of 0.1 m/s2.
 
-各雲頂高度の雲の総和の,
-雲の質量フラックス$M$ は
+In-cloud properties are then integrated upward with Eqs. (2), (4), (5), (6), and (7). This upward integration continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some point, the parcel detrains at the neutral buoyancy level that is below and closest to the point. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of CIN near cloud base is also represented by this. Note, however, that an effect of overshooting above cloud top is not included for simplicity (i.e., detrainment never occurs above cloud top).
 
+A numerical scheme for solving the set of the equations is devised considering accuracy, stability, and column conservation of mass, energy, and water. The details are described in appendix A. For determination of $\hat{h}$ and $\hat{q}_t$ at cloud base, see appendix B
+
+
+###  Cloud-base mass flux
+
+Cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, cloud kinetic energy for each cloud type is explicitly predicted by
+
 $$
-  M(z)   = \int^i M_B^i \eta^i(z) \; .
+ \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\;,  \qquad\tag{8}
 $$
 
-また, 降水のフラックス $P(z)$ は,
+where $K$ and $A$ are cloud kinetic energy and cloud work function, respectively, and $t_p$ denotes a time scale of dissipation. Cloud work function $A$ is defined as
 
 $$
- P(z) = \int_i M_B^i \left[ R^i(z_T)-R^i(z) \right]  \; .
+ A \equiv \int_{z_B}^{z_T} B \eta \,dz\;. 
 $$
-
-### 平均場の時間変化
 
-補償下降流およびデトレインメントによる
-平均場の時間変化は, 以下のように求められる.
+The energy is linked with $M_B$ by
 
 $$
-  \frac{\partial{\bar{h}}}{\partial {t}}  =  M \frac{\partial{\bar{h}}}{\partial {z}}
-                    + \int_i D^i ( (h^t)^i - \bar{h} ) \; , \\
-  \frac{\partial{\bar{q}}}{\partial {t}}  =  M\frac{\partial{\bar{q}}}{\partial {z}}
-                    + \int_i D^i ( (q^t)^i + (l^t)^i - \bar{q}(z_T^i) ) \; .
+ K = \alpha M_B^2.
 $$
 
-ただし, $D^i = M_B^i \eta^i(z_T^i)$ である.
+Cloud-base mass flux is then solved for each cloud type ($\tau_p$ and $\alpha$  are set at $1.0 \times 10^3\, \mathrm{s}$ and $5.0 \times 10^7\, \mathrm{kg}^{-1} \mathrm{m}^4$, respectively).
 
-### 降水の蒸発とダウンドラフト
 
-降水は未飽和の大気中を落下し, その間に一部が蒸発する.
-さらにその一部は, ダウンドラフトを形成する.
+###  Microphysics
 
-蒸発率$E$は,
+The method to obtain temperature and specific humidity of in-cloud air from moist static energy is identical to that in Arakawa and Schubert (1974). The ratio of precipitation to the total amount of condensates generated from cloud base to a given height $z$ is expressed by
 
 $$
- E = \rho a_e {\rho_p}^{b_e} \left( \bar{q}_{w} - \bar{q} \right) \; ,
+ F_p(z) = 1 - e^{-(z - z_B - z_0)/z_p}, 
 $$
 
-ただし, $\bar{q}_{w}$ は湿球温度に対応する飽和比湿であり,
+where $z_0$ and $z_p$ are set at 1.5 and 4 km, respectively.
 
-$$
-  \bar{q}_w = \bar{q}
-            + \frac{\bar{q}^* - \bar{q}}{1+ \frac{L}{C_P}\frac{\partial{q^*}}{\partial {T}}} \; .
-$$
+The ratio of ice cloud to cloud water is determined simply by a linear function of temperature,
 
-$a_e, b_e$ は微物理のパラメータである.
-$\rho_p$ は降水粒子の密度であり, $V_T$ を降水の終端速度として,
-
 $$
-  \rho_p = \frac{P}{V_T} \; .
+ F_i(T) = \begin{cases} 1 & T \leq T_1 \\ (T_2 - T)/(T_2 - T_1) & T_1 < T < T_2 \\ 0  & T \geq T_2 \end{cases}
 $$
 
-現在の標準値は $a_e=0.25$, $b_e=1$, $V_T=10$m/s である.
+where $T_1$ and $T_2$ are set at 258.15 and 273.15 K. The ratio of snowfall to precipitation is also determined by this function.
 
-ダウンドラフトについては, 次の様な仮定を行う.
-\begin{itemize}
-\item 雲底の上で $\bar{h}$ が高度とともに単調減少する
-領域の上端を $z_d$ とすると, ダウンドラフトは,
-$z < z_d$ なる領域で起こる.
-\item 各高度で起こる降水蒸発の一定割合が
-ダウンドラフトの形成に用いられる.
-降水の蒸発によってちょうど飽和状態となった
-周囲領域の空気が
-ダウンドラフトに取り込まれる(エントレインメント).
-\item $z < z_B$ ではデトレインメントが起き,
-質量フラックスは直線的に減少する.
-\end{itemize}
+From the conservation of condensate static energy, $C_p T + gz + L_v q - L_i q_i$, for a cloud parcel, $Q_i$ in Eq. (5) is written as
 
-すなわち, $z_B < z < z_d$ において, 質量フラックス $M^d(z)$,
-ダウンドラフトの空気塊の $h^d(z),q^d(z)$ は以下の式に従う.
-降水の蒸発時には湿潤静的エネルギーは保存すること,
-ならびに蒸発によって飽和になったときの比湿が
-$\bar{q}_{w}$ であることに注意.
-
 $$
-  \frac{\partial{M^d}}{\partial {z}} =  - f_d \frac{E}{\bar{q}_{w}-\bar{q}} \;  ,
+ Q_i = L_i \left(\frac{\partial \eta \hat{q}_i}{\partial z} - \epsilon\eta\bar{q}\right)_i
 $$
+
+and discretized as
 
 $$
-  \frac{\partial{}}{\partial {z}} ( M^d h^d )  =  \bar{h}     \frac{\partial{M^d}}{\partial {z}} \; ,\\
-  \frac{\partial{}}{\partial {z}} ( M^d q^d )  =  \bar{q}_{w} \frac{\partial{M^d}}{\partial {z}} \; .
+ {Q_i}_k = L_i \left(\frac{\eta_{k+1/2} {\hat{q}_i}_{k+1/2} - \eta_{k-1/2} {\hat{q}_i}_{k-1/2}}{\Delta z_k} - E_k {\bar{q}_i}_k \right)
 $$
 
-上式で, $f_d$ は蒸発のうちダウンドラフトにとりこまれる分であり,
-$(1-f_d)$ は平均場に直接蒸発する.
-ただし, ダウンドラフトの質量フラックス $M^d$ は
-雲底の質量フラックスの合計 $M$ の $f_m$ 倍を越えないとする.
-現在の標準値は $f_d=0.5, f_m=1.0$ である.
+Strictly, the ratio of ice to water should be recalculated after the modification of temperature by $Q_i$ and the iterations are required; however, it is omitted for simplicity.
 
-### 雲水量と雲量
+Melting and freezing of precipitation occurs depending on wet-bulb temperature of large-scale environment and cumulus mass flux.
 
-放射に用いる格子平均の雲水量 $l^{cR}$ は,
-雲水 $l^c$ を含む積雲の強い上昇域の
-占める割合を $\delta^c$ とすると,
 
+###  Evaporation and downdraft
+
+A part of precipitation is evaporated at each level as
+
 $$
-  l^{cR} = \delta^c l^c \; .
+ E_v = a_e (\bar{q}_w - \bar{q}) \left(\frac{P}{V_T}\right),
 $$
 
-質量フラックス $M^c$ は, この $\delta^c$ と
-上昇流の鉛直速度$v^c$ を用いて
+where $E_v, q_w, P,$ and $V_T$ are the mass of evaporation per a unit volume and time, wet-bulb saturated specific humidity, precipitation, and terminal velocity of precipitation, respectively, and $a_e$ is a constant. Here, $a_e$ and $V_T$ are taken as $0.3 \,\mathrm{s}^{-1}$ and $10 \,\mathrm{m}\,\mathrm{s}^{-1}$, respectively. Downdraft mass flux $M_d$ is generated as
 
 $$
-  M = \delta^c \rho v^c
+ \frac{\partial M_d}{\partial z} = -b_e \bar{\rho} (\bar{T}_w - \bar{T}) P, 
 $$
+
+where $\rho$ and $T_w$ are density and wet-bulb temperature, respectively; $b_e$ is a constant set at $5\times10^{-4} \,\mathrm{m}^2 \,\mathrm{kg}^{-1} \,\mathrm{K}^{-1}$. Properties of downdraft air are determined by budget equations and the detrainment occurs at neutral buoyancy level and below cloud base.
 
-となるから, 結局,
 
+###  Cloudiness
+
+Fractional cloudiness used in the radiation scheme is expressed by
+
 $$
-  l^{cR} = \frac{M^c}{\rho v^c} l^c = \alpha M^c l^c \; .
+ C = \frac{C_\mathrm{max} - C_\mathrm{min}}{\ln M_\mathrm{max} - \ln M_\mathrm{min}}(\ln M - \ln M_\mathrm{min}) + C_\mathrm{min},
 $$
+
+where $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max}, M_\mathrm{min},$and $M$ are the maximum and minimum values of the cloudiness and cumulus mass flux and the total cumulus mass flux, respectively;$C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max},$ and $M_\mathrm{min}$ are set at $0.1, 1 \times 10^{-3}, 0.3 \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1},$and $2 \times 10^{-3} \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1}$, respectively.
 
-放射の見積りに用いられる雲量 $C^c$ は,
-実際には上昇流や雲水の分布に水平方向の広がりがあることを
-考えると, この$\delta^c$ よりはかなり大きな値をとるのが妥当である.
-ここでは, 簡単に,
+The grid mean liquid cloud mixing ratio is given by
 
 $$
-  C^c = \beta M_B
+ l_c = \frac{\beta C}{M} \sum_i \hat{q}_l^i M^i,
 $$
 
-とする.
-現在の標準値は, $\alpha=0.3$, $\beta=10$ である.
+where $i$ denotes an index of cloud type, $q_l$ is liquid water, and $\beta$ is a dimensionless constant set at 0.1. The grid mean ice cloud mixing ratio is determined similarly.
