@@ -3,14 +3,14 @@ Table of contents
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
 - [1. Surface Flux](#1-surface-flux)
 	- [1.1. 本章でとりあげるプログラム [済 10月]](#11-本章でとりあげるプログラム-済-10月)
-	- [1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 11月下旬作業予定]](#12-pgsfc-agcmと陸面海水面スキーム間での変数の受け渡し-未-11月下旬作業予定)
+	- [1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 12月上旬作業予定]](#12-pgsfc-agcmと陸面海水面スキーム間での変数の受け渡し-未-12月上旬作業予定)
 	- [1.3. Surface Flux Scheme [8割済 12月中旬に追加作業予定]](#13-surface-flux-scheme-8割済-12月中旬に追加作業予定)
 		- [1.3.1. Overview](#131-overview)
 		- [1.3.1. SEAZ0F: Roughness](#131-seaz0f-roughness)
 		- [1.3.2. PSFCL: Richardson Number](#132-psfcl-richardson-number)
 		- [1.3.3. PSFCL: Bulk factor](#133-psfcl-bulk-factor)
 		- [1.3.4. PSFCM: Calculation of surface turbulent fluxes](#134-psfcm-calculation-of-surface-turbulent-fluxes)
-- [2. POECN: Sea surface conditions for AGCM [未 11月下旬作業予定]](#2-poecn-sea-surface-conditions-for-agcm-未-11月下旬作業予定)
+- [2. POECN: Sea surface conditions for AGCM [未 12月上旬作業予定]](#2-poecn-sea-surface-conditions-for-agcm-未-12月上旬作業予定)
 	- [2.1. fixed sea surface](#21-fixed-sea-surface)
 <!-- TOC END -->
 
@@ -66,7 +66,7 @@ Table of contents
 | `OCEAN_DUMMY` | --                                     |
 
 
-## 1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 11月下旬作業予定]
+## 1.2. PGSFC: AGCMと陸面/海水面スキーム間での変数の受け渡し [未 12月上旬作業予定]
 
 海面については`PGOCN`、陸面についてはMATSIROモデルの`LNDFLX` をそれぞれ呼び出す。
 
@@ -277,5 +277,5 @@ $$
 \hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^*(T_0) - q_1 \right)
 $$
 
-# 2. POECN: Sea surface conditions for AGCM [未 11月下旬作業予定]
+# 2. POECN: Sea surface conditions for AGCM [未 12月上旬作業予定]
 ## 2.1. fixed sea surface
