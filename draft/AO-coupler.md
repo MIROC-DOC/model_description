@@ -45,7 +45,7 @@ $$ SA*FLND^{atm} = \sum_{j=1}^{jldiv}\sum_{i=1}^{ildiv}(SL_{ij}*FLND^{land}_{ij}
 湖の凍結・融解および積雪は鉛直1時限の氷モデル（0-layer model）によって考慮されている。
 ここで陸面グリッドの面積を$SL$とすると湖とそれぞれの土壌被覆の占める面積はそれぞれ
 $$ SL^{lake}=SL * LKFRC * FLND $$
-$$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND$$
+$$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND $$
 となる。ここで$LKFRC$は陸に占める湖の割合、$k$は土壌被覆の種類、$GRFRC_k$は湖を除く陸に占める土壌被覆$k$の割合で示す。
 陸面からのフラックスはこれらの土壌被覆、湖の上でそれぞれ別々に計算され、面積の重さで平均し、大気に渡される。
 $$ FLXL=LKFRC*FLXL^{lake}+(1-LKFRC)*\sum_{k=1}^{km}(GRFRC_k * FLXL_k^{grd}) $$
@@ -137,11 +137,11 @@ $$ HSN^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(I
 
 $$ TI^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N))*HI^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)} {SOCNG(LC)*HI^{oc}(LC)*AI^{oc}(LC)} $$
 
-$$ UO^{oc}(LC)=RUO(LC)* \sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)
-+RVO(LC)* \sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC) $$
+$$ UO^{oc}(LC)=RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}
++RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
 
-$$ VO^{oc}(LC)=-RVO(LC)* \sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)
-+RUO(LC)* \sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC) $$
+$$ VO^{oc}(LC)=-RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}
++RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
 
 $$ SOCNG(LC)= \sum_{N=1}^{IJO(LC)}SOCN(LC,N) $$
 
