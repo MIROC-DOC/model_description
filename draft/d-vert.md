@@ -45,6 +45,9 @@ $$
 
 整数レベルにおける気圧$p_k, (k=1,2,\ldots K)$は次の式で内挿する。
 
+$$
+ p_k = \{ \frac{1}{1+\kappa}( \frac{  p_{k-1/2}^{\kappa +1}- p_{k+1/2}^{\kappa +1}}{ p_{k-1/2} - p_{k+1/2} })\}^{1/\kappa}
+$$
 
 $$
  p_k = \left\{ \frac{1}{1+\kappa}\left( \frac{  p_{k-1/2}^{\kappa +1}- p_{k+1/2}^{\kappa +1}      }{ p_{k-1/2} - p_{k+1/2} }\right)\right\}^{1/\kappa}
