@@ -47,8 +47,8 @@ $$
 
 $$
  p_k = \left\{ \frac{1}{1+\kappa}
-                     \left( \frac{  p^{\kappa +1}_{k-1/2}
-                                  - p^{\kappa +1}_{k+1/2}      }
+                     \left( \frac{  p_{k-1/2}^{\kappa +1}
+                                  - p_{k+1/2}^{\kappa +1}      }
                                   { p_{k-1/2} - p_{k+1/2} }
                      \right)
               \right\}^{1/\kappa}
