@@ -49,7 +49,7 @@ $$
  p_k = \frac{1}{1+\kappa}
 $$
 $$
- p_k = \frac{p^{\kappa +1}_{k-1/2}- p^{\kappa+1}_{k+1/2}      }{ p_{k-1/2} - p_{k+1/2} }
+ p_k = \frac{p^{\kappa +1}_{k-1/2}}{ p_{k-1/2} - p_{k+1/2} }
 $$
 $$
  p_k = \frac{1}{1+\kappa}(\frac{p^{\kappa +1}_{k-1/2}- p^{\kappa+1}_{k+1/2}      }{ p_{k-1/2} - p_{k+1/2} })
