@@ -79,6 +79,10 @@ $$
 $$
 
 $$
+  \dot{\eta}_{1/2} = 0
+$$
+
+$$
   \frac{(m\dot{\eta})_{k-1/2}}{p_s}
  = - B_{k-1/2} \frac{\partial \pi}{\partial t} - \sum_{l=k}^{K}\left[ D_l \Delta\sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l \right]
 $$
