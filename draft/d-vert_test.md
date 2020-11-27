@@ -75,13 +75,15 @@ $$
 $$
 
 $$
-  \frac{(m\eta)_{k-1/2}}{p_s}
- = - B_{k-1/2} \frac{\partial \pi}{\partial t}
+  \eta_{1/2} = \eta_{K+1/2} = 0
 $$
 
 $$
-  \frac{(m\dot{\eta})_{k-1/2}}{p_s}
- = - B_{k-1/2} \frac{\partial \pi}{\partial t}
+  {\dot{\eta}}_{1/2} = {\dot{\eta}}_{K+1/2} = 0
+$$
+
+$$
+  \dot{\eta}_{1/2} = \dot{\eta}_{K+1/2} = 0
 $$
 
 $$
