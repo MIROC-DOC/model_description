@@ -64,7 +64,9 @@ $$
               \right\}^{1/\kappa}
 $$
 
-鉛直座標を40層にした場合の整数レベルの気圧を図に例示する。
+鉛直座標を80層にした場合の整数レベルの気圧を例示する。下図において、地表気圧は場所によって1000hPaから700hPaまで変化しており、下部の層はそれに追従する一方で、上部の層は等圧になっており、両者が滑らかに接続されている。
+
+![levels](levels.png)
 
 Each predictor is entirely defined on a grid of $(\lambda_i, \varphi_j, \sigma_k)$ or $(\lambda_i, \varphi_j, z_l)$. (The underground level, $z_l$, is described in the section on physical processes.)
 
