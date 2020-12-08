@@ -21,7 +21,7 @@
 
 さらに$\Delta t$を大きくとるために、重力波の項にsemi-impicitの手法を適用する(Bourke,1988)。
 \subsection{leap frogによる時間積分と時間フィルター}
-leap frogにおける計算モードにおける計算モードの影響緩和のためにWilliams(2009)の時間フィルターを毎ステップごとに適用する。
+leap frogにおける計算モードの影響緩和のためにWilliams(2009)の時間フィルターを毎ステップごとに適用する。
 
 時間フィルターは以下の式で与えられる。
 
@@ -77,7 +77,7 @@ Gibbs現象による短所も大抵の場合深刻な問題は生じない。
 
 $x=x_{i} (i=1,2,3...), y=y_{j} (j=1,2,3...), p=p_{k} (k=1,2,3...)$で格子点法で離散化すると
 \begin{equation}
-  \frac{\partial q_{i,j,k}}{\partial t}=\frac{1}{\Delta x_{i,j,k}}(F^{x}_{i-\frac{1}{2},j,k}-F^{x}_{i+\frac{1}{2},j,k})+\frac{1}{\Delta y_{i,j,k}}(F^{y}_{i,j-\frac{1}{2},k}-F^{y}_{i,j+\frac{1}{2},k}+\frac{1}{\Delta p_{i,j,k}}(F^{p}_{i,j,k-\frac{1}{2}}-F^{p}_{i,j,k+\frac{1}{2}}))
+  \frac{\partial q_{i,j,k}}{\partial t}=\frac{1}{\Delta x_{i,j,k}}(F^{x}_{i-\frac{1}{2},j,k}-F^{x}_{i+\frac{1}{2},j,k})+\frac{1}{\Delta y_{i,j,k}}(F^{y}_{i,j-\frac{1}{2},k}-F^{y}_{i,j+\frac{1}{2},k})+\frac{1}{\Delta p_{i,j,k}}(F^{p}_{i,j,k-\frac{1}{2}}-F^{p}_{i,j,k+\frac{1}{2}})
 \end{equation}
 ここで、$F^{x}_{i-\frac{1}{2},j,k}$は格子$(i,j,k)$と格子$(i-1,j,k)$の境界における$x$方向のフラックス、$\Delta x_{i,j,k}$は格子$(i,j,k)$の代表する$x$方向の幅である。
 
@@ -89,7 +89,7 @@ $x=x_{i} (i=1,2,3...), y=y_{j} (j=1,2,3...), p=p_{k} (k=1,2,3...)$で格子点�
 \subsubsection{The Piecewise Parobolic Method (PPM) スキーム}
 semi-Lagrangeスキームでは時刻tにおける地点$x_{i+\frac{1}{2}}$のフラックスを計算するのに時刻$t-\Delta t$の地点$x_{i+\frac{1}{2}}-u\Delta t$の$q$の値を用いる。$u$には時刻$t$の値、$q$には時刻$t-\Delta t$の値を用いることになる。
 
-CFL条件($\frac{u\Delta t}{\Delta x}$)を満たし、$u_{i+\frac{1}{2}>0}$の場合$x_{i+\frac{1}{2}}-u\Delta t$はグリッド$i$の内部の地点になる。
+CFL条件($|\frac{u\Delta t}{\Delta x}|<1$)を満たし、$u_{i+\frac{1}{2}}>0$の場合$x_{i+\frac{1}{2}}-u\Delta t$はグリッド$i$の内部の地点になる。
 
 地点$x_{i+\frac{1}{2}}-u\Delta t$の$q$の値としてはグリッド$i$内では$q$が一定値をとるとしてグリッド$i$での平均値$q_{i}$を選ぶ方法もある。
 
@@ -111,13 +111,13 @@ PPMでは以下のように$q$の分布を定める。
 \begin{equation}
 \begin{split}
 \label{a4}
-  q(x)=q_{L,i}+\xi (\Delta q_{i}+q_{6,i}(1-\xi)) \\
+  q(x)=q_{L,i}+\xi (\Delta q_{i}+q_{R,i}(1-\xi))\\
   \xi=\frac{x-x_{i-\frac{1}{2}}}{\Delta x_{i}},  x_{i-\frac{1}{2}}\leq x \leq x_{i+\frac{1}{2}}
   \end{split}
 \end{equation}
-ここで、$q_{L,i}$は$lim_{x \uparrow x_{i+\frac{1}{2}}}=q_{L,i}$と定義される。
+ここで、$q_{L,i}$は$\lim_{x \to x_{i+\frac{1}{2}}}=q_{L,i}$と定義される。
 
-同様に$q_{R,i}$も$lim_{x \uparrow x_{i+\frac{1}{2}}}=q_{R,i}$と定義される。
+同様に$q_{R,i}$も$\lim_{x \to x_{i+\frac{1}{2}}}=q_{R,i}$と定義される。
 
 この内挿では境界$i+\frac{1}{2}$では$q$は連続なので、$q_{L,i+1}=q_{R,i}=q_{i+\frac{1}{2}}$となる。
 
@@ -132,7 +132,7 @@ $q_{i+\frac{1}{2}}$は
   \label{a3}
   \begin{split}
     q_{i+\frac{1}{2}}=&q_{i}+\Delta x_{i} \frac{q_{i+1}-q_{i}}{\Delta x_{i+1}+\Delta x_{i}}+\frac{1}{\sum_{k=i-1}^{i+2}\Delta x_{k}}\\
-    &\times \Bigl[\frac{2\Delta x_{i}\Delta x_{i+1}}{\Delta x_{i+1}+\Delta x_{i}}(\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}}-\frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}})(q_{i+1}-q{i})\\
+    &\times \Bigl[\frac{2\Delta x_{i}\Delta x_{i+1}}{\Delta x_{i+1}+\Delta x_{i}}(\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}}-\frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}})(q_{i+1}-q_{i})\\
      & -\Delta x_{i}\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}} \delta q_{i+1}+\Delta x_{i+1} \frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}} \delta q_{i}\Bigr]
   \end{split}
 \end{equation}
@@ -144,10 +144,11 @@ $q_{i+\frac{1}{2}}$は
 
 しかし、これでは内挿した関数がグリッド内で極値を持つ場合などは単調性が保てない場合があるので、$q_{i+\frac{1}{2}}$が$q_{i}$と$q_{i+1}$の間にあるように$\delta q_{i}$を
 \begin{equation}
-  \begin{split}
-    \delta_{m} q_{i}=min(|\delta q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) \qquad if\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0, \\
-    =0 \qquad otherwise
-  \end{split}
+  \begin{aligned}
+    \delta_{m} q_{i} & =\min(|\delta
+    q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
+    & =0 && \qquad \text{otherwise}
+  \end{aligned}
 \end{equation}
 と改良し、これを$\delta q_{i}$として式(\ref{a3})に用いて$q_{i+\frac{1}{2}}$を求める。
 
@@ -214,8 +215,8 @@ $I_{C}<0$のとき、
 \subsection{MIROC6でのの移流スキームの手順}
 球面上の$\eta$座標での輸送方程式は
 \begin{eqnarray}
-  \frac{\partial mq}{\partial t} &=& - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mvq cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
-  &=& \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
+  \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
+  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray}
 $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial \eta}$と定義される。
 
@@ -223,7 +224,7 @@ $q$はトレーサーの量である(ex. 混合比for水蒸気量)。
 
 連続の式は$q=1$の時を考えて
 \begin{equation}
-  \frac{\partial m}{\partial t} = - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mv cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})  
+  \frac{\partial m}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mv \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})
 \end{equation}
 ここで、離散化を考えると輸送方程式は
 \begin{equation}
@@ -242,7 +243,7 @@ $q$はトレーサーの量である(ex. 混合比for水蒸気量)。
 \end{equation}
 また、
 \begin{equation}
-  \Delta D_{j,k}=a cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
+  \Delta D_{j,k}=a \cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a \cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
 \end{equation}
 である。このようなフラックス形式を基本とすると、保存性は自動的に満たされる。
 
@@ -275,7 +276,7 @@ MIROC6におけるトレーサー移流スキームの具体的な計算手順�
 \item スペクトル法で、トレーサー量($q$)以外の量($m(t+\Delta t), \bf{v}(t+\Delta t)$)を予報する。
 \item 球面調和関数展開により、連続の方程式の右辺第１項$C^{x}_{i,j,k}$および第２項$C^{y}_{i,j,k}$を評価する。
   \begin{equation}
-    C^{x}=-\frac{1}{a cos \varphi}\frac{\partial}{\partial \lambda}(mu),\quad C^{y}=-\frac{1}{a cos \varphi}\frac{\partial}{\partial \lambda}(mv cos \varphi) 
+    C^{x}=-\frac{1}{a \cos \varphi}\frac{\partial}{\partial \lambda}(mu),\quad C^{y}=-\frac{1}{a \cos \varphi}\frac{\partial}{\partial \lambda}(mv \cos \varphi) 
   \end{equation}
   このとき、$(t-\Delta t)$と$(t+\Delta t)$の平均の風の場を用いる。これは$m$の時間積分にsemi-implicitを用いているからである。
 \item $C_{x}$,$C_{y}$を用い、$V^{\lambda}, V^{\varphi}, V^{\eta}$を求める。
