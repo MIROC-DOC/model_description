@@ -1,34 +1,54 @@
 \documentclass{jsbook}
+%% \usepackage{amsmath} %% for better placement of second accent
 \setlength{\textwidth}{\fullwidth}
 \setlength{\evensidemargin}{\oddsidemargin}
 \usepackage{color}
 \begin{document}
-\chapter{モデルの概要}
+% \chapter{モデルの概要}
+\setcounter{chapter}{1}
 \chapter{力学過程}
 \section{時間積分}
-時間差分スキームは基本的にleap frogである。ただし、拡散項および物理過程の項は後方差分もしくは前方差分とする。計算モードを抑えるために時間フィルター(Williams, 2009)を用いる。さらに$\Delta t$を大きくとるために、重力波の項にsemi-impicitの手法を適用する(Bourke,1988)。\textcolor{red}{(要検証:zonal-implicit)}
+時間差分スキームは基本的にleap frogである。
+ただし、拡散項および物理過程の項は後方差分もしくは前方差分とする。
+計算モードを抑えるために時間フィルター(Williams, 2009)を用いる。
+さらに$\Delta t$を大きくとるために、重力波の項にsemi-impicitの手法を適用する(Bourke,1988)。
+\textcolor{red}{(要検証:zonal-implicit)}
 \subsection{leap frogによる時間積分と時間フィルター}
-leap frogにおける計算モードにおける計算モードの影響緩和のためにWilliams(2009)の時間フィルターを毎ステップごとに適用する。時間フィルターは以下の式で与えられる。バーは時間フィルターがかかっていることを意味する。
-$$                                                                            
-\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - 2 \
-\bar{X}^{t} + X^{t+\Delta t}] \eqno(2.1)
-$$                                                                            
+leap frogにおける計算モードにおける計算モードの影響緩和のために
+Williams(2009)の時間フィルターを毎ステップごとに適用する。時間フィルター
+は以下の式で与えられる。バーは時間フィルターがかかっていることを意味す
+る。
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)
-$$  
+\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha \left[\bar{\bar{X}}^{t-\Delta t} - 2 \
+\bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.1)
+$$
+$$
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
+$$
 ただし、$\nu=0.05$かつ、$\alpha=0.5$である。
 \section{semi-Lagrangeスキーム}
 \subsection{semi-Lagrangeスキームの概要と用途}
-MIROC6は力学フレームとして球面調和関数展開に基づくスペクトル法を採用しているのはこれまで述べてきたとおりである。スペクトル法の特徴として例えば以下のようなものがある。
+MIROC6は力学フレームとして球面調和関数展開に基づくスペクトル法を採用し
+ているのはこれまで述べてきたとおりである。スペクトル法の特徴として例え
+ば以下のようなものがある。
 \begin{enumerate}
 \item Gibbs現象のため、滑らかでない分布を表現しようするとノイズ的な振動が出てしまう。
 \item 上の現象と関連し、本来物質量としてはありえない負の値が変換格子点上に出現する。
 \item グローバルな保存性は良いが、ローカルに見ると必ずしも保存性を満たさない。
-\item 情報が上流から下流のみにローカルに伝わるという性質(移流性)が必ずしも満たされない(極端にいえば、地球の裏側まで情報が瞬時に伝わる)。
-\end{enumerate}
-以上の長所や短所を了承した上で力学の基本フレームとしてスペクトル法を採用している。Gibbs現象による短所も大抵の場合深刻な問題は生じない。しかし、特に不連続性の強い分布をもつ物質の輸送に関しては、場合によってはノイズや負の値が相対的に目立ち、看過できない場合が生じる。例えば、極や成層圏など水蒸気の分布も不連続になりやすく、エアロゾルなどもともと局所集中的な分布を持ちがちな変数の輸送にはGibbs現象の影響は現れやすい(水蒸気の輸送は補正を行うことで影響を緩和することができる)。
+\item 情報が上流から下流のみにローカルに伝わるという性質(移流性)が必ず
+  しも満たされない(極端にいえば、地球の裏側まで情報が瞬時に伝わる)。
+  \end{enumerate}
+以上の長所や短所を了承した上で力学の基本フレームとしてスペクトル法を採
+用している。Gibbs現象による短所も大抵の場合深刻な問題は生じない。しか
+し、特に不連続性の強い分布をもつ物質の輸送に関しては、場合によってはノ
+イズや負の値が相対的に目立ち、看過できない場合が生じる。例えば、極や成
+層圏など水蒸気の分布も不連続になりやすく、エアロゾルなどもともと局所集
+中的な分布を持ちがちな変数の輸送にはGibbs現象の影響は現れやすい(水蒸気
+の輸送は補正を行うことで影響を緩和することができる)。
 
-そこで、現行のモデルでは水蒸気輸送とトレーサーの輸送に関してはスペクトル法を用いず、Lin and Rood(1996)のフラックス形式semi-Lagrange(FFSL)スキームを用いて計算している。このスキームは以下の利点がある
+そこで、現行のモデルでは水蒸気輸送とトレーサーの輸送に関してはスペクト
+ル法を用いず、Lin and Rood(1996)のフラックス形式semi-Lagrange(FFSL)ス
+キームを用いて計算している。このスキームは以下の利点がある
 \begin{enumerate}
 \item 格子点法を基本とするためGibbs現象が生じず、滑らか出ない場を精度良く表現できる。
 \item 上流から下流への移流性を満たす。
@@ -39,17 +59,18 @@ MIROC6は力学フレームとして球面調和関数展開に基づくスペ�
 \subsection{semi-Lagrangeスキームの手順}
 球面上の$\eta$座標での輸送方程式は
 \begin{eqnarray*}
-  \frac{\partial mq}{\partial t} &=& - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mvq cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
-  &=& \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
+  \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\
+  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray*}
-$m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial eta}$と定義される。qはトレイサーの量である(ex. 混合比for水蒸気量)。
+$m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial eta}$と
+定義される。qはトレイサーの量である(ex. 混合比for水蒸気量)。
 連続の式は$q=1$の時を考えて
 \begin{equation}
-  \frac{\partial m}{\partial t} = - \frac{1}{a cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a cos \varphi} \frac{\partial}{\partial \varphi}(mv cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})  
+  \frac{\partial m}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(mu)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mv \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta})
 \end{equation}
 ここで、離散化を考えると輸送方程式は
 \begin{equation}
-  \frac{\partial m_{i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}[(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k})+(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}))+(G^{\eta}_{i,j,k-\frac{1}{2}}-G^{\eta}_{i,j,k+\frac{1}{2}})]
+  \frac{\partial m_{i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}\left[\left(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k}\right)+\left(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}\right)+\left(G^{\eta}_{i,j,k-\frac{1}{2}}-G^{\eta}_{i,j,k+\frac{1}{2}}\right)\right]
 \end{equation}
 と表される。ただし、
 \begin{equation}
@@ -63,13 +84,21 @@ $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial et
 \end{equation}
 また、
 \begin{equation}
-  \Delta D_{j,k}=a cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
+  \Delta D_{j,k}=a \cos \varphi_{j} \Delta x_{j} \Delta \eta,\quad \Delta x_{j}=a \cos \varphi_{j} \Delta \eta,\quad \Delta y_{j}=a \Delta \varphi_{j}
 \end{equation}
-である。このようなフラックス形式を基本とすると、保存性は自動的に満たされる。精度及び単調性を満たすか否かは$F^{\lambda}_{i-\frac{1}{2},j,k}$の決定法などに依存する。
+である。このようなフラックス形式を基本とすると、保存性は自動的に満たさ
+れる。精度及び単調性を満たすか否かは$F^{\lambda}_{i-\frac{1}{2},j,k}$の決定法などに依存する。
 
-ここからは離散化された移流方程式を実際にはどのように解いているのかを見ていく。スペクトルモデルでは、変換格子$(i,j,k)$上の同じ点(整数点)で、u,vおよびスカラー量が計算される。スペクトル逆変換を用いれば、格子の境界におけるu,vの値、すなわち$u_{i-/frac{1}{2},j,k},v_{i,j-/frac{1}{2},k}$を求める事が可能であるが、そのようにして求めた$u_{i-/frac{1}{2},j,k},v_{i,j-/frac{1}{2},k}$は連続の式の必ずしも差分系を満たさない。連続の式の差分系は離散化された移流方程式で$q=1$の時を考えて
+ここからは離散化された移流方程式を実際にはどのように解いているのかを見
+ていく。スペクトルモデルでは、変換格子$(i,j,k)$上の同じ点(整数点)で、
+u,vおよびスカラー量が計算される。スペクトル逆変換を用いれば、格子の境
+界におけるu,vの値、すなわち
+$u_{i-\frac{1}{2},j,k},v_{i,j-\frac{1}{2},k}$を求める事が可能であるが、
+そのようにして求めた$u_{i-\frac{1}{2},j,k},v_{i,j-\frac{1}{2},k}$は連
+続の式の必ずしも差分系を満たさない。連続の式の差分系は離散化された移流
+方程式で$q=1$の時を考えて
 \begin{equation}
-  \frac{\partial m_{i,j,k} }{\partial t}=\frac{1}{\Delta D_{j,k}}[(V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k})+(V^{\varphi}_{i,j-\frac{1}{2},k}-V^{\varphi}_{i,j+\frac{1}{2},k}))+(V^{\eta}_{i,j,k-\frac{1}{2}}-V^{\eta}_{i,j,k+\frac{1}{2}})]
+  \frac{\partial m_{i,j,k} }{\partial t}=\frac{1}{\Delta D_{j,k}}\left[\left(V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k})+(V^{\varphi}_{i,j-\frac{1}{2},k}-V^{\varphi}_{i,j+\frac{1}{2},k}\right)+\left(V^{\eta}_{i,j,k-\frac{1}{2}}-V^{\eta}_{i,j,k+\frac{1}{2}}\right)\right]
 \end{equation}
 で与えられる。ただし、
 \begin{equation}
@@ -81,33 +110,43 @@ $m$はこの座標系での密度に相当し、$m=\frac{\partial p}{\partial et
 \begin{equation}
   V^{\eta}_{i,j,k-\frac{1}{2}}=(m\dot{\eta})_{i,j,k-\frac{1}{2}} \Delta x_{j} \Delta y_{j}
 \end{equation}
-以上の課題はスペクトルモデルの水平質量収束の場から、この格子系で離散化された連続の式を満たすように水平・鉛直流を再構成することによって(ほぼ)この問題を解決する。
+以上の課題はスペクトルモデルの水平質量収束の場から、この格子系で離散化
+された連続の式を満たすように水平・鉛直流を再構成することによって(ほぼ)この問題を解決する。
 \section{力学部分まとめ}
 \subsection{時間フィルター}
-leap frogにおける計算モードの影響を緩和するために、時間フィルターを毎ステップ適用する。以前はAsselin(1972)の時間フィルターを使用していたが、現行のモデルではではその改良版(Williams, 2009)を用いている。
-時間フィルターの使用目的は計算モードの緩和であるが、同時に物理モードへの影響が最小限になるようにとるのが望ましい。Asselin(1972)の時間フィルターでは高周波の物理モードも減衰してしまい、Leap-Frog法の精度が低下してしまうという難点があったが、現行の時間フィルターではそれが緩和されている。
+leap frogにおける計算モードの影響を緩和するために、時間フィルターを毎
+ステップ適用する。以前はAsselin(1972)の時間フィルターを使用していたが、
+現行のモデルではではその改良版(Williams, 2009)を用いている。
+時間フィルターの使用目的は計算モードの緩和であるが、同時に物理モードへ
+の影響が最小限になるようにとるのが望ましい。Asselin(1972)の時間フィル
+ターでは高周波の物理モードも減衰してしまい、Leap-Frog法の精度が低下し
+てしまうという難点があったが、現行の時間フィルターではそれが緩和されて
+いる。
 
-時間フィルターは以下の式で表される(式2.1,2,2再掲)。バーは時間フィルターがかかっていることを意味する。現行の改良型時間フィルターでは時間フィルターは二重にかかる。
-$$                                                                            
-\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - 2 \
-\bar{X}^{t} + X^{t+\Delta t}] \eqno(2.1)
-$$                                                                            
+時間フィルターは以下の式で表される(式2.1,2,2再掲)。バーは時間フィルター
+がかかっていることを意味する。現行の改良型時間フィルターでは時間フィル
+ターは二重にかかる。
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)
-$$  
+\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha \left[\bar{\bar{X}}^{t-\Delta t} - 2 \
+\bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.1)
+$$
+$$
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
+$$
 ただし、$\nu=0.05$かつ、$\alpha=0.5$である。
 $\alpha$が1の時は旧式のAsselin Time Filterと一致する。
 
 実際のモデルではまず、予報変数の格子点値への変換の箇所で
 $$
-\bar{\bar{X}}^{t\ast}=(1-\nu \alpha)^{-1}[(1-2 \nu \alpha)\bar{X}^{t}+\nu \alpha \bar{\bar{X}}^{t-\Delta t}] \eqno(2.3)
+\bar{\bar{X}}^{t\ast}=(1-\nu \alpha)^{-1}\left[(1-2 \nu \alpha)\bar{X}^{t}+\nu \alpha \bar{\bar{X}}^{t-\Delta t}\right] \eqno(2.3)
 $$
-を求めておき、$\bar{\bar{X}}^{t-\Delta t}-2\bar{X}^{t}$を保存する[DADVNC]。その後の処理で$X^{t+\Delta t}$が確定したのち、[TFILT]にて
+を求めておき、$\bar{\bar{X}}^{t-\Delta t}-2\bar{X}^{t}$を保存する
+[DADVNC]。その後の処理で$X^{t+\Delta t}$が確定したのち、[TFILT]にて
 $$
 \bar{\bar{X}}^{t} = (1-\nu \alpha) \bar{\bar{X}}^{t\ast}+\nu \alpha X^{t+\Delta t} \eqno(2.4)
 $$
 $$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}] \eqno(2.2)  
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) \left[\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}\right] \eqno(2.2)
 $$
 を計算し時間フィルターをかける。
 
