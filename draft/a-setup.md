@@ -31,8 +31,6 @@ $$
 
 Usually, the grid spacing of longitude and latitude is taken to be approximately equal to $J = I/2$. This is based on the triangular truncation of the spectral method.
 
-The normalized atmospheric pressure $\sigma$ is discretized appropriately at unequal intervals so as to better represent the vertical structure of the atmosphere `MODULE:[ASETS]`. As described later in Mechanics, the value of the layer boundaries ($\sigma_{k-1/2}$) is defined in $k = 1 \ldots K+1$, and then
-
 気圧$p$は$k = 0 \ldots K$について、定数$A_{k+1/2},\ B_{k+1/2}$を用いて次の式で定義する。
 
 $$
@@ -51,9 +49,9 @@ $$
 \eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2}
 $$
 
-$A_{k+1/2},\ B_{k+1/2}, p_0$が定数であるため、$\eta_{k+1/2}$も定数であり、これをモデルの鉛直座標とする。ただし、第二章で示すように、離散化を行った後の式は$\eta_{k+1/2}$が陽には現れない形になっている。
+$A_{k+1/2},\ B_{k+1/2}, p_0$が定数であるため、$\eta_{k+1/2}$も定数であり、これをモデルの鉛直座標とする。ただし、第二章で示すように、離散化を行った後の式は、$\eta_{k+1/2}$が陽には現れない形になっている。
 
-整数レベルにおける気圧$p_k, (k=1,2,\ldots K)$は次の式で内挿する。
+整数レベルにおける気圧$p_k\ (k=1,2,\ldots K)$は次の式で内挿する。
 
 $$
  p_k = \left\{ \frac{1}{1+\kappa}
@@ -64,7 +62,7 @@ $$
               \right\}^{1/\kappa}
 $$
 
-鉛直座標を80層にした場合の整数レベルの気圧を例示する。下図において、地表気圧は場所によって1000hPaから700hPaまで変化しており、下部の層はそれに追従する一方で、上部の層は等圧になっており、両者が滑らかに接続されている。
+鉛直座標を80層にした場合の整数レベルの気圧を例示する。下層は地形に追従する一方で、上部の層は等圧になっており、両者が滑らかに接続されている。
 
 ![levels](levels.png)
 

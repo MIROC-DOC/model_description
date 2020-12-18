@@ -3,7 +3,7 @@ Table of contents
 - Mechanical Processes
   - Basic Equations
     - Basic Equations (数式をハイブリッド化済)
-    - Boundary Conditions (数式をハイブリッド化済。$\partial\pi/\partial t,\dot{\eta}$の方程式の導出は$\sigma$座標に比べて煩雑なため、今のところ省略)
+    - Boundary Conditions (数式をハイブリッド化済)
 
 # Mechanical Processes
 
@@ -49,8 +49,6 @@ $$
 $$
 
 4. Thermodynamic equation
-
-コメント：$B$は離散化後だけに出てくる変数だと思っていたが、ここでは使わざるを得ない($\dot{p}$を使っていいなら不要だが)
 
 $$
   \frac{\partial T}{\partial t}
