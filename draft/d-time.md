@@ -2,7 +2,7 @@ Table of contents
 
 - Time Integration
   - Time integration and time filtering with leap frog (変更なし)
-  - Semi-implicit time integration (数式をハイブリッド化済)
+  - Semi-implicit time integration (変更なし)
   - Applying semi-implicit time integration (数式をハイブリッド化済)
   - Time scheme properties and time step estimates (変更なし)
   - Handling of the initiation of time integration (変更なし)
@@ -103,7 +103,7 @@ $$
          - {\mathcal D}_H {\mathbf{T}} ,
 $$
 
-Here, the non-gravitational wave term is TODO
+Here, the non-gravitational wave term is
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}

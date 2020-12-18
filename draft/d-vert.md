@@ -25,7 +25,7 @@ Following Arakawa and Konor (1996) but in the Lorentz grid, the basic equations 
 
 ### Model levels
 
-下の層から上へと層の番号をつける。$\zeta,D,T,q$の物理量は整数レベル(layer)で定義されるとし、鉛直速度$\dot{\eta}$は半整数レベルにおいて定義する。ただし、$\frac{1}{2}$は下端($\eta=1$)、$K+\frac{1}{2}$は上端($\eta=0$)である。さらに、半整数レベルにおける気圧$p$を以下の式で定義する。
+下の層から上へと層の番号をつける。$\zeta,D,T,q$の物理量は整数レベルで定義されるとし、鉛直速度$\dot{\eta}$は半整数レベルにおいて定義する。ただし、$\frac{1}{2}$は下端($\eta=1$)、$K+\frac{1}{2}$は上端($\eta=0$)である。さらに、半整数レベルにおける気圧$p$を以下の式で定義する。
 
 $$
 p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s
@@ -43,7 +43,7 @@ $$
 \eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2}
 $$
 
-整数レベルにおける気圧$p_k, (k=1,2,\ldots K)$は次の式で内挿する。
+整数レベルにおける気圧$p_k, (k=1,2,\ \ldots\ K)$は次の式で内挿する。
 
 $$
  p_k = \left\{ \frac{1}{1+\kappa}
@@ -73,6 +73,8 @@ $$
   \frac{\partial \pi}{\partial t}
  = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}
 $$
+
+MIROC6.0では、以前のバージョンで用いられていた$\sigma$座標系(MIROC6.0でも選択可能である)とできるだけ類似した表式で離散化を行ったため、鉛直速度は$\dot{\sigma}=m\dot{\eta}/p_s$で表現している。また、鉛直移流$\dot{\eta}(\partial/\partial\eta)$は$m\dot{\eta}/p_s(\partial/\partial\sigma)$と等価であり、プログラム中では後者を使用している。
 
 $$
   \frac{(m\dot{\eta})_{k-1/2}}{p_s}
@@ -251,8 +253,7 @@ $$
 
 ### Differences from $\sigma$-coordinate
 
-ここではハイブリッド座標を、できるだけ$\sigma$座標に近い表式で離散化したため、両者の差は比較的少ない。重要な対応関係を以下に挙げる。
+ここではハイブリッド座標を、できるだけ$\sigma$座標に近い表式で離散化したため、両者の差は比較的少ない。両者の重要な対応関係を以下に挙げる。
 
 - 全層で$A_{k+1/2}=0$とすれば、ハイブリッド座標は$\sigma$座標に帰着する。
 - ハイブリッド座標における$\Delta B_k$と$\Delta \sigma$は、$\sigma$座標系においては両者とも$\Delta \sigma_k$に対応する。
-- ハイブリッド座標における$m\dot{\eta}/p_s$は、$\sigma$座標系における$\dot{\sigma}$に対応する。
