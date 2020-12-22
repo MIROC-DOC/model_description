@@ -96,7 +96,8 @@ m \equiv \left(\frac{\partial p}{\partial \eta}\right)_{p_s} \\
  \dot{\eta}  \equiv   \frac{d \eta}{d t} \\
 %
      T_v  \equiv  T ( 1+\epsilon_v q ) \\
-     T  \equiv   \bar{T} + T^{\prime} \\
+     T  \equiv   \bar{T} + T^{\prime}\\
+     \bar{T}\equiv 300 \ \mathrm{K} \\
 %
  \zeta  \equiv  \frac{1}{a \cos\varphi }
                     \frac{\partial v}{\partial \lambda} 
@@ -158,14 +159,4 @@ $$
   \dot{\eta} = 0  \ \ \ at \ \ \eta = 0 , \ 1 .
 $$
 
-これを用いて連続の式を鉛直積分することで、$p_s$の予報方程式と、$\dot\eta$の診断方程式が導かれる。
-
-なお、実際の離散化においては$\eta$を陽に用いない表式を用いている。例えば、鉛直移流項$\dot\eta (\partial/\partial\eta)$は以下の等式を利用して、$(m\dot{\eta}/p_s)(\partial/\partial\sigma)$に置き換えて離散化している。
-
-$$
-  \dot{\eta}\frac{\partial}{\partial \eta}
-  =\dot{\eta}\frac{\partial p}{\partial \eta}\frac{\partial}{\partial p}
-  =m\dot{\eta}\frac{\partial}{\partial p}
-  =m\dot{\eta}\frac{\partial}{\partial (p_s \sigma)}
-  =\frac{m\dot{\eta}}{p_s}\frac{\partial}{\partial \sigma}
-$$
+これを用いて連続の式を鉛直積分することで、$p_s$の予報方程式と、鉛直流の診断方程式が導かれる。
