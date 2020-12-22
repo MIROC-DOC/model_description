@@ -2,89 +2,116 @@
 
 ## Physical basis for statistical PDF scheme
 
-GCMs typically adopt fractional cloud cover to realistically represent clouds because of its coarse horizontal resolution ($O(100km)$).
-A common approach to calculating the grid-mean cloud cover is to assume that there is a subgrid‐scale distribution of humidity within the grid and to calculate the cloud cover from the portion of the distribution that is above saturation.
-PDF
-Sophisticated cloud schemes that predict higher moments like variance and skewness and are called statistical cloud schemes.
-The majority of statistical cloud schemes use the so-called "s-distribution", following Sommeria and Deardorff (1977).
-A single variable $s$, which considers the subgrid-scale perturbations of liquid temperature $T_l$ and total water $q_t$, is employed.
-$q_t$ is sum of water vapor and cloud water.
+GCMs typically adopt fractional cloud cover to realistically represent clouds because of its coarse horizontal resolution ($O(100km)$). Statistical cloud schemes assume a subgrid‐scale probability distribution function (PDF) of humidity within the grid to determine the cloud fraction and condensation. The key for statistical cloud schemes is to determine the PDF form and their moments. Assuming specific PDFs with their moments diagnosed or prognosed, integration of the PDFs will give the cloud fraction and condensate consistently.
 
+The majority of statistical cloud schemes use the so-called "s-distribution", following Sommeria and Deardorff (1977). A single variable $s$, which considers the subgrid-scale perturbations of liquid temperature $T_l$ and total water mixing ratio $q_t$, is employed. $q_t$ is sum of water vapor and cloud water mixing ratio $q_c$.
+$$
+s=a_{L}\left(q_{t}^{\prime}-\alpha_{L} T_{l}^{\prime}\right)
+$$
+where
+$$
+a_{L}=1 /\left(1+L \alpha_{L} / c_{p}\right), \alpha_{L}=\partial q_{s} /\left.\partial T\right|_{T=\bar{T_l}}.
+$$
 
+By means of the "fast condensation" assumption,
 $$
 q_{c}=\left(q_{t}-q_{s}\right) \delta\left(q_{t}-q_{s}\right)
 \tag{hpc.1}
 $$
+where $q_s$ denotes the saturation mixing ratio and $\delta(x)$ denotes the Heviside function of x.
 
 
-For any choice of $G(s)$, the grid-mean cloud fraction, $C$, and cloud water content, $qc$, are obtained by integrating $G(s)$ and $(Qc + s)G(s)$, where $Qc$ denotes the grid-scale saturation deficit.
-
+The PDF of $s$ is denoted as $G(s)$. For any choice of $G(s)$, the grid-mean cloud fraction, $C$, and cloud water content, $q_c$, are obtained by integrating $G(s)$ and $(Qc + s)G(s)$, where $Qc$ denotes the grid-scale saturation deficit defined as
 $$
-\begin{aligned}
-&q_{c}=\left\{\begin{array}{ll}
-Q_{c}+s & \text { for }-Q_{c}<s \\
-0 & \text { for }-Q_{c} \geq s
-\end{array}\right.\\
-&\text { where }\\
-&s=a_{L}\left(q_{t}^{\prime}-\alpha_{L} T_{l}^{\prime}\right)
-\end{aligned}
+Q_{c} \equiv a_{L}\left\{\bar{q}_{t}-q_{s}\left(\bar{T}_{l}, \bar{p}\right)\right\}.
 $$
-
-
 ## Hybrid Prognostic Cloud (HPC) scheme
 
-The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009).
-The shape of the PDF is represented by a skewed-triangular function.
+The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009). The HPC scheme proposes two types of shape for the PDF $G(s)$, Double-uniform PDF and Skewed-triangular PDF. We focus on Skewed-triangular because MIROC6 adoptes the shape. The physical basics of the scheme are in common with Double-uniform.
+
 
 ![](https://cdn.mathpix.com/snip/images/sT9QRiYBjSFFuHN6tYy1yHx4Md81UVA2xIGKupuEoLE.original.fullsize.png)
 
+Example of the basis PDF for HPC: skewed-triangular functions.
+Copied from Fig.1 in Watanabe et al. 2009.
 
-The model preicts variance ($V$) and skewness ($S$) of the PDF, which are affected by cumulus convection, cloud microphysics, turbulent mixing, and advection.
+The scheme preicts variance ($V$) and skewness ($S$) of the PDF. $V$, $S$, the second moment $\mu_2$, and the third moment $\mu_3$ are defined as follows.
+$$
+\mu_{2} \equiv V=\int_{-\infty}^{\infty} s^{2} G(s) d s
+$$
+$$
+\mu_{3} \equiv \mu_{2}^{3 / 2} S=\int_{-\infty}^{\infty} s^{3} G(s) d s
+$$
+$V$ and $S$ are affected by cumulus convection, cloud microphysics, turbulent mixing, and advection.
 
-## Processes
+The the integrals to obtain $C$ and $q_c$ is symbolically expressed as
+$$
+C=I_{C}\left(\bar{p}, \bar{T}_{l}, \bar{q}_{t}, \mathcal{V}, \mathcal{S}\right)
+\tag{W09-1}
+$$
+$$
+\bar{q}_{c}=I_{q}\left(\bar{p}, \bar{T}_{l}, \bar{q}_{t}, \mathcal{V}, \mathcal{S}\right)
+\tag{W09-2}
+$$
 
-Everytime after the processes that affects cloud water PDF,
+where $\bar{p}$ denotes the pressure. The overbars denote the grid-mean quantity.
 
-### Dynamical Process
+If the PDF is not too complicated, (1, 2) can be analytically solved for $V$ and $S$ by defining integrand functions, ${\tilde{I}}$ as
+
+$$
+\mathcal{V}=\tilde{I}_{\mathcal{V}} \left(\bar{p}, \bar{T}_{l}, \bar{{q}}_{v}, \bar{q}_{c}, C\right)
+$$
+$$
+\mathcal{S}=\tilde{I}_{\mathcal{VS}} \left(\bar{p}, \bar{T}_{l}, \bar{{q}}_{v}, \bar{q}_{c}, C\right)
+$$
+
+The relationship between (1, 2) and (4, 5) is quasireversible. The double-uniform function and skewed-triangular function PDFs are selected for $G(s)$ because of their feasibility in deriving ${\tilde{I}}$.
+
+## PDF change through processes
+
+The cloud scheme is composed using prognostic equations for four
+variables determining $I$, namely, $T_l$,$q_t$, $V$, and $S$. The prognostic variables can also be $T_l$, $q_t$, $C$, and $q_c$ that determine $\tilde {I}$.
+Everytime after the processes that affects cloud water PDF take place in the model, $G(s)$ is updated.  Thus $G(s)$ is modified several times within a single time step.
 ### Cumulus convection
 
-Cumulus convections modify the grid-mean enthalpy and total water by transporting the net moist energy upward.
+The total effect of cumulus convection to the PDF moments is written as
 
 $$
 \left.\frac{\Delta \mathcal{V}}{\Delta t}\right|_{\mathrm{conv} .}=M_{c} \frac{\partial \mathcal{V}}{\partial z}+\frac{\Delta \tilde{I}_{\mathcal{V}}}{\Delta t}
+\tag{W09-14}
 $$
 
 $$
 \left.\frac{\Delta \mathcal{S}}{\Delta t}\right|_{\mathrm{conv} .}=M_{c} \frac{\partial \mathcal{S}}{\partial z}+\frac{\Delta \tilde{I}_{\mathcal{S}}}{\Delta t}
+\tag{W09-15}
 $$
 
+$M_c$ is the cumulus mass-flux including downdraft.
+The vertical transport of the PDF moments is represented by the first terms on the right side hand of (14, 15).
 
-$$
-\left.\frac{\partial \bar{h}}{\partial t}\right|_{\mathrm{conv} .}=M_{c} \frac{\partial \bar{h}}{\partial z}+D\left(h^{t}-\bar{h}\right)
-$$
-
-$$
-\left.\frac{\partial \bar{q}_{v}}{\partial t}\right|_{\mathrm{conv} .}=M_{c} \frac{\partial \bar{q}_{v}}{\partial z}+D\left(q_{v}^{t}-\bar{q}_{v}\right)
-$$
-
-$$
-\left.\frac{\partial \bar{q}_{c}}{\partial t}\right|_{\mathrm{conv} .}=M_{c} \frac{\partial \bar{q}_{c}}{\partial z}+D\left(q_{c}^{t}-\bar{q}_{c}\right)
-$$
-
-the detrainment of the cloudy air mass is included, as in Bushell et al.
+Cumulus convections modify the grid-mean $T_l$,$q_t$, and $q_c$ by upward transportation in the convective tower and subsidence in the environment. Detrainment also change these variables. The detrainment of the cloudy air mass is included, as in Bushell et al.
 
 $$
 \left.\frac{\partial C}{\partial t}\right|_{\mathrm{conv} .}=D(1-C)
 $$
 
-D = g/P*CBMFX
+The second terms on the right hand side of (14, 15) indicates the changes in the PDF moments consistent with the changes in the grid-scale temperature, humidity, cloud water, and cloud fraction.
 
-tracer in CUMFXR
+$$
+\Delta \tilde{I}_{\mathcal{X}}= \tilde{I}_{\mathcal{X}}\left(\bar{p}, \bar{T}_{l}+\Delta \bar{T}_{l}, \bar{q}_{v}+\Delta \bar{q}_{v}, \bar{q}_{c}+\Delta \bar{q}_{c}, C+\Delta C\right)
+-\tilde{I}_{\mathcal{X}}\left(\bar{p}, \bar{T}_{l,} \bar{q}_{v}, \bar{q}_{c}, C\right)
+$$
 
+$$
+\tag{W09-16}
+$$
+where $\mathcal{X}$ is either $\mathcal{V}$ or $\mathcal{S}$.
+
+[](D=g/P*CBMFX)
+[](tracerinCUMFXR)
 ### Cloud Microphysics
 
-The tendency due to microphysical processes can be
-written in a similar manner to the cumulus effect
+The tendency due to microphysical processes can be written in a similar manner to the cumulus effect
 
 $$
 \left.\frac{\Delta \mathcal{V}}{\Delta t}\right|_{\text {micro. }}=\frac{\Delta \tilde{I}_{\mathcal{V}}}{\Delta t}
@@ -95,22 +122,36 @@ $$
 $$
 
 Changes in $\bar{T}_{l}, \bar{q}_{v}, \text{and } \bar{q}_{c} $  are derived from microphysical tendency terms including precipitation, evaporation, melting/freezing.
+### Turbulent mixing
 
-$\Delta C$ is assumed to be 0.
-
-### Turbulent mixing and Subgrid-scale horizontal eddy
-
-From the definition of s (see Appendix 1), the PDF
-variance becomes
+From the definition of s , the PDF variance $V$ becomes
 $$
 \mathcal{V}=a_{L}^{2}\left(\overline{q_{t}^{\prime 2}}+\alpha_{L}^{2} \Pi \overline{\theta_{l}^{\prime 2}}-2 \alpha_{L} \Pi \overline{q_{t}^{\prime} \theta_{l}^{\prime}}\right)
 $$
 
+,where $\Pi$ is the Exner function. From the level-2 closure in by Nakanishi and Niino (2004), the time change of $V$ can be derived as
+
+$$
+\begin{aligned}
+\left.\frac{\Delta \mathcal{V}}{\Delta t}\right|_{\text {turb. }}=& 2 a_{L}^{2}\left[\left(\alpha_{L} \Pi\right)^{2} K_{H}\left(\frac{\partial \bar{\theta}_{l}}{\partial z}\right)^{2}+K_{q}\left(\frac{\partial \bar{q}_{t}}{\partial z}\right)^{2}\right.\\
+&\left.-\alpha_{L} \Pi\left(K_{H}+K_{q}\right) \frac{\partial \bar{\theta}_{l}}{\partial z} \frac{\partial \bar{q}_{t}}{\partial z}\right]-\frac{2 q}{\Lambda_{2}} \mathcal{V},
+\end{aligned}
+$$
+where $K_H$ and $K_q$ are the mixing coefficients for sensible
+heat and moisture, respectively. $q^{2}=\overline{u^{\prime 2}+v^{\prime 2}+w^{\prime 2}}$ denotes the turbulent kinetic energy. The other symbols follow the original notation.
+Since the turbulence production does not affect the PDF shape parameter defined by the third moment (cf. Tompkins 2002), the skewness change $\Delta \mathcal{S} /\left.\Delta t\right|_{\text {turb. }}$ is simply calculated due to the variance change in (28).
+
+### Subgrid-scale horizontal eddy
+
+In the planetary boundary layer, the subgrid-scale inhomogeneity is dissipated due to the turbulent mixing. In free atmosphere, the grid box will be homogenized mainly due to mesoscale motions, which are expressed by the Newtonian damping as in (Tompkins 2002): $\varepsilon_{\mathcal{V}}=\frac{\mathcal{V}}{\tau_{h}}, \varepsilon_{\mathcal{S}}=\frac{\mathcal{S}}{\tau_{h}}$
+where the relaxation timescale is (as it represents the subgrid-scale eddy viscous diffusion) parameterized by the horizontal wind shear as
+$$
+\tau_{h}^{-1}=C_{s}^{2}\left\{\left(\frac{\partial \bar{u}}{\partial x}\right)^{2}+\left(\frac{\partial \bar{v}}{\partial y}\right)^{2}\right\}^{1 / 2}
+$$
+where the coefficient $C_{s}$ is set to 0.23 following (Tompkins 2002).
 ### Other physical processes
 
-radiation/mass src/dry conv
-
-
+Radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effect is included in the same way as cloud microphysics.
 ## Equation solving procedures
 
 The scheme needs two main subroutines PDF2CLD and CLD2PDF.
