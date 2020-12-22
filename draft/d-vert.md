@@ -77,13 +77,13 @@ $$
 MIROC6.0では、以前のバージョンで用いられていた$\sigma$座標系(MIROC6.0でも選択可能である)とできるだけ類似した表式で離散化を行ったため、鉛直速度は$\dot{\sigma}=m\dot{\eta}/p_s$で表現している。また、鉛直移流$\dot{\eta}(\partial/\partial\eta)$は$m\dot{\eta}/p_s(\partial/\partial\sigma)$と等価であり、プログラム中では後者を使用している。
 
 $$
-  \frac{(m\dot{\eta})_{k-1/2}}{p_s}
+  \left(\dot{\sigma}=\right)\frac{(m\dot{\eta})_{k-1/2}}{p_s}
  = - B_{k-1/2} \frac{\partial \pi}{\partial t}
    - \sum_{l=k}^{K}\left\{ D_l \Delta\sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l \right\}
 $$
 
 $$
-  \dot{\eta}_{1/2} = \dot{\eta}_{K+1/2} = 0
+  \frac{(m\dot{\eta})_{1/2}}{p_s} = \frac{(m\dot{\eta})_{k+1/2}}{p_s} = 0
 $$
 
 2. 静水圧の式
@@ -137,8 +137,6 @@ $$
              + ({\mathit KE})_k )
           - {\mathcal D}(D_k) 
 $$
-
-ここで、$\bar{T}$はリファレンスとなる気温であり、デフォルトでは全層で300Kである。また、
 
 $$
   (A_u)_k
