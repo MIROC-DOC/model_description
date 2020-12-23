@@ -154,32 +154,37 @@ where the coefficient $C_{s}$ is set to 0.23 following (Tompkins 2002).
 Radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effect is included in the same way as cloud microphysics.
 ## Equation solving procedures
 
-The scheme needs two main subroutines PDF2CLD and CLD2PDF.
-The subroutine PDF2CLD calculates $C$ and $\bar{q}_{c}$ from $\bar{p}, T_{l,} \bar{q}_{t}, \mathcal{V}, \mathcal{S}$.
-The subroutine CLD2PDF calculates $\mathcal{V}$ and $\mathcal{S}$ from $\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C$.
 
-(Watanabe et al. 2009)にならう。
-陰解法を用いた解き方について、江守さんのメモを参照する。
+The shape of the Skewed-triangular PDF is represented as follows. The widths defined by positions of the right and left edges on the s-coordinate are denoted as $a$ and $b$, respectively. The position of the top, denoted as $q$, is constrained by $a+b+q=0$. By definition, $q \leq b$ and $a \leq q$ must be satisfied. The PDF is then expressed as
+$$
+G(s)=\left\{\begin{array}{cl}-\frac{2(s-b)}{(b-q)(b-a)} & \text { for } q<s \leq b \\ \frac{2(s-a)}{(q-a)(b-a)} & \text { for } a<s \leq q\end{array}\right.
+$$
 
+The code in pmlsc file includes two main subroutines PDF2CLD and CLD2PDF. The subroutine PDF2CLD calculates $C$ and $\bar{q}_{c}$ from $\bar{p}, T_{l,} \bar{q}_{t}, \mathcal{V}, \mathcal{S}$. The subroutine CLD2PDF calculates $\mathcal{V}$ and $\mathcal{S}$ from $\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C$. These subroutines are used to taken into account the physical process effects on the PDF as described in the previous subsection.
 ### PDF2CLD
+#### From $\mu_{1}, \mu_{1}, \mu_{1}$ To $a,b,q$
 
-#### a,b,q
 
-$$
-\mu_{1}=\quad \int_{q-a}^{q+b} x p(x) d x \quad=q+\frac{b-a}{3}
-$$
+The first, second, and third moments of the PDF is calculated as follows.
 
 $$
-\mu_{2}=\int_{q-a}^{q+b}\left(x-\mu_{1}\right)^{2} p(x) d x=\frac{a^{2}+a b+b^{2}}{18}
+\mu_{1}=\quad \int_{q-a}^{q+b}sG(s)ds \quad=q+\frac{b-a}{3}
+\tag{E08-7}
 $$
 
 $$
-\mu_{3}=\int_{q-a}^{q+b}\left(x-\mu_{1}\right)^{3} p(x) d x=\frac{(b-a)\left(2 a^{2}+5 a b+2 b^{2}\right)}{270}
+\mu_{2}=\int_{q-a}^{q+b}\left(s-\mu_{1}\right)^{2} G(s)ds=\frac{a^{2}+a b+b^{2}}{18}
+\tag{E08-8}
 $$
 
-Given $\mu_{1}, \mu_{2}, \mu_{3}$,
+$$
+\mu_{3}=\int_{q-a}^{q+b}\left(s-\mu_{1}\right)^{3} G(s)ds=\frac{(b-a)\left(2 a^{2}+5 a b+2 b^{2}\right)}{270}
+\tag{E08-9}
+$$
 
-We define $\delta \equiv b-a, \beta \equiv a b$.
+From (7,8,9), we derive the solution for $a,b , q$ given $\mu_{1}, \mu_{2}, \mu_{3}$.
+
+We define $\delta \equiv b-a, \beta \equiv a b$. (8,9) are
 
 $$
 \delta^{2}+3 \beta=18 \mu_{2}
@@ -189,26 +194,30 @@ $$
 \delta\left(\beta+12 \mu_{2}\right)=90 \mu_{3}
 $$
 
-変形すると
+Transform these equations to eliminate $\beta$ or $\delta$.
 
 $$
 \delta^{3}-54 \mu_{2} \delta+270 \mu_{3}=0
+\tag{E08-10}
 $$
 
 $$
 \beta=6 \mu_{2}-\frac{1}{3} \delta^{2}
+\tag{E08-11}
 $$
 
-三次方程式の解の公式を用いて
+We apply the formula for the solution of a cubic equation to (10)obtain $\delta$.
+
 $$
 \delta=2 \sqrt{18 \mu_{2}} \cos \left(\frac{1}{3} \cos ^{-1}\left(\frac{-135 \mu_{3}}{\sqrt{\left(18 \mu_{2}\right)^{3}}}\right)+\frac{4}{3} \pi\right)
 $$
 
-$\alpha \equiv a+b$とおけば
+$\beta$ is obtained from (11). Finally, $a,b,q$ is calculated as follows.
 
 $$
 \alpha=\sqrt{\delta^{2}+4 \beta}
 $$
+
 $$
 a=(\alpha-\delta) / 2
 $$
@@ -221,10 +230,11 @@ $$
 q=\mu_{1}-\delta / 3
 $$
 
-とa,b,qが求まった。
+,where $\alpha \equiv a+b$.
 
 #### PDF to C and qc
 
+Once the PDF $G(s)$ is defined by the parameters $a,b,q$, the cloud fraction $C$ and grid-mean cloud water mixing ratio $q_c$ are
 $$
 C=\left\{\begin{array}{ll}
 0 & \text { if } b<-Q_{c} \\
@@ -232,6 +242,7 @@ C=\left\{\begin{array}{ll}
 \frac{\left(Q_{c}+a\right)^{2}}{(q-a)(b-a)} & \text { if } a \leq-Q_{c} \leq q \\
 1 & \text { if }-Q_{c}<a
 \end{array}\right.
+\tag{E08-15}
 $$
 
 $$
@@ -241,54 +252,60 @@ $$
 Q_{c}-\frac{1}{3}(1-C)\left(Q_{c}+a\right) & \text { if } a \leq-Q_{c} \leq q \\
 Q_{c} & \text { if }-Q_{c}<a
 \end{array}\right.
+\tag{E08-16}
 $$
-
 
 ### CLD2PDF
+#### From qc, C to a,b,q
 
-#### from qc, C to a,b,q
+1. When $a \leq-Q_{c} \leq q$
 
-$\left(A \leq-Q_{c} \leq Q\right)$の場合
-
+From (16), $a$ is
 $$
-A=\frac{3\left(Q_{c}-q_{c}\right)}{1-C}-Q_{c}
-$$
-からAが求まる。
-
-二次方程式
-$$
-B^{2}+A B-2 A^{2}+\left(Q_{c}+A\right)^{2} /(1-C)=0
-$$
-のうち意味のある解Bは
-$$
-B=\left(-A+\sqrt{9 A^{2}-4\left(Q_{c}+A\right)^{2} /(1-C)}\right) / 2
+a =\frac{3\left(Q_{c}-q_{c}\right)}{1-C}-Q_{c}
 $$
 
-$\left(Q \leq-Q_{c} \leq B\right)$ の場合
+Eliminate $q$ from (15) using $q = -a-b$, we obtain the quadratic equation of b.
 $$
-B=\frac{3 q_{c}}{C}-Q_{c}
-$$
-
-$$
-A^{2}+B A-2 B^{2}+\left(Q_{c}+B\right)^{2} / C=0
+b^{2}+ab-2a^{2}+\left(Q_{c}+a\right)^{2} /(1-C)=0
 $$
 
+The physically meaningful solution for $b$ is
 $$
-A=\left(-B-\sqrt{9 B^{2}-4\left(Q_{c}+B\right)^{2} / C}\right) / 2
-$$
-
-
-#### from a,b,q to moment
-
-$$
-\mu_{2}=\frac{A^{2}+A B+B^{2}}{6}
+b=\left(-a\sqrt{9 a^{2}-4\left(Q_{c}+a\right)^{2} /(1-C)}\right) / 2
 $$
 
+2. When $q \leq-Q_{c} \leq b$
+
+From (16), $b$ is
 $$
-\mu_{3}=\frac{Q A B}{10}=\frac{-(A+B) A B}{10}
+b=\frac{3 q_{c}}{C}-Q_{c}
+$$
+
+Eliminate $q$ from (15) using $q = -a-b$, we obtain the quadratic equation of a.
+$$
+a^{2}+ab-2 b^{2}+\left(Q_{c}+b\right)^{2} / C=0
+$$
+
+The physically meaningful solution for $a$ is
+$$
+a=\left(-b-\sqrt{9 b^{2}-4\left(Q_{c}+b\right)^{2} / C}\right) / 2
 $$
 
 
+#### From $a,b,q$ To the moments
+
+By definition, the PDF moments are expressed in terms of $a$ and $b$.
+
+$$
+\mu_{2}=\frac{a^{2}+ab+b^{2}}{6}
+$$
+
+$$
+\mu_{3}=\frac{-(a+b) ab}{10}
+$$
+
+## Adjustment of parameters
 ## Treatment of cloud ice
 
 Cloud ice volume does not change in the process of cloud volume diagnosis.
