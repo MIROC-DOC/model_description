@@ -16,7 +16,7 @@ The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i
 Specific formulations of each process are described in the following "Microphysical Processes" subsection.
 ## Microphysical Processes
 
-[](計算の順序)
+The calculation is done from the top layer down.
 ### Ice Properties
 
 The formulation of the ice conversion terms requires parametrization of the mass, fall speed and particle size distributions of ice. These are described first and then subsequently used to derive the conversion terms.
