@@ -1,22 +1,21 @@
 # pcldphys: Cloud Microphysics
 ## Overview of Cloud Microphysics
 
-The stratiform cloud microphysics in MIROC6 are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme.
+The stratiform cloud microphysics in MIROC6 (Tetebe et al. 2019) are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme.
+The previous version of the scheme in MIROC3.2 diagnoses the fraction of liquid-phase condensate to total condensate simply as a function of the local temperature. The explicit treatment of ice cloud processes allows more flexible representation of the cloud liquid/ice partitioning in MIROC5 and MIROC6 (Watanabe et al. 2010; Cesana et al. 2015).
 
-The previous version of the scheme in MIROC3.2 diagnoses the fraction of liquid-phase condensate to total condensate simply as a function of the local temperature. The explicit treatment of ice cloud processes allows more flexible representation of the cloud liquid/ice partitioning in MIROC5/6 (Watanabe et al. 2010; Cesana et al. 2015).
+The MIROC6 cloud microphysics treat two prognostic variables: ice water mixing ratio $q_i$ and cloud water mixing ratio $q_c$. Water vapor mixing ratio $q_v$ affects the rate of microphysical processes andn $q_v$ itself is also modified via microphysical processes. Ice number concentration $N_i$ is diagnosed as a function of $q_i$ and air temperature $T \mathrm{~K}$. Cloud number concentration $N_c$ is predicted by the online aerosol module implemented. Rain water mixing ratio $q_r$ is treated as a diagnostic variable: $q_r$ falls out to the surface within the time step.
 
-The MIROC6 cloud microphysics treat two prognostic variables: ice water mixing ratio $q_i$ and cloud water mixing ratio $q_c$. Ice number concentration $N_i$ is diagnosed as a function of $q_i$ and air temperature $T \mathrm{~K}$. Cloud number concentration $N_c$ is explicitlly predicted by the online aerosol module implemented. Rain water mixing ratio $q_r$ is treated as a diagnostic variable: $q_r$ falls out to surface within the time step.
+The scheme utilize a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i $). A number concentraion is in units $\mathrm{~m}^{-3}$.
+Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). The sub-grid scale variability of water content within the cloudy area is not considered.
 
-The scheme utilize a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A mass is obtained by multiplying the mixing ratio by the density. (e.g., the mass of ice $m_i = \rho q_i $)
-A number concentraion is in units $\mathrm{~m}^{-3}$. Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction).
-The sub-grid scale cloud variability within the cloudy area is not considered.
-
-The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i$ using physically based tendency terms, which represent homogeneous nucleation, heterogeneous nucleation, deposition and sublimation between vapor and ice, riming (cloud liquid water collection by ice), and ice melting. The warm rain processes produce rain as the sum of autoconversion and accretion.
+The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i$ using physically based tendency terms, which represent homogeneous nucleation, heterogeneous nucleation, deposition/sublimation between vapor and ice, riming (cloud liquid water collection by falling ice), and ice melting. The warm rain processes produce rain as the sum of autoconversion and accretion processes.
 
 Specific formulations of each process are described in the following "Microphysical Processes" subsection.
 ## Microphysical Processes
 
-The calculation is done from the top layer down.
+The conversion terms of all processes are calculated at a layer. The calculation is done from the top layer down within the column.
+The changes in the temperature of a layer is treated consistent with the heat release by the phase-change of water.
 ### Ice Properties
 
 The formulation of the ice conversion terms requires parametrization of the mass, fall speed and particle size distributions of ice. These are described first and then subsequently used to derive the conversion terms.
@@ -27,9 +26,11 @@ $$
 N_{i}(D)=N_{i0} \exp (-0.1222 (T-T_{0})) \exp \left(-\Lambda_{i} D\right)
 \tag{WB99.A1}
 $$
+
 where $D$ is the equivolume diameter of the particle in $\mathrm{m}$, $N_{i0}=2.0 \times 10^{6} \mathrm{~m}^{-4}$, $T$ is the temperature in Kelvin, and $T_{0}= 273.15$.  $\Lambda_{i}$ represents the slope of the exponential distribution. The temperature function $\exp (-0.1222 (T-T_0))$ represents the fact that ice particles tend to be smaller at lower temperatures, and is an implicit way of parametrizing aggregation.
 
 The mass of an ice particle is parametrized as a function of D
+
 $$
 m_{\mathrm{i}}(D)=a D^{b}
 \tag{WB99.A2}
@@ -53,9 +54,8 @@ v(\rho)=\left(\rho_{0} / \rho\right)^{0.4} \nu\left(\rho_{0}\right)
 \tag{WB99.A6}
 $$
 
-The combination of the distribution, mass and velocity relationships yield a fall-speed ice water content relationship.
+The combination of the size distribution, mass and velocity relationships yield a fall-speed ice water content relationship.
 
-### Ice Fall Flux
 
 For a given ice content and temperature, $\Lambda_{\text {i}}$ can be calculated by integrating (A.2) across the particle size distribution (A.1). This gives the result that, for a given temperature, $\Lambda_{\text {i}}$ is proportional to the inverse cube root of the ice water content.
 
@@ -63,35 +63,39 @@ $$
 \Lambda_{\text {i}} = \left(\frac{2aN_{i0}\exp (-0.1222 (T-T_{0}))}{m_i}\right)^{\frac{1}{3}}
 $$
 
-GPICEWGT ( IJSDIM,KMAX,0:KMAX ) !! ice flux weight to level k
-VICELMT ( IJSDIM,KMAX,KMAX ) !! fall through limit
-STYABV  !! ice flux fraction which stays above , times GAMF(1)
-GOTHR ( IJSDIM, KMAX, KMAX )  !! ice fraction which goes through
-
-The ice flux fraction from the layer k which stays above the level kk, $\text{STYABV}|_{k,kk}$ is
-
-
-fraction of ice flux from level 'k' to 'kk'
-
-Finally, the fraction of ice flux from level 'k' to the level 'kk' in the time-step, $\text{iceweight}|_{k,kk}$, is given as follows.
-
 ### Evaporation of Rain and Snow
 
 The evaporation rate of rain $E_{r}\mathrm{~kg} \mathrm{~kg}^{-1} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$ is expressed as
 $$
 E_{r}=k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}}
 $$
-where $F_r$ denotes the net accumulation of rain water at the layer, $V_{Tr}$ the terminal velocity, and $k_E$ the evaporation factor ($V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}$and $k_E = 0.5$). $q_w$ correcponds to the saturation water vapor mixing ratio at the wet-bulb temperature. The evaporation occurs only when $q^{w}-q_v>0$.
+where $F_r$ denotes the net accumulation of rain water at the layer, $V_{Tr}$ the terminal velocity, and $k_E$ the evaporation factor ($V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}$and $k_E = 0.5$). $q^w$ correcponds to the saturation water vapor mixing ratio at the wet-bulb temperature. The evaporation occurs only when $q^{w}-q_v>0$.
 
-Similary to this, the evaporation rate of snow $E_{s}\mathrm{~kg} \mathrm{~kg}^{-1} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$ is expressed as
+Similary to this, the evaporation rate of falling ice $E_{i}\mathrm{~kg} \mathrm{~kg}^{-1} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$ is expressed as
 $$
-E_{s}=k_{E}\left(q^{w}-q_v\right) \frac{F_s}{V_{Tr}}
+E_{i}=k_{E}\left(q^{w}-q_v\right) \frac{F_i}{V_{Tr}}
 $$
-where $F_s$ denotes sedimentation of cloud ice above the layer. $V_{Ts} = 5\mathrm{~m}$.
+where $F_i$ denotes sedimentation of cloud ice above the layer. $V_{Ts} = 5\mathrm{~m}$.
 
-### Ice Fall Out
+### Ice Fall
 
-### Ice Fall In
+
+The total ice flux from the layer is
+$$
+F_i=\int N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD.
+$$
+
+The fraction of ice flux from level the 'k' to the below level 'kk' $(1<=\text{kk}<\text{k})$ $\text{iceweight}|_{k,kk}$, is given as
+
+$$
+\frac{\int^{f(\text{zm(k)}-\text{zm(kk)})}_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD-
+\int^{f(\text{zm(k)}-\text{zm(kk+1)})}_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD}
+{\int^\infty_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD},
+$$
+
+where zm(k) is the middle of the height of the layer k, and f(dz) is the ice size which falls dz in a single time step.
+The net ice fall out from the layer is $F_i$.
+The net ice fall in to the layer 'k' is $\sum^{l=kmax}_{l=k+1}F_i|_{k=l} \times \text{iceweight}|_{l,k}$.
 
 ### Homogeneous nucleation
 
@@ -154,7 +158,6 @@ $$
 $V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal.
 $v_{t}$ is the cloud droplet terminal velocity; $g$ is the acceleration due to gravity.
 ### Ice melt
-
 
 since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
 $$
