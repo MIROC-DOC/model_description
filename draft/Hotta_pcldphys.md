@@ -80,9 +80,9 @@ where $F_i$ denotes sedimentation of cloud ice above the layer. $V_{Ts} = 5\math
 ### Ice Fall
 
 
-The total ice flux from the layer is
+The total ice flux from the layer 'k' is
 $$
-F_i=\int N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD.
+F_i|_k = \int^\infty_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD.
 $$
 
 The fraction of ice flux from level the 'k' to the below level 'kk' $(1<=\text{kk}<\text{k})$ $\text{iceweight}|_{k,kk}$, is given as
@@ -103,49 +103,47 @@ This term simply converts all liquid water to ice if the temperature is less tha
 
 ### Heterogeneous nucleation
 
-Heterogeneous freezing of cloud droplets takes place through contact and immersion freezing on ice cucleating particles (INPs), which are parameterized according to Lohmann and Diehl (2006) and Diehl et al. (2006).
-Soil dust and black carbon can act as INPs.
-Ratios of activated INPs to the total number concentration of soil dust and black carbon for the contact freezing and the immersion/condensation freezing are based on Fig. 1 in Lohmann and Diehl (2006)
-With the number of INPs ($N_{nuc}$) calculated in SPRINTARS, the rate of heterogeneous freezing is diagnosed as follows.
+A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS; Takemura et al. 2000, 2002, 2005, 2009) coupled with MIROC6 explicitly predicts the number concentrations for aerosol species. Heterogeneous freezing of cloud droplets takes place through contact and immersion freezing on ice cucleating particles (INPs), which are parameterized according to Lohmann and Diehl (2006) and Diehl et al. (2006). Soil dust and black carbon can act as INPs. Ratios of activated INPs to the total number concentration of soil dust and black carbon for the contact freezing and the immersion/condensation freezing are based on Fig. 1 in Lohmann and Diehl (2006). With the number of INPs ($N_{nuc}$) predicted in SPRINTARS, the rate of heterogeneous freezing is diagnosed as follows.
 
 $$
 \frac{\partial q_i}{\partial t}=  \max \{N_{nuc} W_{nuc0}, q_c\}
 $$
+
 The weight of nucleated drop, $W_{nuc0}$, is set to $1.0\times10^{-12}$.
 ### Deposition-sublimation
 
-A single ice particle grows or disappear by vapour diffusion according to the following equation:
+A single ice particle grows or disappears by water vapor diffusion according to the following equation:
 
 $$
 \frac{\partial m_i(D)}{\partial t}=\left\{4 \pi C\left(S_{\mathrm{i}}-1\right) F\right\} /\left[\left\{L_{\mathrm{s}} /(R_{v} T)-1\right\} L_{\mathrm{s}} /\left(k_{\mathrm{a}} T\right)+R_v T /\left(X P_{\text {sati }}\right)\right]
 $$
 
-where $\frac{\partial m_i(D)}{\partial t}$ is the rate of change of mass of the particle; $(S_i - 1)$ is the supersaturation of the atmosphere with respect to ice; $R_v$ is the gas constant for water vapour; $k_a$ is the thermal conductivity of air at temperature $T, X$ is the diffusivity of water vapour; $P_{\text {sati}}$ is the saturated vapour pressure over ice; $L_{\mathrm{s}}$ is the latent heat of sublimation of ice; $C$ is a capacitance term and $F$ is a ventilation coefficient. $C$ is assumed to appropriate to spheres, so is equal to $D / 2 . F$ is given by Pruppacher and Klett (1978) as $F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}$ where $S c$ is the Schmidt number, equal to $0.6,$ and $R e$ is the Reynolds number, $v(D) \rho D / \mu,$ where $v(D)$ is the fall-speed of the particle and $\mu$ is the dynamic viscosity of air.
+where $\frac{\partial m_i(D)}{\partial t}$ is the rate of change of the particle mass; $(S_i - 1)$ is the supersaturation of the atmosphere with respect to ice; $R_v$ is the gas constant for water vapour; $k_a$ is the thermal conductivity of air at temperature $T, X$ is the diffusivity of water vapour; $P_{\text {sati}}$ is the saturated vapour pressure over ice; $L_{\mathrm{s}}$ is the latent heat of sublimation of ice; $C$ is a capacitance term and $F$ is a ventilation coefficient. $C$ is assumed to appropriate to spheres, so is equal to $D/2$ . $F$ is given by Pruppacher and Klett (1978) as $F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}$ where $S c$ is the Schmidt number, equal to $0.6,$ and $R e$ is the Reynolds number, $v(D) \rho D / \mu,$ where $\mu$ is the dynamic viscosity of air.
 
-Integrating the distribution of ice, $\frac{\partial q_i}{\partial t}$ is obtained as
+Integrating ice size distribution, $\frac{\partial q_i}{\partial t}$ is obtained as
+
 $$
-\frac{\partial q_i}{\partial t}=\int \frac{\partial m_i(D)}{\partial t}N(D)dD
+\frac{\partial q_i}{\partial t}= \frac{1}{\rho}\int \frac{\partial m_i(D)}{\partial t}N(D)dD
 $$
 
 The ice grows or disappears depending on the sign of $(S_i - 1)$.
 
 1. $(S_i - 1)>0$
 
-The ice grows (deposition). If $q_c$ exists, $q_c$ is evaporated as fast as the deposition process (Wegener–Bergeron–Findeisen process). the saturation vapor pressure over water and the lower saturation vapor pressure over ice. The basis of this theory is the fact that the equilibrium vapor pressure of water vapor with respect to ice is less than that with respect to liquid water at the same subfreezing temperature. Thus, within an admixture of these particles, the ice crystals would gain mass by vapor deposition at the expense of the liquid drops that would lose mass by evaporation.
+The ice grows (deposition). If $q_c$ exists, $q_c$ is evaporated as fast as the deposition process (Wegener–Bergeron–Findeisen process). The basis of this theory is the fact that the saturation vapor pressure of water vapor with respect to ice is less than that with respect to liquid water at the same temperature. Thus, within a mixture of these particles, the ice would gain mass by vapor deposition at the expense of the liquid drops that would lose mass by evaporation.
 
 1. $(S_i - 1)<0$
 
-The ice disappears (sublimation)
+The ice disappears (sublimation).
 ### Cloud water collection by ice (riming)
-The Rate at which single ice particle collects supercooled liquid water is given by the equation
 
-Lomann 2004
-In the model, riming (the ice crystals settling through a population of supercooled cloud droplets, freezing them upon collision) is based on the geometric sweep-out integrated over all ice sizes:
+Riming process (the ice crystals settling through a population of supercooled cloud droplets, freezing them upon collision) is based on the geometric sweep-out integrated over all ice sizes (Lohmann 2004):
+
 $$
 \frac{\partial q_{i}}{\partial t}=\frac{\pi E_{\mathrm{SW}} n_{0 S} a q_{c} \Gamma(3+b)}{4 \lambda_{S}^{(3+b)}}\left(\frac{\rho_{0}}{\rho}\right)^{0.5}
 $$
-where $n_{0 S}=3 \times 10^{6} \mathrm{~m}^{-4}$ is the intercept parameter, $\lambda_{S}$ is the slope of the exponential Marshall-Palmer snow crystal size distribution, $a=4.84, b=0.25, \rho$ is the air density, and $\rho_{0}=1.3 \mathrm{~kg} \mathrm{~m}^{-3}$ is the reference density.
-The collection efficiency $E_{\mathrm{sw}}$ is highly dependent on the cloud droplet and snow crystal size (Pruppacher and Klett 1997 ). The size-dependent collection efficiency for aggregates is introduced as obtained from laboratory results by Lew et al. (1986) (simulation ESWagg)
+
+where $n_{0 S}=3 \times 10^{6} \mathrm{~m}^{-4}$ is the intercept parameter, $\lambda_{S}$ is the slope of the exponential Marshall-Palmer ice crystal size distribution, $a=4.84, b=0.25$, and $\rho_{0}=1.3 \mathrm{~kg} \mathrm{~m}^{-3}$ is the reference density. The collection efficiency $E_{\mathrm{sw}}$ is highly dependent on the cloud droplet and snow crystal size (Pruppacher and Klett 1997). The size-dependent collection efficiency for aggregates is introduced as obtained from laboratory results by Lew et al. (1986) (simulation ESWagg)
 
 $$
 E_{\mathrm{SW}}^{\mathrm{agg}}=0.939 \mathrm{St}^{2.657}
@@ -153,43 +151,44 @@ $$
 
 The Stokes number (St) is given by
 $$
-\mathrm{St}=\frac{2\left(V_{t}-\boldsymbol{v}_{t}\right) \boldsymbol{v}_{t}}{D g}
+\mathrm{St}=\frac{2\left(V_{t}-{v}_{t}\right) {v}_{t}}{D g}.
 $$
-$V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal.
-$v_{t}$ is the cloud droplet terminal velocity; $g$ is the acceleration due to gravity.
+
+$V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal.$v_{t}$ is the cloud droplet terminal velocity; $g$ is the acceleration due to gravity.
 ### Ice melt
 
-since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
-$$
-\mathrm{d} m / \mathrm{d} t=-4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T_{\mathrm{w}}-T_{0}\right)\right\}
-$$
-where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T_{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}$ is the freezing point of ice. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F,$ is considered to be
+Since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
 
-The rate of change of ice mass of a melting particle is given by
+$$
+\frac{\partial m_i}{\partial t}
+=-4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\},
+$$
 
-$T_{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}$ is the freezing point of ice. The wet-bulb temperature is calculated using a numerical approximation containing the saturation deficit and the air
+where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in deposition/sublimation process.
 
 ### Warm rain cloud microphysics
 
-
-A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS; Takemura et al. 2000, 2002, 2005, 2009) coupled with MIROC6 explicitly predicts the number concentrations for aerosol species.
 The nucleation of cloud droplets is based on the parameterization by Abdul-Razzak and Ghan [2000].
 
-The autoconversion term following Berry (1967) is a function of $q_c$ and $N_c$ to take into account aerosol-cloud interaction.
+The autoconversion term following Berry (1967) is a function of $q_c$ and $N_c$.
+
+$$
+\frac{\partial q_c}{\partial t} = -
+\frac{1}{\rho}
+\frac{b_1 \times m_{c}^{2}}{b_2+b_3 \frac{N_{c}}{m_{c}}}
+$$
+
+to take into account the effect of aerosol-cloud interaction on clouds lifetime.
+The accretion term is given as
+$$
+\frac{\partial q_c}{\partial t} = -
+\frac{1}{\rho}q_c q_r
+$$
+
 Rain water $q_r$ is treated as a diagnostic variables.
 $q_r$ falls out to surface within the time step.
 
-autoconversion
-Berry scheme
-b1 = 0.035, b2 =0.12, b3 = 1.d-12
-
-
-accretion
-
-### total precipitation
-
-### melt/freeze
-
+$b_1 = 0.035$, $b_2 =0.12$, $b_3 = 1.0\times10^{-12}$
 ## Future Challenges
 
 
