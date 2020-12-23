@@ -306,6 +306,36 @@ $$
 $$
 
 ## Adjustment of Cloud Fraction
+
+When there is no physically meaningful solution for (18), $C$ is adjusted so that a reasonable solution is obtained. The critical conditions for the existence of real solutions for (18) are as follows.
+
+$$
+\begin{array}{ll}
+9 a^{2}-4\left(Q_{c}+a\right)^{2} /(1-C)=0 & \left(a \leq-Q_{c} \leq q\right) \\
+9 b^{2}-4\left(Q_{c}+b\right)^{2} / C=0 & \left(q \leq-Q_{c} \leq b\right)
+\end{array}
+$$
+
+Eliminate $a$ and $b$ by (17),
+
+$$
+\begin{array}{ll}
+9\left(\frac{3\left(Q_{c}-q_{c}\right)}{1-C}-Q_{c}\right)^{2}=\frac{4}{1-C}\left(\frac{3\left(Q_{c}-q_{c}\right)}{1-C}\right)^{2} & \left(A \leq-Q_{c} \leq Q\right) \\
+9\left(\frac{3 q_{c}}{C}-Q_{c}\right)^{2}=\frac{4}{C}\left(\frac{3 q_{c}}{C}\right)^{2} & \left(Q \leq-Q_{c} \leq B\right)
+\end{array}
+$$
+
+We define $R_{1}=1-\frac{q_{c}}{Q_{c}}, R_{2}=\frac{q_{c}}{Q_{c}}$,
+
+$$
+\gamma^{2}=\left\{\begin{array}{ll}
+-4 R \sinh ^{2}\left(\frac{1}{3} \sinh ^{-1}\left(\frac{1}{\sqrt{-R}}\right)\right) & (R<0) \\
+4 R \cos ^{2}\left(\frac{1}{3} \cos ^{-1}\left(\frac{1}{\sqrt{R}}\right)+\frac{4}{3} \pi\right) & (R>1)
+\end{array}\right.
+$$
+
+Note that, $\gamma=\gamma_{1}, R=R_{1}\left(a \leq-Q_{c} \leq q\right)$ or $\gamma=\gamma_{2}, R=R_{2}\left(q \leq-Q_{c} \leq b\right)$.
+
 ## Treatment of cloud ice and in-cloud water vapor
 
 Because the original HPC scheme by Watanabe et al. (2009) does not consider the cloud ice, it is modified when coupled with the Wilson and Ballard (1999) ice microphysics. Since the statistical PDF scheme employs a ‘fast condensation’ assumption that is not valid for ice, the ice mixing ratio is conserved in the large scale condensation process by assuming that the cloud ice exists preferentially in a subgrid area having the largest amount of total condensate.
