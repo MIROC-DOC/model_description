@@ -305,17 +305,66 @@ $$
 \mu_{3}=\frac{-(a+b) ab}{10}
 $$
 
-## Adjustment of parameters
-## Treatment of cloud ice
+## Adjustment of Cloud Fraction
+## Treatment of cloud ice and in-cloud water vapor
 
-Cloud ice volume does not change in the process of cloud volume diagnosis.
-At first the cloud fraction and cloud water is diagnosed.
+Because the original HPC scheme by Watanabe et al. (2009) does not consider the cloud ice, it is modified when coupled with the Wilson and Ballard (1999) ice microphysics. Since the statistical PDF scheme employs a ‘fast condensation’ assumption that is not valid for ice, the ice mixing ratio is conserved in the large scale condensation process by assuming that the cloud ice exists preferentially in a subgrid area having the largest amount of total condensate.
 
-1. qc>qi
+Here we assume that
+- the water vapor mixing ratio within the cloudy area in a grid is constant
+- cloud ice preferentially exists in areas with large total water content
 
+Based on these two assumptions, the cloud fraction and each condensate mixing ratios are diagnosed in the following manner. The mixing ratios of liquid water $q_l$, ice $q_i$, vapor $q_v$, in-cloud vapor is $q_{vi}$ are employed.
 
+At first the total condensate mixing ratio $q_c$ is diagnosed from $q_t$ and $T_l$ assuming that ice does not exist. The saturation mixing ratio is set for liquid ($q_{\text{satl}}$).
+Mixed-phase cloud is generated when the condensate amount is more than the ice content, whereas the cloud fraction and vapor amount are adjusted in the case of a pure ice cloud when the condensate amount is less than the ice content. Specifically, $C$ and $q_{vi}$ is calculated as follows.
 
-1. qc<qi
+1. $q_c>q_i$
 
-## In-cloud water vapor
+Liquid-phase clouds and ice clouds coexist.
 
+$$
+q_l= q_c-q_i
+$$
+
+$$
+q_{vi} = q_{\text{satl}}
+$$
+
+2. $q_c<q_i$
+
+Only ice clouds exist $(q_l=0)$. In this case, $C$ and $q_{vi}$ are rediagnosed. With the assumption that $q_c=q_i$, we eliminate $Q_c$ in (15,16) and $C$ is given as
+
+$$
+C^{3}=\frac{9 q_{i}^{2}}{(b-q)(b-q)} \left(q \leq-Q_{c} \leq b\right)
+$$
+
+$$
+C^{3}+3 C^{2}=4-\frac{9\left(q_{i}+a\right)^{2}}{(q-a)(b-a)} \left(a \leq-Q_{c}<q\right)
+$$
+
+From these equations, $C$ is obtained as follows.
+
+$$
+C=\left\{\begin{array}{ll}
+\sqrt[3]{\frac{9 q_{i}^{2}}{(b-q)(b-a)}} & \left(0 \leq q_{i} \leq \frac{(b-q)^{2}}{3(b-a)}\right) \\
+2 \cos \left(\frac{1}{3} \cos ^{-1}\left(1-\frac{9\left(q_{i}+a\right)^{2}}{2(q-a)(b-a)}\right)\right)-1 & \left(\frac{(b-q)^{2}}{3(b-a)}<q_{i} \leq-a\right)\\
+1 & \left(-a<q_{i}\right)
+\end{array}\right.
+$$
+
+,where
+
+$$
+Q_{c}=\frac{3 q_{i}}{C}-b=\sqrt[3]{3 q_{i}(b-q)(b-a)}-b.
+$$
+
+Given $Q_{c}$, $q_{v i}=q_{t}-Q_{c}$ is
+
+$$
+q_{v i}=\left\{\begin{array}{ll}
+q_{t}-\frac{3 q_{i}}{C}+b & \left(0 \leq q_{i} \leq \frac{(b-q)^{2}}{3(b-a)}\right) \\
+q_{t}-\frac{3\left(q_{i}+a\right)}{2+C}+a & \left(\frac{(b-q)^{2}}{3(b-a)}<q_{i} \leq-a\right) \\
+q_{t}-q_{i} & \left(-a<q_{i}\right)
+\end{array}\right.
+$$
