@@ -1,4 +1,6 @@
-# pmlsc: Large Scale Condensation
+# pmlsc: Large Scale Condensationa
+
+The code is written in the 'pmlsc' file and called in 'padmn', 'pcumc', 'pshcn', and 'pvdfm' files.
 
 ## Physical basis for statistical PDF scheme
 
@@ -151,7 +153,7 @@ $$
 where the coefficient $C_{s}$ is set to 0.23 following (Tompkins 2002).
 ### Other physical processes
 
-Radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effect is included in the same way as cloud microphysics.
+Dynamics, shallow convection, radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effect is included in the same way as cloud microphysics.
 ## Equation solving procedures
 
 
@@ -344,7 +346,7 @@ Here we assume that
 - the water vapor mixing ratio within the cloudy area in a grid is constant
 - cloud ice preferentially exists in areas with large total water content
 
-Based on these two assumptions, the cloud fraction and each condensate mixing ratios are diagnosed in the following manner. The mixing ratios of liquid water $q_l$, ice $q_i$, vapor $q_v$, in-cloud vapor is $q_{vi}$ are employed.
+Based on these two assumptions, the cloud fraction and each condensate mixing ratios are diagnosed in the following manner. The mixing ratios ($q_l, q_i, q_v, q_{vi}$) of liquid water (subscript l), ice (subscript i), vapor (subscript v), in-cloud vapor (subscript vi) are employed.
 
 At first the total condensate mixing ratio $q_c$ is diagnosed from $q_t$ and $T_l$ assuming that ice does not exist. The saturation mixing ratio is set for liquid ($q_{\text{satl}}$).
 Mixed-phase cloud is generated when the condensate amount is more than the ice content, whereas the cloud fraction and vapor amount are adjusted in the case of a pure ice cloud when the condensate amount is less than the ice content. Specifically, $C$ and $q_{vi}$ is calculated as follows.

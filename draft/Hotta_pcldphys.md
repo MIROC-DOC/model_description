@@ -1,21 +1,56 @@
 # pcldphys: Cloud Microphysics
+
+The code is written in the 'pcldphys' file.
 ## Overview of Cloud Microphysics
 
-The stratiform cloud microphysics in MIROC6 (Tetebe et al. 2019) are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme.
+Cloud microphysics control the conversion from water condensate to precipitate. The condensate parameterization closely links the radiative properties of the clouds. Cloud fraction is predicted as described in the section 'pmlsc: Large Scale Condensation'.
+
+The stratiform (non-convective) cloud microphysics in MIROC6 (Tetebe et al. 2019) are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme.
 The previous version of the scheme in MIROC3.2 diagnoses the fraction of liquid-phase condensate to total condensate simply as a function of the local temperature. The explicit treatment of ice cloud processes allows more flexible representation of the cloud liquid/ice partitioning in MIROC5 and MIROC6 (Watanabe et al. 2010; Cesana et al. 2015).
 
 The MIROC6 cloud microphysics treat two prognostic variables: ice water mixing ratio $q_i$ and cloud water mixing ratio $q_c$. Water vapor mixing ratio $q_v$ affects the rate of microphysical processes andn $q_v$ itself is also modified via microphysical processes. Ice number concentration $N_i$ is diagnosed as a function of $q_i$ and air temperature $T \mathrm{~K}$. Cloud number concentration $N_c$ is predicted by the online aerosol module implemented. Rain water mixing ratio $q_r$ is treated as a diagnostic variable: $q_r$ falls out to the surface within the time step.
 
 The scheme utilize a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i $). A number concentraion is in units $\mathrm{~m}^{-3}$.
-Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). The sub-grid scale variability of water content within the cloudy area is not considered.
+
+Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. The sub-grid scale variability of water content within the cloudy area is not considered.
 
 The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i$ using physically based tendency terms, which represent homogeneous nucleation, heterogeneous nucleation, deposition/sublimation between vapor and ice, riming (cloud liquid water collection by falling ice), and ice melting. The warm rain processes produce rain as the sum of autoconversion and accretion processes.
 
 Specific formulations of each process are described in the following "Microphysical Processes" subsection.
 ## Microphysical Processes
 
-The conversion terms of all processes are calculated at a layer. The calculation is done from the top layer down within the column.
-The changes in the temperature of a layer is treated consistent with the heat release by the phase-change of water.
+The time evolution of $q_i$ by microphysical processes is
+$$
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {micro}}
+=\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {icein}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {iceout}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
+$$
+
+where t is time. The terms of the right hand side denote evaporation of snow (sunscript esnw), ice fall in (subscript icein), ice fall out (subscript iceout), homogeneous nucleation (subscript hom), heterogeneous nucleation (subscript het), deposition/sublimation (subscript dep), riming (subscript rim), and melting (subscript mlt).
+
+Similarly, the time evolution of $q_c$ by microphysical processes is
+$$
+\left(\frac{\partial q_c}{\partial t}\right)_{\text {micro}}
+=\left(\frac{\partial q_c}{\partial t}\right)_{\text {hom}}
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {het}}
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {rim}}
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {evap}}
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {auto}}
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {accr}}
+$$
+
+the terms on the right hand side are homogeneous nucleation, heterogeneous nucleation, riming, evaporation (subscript evap), autoconversion (subscript auto), and accretion (subscript accr).
+The formulations of these processes are detailed in the following subsections.
+
+The conversion terms of all processes are calculated at every layer from the top layer to the bottom layer of the column.
+
+The changes in the temperature of a layer is treated consistent with the heat release caused by the phase-change of water.
 ### Ice Properties
 
 The formulation of the ice conversion terms requires parametrization of the mass, fall speed and particle size distributions of ice. These are described first and then subsequently used to derive the conversion terms.
@@ -79,7 +114,6 @@ where $F_i$ denotes sedimentation of cloud ice above the layer. $V_{Ts} = 5\math
 
 ### Ice Fall
 
-
 The total ice flux from the layer 'k' is
 $$
 F_i|_k = \int^\infty_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD.
@@ -110,7 +144,7 @@ $$
 $$
 
 The weight of nucleated drop, $W_{nuc0}$, is set to $1.0\times10^{-12}$.
-### Deposition-sublimation
+### Deposition/Sublimation
 
 A single ice particle grows or disappears by water vapor diffusion according to the following equation:
 
@@ -178,8 +212,7 @@ $$
 \frac{b_1 \times m_{c}^{2}}{b_2+b_3 \frac{N_{c}}{m_{c}}}
 $$
 
-to take into account the effect of aerosol-cloud interaction on clouds lifetime.
-The accretion term is given as
+The effect of aerosol-cloud interaction on clouds lifetime is taken into account by the dependency on $N_c$. The accretion term is given as
 $$
 \frac{\partial q_c}{\partial t} = -
 \frac{1}{\rho}q_c q_r
@@ -189,7 +222,7 @@ Rain water $q_r$ is treated as a diagnostic variables.
 $q_r$ falls out to surface within the time step.
 
 $b_1 = 0.035$, $b_2 =0.12$, $b_3 = 1.0\times10^{-12}$
-## Future Challenges
+
 
 
 
