@@ -4,7 +4,7 @@ The code is written in the 'pmlsc' file and called in 'padmn', 'pcumc', 'pshcn',
 
 ## Physical basis for statistical PDF scheme
 
-GCMs typically adopt fractional cloud cover to realistically represent clouds because of its coarse horizontal resolution ($O(100km)$). Statistical cloud schemes assume a subgrid‐scale probability distribution function (PDF) of humidity within the grid to determine the cloud fraction and condensation. The key for statistical cloud schemes is to determine the PDF form and their moments. Assuming specific PDFs with their moments diagnosed or prognosed, integration of the PDFs will give the cloud fraction and condensate consistently.
+GCMs typically adopt fractional cloud cover (the volume of cloudy air per total air volume in a grid box )to realistically represent clouds because of its coarse horizontal resolution ($O(100km)$). Statistical cloud schemes assume a subgrid‐scale probability distribution function (PDF) of humidity within the grid to determine the cloud fraction and condensation. The key for statistical cloud schemes is to determine the PDF form and their moments. Assuming specific PDFs with their moments diagnosed or prognosed, integration of the PDFs will give the cloud fraction and condensate consistently.
 
 The majority of statistical cloud schemes use the so-called "s-distribution", following Sommeria and Deardorff (1977). A single variable $s$, which considers the subgrid-scale perturbations of liquid temperature $T_l$ and total water mixing ratio $q_t$, is employed. $q_t$ is sum of water vapor and cloud water mixing ratio $q_c$.
 $$
@@ -73,7 +73,9 @@ The relationship between (1, 2) and (4, 5) is quasireversible. The double-unifor
 
 The cloud scheme is composed using prognostic equations for four
 variables determining $I$, namely, $T_l$,$q_t$, $V$, and $S$. The prognostic variables can also be $T_l$, $q_t$, $C$, and $q_c$ that determine $\tilde {I}$.
-Everytime after the processes that affects cloud water PDF take place in the model, $G(s)$ is updated.  Thus $G(s)$ is modified several times within a single time step.
+In ECHAM, the cloud scheme is called after the advection, vertical mixing, and convection schemes. It calculates the tendencies of the cloud variables due to cloud processes
+
+ The HPC scheme is called and $G(s)$ is updated after the processes that affects cloud water PDF. Thus $G(s)$ is modified several times within a single time step.
 ### Cumulus convection
 
 The total effect of cumulus convection to the PDF moments is written as

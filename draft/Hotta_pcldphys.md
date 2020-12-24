@@ -12,14 +12,15 @@ The MIROC6 cloud microphysics treat two prognostic variables: ice water mixing r
 
 The scheme utilize a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i $). A number concentraion is in units $\mathrm{~m}^{-3}$.
 
-Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. The sub-grid scale variability of water content within the cloudy area is not considered.
+Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. The sub-grid scale variability of water content within the cloudy area is not considered at present.
 
 The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i$ using physically based tendency terms, which represent homogeneous nucleation, heterogeneous nucleation, deposition/sublimation between vapor and ice, riming (cloud liquid water collection by falling ice), and ice melting. The warm rain processes produce rain as the sum of autoconversion and accretion processes.
 
 Specific formulations of each process are described in the following "Microphysical Processes" subsection.
 ## Microphysical Processes
 
-The time evolution of $q_i$ by microphysical processes is
+The time evolution of $q_i$ by microphysical processes is written in symbolic form as follows.
+
 $$
 \left(\frac{\partial q_i}{\partial t}\right)_{\text {micro}}
 =\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
@@ -29,7 +30,7 @@ $$
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}},
 $$
 
 where t is time. The terms of the right hand side denote evaporation of snow (sunscript esnw), ice fall in (subscript icein), ice fall out (subscript iceout), homogeneous nucleation (subscript hom), heterogeneous nucleation (subscript het), deposition/sublimation (subscript dep), riming (subscript rim), and melting (subscript mlt).
@@ -48,9 +49,44 @@ $$
 the terms on the right hand side are homogeneous nucleation, heterogeneous nucleation, riming, evaporation (subscript evap), autoconversion (subscript auto), and accretion (subscript accr).
 The formulations of these processes are detailed in the following subsections.
 
-The conversion terms of all processes are calculated at every layer from the top layer to the bottom layer of the column.
+The conversion terms of all processes are calculated at every layer downward from the top layer (k=kmax) to the bottom layer of the column (k=1). k  is the vertical level increasing with height, i.e., k+1 is the next vertical level above k.
 
-The changes in the temperature of a layer is treated consistent with the heat release caused by the phase-change of water.
+The changes in the temperature of a layer is treated consistent with the phase-change of water.
+
+$$
+\left(\frac{\partial T}{\partial t}\right)_{phase~change}=\left(\frac{\partial T}{\partial t}\right)_{vapor \leftrightarrow liquid}+\left(\frac{\partial T}{\partial t}\right)_{vapor \leftrightarrow solid}+\left(\frac{\partial T}{\partial t}\right)_{liquid \leftrightarrow solid}
+$$
+
+with
+
+$$
+\left(\frac{\partial T}{\partial t}\right)_{vapor \leftrightarrow liquid}
+=\frac{L_{v}}{c_{p}}\left(
+\left(\frac{\partial q_c}{\partial t}\right)_{evap}
++\left(\frac{\partial q_r}{\partial t}\right)_{erain}
+\right)
+$$
+
+$$
+\left(\frac{\partial T}{\partial t}\right)_{vapor \leftrightarrow solid}
+=\frac{L_{s}}{c_{p}}\left(
+\left(\frac{\partial q_i}{\partial t}\right)_{esnw}
++\left(\frac{\partial q_i}{\partial t}\right)_{dep}
+\right)
+$$
+
+$$
+\left(\frac{\partial T}{\partial t}\right)_{liquid \leftrightarrow solid}
+=\frac{L_{f}}{c_{p}}\left(
+\left(\frac{\partial q_i}{\partial t}\right)_{hom}
++\left(\frac{\partial q_i}{\partial t}\right)_{hel}
+\left(\frac{\partial q_i}{\partial t}\right)_{rim}
++\left(\frac{\partial q_i}{\partial t}\right)_{mlt}
+\right)
+$$
+
+where $L_v, L_s, L_f$ is the latent heat of vaporization, sublimation, and fusion, respectively, $C_p$ is the specific heat of moist air at constant pressure,
+
 ### Ice Properties
 
 The formulation of the ice conversion terms requires parametrization of the mass, fall speed and particle size distributions of ice. These are described first and then subsequently used to derive the conversion terms.
@@ -100,16 +136,21 @@ $$
 
 ### Evaporation of Rain and Snow
 
-The evaporation rate of rain $E_{r}\mathrm{~kg} \mathrm{~kg}^{-1} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$ is expressed as
+The evaporation rate of rain $
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}$ is expressed as
 $$
-E_{r}=k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}}
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}
+=k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}}
 $$
 where $F_r$ denotes the net accumulation of rain water at the layer, $V_{Tr}$ the terminal velocity, and $k_E$ the evaporation factor ($V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}$and $k_E = 0.5$). $q^w$ correcponds to the saturation water vapor mixing ratio at the wet-bulb temperature. The evaporation occurs only when $q^{w}-q_v>0$.
 
-Similary to this, the evaporation rate of falling ice $E_{i}\mathrm{~kg} \mathrm{~kg}^{-1} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$ is expressed as
+Similary to this, the evaporation rate of falling ice $\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}$ is expressed as
+
 $$
-E_{i}=k_{E}\left(q^{w}-q_v\right) \frac{F_i}{V_{Tr}}
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
+=k_{E}\left(q^{w}-q_v\right) \frac{F_i}{V_{Tr}}
 $$
+
 where $F_i$ denotes sedimentation of cloud ice above the layer. $V_{Ts} = 5\mathrm{~m}$.
 
 ### Ice Fall
@@ -135,12 +176,19 @@ The net ice fall in to the layer 'k' is $\sum^{l=kmax}_{l=k+1}F_i|_{k=l} \times 
 
 This term simply converts all liquid water to ice if the temperature is less than a given threshold of $233.15 \mathrm{~K}$.
 
+$$
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}
+=-\left(\frac{\partial q_c}{\partial t}\right)_{\text {hom}}
+=  \frac{q_c}{t}
+$$
 ### Heterogeneous nucleation
 
 A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS; Takemura et al. 2000, 2002, 2005, 2009) coupled with MIROC6 explicitly predicts the number concentrations for aerosol species. Heterogeneous freezing of cloud droplets takes place through contact and immersion freezing on ice cucleating particles (INPs), which are parameterized according to Lohmann and Diehl (2006) and Diehl et al. (2006). Soil dust and black carbon can act as INPs. Ratios of activated INPs to the total number concentration of soil dust and black carbon for the contact freezing and the immersion/condensation freezing are based on Fig. 1 in Lohmann and Diehl (2006). With the number of INPs ($N_{nuc}$) predicted in SPRINTARS, the rate of heterogeneous freezing is diagnosed as follows.
 
 $$
-\frac{\partial q_i}{\partial t}=  \max \{N_{nuc} W_{nuc0}, q_c\}
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
+=-\left(\frac{\partial q_c}{\partial t}\right)_{\text {het}}
+=  \max \{N_{nuc} W_{nuc0}, \frac{q_c}{t}\}
 $$
 
 The weight of nucleated drop, $W_{nuc0}$, is set to $1.0\times10^{-12}$.
@@ -154,10 +202,11 @@ $$
 
 where $\frac{\partial m_i(D)}{\partial t}$ is the rate of change of the particle mass; $(S_i - 1)$ is the supersaturation of the atmosphere with respect to ice; $R_v$ is the gas constant for water vapour; $k_a$ is the thermal conductivity of air at temperature $T, X$ is the diffusivity of water vapour; $P_{\text {sati}}$ is the saturated vapour pressure over ice; $L_{\mathrm{s}}$ is the latent heat of sublimation of ice; $C$ is a capacitance term and $F$ is a ventilation coefficient. $C$ is assumed to appropriate to spheres, so is equal to $D/2$ . $F$ is given by Pruppacher and Klett (1978) as $F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}$ where $S c$ is the Schmidt number, equal to $0.6,$ and $R e$ is the Reynolds number, $v(D) \rho D / \mu,$ where $\mu$ is the dynamic viscosity of air.
 
-Integrating ice size distribution, $\frac{\partial q_i}{\partial t}$ is obtained as
+Integrating ice size distribution, $\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}$ is obtained as
 
 $$
-\frac{\partial q_i}{\partial t}= \frac{1}{\rho}\int \frac{\partial m_i(D)}{\partial t}N(D)dD
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}
+= \frac{1}{\rho}\int \frac{\partial m_i(D)}{\partial t}N(D)dD
 $$
 
 The ice grows or disappears depending on the sign of $(S_i - 1)$.
@@ -174,7 +223,9 @@ The ice disappears (sublimation).
 Riming process (the ice crystals settling through a population of supercooled cloud droplets, freezing them upon collision) is based on the geometric sweep-out integrated over all ice sizes (Lohmann 2004):
 
 $$
-\frac{\partial q_{i}}{\partial t}=\frac{\pi E_{\mathrm{SW}} n_{0 S} a q_{c} \Gamma(3+b)}{4 \lambda_{S}^{(3+b)}}\left(\frac{\rho_{0}}{\rho}\right)^{0.5}
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
+=-\left(\frac{\partial q_c}{\partial t}\right)_{\text {rim}}
+=\frac{\pi E_{\mathrm{SW}} n_{0 S} a q_{c} \Gamma(3+b)}{4 \lambda_{S}^{(3+b)}}\left(\frac{\rho_{0}}{\rho}\right)^{0.5}
 $$
 
 where $n_{0 S}=3 \times 10^{6} \mathrm{~m}^{-4}$ is the intercept parameter, $\lambda_{S}$ is the slope of the exponential Marshall-Palmer ice crystal size distribution, $a=4.84, b=0.25$, and $\rho_{0}=1.3 \mathrm{~kg} \mathrm{~m}^{-3}$ is the reference density. The collection efficiency $E_{\mathrm{sw}}$ is highly dependent on the cloud droplet and snow crystal size (Pruppacher and Klett 1997). The size-dependent collection efficiency for aggregates is introduced as obtained from laboratory results by Lew et al. (1986) (simulation ESWagg)
@@ -194,35 +245,61 @@ $V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension 
 Since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
 
 $$
-\frac{\partial m_i}{\partial t}
-=-4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\},
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {mlt}}
+=-\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
+=4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\},
 $$
 
 where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in deposition/sublimation process.
 
 ### Warm rain cloud microphysics
 
-The nucleation of cloud droplets is based on the parameterization by Abdul-Razzak and Ghan [2000].
+We assume $N_c$ is the number of aerosols activated as droplets. The nucleation of cloud droplets is predicted in the aerosol module SPRINTARS (Takemura et al. 2000; 2002; 2005; 2009) based on the parameterization by Abdul-Razzak and Ghan (2000), which depends on the aerosol particle number concentrations, size distributions and chemical properties of of each aerosol species, and the updraft velocity.
 
 The autoconversion term following Berry (1967) is a function of $q_c$ and $N_c$.
 
 $$
-\frac{\partial q_c}{\partial t} = -
-\frac{1}{\rho}
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {auto}}
+=-\left(\frac{\partial q_c}{\partial t}\right)_{\text {auto}}
+=\frac{1}{\rho}
 \frac{b_1 \times m_{c}^{2}}{b_2+b_3 \frac{N_{c}}{m_{c}}}
 $$
 
-The effect of aerosol-cloud interaction on clouds lifetime is taken into account by the dependency on $N_c$. The accretion term is given as
+
+The parameters are set as $b_1 = 0.035$, $b_2 =0.12$, $b_3 = 1.0\times10^{-12}$. The effect of aerosol-cloud interaction on clouds lifetime is taken into account by the dependency on $N_c$.
+
+The accretion term is given as
+
 $$
-\frac{\partial q_c}{\partial t} = -
-\frac{1}{\rho}q_c q_r
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {auto}}
+=-\left(\frac{\partial q_c}{\partial t}\right)_{\text {auto}}
+=\frac{1}{\rho}q_c q_r
 $$
 
-Rain water $q_r$ is treated as a diagnostic variables.
-$q_r$ falls out to surface within the time step.
+Rain water $q_r$ into the layer is from above the layer. $q_r$ is treated as a diagnostic variables: $q_r$ falls out to surface within the time step.
 
-$b_1 = 0.035$, $b_2 =0.12$, $b_3 = 1.0\times10^{-12}$
+### Total precipitation
 
+The total amount of precipitation at a certain pressure level, $p,$ is obtained by integrating the relevant processes from the top of the model $(p=0)$ to the respective pressure level. The fluxes of rain and ice $\mathrm{kgm}^{-2} \mathrm{~s}^{-1}$ are then expressed as
 
+$$
+P_{\text {rain}}(p) =\frac{1}{g} \int_{0}^{p}\left(
+\left(\frac{\partial q_r}{\partial t}\right)_{\text {auto}}
++\left(\frac{\partial q_r}{\partial t}\right)_{\text {accr}}
++\left(\frac{\partial q_r}{\partial t}\right)_{\text {mlt}}
+-\left(\frac{\partial q_r}{\partial t}\right)_{\text {revap}}
+\right) d p
+$$
+
+$$
+P_{\text {ice}}(p)
+=\frac{1}{g} \int_{0}^{p}\left(
+\left(\frac{\partial q_i}{\partial t}\right)_{\text {icein}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {iceout}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
+-\left(\frac{\partial q_r}{\partial t}\right)_{\text {mlt}}
+-\left(\frac{\partial q_r}{\partial t}\right)_{\text {esnw}}
+\right) d p
+$$
 
 
