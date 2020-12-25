@@ -9,7 +9,7 @@ Table of contents
 
 ## Time Integration
 
-The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Asselin, 1972) is used to suppress the computational modes. A semi-implicit method is applied to the gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
+The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Williams, 2009) is used to suppress the computational modes. A semi-implicit method is applied to the gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
 
 ### Time integration and time filtering with leap frog
 
