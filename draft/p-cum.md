@@ -10,7 +10,7 @@ The output variables are as follows. To calculate the time evolution of the atmo
 
 The framework of the deep cumulus convection scheme is based on Chikira and Sugiyama (2010), which is an improvement on the Arakawa–Schubert scheme (Arakawa and Schubert, 1974). The vertical air column in a horizontal grid is considered as the basic unit of parameterization. The cumulus is characterized by the temperature, specific humidity, cloud water content, and vertical mass fluxes in the clouds, and several cumulus clouds with different cloud tops are considered in a single vertical column. The cumulus occupies a part of the horizontal grid, and in the rest of the surrounding area, there is a downward motion equal to the mass flux in the cloud (the compensating subsidence). This compensating subsidence and the outflow of air into the surrounding region (detrainment) cause changes in the temperature and specific humidity fields in the surrounding region. Assuming that the upwelling area of the cumulus convection is assumed to be small and the grid-mean temperature and specific humidity are treated as the same as the temperature and specific humidity fields in the surrounding region, the changes in the grid-mean temperature and specific humidity can be obtained.
 
-The temperature, specific humidity, and cloud water content in the clouds are determined with the entraining plume model. The cloud base is defined as the lifted condensation level of the air parcel at the surface, and the vertical velocity at the cloud base is used to spectrally represent the cloud ensemble. Furthermore, the effects of precipitation evaporation and associated downdrafts are taken into account in a simple way.
+The temperature, specific humidity, and cloud water content in the clouds are determined with the entraining plume model. The cloud base is defined as the lifted condensation level of the air parcel at the surface, and the vertical velocity at the cloud base is used to spectrally represent the cloud ensemble. Furthermore, the effects of precipitation evaporation and associated downdrafts are taken into account.
 
 A summary of the calculation procedure is given below, along with the subroutine names.
 1. calculation of cloud base `CUMBAS`.
@@ -19,7 +19,7 @@ A summary of the calculation procedure is given below, along with the subroutine
 4. calculation of cloud mass flux, detrainment, and precipitation `CUMFLX`.
 5. evaluation of cloud water and cloud cover by cumulus `CUMCLD`.
 6. calculation of the change in temperature and specific humidity by detrainment `CLDDET`.
-7. calculation of freezing, melting, and evaporation `CUMDWN`.
+7. calculation of freezing, melting, evaporation, sublimation, and downdraft mass flux `CUMDWN`.
 8. calculation of the change in temperature and specific humidity by compensating subsidence `CLDSBH`.
 9. calculation of cumulus momentum transport `CUMCMT`.
 10. calculation of tracer updraft `CUMUPR`.
@@ -306,21 +306,9 @@ Strictly, the ratio of ice to water should be recalculated after the modificatio
 Melting and freezing of precipitation occurs depending on wet-bulb temperature of large-scale environment and cumulus mass flux.
 
 
-###  Evaporation and downdraft
+###  Evaporation, sublimation and downdraft
 
-A part of precipitation is evaporated at each level as
-
-$$
- E_v = a_e (\bar{q}_w - \bar{q}) \left(\frac{P}{V_T}\right),
-$$
-
-where $E_v, q_w, P,$ and $V_T$ are the mass of evaporation per a unit volume and time, wet-bulb saturated specific humidity, precipitation, and terminal velocity of precipitation, respectively, and $a_e$ is a constant. Here, $a_e$ and $V_T$ are taken as $0.3 \,\mathrm{s}^{-1}$ and $10 \,\mathrm{m}\,\mathrm{s}^{-1}$, respectively. Downdraft mass flux $M_d$ is generated as
-
-$$
- \frac{\partial M_d}{\partial z} = -b_e \bar{\rho} (\bar{T}_w - \bar{T}) P, 
-$$
-
-where $\rho$ and $T_w$ are density and wet-bulb temperature, respectively; $b_e$ is a constant set at $5\times10^{-4} \,\mathrm{m}^2 \,\mathrm{kg}^{-1} \,\mathrm{K}^{-1}$. Properties of downdraft air are determined by budget equations and the detrainment occurs at neutral buoyancy level and below cloud base.
+The effects of evaporation and sublimation, both in downdrafts and in the environment, are taken into account.
 
 
 ###  Cloudiness
