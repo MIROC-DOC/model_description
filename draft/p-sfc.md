@@ -158,16 +158,28 @@ $$
 緯度$\thetaにおける$太陽天頂角$\beta (\theta)$をもちいて、
 
 $$
-	AM1 = \mathrm{min}(\mathrm{max(cos}(\beta(\theta)), \mathrm{cos}	(88^\circ)),\mathrm{cos}	(16^\circ))\\
-	S=(\mathrm{tan}(57.7^\circ) * AM1 + \mathrm{tan}(-77.9^\circ))*AM1 + \mathrm{tan}(-36.8^\circ)\\
-	\alpha_{1,1} = e^S\\
-	\alpha_{2,1} = 0.06\\
+	AM1 = \mathrm{min}(\mathrm{max(cos}(\beta(\theta)), \mathrm{cos}	(88^\circ)),\mathrm{cos}	(16^\circ))
+$$
+
+$$
+	S=(\mathrm{tan}(57.7^\circ) * AM1 + \mathrm{tan}(-77.9^\circ))*AM1 + \mathrm{tan}(-36.8^\circ)
+$$
+
+$$
+	\alpha_{1,1} = e^S
+$$
+
+$$
+	\alpha_{2,1} = 0.06
 $$
 
 近赤外$b=2$については、可視と同じアルベドを用いる。
 
 $$
-	\alpha_{1,2} =\alpha_{1,1} \\
+	\alpha_{1,2} =\alpha_{1,1}
+$$
+
+$$
 	\alpha_{2,2} =\alpha_{2,1}
 $$
 
@@ -196,11 +208,9 @@ $$
 $$
 
 #### 1.3.2.2 Roughness
-[1.4節に記載](#13221-sea-surface-roughness-seaz0f)
+[1.4節に記載](#13221-sea-surface-roughness-seaz0f) - どっちに入れるか
 
 ##### 1.3.2.2.1 Sea Surface Roughness `[SEAZ0F]`
-
-
 
 ##### 1.3.2.2.2 Roughness modification by ice and snow
 
@@ -228,7 +238,10 @@ $$
 よって、熱伝導フラックスとその微分は、
 
 $$
- G = k_{ice} (T_b - T_s) \\
+ G = k_{ice} (T_b - T_s)
+$$
+
+$$
  \frac{\partial G}{\partial T} = k_{ice}
 $$
 
@@ -291,8 +304,14 @@ $$
 We perform successive approximation calculation of ${C_{M_0}}$, because $F_u,F_v,F_\theta,F_q$ are required.
 
 $$
-	r_{0,M} = z_{0,M_0} + z_{0,M_R} + \frac{z_{0,M_R} {u^\star }^2 }{g} + \frac{z_{0,M_S}\nu }{u^\star}\\
-	r_{0,H} = z_{0,H_0} + z_{0,H_R} + \frac{z_{0,H_R} {u^\star }^2 }{g} + \frac{z_{0,H_S}\nu }{u^\star}\\
+	r_{0,M} = z_{0,M_0} + z_{0,M_R} + \frac{z_{0,M_R} {u^\star }^2 }{g} + \frac{z_{0,M_S}\nu }{u^\star}
+$$
+
+$$
+	r_{0,H} = z_{0,H_0} + z_{0,H_R} + \frac{z_{0,H_R} {u^\star }^2 }{g} + \frac{z_{0,H_S}\nu }{u^\star}
+$$
+
+$$
 	r_{0,E} = z_{0,E_0} + z_{0,E_R} + \frac{z_{0,E_R} {u^\star }^2 }{g} + \frac{z_{0,E_S}\nu }{u^\star}
 $$
 
@@ -303,8 +322,14 @@ $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{
 When the sea ice exists,
 
 $$
-	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  \alpha_{ice}\\
-	z_{0,H} = z_{0,H} + ( z_{0,ice,H} - z_{0,H})  \alpha_{ice}\\
+	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  \alpha_{ice}
+$$
+
+$$
+	z_{0,H} = z_{0,H} + ( z_{0,ice,H} - z_{0,H})  \alpha_{ice}
+$$
+
+$$
 	z_{0,E} = z_{0,E} + ( z_{0,ice,E} - z_{0,E})  \alpha_{ice}
 $$
 
@@ -313,8 +338,14 @@ Here, $r_{0,ice,*}$ is roughness of sea ice, $\alpha_{ice}$ is the sea ice conce
 When the snow even exists,
 
 $$
-	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  \alpha_{snow}\\
-	z_{0,H} = z_{0,H} + ( z_{0,snow,H} - z_{0,H})  \alpha_{snow}\\
+	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  \alpha_{snow}
+$$
+
+$$
+	z_{0,H} = z_{0,H} + ( z_{0,snow,H} - z_{0,H})  \alpha_{snow}
+$$
+
+$$
 	z_{0,E} = z_{0,E} + ( z_{0,snow,E} - z_{0,E})  \alpha_{snow}
 $$
 
@@ -327,9 +358,9 @@ The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stab
 $$
 R_{iB} =
 			\frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
-              { (u_1/z_1)^2                                  }\\
+              { (u_1/z_1)^2                                  }
        = \frac{g}{\theta_s}
-         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T .
+         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T
 $$
 
 
@@ -347,7 +378,7 @@ is a correction factor, which is approximated from the uncorrected bulk Richards
 The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$ first, and then corrected.
 
 $$
-C_M = \left\{
+	C_M = \left\{
       \begin{array}{lr}
       C_{0,M} [ 1 + (b_M/e_M)  R_{iB} ]^{-e_M}
 			&,
@@ -362,7 +393,7 @@ $$
 
 
 $$
-\widetilde{C_H} = \left\{
+	\widetilde{C_H} = \left\{
       \begin{array}{lr}
       \widetilde{C_{0,H}} [ 1 + (b_H/e_H) R_{iB} ]^{-e_H}
 			&,
@@ -378,12 +409,12 @@ $$
 
 
 $$
-C_H = \widetilde{C_H} f_T
+	C_H = \widetilde{C_H} f_T
 $$
 
 
 $$
-\widetilde{C_E} = \left\{
+	\widetilde{C_E} = \left\{
       \begin{array}{lr}
       \widetilde{C_{0,E}} [ 1 + (b_E/e_E) R_{iB} ]^{-e_E}
 			&,
@@ -398,14 +429,14 @@ $$
 $$
 
 $$
-C_E = \widetilde{C_E} f_q
+	C_E = \widetilde{C_E} f_q
 $$
 
 
 $C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ is the bulk coefficient (for fluxes from $z_{0M}$) at neutral,
 
 $$
-C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  =
+	C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  =
        \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 }
 $$
 
@@ -426,7 +457,10 @@ The turbulent fluxes at the ground surface are solved by bulk formulae as follow
 - Momentum flux
 
 $$
- \tau_x = - \rho C_{M}|V_a| u_a \\
+ \tau_x = - \rho C_{M}|V_a| u_a
+$$
+
+$$
  \tau_y = - \rho C_{M}|V_a| v_a
 $$
 
@@ -436,7 +470,7 @@ where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zon
 - Sensible heat flux
 
 $$
- H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)\\
+ H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)
 $$
 
 where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
@@ -455,7 +489,9 @@ $$
 地表面アルベド$\alpha_{(d,b)}$について、$b=1,2$はそれぞれ可視、近赤外の波長帯を表す。また、$d=1,2$はそれぞれ直達、散乱である。地表面に入射する下向き短波放射$SW^\downarrow$および上向き短波放射$SW^\uparrow$について、直達光と散乱光を合わせて
 
 $$
-SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
+	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}
+$$
+
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
@@ -464,12 +500,12 @@ $$
 
 - Modified in this subroutine
 
-| Original | Presentation | Meanings                                                                                |
-|:---------|:-------------|:----------------------------------------------------------------------------------------|
-| GDTS     | $T_s$        | skin temperature                                                                        |
-| GFLUXS   | $G$          | soil heat flux(おそらく地表面からの熱フラックス)                                        |
-| TFLUXS   | $H$          | flux of T ($H_s$ from [`[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm))   |
-| QFLUXS   | $E$          | flux of q ($F_q^P$ from [`[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm)) |
+| Original | Presentation | Meanings                                                                              |
+|:---------|:-------------|:--------------------------------------------------------------------------------------|
+| GDTS     | $T_s$        | skin temperature                                                                      |
+| GFLUXS   | $G$          | soil heat flux(おそらく地表面からの熱フラックス)                                      |
+| TFLUXS   | $H$          | flux of T ($H_s$ from [[PSFCM]](#14-calculation-of-surface-turbulent-fluxes-psfcm))   |
+| QFLUXS   | $E$          | flux of q ($F_q^P$ from [[PSFCM]](#14-calculation-of-surface-turbulent-fluxes-psfcm)) |
 
 - Outputs
 
@@ -539,7 +575,10 @@ $$
 一方、海氷域($L=1$)では、
 
 $$
-	G_{ice} = G - l_s E\\
+	G_{ice} = G - l_s E
+$$
+
+$$
 	\frac{\partial G_{ice}}{\partial T_s}=\frac{\partial G}{\partial T_s} + l_s\frac{\partial E}{\partial T_s}
 $$
 
@@ -552,7 +591,10 @@ $$
 このとき、潜熱フラックス、顕熱フラックスはそれぞれ
 
 $$
-	E_{ice} = E + \frac{\partial E}{\partial T_s} \delta T_{ice} \\
+	E_{ice} = E + \frac{\partial E}{\partial T_s} \delta T_{ice}
+$$
+
+$$
 	H_{ice} = E + \frac{\partial H}{\partial T_s} \delta T_{ice}
 $$
 
@@ -565,11 +607,29 @@ $$
 また、各フラックスも更新する。
 
 $$
-	H=H+\frac{\partial H}{\partial T_s} R_{ice} \delta T_{ice} \\
-	LW^\uparrow=LW^\uparrow + \frac{\partial R}{\partial T_s} R_{ice} \delta T_{ice}\\
-	E=(1-R_{ice})E + R_{ice}E_{ice}\\
-	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}\\
-	W_{free} = (1-R_{ice}) E\\
-	W_{ice} = R_{ice} E_{ice}\\
+	H=H+\frac{\partial H}{\partial T_s} R_{ice} \delta T_{ice}
+$$
+
+$$
+	LW^\uparrow=LW^\uparrow + \frac{\partial R}{\partial T_s} R_{ice} \delta T_{ice}
+$$
+
+$$
+	E=(1-R_{ice})E + R_{ice}E_{ice}
+$$
+
+$$
+	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}
+$$
+
+$$
+	W_{free} = (1-R_{ice}) E
+$$
+
+$$
+	W_{ice} = R_{ice} E_{ice}
+$$
+
+$$
 	F = R_{ice} H_{ice}
 $$
