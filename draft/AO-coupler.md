@@ -48,8 +48,7 @@ $$ FLXL=LKFRC*FLXL^{lake}+(1-LKFRC)*\sum_{k=1}^{km}(GRFRC_k * FLXL_k^{grd}) $$
 ### 大気へのフラックスの合計
 河川モデルは面積を持たないので、大気へのフラックス（$FLXA$）は、陸面グリッドのフラックス（$FLXL$）・海面グリッドでのフラックス（$FLXO$）の海陸分布の重み付き平均として次式のように求まる。
 
-$$ FLXA= \\
-\frac{1}{SA}*[ \sum_{j=1}^{jldiv}\sum_{i=1}^{ildiv}(SL_{ij}*FLND^{land}_{ij}*FLXL_{ij}) + \sum_{j=1}^{jodiv}\sum_{i=1}^{iodiv}(SO_{ij}*(1-FLND^{oc}_{ij})*FLXO_{ij})] $$
+$$ FLXA= \frac{1}{SA}*[ \sum_{j=1}^{jldiv}\sum_{i=1}^{ildiv}(SL_{ij}*FLND^{land}_{ij}*FLXL_{ij}) + \sum_{j=1}^{jodiv}\sum_{i=1}^{iodiv}(SO_{ij}*(1-FLND^{oc}_{ij})*FLXO_{ij})] $$
 
 降水のように大気モデルで計算されたフラックスも$FLXL$と$FLXO$に含まれる。
 このようなフラックスの場合、分割された陸面・海面グリッドのフラックスはすべて対応するグリッドと同じ値になる。
@@ -67,7 +66,8 @@ $$ FLXA= \\
 ### 陸面からの水の流出
 陸面グリッドにおけるそれぞれの土壌被覆において水もしくは雪氷を保持できなくなった場合、各土壌モデルからカップラーを通して河川モデルに水もしくは氷が渡される。
 
-$$ RUNOFF^{grd}_{all}= (1-LKFRC)* \sum_{k=1}^{km}(GFLRC_k*RUNOFF^{grd}_k) $$
+$$ RUNOFF^{grd}_{all} = 
+    (1-LKFRC) * \sum_{k=1}^{km}(GFLRC_{k} * RUNOFF^{grd}_{k}) $$
 
 各土壌被覆からの流出量の詳細は陸面モデルMATSIROの資料を参照されたい。
 湖モデルにおいては湖の水位または雪氷の厚さ($H$)が一定値($H_c$)を超えた場合、時定数 $\tau_h$ で河川に流出する。
@@ -132,11 +132,9 @@ $$ HSN^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(I
 
 $$ TI^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N))*HI^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)} {SOCNG(LC)*HI^{oc}(LC)*AI^{oc}(LC)} $$
 
-$$ UO^{oc}(LC)=RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}
-+RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ UO^{oc}(LC)=RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}+RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
 
-$$ VO^{oc}(LC)=-RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}
-+RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ VO^{oc}(LC)=-RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}+RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
 
 $$ SOCNG(LC)= \sum_{N=1}^{IJO(LC)}SOCN(LC,N) $$
 
