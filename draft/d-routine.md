@@ -1,41 +1,39 @@
-## 力学過程における計算フロー
+## Computational flow of dynamical core
 
-ここでは, 力学過程部で行なわれる計算をコードに基づいて列挙する.
+In this section, calculations of dynamical component based on coding are summarized. `[module name(file name)]`
 
-### 力学部分の計算の概要
+### Overview of dynamical core
 
-力学過程は, 以下のような順序で計算が行なわれる.
+1. calculate dynamical term `[DYNTRM(dterm.F)]`
 
-1. 力学項の計算 `[DYNTRM(dterm.F)]`
+   1.1 calculate volticity and divergence on wave space and get grid value. `[G2W, W2G(xdsphe.F)]`
 
-   1.1 波数空間で渦度・発散などの計算、格子点値の渦度等を取得 `[G2W, W2G(xdsphe.F)]`
+   1.2 diagnose stream function and potential velocity `[DYNTRM(dterm.F)]`
 
-   1.2 流線関数、速度ポテンシャルの診断 `[DYNTRM(dterm.F)]`
+   1.3 diagnose surface pressure advection, its tendency & vertical flow `[PSDOT(dgdyn.F)]`
 
-   1.3 地表面気圧の移流項、傾向、鉛直速度の計算 `[PSDOT(dgdyn.F)]`
+   1.4 calculate factor for hydrostatic eq. & interporation of temprature on Hybrid coord. `[CFACT(dcfct.F)]`
 
-   1.4 ハイブリット座標における静水圧平衡の式、気温の内挿の係数計算 `[CFACT(dcfct.F)]`
+   1.5 calculate vartual temprature `[VIRTMD(dvtmp.F)]`
 
-   1.5 仮温度の計算 `[VIRTMD(dvtmp.F)]`
+   1.6 calculate temperature advection `[GRTADV(dgdyn.F)]`
 
-   1.6 気温の移流項の計算 `[GRTADV(dgdyn.F)]`
+   1.7 calculate momentum advection `[GRUADV(dgdyn.F)]`
 
-   1.7. 運動量移流項の計算 `[GRUADV(dgdyn.F)]`
+   1.8 spectral transform of tendency terms `[G2W(xdsphe.F)]`
 
-   1.8. 時間変化項のスペクトル変換 `[G2W(xdsphe.F)]`
+2. Time integration of equation `DYNSTP(dstep.F)`
 
-2. 方程式の時間積分 `DYNSTP(dstep.F)`
+   2.1 calculate tracer transport `[TRACEG(dtrcr.F)]`
 
-   2.1 トレーサー輸送の計算 `[TRACEG(dtrcr.F)]`
+   2.2 time integration on wave space `[TINTGR(dintg.F)]`
 
-   2.2 スペクトル値時間積分 `[TINTGR(dintg.F)]`
+   2.3 time integration of tracer terms `[GTRACE(dtrcr.F)]`
 
-   2.3 トレーサー項の時間積分 `[GTRACE(dtrcr.F)]`
+   2.4 time filter `[DADVNC(dadvn.F)]`
 
-   2.4 時間フィルター `[DADVNC(dadvn.F)]`
+   2.5 get horizontal wind of grid value from wave space `[W2G(xdsphe.F)]`
 
-   2.5 スペクトル空間から格子点値のu, v を取得 `[W2G(xdsphe.F)]`
+   2.6 correction of pressure-level diffusion `[CORDIF(ddifc.F)]`
 
-   2.6 疑似等p面拡散補正 `[CORDIF(ddifc.F)]`
-
-   2.7 拡散による摩擦熱の補正 `[CORFRC(ddifc.F)]`
+   2.7 correction of horizontal friction heating `[CORFRC(ddifc.F)]`
