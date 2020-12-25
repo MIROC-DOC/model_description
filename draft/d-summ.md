@@ -555,38 +555,32 @@ The results are approximate to those of $K_R^0 = {(30day)}^{-1}$ and $z_R = -H \
 
 ### Time Filter `MODULE: [DADVNC]`
 
-Apply the time filter of Asselin (1972) to remove computational modes in leap frog at every step.
+To reduce numerical mode associated with leap frog scheme, time filter is applied every time step. MIORC6 used modified Asselin time filter (Williams, 2009), which is updated version of Asselin(1972) used previous version of MIROC. Although Asselin time filter attenuate high frequency physical mode, bringing low accuracy of leap frog scheme, current time filter succeeded in suppressing it.
+
+Modified Asselin filter is expressed as following equation
 
 $$
-  \bar{T}^{t}
-    = ( 1-2 \epsilon_f ) T^{t}
-    +  \epsilon_f
-        \left( \bar{T}^{t-\Delta t} + T^{t+\Delta t} \right)
+ \bar{\bar{X}}^t = \bar{X}^t + \nu\alpha[\bar{\bar{X}}^{t-\Delta t} -2 \bar{X}^t + X^{t+\Delta t}]
 $$
 
-
-and $\bar{T}$ are obtained. This $\bar{T}^t$ is used as the $T^{t-\Delta t}$ for the next step of the mechanical process. As a rule, 0.05 is used for $\epsilon_f$.
-
-In fact, the first step is to convert the predictor to a grid point value at the`,
-
 $$
-  \bar{T}^{t*}
-    = ( 1 -\epsilon_f )^{-1}
-     \left[ ( 1-2 \epsilon_f ) T^{t} + \epsilon_f \bar{T}^{t-\Delta t}
-     \right]
+ \bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu(1-\alpha)[\bar{\bar{X}}^{t-\Delta t} -2 \bar{X}^t + X^{t+\Delta t}]
 $$
 
+where bar indicates time filter. The parameters set to $\nu=0.05$, $\alpha=0.5$. Assuming $\alpha=1$, modified Asselin filter is same as Asselin filter.
 
-and after the physical process is finished and the value of $T^{t+\Delta t}$ is fixed,
+In the model, 
+$$
+ \bar{\bar{X}}^{t*} = (1-\nu\alpha)^{-1}[(1-2\nu\alpha)\bar{X}^t +\nu\alpha \bar{\bar{X}}^{t-\Delta t} ]
+$$
+is firstly calculated at `MODULE: [DADVNC]` where transformation of prognostic variableto grid point values. And then, $X^{t-\Delta t}-2X^t$ is stored. When the $X^{t+\Delta t}$ is obtained later, time filter conduct at `MODULE [TFILT]`,
 
 $$
- \bar{T}^{t}
-    = ( 1 -\epsilon_f ) \bar{T}^{t*}  
-       +  \epsilon_f \bar{T}^{t+\Delta t}
+ \bar{\bar{X}}^{t} = (1-\nu\alpha)\bar{\bar{X}}^{t*} +\nu\alpha X^{t+\Delta t} 
 $$
-
-
-
+$$
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha)[ \bar{\bar{X}}^{t-\Delta t} - 2\bar{X}^{t} + X^{t+\Delta t}]
+ $$
 
 ### Correction for conservation of mass `MODULE: [FIXMAS, MASFIX]`
 
