@@ -232,7 +232,7 @@ $$
  \frac{\partial G}{\partial T} = k_{ice}
 $$
 
-なお、無海氷面($L=2$)においては、
+なお、無海氷域($L=2$)においては、
 
 $$
 G=k_{ocn}
@@ -397,7 +397,6 @@ $$
       \end{array} \right.
 $$
 
-
 $$
 C_E = \widetilde{C_E} f_q
 $$
@@ -407,7 +406,7 @@ $C_{0M}, \widetilde{C_{0H}}, \widetilde{C_{0E}}$ is the bulk coefficient (for fl
 
 $$
 C_{0M}  =  \widetilde{C_{0H}}  =  \widetilde{C_{0E}}  =
-       \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 } .
+       \frac{k^2}{\left[\ln \left(\frac{z_1}{z_{0M}}\right)\right]^2 }
 $$
 
 
@@ -416,7 +415,6 @@ Correction Factor $f_q$ is ,
 $$
   f_q = (q_1 - q(z_0))/(q_1 - q^{\ast}(\theta_0))
 $$
-
 
 but the method of calculation is omitted. The coefficients of Louis factors are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 )$, $( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
 
@@ -439,7 +437,7 @@ where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zon
 
 $$
  H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)\\
- $$
+$$
 
 where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
 
@@ -454,7 +452,7 @@ $$
 
 ## 1.5 Radiation Flux at Sea Surface `[RADSFC]` [7割済 12月]
 
-地表面アルベド$\alpha_{(d,b)}$について、$b=1,2$ はそれぞれ可視、近赤外の波長帯を表す。また、$d=1,2$はそれぞれ直達、散乱である。地表面に入射する下向き短波放射$SW^{\downarrow}$および上向き短波放射$SW^{\uparrow}$について、直達光と散乱光を合わせて
+地表面アルベド$\alpha_{(d,b)}$について、$b=1,2$はそれぞれ可視、近赤外の波長帯を表す。また、$d=1,2$はそれぞれ直達、散乱である。地表面に入射する下向き短波放射$SW^\downarrow$および上向き短波放射$SW^\uparrow$について、直達光と散乱光を合わせて
 
 $$
 SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
@@ -466,12 +464,12 @@ $$
 
 - Modified in this subroutine
 
-| Original | Presentation | Meanings                                         |
-|:---------|:-------------|:-------------------------------------------------|
-| GDTS     | $T_s$        | skin temperature                                 |
-| GFLUXS   | $G$          | soil heat flux(おそらく地表面からの熱フラックス) |
-| TFLUXS   | $H$          | flux of T ($H_s$ from [`[PSFCM]`]())             |
-| QFLUXS   | $E$          | flux of q ($F_q^P$ from [`[PSFCM]`]())           |
+| Original | Presentation | Meanings                                                                                |
+|:---------|:-------------|:----------------------------------------------------------------------------------------|
+| GDTS     | $T_s$        | skin temperature                                                                        |
+| GFLUXS   | $G$          | soil heat flux(おそらく地表面からの熱フラックス)                                        |
+| TFLUXS   | $H$          | flux of T ($H_s$ from [`[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm))   |
+| QFLUXS   | $E$          | flux of q ($F_q^P$ from [`[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm)) |
 
 - Outputs
 
@@ -485,9 +483,9 @@ $$
 
 | Original | Presentation                      | Meanings             |
 |:---------|:----------------------------------|:---------------------|
-| DTFDS    | $\frac{\partial H}{\partial T_g}$ | dH/dTg               |
-| DQFDS    | $\frac{\partial E}{\partial T_g}$ | dE/dTg               |
-| DGFDS    | $\frac{\partial G}{\partial T_g}$ | dG/dTg               |
+| DTFDS    | $\frac{\partial H}{\partial T_s}$ | dH/dTs               |
+| DQFDS    | $\frac{\partial E}{\partial T_s}$ | dE/dTs               |
+| DGFDS    | $\frac{\partial G}{\partial T_s}$ | dG/dTs               |
 | RFLXSD   | $SW^\downarrow$                   | down. SW rad.        |
 | RFLXSU   | $SW^\uparrow$                     | up. SW rad           |
 | RFLXLD   | $LW^\downarrow$                   | down. LW rad.        |
@@ -501,7 +499,7 @@ $$
 | ESUB     | $l_s$                                   | 昇華潜熱                       |
 | EMIS     | $1-\alpha_L$                            | 長波射出率                     |
 | STG      | $(1-\alpha_L)\sigma T_s^4 $             | 黒体放射                       |
-| DRFDS    | $\frac{\partial R}{\partial T_g}$       | dR/dTg                         |
+| DRFDS    | $\frac{\partial R}{\partial T_s}$       | dR/dTs                         |
 | SFLUX    | $F^*$                                   | 地表面から射出されるフラックス |
 | GSFLUX   | $F^*-G$                                 | 正味の地表面フラックス         |
 | GFLUXF   | $G_{free}$                              | 無海氷域における地表フラックス |
@@ -509,69 +507,69 @@ $$
 | DTI      | $\delta T_{ice}$                        | 海氷域における地表面温度変化   |
 | EVAPI    | $\delta E_{ice}$                        | 海氷域における潜熱フラックス   |
 | SFLXBI   | $\delta H_{ice}$                        | 海氷域における顕熱フラックス   |
-| DGSFDS   | $\frac{\partial G}{\partial T_g}$       | dG/dTg (更新後)                |
-| DSBDSI   | $\frac{\partial G_{ice}}{\partial T_g}$ | 海氷域における dG/dTg          |
+| DGSFDS   | $\frac{\partial G}{\partial T_s}$       | dG/dTs (更新後)                |
+| DSBDSI   | $\frac{\partial G_{ice}}{\partial T_s}$ | 海氷域における dG/dTs          |
 
 ### 1.6.2 Calculating heat Balance
 
 海表面から出るフラックスは、
 
 $$
-F^*=H + (1-\alpha_L)\sigma T_s^4 + \alpha_L LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
+	F^*=H + (1-\alpha_L)\sigma T_s^4 + \alpha_L LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
 $$
 
 正味で海表面に入るフラックスは、
 
 $$
-G = H_s - F^*
+	G = H_s - F^*
 $$
 
- 地表面フラックスの温度微分項は、
+地表面フラックスの温度微分項は、
 $$
-\frac{\partial G}{\partial T_g} = \frac{\partial G}{\partial T_g}+\frac{\partial H}{\partial T_g}+\frac{\partial R}{\partial T_g}
+	\frac{\partial G}{\partial T_s} = \frac{\partial G}{\partial T_s}+\frac{\partial H}{\partial T_s}+\frac{\partial R}{\partial T_s}
 $$
 
-無海氷域では、凝結によって得られた潜熱フラックスを足して、
+無海氷域($L=2$)では、凝結によって得られた潜熱フラックスを足して、
 
 $$
 	G_{free}=F^* + l_cE
 $$
 
 
-一方、海氷域では、
+一方、海氷域($L=1$)では、
 
 $$
-G_{ice} = G - l_s E\\
-\frac{\partial G_{ice}}{\partial T_g}=\frac{\partial G}{\partial T_g} + l_s\frac{\partial E}{\partial T_g}
+	G_{ice} = G - l_s E\\
+	\frac{\partial G_{ice}}{\partial T_s}=\frac{\partial G}{\partial T_s} + l_s\frac{\partial E}{\partial T_s}
 $$
 
-よって、海氷域での地表面温度変化は、
+よって、地表面温度変化は、
 
 $$
-\delta T_{ice} = G_{ice} ( \frac{\partial G_{ice}}{\partial T_g})^{-1}
+	\delta T_{ice} = G_{ice} ( \frac{\partial G_{ice}}{\partial T_s})^{-1}
 $$
 
 このとき、潜熱フラックス、顕熱フラックスはそれぞれ
 
 $$
-	E_{ice} = E + \frac{\partial E}{\partial T_g} \delta T_{ice}\\
-	H_{ice} = E + \frac{\partial H}{\partial T_g} \delta T_{ice}
+	E_{ice} = E + \frac{\partial E}{\partial T_s} \delta T_{ice} \\
+	H_{ice} = E + \frac{\partial H}{\partial T_s} \delta T_{ice}
 $$
 
 以上より、地表面温度を更新する。
 
 $$
-	T_s = T_s L R_{ice}\delta T_{ice}
+	T_s = T_s +R_{ice}\delta T_{ice}
 $$
 
 また、各フラックスも更新する。
 
 $$
-H=H+\frac{\partial H}{\partial T_g} R_{ice} \delta T_{ice}\\
-LW^\uparrow=LW^\uparrow + \frac{\partial R}{\partial T_g} R_{ice} \delta T_{ice}\\
-E=(1-R_{ice})E + R_{ice}E_{ice}\\
-G=(1-R_{ice})G_{free} + R_{ice}G_{ice}\\
-W_{free} = (1-R_{ice}) E\\
-W_{ice} = R_{ice} E_{ice}\\
-F = R_{ice} H_{ice}
+	H=H+\frac{\partial H}{\partial T_s} R_{ice} \delta T_{ice} \\
+	LW^\uparrow=LW^\uparrow + \frac{\partial R}{\partial T_s} R_{ice} \delta T_{ice}\\
+	E=(1-R_{ice})E + R_{ice}E_{ice}\\
+	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}\\
+	W_{free} = (1-R_{ice}) E\\
+	W_{ice} = R_{ice} E_{ice}\\
+	F = R_{ice} H_{ice}
 $$
