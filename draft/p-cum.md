@@ -328,3 +328,19 @@ $$
 $$
 
 where $i$ denotes an index of cloud type, $q_l$ is liquid water, and $\beta$ is a dimensionless constant set at 0.1. The grid mean ice cloud mixing ratio is determined similarly.
+
+
+###  Cumulus Momentum Transport
+
+The tendencies of zonal and meridional momentum by cumulus momentum transport are calculated as 
+
+$$
+ \left(\frac{\partial u}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{u'w'})_{k+1/2} - (\rho\overline{u'w'})_{k-1/2}}{\Delta p_k}, \,\mathrm{and} 
+$$
+
+
+$$
+ \left(\frac{\partial v}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{v'w'})_{k+1/2} - (\rho\overline{v'w'})_{k-1/2}}{\Delta p_k}, 
+$$
+
+respectively, where $\rho\overline{u'w'}$ and $\rho\overline{v'w'}$ are total zonal and meridional momentum flux, respectively. This total momentum fluxes are carried by both cumulus updrafts and downdrafts.
