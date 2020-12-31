@@ -41,6 +41,7 @@ where $Qc$ denotes the grid-scale saturation deficit defined as
 $$
 Q_{c} \equiv a_{L}\left\{\bar{q}_{t}-q_{s}\left(\bar{T}_{l}, \bar{p}\right)\right\}.
 $$
+
 ## Hybrid Prognostic Cloud (HPC) scheme
 
 The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009). The HPC scheme proposes two types of shape for the PDF $G(s)$, Double-uniform PDF and Skewed-triangular PDF. Here we focus on Skewed-triangular scheme because MIROC6 adoptes the shape. The physical basics of the scheme are in common with Double-uniform PDF.
@@ -92,7 +93,7 @@ The relationship between (1, 2) and (4, 5) is quasireversible. The double-unifor
 
 ## PDF change through processes
 
-The HPC cloud scheme is composed using prognostic equations for four variables determining $I$, namely, $T_l$,$q_t$, $V$, and $S$. The prognostic variables can be $T_l$, $q_t$, $C$, and $q_c$ that determine $\tilde {I}$.
+The HPC cloud scheme is composed using prognostic equations for four variables determining $I$, namely, $T_l$, $q_t$, $V$, and $S$. The prognostic variables can be $T_l$, $q_t$, $C$, and $q_c$ that determine $\tilde {I}$.
 
 Prognostic equations for the PDF variance and skewness are expressed as
 
@@ -110,6 +111,7 @@ $$
 where subscripts 'conv.', 'micro.' and 'turb.' indicate cumulus convection, cloud microphysics and turbulent mixing processes, which all affect the PDF shape. The last terms represent dissipation due to subgrid-scale horizontal motions. The specific formulations for each term are described below.
 
 The HPC scheme is referred to as and $G(s)$ is updated every after the process that affects cloud water PDF. $G(s)$ is thus modified several times within a single time step.
+
 ### Cumulus convection
 
 The total effect of cumulus convection to the PDF moments is written as
@@ -126,7 +128,7 @@ $$
 
 $M_c$ is the cumulus mass-flux including updraft in the convection tower and downdraft in the environment. The vertical transport of the PDF moments is represented by the first terms on the right side hand of (14, 15).
 
-Cumulus convections modify the grid-mean $T_l$,$q_t$, and $q_c$ by upward transportation of grid-mean moist static energy, $q_v$, and $q_c$. Detrainment also affects these variables. The detrainment of the cloudy air mass is considered, as in Bushell et al. (2003),
+Cumulus convections modify the grid-mean $T_l$, $q_t$, and $q_c$ by upward transportation of grid-mean moist static energy, $q_v$, and $q_c$. Detrainment also affects these variables. The detrainment of the cloudy air mass is considered, as in Bushell et al. (2003),
 
 $$
 \left.\frac{\partial C}{\partial t}\right|_{\mathrm{conv} .}=D(1-C)
@@ -157,6 +159,7 @@ $$
 $$
 
 Changes in $\bar{T}_{l}, \bar{q}_{v}, \text{and} \bar{q}_{c}$  are derived from microphysical tendency terms including precipitation, evaporation, melting/freezing.
+
 ### Turbulent mixing
 
 From the definition of $s$, the PDF variance $\mathcal{V}$ becomes
@@ -188,6 +191,7 @@ $$
 $$
 
 The coefficient $C_{s}$ is set to 0.23 following Tompkins 2002.
+
 ### Other processes
 
 Dynamics, shallow convection, radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effects on the shape of PDF are included following (16).
@@ -201,7 +205,9 @@ G(s)=\left\{\begin{array}{cl}-\frac{2(s-b)}{(b-q)(b-a)} & \text { for } q<s \leq
 $$
 
 The pmlsc module includes two main subroutines, PDF2CLD and CLD2PDF. The subroutine PDF2CLD calculates $C$ and $\bar{q}_{c}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \mathcal{V}, \mathcal{S}$. The subroutine CLD2PDF calculates $\mathcal{V}$ and $\mathcal{S}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C$. We will derive the concrete calculation processes in this subsection.
+
 ### PDF2CLD
+
 #### From $\mu_{1}, \mu_{2}, \mu_{3}$ To $a,b,q$
 
 The first, second, and third moments of the PDF is calculated as follows.
@@ -391,6 +397,7 @@ $$
 $$
 \mu_{3}=\frac{-(a+b) ab}{10}
 $$
+
 ### Treatment of cloud ice and in-cloud water vapor
 
 Because the original HPC scheme by Watanabe et al. (2009) does not consider the cloud ice, it is modified when coupled with the Wilson and Ballard (1999) ice microphysics. Since the statistical PDF scheme employs a ‘fast condensation’ assumption that is no more valid for ice, the ice mixing ratio is assumed to be conserved in the large scale condensation process.
