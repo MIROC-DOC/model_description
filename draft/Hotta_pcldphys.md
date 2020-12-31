@@ -1,6 +1,7 @@
 # pcldphys: Cloud Microphysics
 
 The code is written in the 'pcldphys' file.
+
 ## Overview of Cloud Microphysics
 
 Cloud microphysics control the conversion from water condensate to precipitate. The condensate parameterization closely links to the lifetime of and radiative properties of the clouds.
@@ -11,9 +12,10 @@ The MIROC6 cloud microphysics scheme uses four quantities to describe water in t
 
 The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i$ using physically based tendency terms, which represent homogeneous nucleation, heterogeneous nucleation, deposition/sublimation between vapor and ice, riming (cloud liquid water collection by falling ice), and ice melting. The warm rain processes produce rain as the sum of autoconversion and accretion processes. Specific formulations of each process are described in the following "Microphysical Processes" subsection.
 
-The scheme utilizes a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i $). A number concentraion is in units $\mathrm{~m}^{-3}$.
+The scheme utilizes a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i$). A number concentraion is in units $\mathrm{~m}^{-3}$.
 
 Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
+
 ## Microphysical Processes
 
 The time evolution of $q_i$ by microphysical processes is written in symbolic form as follows.
@@ -31,6 +33,7 @@ $$
 $$
 
 where t is time. The terms of the right hand side denote evaporation of snow (sunscript esnw), ice fall in from above layers (subscript fallin), ice fall out to below layers (subscript fallout), homogeneous nucleation (subscript hom), heterogeneous nucleation (subscript het), deposition/sublimation (subscript dep), riming (subscript rim), and melting (subscript mlt). Similarly, the time evolution of $q_c$ by microphysical processes is
+
 $$
 \left(\frac{\partial q_c}{\partial t}\right)_{\text {micro}}
 =\left(\frac{\partial q_c}{\partial t}\right)_{\text {hom}}
@@ -129,8 +132,7 @@ $$
 
 ### Evaporation of Rain and Snow
 
-The evaporation rate of rain $
-\left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}$ is expressed as
+The evaporation rate of rain $\left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}$ is expressed as
 
 $$
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}
