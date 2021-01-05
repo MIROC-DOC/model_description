@@ -36,30 +36,26 @@ $$\rho \overline {w' \psi '}\approx M_u (\psi_u-\overline{\psi})  $$
 $$\frac{\partial M_u}{\partial z} = E - D$$
 $$\frac{\partial}{\partial z} (\psi_u M_u) = X_\psi + S_\psi M_u$$
 のように書ける．ただし$X_\psi$は環境場との水平方向の混合，$S_\psi$はソース項，$E$および$D$はエントレインメント割合で，
-$$E=\varepsilon M_u$$
-$$D=\delta M_u$$
+$$E=\tilde{E}M_u$$
+$$D=\tilde{D} M_u$$
 として質量フラックスに対する比の形で記述する．$\overline{\psi}$ を格子平均値で代表させ，水平混合の項を$X_{\psi}=E \overline{\psi} - D\psi_u$でパラメタライズすることで，上記のフラックス診断式は
-$$\frac{\partial M_u}{\partial z} = M_u (\varepsilon - \delta)$$
-$$\frac{\partial \psi_u}{\partial z} = \varepsilon(\overline{\psi} - \psi_u) + S_{\psi}$$
+$$\frac{\partial M_u}{\partial z} = M_u (\tilde{E} - \tilde{D})$$
+$$\frac{\partial \psi_u}{\partial z} = \tilde{E}(\overline{\psi} - \psi_u) + S_{\psi}$$
 となり$\varepsilon$と$\delta$の二つのパラメーターについてのクロージャー問題に帰着する．これを雲底のでの境界条件とともに解くことで$M_u$と$\psi_u$の鉛直プロファイルを求める．
 
 ##  3. <a name='PSHCN'></a>PSHCNでの計算
 計算手順の概略は以下の通り．
-- 温度$T$，水蒸気量$q_v$，雲水量$q_l$，雲氷量$q_i$から液水温位$\theta_l$と総水量$q_t$を診断する
+- 温度$T$，比湿$q$，雲水量$l$，雲氷量$q_i$の入力から液滴温位$\theta_l$と総水量$q_t$を診断する
 - 雲底における上昇流のマスフラックス$M_u$を診断する
 - 雲底高度を診断する
 - 浅い積雲の有無を診断する
 - 上昇流内での$M_u$，$\theta_l$，$q_t$、水平風速$u$、$v$の鉛直プロファイルを診断する
-- 水の相を診断する($q_v$，$q_l$，$q_i$，$q_r$)
-- $\theta_l$、$q_t$、$u$、$v$、$q_i$のフラックスを診断する
-- $\theta_l$、$q_t$、$u$、$v$、$q_i$，液水温度$T_l$を予報する
-- $T_l$と$q_t$から$T$、$q_v$、$q_l$を診断する
-- 雲量$C$と雲水量を補正し、降水量$P$を診断する
-- 総水量PDFを変更し，変更したPDFにより雲量などを診断する
+- $\theta_l$，$q_t$，$q_i$，$u$，$v$，液滴温度$T_l$を予報する
+- $T_l$と$q_t$から$T$，$q$，$l$を診断する
 
 ###  3.1. <a name='-1'></a>下部境界条件：雲底での質量フラックスの診断
 雲底での質量フラックスは，境界層内部の乱流運動エネルギーと境界層上部の対流抑制（convective inhibition, CIN）に依存するように定式化する．まず浅い積雲が存在する層全体で上昇流速の鉛直分布について
-$$\frac{1}{2}\frac{\partial}{\partial z}w_u^2=aB_u-b\varepsilon w_u^2$$
+$$\frac{1}{2}\frac{\partial}{\partial z}w_u^2=aB_u-b\tilde{E} w_u^2$$
 が成り立つものとする．$B_u$は浮力，$a,b$は経験的な定数であり，右辺第一項は浮力による加速，第二項はエントレインメントによるドラッグを意味する．LFCより下ではエントレインメントは起こらないものと仮定し，上の式を雲底からLFCまで積分することにより，上昇プルームが混合層からLFCまで達するための雲底での上昇流速の臨界値$w_c$が次のように求められる
 $$w_c = \sqrt{2a(CIN)}.$$
 この臨界値$w_c$を超えた上昇流が雲底から入ってくることになる．
@@ -100,12 +96,12 @@ $$z_{base} = z_{Hi} - (z_{Hi}-z_{Lo})\frac{CIN-CIN_{Lo}}{CIN_{Hi} - CIN_{Lo}}$$
 ###  3.4. <a name='-1'></a>上昇流フラックスの鉛直プロファイルの診断
 浅い積雲が発生すると判定された雲底と判断された格子では，上述の雲底高度に輸送される量$\psi_u$の境界層格子平均値と雲底の質量フラックス$M_{u,base}$を与え，エントレインメントとデトレインメントを計算していく．
 
-エントレインメントとデトレインメントの比率$\varepsilon, \delta$を決定するプロセスはKain and Fritsch (1990)などでも用いられている浮力ソートの考え方を利用する．厚さ$\delta z$の層内で，環境場の空気$\delta M_e$と上昇流内の空気$\delta M_u$が等しく$\varepsilon_0 M_u \delta z$ずつ水平混合に関与して様々な混合状態のスペクトルを成す状況を考える．混合に関与する全質量フラックスは$2\varepsilon_0 M_u\delta z$である．混合空気内では，環境場からの空気が比率$\chi$を占めるような混合状態が確率密度$q(\chi)$で存在しており，ここでは計算を簡単にするため$\chi=0$の純粋な湿潤空気から$\chi=1$の純粋な環境場の空気までの混合状態が一様な確率で分布していると考える（Kain-Fritschスキームではガウス分布を仮定している）．この混合空気のうちエントレインされる環境場の空気とデトレインされる上昇流の空気それぞれの量は混合状態ごとの浮力に基づいて計算され，この過程でPSHCNの内部でサブルーチンDISTANCEが呼び出される．上昇流の液水温位(THETLU)とエントレインメント・デトレインメントの判定のブール値(JUDGE)が出力変数である．
+エントレインメントとデトレインメントの比率$\tilde{E}$, $\tilde{D}$を決定するプロセスはKain and Fritsch (1990)などでも用いられている浮力ソートの考え方を利用する．厚さ$\delta z$の層内で，環境場の空気$\delta M_e$と上昇流内の空気$\delta M_u$が等しく$\tilde{E_0} M_u \delta z$ずつ水平混合に関与して様々な混合状態のスペクトルを成す状況を考える．混合に関与する全質量フラックスは$2\tilde{E_0} M_u\delta z$である．混合空気内では，環境場からの空気が比率$\chi$を占めるような混合状態が確率密度$q(\chi)$で存在しており，ここでは計算を簡単にするため$\chi=0$の純粋な湿潤空気から$\chi=1$の純粋な環境場の空気までの混合状態が一様な確率で分布していると考える（Kain-Fritschスキームではガウス分布を仮定している）．この混合空気のうちエントレインされる環境場の空気とデトレインされる上昇流の空気それぞれの量は混合状態ごとの浮力に基づいて計算され，この過程でPSHCNの内部でサブルーチンDISTANCEが呼び出される．上昇流の液水温位(THETLU)とエントレインメント・デトレインメントの判定のブール値(JUDGE)が出力変数である．
 
 <!-- chi-w,theta-->
 
 エントレインメントの条件は以下のように判定される．まず上昇流が飽和しているかを判断し，飽和していなければエントレインメントは起こらない．
-次にパーセルに働く浮力を
+次にパーセルに働く浮力を環境場の仮温位$\overline{\theta_v}$，上昇流内の仮温位$\theta_{vu}$を用いて
 $$B_u = g\frac{\theta_{vu} - \overline{\theta_{v}}}{ \overline{\theta_v}}$$
 で計算し，正の浮力を持つ場合にはエントレインメントが起こるとする．
 さらに，浮力が負の場合でも慣性によってある渦混合距離$l_c$を超えて上昇し続けることができる場合にはエントレインメントが起こるものとする．混合距離は$l_c \equiv c_1 H$で定義する．ただし$H$は対流層の厚さで，定数$c_1=0.1$は貿易風帯のケースに最適化した値を使用している．
@@ -113,18 +109,18 @@ $$B_u = g\frac{\theta_{vu} - \overline{\theta_{v}}}{ \overline{\theta_v}}$$
 $$B_c = -\frac{1}{2}\frac{w_u^2}{l_c}$$
 を超えていればエントレインメントが起こると判定される．
 浮力が負で$l_c$だけ上昇できるような最初の混合状態の臨界値$\chi_c$が求まれば，エントレインメントによって上昇流内に取り込まれる環境場の空気
-$$M_t\int_0^{\chi_c}\chi q(\chi) d\chi = \varepsilon_0 M_u \chi_c^2$$
+$$ M_t\int_0^{\chi_c}\chi q(\chi) d\chi = \tilde{E_0} M_u \chi_c^2 $$
 とデトレインメントによって環境場へ放出される上昇流内の空気
-$$M_t\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \varepsilon_0 M_u (1-\chi_c)^2$$
+$$ M_t\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \tilde{E_0} M_u (1-\chi_c)^2 $$
 が計算でき，
-$$\varepsilon=\varepsilon_0\chi_c^2$$
-$$\delta=\varepsilon_0(1-\chi_c)^2$$
-$$\frac{1}{M}\frac{\partial M_u}{\partial z}= \varepsilon - \delta = \varepsilon_0(2\chi - 1)$$
+$$\tilde{E}=\tilde{E_0}\chi_c^2$$
+$$\tilde{D}=\tilde{E_0}(1-\chi_c)^2$$
+$$\frac{1}{M}\frac{\partial M_u}{\partial z}= \tilde{E} - \tilde{D} = \tilde{E_0}(2\chi - 1)$$
 となる．$\chi_c$は混合空気の仮温位
 $$\theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{l,u})-\left(\frac{\beta L}{c_p\Pi}-\theta_u\right)(\overline{q_t}-q_{l,u})\right]$$
 (Randall,1980)をもとに導出する．
 
-$\psi_u$の中の液水温位と総水量から雲水量$q_l$と水蒸気量$q_v$を診断し，閾値を上回った雲水は雨水$q_r$として落下させる．$q_r$の青星寮に応じて液水温位を更新し，$w_u$および$M_{u,base}$と整合するように上昇流の面積を診断する．これを離散化した支配方程式で上方に積分していくことで上昇流の鉛直プロファイルを求めていき，$w_u$または上昇流面積が下限値の定数を下回る高さを雲頂高度とする．
+$\psi_u$の中の液水温位と総水量から雲水量$l$と比湿$q$を診断し，閾値を上回った雲水は雨水$q_r$として落下させる．$q_r$の生成量に応じて液水温位を更新し，$w_u$および$M_{u,base}$と整合するように上昇流の面積を診断する．これを離散化した支配方程式で上方に積分していくことで上昇流の鉛直プロファイルを求めていき，$w_u$または上昇流面積が下限値の定数を下回る高さを雲頂高度とする．
 
 ##  4. <a name='-1'></a>実装に際しての補足
 
@@ -138,4 +134,3 @@ $$M_u = min.\left(M_u, \frac{\rho\Delta z}{\Delta t}\right)$$
 - Park, S. and C. S. Bretherton 2009: The University of Washington shallow convection and moist turbulence schemes and their impact on climate simulations with the Community Atmosphere Model, *J. Clim*, 22, 3449-3469.
 - Kain, J. S., and J. M. Fritsch 1990: A one-dimensional entraining/detraining plume model and its application in convective parameterization, *J. Atmos. Sci.*, 47, 2784-2802.
 - Randall, D. A. 1980: Conditional instability of the first kind upside-down. *J. Atmos. Sci.*, 37, 125–130.
-- 小倉知夫, III-1-2-2 浅い積雲パラメタリゼーションの実装. H26気候変動リスク情報創生プログラム報告書
