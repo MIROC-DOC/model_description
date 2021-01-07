@@ -13,7 +13,7 @@
 ## 鉛直拡散
 本章では、サブグリッドスケールの乱流を表現する鉛直拡散スキームについて記述する。鉛直拡散スキームでは、運動量、熱、および水蒸気などのトレーサーについて、鉛直フラックスとimplicit解を得るための微分値を出力する。また、後述する乱流量について時間発展を解くために必要な生成項、散逸項、鉛直フラックスを出力する。
 
-鉛直拡散係数の見積もりにはNakanishi and Niino (2004)の改良Mellor-Yamada Level2.5乱流クロージャーモデル(MYNNモデル)を用いる。MYNNモデルでは、熱力学変数としてliquid water potential temperature $\theta_l$ およびtotal water content $q_w$ が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
+鉛直拡散係数の見積もりにはNakanishi (2001), Nakanishi and Niino (2004) の改良Mellor-Yamada Level2.5乱流クロージャーモデル(MYNNモデル)を用いる。MYNNモデルでは、熱力学変数としてliquid water potential temperature $\theta_l$ およびtotal water content $q_w$ が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
 
 $$ \theta_l=\frac{ T - \frac{L}{C_p}q_l - \frac{L+L_{M}}{C_p}q_i }{\left(\frac{p}{p_0}\right)^\kappa } $$
 
@@ -36,9 +36,9 @@ $$q_w=q_v+q_l+q_i$$
 
 $$u^*=\left(\sqrt{{F_{u,g}}^2+{F_{v,g}}^2}/\rho \right)^\frac{1}{2}$$
 
-$$L_M=-\frac{T_{v,g}}{\kappa g}\frac{{u^*}^3}{\langle w\theta_v \rangle_g}$$
+$$L_M=-\frac{T_{v,g}}{kg}\frac{{u^*}^3}{\langle w\theta_v \rangle_g}$$
 
-ここで、$\langle w\theta_v \rangle_g=F_{\theta,g}/C_p\rho +\left(\frac{1}{\epsilon}-1\right)\theta_1 F_{w,g}/\rho$ は地表における仮温位の鉛直フラックスである。 $F_{u,g},F_{v,g},F_{\theta,g},F_{w,g}$ はそれぞれ運動量、熱、水蒸気の地表面フラックス、$T_{v,g}$ は地表における仮温度、$\theta_1$は1層目の温位、$\kappa$はカルマン定数である。
+ここで、$\langle w\theta_v \rangle_g=F_{\theta,g}/C_p\rho +\left(\frac{1}{\epsilon}-1\right)\theta_1 F_{w,g}/\rho$ は地表における仮温位の鉛直フラックスを表し $F_{u,g},F_{v,g},F_{\theta,g},F_{w,g}$ はそれぞれ運動量、熱、水蒸気の地表面フラックス、$T_{v,g}$ は地表における仮温度、$\theta_1$は1層目の温位である。
 
 ### 浮力係数の診断
 
@@ -130,13 +130,13 @@ $$Ri_B=\frac{\frac{g}{\theta_g}\Delta\theta_v\Delta z}{(\Delta u)^2+(\Delta v)^2
 
 $$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B}$$
 
-それぞれのスケールは以下のように求められる。
+$L_S,L_T,L_B$ はそれぞれ接地層、乱流、大気安定度によって決定される長さスケールを表し、以下のように計算される。
 
 \[L_S=\left\{
     \begin{array}{1}
-      \kappa z/3.7, &\zeta\ge1\\
-      \kappa z/(2.7+\zeta), &0\le\zeta\lt1\\
-      \kappa z(1-\alpha_4\zeta)^{0.2}, &\zeta\lt0
+      kz/3.7, &\zeta\ge1\\
+      kz/(2.7+\zeta), &0\le\zeta\lt1\\
+      kz(1-\alpha_4\zeta)^{0.2}, &\zeta\lt0
     \end{array}
   \right.
 \]
@@ -152,7 +152,7 @@ $$L_T=\alpha_1\frac{\int_0^h{qz}\,dz}{\int_0^h{q}\,dz}$$
   \right.
 \]
 
-ここで $\zeta\equiv z/L_M$ はMonin-Obukhov長 $L_M$ で規格化された高さ、$N\equiv\left[(g/\theta)(\partial\theta_v/\partial z)\right]^{1/2}$ はBrunt-V\"{a}is\"{a}l\"{a}振動数、 $q_c\equiv [(g/\theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ は対流速度 $w_*$ と同様な速度スケールを表す。経験定数は
+ここで $\zeta\equiv z/L_M$ はMonin-Obukhov長 $L_M$ で規格化された高さ、$N\equiv\left[(g/\theta)(\partial\theta_v/\partial z)\right]^{1/2}$ はBrunt-V\"{a}is\"{a}l\"{a}振動数、 $q_c\equiv [(g/\theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ は対流速度 $w^*$ と同様な速度スケールを表す。経験定数は
 
 $$(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(0.23,1.0,5.0,100.0)$$
 
@@ -253,13 +253,13 @@ $$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \theta_l}{\partial z}\fr
 
 ただし、鉛直勾配が必要な量は第一層についてのみMonin-Obukhovの相似則を用いて計算される。
 
-$$P_{s,1}+P_{b,1}=\frac{{u_*}^3}{\kappa z_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right]$$
+$$P_{s,1}+P_{b,1}=\frac{{u^*}^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right]$$
 
-$$\langle {\theta_l}^2 \rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u_*\kappa z_1}\frac{{\langle w\theta_l \rangle_g}^2}{q/B_2L}$$
+$$\langle {\theta_l}^2\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{{\langle w\theta_l \rangle_g}^2}{q/B_2L}$$
 
-$$\langle {q_w}^2 \rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u_*\kappa z_1}\frac{{\langle wq_w \rangle_g}^2}{q/B_2L}$$
+$$\langle {q_w}^2\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{{\langle wq_w\rangle_g}^2}{q/B_2L}$$
 
-$$\langle \theta_lq_w \rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u_*\kappa z_1}\frac{\langle w\theta_l \rangle_g\langle wq_w \rangle_g}{q/B_2L}$$
+$$\langle \theta_lq_w\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{\langle w\theta_l \rangle_g\langle wq_w \rangle_g}{q/B_2L}$$
 
 $z_1$ は第一層の高度であり、 $\zeta_1=z_1/L_M$ 。 $\phi_m,\phi_h$ はシア関数であり、Businger et al. (1971)に基づき以下のように定義される。
 
