@@ -7,11 +7,11 @@ Table of contents
   - Time scheme properties and time step estimates (変更なし)
   - Handling of the initiation of time integration (変更なし)
 
-## Time Integration
+## Time Integration `MODULE: [DYNSTP]`
 
-The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Asselin, 1972) is used to suppress the computational modes. A semi-implicit method is applied to the gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
+The time difference scheme is essentially a leap frog. However, the diffusion terms and physical process terms are backward or forward differences. A time filter (Williams, 2009) is used to suppress the computational modes. A semi-implicit method is applied to the gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
 
-### Time integration and time filtering with leap frog
+### Time integration and time filtering with leap frog `MODULE: [DADVNC]`
 
 We use leap frog as a time integration scheme for advection terms and so on. A backward difference of $2 \Delta t$ is used for the horizontal diffusion term. The pseudo $p$ surface correction of the diffusion term and the frictional heat due to horizontal diffusion term are treated as corrections, which are forward differences of $2 \Delta t$. The physical process terms (${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$) still use the forward difference of $2 \Delta t$ (except for the vertical diffusion term, which uses the forward difference of ${\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q$). (However, the calculation of the time-varying term of vertical diffusion is treated as a backward difference. Please refer to the chapter on physical processes for details.)
 
