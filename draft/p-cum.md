@@ -38,7 +38,7 @@ $$
 
 
 $$
- \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) \; 
+ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) 
 $$
 
 where $M$ is cloud mass flux, $D$ is detrainment, $h, q, l$ is moist static energy, cloud water content, and specific humidity, respectively. The hats denote in-cloud properties, and the overbars denote large-scale environmental properties.
@@ -46,12 +46,12 @@ where $M$ is cloud mass flux, $D$ is detrainment, $h, q, l$ is moist static ener
 Cloud mass flux $M$ and  detrainment $D$ are represented by
 
 $$
- M(z) = M_B \eta(z) \; ,
+ M(z) = M_B \eta(z) \, ,
 $$
 
 
 $$
- D(z) = M_B \eta(z_T) \delta (z-z_T)\; ,
+ D(z) = M_B \eta(z_T) \delta (z-z_T)\, ,
 $$
 
 respectively, where $z_T$ is cloud top height, $z_B$ is cloud base height, $M_B$ is mass flux at $z_B$, $\eta$ is normalized mass flux, and $\delta$ is the Dirac delta function.
@@ -64,7 +64,7 @@ $\eta, h^t, q^t,$ and $l^t$ are determined with the entraining plume model. $M_B
 Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest $z$ such that
 
 $$
-  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\;, 
+  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\,, 
 $$
 
 where
@@ -216,22 +216,22 @@ $$
  \hat{h}_{k+1/2} = e^{-\epsilon_k \Delta z_k} \hat{h}_{k - 1/2} + (1 - e^{-\epsilon_k \Delta z_k}) \bar{h}_k,
 $$
 
-which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$and$\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same concept is applied to $\hat{q}_t$ as well when assuming $P$ is zero.
+which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$ and $\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same concept is applied to $\hat{q}_t$ as well when assuming $P$ is zero.
 
 Properties in detrained air parcel are determined by
 
 $$
- h^t  =  \hat{h}(z_T) \; ,
+ h^t  =  \hat{h}(z_T) \, ,
 $$
 
 
 $$
- q^t  =  \hat{q}(z_T) \; , \mathrm{and}
+ q^t  =  \hat{q}(z_T) \, , \mathrm{and}
 $$
 
 
 $$
- l^t  =  \hat{l}(z_T) \;, 
+ l^t  =  \hat{l}(z_T) \,, 
 $$
 
 where superscript $t$ denote detrained properties.
@@ -253,13 +253,13 @@ A numerical scheme for solving the set of the equations is devised considering a
 Cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, cloud kinetic energy for each cloud type is explicitly predicted by
 
 $$
- \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\;,  \qquad\tag{8}
+ \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\,,  \qquad\tag{8}
 $$
 
 where $K$ and $A$ are cloud kinetic energy and cloud work function, respectively, and $t_p$ denotes a time scale of dissipation. Cloud work function $A$ is defined as
 
 $$
- A \equiv \int_{z_B}^{z_T} B \eta \,dz\;. 
+ A \equiv \int_{z_B}^{z_T} B \eta \,dz\,. 
 $$
 
 The energy is linked with $M_B$ by
