@@ -28,19 +28,19 @@ A summary of the calculation procedure is given below, along with the subroutine
 [** Basic framework]
 The tendency of large-scale environmental properties by the deep cumulus convection scheme is calculated as
 [$ \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ), ]
-[$ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) \; ]
+[$ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) ]
 where [$ M ] is cloud mass flux, [$ D ] is detrainment, [$ h, q, l ] is moist static energy, cloud water content, and specific humidity, respectively. The hats denote in-cloud properties, and the overbars denote large-scale environmental properties.
 
 Cloud mass flux [$ M ] and  detrainment [$ D ] are represented by
-[$ M(z) = M_B \eta(z) \; ,]
-[$ D(z) = M_B \eta(z_T) \delta (z-z_T)\; ,]
+[$ M(z) = M_B \eta(z) \, ,]
+[$ D(z) = M_B \eta(z_T) \delta (z-z_T)\, ,]
 respectively, where [$ z_T ] is cloud top height, [$ z_B ] is cloud base height, [$ M_B ] is mass flux at [$ z_B ], [$ \eta ] is normalized mass flux, and [$ \delta ] is the Dirac delta function.
 
 [$ \eta, h^t, q^t, ] and [$ l^t ] are determined with the entraining plume model. [$ M_B ] is determined with the prognostic convective kinetic energy closure.
 
 [** Cloud base]
 Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height [$ z_B ] is defined as smallest [$ z ] such that
-[$  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\;, ]
+[$  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\,, ]
 where
 [$ \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right). ]
 The normalized mass flux below the cloud base is given by [$ \eta = (z/z_B)^{1/2} ]
@@ -94,12 +94,12 @@ Considering the relation that [$ \partial h/\partial z = \epsilon\eta ], [$ E_k 
 [$ E_k = \frac{\eta_{k+1/2} - \eta_{k-1/2}}{\Delta z_k}  \qquad\quad\tag{A4}]
 Note that conservation of mass, energy, and water is guaranteed with Eqs. (A1)–(A4). This set of equations leads to exact solutions of [$ \hat{h} ] under the special case that [$ \epsilon ] and [$ \bar{h} ] are vertically constant and [$ Q_i ] is zero. From Eqs. (A1), (A2), and (A4), assuming [$ Q_i ] is zero,
 [$ \hat{h}_{k+1/2} = e^{-\epsilon_k \Delta z_k} \hat{h}_{k - 1/2} + (1 - e^{-\epsilon_k \Delta z_k}) \bar{h}_k,]
-which shows that [$ \hat{h}_{k+1/2} ] is a linear interpolation between [$ \hat{h}_{k - 1/2} ]and[$ \bar{h}_k ]. Thus, the stability of [$ \hat{h} ] is guaranteed. The same concept is applied to [$ \hat{q}_t ] as well when assuming [$ P ] is zero.
+which shows that [$ \hat{h}_{k+1/2} ] is a linear interpolation between [$ \hat{h}_{k - 1/2} ] and [$ \bar{h}_k ]. Thus, the stability of [$ \hat{h} ] is guaranteed. The same concept is applied to [$ \hat{q}_t ] as well when assuming [$ P ] is zero.
 
 Properties in detrained air parcel are determined by
-[$ h^t  =  \hat{h}(z_T) \; ,] 
-[$ q^t  =  \hat{q}(z_T) \; , \mathrm{and}]
-[$ l^t  =  \hat{l}(z_T) \;, ]
+[$ h^t  =  \hat{h}(z_T) \, ,] 
+[$ q^t  =  \hat{q}(z_T) \, , \mathrm{and}]
+[$ l^t  =  \hat{l}(z_T) \,, ]
 where superscript [$ t ] denote detrained properties.
 
 [** Spectral representation]
@@ -113,9 +113,9 @@ A numerical scheme for solving the set of the equations is devised considering a
 
 [** Cloud-base mass flux]
 Cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, cloud kinetic energy for each cloud type is explicitly predicted by
-[$ \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\;,  \qquad\tag{8}] 
+[$ \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\,,  \qquad\tag{8}] 
 where [$ K ] and [$ A ] are cloud kinetic energy and cloud work function, respectively, and [$ t_p ] denotes a time scale of dissipation. Cloud work function [$ A ] is defined as
-[$ A \equiv \int_{z_B}^{z_T} B \eta \,dz\;. ]
+[$ A \equiv \int_{z_B}^{z_T} B \eta \,dz\,. ]
 The energy is linked with [$ M_B ] by
 [$ K = \alpha M_B^2.]
 Cloud-base mass flux is then solved for each cloud type ([$ \tau_p ] and [$ \alpha ]  are set at [$ 1.0 \times 10^3\, \mathrm{s} ] and [$ 5.0 \times 10^7\, \mathrm{kg}^{-1} \mathrm{m}^4 ], respectively).
