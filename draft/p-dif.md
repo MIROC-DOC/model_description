@@ -211,7 +211,7 @@ $$F_{u,k-1/2}=-K_{M,k-1/2}\frac{u_{k}-u_{k-1}}{z_k-z_{k-1}}$$
 
 $$F_{v,k-1/2}=-K_{M,k-1/2}\frac{v_{k}-v_{k-1}}{z_k-z_{k-1}}$$
 
-$$F_{q,k-1/2}=-K_{q,k-1/2}\frac{{q^2}_{k}-{q^2}_{k-1}}{z_k-z_{k-1}}$$
+$$F_{q,k-1/2}=-K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{z_k-z_{k-1}}$$
 
 $$F_{\theta,k-1/2}=-K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\theta_{l,k}-\theta_{l,k-1}}{z_k-z_{k-1}}$$
 
@@ -219,7 +219,7 @@ $$F_{w,k-1/2}=-K_{w,k-1/2}\frac{q_{w,k}-q_{w,k-1}}{z_k-z_{k-1}}$$
 
 $$\frac{\partial F_{u,k-1/2}}{\partial u_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial v_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial u_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial v_{k}}=K_{M,k-1/2}\frac{1}{z_k-z_{k-1}}$$
 
-$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_{k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_{k}}=K_{q,k-1/2}\frac{1}{z_k-z_{k-1}}$$
+$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=K_{q,k-1/2}\frac{1}{z_k-z_{k-1}}$$
 
 $$\frac{\partial F_{\theta,k-1/2}}{\partial T_{k-1}}=K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{z_k-z_{k-1}}$$
 
