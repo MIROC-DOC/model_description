@@ -56,7 +56,9 @@ $$
                \frac{\partial uT'}{\partial \lambda}
           - \frac{1}{a}
                \frac{\partial }{\partial \varphi} ( vT' \cos\varphi )
-          + T' D  \\
+          + T' D
+$$
+$$
         - \dot{\eta} 
               \frac{\partial T }{\partial \eta}
           + \frac{\kappa T}{\sigma} \left[ B\left( \frac{\partial \pi}{\partial t}
@@ -78,7 +80,9 @@ $$
                \frac{\partial uq}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} (vq \cos\varphi)
-          + q D  \\
+          + q D
+$$
+$$
         - \dot{\eta} \frac{\partial q }{\partial \eta}
           + S_{q}
           - {\mathcal D}(q) 
@@ -87,50 +91,71 @@ $$
 Here,
 
 $$
-m \equiv \left(\frac{\partial p}{\partial \eta}\right)_{p_s} \\
-\theta  \equiv  T \left( p/p_{0} \right)^{-\kappa} \\
-\kappa  \equiv  R/C_{p} \\
-  \Phi  \equiv  gz \\
-   \pi  \equiv  \ln p_{S} \\
-%
- \dot{\eta}  \equiv   \frac{d \eta}{d t} \\
-%
-     T_v  \equiv  T ( 1+\epsilon_v q ) \\
-     T  \equiv   \bar{T} + T^{\prime}\\
-     \bar{T}\equiv 300 \ \mathrm{K} \\
-%
+m \equiv \left(\frac{\partial p}{\partial \eta}\right)_{p_s}
+$$
+$$
+\theta  \equiv  T \left( p/p_{0} \right)^{-\kappa}
+$$
+$$
+\kappa  \equiv  R/C_{p}
+$$
+$$
+  \Phi  \equiv  gz
+$$
+$$
+   \pi  \equiv  \ln p_{S}
+$$
+$$
+ \dot{\eta}  \equiv   \frac{d \eta}{d t}
+$$
+$$
+     T_v  \equiv  T ( 1+\epsilon_v q )
+$$
+$$
+     T  \equiv   \bar{T} + T^{\prime}
+$$
+$$
+     \bar{T}\equiv 300 \ \mathrm{K}
+$$
+$$
  \zeta  \equiv  \frac{1}{a \cos\varphi }
                     \frac{\partial v}{\partial \lambda} 
              -    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
-                    ( u \cos\varphi ) \\
-%
+                    ( u \cos\varphi )
+$$
+$$
      D  \equiv  \frac{1}{a \cos\varphi }
                     \frac{\partial u}{\partial \lambda} 
              +    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
-                    ( v \cos\varphi ) \\
-%
+                    ( v \cos\varphi )
+$$
+$$
     A_u  \equiv   ( \zeta + f ) v
              - \dot{\eta} \frac{\partial u}{\partial \eta} 
              - \frac{RT^{\prime}}{a\cos\varphi} 
                   \frac{\partial \pi}{\partial \lambda} 
-             + {\mathcal F}_x \\
-%
+             + {\mathcal F}_x
+$$
+$$
     A_v  \equiv  - ( \zeta + f ) u
              - \dot{\eta} \frac{\partial v}{\partial \eta} 
              - \frac{RT^{\prime}}{a}
                   \frac{\partial \pi}{\partial \varphi} 
-             + {\mathcal F}_y \\
-%
-     E  \equiv   \frac{u^{2}+v^{2}}{2} \\
-%
+             + {\mathcal F}_y
+$$
+$$
+     E  \equiv   \frac{u^{2}+v^{2}}{2}
+$$
+$$
  {\mathbf{v}}_{H} \cdot \nabla
         \equiv  \frac{u}{a \cos \varphi} 
          \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
      + \frac{v}{a}
          \left( \frac{\partial }{\partial \varphi} \right)_{\sigma} 
-            \\
+$$
+$$
   \nabla^{2}_{\eta}  
         \equiv  
                \frac{1}{a^{2}\cos^2\varphi} 

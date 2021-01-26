@@ -139,23 +139,30 @@ $$
 $$
 
 $$
- \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
+ \hat{H}_k  =  T_{k}^{\prime} D_{k}
+$$
+$$
          - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \\
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right]
+$$
+$$
          + \hat{\kappa}_{k} T_{v,k} {\mathbf{v}}_{k} \cdot \nabla \pi
-                \\
+$$
+$$
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
              \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
                \Delta B_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
              \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
                \Delta B_{l}
-                \\
+$$
+$$
          - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
-                \\
+$$
+$$
          + \frac{Q_k + (Q_{diff})_k}{C_p}
 $$
 
@@ -197,7 +204,8 @@ $$
     \overline{X}^{t}
    \equiv  \frac{1}{2} \left( {X}^{t+\Delta t} 
                               + {X}^{t-\Delta t} \right)
-         \\ 
+$$
+$$
    =  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t   ,
 $$
 
@@ -239,12 +247,14 @@ $$
              {\mathbf{G}} {\mathbf{C}}^{T} ) \nabla^{2}_{\eta}
   \right\}
       \overline{ {\mathbf{D}} }^{t} 
-       \\
+$$
+$$
   = ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M ) 
        {\mathbf{D}}^{t-\Delta t}
   + \Delta t 
      \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  
-  \\
+$$
+$$
   -  \Delta t \nabla^{2}_{\eta}     
                    \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S} 
                           + \underline{W} 
@@ -255,7 +265,8 @@ $$
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
-  \\
+$$
+$$
                  \left.  \hspace*{20mm} 
                           + ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}} 
                             \left[ \pi^{t-\Delta t} 
@@ -323,8 +334,8 @@ This absolute value is
 $$
   |\lambda| = \left\{ 
              \begin{array}{ll}
-               1                      |p| \le 1 \\
-               p \pm \sqrt{p^2-1} \;\;    |p| > 1
+               1 & |p| \le 1 \\
+               p \pm \sqrt{p^2-1} & |p| > 1
              \end{array}
              \right.
 $$
