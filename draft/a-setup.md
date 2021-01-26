@@ -81,7 +81,7 @@ The basic physical constants are shown below `MODULE:[APCON]`.
 | atmospheric pressure specific heat | $C_p$ | J kg$^{-1}$ K$^{-1}$ | 1004.6 |
 | Atmospheric gas constant | $R$ | J kg$^{-1}$ K$^{-1}$ | 287.04 |
 | Latent heat of water evaporation | $L$ | J kg$^{-1}$ | 2.5 $\times 10^6$ |
-| Water vapor constant pressure specific heat | $C_v$ | J kg$^{-1}$ K$^{-1}$ | 1810\bsp. |
+| Water vapor constant pressure specific heat | $C_v$ | J kg$^{-1}$ K$^{-1}$ | 1810. |
 | Gas constant of water | $R_v$ | J kg$^{-1}$ K$^{-1}$ | 461\. |
 | Density of liquid water | $d_{H_2O}$ | J kg$^{-1}$ K$^{-1}$ | 1000. |
 | 0 Saturated vapor at 0 $^{\circ}$ | $e^*$(273K) | Pa. | 611 |

@@ -57,7 +57,9 @@ $$
 さらに、
 
 $$
-  \Delta\sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2} \\
+  \Delta\sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2}
+$$
+$$
   \Delta B_k \equiv B_{k-1/2} - B_{k+1/2}
 $$
 
@@ -89,7 +91,9 @@ $$
 2. 静水圧の式
 
 $$
- \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
+ \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1}
+$$
+$$
            =  \Phi_{s} + C_{p} \alpha_{1} T_{v,1} 
 $$
 
@@ -101,7 +105,9 @@ $$
        + C_{p}
    \left[ 1- 
          \left( \frac{ p_{k-1/2} }{ p_{k-1} } \right)^{\kappa}
-              \right] T_{v,k-1} \\
+              \right] T_{v,k-1}
+$$
+$$
    =    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 $$
 
@@ -109,8 +115,9 @@ $$
 
 $$
  \alpha_k \equiv \left( \frac{ p_{k-1/2} }
-                               { p_k } \right)^{\kappa} -1 \\
- \beta_k \equiv  1- \left( \frac{ p_{k+1/2} }
+                               { p_k } \right)^{\kappa} -1
+$$
+$$ \beta_k \equiv  1- \left( \frac{ p_{k+1/2} }
                                { p_k } \right)^{\kappa} .
 $$
 
@@ -143,7 +150,8 @@ $$
     =  ( \zeta_k + f ) v_k 
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{u_{k-1} - u_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
-            \\
+$$
+$$
            - \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
              + {\mathcal F}_x
 $$
@@ -153,7 +161,8 @@ $$
     =  - ( \zeta_k + f ) u_k 
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{v_{k-1} - v_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
-            \\
+$$
+$$
            - \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
              + {\mathcal F}_y
 $$
@@ -172,10 +181,12 @@ $$
                \frac{\partial u_k T'_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
-          + H_k  \\
+          + H_k
+$$
+$$
         + \frac{Q_k}{C_{p}}
           + \frac{(Q_{diff})_k}{C_p} 
-          - {\mathcal D}(T_k)  \\
+          - {\mathcal D}(T_k)
 $$
 
 ここで、
@@ -185,31 +196,38 @@ $$
      \equiv  T_k' D_k
               - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right]
-                \\
+$$
+$$
         + \left\{ \alpha_k
                     \left[ B_{k-1/2} {\mathbf{v}}_k \cdot \nabla \pi
                           - \sum_{l=k}^{K} 
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                     \right]
-             \right.    \\
+             \right.
+$$
+$$
           + \left. \beta_k
                      \left[ B_{k+1/2} {\mathbf{v}}_k \cdot \nabla \pi
                           - \sum_{l=k+1}^{K} 
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                     \right]
               \right\} 
-              \frac{1}{\Delta \sigma_k} T_{v,k}   \\
-%
+              \frac{1}{\Delta \sigma_k} T_{v,k}
+$$
+$$
      =  T_k' D_k 
           - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right]
-                \\
+$$
+$$
         + \hat{\kappa}_k {\mathbf{v}}_k \cdot \nabla \pi T_{v,k} 
-                \\
+$$
+$$
         - \alpha_k \sum_{l=k}^{K} 
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                             \frac{T_{v,k}}{\Delta \sigma_k} 
-                \\
+$$
+$$
         - \beta_k \sum_{l=k+1}^{K} 
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                             \frac{T_{v,k}}{\Delta \sigma_k}
@@ -221,9 +239,11 @@ $$
 $$
 
 $$
-  a_k  =  \alpha_k 
+  a_k  =  \alpha_k
               \left[ 1- \left( \frac{ p_k }{ p_{k-1} }
-                        \right)^{\kappa} \right]^{-1}   \\
+                        \right)^{\kappa} \right]^{-1}
+$$
+$$
   b_k  =  \beta_k 
               \left[ \left( \frac{ p_k }{ p_{k+1} } 
                      \right)^{\kappa} - 1 \right]^{-1} .  
