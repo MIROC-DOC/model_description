@@ -64,7 +64,7 @@ $$
 
 鉛直座標を80層にした場合の整数レベルの気圧を例示する。下層は地形に追従する一方で、上部の層は等圧になっており、両者が滑らかに接続されている。
 
-![levels](levels.png)
+![鉛直80層とする場合のデフォルトの層配置](levels.png)
 
 Each predictor is entirely defined on a grid of $(\lambda_i, \varphi_j, \sigma_k)$ or $(\lambda_i, \varphi_j, z_l)$. (The underground level, $z_l$, is described in the section on physical processes.)
 
