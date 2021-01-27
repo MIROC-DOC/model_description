@@ -1,21 +1,3 @@
-<!-- vscode-markdown-toc -->
-* 1. [浅い積雲の概要](#)
-* 2. [雲モデルの基本](#-1)
-* 3. [PSHCNでの計算](#PSHCN)
-	* 3.1. [下部境界条件：雲底での質量フラックスの診断](#-1)
-	* 3.2. [雲底高度の診断](#-1)
-	* 3.3. [ 浅い積雲の有無の判定](#-1)
-	* 3.4. [上昇流フラックスの鉛直プロファイルの診断](#-1)
-* 4. [実装に際しての補足](#-1)
-	* 4.1. [ 質量フラックスのリミッター](#-1)
-* 5. [参考文献](#-1)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
 # 浅い積雲対流のパラメタリゼーション
 ##  1. <a name=''></a>浅い積雲の概要
 浅い積雲は熱帯や亜熱帯で対流雲の中では最も頻度が多く，大気放射によるエネルギー収支を介して気候に与える影響が重要視されている。浅い積雲は境界層の大気を自由大気へ輸送する役割を担っており，降水を伴わないことが多く，深い対流のように降水性の下降流が地表まで到達しないことが特徴である．
@@ -122,14 +104,10 @@ $$\theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{l,u})-
 
 $\psi_u$の中の液水温位と総水量から雲水量$l$と比湿$q$を診断し，閾値を上回った雲水は雨水$q_r$として落下させる．$q_r$の生成量に応じて液水温位を更新し，$w_u$および$M_{u,base}$と整合するように上昇流の面積を診断する．これを離散化した支配方程式で上方に積分していくことで上昇流の鉛直プロファイルを求めていき，$w_u$または上昇流面積が下限値の定数を下回る高さを雲頂高度とする．
 
-##  4. <a name='-1'></a>実装に際しての補足
-
-###  4.1. <a name='-1'></a> 質量フラックスのリミッター
-本パラメタリゼーションでの保存量の鉛直フラックスの定式化は，講師の下端から流入する上昇流は時間ステップ$\Delta t$で格子内の大気を全て入れ替えるほど大きくないと仮定しているに等しい．よって上昇流の質量フラックスを求める際には次のような上限を課している．
+なお，本パラメタリゼーションでの保存量の鉛直フラックスの定式化は，講師の下端から流入する上昇流は時間ステップ$\Delta t$で格子内の大気を全て入れ替えるほど大きくないと仮定しているに等しい．よって上昇流の質量フラックスを求める際には次のような上限を課して数値不安定を防いでいる．
 $$M_u = min.\left(M_u, \frac{\rho\Delta z}{\Delta t}\right)$$
-このリミッターは数値不安定を防ぐ効果を持っている．
 
-##  5. <a name='-1'></a>参考文献
+##  4. <a name='-1'></a>参考文献
 - Bretherton, C. S., J. R. McCaa, and H. Grenier 2004: A new parameterization for shallow cumulus convection and its application to marine subtropical cloud-topped boundary layers. Part I: description and 1D results, *Mon. Wea. Rev.*, 132, 864-882.
 - Park, S. and C. S. Bretherton 2009: The University of Washington shallow convection and moist turbulence schemes and their impact on climate simulations with the Community Atmosphere Model, *J. Clim*, 22, 3449-3469.
 - Kain, J. S., and J. M. Fritsch 1990: A one-dimensional entraining/detraining plume model and its application in convective parameterization, *J. Atmos. Sci.*, 47, 2784-2802.
