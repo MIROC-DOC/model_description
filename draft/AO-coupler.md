@@ -36,7 +36,7 @@
 
 $$ SL^{lake}=SL * LKFRC * FLND $$
 
-$$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND $$
+$$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND $
 
 となる。ここで$LKFRC$は陸に占める湖の割合、$k$は土壌被覆の種類、$GRFRC_k$は湖を除く陸に占める土壌被覆$k$の割合で示す。
 陸面からのフラックスはこれらの土壌被覆、湖の上でそれぞれ別々に計算され、面積の重さで平均し、大気に渡される。
@@ -250,3 +250,6 @@ $AIM$ はグリッドに海氷の占める面積の割合（海氷密接度）�
 海面グリッドは大気のグリッドの緯度経度を分割して作成しているが、分割個数が十分ではなく、海洋モデルのグリッドが大気の海面グリッドと比べて高解像度の場合、エクスチェンジャーを通してフラックスを海洋のグリッドに変換した際に大気のグリッドサイズの構造が残る場合がある。
 また、大気からの降水などのデータは大気グリッドから海面グリッドに変換する際に補間を行わないため、これらのフラックスについては海洋グリッドで大気グリッドサイズの構造が残る。
 また、海面グリッドに変換する際に、3次スプライン補間はなく線形補間を用いた場合は風応力カールのような微分量で大気グリッドサイズの構造が残る場合がある。
+
+# Reference
+Suzuki, T., Saito, F., Nishimura, T., and Ogochi, K., 2009: Coupling procedures of heat and freshwater fluxes in the MIROC (Model for Interdiciplinary Research on Climate) version 4. JAMSTEC Report of Research and Development, 9, 1-9 (in Japanese)
