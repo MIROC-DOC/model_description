@@ -2,7 +2,7 @@
 
 - [1 Sea Surface Conditions](#1-sea-surface-conditions)
 	- [1.1 Overview [済 1月]](#11-overview-済-1月)
-	- [1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in January].](#12-passing-variables-between-agcm-and-landsea-level-schemes-pgsfcnot-yet-done-work-to-be-done-in-january)
+	- [1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in February].](#12-passing-variables-between-agcm-and-landsea-level-schemes-pgsfcnot-yet-done-work-to-be-done-in-february)
 	- [1.3 Setting Sea Surface Conditions [済 1月]](#13-setting-sea-surface-conditions-済-1月)
 		- [1.3.1 Input variables from the atmosphere](#131-input-variables-from-the-atmosphere)
 		- [1.3.2 Ocean Surface Conditions `[OCNBCS]`](#132-ocean-surface-conditions-ocnbcs)
@@ -47,7 +47,7 @@ The four modules discussed in this chapter are as follows.
 | `MODULE:[PSFCM]` | `./physics/psfcm.F`  | surface fluxes                    |
 | `MODULE:[PGOCN]` | `./physics/pgocn.F`  | mixed layer/fixed SST ocean       |
 
-## 1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in January].
+## 1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in February].
 
 Calling `OCNFLX` (`MODULE: [POCEN]`) for sea level and `LNDFLX` of the MATSIRO model for land level, respectively.
 
