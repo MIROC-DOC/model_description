@@ -10,7 +10,6 @@ $$
 \zeta_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
                 \frac{w_j}{a(1-\mu_j^{2})}
-                 \\
            +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                      u_{ij} \cos\varphi_j (1-\mu_j^2)
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
@@ -23,7 +22,6 @@ $$
     D_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   im u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
                 \frac{w_j}{a(1-\mu_j^{2})}
-                 \\
            -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   v_{ij} \cos\varphi_j  (1-\mu_j^2)
                   \frac{\partial }{\partial \mu} {Y_n^{m*}}_{ij}
