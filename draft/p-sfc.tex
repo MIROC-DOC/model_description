@@ -210,16 +210,16 @@ In the sea ice area (\(L=1\)), the surface temperature \(T_s\) is the
 sea ice surface temperature \(T_{ice}\). However, if \(T_{ice}\) is
 higher than \(T_{melt}=0\), then \(T_{melt}\) is used.
 
-\begin{eqnarray}
+\begin{eqnarray}.
     T_s = min(T_{ice},T_{melt})
-\end{eqnarray}
+\end{eqnarray}.
 
 The sea ice bottom temperature \(T_b\) is assumed to be the ocean
 surface temperature \(T_{o(1)}\).
 
-\begin{eqnarray}
+\begin{eqnarray}.
     T_b = T_{o(1)}
-\end{eqnarray}
+\end{eqnarray}.
 
 The amount of sea ice \(W_{ice}\) and the amount of snow on it
 \(W_{snow}\) are converted per unit area by considering \(R_{ice}\) and
@@ -234,9 +234,9 @@ In the ice-free region (\(L=2\)), the surface temperature \(T_s\) and
 sea ice bottom temperature \(T_b\) are assumed to be the ocean surface
 temperature \(T_{o(1)}\).
 
-\begin{eqnarray}
+\begin{eqnarray}.
     T_s = T_b = T_{o(1)}
-\end{eqnarray}
+\end{eqnarray}.
 
 The evaporation coefficient is assumed to be \(GRBET=1\) for both
 \(L=1 and 2\).
@@ -244,9 +244,9 @@ The evaporation coefficient is assumed to be \(GRBET=1\) for both
 If the sea ice concentration \(R_{ice}\) is not given, it can be
 diagnosed simply from the sea ice volume \(W_{ice}\).
 
-\begin{eqnarray}
+\begin{eqnarray}.
 R_{ice} = \mathrm{min}\Big(\sqrt{\frac{\mathrm{max}(W_{ice},0)}{W_{ice,c}}},1.0\Big)
-\end{eqnarray}
+\end{eqnarray}.
 
 The standard gives the amount of sea ice per area as
 \(W_{ice,c}=300 \mathrm{[kg/m^2]}\).
@@ -567,7 +567,7 @@ Therefore, the heat conduction flux and its derivative are
 
 \begin{eqnarray}
  \frac{\partial G}{\partial T} = k_{ice}
-\end{eqnarray}
+\end{eqnarray}.
 
 Note that in the ice-free region (\(L=2\))
 
@@ -1013,7 +1013,7 @@ meaning.
 Meaning & Presentation & Variable & dimension & unit \\ \addlinespace
 \midrule\relax
 \endhead
-surface water flux *1 & \(W_{free/ice}\) & WFLUXS & IJLSDM,2 &
+surface water flux & \(W_{free/ice}\) & WFLUXS & IJLSDM,2 &
 -- \\ \addlinespace
 upward long wave & \(LW^\uparrow\) & RFLXLU & IJLSDM &
 -- \\ \addlinespace
