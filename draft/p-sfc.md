@@ -1,14 +1,15 @@
-<!-- TOC START min:1 max:5 link:true asterisk:false update:true -->
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
 - [1 Sea Surface Conditions](#1-sea-surface-conditions)
-	- [1.1 Overview [済 10月]](#11-overview-済-10月)
-	- [1.2 AGCMと陸面/海水面スキーム間での変数の受け渡し `[PGSFC]`[未 1月作業予定]](#12-agcmと陸面海水面スキーム間での変数の受け渡し-pgsfc未-1月作業予定)
-	- [1.3 Setting Sea Surface Conditions [7割済 12月]](#13-setting-sea-surface-conditions-7割済-12月)
+	- [1.1 Overview [済 1月]](#11-overview-済-1月)
+	- [1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in January].](#12-passing-variables-between-agcm-and-landsea-level-schemes-pgsfcnot-yet-done-work-to-be-done-in-january)
+	- [1.3 Setting Sea Surface Conditions [済 1月]](#13-setting-sea-surface-conditions-済-1月)
 		- [1.3.1 Input variables from the atmosphere](#131-input-variables-from-the-atmosphere)
 		- [1.3.2 Ocean Surface Conditions `[OCNBCS]`](#132-ocean-surface-conditions-ocnbcs)
 			- [1.3.2.1 Albedo](#1321-albedo)
 			- [1.3.2.2 Roughness](#1322-roughness)
 			- [1.3.2.3 Sea Surface heat flux](#1323-sea-surface-heat-flux)
-	- [1.4 Surface Flux [8割済 11月]](#14-surface-flux-8割済-11月)
+	- [1.4 Surface Flux [済 1月]](#14-surface-flux-済-1月)
 		- [1.4.1 Overview](#141-overview)
 			- [1.4.2 Basic Formula for Flux Calculations](#142-basic-formula-for-flux-calculations)
 		- [1.4.2 Roughness `[SEA0F]`](#142-roughness-sea0f)
@@ -16,30 +17,28 @@
 		- [1.4.3 Richardson Number `[PSFCL]`](#143-richardson-number-psfcl)
 		- [1.4.4 Bulk factor `[BLKCOF]`](#144-bulk-factor-blkcof)
 		- [1.4. Calculation of surface turbulent fluxes `[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm)
-	- [1.5 Radiation Flux at Sea Surface `[RADSFC]` [7割済 12月]](#15-radiation-flux-at-sea-surface-radsfc-7割済-12月)
-	- [1.6 Surface Heat Balance `[OCNSLV]`　[7割済 12月]](#16-surface-heat-balance-ocnslv7割済-12月)
-		- [1.6.1 Variables](#161-variables)
-		- [1.6.2 Calculating heat Balance](#162-calculating-heat-balance)
-<!-- TOC END -->
+	- [1.5 Radiation Flux at Sea Surface `[RADSFC]` [済 1月]](#15-radiation-flux-at-sea-surface-radsfc-済-1月)
+	- [1.6 Surface Heat Balance `[OCNSLV]`　[済 1月]](#16-surface-heat-balance-ocnslv-済-1月)
 
+<!-- /TOC -->
 
 
 # 1 Sea Surface Conditions
-地表過程は、大気・地表間の運動量・熱・水フラックスの交換を通して大気下端の境界条件を与える。[CCSR/NIES AGCM]()までは陸面・海面ともに大気物理過程のひとつとして扱われていたが、[MIROC3 (Hasumi and Emori, 2004)]()以降、陸面過程がMATSIROとして独立した。本章では、今(MIROC6)なお大気物理過程の枠組み内で扱われている、海水面過程について記述する。陸面過程については、[ILSの記述](https://github.com/integrated-land-simulator/model_description)を参照されたい。
+Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. Until [CCSR/NIES AGCM](), both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 (Hasumi and Emori, 2004), land surface processes became independent as MATSIRO. However, since MIROC3 (Hasumi and Emori, 2004), land surface processes have been separated into MATSIRO. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes (MIROC6). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
 
-## 1.1 Overview [済 10月]
+## 1.1 Overview [済 1月]
 
-`MODULE: [PGSFC]`において、海面については`[OCNFLX]`(`MODULE: [POCEN]`)、陸面についてはMATSIROモデルの`[LNDFLX]` をそれぞれ呼び出している。`[OCNFLX]`では、以下の手順で海表面過程を扱う。
+In `MODULE: [PGSFC]`, `[OCNFLX]` (`MODULE: [POCEN]`) is called for the sea surface, and `[LNDFLX]` of MATSIRO model is called for the land surface. In `[OCNFLX]`, the following procedure is used to deal with sea surface processes.
 
-1. 海氷密接度を用いて、海氷域と無海氷域それぞれについての変数を準備する。
-2. 表層境界条件を求める。
-3. フラックス収支を求める。
-4. 海表面での放射収支を求める。
-5. (CHASERによるdepositionを求める。)
-6. 海表面における熱バランスを解き、表面温度と各フラックスの値を更新する。
+1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration. 2.
+Determine the surface boundary conditions. 3.
+Calculate the flux balance. 4.
+Calculate the radiation budget at the sea surface. 5.
+(3) Calculate the deposition by CHASER.
+6. solve the heat balance at the sea surface and update the surface temperature and each flux value.
 
 
-本章で取り上げるモジュールは次の4つである。
+The four modules discussed in this chapter are as follows.
 
 | module name      | file name            | contents                          |
 |:-----------------|:---------------------|:----------------------------------|
@@ -86,89 +85,91 @@
 | `OCHKV`       | valid range monitor                 |
 | `OCEAN_DUMMY` | --                                  |
 
-## 1.2 AGCMと陸面/海水面スキーム間での変数の受け渡し `[PGSFC]`[未 1月作業予定]
 
-海面については`OCNFLX`(`MODULE: [POCEN]`)、陸面についてはMATSIROモデルの`LNDFLX` をそれぞれ呼び出している。
+## 1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in January].
+
+Calling `OCNFLX` (`MODULE: [POCEN]`) for sea level and `LNDFLX` of the MATSIRO model for land level, respectively.
 
 
 [カップラーのセクション](https://github.com/MIROC-DOC/model_description/blob/coupler_iwakiri/draft/AO-coupler.md)とmerge予定。
 
-## 1.3 Setting Sea Surface Conditions [7割済 12月]
+## 1.3 Setting Sea Surface Conditions [済 1月]
 
 ### 1.3.1 Input variables from the atmosphere
 
-| variable name | contents                 |
-|:--------------|:-------------------------|
-| GAUA          | u-wind                   |
-| GAVA          | v-wind                   |
-| GATA          | temperature T            |
-| GAQA          | humidity q               |
-| GAPA          | pressure P               |
-| GAPS          | surface pressure Ps      |
-| GAZS          | surface height           |
-| RSFCD         | surface radiation fluxes |
-| RCOSZ         | cos(solar angle)         |
+| variable | meaning                  |
+|:---------|:-------------------------|
+| GAUA     | u-wind                   |
+| GAVA     | v-wind                   |
+| GATA     | temperature T            |
+| GAQA     | humidity q               |
+| GAPA     | pressure P               |
+| GAPS     | surface pressure Ps      |
+| GAZS     | surface height           |
+| RSFCD    | surface radiation fluxes |
+| RCOSZ    | cos(solar angle)         |
 
 If use CHASER, variables below are also needed.
 
-| variable name | contents                                             |
-|:--------------|:-----------------------------------------------------|
-| EH            | Henry const                                          |
-| PFLXC         | precipitation flux (cumulus convection scheme)       |
-| PFLXL         | precipitation flux (large scale condensation scheme) |
-| LLAT          | latitude                                             |
+| variable | meaning                                              |
+|:---------|:-----------------------------------------------------|
+| EH       | Henry const                                          |
+| PFLXC    | precipitation flux (cumulus convection scheme)       |
+| PFLXL    | precipitation flux (large scale condensation scheme) |
+| LLAT     | latitude                                             |
 
 Practically, precipitation flux from 2 schemes are treated together.
 
-$$
-	PFLX = PFLXC + PFLXL
-$$
+
+$$.
+	Pr = Pr_c + Pr_l
+$$.
 
 
 
-海氷域($L=1$)においては、地表面温度$T_s$は、海氷面温度$T_{ice}$を用いる。ただし、$T_{ice}$が$T_{melt}=0$よりも高い場合は、$T_{melt}$とする。
+In the sea ice area ($L=1$), the surface temperature $T_s$ is the sea ice surface temperature $T_{ice}$. However, if $T_{ice}$ is higher than $T_{melt}=0$, then $T_{melt}$ is used.
 
-$$
+$$.
 	T_s = min(T_{ice},T_{melt})
-$$
+$$.
 
-また、海氷底温度$T_b$は、海洋表層水温$T_{o(1)}$とする。
+The sea ice bottom temperature $T_b$ is assumed to be the ocean surface temperature $T_{o(1)}$.
 
-$$
+$$.
 	T_b = T_{o(1)}
-$$
+$$.
 
-海氷量W_{ice}およびその上の積雪量W_{snow}は、$R_{ice}$を考慮して単位面積あたりに換算し、計算に用いる。ただし、リミッター$\epsilon$を設けて、値が小さくなりすぎないようにする。
+The amount of sea ice W_{ice} and the amount of snow on it W_{snow} are converted per unit area by considering $R_{ice}$ and used in the calculation. However, a limiter $\epsilon$ is provided to prevent the values from becoming too small.
 
-$$
-R_{ice}  =\mathrm{max}( R_{ice,orginal}, \epsilon)
-$$
+$$.
+R_{ice} =\mathrm{max}( R_{ice,orginal}, \epsilon)
+$$.
 
 
-無海氷域($L=2$)においては、地表面温度$T_s$および海氷底温度$T_b$は、海洋表層水温$T_{o(1)}$とする。
+In the ice-free region ($L=2$), the surface temperature $T_s$ and sea ice bottom temperature $T_b$ are assumed to be the ocean surface temperature $T_{o(1)}$.
 
-$$
+$$.
 	T_s = T_b = T_{o(1)}
-$$
+$$.
 
 
-また、$L=1,2$いずれのばあいも蒸発係数は$GRBET=1$とする。
+The evaporation coefficient is assumed to be $GRBET=1$ for both $L=1 and 2$.
 
 
-海氷密接度$R_{ice}$が与えられない場合は、海氷量$W_{ice}$から簡易的に診断させることもできる。
+If the sea ice concentration $R_{ice}$ is not given, it can be diagnosed simply from the sea ice volume $W_{ice}$.
 
-$$
+$$.
 R_{ice} = \mathrm{min}\Big(\sqrt{\frac{\mathrm{max}(W_{ice},0)}{W_{ice,c}}},1.0\Big)
-$$
+$$.
 
-標準では面積あたりの海氷量を$W_{ice,c}=300 \mathrm{[kg/m^2]}$として与える。
+The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/m^2]}$.
 
 
 ### 1.3.2 Ocean Surface Conditions `[OCNBCS]`
 
 - Output variables
 
-| Original | Presentation                      | Meanings          |
+| variable | Presentation                      | Meaning           |
 |:---------|:----------------------------------|:------------------|
 | GRALB    | $\alpha$                          | surface albedo    |
 | GRZ0     |                                   | surface roughness |
@@ -177,7 +178,7 @@ $$
 
 - Input variables
 
-| Original | Presentation | Meanings         |
+| Variable | Presentation | Meaning          |
 |:---------|:-------------|:-----------------|
 | GRTS     | $T_s$        | skin temperature |
 | GRTB     | $T_{b,ice}$  | ice base temp.   |
@@ -190,40 +191,47 @@ $$
 
 - Internal variables
 
-| Original | Presentation | Meanings      |
+| variable | Presentation | Meaning       |
 |:---------|:-------------|:--------------|
 | GRSNR    |              | snow fraction |
 
 
 #### 1.3.2.1 Albedo
 
-海水面アルベド$\alpha_{(d,b)}$について、$b=1,2,3$ はそれぞれ可視、近赤外、赤外の波長帯を表す。また、$d=1,2$はそれぞれ直達光、散乱光を表す。
+In this module, surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified.
+
+First, let us consider the sea albedo. The sea level $\alpha_{(d,b)}$, $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.
 
 1. Sea Surface Albedo for Visible `[SEAALB]`
 
+- Internal parameters
+
+| Meaning | Presentation     | Variable | unit | value                          |
+|:--------|:-----------------|:---------|:-----|:-------------------------------|
+|         | $C_1, C_2, C_3$  | CC       | [-]  | $-0.7479, -4.677039, 1.583171$ |
+|         | $\alpha_{L(2)} $ | ALBDIF   | [-]  | $0.06$                         |
 
 
-緯度$\thetaにおける$太陽天頂角$\beta (\theta)$をもちいて、
+For sea surface level albedo $\alpha_{L(d)}$, $d=1,2$ represents direct and scattered light, respectively.
+
+
+Using the solar zenith angle at latitude $\theta$, the albedo for direct light is presented by
 
 $$
-	A = \mathrm{min}(\mathrm{max(cos}(\beta(\theta)), \mathrm{cos}	(88^\circ)),\mathrm{cos}	(16^\circ))
+	\alpha_{L(1)} = e^{(C_3A^* + C_2) A^* +C_1}
 $$
 
-$$
-	S=(\mathrm{tan}(57.7^\circ) * A + \mathrm{tan}(-77.9^\circ))*A + \mathrm{tan}(-36.8^\circ)
-$$
+where $A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961) $
+
+On the other hand, the albedo for scattered light is uniformly set to a constant parameter.
 
 $$
-	\alpha_{1,1} = e^S
-$$
-
-$$
-	\alpha_{2,1} = 0.06
+	\alpha_{L(2)} = 0.06
 $$
 
 2. Sea Surface Albedo for Near-Infrared and Infrared
 
-近赤外$b=2$については、可視と同じアルベドを用いる。
+ The albedo for near-infrared is set to same as the visible one.
 
 $$
 	\alpha_{1,2} =\alpha_{1,1}
@@ -233,39 +241,37 @@ $$
 	\alpha_{2,2} =\alpha_{2,1}
 $$
 
-また、赤外$b=3$については、太陽天頂角によらず、一定値を用いる。
+ The albedo for infrared is uniformly set to a constant value.
 
 3. Albedo modification by ice
 
-グリッド平均のアルベドは、海氷密接度$R_{ice}$を考慮して、
+The grid-averaged albedo, taking into account the sea ice concentration $R_{ice}$, is
 
 $$
 	\alpha = \alpha -R_{ice} \alpha_{ice}
 $$
 
-$\alpha_{ice}$は標準で$\alpha_{ice,1}=0.5,\alpha_{ice,2}=0.5,\alpha_{ice,3}=0.05$として与えられる。
+\alpha_{ice}$ is given by the standard as $\alpha_{ice,1}=0.5,\alpha_{ice,2}=0.5,\alpha_{ice,3}=0.05$. 4.
 
-4. Albedo modification by snow
+4. albedo modification by snow
 
-
-さらに、積雪の影響を考慮したい。ここで、温度によるアルベド変化を考慮する。積雪温度の閾値として$T_{al,2}=258.15 \mathrm{[K]}$、$T_{al,1}=273.15 \mathrm{[K]}$を標準で設定し、温度変化に対して線形に、雪のアルベドが$\alpha_{snow,1}=0.75$から$\alpha_{snow,2}$まで変化するとする。$0\le \tau \le 1$である係数$\tau_{snow}$を
+In addition, we want to consider the effect of snow cover. Here, we consider the albedo modification by temperature. The standard threshold values for snow temperature are $T_{al,2}=258.15 \mathrm{[K]}$ and $T_{al,1}=273.15 \mathrm{[K]}$. The snow albedo changes linearly with temperature change from $\alpha_{snow,1}=0.75$ to $\alpha_{ snow,2}$. Let the coefficient $\tau_{snow}$, which is $0\le \tau \le 1$.
 
 $$
 \tau_{snow} = \frac{T_s - T_{al,1}}{T_{al,2}-T_{al,1}}
 $$
 
-として、雪のアルベド$\alpha_{snow}$を更新する。
+Update the snow albedo $\alpha_{snow}$ as
 
 $$
 	\alpha_{snow} = \alpha_{snow,0} + \tau_{snow}(\alpha_{snow,2}-\alpha_{snow,1})
 $$
 
 #### 1.3.2.2 Roughness
-[1.4節に記載](#13221-sea-surface-roughness-seaz0f) - どっちに入れるか
 
 1. Sea Surface Roughness `[SEAZ0F]`
 
-The roughness variation of the sea surface is determined by the friction velocity $u^*$
+The roughness variation of the sea surface is determined by the friction velocity $u^\star$
 
 $$
 u^{\star} = \sqrt{C_{M_0} ({U_0}^2  +{V_0}^2)}
@@ -330,32 +336,34 @@ Here, $r_{0,snow,*}$ is roughness of sea ice, $\alpha_{snow}$ is the sea ice con
 #### 1.3.2.3 Sea Surface heat flux
 
 1. Conductivity of ice
-When the sea ice exists ($L=1$),
-海氷が存在する時($L=1$)、$D_{f,ice}$ (海氷の熱拡散係数), 海氷密度 $\sigma_{ice}$をもちいて、海氷の熱伝導率$k_{ice}^*$を求める。
+
+When sea ice exists ($L=1$), the thermal conductivity $k_{ice}^*$ of sea ice is obtained by using $D_{f,ice}$ (thermal diffusivity of sea ice) and sea ice density $\sigma_{ice}$.
 
 $$
 k_{ice}^* = \frac{D_{f,ice}}{\mathrm{max}(R_{ice}/\sigma_{ice}, \epsilon)}
 $$
 
-2. Conductivity modification by snow
+2. conductivity modification by snow
 
-
-求めた熱伝導率は、積雪によって変わることを考慮して、$k_{ice}$に修正される。
+The calculated thermal conductivity is modified to $k_{ice}$$ to take into account that it varies with snow cover.
 
 $$
 h_{snow} = \mathrm{min}(
 	\mathrm{max}(
 	R_{snow}/\sigma_{snow}),\epsilon
 		),h_{snow,max}
-		)\\
+		)
+$$
+
+$$		
 k_{ice} = k_{ice}^* (1-R_{ice}) + \frac{D_{ice}}{1+\| D_{ice}/D_{snow} \cdot h_{snow} \|} R_{ice}
 $$
 
-ここで$h_{snow}$は雪の深さ、$R_{snow}$は積雪面積率、$\sigma_{snow}$は雪の密度、$h_{snow,max}$は積雪最大深度、$D_{snow}$は雪の熱拡散係数。
+where $h_{snow}$ is the snow depth, $R_{snow}$ is the snow area fraction, $\sigma_{snow}$ is the snow density, $h_{snow,max}$ is the maximum snow depth, and $D_{snow}$ is the thermal diffusivity of snow. 3.
 
-3. Calculate flux and its derivative
+3. calculate flux and its derivative
 
-よって、熱伝導フラックスとその微分は、
+Therefore, the heat conduction flux and its derivative are
 
 $$
  G = k_{ice} (T_b - T_s)
@@ -363,19 +371,17 @@ $$
 
 $$
  \frac{\partial G}{\partial T} = k_{ice}
-$$
+$$.
 
-なお、無海氷域($L=2$)においては、
+Note that in the ice-free region ($L=2$)
 
 $$
 G=k_{ocn}
-$$
+$$ G=k_{ocn}
 
-としておく。ここで、$k_{ocn}$は海洋表層の熱フラックス。
+where $k_{ocn}$$ is the heat flux in the ocean surface layer. Here, $$k_{ocn}$$ is the heat flux in the ocean surface layer.
 
-
-
-## 1.4 Surface Flux [8割済 11月]
+## 1.4 Surface Flux [済 1月]
 
 
 ### 1.4.1 Overview
@@ -423,7 +429,7 @@ Note that $F_q^P$ is the possible evaporation flux.
 #### 1.4.2.1 variables
 - Output Variables
 
-| Original | Presentation | Meanings              |
+| Variable | Presentation | Meaning               |
 |:---------|:-------------|:----------------------|
 | GRZ0M    | $r_{0,M}$    | surface roughness (V) |
 | GRZ0H    | $r_{0,H}$    | surface roughness (T) |
@@ -431,36 +437,36 @@ Note that $F_q^P$ is the possible evaporation flux.
 
 - Input variables
 
-| Original | Presentation | Meanings         |
+| Variable | Presentation | Meaning          |
 |:---------|:-------------|:-----------------|
 | USFC     | $U_0$        | u sfc wind speed |
 | VSFC     | $V_0$        | v sfc wind speed |
 
 - Internal variables
 
-| Original | Presentation | Meanings          |
+| Variable | Presentation | Meaning           |
 |:---------|:-------------|:------------------|
-| USTAR    | $u^*$        | friction velocity |
+| USTAR    | $u^\star$    | friction velocity |
 
 - Internal parameters
 
-| Original | Presentation | Meanings            | Values |
-|:---------|:-------------|:--------------------|-------:|
-| Z0M0     | $r_{0,M_0}$  | base                |      0 |
-| Z0MR     | $r_{0,M_R}$  | rough factor        |   0.18 |
-| Z0MS     | $r_{0,M_S}$  | smooth factor       |   0.11 |
-| Z0H0     | $r_{0,H_0}$  | base                | 1.4^-5 |
-| Z0HR     | $r_{0,H_R}$  | rough factor        |    0.0 |
-| Z0HS     | $r_{0,H_S}$  | smooth factor       |    0.4 |
-| Z0E0     | $r_{0,E_0}$  | base                | 1.3^-4 |
-| Z0ER     | $r_{0,E_R}$  | rough factor        |    0.0 |
-| Z0ES     | $r_{0,E_S}$  | smooth factor       |   0.62 |
-| VISAIR   | $\nu$        | kinematic viscosity | 1.5^-5 |
-| CM0      | $C_{M_0}$    | bulk coef for $u^*$ | 1.0^-3 |
-| USTRMN   |              | min(u*)             | 1.0^-3 |
-| Z0MMIN   |              | minimum             | 3.0^-5 |
-| Z0HMIN   |              | minimum             | 3.0^-5 |
-| Z0EMIN   |              | minimum             | 3.0^-5 |
+| Variable | Presentation | Meaning             |     Values |
+|:---------|:-------------|:--------------------|-----------:|
+| Z0M0     | $r_{0,M_0}$  | base                |        $0$ |
+| Z0MR     | $r_{0,M_R}$  | rough factor        | $   0.18 $ |
+| Z0MS     | $r_{0,M_S}$  | smooth factor       | $   0.11 $ |
+| Z0H0     | $r_{0,H_0}$  | base                | $ 1.4^-5 $ |
+| Z0HR     | $r_{0,H_R}$  | rough factor        | $    0.0 $ |
+| Z0HS     | $r_{0,H_S}$  | smooth factor       | $    0.4 $ |
+| Z0E0     | $r_{0,E_0}$  | base                | $ 1.3^-4 $ |
+| Z0ER     | $r_{0,E_R}$  | rough factor        | $    0.0 $ |
+| Z0ES     | $r_{0,E_S}$  | smooth factor       | $   0.62 $ |
+| VISAIR   | $\nu$        | kinematic viscosity | $ 1.5^-5 $ |
+| CM0      | $C_{M_0}$    | bulk coef for $u^*$ | $ 1.0^-3 $ |
+| USTRMN   |              | min(u*)             | $ 1.0^-3 $ |
+| Z0MMIN   |              | minimum             | $ 3.0^-5 $ |
+| Z0HMIN   |              | minimum             | $ 3.0^-5 $ |
+| Z0EMIN   |              | minimum             | $ 3.0^-5 $ |
 
 ### 1.4.3 Richardson Number `[PSFCL]`
 
@@ -565,7 +571,7 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 - Modified variables
 
 
-| Original | Presentation | Meanings  |
+| Variable | Presentation | Meaning   |
 |:---------|:-------------|:----------|
 | UFLUXS   |              | flux of U |
 | VFLUXS   |              | flux of V |
@@ -575,7 +581,7 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 - Output variables
 
 
-| Original | Presentation | Meanings        |
+| variable | Presentation | Meaning         |
 |:---------|:-------------|:----------------|
 | DUFDU    |              | -d(tau)/du      |
 | DTFDT    |              | -dH/dTa         |
@@ -593,19 +599,19 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 
 - Input variables
 
-| Original | Presentation | Meanings                 |
-|:---------|:-------------|:-------------------------|
-| GDUA     |              | westerly u               |
-| GDVA     |              | southern wind v          |
-| GDTA     |              | temperature T            |
-| GDQA     |              | humidity q               |
-| GDPA     |              | pressure (lev=1)         |
-| GDPS     |              | surface pressure         |
-| GDTS     |              | surface skin temperature |
-| GRZ0     |              | surface roughness        |
-| GRBET    |              | soil wetness             |
-| GRUA     |              | ocean u                  |
-| GRVA     |              | ocean v                  |
+| Meaning                  | Presentation | Variable | dimension | unit |
+|:-------------------------|:-------------|:----------------------------|
+| westerly u               |              | GDUA                        |
+| southern wind v          |              | GDVA                        |
+| temperature T            |              | GDTA                        |
+| humidity q               |              | GDQA                        |
+| pressure (lev=1)         |              | GDPA                        |
+| surface pressure         |              | GDPS                        |
+| surface skin temperature |              | GDTS                        |
+| surface roughness        |              | GRZ0                        |
+| soil wetness             |              | GRBET                       |
+| ocean u                  |              | GRUA                        |
+| ocean v                  |              | GRVA                        |
 
 
 The turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
@@ -640,9 +646,10 @@ $$
 
 
 
-## 1.5 Radiation Flux at Sea Surface `[RADSFC]` [7割済 12月]
+## 1.5 Radiation Flux at Sea Surface `[RADSFC]` [済 1月]
 
-地表面アルベド$\alpha_{(d,b)}$について、$b=1,2$はそれぞれ可視、近赤外の波長帯を表す。また、$d=1,2$はそれぞれ直達、散乱である。地表面に入射する下向き短波放射$SW^\downarrow$および上向き短波放射$SW^\uparrow$について、直達光と散乱光を合わせて
+
+For the ground surface albedo $\alpha_{(d,b)}$, $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation $SW^\downarrow$ and upward shortwave radiation $SW^\uparrow$ incident on the earth's surface, the direct and scattered light together are
 
 $$
 	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}
@@ -652,143 +659,177 @@ $$
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
-## 1.6 Surface Heat Balance `[OCNSLV]`　[7割済 12月]
-### 1.6.1 Variables
+## 1.6 Surface Heat Balance `[OCNSLV]`　[済 1月]
 
-- Modified in this subroutine
-
-| Header0               | name in the texts | name in the program | dimension | unit |
-|:----------------------|:------------------|:--------------------|:----------|:-----|
-| skin temperature      | $T_s$             | GDTS                | IJLSDM    |      |
-| surface heat flux \*1 | $G$               | GFLUXS              | IJLSDM    |      |
-| flux of T             | $H$               | TFLUXS              | IJLSDM    |      |
-| flux of q             | $E$               | QFLUXS              | IJLDSM    |      |
+The comments for some variables say "soil", but this is because the program was adapted from a land surface scheme, and has no particular meaning.
 
 - Outputs
 
-
-| Header0                | name in the texts | name in the program | dimension | unit |
-|:-----------------------|:------------------|:--------------------|:----------|:-----|
-| surface water flux \*1 | $W_{free/ice}$    | WFLUXS              | IJLSDM,2  |      |
-| upward long wave       | $LW^\uparrow$     | RFLXLU              | IJLSDM    |      |
-| flux balance           | $F$               | SFLXBL              | IJLSDM    |      |
-
-	- \*1 コメントアウトには*soil*とかかれているが、陸面スキームから流用したプログラムのためであり、特に意味はない。
+| Meaning                | Presentation   | Variable | dimension | unit |
+|:-----------------------|:---------------|:---------|:----------|:-----|
+| surface water flux \*1 | $W_{free/ice}$ | WFLUXS   | IJLSDM,2  |      |
+| upward long wave       | $LW^\uparrow$  | RFLXLU   | IJLSDM    |      |
+| flux balance           | $F$            | SFLXBL   | IJLSDM    |      |
 
 
- - Inputs
+- Inputs variables
 
+| Meaning                       | Presentation                      | Variable |
+|:------------------------------|:----------------------------------|:---------|
+| sensible heat flux coefficent | $\frac{\partial H}{\partial T_s}$ | DTFDS    |
+| latent heat flux coefficient  | $\frac{\partial E}{\partial T_s}$ | DQFDS    |
+| surface heat flux coefficient | $\frac{\partial G}{\partial T_s}$ | DGFDS    |
+| downward SW radiation         | $SW^\downarrow$                   | RFLXSD   |
+| upward SW radiation           | $SW^\uparrow$                     | RFLXLU   |
+| downward LW radiation         | $LW^\downarrow$                   | RFLXLD   |
+| sea surface albedo            | $\alpha$                          | GRALBL   |
+| sea ice concentration         | $R_{ice}$                         | GRICR    |
 
- | Header0                             | name in the texts                 | name in the program |
- |:------------------------------------|:----------------------------------|:--------------------|
- | dH/dTs                              | $\frac{\partial H}{\partial T_s}$ | DTFDS               |
- | dE/dTs                              | $\frac{\partial E}{\partial T_s}$ | DQFDS               |
- | dG/dTs                              | $\frac{\partial G}{\partial T_s}$ | DGFDS               |
- | downward SW radiation               | $SW^\downarrow$                   | RFLXSD              |
- | upward SW radiation                 | $SW^\uparrow$                     | RFLXLU              |
- | downward LW radiation               | $LW^\downarrow$                   | RFLXLD              |
- | lake surface LW albedo (1-emission) | $\alpha_L$                        | GRALBL              |
- | snow/ice ration                     | $R_ice$                           | GRICR               |
+- Modified in this subroutine
 
-  - note: コメントアウトには添字の*g*が使われているが、陸面スキームから流用したプログラムのためであり、特に意味はない。
+| Meaning                        | Presentation | Variable | dimension | unit |
+|:-------------------------------|:-------------|:---------|:----------|:-----|
+| skin temperature               | $T_s$        | GDTS     | IJLSDM    |      |
+| surface heat flux from `seaBC` | $G$          | GFLUXS   | IJLSDM    |      |
+| sensible heat flux             | $H$          | TFLUXS   | IJLSDM    |      |
+| latent heat flux               | $E$          | QFLUXS   | IJLDSM    |      |
 
-- The others
+- Internal work
 
+| Meaning                                         | Presentation                            | Variable | dimension |
+|:------------------------------------------------|:----------------------------------------|:---------|:----------|
+| latent heat for sublimation                     | $l_s$                                   | ESUB     |           |
+| emissivity of the sea surface                   | $\epsilon$                              | EMIS     |           |
+| black body radiation                            | $(1-\alpha)\sigma T_s^4 $               | STG      |           |
+| dR/dTs                                          | $\frac{\partial R}{\partial T_s}$       | DRFDS    |           |
+| net surface flux                                | $F^*$                                   | SFLUX    |           |
+| net heat flux (downward positive)               | $G^*$                                   | GSFLUX   |           |
+| The temperature derivative term of $G^*$        | $\frac{dG^*}{dT_s}$                     | DGSFDS   |           |
+| surface heat flux for ice-free area             | $G_{free}$                              | GFLUXF   |           |
+| sensible heat flux for ice covered area         | $\delta H_{ice}$                        | SFLUXBI  |           |
+| temperature derivative term of $G_{ice}$        | $\frac{\partial G_{ice}}{\partial T_s}$ | DSBDSI   |           |
+| surface temperature change for ice-covored area | $\Delta T_{ice}$                        | DTI      |           |
+| latennt heat flux for ice covered area          | $E_{ice}$                               | EVAPI    |           |
+| surface heat flux for ice covered area          | $G_{ice}$                               | GFLUXI   |           |
+|                                                 | $1-R_{ice}$                             | FF       |           |
+| sea ice fraction                                | $R_{ice}$                               | FI       |           |
+|                                                 | $R_{ice}\Delta T_{ice}$                 | DTX      |           |
 
-| Header0                        | name in the texts                       | name in the program | dimension |
-|:-------------------------------|:----------------------------------------|:--------------------|:----------|
-| 昇華潜熱                       | $l_s$                                   | ESUB                |           |
-| emissivity of the lake surface | $\epsilon_L$                            | EMIS                |           |
-| black body radiation           | $(1-\alpha_L)\sigma T_s^4 $             | STG                 |           |
-| dR/dTs                         | $\frac{\partial R}{\partial T_s}$       | DRFDS               |           |
-| 地表面から射出されるフラックス | $F^*$                                   | SFLUX               |           |
-| 正味の地表面フラックス         | $F^*-G$                                 | GSFLUX              |           |
-| dG/dTs (更新後)                | $\frac{dG_s}{dT_s}$                     | DGSFDS              |           |
-| 無海氷域における地表フラックス | $G_{free}$                              | GFLUXF              |           |
-| 海氷域における顕熱フラックス   | $\delta H_{ice}$                        | SFLUXBI             |           |
-| 海氷域における dG/dTs          | $\frac{\partial G_{ice}}{\partial T_s}$ | DSBDSI              |           |
-| 海氷域における地表面温度変化   | $\delta T_{ice}$                        | DTI                 |           |
-| 海氷域における潜熱フラックス   | $\delta E_{ice}$                        | EVAPI               |           |
-| 海氷域における地表フラックス   | $G_{ice}$                               | GFLUXI              |           |
-| sea ice free fraction          | $1-R_{ice}$                             | FF                  |           |
-| sea ice fraction               | $R_{ice}$                               | FI                  |           |
-|                                | $R_{ice}\delta T_{ice}$                 | DTX                 |           |
+- Others (appeared in texts)
 
-### 1.6.2 Calculating heat Balance
+| Meaning                                               | Presentation | Variable | dimension | unit |
+|:------------------------------------------------------|:-------------|:---------|:----------|:-----|
+| sea surface albedo for shortwave radiation (ice-free) | $\alpha_S$   |          | [-]       |      |
+| the Stefan-Boltzmann constant                         | $\sigma$     | STB      |           |      |
 
-海表面から出るフラックスは、
+Reference: [Hasumi, 2015, Appendices A](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/COCO/coco4.pdf)
+
+Downward radiative fluxes are not directly dependent on the condition of the sea surface, and their observed values are simply specified to drive the model. Shotwave emission from the sea surface is negligible, so the upward part of the shortwave radiative flux is accounted for solely by reflection of the incoming downward flux. Let $\alpha _S$ be the sea surface albedo for shortwave radiation. The upward shortwave radiative flux is represented by
 
 $$
-	F^*=H + (1-\alpha_L)\sigma T_s^4 + \alpha_L LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
+	SW^\uparrow = - \alpha_S SW^\downarrow
 $$
 
-正味で海表面に入るフラックスは、
+On the other hand, the upward longwave radiative flux has both reflection of the incoming flux and emission from the sea surface. Let $\alpha$ be the sea surface albedo for longwave radiation and $\epsilon$ be emissivity of the sea surface relative to the black body radiation. The upward shortwave radiative flux is represented by
 
 $$
-	G = H_s - F^*
+	LW^\uparrow = - \alpha LW^\downarrow + \epsilon \sigma T_s ^4
 $$
 
-地表面フラックスの温度微分項は、
+where $\sigma$ is the Stefan-Boltzmann constant and $T_s$ is skin temperature. If sea ice exists, snow or sea ice temperature is considered by fractions. When radiative equilibrium is assumed, emissivity becomes identical to co-albedo:
+
 $$
-	\frac{\partial G}{\partial T_s} = \frac{\partial G}{\partial T_s}+\frac{\partial H}{\partial T_s}+\frac{\partial R}{\partial T_s}
+	\epsilon = 1 - \alpha
 $$
 
-無海氷域($L=2$)では、凝結によって得られた潜熱フラックスを足して、
+The net surface flux is presented by
+
+$$
+	F^*=H + (1-\alpha)\sigma T_s^4 + \alpha LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
+$$
+
+The heat flux into the sea surface is presented, with the surface heat flux calculated in `PSFCM`
+
+$$
+	G^* = G - F^*
+$$
+
+Note that $G^*$ is downward positive.
+
+The temperature derivative term is
+
+$$
+	\frac{\partial G^*}{\partial T_s} = \frac{\partial G}{\partial T_s}+\frac{\partial H}{\partial T_s}+\frac{\partial R}{\partial T_s}
+$$
+
+When the sea ice exists, the sublimation flux is considered
+
+$$
+	G_{ice} = G^* - l_s E
+$$
+
+The temperature derivative term is
+
+$$
+	\frac{\partial G_{ice}}{\partial T_s}=\frac{\partial G^*}{\partial T_s} + l_s\frac{\partial E}{\partial T_s}
+$$
+
+Finally, we can update the surface temperature with the sea ice concentration with $\Delta T_s=G_{ice} ( \frac{\partial G_{ice}}{\partial T_s})^{-1}$
+
+
+$$
+	T_s = T_s +R_{ice} \Delta T_s
+$$
+
+Then, the sensible and latent heat flux on the sea ice is updated.
+
+$$
+	E_{ice} = E + \frac{\partial E}{\partial T_s}\Delta T_s
+$$
+
+$$
+	H_{ice} = H + \frac{\partial H}{\partial T_s}\Delta T_s
+$$
+
+When the sea ice does not existed, otherwise, the evaporation flux is added to the net flux.
 
 $$
 	G_{free}=F^* + l_cE
 $$
 
+Finally each flux is updated.
 
-一方、海氷域($L=1$)では、
-
-$$
-	G_{ice} = G - l_s E
-$$
+For the sensible heat flux, the temperature change on the sea ice is considered.
 
 $$
-	\frac{\partial G_{ice}}{\partial T_s}=\frac{\partial G}{\partial T_s} + l_s\frac{\partial E}{\partial T_s}
+	H=H+ R_{ice}  H_{ice}
 $$
 
-よって、地表面温度変化は、
+Then, the heat used for the temperature change is saved.
 
 $$
-	\delta T_{ice} = G_{ice} ( \frac{\partial G_{ice}}{\partial T_s})^{-1}
+	F = R_{ice} H_{ice}
 $$
 
-このとき、潜熱フラックス、顕熱フラックスはそれぞれ
+For the upward longwave radiative flux, the temperature change on the sea ice is considered.
 
 $$
-	E_{ice} = E + \frac{\partial E}{\partial T_s} \delta T_{ice}
+	LW^\uparrow=LW^\uparrow +  4\frac{\sigma}{T_s}R_{ice}  \Delta T_s
 $$
 
-$$
-	H_{ice} = E + \frac{\partial H}{\partial T_s} \delta T_{ice}
-$$
-
-以上より、地表面温度を更新する。
+For the surface heat flux, the sea ice  concentration is considered.
 
 $$
-	T_s = T_s +R_{ice}\delta T_{ice}
+	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}
 $$
 
-また、各フラックスも更新する。
-
-$$
-	H=H+\frac{\partial H}{\partial T_s} R_{ice} \delta T_{ice}
-$$
-
-$$
-	LW^\uparrow=LW^\uparrow + \frac{\partial R}{\partial T_s} R_{ice} \delta T_{ice}
-$$
+For the latent heat flux, the sea ice  concentration is considered.
 
 $$
 	E=(1-R_{ice})E + R_{ice}E_{ice}
 $$
 
-$$
-	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}
-$$
+Each term above are saved as freshwater flux.
 
 $$
 	W_{free} = (1-R_{ice}) E
@@ -796,8 +837,4 @@ $$
 
 $$
 	W_{ice} = R_{ice} E_{ice}
-$$
-
-$$
-	F = R_{ice} H_{ice}
-$$
+$$|$
