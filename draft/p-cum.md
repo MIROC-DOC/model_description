@@ -1,10 +1,10 @@
-## Deep Cumulus Convection 
+## Deep Cumulus Convection
 
-###  Outline of deep cumulus convection scheme
+### Outline of deep cumulus convection scheme
 
 The deep cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates temperature and water vapor changes and precipitation due to latent heat release and associated convective motion. Although this scheme deals with the effects of cumulus clouds of various heights, we will refer to it as the "deep" cumulus convection scheme to distinguish it from the "shallow" cumulus convection scheme for clouds at the top of the boundary layer discussed in the next section.
 
-The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the $\sigma$ coordinates, altitude,  pressure, and cloud cover.
+The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the $\sigma$ coordinates, altitude, pressure, and cloud cover.
 
 The output variables are as follows. To calculate the time evolution of the atmospheric variables, the tendency of temperature $\partial T/\partial t$, specific humidity$\partial q/\partial t$, zonal wind $\partial u/\partial t$, and meridional wind $\partial v/\partial t$ are output. Surface rainfall and surface snowfall are output as external forces on the ocean and land surface models. Cloud water content $l^{cR}$ and cloud cover $C^c$ of cumulus clouds are output for the radiative processes. For the satellite simulator COSP, full-level cloud water content, cloud ice content, rainfall flux, and snowfall flux are output. For the aerosol transport model SPRINTARS, half-level precipitation fluxes are output. For the chemical model CHASER, half-level precipitation and snow fluxes are output, as well as full-level cumulus cloud top flags, cloud area fraction, and evaporation rate. For the shallow cumulus convection scheme, cloud base pressure and cloud top pressure are output.
 
@@ -13,6 +13,7 @@ The framework of the deep cumulus convection scheme is based on Chikira and Sugi
 The temperature, specific humidity, and cloud water content in the clouds are determined with the entraining plume model. The cloud base is defined as the lifted condensation level of the air parcel at the surface, and the vertical velocity at the cloud base is used to spectrally represent the cloud ensemble. Furthermore, the effects of precipitation evaporation and associated downdrafts are taken into account.
 
 A summary of the calculation procedure is given below, along with the subroutine names.
+
 1. calculation of cloud base `CUMBAS`.
 2. calculation of in-cloud properties `CUMUP`.
 3. calculation of cloud base mass flux `CUMBMX`.
@@ -27,28 +28,25 @@ A summary of the calculation procedure is given below, along with the subroutine
 12. calculation of tracer subsidence `CUMSBR`.
 13. fixing tracer mass `CUMFXR` .
 
-
-###  Basic framework
+### Basic framework
 
 The tendency of large-scale environmental properties by the deep cumulus convection scheme is calculated as
 
 $$
- \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ), 
+ \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ),
 $$
 
-
 $$
- \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} ) 
+ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} )
 $$
 
 where $M$ is cloud mass flux, $D$ is detrainment, $h, q, l$ is moist static energy, cloud water content, and specific humidity, respectively. The hats denote in-cloud properties, and the overbars denote large-scale environmental properties.
 
-Cloud mass flux $M$ and  detrainment $D$ are represented by
+Cloud mass flux $M$ and detrainment $D$ are represented by
 
 $$
  M(z) = M_B \eta(z) \, ,
 $$
-
 
 $$
  D(z) = M_B \eta(z_T) \delta (z-z_T)\, ,
@@ -58,33 +56,31 @@ respectively, where $z_T$ is cloud top height, $z_B$ is cloud base height, $M_B$
 
 $\eta, h^t, q^t,$ and $l^t$ are determined with the entraining plume model. $M_B$ is determined with the prognostic convective kinetic energy closure.
 
-
-###  Cloud base
+### Cloud base
 
 Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest $z$ such that
 
 $$
-  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\,, 
+  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\,,
 $$
 
 where
 
 $$
- \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right). 
+ \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right).
 $$
 
 The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$
 
-
-###  Updraft velocity and entrainment rate
+### Updraft velocity and entrainment rate
 
 The entrainment rate is defined by
 
 $$
- \epsilon = \frac{1}{M}\frac{\partial M}{\partial z} 
+ \epsilon = \frac{1}{M}\frac{\partial M}{\partial z}
 $$
 
-where $M$ is mass flux of cumulus updraft and is allowed to vary vertically.  Based on the formulation of Gregory (2001), the rate of change of updraft velocity with height is
+where $M$ is mass flux of cumulus updraft and is allowed to vary vertically. Based on the formulation of Gregory (2001), the rate of change of updraft velocity with height is
 
 $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \qquad\tag{1}
@@ -94,7 +90,7 @@ where $\hat{w}$ and $B$ are the updraft velocity and the buoyancy of cloud air p
 constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate mean updraft velocity. Here, $a$is set at 0.15. The other part of the force is used for the energy of perturbation. The second term on the right-hand side represents reduction in the upward momentum of cloud air parcel through the entrainment process. Then it is assumed that
 
 $$
- \epsilon \hat{w}^2 \simeq C_\epsilon a B, 
+ \epsilon \hat{w}^2 \simeq C_\epsilon a B,
 $$
 
 where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. Here, $C_\epsilon$ is set at 0.6. This expression denotes that a certain fraction of buoyancy-generated energy is reduced by entrainment, which is identical to the fraction used to accelerate entrained air to the mean updraft velocity. Thus, entrainment rate is written as
@@ -102,7 +98,6 @@ where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. He
 $$
  \epsilon = C_\epsilon\frac{aB}{\hat{w}^2}. \qquad\tag{2}
 $$
-
 
 Eqs. (1) and (2) lead to
 
@@ -127,28 +122,24 @@ Note that the equation is solved with respect to $\hat{w}^2$ rather than $\hat{w
 Buoyancy of cloud air parcel is determined by
 
 $$
- B  =   \frac{g}{\bar{T}} ( \hat{T}_v - \bar{T}_v ) 
+ B  =   \frac{g}{\bar{T}} ( \hat{T}_v - \bar{T}_v )
 $$
 
-
 $$
- =   \frac{g}{\bar{T}} \left[ \hat{T} ( 1+\varepsilon \hat{q}-\hat{l} ) - \bar{T} ( 1+\varepsilon \bar{q} - \bar{l}) \right] 
-$$
-
-
-$$
- \simeq  g \left[ \frac{\hat{T} - \bar{T}}{\bar{T}} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right] 
+ =   \frac{g}{\bar{T}} \left[ \hat{T} ( 1+\varepsilon \hat{q}-\hat{l} ) - \bar{T} ( 1+\varepsilon \bar{q} - \bar{l}) \right]
 $$
 
+$$
+ \simeq  g \left[ \frac{\hat{T} - \bar{T}}{\bar{T}} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right]
+$$
 
 $$
- \simeq g \left[ \frac{1}{\bar{T}}\frac{\hat{h} - \bar{h}^*}{C_p (1 + \gamma)} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right] 
+ \simeq g \left[ \frac{1}{\bar{T}}\frac{\hat{h} - \bar{h}^*}{C_p (1 + \gamma)} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right]
 $$
 
 where $\varepsilon = R_\mathrm{{H}_2{O}}/R_\mathrm{air} - 1$.
 
-
-###  Normalized mass flux and In-cloud properties
+### Normalized mass flux and In-cloud properties
 
 In-cloud properties are determined by
 
@@ -156,14 +147,12 @@ $$
  \frac{\partial \eta \hat{h}}{\partial z} = \epsilon \eta \bar{h} + Q_i, \qquad\tag{5}
 $$
 
-
 $$
  \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P,\,\mathrm{and} \qquad\tag{6}
 $$
 
-
 $$
- \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7} 
+ \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7}
 $$
 
 where $h$ and $q_t$ are moist static energy and total water, respectively. Also, $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation, respectively. All other variables such as temperature, specific humidity, and liquid and ice cloud water are computed by these quantities; the details are described in appendix B. Tracers such as aerosols are determined by a method identical to that for $\hat{q}_t$. Following Arakawa and Schubert (1974), detrainment occurs only at cloud top.
@@ -171,7 +160,7 @@ where $h$ and $q_t$ are moist static energy and total water, respectively. Also,
 Equation (7) leads to
 
 $$
- \frac{\partial \ln \eta}{\partial z} = \epsilon. 
+ \frac{\partial \ln \eta}{\partial z} = \epsilon.
 $$
 
 Then, $\eta$ and $\epsilon$ are discretized as
@@ -188,9 +177,8 @@ $$
  \frac{\partial \eta \hat{h}}{\partial z} = E \bar{h} + Q_i, \mathrm{and}
 $$
 
-
 $$
- \frac{\partial \eta \hat{q}_t}{\partial z} = E \bar{q}_t -P, 
+ \frac{\partial \eta \hat{q}_t}{\partial z} = E \bar{q}_t -P,
 $$
 
 where $E = \epsilon\eta$. These are discretized as
@@ -198,7 +186,6 @@ where $E = \epsilon\eta$. These are discretized as
 $$
  \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_i}_k  \qquad\quad\tag{A2}
 $$
-
 
 $$
  \frac{\eta_{k+1/2} {\hat{q}_t}_{k+1/2} - \eta_{k-1/2} {\hat{q}_t}_{k-1/2}}{\Delta z_k} = E_k {\bar{q}_t}_k - P_k  \qquad\quad\tag{A3}
@@ -224,20 +211,17 @@ $$
  h^t  =  \hat{h}(z_T) \, ,
 $$
 
-
 $$
  q^t  =  \hat{q}(z_T) \, , \mathrm{and}
 $$
 
-
 $$
- l^t  =  \hat{l}(z_T) \,, 
+ l^t  =  \hat{l}(z_T) \,,
 $$
 
 where superscript $t$ denote detrained properties.
 
-
-###  Spectral representation
+### Spectral representation
 
 Following the spirit of the Arakawa–Schubert scheme, cloud types are spectrally represented. The Arakawa–Schubert scheme considered different types of clouds according to different values of the entrainment rate. In the scheme developed here, however, the entrainment rate is calculated using Eq. (2).
 
@@ -247,8 +231,7 @@ In-cloud properties are then integrated upward with Eqs. (2), (4), (5), (6), and
 
 A numerical scheme for solving the set of the equations is devised considering accuracy, stability, and column conservation of mass, energy, and water. The details are described in appendix A. For determination of $\hat{h}$ and $\hat{q}_t$ at cloud base, see appendix B
 
-
-###  Cloud-base mass flux
+### Cloud-base mass flux
 
 Cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, cloud kinetic energy for each cloud type is explicitly predicted by
 
@@ -259,7 +242,7 @@ $$
 where $K$ and $A$ are cloud kinetic energy and cloud work function, respectively, and $t_p$ denotes a time scale of dissipation. Cloud work function $A$ is defined as
 
 $$
- A \equiv \int_{z_B}^{z_T} B \eta \,dz\,. 
+ A \equiv \int_{z_B}^{z_T} B \eta \,dz\,.
 $$
 
 The energy is linked with $M_B$ by
@@ -268,15 +251,14 @@ $$
  K = \alpha M_B^2.
 $$
 
-Cloud-base mass flux is then solved for each cloud type ($\tau_p$ and $\alpha$  are set at $1.0 \times 10^3\, \mathrm{s}$ and $5.0 \times 10^7\, \mathrm{kg}^{-1} \mathrm{m}^4$, respectively).
+Cloud-base mass flux is then solved for each cloud type ($\tau_p$ and $\alpha$ are set at $1.0 \times 10^3\, \mathrm{s}$ and $5.0 \times 10^7\, \mathrm{kg}^{-1} \mathrm{m}^4$, respectively).
 
-
-###  Microphysics
+### Microphysics
 
 The method to obtain temperature and specific humidity of in-cloud air from moist static energy is identical to that in Arakawa and Schubert (1974). The ratio of precipitation to the total amount of condensates generated from cloud base to a given height $z$ is expressed by
 
 $$
- F_p(z) = 1 - e^{-(z - z_B - z_0)/z_p}, 
+ F_p(z) = 1 - e^{-(z - z_B - z_0)/z_p},
 $$
 
 where $z_0$ and $z_p$ are set at 1.5 and 4 km, respectively.
@@ -305,13 +287,25 @@ Strictly, the ratio of ice to water should be recalculated after the modificatio
 
 Melting and freezing of precipitation occurs depending on wet-bulb temperature of large-scale environment and cumulus mass flux.
 
+### Evaporation, sublimation and downdraft
 
-###  Evaporation, sublimation and downdraft
+A part of precipitation is evaporated at each level as
 
-The effects of evaporation and sublimation, both in downdrafts and in the environment, are taken into account.
+$$
+ E_v = a_e (\bar{q}_w - \bar{q}) \left(\frac{P}{V_T}\right),
+$$
 
+where $E_v, q_w, P,$ and $V_T$ are the mass of evaporation per a unit volume and time, wet-bulb saturated specific humidity, precipitation, and terminal velocity of precipitation, respectively, and $a_e$ is a constant. Here, $a_e$ and $V_T$ are taken as $0.3 \,\mathrm{s}^{-1}$ and $5 \,\mathrm{m}\,\mathrm{s}^{-1}$, respectively. Downdraft mass flux $M_d$ is generated as
 
-###  Cloudiness
+$$
+ \frac{\partial M_d}{\partial z} = -b_e \bar{\rho} (\bar{T}_w - \bar{T}) P,
+$$
+
+where $\rho$ and $T_w$ are density and wet-bulb temperature, respectively; $b_e$ is a constant set at $5\times10^{-4} \,\mathrm{m}^2 \,\mathrm{kg}^{-1} \,\mathrm{K}^{-1}$. Properties of downdraft air are determined by budget equations and the detrainment occurs at neutral buoyancy level and below cloud base.
+
+If precipitation is composed of both rain and snow, the rain (snow) is evaporated (sublimated) in the same ratio as the ratio of rain (snow) to total precipitation when the precipitation evaporates to produce downdrafts.
+
+### Cloudiness
 
 Fractional cloudiness used in the radiation scheme is expressed by
 
@@ -319,7 +313,7 @@ $$
  C = \frac{C_\mathrm{max} - C_\mathrm{min}}{\ln M_\mathrm{max} - \ln M_\mathrm{min}}(\ln M - \ln M_\mathrm{min}) + C_\mathrm{min},
 $$
 
-where $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max}, M_\mathrm{min},$and $M$ are the maximum and minimum values of the cloudiness and cumulus mass flux and the total cumulus mass flux, respectively;$C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max},$ and $M_\mathrm{min}$ are set at $0.1, 1 \times 10^{-3}, 0.3 \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1},$and $2 \times 10^{-3} \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1}$, respectively.
+where $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max}, M_\mathrm{min},$and $M$ are the maximum and minimum values of the cloudiness and cumulus mass flux and the total cumulus mass flux, respectively; $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max},$ and $M_\mathrm{min}$ are set at $0.1, 1 \times 10^{-3}, 0.3 \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1},$and $2 \times 10^{-3} \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1}$, respectively.
 
 The grid mean liquid cloud mixing ratio is given by
 
@@ -329,18 +323,16 @@ $$
 
 where $i$ denotes an index of cloud type, $q_l$ is liquid water, and $\beta$ is a dimensionless constant set at 0.1. The grid mean ice cloud mixing ratio is determined similarly.
 
+### Cumulus Momentum Transport
 
-###  Cumulus Momentum Transport
-
-The tendencies of zonal and meridional momentum by cumulus momentum transport are calculated as 
-
-$$
- \left(\frac{\partial u}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{u'w'})_{k+1/2} - (\rho\overline{u'w'})_{k-1/2}}{\Delta p_k}, \,\mathrm{and} 
-$$
-
+The tendencies of zonal and meridional momentum by cumulus momentum transport are calculated as
 
 $$
- \left(\frac{\partial v}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{v'w'})_{k+1/2} - (\rho\overline{v'w'})_{k-1/2}}{\Delta p_k}, 
+ \left(\frac{\partial u}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{u'w'})_{k+1/2} - (\rho\overline{u'w'})_{k-1/2}}{\Delta p_k}, \,\mathrm{and}
+$$
+
+$$
+ \left(\frac{\partial v}{\partial t}\right)_{\mathrm{CMT},k} = -g\frac{(\rho\overline{v'w'})_{k+1/2} - (\rho\overline{v'w'})_{k-1/2}}{\Delta p_k},
 $$
 
 respectively, where $\rho\overline{u'w'}$ and $\rho\overline{v'w'}$ are total zonal and meridional momentum flux, respectively. This total momentum fluxes are carried by both cumulus updrafts and downdrafts.
