@@ -8,7 +8,7 @@ Obtain grid point values of vorticity and divergence from the grid point values 
 
 $$
 \zeta_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                  im v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
+                  \mathrm{i}m v_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
                 \frac{w_j}{a(1-\mu_j^{2})}
            +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                      u_{ij} \cos\varphi_j (1-\mu_j^2)
@@ -16,11 +16,9 @@ $$
                  \frac{w_j}{a(1-\mu_j^{2})} \; ,
 $$
 
-
-
 $$
     D_n^m  =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-                  im u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
+                  \mathrm{i}m u_{ij} \cos\varphi_j {Y_n^{m*}}_{ij}
                 \frac{w_j}{a(1-\mu_j^{2})}
            -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                   v_{ij} \cos\varphi_j  (1-\mu_j^2)
@@ -68,7 +66,7 @@ $$
      =
    \frac{1}{a \cos \varphi}
         {\mathcal R}{\mathbf{e}} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
-       im \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
+       \mathrm{i}m \tilde{X}_n^m {Y_n^m}_{ij}  \; ,
 $$
 
 
@@ -245,7 +243,7 @@ Tendency Term of Vorticity
 $$
   \frac{\partial{\zeta_n^m}}{\partial {t}}
     =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-    im (A_v)_{ij} \cos \varphi_j
+    \mathrm{i}m (A_v)_{ij} \cos \varphi_j
     {Y_n^{m *}}_{ij}
     \frac{w_j}{a(1-\mu_j^{2})}
 \\
@@ -263,7 +261,7 @@ The non-gravity wave component of the tendency term of the divergence
 $$
   \left( \frac{\partial{D_n^m}}{\partial {t}} \right)^{NG}
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          im (A_u)_{ij} \cos \varphi_j
+          \mathrm{i}m (A_u)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
           \\
@@ -288,7 +286,7 @@ The non-gravity wave component of the tendency term of temperature
 $$
   \left( \frac{\partial{T_n^m}}{\partial {t}} \right)^{NG}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          im (u T')_{ij} \cos \varphi_j
+          \mathrm{i}m (u T')_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
           \\
@@ -311,7 +309,7 @@ Tendency term of water vapor
 $$
   \frac{\partial{q_n^m}}{\partial {t}}
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
-          im (uq)_{ij} \cos \varphi_j
+          \mathrm{i}m (uq)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
           \\
@@ -424,7 +422,7 @@ $$
     \left\{
              \frac{a}{n(n+1)} \zeta_n^m
             (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
-          -  \frac{im a}{n(n+1)} D_n^m {Y_n^m}_{ij}
+          -  \frac{\mathrm{i}m a}{n(n+1)} D_n^m {Y_n^m}_{ij}
     \right\}
 $$
 
@@ -435,7 +433,7 @@ $$
      {\mathcal R}{\mathbf{e}} \sum_{m=-N}^{N}
                        \sum_{\stackrel{n=|m|}{n \neq 0}}^{N}
     \left\{
-          -  \frac{im a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
+          -  \frac{\mathrm{i}m a}{n(n+1)} \zeta_n^m  {Y_n^m}_{ij}
           -  \frac{a}{n(n+1)} \tilde{D}_n^m
             (1-\mu^{2}) \frac{\partial{}}{\partial {\mu}} {Y_n^m}_{ij}
     \right\}
