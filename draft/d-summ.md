@@ -83,123 +83,89 @@ $$
 
 ### Diagnosis of vertical flow. `MODULE: [PSDOT]`
 
-pressure change term and vertical flow,
+Barometric pressure change term, and lead DC,
 
 $$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} ( D_k + {\mathbf{v}}_k \cdot \nabla \pi )
-       \Delta  \sigma_k
+    = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}
 $$
 
+$$
+  \frac{(m\dot{\eta})_{k-1/2}}{p_s}
+   = - B_{k-1/2} \frac{\partial \pi}{\partial t}
+    - \sum_{l=k}^{K}\left\{ D_l \Delta\sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l \right\}
+$$
 
-$$
-  \dot{\sigma}_{k-1/2}
- = - \sigma_{k-1/2} \frac{\partial \pi}{\partial t}
-     - \sum_{l=k}^{K} ( D_l + {\mathbf{v}}_l \cdot \nabla \pi )          
-       \Delta  \sigma_l
-$$
 
 and its non-gravity components.
 
 $$
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
    =   - \sum_{k=1}^{K} {\mathbf{v}}_{k} \cdot \nabla \pi  
-       \Delta  \sigma_{k}  \\
+       \Delta B_{k}
 $$
 
-
 $$
-  \dot{\sigma}^{NG}_{k-1/2}
-  = - \sigma_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+  \frac{(m\dot{\eta})^{NG}_{k-1/2}}{p_s}
+    = - B_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
     - \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-       \Delta  \sigma_{l}
+       \Delta B_{l}
 $$
 
+### Tendency terms due to advection  `MODULE: [GRTADV, GRUADV]`
 
-### tendency terms due to advection `MODULE: [GRTADV, GRUADV]`.
-
-Momentum advection term `MODULE: [GRUADV]`:
+Momentum advection term  `MODULE: [GRUADV]`:
 
 $$
   (A_u)_k
-    =  ( \zeta_k + f ) v_k
-             - \frac{1}{2 \Delta \sigma_k}
-             [   \dot{\sigma}_{k-1/2} ( u_{k-1} - u_k   )
-               + \dot{\sigma}_{k+1/2} ( u_k   - u_{k+1} ) ]
-            \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{ a \cos \varphi}
-                  \frac{\partial \pi}{\partial \lambda}
+    =  ( \zeta_k + f ) v_k 
+             - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{u_{k-1} - u_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
 $$
-
-
+$$
+           - \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+             + {\mathcal F}_x
+$$
 
 $$
   (A_v)_k
-    =  - ( \zeta_k + f ) u_k
-             - \frac{1}{2 \Delta \sigma_k}
-             [   \dot{\sigma}_{k-1/2} ( v_{k-1} - v_k   )
-               + \dot{\sigma}_{k+1/2} ( v_k   - v_{k+1} ) ]
-            \\
-           - \frac{C_{p} \hat{\kappa}_k T_{v,k}'}{a}
-             \frac{\partial \pi}{\partial \varphi}
+    =  - ( \zeta_k + f ) u_k 
+             - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{v_{k-1} - v_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
+$$
+$$
+           - \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+             + {\mathcal F}_y
 $$
 
-
-
-$$
- \hat{E}_k    
-  = \frac{1}{2} ( u^2 + v^2 )
-    +  \sum_{k'=1}^{k} \left[  C_p \alpha_k ( T_v - T )_{k'}
-                              + C_p \beta_k ( T_v - T )_{k'-1} \right]
-$$
-
-
-Temperature advection term `MODULE: [GRTADV]`:
+Temperature advection term  `MODULE: [GRTADV]`:
 
 $$
  (u T')_k  = u_k (T_k - \bar{T} )
 $$
 
-
 $$
  (v T')_k  = v_k (T_k - \bar{T} )
 $$
 
-
 $$
- \hat{H}_k  =  T_{k}^{\prime} D_{k}  \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}_{k-1/2} ( \hat{T^{\prime}}_{k-1/2}
-                                         - T^{\prime}_{k}   )
-               + \dot{\sigma}_{k+1/2} ( T^{\prime}_{k}  
-                                         - \hat{T^{\prime}}_{k+1/2} ) ]
-                \\
-         - \frac{1}{\Delta \sigma_{k}}
-             [   \dot{\sigma}^{NG}_{k-1/2} ( \hat{\bar{T}}_{k-1/2}
-                                         - \bar{T}_{k}   )
-               + \dot{\sigma}^{NG}_{k+1/2} ( \bar{T}_{k}  
-                                         - \hat{\bar{T}}_{k+1/2} ) ]
-                \\
-         + \hat{\kappa}_{k} T_{v,k} {\mathbf{v}}_{k} \cdot \nabla \pi
-                \\
-         - \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-               \Delta \sigma_{l}
-           - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-               \Delta \sigma_{l}
-                \\
-         - \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
-             \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
-           - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
-             \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
+   H_k =  T_k' D_k 
+          - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right]
 $$
-
-
-
-
-
-
+$$
+        + \hat{\kappa}_k {\mathbf{v}}_k \cdot \nabla \pi T_{v,k} 
+$$
+$$
+        - \alpha_k \sum_{l=k}^{K} 
+                           (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
+                            \frac{T_{v,k}}{\Delta \sigma_k} 
+$$
+$$
+        - \beta_k \sum_{l=k+1}^{K} 
+                           (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
+                            \frac{T_{v,k}}{\Delta \sigma_k}
+$$
 
 Water vapor advection term:
 
@@ -207,17 +173,15 @@ $$
  (u q)_k  = u_k q_k
 $$
 
-
 $$
  (v q)_k  = v_k q_k
 $$
 
-
 $$
-R_k  =  q_k D_k
-       - \frac{1}{2 \Delta \sigma_k}
-             [   \dot{\sigma}_{k-1/2} ( q_{k-1} - q_k   )
-               + \dot{\sigma}_{k+1/2} ( q_k   - q_{k+1} ) ]
+R_k  =  q_k D_k 
+       - \frac{1}{2} 
+             \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{q_{k-1} - q_k}{\Delta\sigma_k}
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 $$
 
 
@@ -460,29 +424,30 @@ to calculate.
 
 ### Diffusion Correction along pressure level `MODULE: [CORDIF]`
 
-The horizontal diffusion is applied on the surface of $\sigma$, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for $T,q,l$.
+The horizontal diffusion is applied on the surface of $\eta-$plane, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for $T,q,l$.
 
 $$
   {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
-                \simeq  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
-                      - \frac{\partial{\sigma}}{\partial {p}}
-                      (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} p
-                      \cdot \frac{\partial{T}}{\partial {\sigma}}                   \\
-                =      (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} T  
-                    -  (-1)^{N_D/2} K \nabla^{N_D}_{\sigma} \pi
-                          \cdot \sigma \frac{\partial{T}}{\partial {\sigma}}  \\
-                =    {\mathcal D} (T)
-                    -  {\mathcal D} (\pi)
+                \simeq  (-1)^{N_D/2} K \nabla^{N_D}_{\eta} T  
+                      - \frac{\partial{\sigma}}{\partial {p}} 
+                      (-1)^{N_D/2} K \nabla^{N_D}_{\eta} p
+                      \cdot \frac{\partial{T}}{\partial {\sigma}}
+$$
+$$
+                =      (-1)^{N_D/2} K \nabla^{N_D}_{\eta} T  
+                    -  (-1)^{N_D/2} K \nabla^{N_D}_{\eta} \pi
+                          \cdot \sigma \frac{\partial{T}}{\partial {\sigma}}
+$$
+$$
+                =    {\mathcal D} (T) 
+                    -  {\mathcal D} (\pi) 
                        \sigma \frac{\partial{T}}{\partial {\sigma}}
 $$
-
-
-
 
 So,
 
 $$
-  T_k \leftarrow  T_k
+  T_k \leftarrow  T_k 
        -  2 \Delta t
         \sigma_{k} \frac{T_{k+1}-T_{k-1}}{\sigma_{k+1} - \sigma_{k-1}}
         {\mathcal D}(\pi)
