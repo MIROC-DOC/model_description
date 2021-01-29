@@ -83,11 +83,11 @@ $$
 
 ### Diagnosis of vertical flow. `MODULE: [PSDOT]`
 
-Barometric pressure change term, and lead DC,
+Pressure change term, and lead DC,
 
 $$
   \frac{\partial \pi}{\partial t}
-    = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}
+   = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}
 $$
 
 $$
@@ -107,7 +107,7 @@ $$
 
 $$
   \frac{(m\dot{\eta})^{NG}_{k-1/2}}{p_s}
-    = - B_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
+   = - B_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
     - \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
        \Delta B_{l}
 $$
@@ -183,7 +183,6 @@ R_k  =  q_k D_k
              \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{q_{k-1} - q_k}{\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 $$
-
 
 ### Transformation of prognostic variables to spectral space `MODULE: [G2Wpush, G2Wtrans, G2Wshift]`
 
