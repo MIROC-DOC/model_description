@@ -453,7 +453,7 @@ $$
 $$
 
 
-and so on. In ${\mathcal D}(\pi)$, the spectral value of $pi$ is converted to a grid by multiplying the spectral value of $\pi_n^m$ by the spectral representation of the diffusion coefficient.
+and so on. In ${\mathcal D}(\pi)$, the spectral value of $\pi$ is converted to a grid by multiplying the spectral value of $\pi_n^m$ by the spectral representation of the diffusion coefficient.
 
 ### Frictional heat associated with diffusion. `MODULE: [CORDIF]`
 
