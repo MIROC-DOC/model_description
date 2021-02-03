@@ -4,9 +4,9 @@
 
 The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since version 5 of MIROC. It represents updrafts, downdrafts, their detrainment and compensating downward motion over the surrounding area as well as microphysical processes associated with updrafts and downdrafts.
 
-The updraft is based on an entraining plume model, where the mass flux increases upward due to lateral entrainment. The detrainment occurs only at the cloud top which is defined as the neutral buoyancy level of the updraft air parcel. The lateral entrainment rate is formulated in terms of buoyancy and vertical velocity of the air parcel at each level following Gregory (2001).
+The updraft is based on an entraining plume model, where the mass flux increases upward due to lateral entrainment. The detrainment occurs only at the cloud top which is defined as the neutral buoyancy level of the updraft air parcel. The lateral entrainment rate is formulated in terms of buoyancy and vertical velocity of the air parcel at each level following Gregory (2001). The momentum transport is formulated following Gregory et al. (1997).
 
-The cloud base mass fluxes are determined by the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990) and Xu (1991, 1993), which was adopted in the prognostic Arakawa–Schubert scheme (Randall and Pan 1993; Pan 1995; Randall et al. 1997; Pan and Randall 1998).
+The cloud base mass fluxes are determined by the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990) and Xu (1991, 1993), which was adopted in the prognostic Arakawa–Schubert scheme (Randall and Pan 1993; Pan 1995; Randall et al. 1997; Pan and Randall 1998). The convective kinetic energy increases by buoancy and decreases by dissipation. 
 
 The cloud types are spectrally represented according to the updraft vertical velocity at the cloud base. Larger (smaller) vertical velocities give smaller (larger) entrainment rates which result in higher (lower) cloud tops. The cloud base is diagnosed as the lifting condensation level of the air parcel at the lowest model layer.
 
@@ -14,18 +14,18 @@ The scheme has a simple downdraft model, where a part of the precipitation cause
 
 The interaction of the updrafs and downdrafts with the surrounding environment is formulated following Arakawa and Schubert (1974). The areal fractions of the updrafts and downdrafts are assumed to be sufficiently small and the grid-mean prognostic variables are the same as those over the environmental area, which are changed by the detrainment of the updrafts and downdrafts, the compensating subsidence and the evaporation and sublimation of the precipitation associated with the updrafts. 
 
-The input variables to this scheme are temperature $T$, specific humidity $q$, cloud water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables. 
+The input variables to this scheme are temperature $T$, specific humidity $q$, cloud liquid water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud liquid water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables. 
 
-A summary of the calculation procedure is given below, along with the subroutine names.
+The procedure of the calculations is given as follows along with the names of the subroutines.
 
 1. calculation of cloud base `CUMBAS`.
 2. calculation of in-cloud properties `CUMUP`.
 3. calculation of cloud base mass flux `CUMBMX`.
 4. calculation of cloud mass flux, detrainment, and precipitation `CUMFLX`.
-5. evaluation of cloud water and cloud cover by cumulus `CUMCLD`.
-6. calculation of the change in temperature and specific humidity by detrainment `CLDDET`.
+5. diagnosis of cloud water and cloud cover by cumulus `CUMCLD`.
+6. calculation of tendencies by detrainment `CLDDET`.
 7. calculation of freezing, melting, evaporation, sublimation, and downdraft mass flux `CUMDWN`.
-8. calculation of the change in temperature and specific humidity by compensating subsidence `CLDSBH`.
+8. calculation of tendencies by compensating subsidence `CLDSBH`.
 9. calculation of cumulus momentum transport `CUMCMT`.
 10. calculation of tracer updraft `CUMUPR`.
 11. calculation of tracer downdraft `CUMDNR`.
