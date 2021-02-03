@@ -2,7 +2,7 @@
 
 ### Outline of cumulus scheme
 
-The deep cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates temperature and water vapor changes and precipitation due to latent heat release and associated convective motion. Although this scheme deals with the effects of cumulus clouds of various heights, we will refer to it as the "deep" cumulus convection scheme to distinguish it from the "shallow" cumulus convection scheme for clouds at the top of the boundary layer discussed in the next section.
+The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since version 5 of MIROC. It represents updrafts, downdrafts, their detrainment and compensating downward motion over the surrounding area as well as microphysical processes associated with updrafts and downdrafts.
 
 The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the $\sigma$ coordinates, altitude, pressure, and cloud cover.
 
