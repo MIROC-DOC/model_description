@@ -4,7 +4,7 @@
 
 The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since version 5 of MIROC. It represents updrafts, downdrafts, their detrainment and compensating downward motion over the surrounding area as well as microphysical processes associated with updrafts and downdrafts.
 
-The input variables are air temperature $T$, specific humidity $q$, zonal wind $u$, meridional wind $v$, vertical velocity at the $\sigma$ coordinates, altitude, pressure, and cloud cover.
+The input variables to this scheme are temperature $T$, specific humidity $q$, cloud water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$.
 
 The output variables are as follows. To calculate the time evolution of the atmospheric variables, the tendency of temperature $\partial T/\partial t$, specific humidity$\partial q/\partial t$, zonal wind $\partial u/\partial t$, and meridional wind $\partial v/\partial t$ are output. Surface rainfall and surface snowfall are output as external forces on the ocean and land surface models. Cloud water content $l^{cR}$ and cloud cover $C^c$ of cumulus clouds are output for the radiative processes. For the satellite simulator COSP, full-level cloud water content, cloud ice content, rainfall flux, and snowfall flux are output. For the aerosol transport model SPRINTARS, half-level precipitation fluxes are output. For the chemical model CHASER, half-level precipitation and snow fluxes are output, as well as full-level cumulus cloud top flags, cloud area fraction, and evaporation rate. For the shallow cumulus convection scheme, cloud base pressure and cloud top pressure are output.
 
