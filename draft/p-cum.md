@@ -1,6 +1,6 @@
-## Deep Cumulus Convection
+## Cumulus scheme
 
-### Outline of deep cumulus convection scheme
+### Outline of cumulus scheme
 
 The deep cumulus convection scheme describes the condensation, precipitation, and convection processes involved in cumulus convection, and calculates temperature and water vapor changes and precipitation due to latent heat release and associated convective motion. Although this scheme deals with the effects of cumulus clouds of various heights, we will refer to it as the "deep" cumulus convection scheme to distinguish it from the "shallow" cumulus convection scheme for clouds at the top of the boundary layer discussed in the next section.
 
