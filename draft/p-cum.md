@@ -174,7 +174,7 @@ $$
  \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k. \qquad\quad\tag{A1}
 $$
 
-Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3}$ is applied.
+Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3} m^{-1}$ is applied.
 
 Equations (5) and (6) are written as
 
@@ -212,13 +212,9 @@ which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k
 
 ### Spectral representation
 
-Following the spirit of the Arakawa–Schubert scheme, cloud types are spectrally represented. The Arakawa–Schubert scheme considered different types of clouds according to different values of the entrainment rate. In the scheme developed here, however, the entrainment rate is calculated using Eq. (2).
+Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$.
 
-In the Arakawa–Schubert scheme, a cloud-top level is first given and then the entrainment rate corresponding to the level is inversely solved. Since the formulation of entrainment rate is more complicated here, mathematically there is no guarantee that cloud-base updraft velocity that corresponds to the midst of a given cloud-top level always exists. Therefore, different values of cloud-base updraft velocity are first given from the minimum to the maximum with a fixed interval. The minimum and maximum values are set at 0.1 and 1.4 m/s2, with an interval of 0.1 m/s2.
-
-In-cloud properties are then integrated upward with Eqs. (2), (4), (5), (6), and (7). This upward integration continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some point, the parcel detrains at the neutral buoyancy level that is below and closest to the point. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of CIN near cloud base is also represented by this. Note, however, that an effect of overshooting above cloud top is not included for simplicity (i.e., detrainment never occurs above cloud top).
-
-A numerical scheme for solving the set of the equations is devised considering accuracy, stability, and column conservation of mass, energy, and water. The details are described in appendix A. For determination of $\hat{h}$ and $\hat{q}_t$ at cloud base, see appendix B
+Then, the updraft properties are calculated upward with Eqs. (2), (4), (5), (6), and (7). This upward calculation continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some level, the air parcel detrains at the neutral buoyancy level which is below and closest to the level. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of the convective inhibition (CIN) near cloud base is also represented by this method. Note, however, that an effect of overshooting above cloud top is not represented for simplicity (i.e., detrainment never occurs above cloud top).
 
 ### Cloud-base mass flux
 
