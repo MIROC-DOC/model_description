@@ -87,23 +87,22 @@ The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$
 The entrainment rate is defined by
 
 $$
- \epsilon = \frac{1}{M}\frac{\partial M}{\partial z}
+ \epsilon = \frac{1}{M_u}\frac{\partial M_u}{\partial z}
 $$
 
-where $M$ is mass flux of cumulus updraft and is allowed to vary vertically. Based on the formulation of Gregory (2001), the rate of change of updraft velocity with height is
+and allowed to vary vertically. Based on the formulation of Gregory (2001), the updraft velocity is calculated by
 
 $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \qquad\tag{1}
 $$
 
-where $\hat{w}$ and $B$ are the updraft velocity and the buoyancy of cloud air parcel, respectively, and $a$ is a dimensionless
-constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate mean updraft velocity. Here, $a$is set at 0.15. The other part of the force is used for the energy of perturbation. The second term on the right-hand side represents reduction in the upward momentum of cloud air parcel through the entrainment process. Then it is assumed that
+where $w$ and $B$ are the vertical velocity and the buoyancy of updraft air parcel respectively. $a$ is a dimensionless constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate the updraft velocity. The hats indicate the values of the updraft. The second term on the right-hand side represents reduction in the upward momentum of the air parcel through the entrainment. Then it is assumed that
 
 $$
  \epsilon \hat{w}^2 \simeq C_\epsilon a B,
 $$
 
-where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. Here, $C_\epsilon$ is set at 0.6. This expression denotes that a certain fraction of buoyancy-generated energy is reduced by entrainment, which is identical to the fraction used to accelerate entrained air to the mean updraft velocity. Thus, entrainment rate is written as
+where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. This formulation denotes that a certain fraction of the buoyancy-generated energy is reduced by the entrainment, which is identical to the fraction used to accelerate the entrained air to the updraft velocity. Thus, the entrainment rate is written as
 
 $$
  \epsilon = C_\epsilon\frac{aB}{\hat{w}^2}. \qquad\tag{2}
@@ -115,39 +114,33 @@ $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B
 $$
 
-which shows that $\hat{w}$ is continuously accelerated upward when buoyancy is positive. Many CRM and LES results show, however, that updraft velocity is often reduced if the parcel approaches cloud top. For this reason, an additional term is added when used with Eq. (2), and the equation becomes
+which shows that $\hat{w}$ is continuously accelerated upward when buoyancy is positive. Many CRM and LES results show, however, that updraft velocity is often reduced if the parcel approaches its cloud top. For this reason, adding an additional term, we use
 
 $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}^2}{2}\qquad\tag{4}
 $$
 
-where the last term denotes that the energy of the updraft velocity is relaxed to zero with a height scale $z_0$. Here, $z_0$ is set at 2 km. Eq. (4) is discretized as
+where the last term denotes that the energy of the updraft velocity is relaxed to zero with a height scale $z_0$. Eq. (4) is discretized as
 
 $$
- \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \qquad\quad\tag{A5}
+ \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B_k - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \qquad\quad\tag{A5}
 $$
 
-Note that the equation is solved with respect to $\hat{w}^2$ rather than $\hat{w}$.
+where $k$ is an index of model layers and $+1/2$ and $-1/2$ indicate the upper and lower sides of the half levels. $\Delta z$ is the depth of the model layer. Note that the equation is solved for $\hat{w}^2$ rather than $\hat{w}$.
 
-Buoyancy of cloud air parcel is determined by
+The buoyancy of the cloud air parcel is determined by
 
 $$
  B  =   \frac{g}{\bar{T}} ( \hat{T}_v - \bar{T}_v )
 $$
 
 $$
- =   \frac{g}{\bar{T}} \left[ \hat{T} ( 1+\varepsilon \hat{q}-\hat{l} ) - \bar{T} ( 1+\varepsilon \bar{q} - \bar{l}) \right]
+ \simeq g \left\{ \frac{\hat{h} - \bar{h}^*}{C_p \bar{T}(1 + \gamma)} + \varepsilon(\hat{q_v}-\bar{q_v}) - \left[ (\hat{q_l}+\hat{q_i}) - (\bar{q_l}+\bar{q_i}) \right] \right\}
 $$
 
-$$
- \simeq  g \left[ \frac{\hat{T} - \bar{T}}{\bar{T}} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right]
-$$
+where $T_v$ is virtual temperature. $\varepsilon = R_v/R_d - 1$ where $R_v$ and $R_d$ are the gas constants for water vapor and dry air respectively. 
 
-$$
- \simeq g \left[ \frac{1}{\bar{T}}\frac{\hat{h} - \bar{h}^*}{C_p (1 + \gamma)} + \varepsilon(\hat{q}-\bar{q}) - (\hat{l} - \bar{l}) \right]
-$$
-
-where $\varepsilon = R_\mathrm{{H}_2{O}}/R_\mathrm{air} - 1$.
+$\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omitted the subscript $j$ for convenience. 
 
 ### Normalized mass flux and In-cloud properties
 
