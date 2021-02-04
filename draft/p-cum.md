@@ -126,7 +126,7 @@ $$
  \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B_k - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \qquad\quad\tag{A5}
 $$
 
-where $k$ is an index of model layers and $+1/2$ and $-1/2$ indicate the upper and lower sides of the half levels. $\Delta z$ is the depth of the model layer. Note that the equation is solved for $\hat{w}^2$ rather than $\hat{w}$.
+where $k$ is an index of full levels and $k+1/2$ and $k-1/2$ indicate the upper and lower sides of the half levels. $\Delta z$ is the depth of the model layer. Note that the equation is solved for $\hat{w}^2$ rather than $\hat{w}$.
 
 The buoyancy of the cloud air parcel is determined by
 
@@ -142,23 +142,25 @@ where $T_v$ is virtual temperature. $\varepsilon = R_v/R_d - 1$ where $R_v$ and 
 
 $\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omitted the subscript $j$ for convenience. 
 
-### Normalized mass flux and In-cloud properties
+### Normalized mass flux and updraft properties
 
-In-cloud properties are determined by
+The properties of the updraft are determined by
 
 $$
  \frac{\partial \eta \hat{h}}{\partial z} = \epsilon \eta \bar{h} + Q_i, \qquad\tag{5}
 $$
 
 $$
- \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P,\,\mathrm{and} \qquad\tag{6}
+ \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P \qquad\tag{6}
 $$
+
+and
 
 $$
  \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7}
 $$
 
-where $h$ and $q_t$ are moist static energy and total water, respectively. Also, $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation, respectively. All other variables such as temperature, specific humidity, and liquid and ice cloud water are computed by these quantities; the details are described in appendix B. Tracers such as aerosols are determined by a method identical to that for $\hat{q}_t$. Following Arakawa and Schubert (1974), detrainment occurs only at cloud top.
+where $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation respectively. All other variables such as temperature, specific humidity, and liquid and ice cloud water are computed from these quantities. Tracers are calculated by a method identical to that for $\hat{q}_t$.
 
 Equation (7) leads to
 
@@ -169,32 +171,32 @@ $$
 Then, $\eta$ and $\epsilon$ are discretized as
 
 $$
- \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k \qquad\quad\tag{A1}
+ \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k. \qquad\quad\tag{A1}
 $$
 
-where the subscript $k$ is an index of full levels. Here, $k + 1/2$ and $k - 1/2$ are the adjacent half levels above and below the level $k$, respectively, and $\Delta z_k$ is a vertical length of the level $k$. Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3}$ is applied.
+Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3}$ is applied.
 
 Equations (5) and (6) are written as
 
 $$
- \frac{\partial \eta \hat{h}}{\partial z} = E \bar{h} + Q_i, \mathrm{and}
+ \frac{\partial \eta \hat{h}}{\partial z} = E \bar{h} + Q_i,
 $$
 
 $$
- \frac{\partial \eta \hat{q}_t}{\partial z} = E \bar{q}_t -P,
+ \frac{\partial \eta \hat{q}_t}{\partial z} = E \bar{q}_t -P
 $$
 
-where $E = \epsilon\eta$. These are discretized as
+respectivuly, where $E = \epsilon\eta$. These equations are discretized as
 
 $$
- \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_i}_k  \qquad\quad\tag{A2}
+ \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_{i,k}}  \qquad\quad\tag{A2}
 $$
 
 $$
- \frac{\eta_{k+1/2} {\hat{q}_t}_{k+1/2} - \eta_{k-1/2} {\hat{q}_t}_{k-1/2}}{\Delta z_k} = E_k {\bar{q}_t}_k - P_k  \qquad\quad\tag{A3}
+ \frac{\eta_{k+1/2} {\hat{q}_{t,k+1/2}} - \eta_{k-1/2} {\hat{q}_{t,k-1/2}}}{\Delta z_k} = E_k {\bar{q}_{t,k}} - P_k  \qquad\quad\tag{A3}
 $$
 
-Considering the relation that $\partial h/\partial z = \epsilon\eta$, $E_k$ is expressed by
+Considering the relation that $\partial \eta/\partial z = \epsilon\eta$, we descretize $E_k$ as
 
 $$
  E_k = \frac{\eta_{k+1/2} - \eta_{k-1/2}}{\Delta z_k}  \qquad\quad\tag{A4}
@@ -206,23 +208,7 @@ $$
  \hat{h}_{k+1/2} = e^{-\epsilon_k \Delta z_k} \hat{h}_{k - 1/2} + (1 - e^{-\epsilon_k \Delta z_k}) \bar{h}_k,
 $$
 
-which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$ and $\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same concept is applied to $\hat{q}_t$ as well when assuming $P$ is zero.
-
-Properties in detrained air parcel are determined by
-
-$$
- h^t  =  \hat{h}(z_T) \, ,
-$$
-
-$$
- q^t  =  \hat{q}(z_T) \, , \mathrm{and}
-$$
-
-$$
- l^t  =  \hat{l}(z_T) \,,
-$$
-
-where superscript $t$ denote detrained properties.
+which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$ and $\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same property applies to $\hat{q}_t$ as well, if $P$ is zero.
 
 ### Spectral representation
 
