@@ -12,9 +12,9 @@ The cloud types are spectrally represented according to the updraft vertical vel
 
 The scheme has a simple downdraft model, where a part of the precipitation caused by the updrafts evaporates and forms the cold air which enters into the downdrafts. The detrainment of the downdraft mass fluxes occurs at the neutral buoyancy level and near the surface. 
 
-The interaction of the updrafs and downdrafts with the surrounding environment is formulated following Arakawa and Schubert (1974). The areal fractions of the updrafts and downdrafts are assumed to be sufficiently small and the grid-mean prognostic variables are the same as those over the environmental area, which are changed by the detrainment of the updrafts and downdrafts, the compensating subsidence and the evaporation and sublimation of the precipitation associated with the updrafts. 
+The interaction of the updrafs and downdrafts with the surrounding environment is formulated following Arakawa and Schubert (1974). The areal fractions of the updrafts and downdrafts are assumed to be sufficiently small and the grid-mean prognostic variables are supposed to be the same as those over the environmental area, which are changed by the detrainment of the updrafts and downdrafts, the compensating subsidence and the evaporation and sublimation of the precipitation associated with the updrafts. 
 
-The input variables to this scheme are temperature $T$, specific humidity $q$, cloud liquid water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud liquid water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables. 
+The input variables to this scheme are temperature $T$, specific humidity $q$, cloud liquid water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q_v$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud liquid water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables. 
 
 The procedure of the calculations is given as follows along with the names of the subroutines.
 
@@ -32,19 +32,19 @@ The procedure of the calculations is given as follows along with the names of th
 12. calculation of tracer subsidence `CUMSBR`.
 13. fixing tracer mass `CUMFXR` .
 
-### Basic framework
+### Interaction between cumulus ensemble and large-scale environment
 
-The tendency of large-scale environmental properties by the deep cumulus convection scheme is calculated as
+The equations for tendencies of the grid-mean variables are written as
 
 $$
  \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ),
 $$
 
 $$
- \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t + l^t - \bar{q} )
+ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t - \bar{q} ),
 $$
 
-where $M$ is cloud mass flux, $D$ is detrainment, $h, q, l$ is moist static energy, cloud water content, and specific humidity, respectively. The hats denote in-cloud properties, and the overbars denote large-scale environmental properties.
+where $M$, $D$, $h$ are total mass flux, detrainment mass flux and moist static energy. $q$ is a substitute for $q_v$, $q_l$ and $q_i$ and any tracers, and they are calculated in the same way. The hats indicate in-cloud properties and the overbars grid-mean.
 
 Cloud mass flux $M$ and detrainment $D$ are represented by
 
