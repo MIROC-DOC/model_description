@@ -80,7 +80,7 @@ $$
 
 $C_p$ denotes the specific heat of dry air at constant pressure and the stars indicate saturation values. 
 
-The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$ where $z_B$ denotes the cloud base height.
+The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$ for all of the updraft types where $z_B$ denotes the cloud base height.
 
 ### Updraft velocity and entrainment rate
 
