@@ -66,19 +66,21 @@ where $M_B$ and $\eta$ are the updraft mass flux at its cloud base and normalize
 
 ### Cloud base
 
-Cloud base is determined as a lifting condensation level of the lowest model level. In other words, cloud-base height $z_B$ is defined as smallest $z$ such that
+The cloud base is determined as the lifting condensation level of the air at the lowest model layer. It is defined as the smallest $z$ which satisfies
 
 $$
-  \bar{q}(0) \geq \bar{q}^*(z) + \frac{\gamma}{L(1+\gamma)} \left(\bar{h}(0)-\bar{h}(z) \right)\,,
+  \bar{q_t}(z_1) \geq \bar{q_v}^* + \frac{\gamma}{L(1+\gamma)} \left[\bar{h}(z_1)-\bar{h}^*(z) \right]\,,
 $$
 
-where
+where $q_t$ denotes total water, L the latent heat of vaporization, $z_1$ the height of the lowest model layer at the full level and 
 
 $$
- \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right).
+ \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right)_{\bar{p}}.
 $$
 
-The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$
+$C_p$ denotes the specific heat of dry air at constant pressure and the stars indicate saturation values. 
+
+The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$ where $z_B$ denotes the cloud base height.
 
 ### Updraft velocity and entrainment rate
 
