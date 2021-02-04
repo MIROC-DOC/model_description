@@ -34,31 +34,35 @@ The procedure of the calculations is given as follows along with the names of th
 
 ### Interaction between cumulus ensemble and large-scale environment
 
-The equations for tendencies of the grid-mean variables are written as
+Following Arakawa and Schubert (1974), the equations for tendencies of the grid-mean variables are written as
 
 $$
- \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + D( h^t - \bar{h} ),
-$$
-
-$$
- \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + D( q^t - \bar{q} ),
-$$
-
-where $M$, $D$, $h$ are total mass flux, detrainment mass flux and moist static energy. $q$ is a substitute for $q_v$, $q_l$ and $q_i$ and any tracers, and they are calculated in the same way. The hats indicate in-cloud properties and the overbars grid-mean.
-
-Cloud mass flux $M$ and detrainment $D$ are represented by
-
-$$
- M(z) = M_B \eta(z) \, ,
+ \frac{\partial \bar{h}}{\partial t} = M \frac{\partial \bar{h}}{\partial z} + \sum_j D_j \left[ h_j(z_{T,j}) - \bar{h} \right],
 $$
 
 $$
- D(z) = M_B \eta(z_T) \delta (z-z_T)\, ,
+ \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + \sum_j D_j \left[ q_j(z_{T,j}) - \bar{q} \right],
 $$
 
-respectively, where $z_T$ is cloud top height, $z_B$ is cloud base height, $M_B$ is mass flux at $z_B$, $\eta$ is normalized mass flux, and $\delta$ is the Dirac delta function.
+where $M$, $D$, $h$ denote total mass flux, detrainment mass flux and moist static energy. $q$ is a substitute for $q_v$, $q_l$ and $q_i$ and any tracers which are calculated in the same way. $z_T$ is the height of the updraft. The hats indicate in-cloud properties, the overbars grid-mean. The subscripts $j$ are an index for the updraft types. 
 
-$\eta, h^t, q^t,$ and $l^t$ are determined with the entraining plume model. $M_B$ is determined with the prognostic convective kinetic energy closure.
+The total mass flux $M$ and detrainment $D$ are defined as
+
+$$
+M(z) = \sum_j M_{u,j} + M_d \, ,
+$$
+
+$$
+ D_j(z) = M_{u,j}(z_{T,j}) \delta (z-z_{T,j})
+$$
+
+respectively, where $M_u$ and $M_d$ denote mass fluxes of updraft and downdraft respectively. The updraft mass flux is formulated as
+
+$$
+ M_{u,j}(z) = M_{B,j} \, \eta_j(z)
+$$
+
+where $M_B$ and $\eta$ are the updraft mass flux at its cloud base and normalized mass flux.
 
 ### Cloud base
 
