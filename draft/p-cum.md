@@ -218,25 +218,25 @@ Then, the updraft properties are calculated upward with Eqs. (2), (4), (5), (6),
 
 ### Cloud-base mass flux
 
-Cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, cloud kinetic energy for each cloud type is explicitly predicted by
+The cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, the cloud kinetic energy for each of the updraft types is explicitly predicted by
 
 $$
  \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\,,  \qquad\tag{8}
 $$
 
-where $K$ and $A$ are cloud kinetic energy and cloud work function, respectively, and $t_p$ denotes a time scale of dissipation. Cloud work function $A$ is defined as
+where $K$ and $A$ are the cloud kinetic energy and cloud work function respectively, and $\tau_p$ denotes a time scale of dissipation. The cloud work function $A$ is defined as
 
 $$
  A \equiv \int_{z_B}^{z_T} B \eta \,dz\,.
 $$
 
-The energy is linked with $M_B$ by
+The cloud kinetic energy is linked with $M_B$ by
 
 $$
  K = \alpha M_B^2.
 $$
 
-Cloud-base mass flux is then solved for each cloud type ($\tau_p$ and $\alpha$ are set at $1.0 \times 10^3\, \mathrm{s}$ and $5.0 \times 10^7\, \mathrm{kg}^{-1} \mathrm{m}^4$, respectively).
+The cloud-base mass flux is then solved for each of the updraft types.
 
 ### Microphysics
 
