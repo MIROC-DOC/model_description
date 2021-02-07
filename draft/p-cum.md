@@ -96,7 +96,9 @@ $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \qquad\tag{1}
 $$
 
-where $w$ and $B$ are the vertical velocity and the buoyancy of updraft air parcel respectively. $a$ is a dimensionless constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate the updraft velocity. The hats indicate the values of the updraft. The second term on the right-hand side represents reduction in the upward momentum of the air parcel through the entrainment. Then it is assumed that
+where $w$ and $B$ are the vertical velocity and the buoyancy of updraft air parcel respectively. $a$ is a dimensionless constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate the updraft velocity. The hats indicate the values of the updraft. The second term on the right-hand side represents reduction in the upward momentum of the air parcel through the entrainment. Here and hereafter, the equation number corresponds to that in Chikira and Sugiyama (2010).
+
+Then it is assumed that
 
 $$
  \epsilon \hat{w}^2 \simeq C_\epsilon a B,
@@ -160,7 +162,7 @@ $$
  \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7}
 $$
 
-where $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation respectively. All other variables such as temperature, specific humidity, and liquid and ice cloud water are computed from these quantities. Tracers are calculated by a method identical to that for $\hat{q}_t$.
+where $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation respectively. All the other variables such as temperature, specific humidity, and liquid and ice cloud water are computed from these quantities. Tracers are calculated by a method identical to that for $\hat{q}_t$.
 
 Equation (7) leads to
 
@@ -235,7 +237,7 @@ $$
 The cloud kinetic energy is linked with $M_B$ by
 
 $$
- K = \alpha M_B^2.
+ K = \alpha M_B^2.  \tag{9}
 $$
 
 The cloud-base mass flux is then solved for each of the updraft types.
