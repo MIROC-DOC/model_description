@@ -69,13 +69,13 @@ where $M_B$ and $\eta$ are the updraft mass flux at its cloud base and normalize
 The cloud base is determined as the lifting condensation level of the air at the lowest model layer. It is defined as the smallest $z$ which satisfies
 
 $$
-  \bar{q_t}(z_1) \geq \bar{q_v}^* + \frac{\gamma}{L(1+\gamma)} \left[\bar{h}(z_1)-\bar{h}^*(z) \right]\,,
+  \bar{q_t}(z_1) \geq \bar{q_v}^* + \frac{\gamma}{L_v(1+\gamma)} \left[\bar{h}(z_1)-\bar{h}^*(z) \right]\,,
 $$
 
-where $q_t$ denotes total water, L the latent heat of vaporization, $z_1$ the height of the lowest model layer at the full level and 
+where $q_t$ denotes total water, $L_v$ the latent heat of vaporization, $z_1$ the height of the lowest model layer at the full level and 
 
 $$
- \gamma \equiv \frac{L}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right)_{\bar{p}}.
+ \gamma \equiv \frac{L_v}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right)_{\bar{p}}.
 $$
 
 $C_p$ denotes the specific heat of dry air at constant pressure and the stars indicate saturation values. 
@@ -138,9 +138,9 @@ $$
  \simeq g \left\{ \frac{\hat{h} - \bar{h}^*}{C_p \bar{T}(1 + \gamma)} + \varepsilon(\hat{q_v}-\bar{q_v}) - \left[ (\hat{q_l}+\hat{q_i}) - (\bar{q_l}+\bar{q_i}) \right] \right\}
 $$
 
-where $T_v$ is virtual temperature. $\varepsilon = R_v/R_d - 1$ where $R_v$ and $R_d$ are the gas constants for water vapor and dry air respectively. 
+where $g$ and $T_v$ denote gravity and virtual temperature respectively. $\varepsilon = R_v/R_d - 1$ where $R_v$ and $R_d$ are the gas constants for water vapor and dry air respectively. 
 
-$\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omitted the subscript $j$ for convenience. 
+$\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omit the subscript $j$ for convenience. 
 
 ### Normalized mass flux and updraft properties
 
@@ -193,7 +193,7 @@ $$
 $$
 
 $$
- \frac{\eta_{k+1/2} {\hat{q}_{t,k+1/2}} - \eta_{k-1/2} {\hat{q}_{t,k-1/2}}}{\Delta z_k} = E_k {\bar{q}_{t,k}} - P_k  \qquad\quad\tag{A3}
+ \frac{\eta_{k+1/2} \hat{q}_{t,k+1/2} - \eta_{k-1/2} \hat{q}_{t,k-1/2}}{\Delta z_k} = E_k {\bar{q}_{t,k}} - P_k  \qquad\quad\tag{A3}
 $$
 
 Considering the relation that $\partial \eta/\partial z = \epsilon\eta$, we descretize $E_k$ as
@@ -209,6 +209,8 @@ $$
 $$
 
 which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k - 1/2}$ and $\bar{h}_k$. Thus, the stability of $\hat{h}$ is guaranteed. The same property applies to $\hat{q}_t$ as well, if $P$ is zero.
+
+These calculations are made for each of the updraft types separately, but we omit the subscript $j$ for convenience.
 
 ### Spectral representation
 
