@@ -242,35 +242,35 @@ The cloud-base mass flux is then solved for each of the updraft types.
 
 ### Microphysics
 
-The method to obtain temperature and specific humidity of in-cloud air from moist static energy is identical to that in Arakawa and Schubert (1974). The ratio of precipitation to the total amount of condensates generated from cloud base to a given height $z$ is expressed by
+The method to obtain temperature and specific humidity of in-cloud air from moist static energy is identical to that in Arakawa and Schubert (1974). The ratio of precipitation to the total amount of condensates generated from cloud base to a given height $z$ is formulated as
 
 $$
  F_p(z) = 1 - e^{-(z - z_B - z_0)/z_p},
 $$
 
-where $z_0$ and $z_p$ are set at 1.5 and 4 km, respectively.
+where $z_0$ and $z_p$ are tuning parameters.
 
-The ratio of ice cloud to cloud water is determined simply by a linear function of temperature,
+The ratio of cloud ice to cloud condensate is determined simply by a linear function of temperature,
 
 $$
  F_i(T) = \begin{cases} 1 & T \leq T_1 \\ (T_2 - T)/(T_2 - T_1) & T_1 < T < T_2 \\ 0  & T \geq T_2 \end{cases}
 $$
 
-where $T_1$ and $T_2$ are set at 258.15 and 273.15 K. The ratio of snowfall to precipitation is also determined by this function.
+where $T_1$ and $T_2$ are set to 258.15 and 273.15 K. The ratio of snowfall to precipitation is also determined by this function.
 
-From the conservation of condensate static energy, $C_p T + gz + L_v q - L_i q_i$, for a cloud parcel, $Q_i$ in Eq. (5) is written as
+From the conservation of condensate static energy, $C_p T + gz + L_v q - L_i q_i$ where $L_i$ is the latent heat of fusion, for a cloud parcel, $Q_i$ in Eq. (5) is written as
 
 $$
- Q_i = L_i \left(\frac{\partial \eta \hat{q}_i}{\partial z} - \epsilon\eta\bar{q}\right)_i
+ Q_i = L_i \left(\frac{\partial \eta \hat{q}_i}{\partial z} - \epsilon\eta\bar{q}_i\right)
 $$
 
 and discretized as
 
 $$
- {Q_i}_k = L_i \left(\frac{\eta_{k+1/2} {\hat{q}_i}_{k+1/2} - \eta_{k-1/2} {\hat{q}_i}_{k-1/2}}{\Delta z_k} - E_k {\bar{q}_i}_k \right)
+ {Q_i}_k = L_i \left(\frac{\eta_{k+1/2} \hat{q}_{i,k+1/2} - \eta_{k-1/2} \hat{q}_{i,k-1/2}}{\Delta z_k} - E_k \bar{q}_{i,k} \right)
 $$
 
-Strictly, the ratio of ice to water should be recalculated after the modification of temperature by $Q_i$ and the iterations are required; however, it is omitted for simplicity.
+Strictly, the ratio of the cloud ice to the cloud condensate should be recalculated after the modification of temperature by $Q_i$ and the iterations of the calculation are required; however, it is omitted for simplicity.
 
 Melting and freezing of precipitation occurs depending on wet-bulb temperature of large-scale environment and cumulus mass flux.
 
