@@ -282,15 +282,15 @@ $$
  E_v = a_e (\bar{q}_w - \bar{q}) \left(\frac{P}{V_T}\right),
 $$
 
-where $E_v, q_w, P,$ and $V_T$ are the mass of evaporation per a unit volume and time, wet-bulb saturated specific humidity, precipitation, and terminal velocity of precipitation, respectively, and $a_e$ is a constant. Here, $a_e$ and $V_T$ are taken as $0.3 \,\mathrm{s}^{-1}$ and $5 \,\mathrm{m}\,\mathrm{s}^{-1}$, respectively. Downdraft mass flux $M_d$ is generated as
+where $E_v$, $q_w$ and $V_T$ are the mass of evaporation per a unit volume and time, wet-bulb saturated specific humidity and terminal velocity of precipitation respectively $a_e$ is a constant. Downdraft mass flux $M_d$ is generated as
 
 $$
  \frac{\partial M_d}{\partial z} = -b_e \bar{\rho} (\bar{T}_w - \bar{T}) P,
 $$
 
-where $\rho$ and $T_w$ are density and wet-bulb temperature, respectively; $b_e$ is a constant set at $5\times10^{-4} \,\mathrm{m}^2 \,\mathrm{kg}^{-1} \,\mathrm{K}^{-1}$. Properties of downdraft air are determined by budget equations and the detrainment occurs at neutral buoyancy level and below cloud base.
+where $\rho$ and $T_w$ are density and wet-bulb temperature, respectively; $b_e$ is a constant. Properties of downdraft air are determined by budget equations and the detrainment occurs at neutral buoyancy level and below cloud base.
 
-If precipitation is composed of both rain and snow, the rain (snow) is evaporated (sublimated) in the same ratio as the ratio of rain (snow) to total precipitation when the precipitation evaporates to produce downdrafts.
+If the precipitation is composed of both rain and snow, the rain (snow) is evaporated (sublimated) in the same ratio as the ratio of rain (snow) to the total precipitation when the precipitation evaporates to produce downdrafts.
 
 ### Cloudiness
 
