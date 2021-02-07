@@ -294,21 +294,21 @@ If the precipitation is composed of both rain and snow, the rain (snow) is evapo
 
 ### Cloudiness
 
-Fractional cloudiness used in the radiation scheme is expressed by
+Fractional cloudiness of the updrafts $C_u$ used in the radiation scheme is diagnosed by
 
 $$
- C = \frac{C_\mathrm{max} - C_\mathrm{min}}{\ln M_\mathrm{max} - \ln M_\mathrm{min}}(\ln M - \ln M_\mathrm{min}) + C_\mathrm{min},
+ C_u = \frac{C_\mathrm{max} - C_\mathrm{min}}{\ln M_\mathrm{max} - \ln M_\mathrm{min}}(\ln \sum_j M_{u,j} - \ln M_\mathrm{min}) + C_\mathrm{min},
 $$
 
-where $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max}, M_\mathrm{min},$and $M$ are the maximum and minimum values of the cloudiness and cumulus mass flux and the total cumulus mass flux, respectively; $C_\mathrm{max}, C_\mathrm{min}, M_\mathrm{max},$ and $M_\mathrm{min}$ are set at $0.1, 1 \times 10^{-3}, 0.3 \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1},$and $2 \times 10^{-3} \,\mathrm{kg} \,\mathrm{m}^{-2} \,\mathrm{s}^{-1}$, respectively.
+where $C_\mathrm{max}$, $C_\mathrm{min}$, $M_\mathrm{max}$, $M_\mathrm{min}$ are the maximum and minimum values of the cloudiness and cumulus mass flux respectively.
 
-The grid mean liquid cloud mixing ratio is given by
+The grid mean liquid cloud mixing ratio in the updrafts is given by
 
 $$
- l_c = \frac{\beta C}{M} \sum_i \hat{q}_l^i M^i,
+ l_c = \frac{\beta C_u}{M} \sum_j \hat{q}_{l,j} M_{u,j},
 $$
 
-where $i$ denotes an index of cloud type, $q_l$ is liquid water, and $\beta$ is a dimensionless constant set at 0.1. The grid mean ice cloud mixing ratio is determined similarly.
+where $\beta$ is a dimensionless constant. The grid mean ice cloud mixing ratio is determined similarly.
 
 ### Cumulus Momentum Transport
 
