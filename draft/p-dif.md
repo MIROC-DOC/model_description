@@ -17,9 +17,17 @@ MYNNスキームでは、熱力学変数としてliquid water potential temperat
 $$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_0}{p}\right)^{\frac{R_d}{C_p}} $$
 $$q_w \equiv q_v+q_l+q_i$$
 
-ここで、$T$, $p$は、それぞれ温度と圧力、$q_v$, $q_l$, $q_i$は、それぞれ比湿、雲水、雲氷、$C_p$, $R_d$は、それぞれ乾燥空気の定圧比熱および気体定数、$L_v$, $L_f$は、それぞれ単位質量あたりの水蒸気の凝結熱および水の凝固熱である。$p_0$は1000hPaである。
+$$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}} $$
 
-また、Level2.5においては、乱流エネルギーを2倍した量である $q^2 \equiv (\langle u^2 \rangle + \langle v^2 \rangle + \langle w^2 \rangle)$ が予報変数となっており、この時間発展もこのスキーム内で計算される。ここで、$u$, $v$, $w$は、それぞれ東西方向、南北方向、鉛直方向の風速である。本章では、大文字の変数で格子平均量を表し、小文字の変数で格子平均からのずれを表すこととする。$\langle \ \rangle$はアンサンブル平均を表す。レベル3の場合、$\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ が予報変数に追加されるが、ここでは省略する。
+$$ q_w \equiv q_v+q_l+q_i $$
+
+ここで、$T$, $p$は、それぞれ温度と圧力、$q_v$, $q_l$, $q_i$は、それぞれ比湿、雲水、雲氷、$C_p$, $R_d$は、それぞれ乾燥空気の定圧比熱および気体定数、$L_v$, $L_f$は、それぞれ単位質量あたりの水蒸気の凝結熱および水の凝固熱である。$p_s$は1000hPaである。
+
+また、Level2.5においては、乱流エネルギーを2倍した量である
+
+$$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
+
+が予報変数となっており、この時間発展もこのスキーム内で計算される。ここで、$u$, $v$, $w$は、それぞれ東西方向、南北方向、鉛直方向の風速である。本章では、大文字の変数で格子平均量を表し、小文字の変数で格子平均からのずれを表すこととする。$\langle \ \rangle$はアンサンブル平均を表す。レベル3の場合、$\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ が予報変数に追加されるが、ここでは省略する。
 
 計算手順の概略は以下の通りである。
 
