@@ -1,6 +1,6 @@
 <!-- TOC -->
 
-- [鉛直拡散](#鉛直拡散)
+- [乱流](#乱流)
   - [接地境界層](#接地境界層)
   - [浮力係数の診断](#浮力係数の診断)
   - [安定度関数](#安定度関数)
@@ -10,14 +10,16 @@
   - [乱流量の計算](#乱流量の計算)
 
 <!-- /TOC -->
-## 鉛直拡散
-本章では、サブグリッドスケールの乱流を表現する鉛直拡散スキームについて記述する。鉛直拡散スキームでは、運動量、熱、および水蒸気などのトレーサーについて、鉛直フラックスとimplicit解を得るための微分値を出力する。また、後述する乱流量について時間発展を解くために必要な生成項、散逸項、鉛直フラックスを出力する。
+## 乱流
+本章では、サブグリッドスケールの乱流の格子平均量への影響を表現する乱流スキームについて記述する。乱流スキームは、乱流による運動量、熱、水およびその他のトレーサーの鉛直拡散を計算する。MIROCではバージョン5以降、乱流スキームとして、Mellor-Yamadaスキーム（Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982）の改良版であるMellor-Yamada-Nakanishi-Niinoスキーム（MYNNスキーム; Nakanishi 2001; Nakanishi and Niino 2004）が採用されている。クロージャーレベルは2.5である。レベル3も使用可能であるが、計算量の増大に見合うパフォーマンスの向上が得られないため、非標準オプションとなっている。
 
-鉛直拡散係数の見積もりにはNakanishi (2001), Nakanishi and Niino (2004) の改良Mellor-Yamada Level2.5乱流クロージャーモデル(MYNNモデル)を用いる。MYNNモデルでは、熱力学変数としてliquid water potential temperature $\theta_l$ およびtotal water content $q_w$ が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
-$$ \theta_l=\frac{ T - \frac{L}{C_p}q_l - \frac{L+L_{M}}{C_p}q_i }{\left(\frac{p}{p_0}\right)^\kappa } $$
-$$q_w=q_v+q_l+q_i$$
+MYNNスキームでは、熱力学変数としてliquid water potential temperature $\theta_l$ およびtotal water $q_w$ が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
+$$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_0}{p}\right)^{\frac{R_d}{C_p}} $$
+$$q_w \equiv q_v+q_l+q_i$$
 
-また、Level2.5モデルにおいては、乱流エネルギー $q^2/2=(\langle u^2 \rangle + \langle v^2 \rangle + \langle w^2 \rangle)/2$ が予報変数となっており、この時間発展項もこのスキーム内で求められる。$\langle \ \rangle$はアンサンブル平均を表す。非標準スキームとしてMYNN Level 3モデルが存在し、その場合は $\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ が予報変数に追加されるが、ここでは省略する。
+ここで、$T$, $p$は、それぞれ温度と圧力、$q_v$, $q_l$, $q_i$は、それぞれ比湿、雲水、雲氷、$C_p$, $R_d$は、それぞれ乾燥空気の定圧比熱および気体定数、$L_v$, $L_f$は、それぞれ単位質量あたりの水蒸気の凝結熱および水の凝固熱である。$p_0$は1000hPaである。
+
+また、Level2.5においては、乱流エネルギーを2倍した量である $q^2 \equiv (\langle u^2 \rangle + \langle v^2 \rangle + \langle w^2 \rangle)$ が予報変数となっており、この時間発展もこのスキーム内で計算される。ここで、$u$, $v$, $w$は、それぞれ東西方向、南北方向、鉛直方向の風速である。本章では、大文字の変数で格子平均量を表し、小文字の変数で格子平均からのずれを表すこととする。$\langle \ \rangle$はアンサンブル平均を表す。レベル3の場合、$\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ が予報変数に追加されるが、ここでは省略する。
 
 計算手順の概略は以下の通りである。
 
@@ -25,9 +27,10 @@ $$q_w=q_v+q_l+q_i$$
 2. 部分凝結を考慮して浮力係数を計算する [`VDFCND`]
 3. 安定度関数を計算する [`VDFLEV2`]
 4. 大気境界層の深さを計算する [`PBLHGT`]
-5. 乱流の代表的長さスケールを計算する [`VDFMLS`]
+5. 乱流の長さスケールを計算する [`VDFMLS`]
 6. 拡散係数および鉛直フラックスとその微分値を計算する [`VDFLEV3`]
 7. 乱流量の生成項と散逸項を計算する [`VDFLEV3`]
+8. 予報変数のimplicit時間積分を計算する
 
 ### 接地境界層
 摩擦速度 $u^*$ およびMonin-Obukhov長 $L_M$ はそれぞれ以下のように与えられる。
