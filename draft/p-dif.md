@@ -14,8 +14,6 @@
 本章では、サブグリッドスケールの乱流の格子平均量への影響を表現する乱流スキームについて記述する。乱流スキームは、乱流による運動量、熱、水およびその他のトレーサーの鉛直拡散を計算する。MIROCではバージョン5以降、乱流スキームとして、Mellor-Yamadaスキーム（Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982）の改良版であるMellor-Yamada-Nakanishi-Niinoスキーム（MYNNスキーム; Nakanishi 2001; Nakanishi and Niino 2004）が採用されている。クロージャーレベルは2.5である。レベル3も使用可能であるが、計算量の増大に見合うパフォーマンスの向上が得られないため、非標準オプションとなっている。
 
 MYNNスキームでは、熱力学変数としてliquid water potential temperature $\theta_l$ およびtotal water $q_w$ が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
-$$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_0}{p}\right)^{\frac{R_d}{C_p}} $$
-$$q_w \equiv q_v+q_l+q_i$$
 
 $$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}} $$
 
@@ -41,11 +39,13 @@ $$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
 8. 予報変数のimplicit時間積分を計算する
 
 ### 接地境界層
-摩擦速度 $u^*$ およびMonin-Obukhov長 $L_M$ はそれぞれ以下のように与えられる。
-$$u^*=\left(\sqrt{{F_{u,g}}^2+{F_{v,g}}^2}/\rho \right)^\frac{1}{2}$$
-$$L_M=-\frac{T_{v,g}}{kg}\frac{{u^*}^3}{\langle w\theta_v \rangle_g}$$
+摩擦速度 $u_*$ およびMonin-Obukhov長 $L_M$ はそれぞれ以下のように与えられる。
 
-ここで、$\langle w\theta_v \rangle_g=F_{\theta,g}/C_p\rho +\left(\frac{1}{\epsilon}-1\right)\theta_1 F_{w,g}/\rho$ は地表における仮温位の鉛直フラックスを表し $F_{u,g},F_{v,g},F_{\theta,g},F_{w,g}$ はそれぞれ運動量、熱、水蒸気の地表面フラックス、$T_{v,g}$ は地表における仮温度、$\theta_1$は1層目の温位である。
+$$u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4}$$
+
+$$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g}$$
+
+ここで、下付文字$g$は、地表付近での値であることを表す。$\Theta_v$, $\theta_v$は仮温位、$k$, $g$は、それぞれ、Von Karman定数および重力加速度である。
 
 ### 浮力係数の診断
 
