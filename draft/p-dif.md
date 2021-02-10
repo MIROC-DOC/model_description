@@ -49,21 +49,29 @@ $$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g}$$
 
 ### 浮力係数の診断
 
-乱流の方程式に現れる浮力項の計算には $\langle w\theta_v \rangle$ の値が必要であるが、仮温位 $\theta_v$ は乱流スキームの予報変数ではないため、これを
+乱流の方程式に現れる浮力項の計算には $\langle w\theta_v \rangle$ の値が必要である。Mellor (1982)に従い、$\theta_l$, $q_w$のグリッド内の確率分布を仮定すると、この項は、
+
 $$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle$$
 
-として与える。係数 $\beta_\theta , \beta_q$ はHPCスキームにてサブグリッドスケールのPDFを仮定することで以下のように得られる。
-$$\beta_\theta=1+\epsilon q_w-(1+\epsilon)q_l-q_i-\tilde{R}abc$$
-$$\beta_q=\epsilon \theta +\tilde{R}ac$$
+と書ける。ただし、確率分布は、Mellor (1982)とは異なり、ガウス分布ではなく、PDF予報型大規模凝結スキーム（Watanabe et al. 2008）が与える三角形状の分布である。係数 $\beta_\theta , \beta_q$ は、以下のように表される。
 
-ここで
-$$a=\left(1+\frac{L}{C_p}\left.\frac{\partial q_{sat}}{\partial T}\right|_{T=T_l}\right)^{-1}$$
-$$b=\frac{T}{\theta}\left.\frac{\partial q_{sat}}{\partial T}\right|_{T=T_l}$$
-$$c=\frac{\theta}{T}\frac{L}{C_p}\left[1+\epsilon q_w-(1+\epsilon)q_l-q_i\right]-(1+\epsilon)\theta$$
-$$\tilde{R}=R\left[1-a(q_w-q_{sat})\frac{q_l}{2\sigma_s}\right]-\frac{{q_l}^2}{4{\sigma_s}^2}$$
+$$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc$$
+
+$$\beta_q=\epsilon \Theta +\tilde{R}ac$$
+
+ここで、$\epsilon=R_v/R_d-1$であり、$R_d$, $R_v$はそれぞれ、乾燥大気および水蒸気の気体定数である。また、
+
+$$a=\left(1+\frac{L_v}{C_p}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\right)^{-1}$$
+
+$$b=\frac{T}{\Theta}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}$$
+
+$$c=\frac{\Theta}{T}\frac{L_v}{C_p}\left[1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i\right]-(1+\epsilon)\Theta$$
+
+$$\tilde{R}=R\left\{1-a\left[Q_w-Q_s(T_l)\right]\frac{Q_l}{2\sigma_s}\right\}-\frac{{Q_l}^2}{4{\sigma_s}^2}$$
+
 $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle$$
 
-$R,q_l$ はそれぞれサブグリッドスケールのPDFから診断される雲量および液水量である。
+である。ここで、$R,Q_l$ はそれぞれグリッド内の確率分布から診断される雲量および液水量である。
 
 ### 安定度関数
 
