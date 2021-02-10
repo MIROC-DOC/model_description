@@ -75,35 +75,62 @@ $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\la
 
 ### 安定度関数
 
-大気の成層安定度の指標となるRichardson数 $Ri$ は以下のように求められる。
-$$Ri=\frac{\frac{g}{\theta}\left(\beta_\theta \frac{\partial \theta_l}{\partial z}+\beta_q \frac{\partial q_w}{\partial z}\right)}{\left(\frac{\partial u}{\partial z}\right)^2+\left(\frac{\partial v}{\partial z}\right)^2}$$
+Mellor-YamadaスキームのLevel2.5では、乱流の成長段階のふるまいが悪いことが知られている(Helfand and Labraga 1988)。そのため、MYNNスキームでは局所的に平衡が仮定されるLevel2の乱流エネルギー ${q_2}^2/2$ を計算し、 $q<q_2$ すなわち乱流が成長段階にある場合に補正をかける。 $q_2$の計算に必要なLevel2の安定度関数 $S_{H2},S_{M2}$ は以下のように求められる。
 
-フラックスRichardson数 $Rf$ は、 $Ri$ を用いて計算される。
+$$S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf}$$
+
+$$S_{M2}=S_{MC}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2}$$
+
+ここで、$Rf$は、フラックスRichardson数であり、以下のように計算される。
+
 $$Rf=R_{i1}\left(Ri+R_{i2}-\sqrt{Ri^2-R_{i3}Ri+R_{i4}}\right)$$
 
-ただし、
-$$(Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2)$$
+$Ri$はgradient Richardson数であり、以下のように計算される。
 
-に対して
-$$A_1=B_1\frac{1-3\gamma_1}{6}$$
-$$C_1=\gamma_1-\frac{1}{3A_1{B_1}^{\frac{1}{3}}}$$
-$$A_2=A_1\frac{\gamma_1-C_1}{\gamma_1 Pr}$$
-$$\gamma_2=\frac{B_2}{B_1}\left(1-C_3\right)+2\frac{A_1}{B_1}\left(3-2C_2\right)$$
-$$F_1=B_1(\gamma_1-C_1)+2A_1(3-2C_2)+3A_2(1-C_2)(1-C_5)$$
-$$F_2=B_1(\gamma_1+\gamma_2)-3A_1(1-C_2)$$
-$$R_{f1}=B_1\frac{\gamma_1-C_1}{F_1}$$
-$$R_{f2}=B_1\frac{\gamma_1}{F_2}$$
+$$Ri=\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right) \Bigg/ \left[ \left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2 \right]$$
+
+その他の記号は、環境場に依存しない量であり、以下のように与えられる。
+
+$$S_{HC}=3A_2(\gamma_1+\gamma_2)$$
+
+$$S_{MC}=\frac{A_1}{A_2}\frac{F_1}{F_2}$$
+
 $$Rf_c=\frac{\gamma_1}{\gamma_1+\gamma_2}$$
-$$S_{Mc}=\frac{A_1}{A_2}\frac{F_1}{F_2}$$
-$$S_{Hc}=3A_2(\gamma_1+\gamma_2)$$
+
+$$R_{f1}=B_1\frac{\gamma_1-C_1}{F_1}$$
+
+$$R_{f2}=B_1\frac{\gamma_1}{F_2}$$
+
 $$R_{i1}=\frac{1}{2S_{Mc}}$$
-$$R_{i2}=R_{f1}S_{Mc}$$
-$$R_{i3}=4R_{f2}S_{Mc}-2R_{i2}$$
+
+$$R_{i2}=R_{f1}S_{MC}$$
+
+$$R_{i3}=4R_{f2}S_{MC}-2R_{i2}$$
+
 $$R_{i4}={R_{i2}}^2$$
 
-Mellor-Yamada Level2.5スキームでは、乱流の成長段階のふるまいが悪いことが知られている(Helfand and Labraga, 1988)。そのため、MYNNモデルでは局地的に平衡が仮定されるLevel2スキームで乱流エネルギー ${q_2}^2/2$ を計算し、 $q<q_2$ すなわち乱流が成長段階にある場合に補正をかける。 $q_2$ の計算に必要なLevel2スキームで使用される安定度関数 $S_{H2},S_{M2}$ は以下のようにして求められる。
-$$S_{H2}=S_{Hc}\frac{Rf_c-Rf}{1-Rf}$$
-$$S_{M2}=S_{Mc}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2}$$
+ここで、
+
+$$A_1=B_1\frac{1-3\gamma_1}{6}$$
+
+$$A_2=A_1\frac{\gamma_1-C_1}{\gamma_1 Pr}$$
+
+$$C_1=\gamma_1-\frac{1}{3A_1{B_1}^{\frac{1}{3}}}$$
+
+$$F_1=B_1(\gamma_1-C_1)+2A_1(3-2C_2)+3A_2(1-C_2)(1-C_5)$$
+
+$$F_2=B_1(\gamma_1+\gamma_2)-3A_1(1-C_2)$$
+
+$$\gamma_2=\frac{B_2}{B_1}\left(1-C_3\right)+\frac{2A_1}{B_1}\left(3-2C_2\right)$$
+
+また、
+
+$$
+\begin{multline}
+(Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5) \\
+=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2)
+\end{multline}
+$$
 
 ### 乱流の代表的長さスケール
 
