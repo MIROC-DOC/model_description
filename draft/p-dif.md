@@ -71,7 +71,7 @@ $$\tilde{R}=R\left\{1-a\left[Q_w-Q_s(T_l)\right]\frac{Q_l}{2\sigma_s}\right\}-\f
 
 $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle$$
 
-である。ここで、$R,Q_l$ はそれぞれグリッド内の確率分布から診断される雲量および液水量である。
+である。ここで、$R,Q_l$ はそれぞれグリッド内の確率分布から診断される雲量および液水量、$Q_s$は、飽和水蒸気量を表す。
 
 ### 安定度関数
 
