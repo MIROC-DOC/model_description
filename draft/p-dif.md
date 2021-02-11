@@ -53,7 +53,7 @@ $$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g}$$
 
 $$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle$$
 
-と書ける。ただし、確率分布は、Mellor (1982)とは異なり、ガウス分布ではなく、PDF予報型大規模凝結スキーム（Watanabe et al. 2008）が与える三角形状の分布である。係数 $\beta_\theta , \beta_q$ は、以下のように表される。
+と書ける。ただし、確率分布は、Mellor (1982), Nakanishi and Niino (2004)とは異なり、ガウス分布ではなく、PDF予報型大規模凝結スキーム（Watanabe et al. 2008）が与える三角形状の分布である。係数 $\beta_\theta , \beta_q$ は、以下のように表される。
 
 $$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc$$
 
