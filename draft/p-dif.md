@@ -189,7 +189,7 @@ $$\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m}$$
 
 $$w_m=u_*/\phi_m$$
 
-$$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-1/3}$$
+$$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}}$$
 
 であり、$z_s$は接地層の高度で、$z_s=0.1H_{PBL}$としている。$F_b$は無次元のチューニングパラメータである。
 
