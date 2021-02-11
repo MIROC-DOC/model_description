@@ -134,15 +134,10 @@ $$
 
 ### 乱流の代表的長さスケール
 
-master turbulence length $L$ は、接地層スケール $L_S$、対流境界層スケール $L_T$、安定層スケール $L_B$ の調和平均として決定される。ただし、MYNNモデルのこの定式化は自由大気において雲の放射効果で安定度が減少した際にふるまいが悪くなる。そこで、バルクRichardson数
-$$Ri_B=\frac{\frac{g}{\theta_g}\Delta\theta_v\Delta z}{(\Delta u)^2+(\Delta v)^2}$$
+Nakanishi (2001)は、master length scale $L$ として以下の式を提案している。
+$$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \tag{1} $$
 
-について $Ri_B=0.5$ となるところを大気境界層高度 $H_{PBL}$ として、 $h=\sqrt{1.5H_{PBL}^2+H_0^2}$ より上では $L$ の扱いを変更する。標準では $H_0=500$ m である。
-
-高度 $h$ より下においては、 $L$ は以下で与えられる。
-$$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B}$$
-
-$L_S,L_T,L_B$ はそれぞれ接地層、乱流、大気安定度によって決定される長さスケールを表し、以下のように計算される。
+$L_S,L_T,L_B$ はそれぞれ接地層、対流混合層、安定成層における長さスケールを表し、以下のように定式化されている。
 $$
 L_S=\left\{
     \begin{array}{lr}
@@ -152,23 +147,53 @@ L_S=\left\{
     \end{array}
   \right.
 $$
-$$L_T=\alpha_1\frac{\int_0^h{qz}\,dz}{\int_0^h{q}\,dz}$$
+
+$$L_T=\alpha_1\frac{\displaystyle \int_0^\infty{qz}\,dz}{\displaystyle \int_0^\infty{q}\,dz}$$
+
 $$
 L_B=\left\{
-    \begin{array}{lr}
-      \alpha_2 q/N, &\partial\theta/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
-      \left[\alpha_2+\alpha_3\sqrt{q_c/L_TN}\right]q/N, &\partial\theta/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
-      \infty, &\partial\theta/\partial z\le 0\\
+    \begin{array}{ll}
+      \alpha_2 q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
+      \left[\alpha_2+\alpha_3\sqrt{q_c/L_TN}\right]q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
+      \infty, &\partial\Theta_v/\partial z\le 0\\
     \end{array}
   \right.
 $$
 
-ここで $\zeta\equiv z/L_M$ はMonin-Obukhov長 $L_M$ で規格化された高さ、$N\equiv\left[(g/\theta)(\partial\theta_v/\partial z)\right]^{1/2}$ はBrunt-V\"{a}is\"{a}l\"{a}振動数、 $q_c\equiv [(g/\theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ は対流速度 $w^*$ と同様な速度スケールを表す。経験定数は
+ここで $\zeta\equiv z/L_M$ はMonin-Obukhov長 $L_M$ で規格化された高さ、$N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}$ はBrunt-Väisälä振動数、 $q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ は対流混合層内の速度スケールを表す。経験定数はLarge Eddy Simulationの結果に基づき、
 $$(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(0.23,1.0,5.0,100.0)$$
 
-と定める。
+と定められている。
 
-一方、高度 $h$ より上層の自由大気においては $L$ は $L_S, L_A, L_{max}$ の調和平均で与えられる。 $L_A=f_{LB}\ q/N$ は安定成層において乱流により空気塊が鉛直方向に移動するときの長さスケールを表し、$f_{LB}=0.53$ である。  $L_{max}=100$ m は $L$ の上限を与える。
+Nakanishi (2001)における以上の定式化は、モデルの領域が大気境界層とその周辺域に限られている場合、適切な値をとる。しかし、モデルが対流圏上層まで含む場合、条件によっては、対流混合層の長さスケールである$L_T$が自由大気で使われてしまう、$L_T$の計算における$q$として自由大気の乱流エネルギーも含まれてしまう、などの問題が生じる。
+
+そこで、MIROCへの実装に当たり、対流混合層の上端の高さ$H_{PBL}$を見積もり、$h=\sqrt{(1.5H_{PBL})^2+H_0^2}$ より下の領域を境界層乱流が卓越する領域とみなす。ここで$H_0=500$mである。
+
+高度$h$以下では、master length scaleとして(1)式を用いるが、$L_T$において、積分の範囲を以下のように修正する。
+
+$$L_T=\alpha_1\frac{\displaystyle \int_0^h{qz}\,dz}{\displaystyle \int_0^h{q}\,dz}$$
+
+高度 $h$ より上では、$L$ は以下のように計算する。
+
+$$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}$$
+
+ここで、$L_A=\alpha_5\,q/N$ は、安定成層において乱流により空気塊が鉛直方向に移動するときの長さスケールを表す。$\alpha_5$は散逸の効果を表し、$\alpha_5=0.53$ である。  $L_{max}=500$mは$L$の上限を与える。
+
+$H_{PBL}$の見積もりはHoltslag and Boville (1993)に基づき、バルクRichardson数
+
+$$Ri_B=\frac{[g/\Theta_v(z_1)][\Theta_v(z_k)-\Theta_{v,g}](z_k-z_g)}{[U(z_k)-U(z_1)]^2+[V(z_k)-V(z_1)]^2+F_u{u_*}^2}$$
+
+を用いて計算する。ここで、$z_k$は下からk番目の層のフルレベルの高度を表し、$z_1$はモデル最下層のフルレベルの高度、$z_g$は地表高度である。$F_u$は無次元のチューニングパラメータである。また、
+
+$$\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m}$$
+
+$$w_m=u_*/\phi_m$$
+
+$$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-1/3}$$
+
+であり、$z_s$は接地層の高度で、$z_s=0.1H_{PBL}$としている。
+
+$k=2$から上に向かって$Ri_B$を順番に計算し、$Ri_B>0.5$ となる層とそのすぐ下の層の間で$Ri_B$を線形内挿し、ちょうど$Ri_B=0.5$となる高さを$H_{PBL}$とする。$z_s$の計算に$H_{PBL}$が必要であるため、最初に仮の値$H_{PBL}=z_1-z_g$を代入した$z_s$を使って$H_{PBL}$計算し、この$H_{PBL}$を代入した$z_s$を用いて真の$H_{PBL}$を再計算する。
 
 ### 拡散係数の計算
 乱流の時間変化項および移流拡散項を無視して計算するLevel2モデルから求める乱流エネルギーは以下の式で与えられる。
