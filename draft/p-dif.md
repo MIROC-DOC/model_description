@@ -263,19 +263,31 @@ $$K_w=LqS_H$$
 
 ### フラックスの計算
 
-以上より各物理量の鉛直フラックス $F$ およびその微分値が計算される。
-$$F_{u,k-1/2}=-K_{M,k-1/2}\frac{u_{k}-u_{k-1}}{z_k-z_{k-1}}$$
-$$F_{v,k-1/2}=-K_{M,k-1/2}\frac{v_{k}-v_{k-1}}{z_k-z_{k-1}}$$
-$$F_{q,k-1/2}=-K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{z_k-z_{k-1}}$$
-$$F_{\theta,k-1/2}=-K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\theta_{l,k}-\theta_{l,k-1}}{z_k-z_{k-1}}$$
-$$F_{w,k-1/2}=-K_{w,k-1/2}\frac{q_{w,k}-q_{w,k-1}}{z_k-z_{k-1}}$$
-$$\frac{\partial F_{u,k-1/2}}{\partial u_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial v_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial u_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial v_{k}}=K_{M,k-1/2}\frac{1}{z_k-z_{k-1}}$$
-$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=K_{q,k-1/2}\frac{1}{z_k-z_{k-1}}$$
-$$\frac{\partial F_{\theta,k-1/2}}{\partial T_{k-1}}=K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{z_k-z_{k-1}}$$
-$$\frac{\partial F_{\theta,k-1/2}}{\partial T_{k}}=-K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k}}\frac{1}{z_k-z_{k-1}}$$
-$$\frac{\partial F_{w,k-1/2}}{\partial q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial q_{w,k}}=K_{w,k-1/2}\frac{1}{z_k-z_{k-1}}$$
+各物理量の鉛直フラックス $F$ は以下のように計算される。
 
-各種トレーサーについても、 $K_w$ を用いて同様にフラックスが計算される。
+$$F_{u,k-1/2}=-K_{M,k-1/2}\frac{U_{k}-U_{k-1}}{\Delta z_{k-1/2}}$$
+
+$$F_{v,k-1/2}=-K_{M,k-1/2}\frac{V_{k}-V_{k-1}}{\Delta z_{k-1/2}}$$
+
+$$F_{q,k-1/2}=-K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{\Delta z_{k-1/2}}$$
+
+$$F_{T,k-1/2}=-K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\Theta_{l,k}-\Theta_{l,k-1}}{\Delta z_{k-1/2}}$$
+
+$$F_{w,k-1/2}=-K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}}$$
+
+また、implicit法による時間積分を行うために、各鉛直フラックスの微分値を以下のように求めておく。
+
+$$\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+
+$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=K_{q,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+
+$$\frac{\partial F_{T,k-1/2}}{\partial T_{k-1}}=K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{\Delta z_{k-1/2}}$$
+
+$$\frac{\partial F_{T,k-1/2}}{\partial T_{k}}=-K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k}}\frac{1}{\Delta z_{k-1/2}}$$
+
+$$\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k}}=K_{w,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+
+ここで、$\Delta z_{k-1/2}=z_k-z_{k-1}$である。各種トレーサーについても、 $K_w$ を用いて同様にフラックスが計算される。
 
 ### 乱流量の計算
 
