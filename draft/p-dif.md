@@ -21,7 +21,7 @@ $$ q_w \equiv q_v+q_l+q_i $$
 
 ここで、$T$, $p$は、それぞれ温度と圧力、$q_v$, $q_l$, $q_i$は、それぞれ比湿、雲水、雲氷、$C_p$, $R_d$は、それぞれ乾燥空気の定圧比熱および気体定数、$L_v$, $L_f$は、それぞれ単位質量あたりの水蒸気の凝結熱および水の凝固熱である。$p_s$は1000hPaである。
 
-また、Level2.5においては、乱流エネルギーを2倍した量である
+また、Level2.5においては、乱流の運動エネルギーを2倍した量である
 
 $$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
 
@@ -33,7 +33,7 @@ $$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
 2. 部分凝結を考慮して浮力係数を計算する [`VDFCND`]
 3. レベル2の安定度関数を計算する [`VDFLEV2`]
 4. 大気境界層の深さを計算する [`PBLHGT`]
-5. 乱流の長さスケールを計算する [`VDFMLS`]
+5. 乱流の代表的長さスケールを計算する [`VDFMLS`]
 6. 拡散係数および鉛直フラックスとその微分値を計算する [`VDFLEV3`]
 7. 乱流量の生成項と散逸項を計算する [`VDFLEV3`]
 8. 予報変数のimplicit時間積分を計算する
@@ -75,7 +75,7 @@ $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\la
 
 ### レベル2の安定度関数
 
-Mellor-YamadaスキームのLevel2.5では、乱流の成長段階のふるまいが悪いことが知られている(Helfand and Labraga 1988)。そのため、MYNNスキームでは局所的に平衡が仮定されるLevel2の乱流エネルギー ${q_2}^2/2$ を計算し、 $q<q_2$ すなわち乱流が成長段階にある場合に補正をかける。$q_2$の計算に必要なLevel2の安定度関数 $S_{H2},S_{M2}$ は以下のように求められる。
+Mellor-YamadaスキームのLevel2.5では、乱流の成長段階のふるまいが悪いことが知られている(Helfand and Labraga 1988)。そのため、MYNNスキームでは局所的に平衡が仮定されるLevel2の乱流の運動エネルギー、${q_2}^2/2$ を計算し、$q<q_2$ すなわち乱流が成長段階にある場合に補正をかける。$q_2$の計算に必要なLevel2の安定度関数 $S_{H2},S_{M2}$ は以下のように求められる。
 
 $$S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf}$$
 
@@ -131,6 +131,7 @@ $$
 
 ### 乱流の代表的長さスケール
 
+#### Nakanishi (2001)の定式化
 Nakanishi (2001)は、master length scale $L$ として以下の式を提案している。
 $$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \tag{1} $$
 
@@ -162,6 +163,8 @@ $$(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(0.23,1.0,5.0,100.0)$$
 
 と定められている。
 
+#### MIROCへの実装上の修正
+
 Nakanishi (2001)における以上の定式化は、モデルの領域が大気境界層とその周辺域に限られている場合、適切な値をとる。しかし、モデルが対流圏上層まで含む場合、条件によっては、対流混合層の長さスケールである$L_T$が自由大気で使われてしまう、$L_T$の計算における$q$として自由大気の乱流エネルギーも含まれてしまう、などの問題が生じる。
 
 そこで、MIROCへの実装に当たり、対流混合層の上端の高さ$H_{PBL}$を見積もり、$h=\sqrt{(F_H H_{PBL})^2+H_0^2}$ より下の領域を境界層乱流が卓越する領域とみなす。ここで$F_H=1.5$、$H_0=500$mである。
@@ -175,6 +178,8 @@ $$L_T=\alpha_1\frac{\displaystyle \int_0^h{qz}\,dz}{\displaystyle \int_0^h{q}\,d
 $$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}$$
 
 ここで、$L_A=\alpha_5\,q/N$ は、安定成層において乱流により空気塊が鉛直方向に移動するときの長さスケールを表す。$\alpha_5$は散逸の効果を表し、$\alpha_5=0.53$ である。  $L_{max}=500$mは$L$の上限を与える。
+
+#### 対流混合層の上端の高さの見積もり
 
 $H_{PBL}$の見積もりはHoltslag and Boville (1993)に基づき、バルクRichardson数
 
@@ -193,30 +198,67 @@ $$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}}$$
 $k=2$から上に向かって$Ri_B$を順番に計算し、$Ri_B>0.5$ となる層とそのすぐ下の層の間で$Ri_B$を線形内挿し、ちょうど$Ri_B=0.5$となる高さを$H_{PBL}$とする。$z_s$の計算に$H_{PBL}$が必要であるため、最初に仮の値$H_{PBL}=z_1-z_g$を代入した$z_s$を使って$H_{PBL}$計算し、この$H_{PBL}$を代入した$z_s$を用いて真の$H_{PBL}$を再計算する。
 
 ### 拡散係数の計算
-乱流の時間変化項および移流拡散項を無視して計算するLevel2モデルから求める乱流エネルギーは以下の式で与えられる。
-$${q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial u}{\partial z}\right)^2+\left(\frac{\partial v}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\theta}\left(\beta_\theta \frac{\partial \theta_l}{\partial z}+\beta_q \frac{\partial q_w}{\partial z}\right)\right\}$$
 
-$q<q_2$ すなわち乱流が成長段階にある場合は、Helfand and Labraga (1998) で導入された係数 $\alpha=q/q_2$ によって安定度関数の補正を行う。
+#### レベル2の乱流の運動エネルギー
+
+レベル2の乱流の運動エネルギー${q_2}^2/2$ は、乱流の運動エネルギーの時間発展式において、時間微分項、移流項、拡散項を無視した以下の式から計算される。
+
+$$ P_s + P_b - \varepsilon = 0 \tag{2} $$
+
+ここで、$P_s$, $P_b$, $\varepsilon$は、それぞれシアーによる生成項、浮力による生成項、消散項である。$P_s$, $P_b$は、以下のように表される。
+
+$$ P_s = -\langle wu \rangle \frac{\partial U}{\partial z} - \langle wv \rangle \frac{\partial V}{\partial z} $$
+
+$$ P_b = \frac{g}{\Theta}\langle w\theta_v \rangle $$
+
+MYNNスキームのレベル2ではこれらは以下のように表される。
+
+$$ P_s = LqS_{M2} \left[ \left(\frac{\partial U}{\partial z}\right)^2 + \left(\frac{\partial V}{\partial z}\right)^2 \right] \tag{3} $$
+
+$$ P_b = LqS_{H2} \frac{g}{\Theta}\left[ \beta_\theta \frac{\partial \Theta_l}{\partial z} + \beta_q \frac{\partial Q_w}{\partial z} \right] \tag{4} $$
+
+$$ \varepsilon = \frac{q^3}{B_1 L} \tag{5} $$
+
+(2), (3), (4), (5)より、${q_2}^2$は以下のように計算される。
+
+$${q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}$$
+
+#### レベル2.5の安定度関数
+
+$q<q_2$ すなわち乱流が成長段階にある場合は、Helfand and Labraga (1998) で導入された係数 $\alpha=q/q_2$ を使って、レベル2.5の安定度関数、$S_M$, $S_H$を以下のように計算する。
 $$S_M=\alpha S_{M2},\quad S_H=\alpha S_{H2}$$
 
-一方、 $q\ge q_2$ の場合には
-$$S_M=A_1\frac{\Phi_3-3C_1\Phi_4}{D_{2.5}}$$
-$$S_H=A_2\frac{\Phi_2+3C_1\Phi_5}{D_{2.5}}$$
+一方、$q \geq q_2$のときは、$S_M$, $S_H$は、以下のように計算される。以下の式は、Nakanishi (2001)のものとは記述法が異なるが、より少ない計算量で同等の結果を与えるものである。
 
-ただし
-$$\Phi_1=1-3A_2B_2(1-C_3)G_H$$
-$$\Phi_2=1-9A_1A_2(1-C_2)G_H$$
-$$\Phi_3=\Phi_1+9{A_2}^2(1-C_2)(1-C_5)G_H$$
-$$\Phi_4=\Phi_1-12A_1A_2(1-C_2)G_H$$
-$$\Phi_5=6{A_1}^2G_M$$
-$$D_{2.5}=\Phi_2\Phi_4+\Phi_5\Phi_3$$
-$$G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial u}{\partial z}\right)^2+\left(\frac{\partial v}{\partial z}\right)^2\right]$$
-$$G_H=-\frac{L^2}{q^2}\frac{g}{\theta}\left(\beta_\theta \frac{\partial \theta_l}{\partial z}+\beta_q \frac{\partial q_w}{\partial z}\right)$$
+$$S_M=A_1\frac{E_3-3C_1 E_4}{E_2 E_4+E_5 E_3}$$
 
-拡散係数 $K$ は $S_M,S_H$ から以下のように計算される。
+$$S_H=A_2\frac{E_2+3C_1 E_5}{E_2 E_4+E_5 E_3}$$
+
+ここで、
+
+$$E_1=1-3A_2B_2(1-C_3)G_H$$
+
+$$E_2=1-9A_1A_2(1-C_2)G_H$$
+
+$$E_3=E_1+9{A_2}^2(1-C_2)(1-C_5)G_H$$
+
+$$E_4=E_1-12A_1A_2(1-C_2)G_H$$
+
+$$E_5=6{A_1}^2G_M$$
+
+$$G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]$$
+
+$$G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)$$
+
+#### 拡散係数の計算
+
+風速, 乱流エネルギー, 熱, 水に対する拡散係数 $K_M$, $K_q$, $K_H$, $K_w$ は、 $S_M,S_H$ から以下のように計算される。
 $$K_M=LqS_M$$
+
 $$K_q=3LqS_M$$
+
 $$K_H=LqS_H$$
+
 $$K_w=LqS_H$$
 
 ### フラックスの計算
