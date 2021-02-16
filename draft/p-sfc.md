@@ -1,104 +1,103 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [1 Sea Surface Conditions](#1-sea-surface-conditions)
-	- [1.1 Overview [済 1月]](#11-overview-済-1月)
-	- [1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in February].](#12-passing-variables-between-agcm-and-landsea-level-schemes-pgsfcnot-yet-done-work-to-be-done-in-february)
-	- [1.3 Setting Sea Surface Conditions [済 1月]](#13-setting-sea-surface-conditions-済-1月)
-		- [1.3.1 Input variables from the atmosphere](#131-input-variables-from-the-atmosphere)
-		- [1.3.2 Ocean Surface Conditions `[OCNBCS]`](#132-ocean-surface-conditions-ocnbcs)
-			- [1.3.2.1 Albedo](#1321-albedo)
-			- [1.3.2.2 Roughness](#1322-roughness)
-			- [1.3.2.3 Sea Surface heat flux](#1323-sea-surface-heat-flux)
-	- [1.4 Surface Flux [済 1月]](#14-surface-flux-済-1月)
-		- [1.4.1 Overview](#141-overview)
-			- [1.4.2 Basic Formula for Flux Calculations](#142-basic-formula-for-flux-calculations)
-		- [1.4.2 Roughness `[SEA0F]`](#142-roughness-sea0f)
-			- [1.4.2.1 variables](#1421-variables)
-		- [1.4.3 Richardson Number `[PSFCL]`](#143-richardson-number-psfcl)
-		- [1.4.4 Bulk factor `[BLKCOF]`](#144-bulk-factor-blkcof)
-		- [1.4. Calculation of surface turbulent fluxes `[PSFCM]`](#14-calculation-of-surface-turbulent-fluxes-psfcm)
-	- [1.5 Radiation Flux at Sea Surface `[RADSFC]` [済 1月]](#15-radiation-flux-at-sea-surface-radsfc-済-1月)
-	- [1.6 Surface Heat Balance `[OCNSLV]`　[済 1月]](#16-surface-heat-balance-ocnslv-済-1月)
+- [1 Surface Flux](#1-surface-flux)
+- [1.1 Sea surface flux `[OCNFLX]`](#11-sea-surface-flux-ocnflx)
+	- [1.2 Sea Surface Conditions `[OCNBCS]`](#12-sea-surface-conditions-ocnbcs)
+		- [1.2.1 Sea Surface Albedo for Visible `[SEAALB]`](#121-sea-surface-albedo-for-visible-seaalb)
+		- [1.2.2 Sea Surface Roughness `[SEAZ0F]`](#122-sea-surface-roughness-seaz0f)
+	- [1.3 Sea Surface Flux `[SFCFLX]`](#13-sea-surface-flux-sfcflx)
+		- [1.3.1 Bulk factor `[BLKCOF]`](#131-bulk-factor-blkcof)
+	- [1.4 Radiation Flux at Sea Surface `[RADSFC]`](#14-radiation-flux-at-sea-surface-radsfc)
+	- [1.5 Sea Surface Heat Balance `[OCNSLV]`](#15-sea-surface-heat-balance-ocnslv)
 
 <!-- /TOC -->
 
 
-# 1 Sea Surface Conditions
-Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. Until [CCSR/NIES AGCM](), both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 (Hasumi and Emori, 2004), land surface processes became independent as MATSIRO. However, since MIROC3 (Hasumi and Emori, 2004), land surface processes have been separated into MATSIRO. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes (MIROC6). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
+# 1 Surface Flux
 
-## 1.1 Overview [済 1月]
-
-In `MODULE: [PGSFC]`, `[OCNFLX]` (`MODULE: [POCEN]`) is called for the sea surface, and `[LNDFLX]` of MATSIRO model is called for the land surface. In `[OCNFLX]`, the following procedure is used to deal with sea surface processes.
-
-1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration. 2.
-Determine the surface boundary conditions. 3.
-Calculate the flux balance. 4.
-Calculate the radiation budget at the sea surface. 5.
-(3) Calculate the deposition by CHASER.
-6. solve the heat balance at the sea surface and update the surface temperature and each flux value.
-
-
-The four modules discussed in this chapter are as follows.
-
-| module name      | file name            | contents                          |
-|:-----------------|:---------------------|:----------------------------------|
-| `MODULE:[PGSFC]` | `./physics/pgsfc.F ` | surface driver                    |
-| `MODULE:[PSFCL]` | `./physics/psfcl.F`  | surface bulk transfer coefficient |
-| `MODULE:[PSFCM]` | `./physics/psfcm.F`  | surface fluxes                    |
-| `MODULE:[PGOCN]` | `./physics/pgocn.F`  | mixed layer/fixed SST ocean       |
-
-## 1.2 Passing variables between AGCM and land/sea level schemes `[PGSFC]`[not yet done, work to be done in February].
-
-Calling `OCNFLX` (`MODULE: [POCEN]`) for sea level and `LNDFLX` of the MATSIRO model for land level, respectively.
-
+Until CCSR/NIES AGCM, both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 (Hasumi and Emori, 2004), land surface processes became independent as MATSIRO. However, since MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes have been separated into MATSIRO. In `SUBROUTINE:[SURFCE]` in pgsfc.F, `ENTRY:[OCNFLX]` (in `SUBROUTINE:[OCEAN]` of pgocn.F) is called for the sea surface, and `ENTRY:[LNDFLX]` (in `SUBROUTINE:[MATSIRO]` of matdrv.F) is called for the land surface, respectively. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes (MIROC6). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
 
 [カップラーのセクション](https://github.com/MIROC-DOC/model_description/blob/coupler_iwakiri/draft/AO-coupler.md)とmerge予定。
 
-## 1.3 Setting Sea Surface Conditions [済 1月]
+- Outputs
 
-### 1.3.1 Input variables from the atmosphere
+| Meaning           | Presentation | Variable | dimension | unit |
+|:------------------|:-------------|:---------|:----------|:-----|
+| upward long wave  |              | RFLXLG   | IJLSDIM   |      |
+| upward short wave |              | RFLXSG   | IJLSDIM   |      |
 
-| variable | meaning                  |
-|:---------|:-------------------------|
-| GAUA     | u-wind                   |
-| GAVA     | v-wind                   |
-| GATA     | temperature T            |
-| GAQA     | humidity q               |
-| GAPA     | pressure P               |
-| GAPS     | surface pressure Ps      |
-| GAZS     | surface height           |
-| RSFCD    | surface radiation fluxes |
-| RCOSZ    | cos(solar angle)         |
+- Inputs
+
+| Meaning                                     | Presentation  | Variable | dimension         | unit    |
+|:--------------------------------------------|:--------------|:---------|:------------------|:--------|
+| surface downward radiation                  |               | RFSFCD   | IJSDIM, NRALB     |         |
+| cos(solar zenith)                           | $cos(\theta)$ | RCOSZ    | IJSDIM            | [-]     |
+| rainfall (cumulus convection scheme)        |               | GPRCC    | IJSDIM, NTR       |         |
+| rainfall (Large scale condensation scheme)  |               | GPRCL    | IJSDIM, NTR       |         |
+| snowfall (cumulus convection scheme)        |               | GSNWC    | IJSDIM, NTR       |         |
+| snowfall (cLarge scale condensation scheme) |               | GSNWL    | IJSDIM, NTR       |         |
+| u wind                                      | $u$           | GDU      | IJSDIM, KMAX      | [m/s]   |
+| v wind                                      | $v$           | GDV      | IJSDIM, KMAX      | [m/s]   |
+| temperature                                 | $T$           | GDT      | IJSDIM, KMAX      | [K]     |
+| humidity                                    | $q$           | GDQ      | IJSDIM, KMAX, NTR | [kg/kg] |
+| pressure                                    | $P$           | GDP      | IJSDIM, KMAX+1    |         |
+| pressure (half level)                       |               | GDPM     | IJSDIM, KMAX+1    |         |
+| altitude (half level)                       |               | GDZM     | IJSDIM, KMAX+1    |         |
+| time                                        |               | TIME     |                   |         |
+| dt for implicit                             |               | DELTP    |                   |         |
+| time step (interval)                        |               | DELTI    |                   |         |
+
+The only 1st layer is practically handed to the surface schemes.
+
+# 1.1 Sea surface flux `[OCNFLX]`
+
+Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. In `ENTRY:[OCNFLX]`, the following procedure is used to deal with sea surface processes.
+
+1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
+2. Determine the surface boundary conditions.
+3. Calculate the flux balance.
+4. Calculate the radiation budget at the sea surface.
+5. Calculate the deposition by CHASER.
+6. solve the heat balance at the sea surface and update the surface temperature and each flux value.
+
+| Meaning                                        | Presentation  | Variable | dimension | unit    |
+|:-----------------------------------------------|:--------------|:---------|:----------|:--------|
+| u wind of the 1st layer of the atmosphere      | $u_a$         | GAUA     | IJOSDM    | [m/s]   |
+| v wind of the 1st layer of the atmosphere      | $v_a$         | GAVA     | IJOSDM    | [m/s]   |
+| temperature of the 1st layer of the atmosphere | $T_a$         | GATA     | IJOSDM    | [K]     |
+| humidity of the 1st layer of the atmosphere    | $q_a$         | GAQA     | IJOSDM    | [kg/kg] |
+| pressure of the 1st layer of the atmosphere    | $P_a$         | GAPA     | IJOSDM    |         |
+| surface pressure Ps                            | $P_s$         | GAPS     | IJOSDM    |         |
+| surface height                                 |               | GAZS     | IJOSDM    |         |
+| surface radiation fluxes                       |               | RSFCD    | IJOSDM    |         |
+| cos(solar zenith)                              | $cos(\theta)$ | RCOSZ    | IJOSDM    | [-]     |
 
 If use CHASER, variables below are also needed.
 
-| variable | meaning                                              |
-|:---------|:-----------------------------------------------------|
-| EH       | Henry const                                          |
-| PFLXC    | precipitation flux (cumulus convection scheme)       |
-| PFLXL    | precipitation flux (large scale condensation scheme) |
-| LLAT     | latitude                                             |
+| Meaning                                              | Presentation | Variable | dimension | unit |
+|:-----------------------------------------------------|:-------------|:---------|:----------|:-----|
+| Henry const                                          |              | EH       | IJOSDM    |      |
+| precipitation flux (cumulus convection scheme)       | $Pr_c$       | PFLXC    | IJOSDM    |      |
+| precipitation flux (large scale condensation scheme) | $Pr_l$       | PFLXL    | IJOSDM    |      |
+| latitude                                             |              | LLAT     | IJOSDM    |      |
 
 Practically, precipitation flux from 2 schemes are treated together.
-
 
 $$
 	Pr = Pr_c + Pr_l
 $$
 
-
-
 In the sea ice area ($L=1$), the surface temperature $T_s$ is the sea ice surface temperature $T_{ice}$. However, if $T_{ice}$ is higher than $T_{melt}=0$, then $T_{melt}$ is used.
 
-$$.
+$$
 	T_s = min(T_{ice},T_{melt})
-$$.
+$$
 
-The sea ice bottom temperature $T_b$ is assumed to be the ocean surface temperature $T_{o(1)}$.
+The sea ice bottom temperature $T_b$ is assumed to be the sea surface temperature $T_{o(1)}$.
 
-$$.
+$$
 	T_b = T_{o(1)}
-$$.
+$$
 
 The amount of sea ice $W_{ice}$ and the amount of snow on it $W_{snow}$ are converted per unit area by considering $R_{ice}$ and used in the calculation. However, a limiter $\epsilon$ is provided to prevent the values from becoming too small.
 
@@ -106,104 +105,53 @@ $$
 R_{ice} =\mathrm{max}( R_{ice,orginal}, \epsilon)
 $$
 
+In the ice-free region ($L=2$), the surface temperature $T_s$ and sea ice bottom temperature $T_b$ are assumed to be the sea temperature temperature $T_{o(1)}$.
 
-In the ice-free region ($L=2$), the surface temperature $T_s$ and sea ice bottom temperature $T_b$ are assumed to be the ocean surface temperature $T_{o(1)}$.
-
-$$.
+$$
 	T_s = T_b = T_{o(1)}
-$$.
+$$
+
+The evaporation efficiency ise set to 1 for both $L=1, 2$.
 
 
-The evaporation coefficient is assumed to be $GRBET=1$ for both $L=1 and 2$.
+If the sea ice concentration $R_{ice}$ is not given, it can be diagnosed simply from the sea ice volume $W_{ice}$ in `ENTRY:[OCNICR]`.
 
-
-If the sea ice concentration $R_{ice}$ is not given, it can be diagnosed simply from the sea ice volume $W_{ice}$.
-
-$$.
+$$
 R_{ice} = \mathrm{min}\Big(\sqrt{\frac{\mathrm{max}(W_{ice},0)}{W_{ice,c}}},1.0\Big)
-$$.
+$$
 
 The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/m^2]}$.
 
 
-### 1.3.2 Ocean Surface Conditions `[OCNBCS]`
+## 1.2 Sea Surface Conditions `[OCNBCS]`
 
 - Output variables
 
-| variable | Presentation                      | Meaning           |
-|:---------|:----------------------------------|:------------------|
-| GRALB    | $\alpha$                          | surface albedo    |
-| GRZ0     | --                                | surface roughness |
-| GFLUXS   | $G$                               | heat flux         |
-| DGFDS    | $\frac{\partial G}{\partial T_s}$ | dG/dTs            |
+| Meaning                    | Presentation                    | Variable | dimension            | unit |
+|:---------------------------|:--------------------------------|:---------|:---------------------|:-----|
+| surface albedo             | $\alpha$                        | GRALB    | IJLODM, NRDIR, NRBND | --   |
+| surface roughness          | $r_0$                           | GRZ0     | IJLODM, NTYZ0        | --   |
+| heat flux                  | $G$                             | FOGFLX   | IJLODM               | --   |
+| heat diffusion coefficient | $\frac{\partial G}{\partial T}$ | DGFDS    | IJLODM               | --   |
 
 - Input variables
 
-| Variable | Presentation | Meaning          |
-|:---------|:-------------|:-----------------|
-| GRTS     | $T_s$        | skin temperature |
-| GRTB     | $T_{b,ice}$  | ice base temp.   |
-| GRICE    | --           | sea ice          |
-| GRSNW    | --           | snow smount      |
-| GRICR    | $R_{ice}$    | ice fraction     |
-| GDUA     | $U_0$        | u sfc wind       |
-| GDVA     | $V_0$        | v sfc wind       |
-| RCOSZ    | --           | cos(sol.zenith)  |
+| Meaning                                   | Presentation           | Variable | dimension | unit                |
+|:------------------------------------------|:-----------------------|:---------|:----------|:--------------------|
+| surface temperature                       | $T_s$                  | GRTS     | IJLODM    | $\mathrm{[K]}$      |
+| ice base temperature                      | $T_b$                  | GRTB     | IJLODM    | $\mathrm{[K]}$      |
+| lake ice amount                           | $Ic$                   | GRICE    | IJLODM    | $\mathrm{[kg/m^2]}$ |
+| snow amount                               | $Sn$                   | GRSNW    | IJLODM    |                     |
+| ice concentration                         | $R_{ice}$              | GRICR    | IJLODM    | [-]                 |
+| u wind of the 1st layer of the atmosphere | $u_a$                  | GDUA     | IJLODM    | $\mathrm{[m/s]}$    |
+| v wind of the 1st layer of the atmosphere | $v_a$                  | GDVA     | IJLODM    | $\mathrm{[m/s]}$    |
+| cos(solar zenith)                         | $\mathrm{cos}(\theta)$ | RCOSZ    | IJLODM    | [-]                 |
 
 
 
-#### 1.3.2.1 Albedo
+In `ENTRY[OCNBCS]` in `SUBROUTINE:[OCNSUB]`, surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified.
 
-In this module, surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified.
-
-First, let us consider the sea albedo. The sea level $\alpha_{(d,b)}$, $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.
-
-1. Sea Surface Albedo for Visible `[SEAALB]`
-
-- Internal parameters
-
-| Meaning | Presentation    | Variable | unit | value                          |
-|:--------|:----------------|:---------|:-----|:-------------------------------|
-| --      | $C_1, C_2, C_3$ | CC       | [-]  | $-0.7479, -4.677039, 1.583171$ |
-
-
-
-For sea surface level albedo $\alpha_{L(d)}$, $d=1,2$ represents direct and scattered light, respectively.
-
-
-Using the solar zenith angle at latitude $\theta$, the albedo for direct light is presented by
-
-$$
-	\alpha_{L(1)} = e^{(C_3A^* + C_2) A^* +C_1}
-$$
-
-where
-
-$$
-A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
-$$
-
-On the other hand, the albedo for scattered light is uniformly set to a constant parameter.
-
-$$
-	\alpha_{L(2)} = 0.06
-$$
-
-2. Sea Surface Albedo for Near-Infrared and Infrared
-
- The albedo for near-infrared is set to same as the visible one.
-
-$$
-	\alpha_{1,2} =\alpha_{1,1}
-$$
-
-$$
-	\alpha_{2,2} =\alpha_{2,1}
-$$
-
- The albedo for infrared is uniformly set to a constant value.
-
-3. Albedo modification by ice
+First, let us consider the sea albedo. The sea level $\alpha_{(d,b)}$, $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.  The albedo for the visible bands are calculated in `SUBROUTINE [SEAALB]`, supposing ice-free conditions.  The albedo for near-infrared is set to same as the visible one. The albedo for infrared is uniformly set to a constant value.
 
 The grid-averaged albedo, taking into account the sea ice concentration $R_{ice}$, is
 
@@ -212,8 +160,6 @@ $$
 $$
 
 $\alpha_{ice}$ is given by the standard as $\alpha_{ice,1}=0.5,\alpha_{ice,2}=0.5,\alpha_{ice,3}=0.05$. 4.
-
-4. albedo modification by snow
 
 In addition, we want to consider the effect of snow cover. Here, we consider the albedo modification by temperature. The standard threshold values for snow temperature are $T_{al,2}=258.15 \mathrm{[K]}$ and $T_{al,1}=273.15 \mathrm{[K]}$. The snow albedo changes linearly with temperature change from $\alpha_{snow,1}=0.75$ to $\alpha_{ snow,2}$. Let the coefficient $\tau_{snow}$, which is $0\le \tau \le 1$.
 
@@ -227,14 +173,140 @@ $$
 	\alpha_{snow} = \alpha_{snow,0} + \tau_{snow}(\alpha_{snow,2}-\alpha_{snow,1})
 $$
 
-#### 1.3.2.2 Roughness
+Second, let us consider the sea surface roughness. The roughnesses of for momentum, heat and vapor are calculated in `[SEAZ0F]`, supposing the ice-free conditions.
 
-1. Sea Surface Roughness `[SEAZ0F]`
+
+When the sea ice exists ($L=1$),  each roughness is modified to take into account the sea concentration $R_{ice}$.
+
+$$
+	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  \alpha_{ice}
+$$
+
+$$
+	z_{0,H} = z_{0,H} + ( z_{0,ice,H} - z_{0,H})  \alpha_{ice}
+$$
+
+$$
+	z_{0,E} = z_{0,E} + ( z_{0,ice,E} - z_{0,E})  \alpha_{ice}
+$$
+
+Here, $r_{0,ice,*}$ is roughness of sea ice, $\alpha_{ice}$ is the sea ice concentration.
+
+When the snow even exists,
+
+$$
+	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  \alpha_{snow}
+$$
+
+$$
+	z_{0,H} = z_{0,H} + ( z_{0,snow,H} - z_{0,H})  \alpha_{snow}
+$$
+
+$$
+	z_{0,E} = z_{0,E} + ( z_{0,snow,E} - z_{0,E})  \alpha_{snow}
+$$
+
+Here, $r_{0,snow,*}$ is roughness of sea ice, $\alpha_{snow}$ is the sea ice concentration.
+
+
+Third, let us consider the conductivity of ice.
+
+When sea ice exists ($L=1$), the thermal conductivity $k_{ice}^\star$ of sea ice is obtained by using $D_{f,ice}$ (thermal diffusivity of sea ice) and sea ice density $\sigma_{ice}$.
+
+$$
+k_{ice}^\star = \frac{D_{f,ice}}{\mathrm{max}(R_{ice}/\sigma_{ice}, \epsilon)}
+$$
+
+The calculated thermal conductivity is modified to $k_{ice}$ to take into account that it varies with snow cover.
+
+$$
+h_{snow} = \mathrm{min}(
+	\mathrm{max}(
+	R_{snow}/\sigma_{snow}),\epsilon
+		),h_{snow,max}
+		)
+$$
+
+$$		
+k_{ice} = k_{ice}^\star (1-R_{ice}) + \frac{D_{ice}}{1+\| D_{ice}/D_{snow} \cdot h_{snow} \|} R_{ice}
+$$
+
+where $h_{snow}$ is the snow depth, $R_{snow}$ is the snow area fraction, $\sigma_{snow}$ is the snow density, $h_{snow,max}$ is the maximum snow depth, and $D_{snow}$ is the thermal diffusivity of snow.
+
+Therefore, the heat conduction flux and its derivative are
+
+$$
+ G = k_{ice} (T_b - T_s)
+$$
+
+$$
+ \frac{\partial G}{\partial T} = k_{ice}
+$$
+
+Note that in the ice-free region ($L=2$)
+
+$$
+G=k_{ocn}
+$$
+
+where $k_{ocn}$ is the heat flux in the sea temperature layer. Here, $k_{ocn}$ is the heat flux in the sea temperature layer.
+
+### 1.2.1 Sea Surface Albedo for Visible `[SEAALB]`
+
+- Inputs
+
+| Meaning           | Presentation  | Variable | dimension | unit |
+|:------------------|:--------------|:---------|:----------|:-----|
+| cos(solar zenith) | $cos(\theta)$ | COSZ     | IJLODM    | [-]  |
+
+- Outputs
+
+| Meaning                              | Presentation    | Variable | dimension | unit |
+|:-------------------------------------|:----------------|:---------|:----------|:-----|
+| sea surface albedo (direct, diffuse) | $\alpha_{L(d)}$ | GALB     | IJLODM ,2 | [-]  |
+
+
+For sea surface level albedo $\alpha_{L(d)}$, $d=1,2$ represents direct and scattered light, respectively.
+
+Using the solar zenith angle at latitude $\theta$, the albedo for direct light is presented by
+
+$$
+	\alpha_{L(1)} = e^{(C_3A^* + C_2) A^* +C_1}
+$$
+
+where
+
+$$
+	A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
+$$
+
+On the other hand, the albedo for scattered light is uniformly set to a constant parameter.
+
+$$
+	\alpha_{L(2)} = 0.06
+$$
+
+### 1.2.2 Sea Surface Roughness `[SEAZ0F]`
+
+- Outputs
+
+| Meaning                        | Presentation | Variable | dimension | unit |
+|:-------------------------------|:-------------|:---------|:----------|:-----|
+| surface roughness for momentum | $r_{0,M}$    | GRZ0M    | IJLODM    | --   |
+| surface roughness for heat     | $r_{0,H}$    | GRZ0H    | IJLODM    | --   |
+| surface roughness for vapor    | $r_{0,E}$    | GRZ0E    | IJLSDIM   | --   |
+
+- Inputs
+
+| Meaning                                   | Presentation | Variable | dimension | unit  |
+|:------------------------------------------|:-------------|:---------|:----------|:------|
+| u wind of the 1st layer of the atmosphere | $u_a$        | GDUA     | IJLODM    | [m/s] |
+| v wind of the 1st layer of the atmosphere | $v_a$        | GDVA     | IJLODM    | [m/s] |
 
 The roughness variation of the sea surface is determined by the friction velocity $u^\star$
 
 $$
-u^{\star} = \sqrt{C_{M_0} ({U_0}^2  +{V_0}^2)}
+u^{\star} = \sqrt{C_{M_0} ({u_a}^2  +{v_a}^2)}
 $$
 
 We perform successive approximation calculation of ${C_{M_0}}$, because $F_u,F_v,F_\theta,F_q$ are required.
@@ -256,109 +328,9 @@ $z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and va
 $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$) and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$) are taken into account.
 
 
-2. Roughness modification by ice
+## 1.3 Sea Surface Flux `[SFCFLX]`
 
-When the sea ice exists ($L=1$),
-
-$$
-	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  \alpha_{ice}
-$$
-
-$$
-	z_{0,H} = z_{0,H} + ( z_{0,ice,H} - z_{0,H})  \alpha_{ice}
-$$
-
-$$
-	z_{0,E} = z_{0,E} + ( z_{0,ice,E} - z_{0,E})  \alpha_{ice}
-$$
-
-Here, $r_{0,ice,*}$ is roughness of sea ice, $\alpha_{ice}$ is the sea ice concentration.
-
-
-3. Roughness modification by snow
-
-When the snow even exists,
-
-$$
-	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  \alpha_{snow}
-$$
-
-$$
-	z_{0,H} = z_{0,H} + ( z_{0,snow,H} - z_{0,H})  \alpha_{snow}
-$$
-
-$$
-	z_{0,E} = z_{0,E} + ( z_{0,snow,E} - z_{0,E})  \alpha_{snow}
-$$
-
-Here, $r_{0,snow,*}$ is roughness of sea ice, $\alpha_{snow}$ is the sea ice concentration.
-
-#### 1.3.2.3 Sea Surface heat flux
-
-1. Conductivity of ice
-
-When sea ice exists ($L=1$), the thermal conductivity $k_{ice}^\star$ of sea ice is obtained by using $D_{f,ice}$ (thermal diffusivity of sea ice) and sea ice density $\sigma_{ice}$.
-
-$$
-k_{ice}^\star = \frac{D_{f,ice}}{\mathrm{max}(R_{ice}/\sigma_{ice}, \epsilon)}
-$$
-
-2. conductivity modification by snow
-
-The calculated thermal conductivity is modified to $k_{ice}$ to take into account that it varies with snow cover.
-
-$$
-h_{snow} = \mathrm{min}(
-	\mathrm{max}(
-	R_{snow}/\sigma_{snow}),\epsilon
-		),h_{snow,max}
-		)
-$$
-
-$$		
-k_{ice} = k_{ice}^\star (1-R_{ice}) + \frac{D_{ice}}{1+\| D_{ice}/D_{snow} \cdot h_{snow} \|} R_{ice}
-$$
-
-where $h_{snow}$ is the snow depth, $R_{snow}$ is the snow area fraction, $\sigma_{snow}$ is the snow density, $h_{snow,max}$ is the maximum snow depth, and $D_{snow}$ is the thermal diffusivity of snow. 3.
-
-3. calculate flux and its derivative
-
-Therefore, the heat conduction flux and its derivative are
-
-$$
- G = k_{ice} (T_b - T_s)
-$$
-
-$$
- \frac{\partial G}{\partial T} = k_{ice}
-$$.
-
-Note that in the ice-free region ($L=2$)
-
-$$
-G=k_{ocn}
-$$
-
-where $k_{ocn}$ is the heat flux in the ocean surface layer. Here, $k_{ocn}$ is the heat flux in the ocean surface layer.
-
-## 1.4 Surface Flux [済 1月]
-
-
-### 1.4.1 Overview
-The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input | are wind speed ($u, v$),  temperature ($T$), and specific humidity ($q$), and the output | are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
-
-The bulk coefficients are obtained according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf), except for the correction for the difference in roughness between momentum and heat. However, corrections are made to take into account the difference between momentum and heat roughness.
-
-The outline of the calculation procedure is as follows.
-
-
-1. Calculate the roughness including modifications by ice and snow. `MODULE:[SEAZ0F]`
-2. Calculate the Richardson number as the stability of the atmosphere. `MODULE:[PSFCL]`
-3. Calculate the bulk coefficient from Richardson number.  `MODULE:[PSFCL]`
-4. Calculate the flux and its derivative from the bulk coefficient. `MODULE:[PSFCM]`
-5. If necessary, the calculated fluxes are re-calculated after taking into account the roughness effect, the free flow effect, and the wind speed correction.
-
-#### 1.4.2 Basic Formula for Flux Calculations
+The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_s$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
 Surface fluxes ($F_u, F_v, F_\theta, F_q$) are expressed using the bulk coefficients ($C_M, C_H, C_E$) as follows
 
@@ -378,57 +350,42 @@ $$
 
 
 $$
-	F_q^P =  \rho C_E |{\mathbf{v}}| ( q_g - q )
+	F_q^P =  \rho C_E |{\mathbf{v}}| ( q_g - q_a )
 $$
 
 Note that $F_q^P$ is the possible evaporation flux.
 
+The turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
 
-### 1.4.2 Roughness `[SEA0F]`
+- Momentum flux
 
-#### 1.4.2.1 variables
-- Output Variables
+$$
+ \tau_x = - \rho C_{M}|V_a| u_a
+$$
 
-| Variable | Presentation | Meaning               |
-|:---------|:-------------|:----------------------|
-| GRZ0M    | $r_{0,M}$    | surface roughness (V) |
-| GRZ0H    | $r_{0,H}$    | surface roughness (T) |
-| GRZ0E    | $r_{0,E}$    | surface roughness (q) |
+$$
+ \tau_y = - \rho C_{M}|V_a| v_a
+$$
 
-- Input variables
 
-| Variable | Presentation | Meaning          |
-|:---------|:-------------|:-----------------|
-| USFC     | $U_0$        | u sfc wind speed |
-| VSFC     | $V_0$        | v sfc wind speed |
+where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zonal and meridional directions, respectively.
 
-- Internal variables
+- Sensible heat flux
 
-| Variable | Presentation | Meaning           |
-|:---------|:-------------|:------------------|
-| USTAR    | $u^\star$    | friction velocity |
+$$
+ H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)
+$$
 
-- Internal parameters
+where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
 
-| Variable | Presentation | Meaning                 |     Values |
-|:---------|:-------------|:------------------------|-----------:|
-| Z0M0     | $r_{0,M_0}$  | base                    |        $0$ |
-| Z0MR     | $r_{0,M_R}$  | rough factor            | $   0.18 $ |
-| Z0MS     | $r_{0,M_S}$  | smooth factor           | $   0.11 $ |
-| Z0H0     | $r_{0,H_0}$  | base                    | $ 1.4^-5 $ |
-| Z0HR     | $r_{0,H_R}$  | rough factor            | $    0.0 $ |
-| Z0HS     | $r_{0,H_S}$  | smooth factor           | $    0.4 $ |
-| Z0E0     | $r_{0,E_0}$  | base                    | $ 1.3^-4 $ |
-| Z0ER     | $r_{0,E_R}$  | rough factor            | $    0.0 $ |
-| Z0ES     | $r_{0,E_S}$  | smooth factor           | $   0.62 $ |
-| VISAIR   | $\nu$        | kinematic viscosity     | $ 1.5^-5 $ |
-| CM0      | $C_{M_0}$    | bulk coef for $u^\star$ | $ 1.0^-3 $ |
-| USTRMN   | --           | min($u^\star$)          | $ 1.0^-3 $ |
-| Z0MMIN   | --           | minimum                 | $ 3.0^-5 $ |
-| Z0HMIN   | --           | minimum                 | $ 3.0^-5 $ |
-| Z0EMIN   | --           | minimum                 | $ 3.0^-5 $ |
+- Bare sea surface evaporation flux
 
-### 1.4.3 Richardson Number `[PSFCL]`
+$$
+\hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^\star(T_0) - q_1 \right)
+$$
+
+
+### 1.3.1 Bulk factor `[BLKCOF]`
 
 The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
 
@@ -441,16 +398,11 @@ R_{iB} =
 $$
 
 
-Here, $g$ is the gravitational accerelation\, $\theta_s$ ($\Theta_0$ in MATSIRO description) is the basic potential temperature, $T_1$ is the atmospheric temperature of the 1st layer, $T_0$ is the surface skin temperature, $p_s$ is the surface pressure, $p_1$ is the pressure of the 1st layer, $\kappa $ is the Karman constant, and
+Here, $g$ is the gravitational accerelation\, $\theta_s$ ($\Theta_0$ in MATSIRO description) is the basic potential temperature, $T_1$ is the atmospheric temperature of the 1st layer, $T_0$ is the surface surface temperature, $p_s$ is the surface pressure, $p_1$ is the pressure of the 1st layer, $\kappa $ is the Karman constant, and
 
 $$
 f_T = (\theta_1 - \theta(z_0))/(\theta_1 - \theta_0)
 $$
-
-
-is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
-
-### 1.4.4 Bulk factor `[BLKCOF]`
 
 The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](./papers/Louis1979_Article_AParametricModelOfVerticalEddy.pdf) and [Louis <span>*et al.*</span>(1982)](./papers/Louis1982_a_short_history_of_the_operational_pbl_parameterization_at_ecmwf.pdf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$ first, and then corrected.
 
@@ -526,100 +478,20 @@ $$
 
 but the method of calculation is omitted. The coefficients of Louis factors are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 )$, $( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
 
-
-### 1.4. Calculation of surface turbulent fluxes `[PSFCM]`
-- Modified variables
+is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
 
 
-| Variable | Presentation | Meaning   |
-|:---------|:-------------|:----------|
-| UFLUXS   | --           | flux of U |
-| VFLUXS   | --           | flux of V |
-| TFLUXS   | --           | flux of T |
-| QFLUXS   | --           | flux of q |
-
-- Output variables
-
-
-| variable | Presentation | Meaning         |
-|:---------|:-------------|:----------------|
-| DUFDU    | --           | -d(tau)/du      |
-| DTFDT    | --           | -dH/dTa         |
-| DQFDQ    | --           | -dLE/dqa        |
-| DTFDS    | --           | dH/dTs          |
-| DQFDS    | --           | dLE/dTs         |
-| CDVE     | --           | bulk coef.      |
-| RM10     | --           | coef. for 10m u |
-| RH2      | --           | coef. for 2m T  |
-| RE2      | --           | coef. for 2m q  |
-| U10      | --           | 10m u           |
-| V10      | --           | 10m v           |
-| T2       | --           | 2m T            |
-| Q2       | --           | 2m q            |
-
-- Input variables
-
-| Meaning                  | Presentation | Variable |
-|:-------------------------|:-------------|:---------|
-| westerly u               | --           | GDUA     |
-| southern wind v          | --           | GDVA     |
-| temperature T            | --           | GDTA     |
-| humidity q               | --           | GDQA     |
-| pressure (lev=1)         | --           | GDPA     |
-| surface pressure         | --           | GDPS     |
-| surface skin temperature | --           | GDTS     |
-| surface roughness        | --           | GRZ0     |
-| soil wetness             | --           | GRBET    |
-| ocean u                  | --           | GRUA     |
-| ocean v                  | --           | GRVA     |
-
-
-The turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground surface temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
-
-- Momentum flux
-
-$$
- \tau_x = - \rho C_{M}|V_a| u_a
-$$
-
-$$
- \tau_y = - \rho C_{M}|V_a| v_a
-$$
-
-
-where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zonal and meridional directions, respectively.
-
-- Sensible heat flux
-
-$$
- H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)
-$$
-
-where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
-
-- Bare sea surface evaporation flux
-
-$$
-\hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^\star(T_0) - q_1 \right)
-$$
-
-
-
-
-## 1.5 Radiation Flux at Sea Surface `[RADSFC]` [済 1月]
+## 1.4 Radiation Flux at Sea Surface `[RADSFC]`
 
 
 For the ground surface albedo $\alpha_{(d,b)}$, $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation $SW^\downarrow$ and upward shortwave radiation $SW^\uparrow$ incident on the earth's surface, the direct and scattered light together are
 
 $$
-	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}
-$$
-
-$$
+	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
-## 1.6 Surface Heat Balance `[OCNSLV]`　[済 1月]
+## 1.5 Sea Surface Heat Balance `[OCNSLV]`
 
 The comments for some variables say "soil", but this is because the program was adapted from a land surface scheme, and has no particular meaning.
 
@@ -627,9 +499,9 @@ The comments for some variables say "soil", but this is because the program was 
 
 | Meaning            | Presentation   | Variable | dimension | unit |
 |:-------------------|:---------------|:---------|:----------|:-----|
-| surface water flux | $W_{free/ice}$ | WFLUXS   | IJLSDM,2  | --   |
-| upward long wave   | $LW^\uparrow$  | RFLXLU   | IJLSDM    | --   |
-| flux balance       | $F$            | SFLXBL   | IJLSDM    | --   |
+| surface water flux | $W_{free/ice}$ | WFLUXS   | IJLODM,2  | --   |
+| upward long wave   | $LW^\uparrow$  | RFLXLU   | IJLODM    | --   |
+| flux balance       | $F$            | SFLXBL   | IJLODM    | --   |
 
 
 - Inputs variables
@@ -649,9 +521,9 @@ The comments for some variables say "soil", but this is because the program was 
 
 | Meaning                        | Presentation | Variable | dimension | unit |
 |:-------------------------------|:-------------|:---------|:----------|:-----|
-| skin temperature               | $T_s$        | GDTS     | IJLSDM    | --   |
-| surface heat flux from `seaBC` | $G$          | GFLUXS   | IJLSDM    | --   |
-| sensible heat flux             | $H$          | TFLUXS   | IJLSDM    | --   |
+| surface temperature            | $T_s$        | GDTS     | IJLODM    | --   |
+| surface heat flux from `seaBC` | $G$          | GFLUXS   | IJLODM    | --   |
+| sensible heat flux             | $H$          | TFLUXS   | IJLODM    | --   |
 | latent heat flux               | $E$          | QFLUXS   | IJLDSM    | --   |
 
 - Others (appeared in texts)
@@ -675,7 +547,7 @@ $$
 	LW^\uparrow = - \alpha LW^\downarrow + \epsilon \sigma T_s ^4
 $$
 
-where $\sigma$ is the Stefan-Boltzmann constant and $T_s$ is skin temperature. If sea ice exists, snow or sea ice temperature is considered by fractions. When radiative equilibrium is assumed, emissivity becomes identical to co-albedo:
+where $\sigma$ is the Stefan-Boltzmann constant and $T_s$ is surface temperature. If sea ice exists, snow or sea ice temperature is considered by fractions. When radiative equilibrium is assumed, emissivity becomes identical to co-albedo:
 
 $$
 	\epsilon = 1 - \alpha
