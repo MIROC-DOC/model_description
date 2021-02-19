@@ -291,26 +291,108 @@ $$\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\
 
 ### 乱流量の計算
 
-乱流エネルギー $q^2$ の予報式は以下で表される。
-$$\frac{\partial q^2}{\partial t}=-\frac{\partial F_q}{\partial z}+2\left(P_s+P_b-\epsilon\right)$$
+#### 乱流の運動エネルギーの計算
 
- $P_s,P_b,\epsilon$ はそれぞれ平均流シアによる乱流生成項、浮力による乱流生成項、エネルギー散逸項を表し
-$$P_s=\frac{q^3}{L}S_MG_M$$
-$$P_b=\frac{q^3}{L}S_HG_H$$
-$$\epsilon=\frac{q^3}{B_1L}$$
+$q^2$ の予報式は以下で表される。
+$$ \frac{d q^2}{dt}=-\frac{1}{\rho}\frac{\partial F_q}{\partial z}+2\left(P_s+P_b-\varepsilon\right) $$
 
-また、Level2.5スキームでは $\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ はそれぞれ以下のようにして診断される。
-$$\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \theta_l}{\partial z}\right)^2$$
-$$\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial q_w}{\partial z}\right)^2$$
-$$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \theta_l}{\partial z}\frac{\partial q_w}{\partial z}$$
+ $P_s,P_b,\varepsilon$ は、レベル2.5では以下のように表される。
 
-ただし、鉛直勾配が必要な量は第一層についてのみMonin-Obukhovの相似則を用いて計算される。
-$$P_{s,1}+P_{b,1}=\frac{{u^*}^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right]$$
-$$\langle {\theta_l}^2\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{{\langle w\theta_l \rangle_g}^2}{q/B_2L}$$
-$$\langle {q_w}^2\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{{\langle wq_w\rangle_g}^2}{q/B_2L}$$
-$$\langle \theta_lq_w\rangle_1=\frac{\phi_h\left(\zeta_1\right)}{u^*kz_1}\frac{\langle w\theta_l \rangle_g\langle wq_w \rangle_g}{q/B_2L}$$
+$$P_s=Lq S_M \left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]$$
 
-$z_1$ は第一層の高度であり、 $\zeta_1=z_1/L_M$ 。 $\phi_m,\phi_h$ はシア関数であり、Businger et al. (1971)に基づき以下のように定義される。
+$$P_b=Lq S_H \frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)$$
+
+$$\varepsilon=\frac{q^3}{B_1L}$$
+
+移流項は、力学スキームにおいてトレーサーの輸送ルーチンを使って計算される。乱流スキームでは、$q^2$の拡散項、生成項、消散項による時間発展がimplicit法を用いて計算される。
+
+#### 分散および共分散の診断
+
+また、$\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ の予報方程式は以下のように表される。
+
+$$
+\frac{d\left\langle{\theta_l}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l}^{2}\right\rangle-2\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-2 \varepsilon_{\theta l}
+$$
+
+$$
+\frac{d\left\langle {q_w}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w q_{w}^{2}\right\rangle-2\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{q w}
+$$
+
+$$
+\frac{d\left\langle\theta_{l} q_{w}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l} q_{w}\right\rangle-\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q}
+$$
+
+レベル2.5では、これらの式で、時間微分項、移流項、拡散項を無視し、局所的に以下のバランスが成立していると仮定する。
+
+$$ -\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\varepsilon_{\theta l} = 0 \tag{6}$$
+
+$$ -\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-\varepsilon_{q w} = 0 \tag{7}$$
+
+$$ -\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q} = 0 \tag{8}$$
+
+MYNNスキームのレベル2.5では、$-\left\langle w \theta_{l}\right\rangle$, $-\left\langle w q_{w}\right\rangle$, $\varepsilon_{\theta l}$, $\varepsilon_{q w}$, $\varepsilon_{\theta q}$は以下のように表される。
+
+$$ -\left\langle w \theta_{l}\right\rangle = LqS_H \frac{\partial \Theta_{l}}{\partial z} \tag{9}$$
+
+$$ -\left\langle w q_{w}\right\rangle = LqS_H \frac{\partial Q_{w}}{\partial z} \tag{10}$$
+
+$$
+\varepsilon_{\theta l}=\frac{q}{B_{2} L}\left\langle\theta_{l}^{2}\right\rangle \tag{11}
+$$
+
+$$
+\varepsilon_{q w}=\frac{q}{B_{2} L}\left\langle q_{w}^{2}\right\rangle \tag{12}
+$$
+
+$$
+\varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \tag{13}
+$$
+
+(6)-(13)より、$\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$は以下のように診断的に計算される。
+
+$$\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \Theta_l}{\partial z}\right)^2$$
+
+$$\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial Q_w}{\partial z}\right)^2$$
+
+$$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}$$
+
+#### モデル最下層の扱い
+
+モデル最下層は、物理量の鉛直勾配が急激に変化する接地層に相当するため、鉛直勾配を精度良く評価するために、以下のMonin-Obukhov相似則を用いる。
+
+$$ \frac{\partial M}{\partial z} = \frac{u_*}{kz}\phi_m \tag{14}$$
+
+$$ \frac{\partial \Theta}{\partial z} = \frac{\theta_*}{kz}\phi_h \tag{15}$$
+
+$$ \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \tag{16}$$
+
+ここで、$M$は接地層における水平風の向きに横軸をとったときの風速を表す。$\phi_m$, $\phi_h$は、それぞれ運動量と熱に対する無次元勾配関数である。$\theta_*$, $q_{v*}$は、それぞれ、接地層における温位と水蒸気のスケールであり、以下の関係を満たす。
+
+$$ \langle wm \rangle = -u_*^2 \tag{17}$$
+
+$$ \langle w\theta \rangle = -u_*\theta_* \tag{18}$$
+
+$$ \langle wq_v \rangle = -u_*q_{v*} \tag{19}$$
+
+$m$は$M$の格子平均からのズレである。$M$, $m$を用いると、乱流エネルギーの生成項は、以下のように書ける。
+
+$$ P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle $$
+
+これは、(14), (17)およびMonin-Obukhov長の定義式を用いると、以下のように計算できる。
+
+$$ P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right] $$
+
+ここで、$\zeta_1$は、モデル最下層のフルレベルでの$\zeta$である。
+
+接地層では雲粒がないと仮定し、$\langle {\theta_l}^2\rangle$, $\langle {q_w}^2\rangle$, $\langle \theta_lq_w\rangle$は、(6)-(8), (11)-(13), (15), (16), (18), (19)より、以下のように診断的に計算できる。
+
+$$\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L} $$
+
+$$\langle {q_w}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle wq_v\rangle_g}^2 \bigg/ \frac{q}{B_2L} $$
+
+$$\langle \theta_lq_w\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}\langle w\theta \rangle_g\langle wq_v \rangle_g \bigg/ \frac{q}{B_2L} $$
+
+$\phi_m,\phi_h$ は、Businger et al. (1971)に基づき以下のように定式化されている。
 $$
 \phi_m(\zeta)=\left\{
     \begin{array}{lr}
@@ -319,6 +401,7 @@ $$
     \end{array}
   \right.
 $$
+
 $$
 \phi_h(\zeta)=\left\{
     \begin{array}{lr}
