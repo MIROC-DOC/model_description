@@ -276,7 +276,7 @@ $$F_{T,k-1/2}=-\rho_{k-1/2}K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\Theta_{l,k}-\Theta_
 
 $$F_{w,k-1/2}=-\rho_{k-1/2}K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}}$$
 
-また、implicit法による時間積分を行うために、各鉛直フラックスの微分値を以下のように求めておく。
+ここで、$\rho$は密度、$\Pi$はexner functionである。また、implicit法による時間積分を行うために、各鉛直フラックスの微分値を以下のように求めておく。
 
 $$\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=\rho_{k-1/2}K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
 
@@ -420,6 +420,6 @@ The prognostic equation for $q^2$ is discretized as
 
 $$ \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right) $$
 
-where $n$ and $n+1$ indicate the current and next time steps respectively. $\rho$ is density and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. $F_q$ at $n+1$ is represented by
+where $n$ and $n+1$ indicate the current and next time steps respectively, and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. $F_q$ at $n+1$ is represented by
 
 $$ F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n})$$
