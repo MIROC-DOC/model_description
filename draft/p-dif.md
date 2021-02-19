@@ -369,11 +369,11 @@ $$ \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \tag{16}$$
 
 ここで、$M$は接地層における水平風の向きに横軸をとったときの風速を表す。$\phi_m$, $\phi_h$は、それぞれ運動量と熱に対する無次元勾配関数である。$\theta_*$, $q_{v*}$は、それぞれ、接地層における温位と水蒸気のスケールであり、以下の関係を満たす。
 
-$$ \langle wm \rangle = -u_*^2 \tag{17}$$
+$$ \langle wm \rangle_g = -u_*^2 \tag{17}$$
 
-$$ \langle w\theta \rangle = -u_*\theta_* \tag{18}$$
+$$ \langle w\theta \rangle_g = -u_*\theta_* \tag{18}$$
 
-$$ \langle wq_v \rangle = -u_*q_{v*} \tag{19}$$
+$$ \langle wq_v \rangle_g = -u_*q_{v*} \tag{19}$$
 
 $m$は$M$の格子平均からのズレである。$M$, $m$を用いると、乱流エネルギーの生成項は、以下のように書ける。
 
