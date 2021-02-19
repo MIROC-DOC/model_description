@@ -8,6 +8,7 @@
   - [拡散係数の計算](#拡散係数の計算)
   - [フラックスの計算](#フラックスの計算)
   - [乱流量の計算](#乱流量の計算)
+  - [Time integration with implicit scheme](#time-integration-with-implicit-scheme)
 
 <!-- /TOC -->
 ## 乱流
@@ -412,3 +413,13 @@ $$
 $$
 
 $$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0)$$
+
+### Time integration with implicit scheme
+
+The prognostic equation for $q^2$ is discretized as
+
+$$ \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right) $$
+
+where $n$ and $n+1$ indicate the current and next time steps respectively. $\rho$ is density and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. $F_q$ at $n+1$ is represented by
+
+$$ F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n})$$
