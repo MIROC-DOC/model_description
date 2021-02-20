@@ -102,7 +102,7 @@ $$R_{f1}=B_1\frac{\gamma_1-C_1}{F_1}$$
 
 $$R_{f2}=B_1\frac{\gamma_1}{F_2}$$
 
-$$R_{i1}=\frac{1}{2S_{Mc}}$$
+$$R_{i1}=\frac{1}{2S_{MC}}$$
 
 $$R_{i2}=R_{f1}S_{MC}$$
 
