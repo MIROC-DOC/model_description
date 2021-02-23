@@ -1,7 +1,10 @@
 
-all: a-setup.pdf d-basic.pdf d-time.pdf d-vert.pdf d-summ.pdf
+all: a-setup.pdf d-basic.pdf d-time.pdf d-vert.pdf d-ref.pdf
 
-.SUFFIXES: .md .pdf
+.SUFFIXES: .tex .pdf
 
-.md.pdf:
-	pandoc $< -o $@ --pdf-engine=lualatex -V documentclass=ltjsarticle -V luatexjapresetoptions=noembed
+.tex.pdf:
+	sed -e "s/__file__/$*/g" template.tex >$*_tmp.tex
+	platex $*_tmp.tex
+	dvipdfmx $*_tmp.dvi
+	mv $*_tmp.pdf $@
