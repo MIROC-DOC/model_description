@@ -6,15 +6,15 @@ The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since version 5 
 
 The updraft is based on an entraining plume model, where the mass flux increases upward due to lateral entrainment. The detrainment occurs only at the cloud top which is defined as the neutral buoyancy level of the updraft air parcel. The lateral entrainment rate is formulated in terms of buoyancy and vertical velocity of the air parcel at each level following Gregory (2001). The momentum transport is formulated following Gregory et al. (1997).
 
-The cloud base mass fluxes are determined by the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990) and Xu (1991, 1993), which was adopted in the prognostic Arakawa–Schubert scheme (Randall and Pan 1993; Pan 1995; Randall et al. 1997; Pan and Randall 1998). The convective kinetic energy increases by buoancy and decreases by dissipation. 
+The cloud base mass fluxes are determined by the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990) and Xu (1991, 1993), which was adopted in the prognostic Arakawa–Schubert scheme (Randall and Pan 1993; Pan 1995; Randall et al. 1997; Pan and Randall 1998). The convective kinetic energy increases by buoancy and decreases by dissipation.
 
 The cloud types are spectrally represented according to the updraft vertical velocity at the cloud base. Larger (smaller) vertical velocities give smaller (larger) entrainment rates which result in higher (lower) cloud tops. The cloud base is diagnosed as the lifting condensation level of the air parcel at the lowest model layer.
 
-The scheme has a simple downdraft model, where a part of the precipitation caused by the updrafts evaporates and forms the cold air which enters into the downdrafts. The detrainment of the downdraft mass fluxes occurs at the neutral buoyancy level and near the surface. 
+The scheme has a simple downdraft model, where a part of the precipitation caused by the updrafts evaporates and forms the cold air which enters into the downdrafts. The detrainment of the downdraft mass fluxes occurs at the neutral buoyancy level and near the surface.
 
-The interaction of the updrafs and downdrafts with the surrounding environment is formulated following Arakawa and Schubert (1974). The areal fractions of the updrafts and downdrafts are assumed to be sufficiently small and the grid-mean prognostic variables are supposed to be the same as those over the environmental area, which are changed by the detrainment of the updrafts and downdrafts, the compensating subsidence and the evaporation and sublimation of the precipitation associated with the updrafts. 
+The interaction of the updrafs and downdrafts with the surrounding environment is formulated following Arakawa and Schubert (1974). The areal fractions of the updrafts and downdrafts are assumed to be sufficiently small and the grid-mean prognostic variables are supposed to be the same as those over the environmental area, which are changed by the detrainment of the updrafts and downdrafts, the compensating subsidence and the evaporation and sublimation of the precipitation associated with the updrafts.
 
-The input variables to this scheme are temperature $T$, specific humidity $q$, cloud liquid water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q_v$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud liquid water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables. 
+The input variables to this scheme are temperature $T$, specific humidity $q$, cloud liquid water $q_l$, cloud ice $q_i$, zonal wind $u$, meridional wind $v$, all tracers including aerosols and greenhouse gases, height $z$, pressure $p$, and cloud cover $C$. The scheme gives the tendencies of $T$, $q_v$, $q_l$, $q_i$, $u$, $v$, $C$ and all the tracers. The vertical profiles of the rainfall and snowfall fluxes, cloud liquid water, cloud ice and cloud fraction associated with the updrafts are also output as diagnostic variables.
 
 The procedure of the calculations is given as follows along with the names of the subroutines.
 
@@ -44,7 +44,7 @@ $$
  \frac{\partial \bar{q}}{\partial t} = M\frac{\partial \bar{q}}{\partial z} + \sum_j D_j \left[ q_j(z_{T,j}) - \bar{q} \right],
 $$
 
-where $M$, $D$, $h$ denote total mass flux, detrainment mass flux and moist static energy. $q$ is a substitute for $q_v$, $q_l$ and $q_i$ and any tracers which are calculated in the same way. $z_T$ is the height of the updraft. The hats indicate in-cloud properties, the overbars grid-mean. The subscripts $j$ are an index for the updraft types. 
+where $M$, $D$, $h$ denote total mass flux, detrainment mass flux and moist static energy. $q$ is a substitute for $q_v$, $q_l$ and $q_i$ and any tracers which are calculated in the same way. $z_T$ is the height of the updraft. The hats indicate in-cloud properties, the overbars grid-mean. The subscripts $j$ are an index for the updraft types.
 
 The total mass flux $M$ and detrainment $D$ are defined as
 
@@ -72,13 +72,13 @@ $$
   \bar{q_t}(z_1) \geq \bar{q_v}^* + \frac{\gamma}{L_v(1+\gamma)} \left[\bar{h}(z_1)-\bar{h}^*(z) \right]\,,
 $$
 
-where $q_t$ denotes total water, $L_v$ the latent heat of vaporization, $z_1$ the height of the lowest model layer at the full level and 
+where $q_t$ denotes total water, $L_v$ the latent heat of vaporization, $z_1$ the height of the lowest model layer at the full level and
 
 $$
  \gamma \equiv \frac{L_v}{C_p}\left(\frac{\partial \bar{q}^*}{\partial \bar{T}}\right)_{\bar{p}}.
 $$
 
-$C_p$ denotes the specific heat of dry air at constant pressure and the stars indicate saturation values. 
+$C_p$ denotes the specific heat of dry air at constant pressure and the stars indicate saturation values.
 
 The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$ for all of the updraft types where $z_B$ denotes the cloud base height.
 
@@ -93,7 +93,7 @@ $$
 and allowed to vary vertically. Based on the formulation of Gregory (2001), the updraft velocity is calculated by
 
 $$
- \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \qquad\tag{1}
+ \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = aB - \epsilon \hat{w}^2 \tag{p-cum.1}
 $$
 
 where $w$ and $B$ are the vertical velocity and the buoyancy of updraft air parcel respectively. $a$ is a dimensionless constant parameter ranging from 0 to 1 and represents a ratio of buoyancy force used to accelerate the updraft velocity. The hats indicate the values of the updraft. The second term on the right-hand side represents reduction in the upward momentum of the air parcel through the entrainment. Here and hereafter, the equation number corresponds to that in Chikira and Sugiyama (2010).
@@ -107,10 +107,10 @@ $$
 where $C_\epsilon$ is a dimensionless constant parameter ranging from 0 to 1. This formulation denotes that a certain fraction of the buoyancy-generated energy is reduced by the entrainment, which is identical to the fraction used to accelerate the entrained air to the updraft velocity. Thus, the entrainment rate is written as
 
 $$
- \epsilon = C_\epsilon\frac{aB}{\hat{w}^2}. \qquad\tag{2}
+ \epsilon = C_\epsilon\frac{aB}{\hat{w}^2}. \tag{p-cum.2}
 $$
 
-Eqs. (1) and (2) lead to
+Eqs. ([1](p-cum.1)) and ([2](p-cum.2)) lead to
 
 $$
  \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B
@@ -119,13 +119,13 @@ $$
 which shows that $\hat{w}$ is continuously accelerated upward when buoyancy is positive. Many CRM and LES results show, however, that updraft velocity is often reduced if the parcel approaches its cloud top. For this reason, adding an additional term, we use
 
 $$
- \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}^2}{2}\qquad\tag{4}
+ \frac{1}{2}\frac{\partial \hat{w}^2}{\partial z} = a(1 - C_\epsilon) B - \frac{1}{z_0}\frac{\hat{w}^2}{2}\tag{p-cum.4}
 $$
 
-where the last term denotes that the energy of the updraft velocity is relaxed to zero with a height scale $z_0$. Eq. (4) is discretized as
+where the last term denotes that the energy of the updraft velocity is relaxed to zero with a height scale $z_0$. Eq. ([4](p-cum.4)) is discretized as
 
 $$
- \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B_k - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \qquad\quad\tag{A5}
+ \frac{1}{2}\frac{\hat{w}^2_{k+1/2} - \hat{w}^2_{k-1/2}}{\Delta z_k} = a(1 - C_\epsilon) B_k - \frac{1}{z_0}\frac{\hat{w}_{k+1/2}^2}{2} \tag{p-cum.A5}
 $$
 
 where $k$ is an index of full levels and $k+1/2$ and $k-1/2$ indicate the upper and lower sides of the half levels. $\Delta z$ is the depth of the model layer. Note that the equation is solved for $\hat{w}^2$ rather than $\hat{w}$.
@@ -140,31 +140,31 @@ $$
  \simeq g \left\{ \frac{\hat{h} - \bar{h}^*}{C_p \bar{T}(1 + \gamma)} + \varepsilon(\hat{q_v}-\bar{q_v}) - \left[ (\hat{q_l}+\hat{q_i}) - (\bar{q_l}+\bar{q_i}) \right] \right\}
 $$
 
-where $g$ and $T_v$ denote gravity and virtual temperature respectively. $\varepsilon = R_v/R_d - 1$ where $R_v$ and $R_d$ are the gas constants for water vapor and dry air respectively. 
+where $g$ and $T_v$ denote gravity and virtual temperature respectively. $\varepsilon = R_v/R_d - 1$ where $R_v$ and $R_d$ are the gas constants for water vapor and dry air respectively.
 
-$\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omit the subscript $j$ for convenience. 
+$\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omit the subscript $j$ for convenience.
 
 ### Normalized mass flux and updraft properties
 
 The properties of the updraft are determined by
 
 $$
- \frac{\partial \eta \hat{h}}{\partial z} = \epsilon \eta \bar{h} + Q_i, \qquad\tag{5}
+ \frac{\partial \eta \hat{h}}{\partial z} = \epsilon \eta \bar{h} + Q_i, \tag{p-cum.5}
 $$
 
 $$
- \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P \qquad\tag{6}
+ \frac{\partial \eta \hat{q_t}}{\partial z} = \epsilon \eta \bar{q_t} - P \tag{p-cum.6}
 $$
 
 and
 
 $$
- \frac{\partial \eta}{\partial z} = \epsilon \eta, \qquad\tag{7}
+ \frac{\partial \eta}{\partial z} = \epsilon \eta, \tag{p-cum.7}
 $$
 
 where $Q_i$ and $P$ denote heating by liquid-ice transition and precipitation respectively. All the other variables such as temperature, specific humidity, and liquid and ice cloud water are computed from these quantities. Tracers are calculated by a method identical to that for $\hat{q}_t$.
 
-Equation (7) leads to
+Equation ([7](p-cum.7)) leads to
 
 $$
  \frac{\partial \ln \eta}{\partial z} = \epsilon.
@@ -173,12 +173,12 @@ $$
 Then, $\eta$ and $\epsilon$ are discretized as
 
 $$
- \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k. \qquad\quad\tag{A1}
+ \frac{\ln \eta_{k+1/2} - \ln \eta_{k-1/2}}{\Delta z_k} = \epsilon_k. \tag{p-cum.A1}
 $$
 
 Note that this discrete form leads to an exact solution if $\epsilon$ is vertically constant. Also, $\eta$ is finite as far as $\epsilon$ is. For $\epsilon_k,$ a maximum value of $4 \times 10^{-3} m^{-1}$ is applied.
 
-Equations (5) and (6) are written as
+Equations ([5](p-cum.5)) and ([6](p-cum.6)) are written as
 
 $$
  \frac{\partial \eta \hat{h}}{\partial z} = E \bar{h} + Q_i,
@@ -191,20 +191,20 @@ $$
 respectivuly, where $E = \epsilon\eta$. These equations are discretized as
 
 $$
- \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_{i,k}}  \qquad\quad\tag{A2}
+ \frac{\eta_{k+1/2} \hat{h}_{k+1/2} - \eta_{k-1/2} \hat{h}_{k-1/2}}{\Delta z_k} = E_k \bar{h}_k + {Q_{i,k}}  \tag{p-cum.A2}
 $$
 
 $$
- \frac{\eta_{k+1/2} \hat{q}_{t,k+1/2} - \eta_{k-1/2} \hat{q}_{t,k-1/2}}{\Delta z_k} = E_k {\bar{q}_{t,k}} - P_k  \qquad\quad\tag{A3}
+ \frac{\eta_{k+1/2} \hat{q}_{t,k+1/2} - \eta_{k-1/2} \hat{q}_{t,k-1/2}}{\Delta z_k} = E_k {\bar{q}_{t,k}} - P_k  \tag{p-cum.A3}
 $$
 
 Considering the relation that $\partial \eta/\partial z = \epsilon\eta$, we descretize $E_k$ as
 
 $$
- E_k = \frac{\eta_{k+1/2} - \eta_{k-1/2}}{\Delta z_k}  \qquad\quad\tag{A4}
+ E_k = \frac{\eta_{k+1/2} - \eta_{k-1/2}}{\Delta z_k}  \tag{p-cum.A4}
 $$
 
-Note that conservation of mass, energy, and water is guaranteed with Eqs. (A1)–(A4). This set of equations leads to exact solutions of $\hat{h}$ under the special case that $\epsilon$ and $\bar{h}$ are vertically constant and $Q_i$ is zero. From Eqs. (A1), (A2), and (A4), assuming $Q_i$ is zero,
+Note that conservation of mass, energy, and water is guaranteed with Eqs. ([A1](p-cum.A1))–([A4](p-cum.A4)). This set of equations leads to exact solutions of $\hat{h}$ under the special case that $\epsilon$ and $\bar{h}$ are vertically constant and $Q_i$ is zero. From Eqs. ([A1](p-cum.A1)), ([A2](p-cum.A2)), and ([A4](p-cum.A4)), assuming $Q_i$ is zero,
 
 $$
  \hat{h}_{k+1/2} = e^{-\epsilon_k \Delta z_k} \hat{h}_{k - 1/2} + (1 - e^{-\epsilon_k \Delta z_k}) \bar{h}_k,
@@ -218,14 +218,14 @@ These calculations are made for each of the updraft types separately, but we omi
 
 Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$.
 
-Then, the updraft properties are calculated upward with Eqs. (2), (4), (5), (6), and (7). This upward calculation continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some level, the air parcel detrains at the neutral buoyancy level which is below and closest to the level. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of the convective inhibition (CIN) near cloud base is also represented by this method. Note, however, that an effect of overshooting above cloud top is not represented for simplicity (i.e., detrainment never occurs above cloud top).
+Then, the updraft properties are calculated upward with Eqs. ([2](p-cum.2)), ([4](p-cum.4)), ([5](p-cum.5)), ([6](p-cum.6)), and ([7](p-cum.7)). This upward calculation continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some level, the air parcel detrains at the neutral buoyancy level which is below and closest to the level. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of the convective inhibition (CIN) near cloud base is also represented by this method. Note, however, that an effect of overshooting above cloud top is not represented for simplicity (i.e., detrainment never occurs above cloud top).
 
 ### Cloud-base mass flux
 
 The cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, the cloud kinetic energy for each of the updraft types is explicitly predicted by
 
 $$
- \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\,,  \qquad\tag{8}
+ \frac{\partial K}{\partial t} = AM_B - \frac{K}{\tau_p}\,,  \tag{p-cum.8}
 $$
 
 where $K$ and $A$ are the cloud kinetic energy and cloud work function respectively, and $\tau_p$ denotes a time scale of dissipation. The cloud work function $A$ is defined as
@@ -237,7 +237,7 @@ $$
 The cloud kinetic energy is linked with $M_B$ by
 
 $$
- K = \alpha M_B^2.  \tag{9}
+ K = \alpha M_B^2.  \tag{p-cum.9}
 $$
 
 The cloud-base mass flux is then solved for each of the updraft types.
@@ -260,7 +260,7 @@ $$
 
 where $T_1$ and $T_2$ are set to 258.15 and 273.15 K. The ratio of snowfall to precipitation is also determined by this function.
 
-From the conservation of condensate static energy, $C_p T + gz + L_v q - L_i q_i$ where $L_i$ is the latent heat of fusion, for a cloud parcel, $Q_i$ in Eq. (5) is written as
+From the conservation of condensate static energy, $C_p T + gz + L_v q - L_i q_i$ where $L_i$ is the latent heat of fusion, for a cloud parcel, $Q_i$ in Eq. ([5](p-cum.5)) is written as
 
 $$
  Q_i = L_i \left(\frac{\partial \eta \hat{q}_i}{\partial z} - \epsilon\eta\bar{q}_i\right)
@@ -320,7 +320,8 @@ $$
  \frac{\partial \eta \hat{u}}{\partial z} = \epsilon \eta \bar{u} + C_m \eta \frac{\partial \bar{u}}{\partial z},
 $$
 
-where $C_m$ is a constant from 0 to 1 representing the effect of pressure. This equation  can be rewitten as
+where $C_m$ is a constant from 0 to 1 representing the effect of pressure. This equation can be rewitten as
+
 $$
  \frac{\partial \eta \hat{u}}{\partial z} = (1-C_m) \epsilon \eta \bar{u} + C_m \frac{\partial \eta \bar{u}}{\partial z},
 $$
@@ -328,10 +329,8 @@ $$
 and is discretized as
 
 $$
- \begin{align}
-  \frac{\eta_{k+1/2} \hat{u}_{k+1/2} - \eta_{k-1/2} \hat{u}_{k-1/2}}{\Delta z_k} = & (1-C_m) E_k \bar{u}_k \\
-         & + C_m \frac{\eta_{k+1/2} \bar{u}_{k+1/2} - \eta_{k-1/2} \bar{u}_{k-1/2}}{\Delta z_k}.
- \end{align}
+  \frac{\eta_{k+1/2} \hat{u}_{k+1/2} - \eta_{k-1/2} \hat{u}_{k-1/2}}{\Delta z_k} = (1-C_m) E_k \bar{u}_k
+          + C_m \frac{\eta_{k+1/2} \bar{u}_{k+1/2} - \eta_{k-1/2} \bar{u}_{k-1/2}}{\Delta z_k}.
 $$
 
 The horizontal velocities of the downdrafts are calculated similarly. The tendencies of zonal and meridional velocities by the cumulus momentum transport (CMT) are calculated as
