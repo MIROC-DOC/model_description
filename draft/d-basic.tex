@@ -1,0 +1,228 @@
+Table of contents
+
+\begin{itemize}
+\tightlist
+\item
+  Mechanical Processes
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Basic Equations
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Basic Equations (数式をハイブリッド化済)
+    \item
+      Boundary Conditions (数式をハイブリッド化済)
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{mechanical-processes}{%
+\section{Mechanical Processes}\label{mechanical-processes}}
+
+\hypertarget{basic-equations}{%
+\subsection{Basic Equations}\label{basic-equations}}
+
+\hypertarget{basic-equations-1}{%
+\subsubsection{Basic Equations}\label{basic-equations-1}}
+
+The fundamental equations are a system of primitive equations at the
+spherical (\(\lambda,\varphi\)) and \(\eta\) coordinates, given as
+follows (Arakawa and Konor 1996).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Continuity equation
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial m}{\partial t}
+    + \nabla_{\eta} \cdot (m\mathbf{v}_H)+ \frac{\partial (m\dot{\eta})}{\partial \eta} = 0
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Hydrostatic equation
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial \Phi}{\partial \eta} = - \frac{RT_v}{p} m
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Equation of motion
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial \zeta}{\partial t} 
+     =   \frac{1}{a\cos\varphi}
+            \frac{\partial A_v}{\partial \lambda}
+          - \frac{1}{a\cos \varphi}
+            \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
+          - {\mathcal D}(\zeta) 
+\end{eqnarray}
+
+\begin{eqnarray}
+  \frac{\partial D}{\partial t} 
+     =    \frac{1}{a\cos\varphi}
+            \frac{\partial A_u}{\partial \lambda}
+          + \frac{1}{a\cos\varphi}
+            \frac{\partial }{\partial \varphi} ( A_v \cos\varphi )
+          - \nabla^{2}_{\eta}
+           ( \Phi + R \bar{T} \pi + E ) 
+          - {\mathcal D}(D) 
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Thermodynamic equation
+\end{enumerate}
+
+\begin{eqnarray}
+  \frac{\partial T}{\partial t}
+     =  - \frac{1}{a\cos\varphi}
+               \frac{\partial uT'}{\partial \lambda}
+          - \frac{1}{a}
+               \frac{\partial }{\partial \varphi} ( vT' \cos\varphi )
+          + T' D
+\end{eqnarray} \begin{eqnarray}
+        - \dot{\eta} 
+              \frac{\partial T }{\partial \eta}
+          + \frac{\kappa T}{\sigma} \left[ B\left( \frac{\partial \pi}{\partial t}
+                            + {\mathbf{v}}_{H} \cdot \nabla_{\eta}\pi \right)
+                            + \frac{ m\dot{\eta} }{ p_s }
+                     \right]
+          + \frac{Q}{C_{p}}
+          + \frac{Q_{diff}}{C_{p}}
+          - {\mathcal D}(T) 
+\end{eqnarray}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Tracers
+\end{enumerate}
+
+ここでは水蒸気の移流方程式を示す。他のトレーサーも同様の方程式に従う。
+
+\begin{eqnarray}
+  \frac{\partial q}{\partial t}
+   =  - \frac{1}{a\cos\varphi}
+               \frac{\partial uq}{\partial \lambda}
+          - \frac{1}{a\cos\varphi}
+               \frac{\partial }{\partial \varphi} (vq \cos\varphi)
+          + q D
+\end{eqnarray} \begin{eqnarray}
+        - \dot{\eta} \frac{\partial q }{\partial \eta}
+          + S_{q}
+          - {\mathcal D}(q) 
+\end{eqnarray}
+
+Here,
+
+\begin{eqnarray}
+m \equiv \left(\frac{\partial p}{\partial \eta}\right)_{p_s}
+\end{eqnarray} \begin{eqnarray}
+\theta  \equiv  T \left( p/p_{0} \right)^{-\kappa}
+\end{eqnarray} \begin{eqnarray}
+\kappa  \equiv  R/C_{p}
+\end{eqnarray} \begin{eqnarray}
+  \Phi  \equiv  gz
+\end{eqnarray} \begin{eqnarray}
+   \pi  \equiv  \ln p_{S}
+\end{eqnarray} \begin{eqnarray}
+ \dot{\eta}  \equiv   \frac{d \eta}{d t}
+\end{eqnarray} \begin{eqnarray}
+     T_v  \equiv  T ( 1+\epsilon_v q )
+\end{eqnarray} \begin{eqnarray}
+     T  \equiv   \bar{T} + T^{\prime}
+\end{eqnarray} \begin{eqnarray}
+     \bar{T}\equiv 300 \ \mathrm{K}
+\end{eqnarray} \begin{eqnarray}
+ \zeta  \equiv  \frac{1}{a \cos\varphi }
+                    \frac{\partial v}{\partial \lambda} 
+             -    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( u \cos\varphi )
+\end{eqnarray} \begin{eqnarray}
+     D  \equiv  \frac{1}{a \cos\varphi }
+                    \frac{\partial u}{\partial \lambda} 
+             +    \frac{1}{a \cos\varphi }
+                    \frac{\partial }{\partial \varphi}
+                    ( v \cos\varphi )
+\end{eqnarray} \begin{eqnarray}
+    A_u  \equiv   ( \zeta + f ) v
+             - \dot{\eta} \frac{\partial u}{\partial \eta} 
+             - \frac{RT^{\prime}}{a\cos\varphi} 
+                  \frac{\partial \pi}{\partial \lambda} 
+             + {\mathcal F}_x
+\end{eqnarray} \begin{eqnarray}
+    A_v  \equiv  - ( \zeta + f ) u
+             - \dot{\eta} \frac{\partial v}{\partial \eta} 
+             - \frac{RT^{\prime}}{a}
+                  \frac{\partial \pi}{\partial \varphi} 
+             + {\mathcal F}_y
+\end{eqnarray} \begin{eqnarray}
+     E  \equiv   \frac{u^{2}+v^{2}}{2}
+\end{eqnarray} \begin{eqnarray}
+ {\mathbf{v}}_{H} \cdot \nabla
+        \equiv  \frac{u}{a \cos \varphi} 
+         \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
+     + \frac{v}{a}
+         \left( \frac{\partial }{\partial \varphi} \right)_{\sigma} 
+\end{eqnarray} \begin{eqnarray}
+  \nabla^{2}_{\eta}  
+        \equiv  
+               \frac{1}{a^{2}\cos^2\varphi} 
+                 \frac{\partial^{2} }{\partial \lambda^{2}} 
+             + \frac{1}{a^{2}\cos\varphi} 
+                 \frac{\partial }{\partial \varphi}
+                 \left[ \cos\varphi
+                       \frac{\partial }{\partial \varphi} \right]  .
+\end{eqnarray}
+
+\({\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)\)
+are horizontal diffusion terms,
+\({\mathcal F}_\lambda, {\mathcal F}_\varphi\) are forces due to
+small-scale kinetic processes (treated as `physical processes'), \(Q\)
+are forces due to radiation, condensation, small-scale kinetic
+processes, etc. Heating and temperature change due to `physical
+processes', and \(S_q\) is a water vapor source term due to `physical
+processes' such as condensation and small-scale motion. \(Q_{diff}\) is
+the heat of friction and
+
+\begin{eqnarray}
+  Q_{diff}
+ = - {\mathbf{v}} \cdot  ( \frac{\partial {\mathbf{v}}}{\partial t} )_{diff} .
+\end{eqnarray}
+
+\(( \frac{\partial {\mathbf{v}}}{\partial t} )_{diff}\) is a
+time-varying term of \(u,v\) due to horizontal and vertical diffusion.
+
+\hypertarget{boundary-conditions}{%
+\subsubsection{Boundary Conditions}\label{boundary-conditions}}
+
+鉛直流に関する上下端の境界条件は以下の通りである：
+
+\begin{eqnarray}
+  \dot{\eta} = 0  \ \ \ at \ \ \eta = 0 , \ 1 .
+\end{eqnarray}
+
+これを用いて連続の式を鉛直積分することで、\(p_s\)の予報方程式と、鉛直流の診断方程式が導かれる。

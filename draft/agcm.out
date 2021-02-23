@@ -1,0 +1,123 @@
+\BOOKMARK [2][-]{subsection.0.1}{Basic Settings}{}% 1
+\BOOKMARK [3][-]{subsubsection.0.1.1}{Coordinate System}{subsection.0.1}% 2
+\BOOKMARK [3][-]{subsubsection.0.1.2}{Physical Constants}{subsection.0.1}% 3
+\BOOKMARK [2][-]{subsection.0.2}{Computational flow of dynamical core}{}% 4
+\BOOKMARK [3][-]{subsubsection.0.2.1}{Overview of dynamical core}{subsection.0.2}% 5
+\BOOKMARK [1][-]{section.1}{Mechanical Processes}{}% 6
+\BOOKMARK [2][-]{subsection.1.1}{Basic Equations}{section.1}% 7
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Basic Equations}{subsection.1.1}% 8
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Boundary Conditions}{subsection.1.1}% 9
+\BOOKMARK [2][-]{subsection.1.2}{Vertical Discretization}{section.1}% 10
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Model levels}{subsection.1.2}% 11
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Vertical discretization}{subsection.1.2}% 12
+\BOOKMARK [3][-]{subsubsection.1.2.3}{Differences from \134sigma-coordinate}{subsection.1.2}% 13
+\BOOKMARK [2][-]{subsection.1.3}{Horizontal discretization}{section.1}% 14
+\BOOKMARK [3][-]{subsubsection.1.3.1}{Spectral Expansion.}{subsection.1.3}% 15
+\BOOKMARK [3][-]{subsubsection.1.3.2}{Horizontal Diffusion Term}{subsection.1.3}% 16
+\BOOKMARK [3][-]{subsubsection.1.3.3}{Spectral representation of equations}{subsection.1.3}% 17
+\BOOKMARK [2][-]{subsection.1.4}{Time Integration MODULE: [DYNSTP]}{section.1}% 18
+\BOOKMARK [3][-]{subsubsection.1.4.1}{Time integration and time filtering with leap frog MODULE: [DADVNC]}{subsection.1.4}% 19
+\BOOKMARK [3][-]{subsubsection.1.4.2}{Semi-implicit time integration}{subsection.1.4}% 20
+\BOOKMARK [3][-]{subsubsection.1.4.3}{Applying semi-implicit time integration}{subsection.1.4}% 21
+\BOOKMARK [3][-]{subsubsection.1.4.4}{Time scheme properties and time step estimates}{subsection.1.4}% 22
+\BOOKMARK [3][-]{subsubsection.1.4.5}{Handling of the initiation of time integration}{subsection.1.4}% 23
+\BOOKMARK [2][-]{subsection.1.5}{Summary of the dynamical core}{section.1}% 24
+\BOOKMARK [3][-]{subsubsection.1.5.1}{Conversion of Horizontal Wind to Vorticity and Divergence MODULE: [G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift]}{subsection.1.5}% 25
+\BOOKMARK [3][-]{subsubsection.1.5.2}{Calculating a virtual temperature MODULE: [VIRTMD]}{subsection.1.5}% 26
+\BOOKMARK [3][-]{subsubsection.1.5.3}{Calculating the pressure gradient term MODULE: [PSDOT]}{subsection.1.5}% 27
+\BOOKMARK [3][-]{subsubsection.1.5.4}{Diagnosis of vertical flow. MODULE: [PSDOT]}{subsection.1.5}% 28
+\BOOKMARK [3][-]{subsubsection.1.5.5}{Tendency terms due to advection MODULE: [GRTADV, GRUADV]}{subsection.1.5}% 29
+\BOOKMARK [3][-]{subsubsection.1.5.6}{Transformation of prognostic variables to spectral space MODULE: [G2Wpush, G2Wtrans, G2Wshift]}{subsection.1.5}% 30
+\BOOKMARK [3][-]{subsubsection.1.5.7}{Transformation of tendency terms to spectral space MODULE: [G2Wpush, G2Wtrans, G2Wshift]}{subsection.1.5}% 31
+\BOOKMARK [3][-]{subsubsection.1.5.8}{Time integration in spectral space MODULE: [TINTGR]}{subsection.1.5}% 32
+\BOOKMARK [3][-]{subsubsection.1.5.9}{Transformation of prognostic variables to grid point Values MODULE: [W2Gpush, W2Gtrans, W2Gshift]}{subsection.1.5}% 33
+\BOOKMARK [3][-]{subsubsection.1.5.10}{Diffusion Correction along pressure level MODULE: [CORDIF]}{subsection.1.5}% 34
+\BOOKMARK [3][-]{subsubsection.1.5.11}{Frictional heat associated with diffusion. MODULE: [CORDIF]}{subsection.1.5}% 35
+\BOOKMARK [3][-]{subsubsection.1.5.12}{Horizontal Diffusion and Rayleigh Friction MODULE: [DSETDF]}{subsection.1.5}% 36
+\BOOKMARK [3][-]{subsubsection.1.5.13}{Time Filter MODULE: [DADVNC]}{subsection.1.5}% 37
+\BOOKMARK [3][-]{subsubsection.1.5.14}{Correction for conservation of mass MODULE: [FIXMAS, MASFIX]}{subsection.1.5}% 38
+\BOOKMARK [2][-]{subsection.1.6}{Cumulus scheme}{section.1}% 39
+\BOOKMARK [3][-]{subsubsection.1.6.1}{Outline of cumulus scheme}{subsection.1.6}% 40
+\BOOKMARK [3][-]{subsubsection.1.6.2}{Interaction between cumulus ensemble and large-scale environment}{subsection.1.6}% 41
+\BOOKMARK [3][-]{subsubsection.1.6.3}{Cloud base}{subsection.1.6}% 42
+\BOOKMARK [3][-]{subsubsection.1.6.4}{Updraft velocity and entrainment rate}{subsection.1.6}% 43
+\BOOKMARK [3][-]{subsubsection.1.6.5}{Normalized mass flux and updraft properties}{subsection.1.6}% 44
+\BOOKMARK [3][-]{subsubsection.1.6.6}{Spectral representation}{subsection.1.6}% 45
+\BOOKMARK [3][-]{subsubsection.1.6.7}{Cloud-base mass flux}{subsection.1.6}% 46
+\BOOKMARK [3][-]{subsubsection.1.6.8}{Microphysics}{subsection.1.6}% 47
+\BOOKMARK [3][-]{subsubsection.1.6.9}{Evaporation, sublimation and downdraft}{subsection.1.6}% 48
+\BOOKMARK [3][-]{subsubsection.1.6.10}{Cloudiness}{subsection.1.6}% 49
+\BOOKMARK [3][-]{subsubsection.1.6.11}{Cumulus Momentum Transport}{subsection.1.6}% 50
+\BOOKMARK [1][-]{section.2}{浅い積雲対流のパラメタリゼーション}{}% 51
+\BOOKMARK [2][-]{subsection.2.1}{1. 浅い積雲の概要}{section.2}% 52
+\BOOKMARK [2][-]{subsection.2.2}{2. 雲モデルの基本}{section.2}% 53
+\BOOKMARK [2][-]{subsection.2.3}{3. PSHCNでの計算}{section.2}% 54
+\BOOKMARK [3][-]{subsubsection.2.3.1}{3.1. 下部境界条件：雲底での質量フラックスの診断}{subsection.2.3}% 55
+\BOOKMARK [3][-]{subsubsection.2.3.2}{3.2. 雲底高度の診断}{subsection.2.3}% 56
+\BOOKMARK [3][-]{subsubsection.2.3.3}{3.3. 浅い積雲の有無の判定}{subsection.2.3}% 57
+\BOOKMARK [3][-]{subsubsection.2.3.4}{3.4. 上昇流フラックスの鉛直プロファイルの診断}{subsection.2.3}% 58
+\BOOKMARK [2][-]{subsection.2.4}{4. 実装に際しての補足}{section.2}% 59
+\BOOKMARK [3][-]{subsubsection.2.4.1}{4.1. 質量フラックスのリミッター}{subsection.2.4}% 60
+\BOOKMARK [2][-]{subsection.2.5}{5. 参考文献}{section.2}% 61
+\BOOKMARK [1][-]{section.3}{pmlsc: Large Scale Condensation}{}% 62
+\BOOKMARK [2][-]{subsection.3.1}{Physical basis for statistical PDF scheme}{section.3}% 63
+\BOOKMARK [2][-]{subsection.3.2}{Hybrid Prognostic Cloud \(HPC\) scheme}{section.3}% 64
+\BOOKMARK [2][-]{subsection.3.3}{PDF change through processes}{section.3}% 65
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Cumulus convection}{subsection.3.3}% 66
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Cloud Microphysics}{subsection.3.3}% 67
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Turbulent mixing}{subsection.3.3}% 68
+\BOOKMARK [3][-]{subsubsection.3.3.4}{Subgrid-scale horizontal eddy}{subsection.3.3}% 69
+\BOOKMARK [3][-]{subsubsection.3.3.5}{Other processes}{subsection.3.3}% 70
+\BOOKMARK [2][-]{subsection.3.4}{Solving procedures}{section.3}% 71
+\BOOKMARK [3][-]{subsubsection.3.4.1}{PDF2CLD}{subsection.3.4}% 72
+\BOOKMARK [3][-]{subsubsection.3.4.2}{CLD2PDF}{subsection.3.4}% 73
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Treatment of cloud ice and in-cloud water vapor}{subsection.3.4}% 74
+\BOOKMARK [1][-]{section.4}{pcldphys: Cloud Microphysics}{}% 75
+\BOOKMARK [2][-]{subsection.4.1}{Overview of Cloud Microphysics}{section.4}% 76
+\BOOKMARK [2][-]{subsection.4.2}{Microphysical Processes}{section.4}% 77
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Ice Properties}{subsection.4.2}% 78
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Evaporation of Rain and Snow}{subsection.4.2}% 79
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Ice Fall}{subsection.4.2}% 80
+\BOOKMARK [3][-]{subsubsection.4.2.4}{Homogeneous nucleation}{subsection.4.2}% 81
+\BOOKMARK [3][-]{subsubsection.4.2.5}{Heterogeneous nucleation}{subsection.4.2}% 82
+\BOOKMARK [3][-]{subsubsection.4.2.6}{Deposition/Sublimation}{subsection.4.2}% 83
+\BOOKMARK [3][-]{subsubsection.4.2.7}{Cloud water collection by ice \(riming\)}{subsection.4.2}% 84
+\BOOKMARK [3][-]{subsubsection.4.2.8}{Ice melt}{subsection.4.2}% 85
+\BOOKMARK [3][-]{subsubsection.4.2.9}{Warm rain cloud microphysics}{subsection.4.2}% 86
+\BOOKMARK [3][-]{subsubsection.4.2.10}{Total precipitation}{subsection.4.2}% 87
+\BOOKMARK [2][-]{subsection.4.3}{Radiant Flux.}{section.4}% 88
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Summary of Radiation Flux Calculations}{subsection.4.3}% 89
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Wavelengths and Subchannels}{subsection.4.3}% 90
+\BOOKMARK [3][-]{subsubsection.4.3.3}{Calculating the Planck function [PLANKS]}{subsection.4.3}% 91
+\BOOKMARK [3][-]{subsubsection.4.3.4}{Calculating the optical thickness by gas absorption [PTFIT]}{subsection.4.3}% 92
+\BOOKMARK [3][-]{subsubsection.4.3.5}{Optical Thickness by Continuous Absorption and CFC Absorption [CNTCFC]}{subsection.4.3}% 93
+\BOOKMARK [3][-]{subsubsection.4.3.6}{Scattering optical thickness and scattering moments [SCATMM]}{subsection.4.3}% 94
+\BOOKMARK [3][-]{subsubsection.4.3.7}{Albedo at Sea Level [SSRFC]}{subsection.4.3}% 95
+\BOOKMARK [3][-]{subsubsection.4.3.8}{Total Optical Thickness.}{subsection.4.3}% 96
+\BOOKMARK [3][-]{subsubsection.4.3.9}{Planck function expansion [PLKEXP]}{subsection.4.3}% 97
+\BOOKMARK [3][-]{subsubsection.4.3.10}{Transmission and reflection coefficients of each layer, the source function [TWST]}{subsection.4.3}% 98
+\BOOKMARK [3][-]{subsubsection.4.3.11}{Combinations of source functions for each layer}{subsection.4.3}% 99
+\BOOKMARK [3][-]{subsubsection.4.3.12}{Radiation flux at each layer boundary [ADDING]}{subsection.4.3}% 100
+\BOOKMARK [3][-]{subsubsection.4.3.13}{Add in the flux}{subsection.4.3}% 101
+\BOOKMARK [3][-]{subsubsection.4.3.14}{The temperature derivative of the flux}{subsection.4.3}% 102
+\BOOKMARK [3][-]{subsubsection.4.3.15}{Treatment of cloud cover}{subsection.4.3}% 103
+\BOOKMARK [3][-]{subsubsection.4.3.16}{Incidence flux and angle of incidence [SHTINS]}{subsection.4.3}% 104
+\BOOKMARK [3][-]{subsubsection.4.3.17}{Other Notes.}{subsection.4.3}% 105
+\BOOKMARK [2][-]{subsection.4.4}{Turbulence scheme}{section.4}% 106
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Surface boundary layer}{subsection.4.4}% 107
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Diagnosis of the buoyancy coefficients}{subsection.4.4}% 108
+\BOOKMARK [3][-]{subsubsection.4.4.3}{Stability functions in the Level 2}{subsection.4.4}% 109
+\BOOKMARK [3][-]{subsubsection.4.4.4}{Master turbulent length scale}{subsection.4.4}% 110
+\BOOKMARK [3][-]{subsubsection.4.4.5}{Calculation of diffusion coefficients}{subsection.4.4}% 111
+\BOOKMARK [3][-]{subsubsection.4.4.6}{Calculation of turbulent variables}{subsection.4.4}% 112
+\BOOKMARK [3][-]{subsubsection.4.4.7}{Time integration with implicit scheme}{subsection.4.4}% 113
+\BOOKMARK [1][-]{section.5}{1 Surface Flux}{}% 114
+\BOOKMARK [1][-]{section.6}{1.1 Sea surface flux [OCNFLX]}{}% 115
+\BOOKMARK [2][-]{subsection.6.1}{1.2 Sea Surface Conditions [OCNBCS]}{section.6}% 116
+\BOOKMARK [3][-]{subsubsection.6.1.1}{1.2.1 Sea Surface Albedo for Visible [SEAALB]}{subsection.6.1}% 117
+\BOOKMARK [3][-]{subsubsection.6.1.2}{1.2.2 Sea Surface Roughness [SEAZ0F]}{subsection.6.1}% 118
+\BOOKMARK [2][-]{subsection.6.2}{1.3 Sea Surface Flux [SFCFLX]}{section.6}% 119
+\BOOKMARK [3][-]{subsubsection.6.2.1}{1.3.1 Bulk factor [BLKCOF]}{subsection.6.2}% 120
+\BOOKMARK [2][-]{subsection.6.3}{1.4 Radiation Flux at Sea Surface [RADSFC]}{section.6}% 121
+\BOOKMARK [2][-]{subsection.6.4}{1.5 Sea Surface Heat Balance [OCNSLV]}{section.6}% 122
+\BOOKMARK [1][-]{section.7}{References \(dynamics\)}{}% 123
