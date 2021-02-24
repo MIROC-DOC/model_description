@@ -9,13 +9,13 @@ $$ q_w \equiv q_v+q_l+q_i $$
 
 where $T$ and $p$ are temperature and pressure; $q_v$, $q_l$, and $q_i$ are specific humidity, cloud water, and cloud ice; $C_p$ and $R_d$ are specific heat at constant pressure and gas constant of dry air; and $L_v$ and $L_f$ are latent heat of vaporization and per unit mass, respectively. $p_s$ is 1000 hPa.
 
-In the Level 2.5, the amount of kinetic energy of turbulence multiplied by two is a forecast variable, and its time evolution is also calculated within this scheme. This value is defined by
+In the Level 2.5, the amount of kinetic energy of turbulence multiplied by two is a prognostic variable, and its time evolution is also calculated within this scheme. This value is defined by
 
 $$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
 
-where $u$, $v$, and $w$ are velocities in the zonal, meridional, and vertical directions, respectively. Hereafter in this chapter, uppercase variables will represent grid mean quantities, and the lowercase variables will represent the deviation from them. $\langle \ \rangle$ denotes an ensemble mean. For the Level 3,  $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ are also forecast variables, but the details are not explained here.
+where $u$, $v$, and $w$ are velocities in the zonal, meridional, and vertical directions, respectively. Hereafter in this chapter, uppercase variables will represent grid mean quantities, and the lowercase variables will represent the deviation from them. $\langle \ \rangle$ denotes an ensemble mean. For the Level 3,  $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ are also prognostic variables, but the details are not explained here.
 
-The outline of the calculation procedure is given as follows along with the names of the subroutines.
+The outline of the calculation procedure is given as follows along with the names of the subroutines. All subroutines listed here are in pvdfm.F.
 
 1. calculation of the friction velocity and the Monin-Obukhov length
 2. calculation of the buoyancy coefficients in consideration of partial condensation [`VDFCND`]
