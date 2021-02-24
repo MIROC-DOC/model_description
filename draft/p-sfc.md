@@ -1,4 +1,4 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0
 
 - [1 Surface Flux](#1-surface-flux)
 - [1.1 Sea surface flux `[OCNFLX]`](#11-sea-surface-flux-ocnflx)
@@ -9,8 +9,7 @@
 		- [1.3.1 Bulk factor `[BLKCOF]`](#131-bulk-factor-blkcof)
 	- [1.4 Radiation Flux at Sea Surface `[RADSFC]`](#14-radiation-flux-at-sea-surface-radsfc)
 	- [1.5 Sea Surface Heat Balance `[OCNSLV]`](#15-sea-surface-heat-balance-ocnslv)
-
-<!-- /TOC -->
+/TOC -->
 
 
 # Surface Flux
@@ -18,8 +17,6 @@
 Until CCSR/NIES AGCM, both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes became independent as MATSIRO. However, since MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes have been separated into MATSIRO. In `SUBROUTINE:[SURFCE]` in pgsfc.F, `ENTRY:[OCNFLX]` (in `SUBROUTINE:[OCEAN]` of pgocn.F) is called for the sea surface, and `ENTRY:[LNDFLX]` (in `SUBROUTINE:[MATSIRO]` of matdrv.F) is called for the land surface, respectively. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes (MIROC6). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
 
 No progostic variables are used in this scheme.
-
-[カップラーのセクション](https://github.com/MIROC-DOC/model_description/blob/coupler_iwakiri/draft/AO-coupler.md)とmerge予定。
 
 <!--
 - Inputs
@@ -121,7 +118,7 @@ $$
 The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/m^2]}$.
 
 
-## 1.2 Sea Surface Conditions `[OCNBCS]`
+## Sea Surface Conditions `[OCNBCS]`
 
 <!--
 - Output variables
@@ -248,7 +245,7 @@ $$
 
 where $k_{ocn}$ is the heat flux in the sea temperature layer, and $k_{ocn}$ is the heat flux in the sea temperature layer, respectively.
 
-### 1.2.1 Sea Surface Albedo for Visible `[SEAALB]`
+### Sea Surface Albedo for Visible `[SEAALB]`
 
 In `SUBROUTINE [SEAALB]` (of pgocn.F), the albedo for the visible bands are calculated supposing ice-free conditions.
 <!--
@@ -285,7 +282,7 @@ $$
 	\alpha_{L(2)} = 0.06
 $$
 
-### 1.2.2 Sea Surface Roughness `[SEAZ0F]`
+### Sea Surface Roughness `[SEAZ0F]`
 
 In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated.
 
@@ -333,7 +330,7 @@ where, $\nu = 1.5 \times 10^{-5} \mathrm{[m^2/s]}$ is the kinetic viscosity of t
 $z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and vapor, $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$), and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$), respectively.
 
 
-## 1.3 Sea Surface Flux `[SFCFLX]`
+## Sea Surface Flux `[SFCFLX]`
 
 The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_s$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
@@ -388,7 +385,7 @@ $$
 $$
 
 
-### 1.3.1 Bulk factor `[BLKCOF]`
+### Bulk factor `[BLKCOF]`
 
 In `SUBROUTINE:[BLKCOF]` (of psfcl.F), the bulk factors are calculated. The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
 
@@ -484,7 +481,7 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
 
 
-## 1.4 Radiation Flux at Sea Surface `[RADSFC]`
+## Radiation Flux at Sea Surface `[RADSFC]`
 
 In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo $\alpha_{(d,b)}$, $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation $SW^\downarrow$ and upward shortwave radiation $SW^\uparrow$ incident on the earth's surface, the direct and scattered light together are
 
@@ -493,7 +490,7 @@ $$
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
-## 1.5 Sea Surface Heat Balance `[OCNSLV]`
+## Sea Surface Heat Balance `[OCNSLV]`
 
 <!--
 The comments for some variables say "soil", but this is because the program was adapted from a land surface scheme, and has no particular meaning.
