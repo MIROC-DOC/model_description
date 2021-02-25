@@ -1,6 +1,6 @@
 # pcldphys: Cloud Microphysics
 
-The code is written in the 'pcldphys' file.
+The SUBROUTINE:[CLDPHYS] is written in the pcldphys.F file.
 
 ## Overview of Cloud Microphysics
 
