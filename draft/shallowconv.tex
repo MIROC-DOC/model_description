@@ -17,7 +17,7 @@
 %     _\ \_
 %     \____\
 \section{浅い積雲の概要}
-浅い積雲は熱帯や亜熱帯で対流雲の中では最も頻度が多く，大気放射によるエネルギー収支を介して気候に与える影響が重要視されている．
+浅い積雲は熱帯や亜熱帯で対流雲の中では最も頻度が多く，大気放射によるエネルギー収支を介して気候に与える影響が重要視されている（Stevens, 2005）．
 浅い積雲は境界層の大気を自由大気へ輸送する役割を担っており，降水を伴わないことが多く，深い対流のように降水性の下降流が地表まで到達しないことが特徴である．
 
 浅い積雲対流が発生する境界層の鉛直構造について簡単に説明する．地表面が太陽光によって温められた，または上方から冷たい空気が流れ込んだとき，
@@ -29,9 +29,11 @@
 
 % fig. 境界層の温度，湿度プロファイル
 
-浅い積雲のパラメタリゼーションは現在気候の再現性を高めるためMIROC6から導入された．
+従来のMIROCでは，Chikira and Sugiyama (2010)が提唱した積雲スキームが様々なタイプの積雲を広く表現することを理想としているが，
+低緯度域の海上で下層雲を過小評価する傾向がある．これに対処し現在気候の再現性を高めるためMIROC6から浅い対流のパラメタリゼーションが導入された．
+(Tatebe et al., 2019, Ogura et al., 2017, Ogura, 2015)．
 当該のパッケージpshcn.FはPSHCNとDISTANCEのサブルーチンから成る．PSHCNの主な入力変数は気温，水蒸気量，雲水量，雲氷量である．
-浅い積雲対流の鉛直輸送に応じた液水温位，総水量，雲氷量，水平風速を予報し，さらに雲量および降水量を診断する．
+浅い積雲対流の鉛直輸送に応じた液滴温位，総水量，雲氷量，水平風速を予報し，さらに雲量および降水量を診断する．
 DISTANCEはPSHCN内部で実行され，浅い対流の浮力上昇および環境場との混合の程度を計算するものである．
 様々な物理過程の中で浅い積雲が発生する条件の判定には深い対流のパラメタリゼーション(CUMULUS)で診断された変数の値を参照するため，
 PSHCNおよびDISTANCEはCUMULUSの後に雲量の診断を経て実行される．また，降水を陸面や海洋のモデルで参照するため，
@@ -54,8 +56,8 @@ PSHCNおよびDISTANCEはCUMULUSの後に雲量の診断を経て実行される
     \rho \overline {w' \psi '}\approx M_u (\psi_u-\overline{\psi}) 
 \end{equation}
 
-ただし$M_u=\rho_u\sigma_u w_u$は上昇流のマスフラックス($\rho_u$，$\sigma_u$,$w_u$はそれぞれ上昇流内の密度，格子内で上昇流が占める面積比，上昇流の速度)，
-$\psi_u$は積雲対流で運ばれる何らかの保存量の上昇流内の代表値，$\overline{\psi}$は同じ保存量の環境場での代表値を表す．
+ただし$M_u=\rho_u\sigma_u w_u$は上昇流のマスフラックス($\rho_u$,$\sigma_u$,$w_u$はそれぞれ上昇流内の密度，格子内で上昇流が占める面積比，上昇流の速度)，
+$\psi_u$は積雲対流で運ばれる何らかの保存量（液滴温位，総水量，運動量の水平成分）の上昇流内の代表値，$\overline{\psi}$は同じ保存量の環境場での代表値を表す．
 この式における未知数$M_u$，$\psi_u$の鉛直プロファイルを求めることで浅い積雲による鉛直輸送の効果を計算する．
 質量と保存量それぞれのフラックスの診断式は
 \begin{align}
@@ -76,7 +78,8 @@ $\psi_u$は積雲対流で運ばれる何らかの保存量の上昇流内の代
     \frac{\partial M_u}{\partial z} &= M_u (\tilde{E} - \tilde{D}) \\
     \frac{\partial \psi_u}{\partial z} &= \tilde{E}(\overline{\psi} - \psi_u) + S_{\psi}
 \end{align}
-となる．MIROC6では$S_{\psi}=0$としており，この連立方程式は$\tilde{D}$と$\tilde{E}$の二つのパラメーターについてのクロージャー問題に帰着する．
+となる．MIROC6では$S_{\psi}$として降水に伴う液滴温位の変化や，サブグリッドの気圧傾度が水平運動量に及ぼす影響を別途計算している．
+(6),(7)の連立方程式は$\tilde{D}$と$\tilde{E}$の二つのパラメーターについてのクロージャー問題に帰着する．
 3.4節の方法で$\tilde{D}$と$\tilde{E}$を求め，雲底での境界条件とともに微分方程式を解くことで$M_u$と$\psi_u$の鉛直プロファイルを求める．
 
 % ________
@@ -90,13 +93,13 @@ $\psi_u$は積雲対流で運ばれる何らかの保存量の上昇流内の代
 計算手順の概略は以下の通り．
 
 \begin{itemize}
-    \item 温度$T$，比湿$q$，雲水量$l$，雲氷量$q_i$の入力から液滴温位$\theta_l$と総水量$q_t$を診断する
+    \item 温度$T$，水蒸気量$q_v$，雲水量$q_l$，雲氷量$q_i$の入力から液滴温位$\theta_l$と総水量$q_t$を診断する
     \item 雲底における上昇流のマスフラックス$M_u$を診断する
     \item 雲底高度を診断する
     \item 浅い積雲の有無を診断する
     \item 上昇流内での$M_u$，$\theta_l$，$q_t$、水平風速$u$、$v$の鉛直プロファイルを診断する
     \item $\theta_l$，$q_t$，$q_i$，$u$，$v$，液滴温度$T_l$を予報する
-    \item $T_l$と$q_t$から$T$，$q$，$l$を診断する
+    \item $T_l$と$q_t$から$T$，$q_v$，$q_l$を診断する
 \end{itemize}
 
 
@@ -156,23 +159,23 @@ $k_f$は乱流運動エネルギーが鉛直と水平の各方向に分配され
 \subsection{浅い積雲の有無の判定}
  各水平格子について，以下の条件によって浅い積雲対流が発生するかどうかを判定する．
  \begin{itemize}
-    \item 推定逆転層強度(estimated nversion strength, EIS; Wood and Bretherton, 2006) がある閾値を超える場合は，層積雲が卓越する環境場であると判断し，浅い積雲は発生させない．
+    \item 推定逆転層強度(estimated inversion strength, EIS; Wood and Bretherton, 2006) がある閾値を超える場合は，層積雲が卓越する環境場であると判断し，浅い積雲は発生させない．
      この基準は，気候モデルの鉛直解像度では境界層の上にできる薄く強い逆転層を十分に表現できず，
      CINの過小評価により浅い積雲が過大に表現される問題があるため導入されている．EISは
      $EIS=\theta_{700}-\theta_{0}-\Gamma_m^{850}(z_{700}-LCL)$
     で求める．ただし$\theta_{700}$，$\theta_0$はそれぞれ700hPaと地表面での温位，$\Gamma_m^{850}$は850hPa高度の湿潤断熱減率，
     $z_{700}$は700hPa高度である．
-   \item 深い積雲のスキームで診断された積雲対流の深さが特定の閾値を超えた場合，深い対流卓越する環境場であるとし，浅い積雲は発生させない．
+   \item 深い積雲のスキームで診断された積雲対流の深さが特定の閾値を超えた場合，深い対流が卓越する環境場であるとし，浅い積雲は発生させない．
    \item 浅い積雲に伴う上昇流の面積が或る閾値を越えない場合浅い積雲の計算を省略する． 
  \end{itemize}
 
 \subsection{上昇流フラックスの鉛直プロファイルの診断}
-浅い積雲が発生すると判定された雲底と判断された格子では，上述の雲底高度に輸送される量$\psi_u$の境界層格子平均値と雲底の質量フラックス
+浅い積雲が発生すると判定された格子では，上述の雲底高度に輸送される量$\psi_u$の境界層格子平均値と雲底の質量フラックス
 $M_{u,base}$を与え，エントレインメントとデトレインメントを計算していく．
 エントレインメントとデトレインメントの比率$\tilde{E}$, $\tilde{D}$を決定するプロセスはKain and Fritsch (1990)などでも用いられている
 浮力ソートの考え方を利用する．厚さ$\delta z$の層内で，環境場の空気$\delta M_e$と上昇流内の空気$\delta M_u$が等しく
 $\tilde{E_0} M_u \delta z$ずつ水平混合に関与して様々な混合状態のスペクトルを成す状況を考える．
-混合に関与する全質量フラックスは$2\tilde{E_0} M_u\delta z$である．ただし$\tilde{E_0}$は$\tilde{E_0}=c_0/H$で与えられる量で$c_0$は経験定数，$H$は対流圏の厚さである．
+混合に関与する全質量フラックスは$2\tilde{E_0} M_u\delta z$である．ただし$\tilde{E_0}$は$\tilde{E_0}=c_0/H$で与えられる量で$c_0$は経験定数，$H$は地表からの高さである．
 混合空気内では，環境場からの空気が比率$\chi$を占めるような混合状態が確率密度$q(\chi)$で存在しており，
 ここでは計算を簡単にするため$\chi=0$の純粋な湿潤空気から$\chi=1$の純粋な環境場の空気までの混合状態が一様な確率で分布していると考える
 (Kain-Fritschスキームではガウス分布を仮定している)．この混合空気にはたらく浮力を元にエントレインメントまたはデトレインメントが判定され，
@@ -201,55 +204,74 @@ $\tilde{E_0} M_u \delta z$ずつ水平混合に関与して様々な混合状態
     B_c = -\frac{1}{2}\frac{w_u^2}{l_c}    
 \end{equation}
 を超えていればエントレインメントが起こると判定され，それ以外の混合空気はすべてデトレインされる．
-負の浮力を受けながら距離$l_c$だけ上昇できるような混合状態の臨界値$\chi_c$が求まれば，エントレインメントによって上昇流内に取り込まれる環境場の空気
+負の浮力を受けながら距離$l_c$だけ上昇できるような混合状態の臨界値$\chi_c$が求まれば，エントレインメントによって
+上昇流内に取り込まれる環境場の空気とデトレインメントによって環境場へ放出される上昇流内の空気はそれぞれ
 \begin{equation}
-    2\tilde{E_0} M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \tilde{E_0} M_u \chi_c^2    
+    M_u\tilde{E}=2\tilde{E_0} M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \tilde{E_0} M_u \chi_c^2    
 \end{equation}
-とデトレインメントによって環境場へ放出される上昇流内の空気
 \begin{equation}
-    2\tilde{E_0} M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \tilde{E_0} M_u (1-\chi_c)^2    
+    M_u\tilde{D}=2\tilde{E_0} M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \tilde{E_0} M_u (1-\chi_c)^2
 \end{equation}
-が計算でき，
+のようになる．これにより
 \begin{align}
     \tilde{E}&=\tilde{E_0}\chi_c^2 \\
     \tilde{D}&=\tilde{E_0}(1-\chi_c)^2 \\
+\end{align}
+として(6),(7)の連立方程式を以下のように求めることができる．
+\begin{align}
     \frac{1}{M_u}\frac{\partial M_u}{\partial z} &= \tilde{E} - \tilde{D} = \tilde{E_0}(2\chi_c - 1) \label{M_u}\\
-    \frac{\partial \psi_u}{\partial z} &= \tilde{E} (\overline{\psi}-\psi_u) = \tilde{E_0}\chi_c^2(\overline{\psi}-\psi_u) \label{psi_u}\\
+    \frac{\partial \psi_u}{\partial z} &= \tilde{E} (\overline{\psi}-\psi_u) + S_{\psi} = \tilde{E_0}\chi_c^2(\overline{\psi}-\psi_u) \label{psi_u} + S_{\psi}.\\
 \end{align}
 
-となる．$\chi_c$は混合空気の仮温位
+ただし$\chi_c$は混合空気の仮温位
 \begin{equation}
-    \theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{l,u})-\left(\frac{\beta L}{c_p\Pi}-\theta_u\right)(\overline{q_t}-q_{l,u})\right]   
+    \theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{lu})-\left(\frac{\beta L}{c_p\Pi}-\theta_u\right)(\overline{q_t}-q_{tu})\right]   
 \end{equation}
-(Randall,1980)をもとに導出する．
+(Bretherton et al., 2004)をもとに導出する．ただし$\beta$はRandall (1980)で定義された温度と圧力に依存する熱力学パラメーター，$\overline{\theta_l}$は環境場の液滴温位，
+$\theta_{lu}$は上昇流内の液滴温位，$\theta_u$は上昇流内の温位，$\overline{q_t}$は環境場の総水量，$q_{tu}$は上昇流内の総水量，$L$は水の蒸発熱，$c_p$は乾燥空気の定圧比熱，
+$\Pi$はエクスナー関数．
 
-$\psi_u$の中の液水温位と総水量から雲水量$l$と比湿$q$を診断し，閾値を上回った雲水は雨水$q_r$として落下させる．$q_r$の生成量に応じて液水温位を更新し，
-$w_u$および$M_{u,base}$と整合するように上昇流の面積を診断する．これを離散化した支配方程式(\ref{M_u})，(\ref{psi_u})で上方に積分していくことで上昇流の鉛直プロファイルを求めていき，
-$w_u$または上昇流面積が下限値の定数を下回る高さを雲頂高度とする．
-なお，本パラメタリゼーションでの保存量の鉛直フラックスの定式化は，講師の下端から流入する上昇流は時間ステップ$\Delta t$で
+以上によって$w_u$, $M_u$, $\psi_u$の鉛直プロファイルについての支配方程式(8)，(21), (22)が揃う．これを離散化し，3.1の下部境界条件を用いて上方に一層ずつ積分していくことで
+各物理量の鉛直プロファイルを求める．
+
+さらに$\psi_u$の中の液滴温位と総水量から雲水量$q_l$と水蒸気量$q_v$を診断する．閾値を上回った雲水は雨水$q_r$として落下させ，$q_r$の生成量に応じて液滴温位を更新する．これが(22)の$S_\psi$に相当する．
+続いて$w_u$および$M_{u,base}$と整合するように上昇流の面積を各層で診断する．雲頂高度は$w_u$または上昇流面積が下限値の定数を下回る高さとする．
+
+なお，本パラメタリゼーションでの保存量の鉛直フラックスの定式化は，格子の下端から流入する上昇流は時間ステップ$\Delta t$で
 格子内の大気を全て入れ替えるほど大きくないと仮定しているに等しい．よって上昇流の質量フラックスを求める際には次のような上限を課して数値不安定を防いでいる．
 \begin{equation}
     M_u = min.\left(M_u, \frac{\rho\Delta z}{\Delta t}\right)    
 \end{equation}
 
 \begin{thebibliography}{99}
-    \bibitem{B04} Bretherton, C. S., J. R. McCaa, and H. Grenier 2004: 
+    \bibitem{B04} Bretherton, C. S., J. R. McCaa, and H. Grenier, 2004: 
         A new parameterization for shallow cumulus convection and its application to marine subtropical cloud-topped boundary layers. 
         Part I: description and 1D results, \textit{Mon. Wea. Rev.}, 132, 864-882.
-    \bibitem{KF90}Kain, J. S., and J. M. Fritsch 1990: 
+    \bibitem{KF90}Kain, J. S., and J. M. Fritsch, 1990: 
         A one-dimensional entraining/detraining plume model and its application in convective parameterization,
         \textit{J. Atmos. Sci.}, 47, 2784-2802.
-    \bibitem{PB09} Park, S. and C. S. Bretherton 2009: 
+    \bibitem{PB09} Park, S. and C. S. Bretherton, 2009: 
         The University of Washington shallow convection and moist turbulence schemes and their impact on 
         climate simulations with the Community Atmosphere Model, \textit{J. Clim}, 22, 3449-3469.
-    \bibitem{R80} Randall, D. A. 1980: 
+    \bibitem{R80} Randall, D. A., 1980: 
         Conditional instability of the first kind upside-down. \textit{J. Atmos. Sci.}, 37, 125–130.
-    \bibitem{SouseiRep} Ogura, T. 2015: 
+    \bibitem{SouseiRep} Ogura, T., 2015: 
         Implementation of a shallow convection parameterization. \textit{Program for Risk Information on Climate Change, 
         Progress report 2014}, 126-131.
-    \bibitem{WB06} Wood, R. and C. S. Bretherton 2006: 
+    \bibitem{WB06} Wood, R. and C. S. Bretherton, 2006: 
         On the relationship between stratiform low cloud cover and lower-tropospheric stability. 
         \textit{J. Clim}, 19, 6425–6432.
+    \bibitem{S05} Stevens, B., 2005: 
+        Atmospheric Moist Convection, \textit{Annu. Rev. Earth Planet. Sci.}, 33, 605-643．
+    \bibitem{Tatebe19} Tatebe, H., T. Ogura, T. Nitta, et al., 2019: 
+        Description and basic evaluation of simulated mean state, internal variability, and climate sensitivity in MIROC6.
+        \textit{Geosci. Model Dev.}, 12, 2727-2765.
+    \bibitem{Ogura17} Ogura, T., H. Shiogama, M. Watanabe, et al., 2017:
+        Effectiveness and limitations of parameter tuning in reducing biases of top-of-atmosphere radiation and clouds in MIROC version 5.
+        \textit{Geosci. Model Dev.}, 10, 4647-4664.
+    \bibitem{CS10}Chikira, M. and M. Sugiyama, 2010: 
+        A cumulus parameterization with state-dependent entrainment rate. Part I: Description and sensitivity to temperature and humidity profiles.
+        \textit{J. Atmos. Sci.}, 67, 2171–2193
 \end{thebibliography}
 
 \end{document}
