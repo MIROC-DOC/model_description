@@ -1,45 +1,44 @@
-# Radiation scheme in the MIROC 6.0
-## Summary of radiation flux calculations [DTRN31]
-The MIROC 6.0 radiation scheme was created based on the Discrete Ordinate Method and the k-distribution Method. The scheme calculates the value of the radiation flux at each level by considering the absorption, emission, and scattering processes of terrestrial and solar radiation by gases and clouds/aerosols. The main input data are temperature $T$, specific humidity $q$, cloud water $l$, and cloud cover $C$. The output data are shortwave or longwave upward and downward radiation fluxes $F^{\mp}$, and derivative coefficient to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$, surface downward radiation flux $F_{sf}^{+}$, 0.5 and 0.67 µm optical thickness $\tau^{vis}$. 
+# Radiation scheme
+## Summary of the radiation flux calculation [DTRN31]
+The  radiation scheme in the MIROC was created based on the Discrete Ordinate Method and the k-distribution Method (Nakajima et al., 2000), and updated by Sekiguchi and Nakajima (2008). The scheme calculates the value of the radiation flux at each level by considering the absorption, emission, and scattering processes of terrestrial and solar radiation by gases and clouds/aerosols. The main input data are temperature $T$, specific humidity $q$, cloud water $l$, and cloud cover $C$. The output data are shortwave or longwave upward and downward radiation fluxes $F^{\mp}$, and derivative coefficient to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$, surface downward radiation flux $F_{sf}^{+}$, and 0.5 and 0.67 µm optical thickness $\tau^{vis}$. 
 
-The calculation is separated for several wavelength bands. It is further divided into several sub-channels, based on the k-distribution method. As for gaseous absorption, the line absorption in $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$,  $\mathrm{O}_{2}$, $\mathrm{O}_{3}$,  $\mathrm{N}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{H}_{4}$, the continuous absorption in   $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$,  $\mathrm{O}_{2}$, $\mathrm{O}_{3}$, and the CFC absorption are incorporated. As for scattering, Rayleigh scattering of gases and scattering by cloud and aerosol particles are considered.
+The calculation is separated for several wavelength bands. It is further divided into several sub-channels, based on the k-distribution method. As for gaseous absorption, the line absorption in $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$, $\mathrm{O}_{2}$, $\mathrm{O}_{3}$, $\mathrm{N}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{H}_{4}$, the continuous absorption in $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$, $\mathrm{O}_{2}$, $\mathrm{O}_{3}$, and the CFC absorption are incorporated. As for scattering, Rayleigh scattering of gases and scattering by cloud and aerosol particles are considered.
 
-Major subroutines to calculate the radiation flux in DTRN31 are
+Major subroutines to calculate the radiation flux in DTRN31 are as follows.
 
 1. Calculate the Planck function from atmospheric temperature [PLANKS, PLANKF]
-
-2. Calculate the optical thickness due to gas in each sub-channel [PTFIT2]
-
-3. Calculate the optical thickness of the CFC absorption [CNTCFC2]
-
-4. Calculate the optical thickness of aerosol, Rayleigh scattering, and cloud [SCATAE, SCATRY, SCATCL]
-
+2. Calculate the optical thickness  to the gas in each sub-channel [PTFIT2]
+3. Calculate the optical thickness to the CFC absorption [CNTCFC2]
+4. Calculate the optical thickness to aerosol, Rayleigh scattering, and cloud [SCATAE, SCATRY, SCATCL]
 5. Expand the Planck function by optical thickness for each sub-channel [PLKEXP]
-
-6. Calculate the transmission coefficient (T), reflection coefficient (R) and source (S) [TWST]
-
+6. Calculate the transmission coefficient (T), reflection coefficient (R) and source function (S) [TWST]
 7. Make T, R, and S matrixes for maximal/random approximation [RTSMR]
-
 8. Calculate the radiation flux by adding method [ADDMR, ADDING]
 
-To account for the partial coverage of clouds, the transmission coefficients, reflection coefficients and source functions for each layer are calculated at weighted average of the cloud cover, separately for cloud cover and clear-sky conditions. The cloud cover of the cumulus is also considered. In addition, it also performs several adding and calculates the clear-sky radiation flux.
+![放射](C:\Users\owner\Pictures\放射.png)
+
+To account for the partial coverage of clouds, the transmission and reflection coefficients and source functions for each layer are calculated at weighted average of the cloud cover, separately for cloud cover and clear-sky conditions. The cloud cover of the cumulus is also considered. In addition, it also performs several adding and calculates the clear-sky radiation flux.
 
 ##  Wavelength and Sub-channel
 
 The basics of radiative flux calculations are represented by Beer-Lambert's Law.
+
 $$
 \begin{eqnarray}
   F^\lambda(z) = F^\lambda(0) exp (-k^\lambda z)
 \end{eqnarray}
 $$
-$F^{\lambda}$ is the radiant flux density at the wavelength of  $\lambda$ and $k^{\lambda}$  is the absorption coefficient. In order to calculate the radiative fluxes related to the heating rate, the integration operation with respect to the wavelength is required.
+
+$F^{\lambda}$ is the radiant flux density at the wavelength of $\lambda$ and $k^{\lambda}$ is the absorption coefficient. In order to calculate the radiative fluxes related to the heating rate, the integration operation with respect to the wavelength is required.
+
 $$
 \begin{eqnarray}
   F(z) = \int F^\lambda(z) d \lambda
  = \int F^\lambda(0) exp (-k^\lambda z) d \lambda \label{p-rad:beer}\\
 \end{eqnarray}
 $$
-However, it is not easy to calculate this integration precisely because the absorption and emission of radiation by gas molecules have the complicated wavelength dependence of the absorption line attributed to the structure of the molecule. The k-distribution method is a method designed to make the relatively precise calculation easier. Within a certain wavelength range, considering the density function $F(k)$ for $\lambda$  of the absorption coefficient of  $k$  , the above formula is approximated as follows,
+
+However, it is not easy to calculate this integration precisely because the absorption and emission of radiation by gas molecules have the complicated wavelength dependence of the absorption line attributed to the structure of the molecule. The k-distribution method is a method designed to make the relatively precise calculation easier. Within a certain wavelength range, considering the density function $F(k)$ for $\lambda$ of the absorption coefficient of $k$, the above formula is approximated as follows,
 $$
 \begin{eqnarray}
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda
@@ -57,9 +56,9 @@ $$
 $$
 the formula, as such above, can be relatively precisely calculated by the addition of a finite number (sub-channels) of exponential terms. This method has furthermore the advantage easy to consider the absorption and scattering at the same time.
 
-In the MIROC 6.0, by changing the radiation parameter data, the calculations can be performed at various wavelengths. In the standard version, the wavelength range is divided into 18 parts. In addition, each wavelength range is divided into 1 to 6 sub-channels (corresponding to the                                 in the above formula). There are 40 channels in total. The wavelength range is divided by the wavenumber ( $\mathrm{cm}^{-1}$ ), 10, 250, 530, 610, 670, 980, 1175, 1225, 2000, 2500, 3300, 6000, 10000, 23000, 30000, 33500, 36000, 43500, and 50000. A global warming version with 29 bands and 111 channels has been developed. Additionally, a chemical version is also with 37 bands and 126 channels for chemical transport model and the boundary of the shortwave region is also changed to 54000 $\mathrm{cm}^{-1}$. In the MIROC 6.0, the global warming version is set as default.
+In the MIROC 6.0, by changing the radiation parameter data, the calculations can be performed at various wavelengths. In the standard version, the wavelength range is divided into 18 parts. In addition, each wavelength range is divided into 1 to 6 sub-channels (corresponding to the $i$ in the above formula). There are 40 channels in total. The wavelength range is divided by the wavenumber ( $\mathrm{cm}^{-1}$ ), 10, 250, 530, 610, 670, 980, 1175, 1225, 2000, 2500, 3300, 6000, 10000, 23000, 30000, 33500, 36000, 43500, and 50000. A global warming version with 29 bands and 111 channels has been developed. Additionally, a chemical version is also with 37 bands and 126 channels for chemical transport model and the boundary of the shortwave region is also changed to 54000 $\mathrm{cm}^{-1}$. In the MIROC 6.0, the global warming version is set as default.
 
-##  **Calculating the Planck function [PLANKS, PLANKF]**
+##  **Calculation of the Planck function [PLANKS, PLANKF]**
 
 The Planck function $\bar{B}^{w}(T)$, integrated in each wavelength range, is evaluated by the following formula.
 $$
@@ -67,17 +66,17 @@ $$
 \bar{B}^{w}(T)=\lambda^{-2} \operatorname{Texp}\left\{\sum_{n=1}^{5} B_{n}^{w}\left(\bar{\lambda}^{w} T\right)^{-n}\right\}
 \end{equation}
 $$
-where $\bar{\lambda}^{w}$ is the averaged wavelength of the wavelength range, $B_{n}^{w}$  is the parameter determined by function fitting. This is calculated to the atmospheric temperature of each layer $T_l$  , and the boundary atmospheric temperature of each layer $T_{l+1/2}$, surface temperature $T_g$ and temperature 1K higher than surface temperature $T_{g+1K}$. The calculations are performed for each wavelength and each layer. In the following description, the subscript of the wavelength range $w$  is omitted.
+where $\bar{\lambda}^{w}$ is the averaged wavelength of the wavelength range, $B_{n}^{w}$ is the parameter determined by function fitting. This is calculated to the atmospheric temperature of each layer $T_l$, and the boundary atmospheric temperature of each layer $T_{l+1/2}$, surface temperature $T_g$ and temperature 1K higher than surface temperature $T_{g+1K}$. The calculations are performed for each wavelength and each layer. In the following description, the subscript of the wavelength range $w$ is omitted.
 
-##  **Calculating the optical thickness due to gas absorption [PTFIT2]**
+##  **Calculation of the optical thickness to gas absorption [PTFIT2]**
 
-The optical thickness of the gas absorption (including the line and continuous absorptions) $\tau^{K D}$ is expressed as follows by using the index $m$  as the type of molecules.
+The optical thickness of the gas absorption (the line and continuum absorption are unified) $\tau^{K D}$ is expressed as follows by using the index $m$ as the type of molecules.
 $$
 \begin{equation}
 \tau^{KD}=\sum_{m=1} k^{(m)} C^{(m)}
 \end{equation}
 $$
-where $k^{(m)}$ is the absorption coefficient of the molecule   $m$, which is different for each sub-channel and determined as a function of temperature $T$  and atmospheric pressure   $p$.  $C^{(m)}$ represents the amount of gas in the layer represented by   $\mathrm{mol} / \mathrm{cm}^{2} / \mathrm{km}$, calculated by using the gas concentration $r^{(m)}$ in ppmv ( $C^{(m)}=10^{-1} r^{(m)} \rho d z$ ). In the MIROC 6.0, the number of the considered molecule types $m$ is 6  (1:$\mathrm{H}_{2} \mathrm{O}$, 2:$\mathrm{C}\mathrm{O}_{2}$,  3:$\mathrm{O}_{2}$, 4:$\mathrm{O}_{3}$, 5:$\mathrm{N}_{2} \mathrm{O}$, 6:$\mathrm{C}\mathrm{H}_{4}$). Also, $k^{(m)}$  is represented as follows.
+where $k^{(m)}$ is the absorption coefficient of the molecule $m$, which is different for each sub-channel and determined as a function of temperature $T$ and atmospheric pressure $p$. $C^{(m)}$ represents the amount of gas in the layer represented by $\mathrm{mol} / \mathrm{cm}^{2} / \mathrm{km}$, calculated by using the gas concentration $r^{(m)}$ in ppmv ( $C^{(m)}=10^{-1} r^{(m)} \rho d z$ ). In the MIROC 6.0, the number of the considered molecule types $m$ is 6 (1:$\mathrm{H}_{2} \mathrm{O}$, 2:$\mathrm{C}\mathrm{O}_{2}$,  3:$\mathrm{O}_{2}$, 4:$\mathrm{O}_{3}$, 5:$\mathrm{N}_{2} \mathrm{O}$, 6:$\mathrm{C}\mathrm{H}_{4}$). Also, $k^{(m)}$ is represented as follows (the details are in Sekiguchi and nakajima, 2008).
 $$
 \begin{equation}
 k^{(m)}=\exp \left(\log 10 k_{2}^{(m)}+(A+B T) \log \left(T / T_{\text {ref2 } }\right)\right)
@@ -96,7 +95,7 @@ A=\frac{\log 10\left(k_{3}^{(m)}-k_{2}^{(m)}\right)}{\log \left(T_{\text {ref3 }
 \end{equation}
 $$
 
-$ T_ {ref1-3}$ are the reference temperatures prepared in advance, and  $k_{1-3}^{(m)}$ are the absorption coefficients when the reference temperatures  $ T_{ref1-3}$  is used (fitted at 26 atmospheric pressure grids ).
+$ T_ {ref1-3}$ are the reference temperatures prepared in advance (200, 260, 320 $K$), and $k_{1-3}^{(m)}$ are the absorption coefficients when the reference temperatures  $ T_{ref1-3}$ is used (also fitted at 26 atmospheric pressure grids).
 
 When considering the absorption of $\mathrm{H}_{2} \mathrm{O}$, we calculate the optical thickness of the self-broadening and add $\tau^{self}$.
 $$
@@ -111,25 +110,25 @@ $$
 \end{equation}
 $$
 
-$k^{(\mathrm{H}_{2} \mathrm{O}_{-} \mathrm{self})}$  is calculated in the same way as $k^{(m)}$. The self-broadening absorption coefficients in the reference temperatures  $T_{ref1-3}$ are prescribed and dependent on the pressure. This calculation is done for each sub-channel and each layer.
+$k^{(\mathrm{H}_{2} \mathrm{O}_{-} \mathrm{self})}$ is calculated in the same way as $k^{(m)}$. The self-broadening absorption coefficients in the reference temperatures $T_{ref1-3}$ are prescribed and dependent on the pressure. This calculation is done for each sub-channel and each layer.
 
-##  **Calculating the optical thickness of the CFC absorption [CNTCFC2]**
+##  **Calculation of the optical thickness to CFC absorption [CNTCFC2]**
 
-The optical thickness of the CFC absorption $\tau^{CFC}$ is considered for several types of CFCs.
+The optical thickness of the CFC absorption $\tau^{CFC}$ is considered for several types of CFCs $m$.
 $$
 \begin{equation}
 \tau^{C F C}=\sum_{m} 10^{k^{(m)}} r^{(m)} \rho \Delta z 10^{-1}
 \end{equation}
 $$
-In MIROC 6.0, the number of the considered CFCs $m$ is 28 (1-28: CFC11, CFC12, CFC13, CFC113, CFC114, CFC115, HCFC21, HCFC22, HCFC123, HCFC124, HCFC141b, HCFC142b, HCFC225ca, HCFC225cb, HFC32, HFC125, HFC134, HFC134a, HFC143a, HFC152a, SF6, ClONO2, CCl4, N2O5, C2F6, HNO4, and SF5CF3). This calculation is performed for each wavelength range and each layer.
+In MIROC 6.0, the number of the considered CFCs $m$ is 28 (1:$\mathrm{CFC\text{-11}}$, 2:$\mathrm{CFC\text{-12}}$, 3:$\mathrm{CFC\text{-13}}$, 4:$\mathrm{CFC\text{-14}}$, 5:$\mathrm{CFC\text{-113}}$, 6:$\mathrm{CFC\text{-114}}$, 7:$\mathrm{CFC\text{-115}}$, 8:$\mathrm{HCFC\text{-21}}$, 9:$\mathrm{HCFC\text{-22}}$, 10:$\mathrm{HCFC\text{-123}}$, 11:$\mathrm{HCFC\text{-124}}$, 12:$\mathrm{HCFC\text{-141b}}$, 13:$\mathrm{HCFC\text{-142b}}$, 14:$\mathrm{HCFC\text{-225ca}}$, 15:$\mathrm{HCFC\text{-225cb}}$, 16:$\mathrm{HFC\text{-32}}$, 17:$\mathrm{HFC\text{-125}}$, 18:$\mathrm{HFC\text{-134}}$, 19:$\mathrm{HFC\text{-134a}}$, 20:$\mathrm{HFC\text{-143a}}$, 21:$\mathrm{HFC\text{-152a}}$, 22:$\mathrm{S}\mathrm{F}_{6}$, 23:$\mathrm{ClON}\mathrm{O}_{2}$, 24:$\mathrm{C}\mathrm{Cl}_{4}$, 25:$\mathrm{N}_{2}\mathrm{O}_{5}$, 26:$\mathrm{C}_{2}\mathrm{F}_{6}$, 27:$\mathrm{HN}\mathrm{O}_{4}$, 28:$\mathrm{SF}_{5}\mathrm{CF}_{3}$). This calculation is performed for each wavelength range and each layer.
 
-## **Optical thickness of scattering and scattering moment**
+## **Optical thickness to scattering and scattering moment**
 
-Calculate the optical thickness of scattering and the scattering moment. These calculations are performed for each wavelength and each layer. The optical parameters for the particle matter  $q_{m}^{(p)}$ are prepared, including the extinction coefficient ($m = 1$) including the scattering and absorption process and the absorption coefficient ($m = 2$) the moments of the volume scattering phase function ($m=3-4$; first-second order).
+Calculate the optical thickness of scattering and the scattering moment. These calculations are performed for each wavelength and each layer. The optical parameters for the particle matter $q_{m}^{(p)}$ are prepared, including the extinction coefficient ($m = 1$) including the scattering and absorption process and the absorption coefficient ($m = 2$) the moments of the volume scattering phase function ($m=3-4$; first-second order).
 
 ### **Aerosol [SCATAE]**
 
-The optical thickness $\tau_{m}^{a e}$ and the scattering moment $Q_{m}^{a e}$ for aerosol are
+The optical thickness $\tau_{m}^{a e}$, the part of the optical thickness  due to absorption $\tau_{ab}^{a e}$,  the scattering moment $Q_{m}^{a e}$ for aerosol are
 $$
 \begin{equation}
 \tau^{a e}=\sum_{p} q_{1, n}^{(p)} r^{(p)} \times \rho \Delta z 10^{-1}
@@ -138,16 +137,28 @@ $$
 
 $$
 \begin{equation}
-Q_{m}^{a e}=\sum_{p} q_{m, n}^{(p)} r^{(p)} \times \rho \Delta z 10^{-1} (\mathrm{~m} \geq 2)
+\tau_{ab}^{a e}=\sum_{p} q_{2, n}^{(p)} r^{(p)} \times \rho \Delta z 10^{-1}
 \end{equation}
 $$
 
-$p$ is the aerosol type, and $r^{(p)}$  is volume mixing ratio of the particle. The optical parameters for the particle $q_{m, n}^{(p)}$  depend on the mode radius index $n$ prescribed for each particle (IRA). In the MIROC 6.0, the number of the considered aerosol types $p$ 15 (1-6:soil dust (bin1-6), 7:carbonaceous (BC/OC=0.3), 8:carbonaceous (BC/OC=0.15), 9:carbonaceous (BC/OC=0), 10:black carbon (external mixture), 11:sulfate, 12-15:sea salt (bin 1-4)).
+$$
+\begin{equation}
+Q_{m}^{a e}=\sum_{p} q_{m, n}^{(p)} r^{(p)} \times \rho \Delta z 10^{-1} (\mathrm{~m} \geq 3)
+\end{equation}
+$$
 
-If the aerosol radius is used, the optical thickness $\tau_{m}^{a e}$ and the scattering moment $Q_{m}^{a e}$ for the hygroscopic aerosols (e.g., carbonaceous, sulfate, sea salt) are
+$p$ is the aerosol type, and $r^{(p)}$ is volume mixing ratio of the particle. The optical parameters for the particle $q_{m, n}^{(p)}$ depend on the mode radius index $n$ prescribed for each particle (IRA). In the MIROC 6.0, the number of the considered aerosol types $p$ 15 (1-6:soil dust (bin1-6), 7:carbonaceous (BC/OC=0.3), 8:carbonaceous (BC/OC=0.15), 9:carbonaceous (BC/OC=0), 10:black carbon (external mixture), 11:sulfate, 12-15:sea salt (bin 1-4)).
+
+If the aerosol radius is used, the optical thickness $\tau_{m}^{a e}$, the part of the optical thickness  due to absorption $\tau_{ab}^{a e}$, and the scattering moment $Q_{m}^{a e}$ for the hygroscopic aerosols (e.g., carbonaceous, sulfate, sea salt) are
 $$
 \begin{equation}
 \tau^{a e}=\sum_{p}\left[\left(1-F X_{a e}\right) q_{1, n f i t}^{(p)} r^{(p)}+F X_{a e} q_{1, n f i t+1}^{(p)} r^{(p)}\right] \times \rho \Delta z 10^{-1}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\tau_{ab}^{a e}=\sum_{p}\left[\left(1-F X_{a e}\right) q_{2, n f i t}^{(p)} r^{(p)}+F X_{a e} q_{2, n f i t+1}^{(p)} r^{(p)}\right] \times \rho \Delta z 10^{-1}
 \end{equation}
 $$
 
@@ -163,11 +174,11 @@ F X_{a e}=\left(R H-R H_{n f i t}^{(r e f)}\right)\left(\frac{1}{R H_{n f i t+1}
 \end{equation}
 $$
 
-where $RH$ is the local relative humidity and $R H_{n f i t}^{(r e f)}$ is the relative humidity given in the parameter and $nfit$ is the number of the prescribed relative humidity closest to the $RH$.  $nfit$ and $FX_{ae}$  are calculated in the subroutine RMDIDX and determined in advance.  
+where $RH$ is the local relative humidity and $R H_{n f i t}^{(r e f)}$ is the relative humidity given in the parameter and $nfit$ is the number of the prescribed relative humidity closest to the $RH$. $nfit$ and $FX_{ae}$ are calculated in the subroutine RMDIDX and determined in advance.  
 
 ### **Rayleigh scattering [SCATRY]**
 
-The optical thickness $\tau_{m}^{r}$ and the scattering moment $Q_{m}^{r}$ of Rayleigh scattering are
+The optical thickness $\tau_{m}^{r}$ of Rayleigh scattering and the part of the optical thickness  due to absorption $\tau_{ab}^{r}$ are
 
 
 $$
@@ -178,7 +189,7 @@ $$
 
 $$
 \begin{equation}
-Q_{m}^{r}=\frac{e^{r} d p q m o l_{m}}{p_{S T D}}(\mathrm{~m} \geq 2)
+\tau_{ab}^{r}=\frac{e^{r} d p q m o l_{2}}{p_{S T D}}
 \end{equation}
 $$
 
@@ -188,7 +199,7 @@ p_{S T D}=1013.25
 \end{equation}
 $$
 
-where $e^{r} is the Rayleigh scattering coefficient, $qmol_m$ is the moments of the phase function. These calculations are performed up to   $m=2$. Also, this is added to the optical thickness for the aerosol.
+where $e^{r}$ is the Rayleigh scattering coefficient, $qmol_m$ is the moments of the phase function. These calculations are performed up to $m=2$. Also, this is added to the optical thickness for the aerosol.
 $$
 \begin{equation}
 \tau^{a e+r}=\tau^{a e}+\tau^{r}
@@ -197,13 +208,19 @@ $$
 
 $$
 \begin{equation}
-Q_{m}^{a e+r}=Q_{m}^{a e}+Q_{m}^{r}(\mathrm{~m} \geq 2)
+\tau_{ab}^{a e+r}=\tau_{ab}^{a e}+\tau_{ab}^{r}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+Q_{m}^{a e+r}=Q_{m}^{a e}+Q_{m}^{r}(\mathrm{~m} \geq 3)
 \end{equation}
 $$
 
 ###  **Cloud [SCATCL]**
 
-The optical thickness $\tau^{cl}$ and the scattering moment $Q_{m}^{c l}$  of cloud are
+The optical thickness $\tau^{cl}$, the part of the optical thickness  due to absorption $\tau_{ab}^{cl}$, and the scattering moment $Q_{m}^{c l}$ for cloud are
 $$
 \begin{equation}
 \tau^{c l}=\sum_{c t} q_{1, n}^{(c t)}r^{(c t)}\times \rho \Delta z 10^{-1}
@@ -212,11 +229,17 @@ $$
 
 $$
 \begin{equation}
-Q_{m}^{c l}=\sum_{c t} q_{m, n}^{(c t)} \times r^{(c t)} \rho \Delta z 10^{-1}(\mathrm{~m} \geq 2)
+\tau_{ab}^{c l}=\sum_{c t} q_{2, n}^{(c t)}r^{(c t)}\times \rho \Delta z 10^{-1}
 \end{equation}
 $$
 
-$ct$ is the cloud particle type (1:liquid cloud, 2:ice cloud). The optical parameters for the particle $q_{m, n}^{(c t)}$ depend on the mode radius index $n$  prescribed for each particle (IRC). If the cloud radius is used, the optical thickness $\tau^{cl}$ and the scattering moment $Q_{m}^{c l}$ for cloud are
+$$
+\begin{equation}
+Q_{m}^{c l}=\sum_{c t} q_{m, n}^{(c t)} \times r^{(c t)} \rho \Delta z 10^{-1}(\mathrm{~m} \geq 3)
+\end{equation}
+$$
+
+$ct$ is the cloud particle type (1:liquid cloud, 2:ice cloud). The optical parameters for the particle $q_{m, n}^{(c t)}$ depend on the mode radius index $n$  prescribed for each particle (IRC). If the cloud radius is used, the optical thickness $\tau^{cl}$, the part of the optical thickness  due to absorption $\tau_{ab}^{cl}$, and the scattering moment $Q_{m}^{c l}$ for cloud are
 $$
 \begin{equation}
 \tau^{c l}=\sum_{c t}\left[\left(1-F X_{c l}\right) q_{1, n f i t}^{(c t)} r^{(c t)}+F X_{c l} q_{1, n f i t+1}^{(c t)} r^{(c t)}\right] \times \rho \Delta z 10^{-1}
@@ -225,7 +248,13 @@ $$
 
 $$
 \begin{equation}
-Q_{m}^{c l}=\sum_{c t}\left[\left(1-F X_{c l}\right) q_{m, n f i t}^{(c t)} r^{(c t)}+F X_{c l} q_{m, n f i t+1}^{(c t)} r^{(c t)}\right] \times \rho \Delta z 10^{-1}(\mathrm{~m} \geq 2)
+\tau_{ab}^{c l}=\sum_{c t}\left[\left(1-F X_{c l}\right) q_{2, n f i t}^{(c t)} r^{(c t)}+F X_{c l} q_{2, n f i t+1}^{(c t)} r^{(c t)}\right] \times \rho \Delta z 10^{-1}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+Q_{m}^{c l}=\sum_{c t}\left[\left(1-F X_{c l}\right) q_{m, n f i t}^{(c t)} r^{(c t)}+F X_{c l} q_{m, n f i t+1}^{(c t)} r^{(c t)}\right] \times \rho \Delta z 10^{-1}(\mathrm{~m} \geq 3)
 \end{equation}
 $$
 
@@ -235,9 +264,9 @@ F X_{c l}=\left(R^{(c t)}-R_{n f i t}^{(r e f)}\right)\left(\frac{1}{R_{n f i t+
 \end{equation}
 $$
 
-where $R^{(ct)}$ is the calculated mode radius and  $R_{n f i t}^{(r e f)}$ is the mode radius given in the parameter and $nfit$  is the number of the prescribed mode radius closest to the $R^{(ct)}$. $nfit$ and $FX_{cl}$  are calculated in the subroutine RMDIDX and determined in advance.
+where $R^{(ct)}$ is the calculated mode radius and $R_{n f i t}^{(r e f)}$ is the mode radius given in the parameter and $nfit$ is the number of the prescribed mode radius closest to the $R^{(ct)}$. $nfit$ and $FX_{cl}$ are calculated in the subroutine RMDIDX and determined in advance.
 
-Finally, the total optical thickness for particle scattering, Rayleigh scattering and absorption $\tau^p$ and the contribution of scattering $\tau^{scat}$   are obtained as follows.
+Finally, the total optical thickness for particle scattering, Rayleigh scattering and absorption $\tau^p$ and the contribution of scattering $\tau^{scat}$ are obtained as follows.
 $$
 \begin{equation}
 \tau^{P}=\tau^{c l}+\tau^{a e+r}
@@ -246,11 +275,11 @@ $$
 
 $$
 \begin{equation}
-\tau^{s c a t}=\tau^{P}-\left(Q_{2}^{c l}+Q_{2}^{a e+r}\right)
+\tau^{s c a t}=\tau^{P}-\left(T_{ab}^{c l}+T_{ab}^{a e+r}\right)
 \end{equation}
 $$
 
-In addition, the moments of the normalized phase function $G$ are calculated up to the three orders. The zeroth moment              $G_1$                   is trivial from the normalization condition of the phase function. The first and second moments  $G_2$, $G_3$ ,   are referred as the asymmetry factor $g$ and the truncation factor $f$. 
+In addition, the moments of the normalized phase function $G$ are calculated up to the three orders. The zeroth moment $G_1$ is trivial from the normalization condition of the phase function. The first and second moments $G_2$, $G_3$, are referred as the asymmetry factor $g$ and the truncation factor $f$. 
 $$
 \begin{equation}
 G_{1}=1.0
@@ -263,7 +292,7 @@ G_{m-1}=\frac{Q_{m}^{c l}+Q_{m}^{a e+r}}{\tau^{s c a t}}(m \geq 3), \quad G_{2}=
 \end{equation}
 $$
 
-This calculation is divided into the cloudy, clear sky and cumulus conditions. In the cloudy and cumulus conditions, $\tau^{cl}$ in the 0.5 and 0.67µm regions is as recorded as $\tau^{vis}$  in subroutine DTRN31.
+This calculation is divided into the cloudy, clear sky and cumulus conditions. In the cloudy and cumulus conditions, $\tau^{cl}$ in the 0.5 and 0.67µm regions is as recorded as $\tau^{vis}$ in subroutine DTRN31.
 
 **$R^{ct}$ is calculated in subroutine RADFLX as follows.
 $$
@@ -277,7 +306,7 @@ $$
 r^{(c t)}=\frac{C_{s t} r_{s t}^{(c t)}+C_{c u} r_{c u}^{(c t)}}{1-\left(1-C_{s t}\right)\left(1-C_{c u}\right)}
 \end{equation}
 $$
-$C$ is the area of the cloud, and the subscript $st$ and $cu$ mean the stratus and cumulus. When $r_{s t, c u}^{(c t)}$ is the tiny amount in the stratosphere, it is reset to 0. $n_{c}^{(c t)}$  is the number density of cloud particles.
+$C$ is the area of the cloud, and the subscript $st$ and $cu$ mean the stratus and cumulus. When $r_{s t, c u}^{(c t)}$ is the small amount in the stratosphere, it is reset to 0. $n_{c}^{(c t)}$ is the number density of cloud particles.
 $$
 \begin{equation}
 n_{c}^{(l i q)}=\max \left(\frac{q_{a e}^{l i q} p N_{A}}{R T_{v}\left(18 \times 10^{-3} R_{v} / R\right)}, f_{l i q} n_{\min }^{(l i q)}\right)
@@ -290,13 +319,13 @@ n_{c}^{(i c e)}=\max \left(\frac{q_{a e}^{i c e} p N_{A}}{R T_{v}\left(18 \times
 \end{equation}
 $$
 
-where $q_{a e}^{l i q}$ is the mixing ratio of the aerosol particles calculated by the SPRINTERS and converted to the number concentration, and $n_{\min }^{(c t)}$  is the minimum number of the cloud particles. and $f_{liq}$  is liquid fraction. Also, $n_{c}^{(c t)}$  is calculated as follows when using OPT_AECL_SIMPLE.
+where $q_{a e}^{l i q}$ is the mixing ratio of the aerosol particles calculated by the SPRINTERS and converted to the number concentration, and $n_{\min }^{(c t)}$ is the minimum number of the cloud particles. and $f_{liq}$ is liquid fraction. Also, $n_{c}^{(c t)}$ is calculated as follows when using OPT_AECL_SIMPLE.
 $$
 \begin{equation}
 n_{c}^{(c t)}=\frac{\varepsilon n_{a} n_{m a x}^{(c t)}}{\varepsilon n_{a}+n_{\max }^{(c t)}}
 \end{equation}
 $$
-where $n_a$ is the number density of aerosol particles give as an external condition, and $\varepsilon$ and $n_{\max }^{(c t)}$ are constants.  $f_{liq}$ is calculated by the following formula using the amount of cloud water $w$ ($0 \leq f_{\text {liq }} \leq 1$).
+where $n_a$ is the number density of aerosol particles give as an external condition, and $\varepsilon$ and $n_{\max }^{(c t)}$ are constants. $f_{liq}$ is calculated by the following formula using the amount of cloud water $w$ ($0 \leq f_{\text {liq }} \leq 1$).
 $$
 \begin{equation}
 f_{l i q}=\frac{w_{s t} f_{l i q, s t}+w_{c u} f_{l i q, c u}}{w_{s t}+w_{c u}}
@@ -313,15 +342,15 @@ $$
 $$
 where because $\tau^{K D}$ is different for each subchannel, the calculation is done for each sub-channel and each layer, and divided into the cloudy, clear sky, and cumulus conditions.
 
-##  **Expanding of the Plank function [PLKEXP]**
+##  **Expansion of the plank function [PLKEXP]**
 
-In each layer, the Planck function $B$ is expanded as follows and the expansion coefficients   $b_0$,   $b_1$, and $b_2$, are obtained.
+In each layer, the Planck function $B$ is expanded as follows and the expansion coefficients $b_0$, $b_1$, and $b_2$, are obtained.
 $$
 \begin{equation}
 \mathrm{B}\left(\tau^{\prime}\right)=b_{0}+b_{1} \tau^{\prime}+b_{2}\left(\tau^{\prime}\right)^{2}
 \end{equation}
 $$
-Here, as $\mathrm{B}\left(\tau^{\prime}\right)$,  $B$ at the top of each layer (the boundary with the top layer) is used, and as $\mathrm{B}(\tau)$,  $B$ at the bottom edge of each layer (the boundary with the layer below), and as $\mathrm{B}(\tau / 2)$, the $B$ at the representative level of each layer.
+Here, as $\mathrm{B}\left(\tau^{\prime}\right)$, $B$ at the top of each layer (the boundary with the top layer) is used, and as $\mathrm{B}(\tau)$, $B$ at the bottom edge of each layer (the boundary with the layer below), and as $\mathrm{B}(\tau / 2)$, the $B$ at the representative level of each layer.
 $$
 \begin{equation}
 b_{0}=B(0)
@@ -344,7 +373,7 @@ This calculation is done for each sub-channel and each layer and divided into th
 
 ##  **Transmission and reflection coefficients, and source function [TWST]**
 
-Using the obtained optical thickness $\tau$, optical thickness of scattering  $\tau^{scat}$ , scattering moments $g$, $f$, expansion coefficients for Planck function $b_n$, and solar incidence angle factor $\mu_{0}$, the transmission coefficient $T$ , reflection coefficient $R$, downward radiation source function $\epsilon^{+}$, and the upward radiation source function $\epsilon^{-}$ are founded, by assuming a uniform layer and using the two-stream approximation.
+Using the obtained optical thickness $\tau$, optical thickness of scattering $\tau^{scat}$, scattering moments $g$, $f$, expansion coefficients for Planck function $b_n$, and solar incidence angle factor $\mu_{0}$, the transmission coefficient $T$, reflection coefficient $R$, downward radiation source function $\epsilon^{+}$, and the upward radiation source function $\epsilon^{-}$ are founded, by assuming a uniform layer and using the two-stream approximation.
 
 The single-scattering albedo $\omega$ is,
 $$
@@ -352,7 +381,7 @@ $$
 \omega=\tau^{\text {scat }} / \tau
 \end{equation}
 $$
-The optical thickness $\tau^{*}$, the single-scattering albedo $\omega^{*}$ , and asymmetric factor $g^{*}$, corrected by the contribution from the forward scattering factor $f$ are,
+The optical thickness $\tau^{*}$, the single-scattering albedo $\omega^{*}$, and asymmetric factor $g^{*}$, corrected by the contribution from the forward scattering factor $f$ are,
 $$
 \begin{equation}
 \tau^{*}=\tau(1-\omega f)
@@ -459,7 +488,7 @@ $$
 \end{array}
 \end{equation}
 $$
-Here, $Q \gamma$ and $V_{s}^{\pm}$ are expressed by the following formulas, and $F_{sol}$  is solar irradiance.
+Here, $Q \gamma$ and $V_{s}^{\pm}$ are expressed by the following formulas, and $F_{sol}$ is solar irradiance.
 $$
 \begin{equation}
 \begin{array}{c}
@@ -476,9 +505,9 @@ E x^{d i r}=e^{-\tau^{*} / \mu_{0}}
 $$
 This calculation is done for each sub-channel and each layer and divided into the cloudy, clear sky, and cumulus conditions.
 
-## **Making T,R,S matrixes for maximal/random approximation [RTSMR]**
+## T, R, S matrixes for maximal/random approximation [RTSMR]**
 
-In this subroutine, T,R,S matrixes for maximal/random approximation is made. The radiation source function, which is the sum of both the plank function and the solar incident origins, is
+In this subroutine, T, R, S matrixes for maximal/random approximation is made. The radiation source function, which is the sum of both the plank function and the solar incident origins, is
 $$
 \begin{equation}
 \begin{array}{l}
@@ -547,7 +576,9 @@ This calculation is done for each sub-channel and each layer.
 
 ##  **Adding of source functions for each layer [ADDMR or ADDING]**
 
-By using transmission coefficient $T$, reflection coefficient $R$, and radiation source function $\varepsilon$ in all layers , the radiation fluxes at each layer boundary can be obtained by using the adding method. This means that the when two layers of $T$, $R$, $\varepsilon$ are known, the $T$, $R$, $\varepsilon$ of the whole combined layer of the two layers can be easily calculated.
+By using transmission coefficient $T$, reflection coefficient $R$, and radiation source function $\varepsilon$ in all layers, the radiation fluxes $u$ at each layer boundary can be obtained by using the adding method. This means that the when two layers of $T$, $R$, $\varepsilon$ are known, the $T$, $R$, $\varepsilon$ of the whole combined layer of the two layers can be easily calculated.
+
+![Adding](C:\Users\owner\Pictures\Adding.png)
 
 ###  **ADDMR**
 
@@ -564,7 +595,7 @@ $$
 \end{array}
 \end{equation}
 $$
-$\left\langle\tau^{*}\right\rangle$ indicates the total optical thickness $\tau^{*}$  of from the upper end of the atmosphere to the upper end of the layer currently being considered and $e^{-\left\langle\tau^{*}\right\rangle / \mu_{0}}$  is calculated in subroutine DTRN31.
+$\left\langle\tau^{*}\right\rangle$ indicates the total optical thickness $\tau^{*}$ of from the upper end of the atmosphere to the upper end of the layer currently being considered and $e^{-\left\langle\tau^{*}\right\rangle / \mu_{0}}$ is calculated in subroutine DTRN31.
 
 In the longwave region,
 $$
@@ -655,7 +686,7 @@ R_{n, N}=R_{n, N}+T_{n}\left(1-R_{n+1, N} R_{n}\right)^{-1} R_{n+1} T_{n} \\
 \end{array}
 \end{equation}
 $$
-This can be solved by n=N-1…,1 in sequence, starting from the values at the surface  $R_{N, N}$, $\epsilon_{N, N}^{-}$.
+This can be solved by n=N-1…,1 in sequence, starting from the values at the surface $R_{N, N}$, $\epsilon_{N, N}^{-}$.
 $$
 \begin{equation}
 \begin{array}{c}
@@ -664,7 +695,7 @@ R_{N, N}=R_{N}=\alpha_{s} \\
 \end{array}
 \end{equation}
 $$
-The reflectance $R_{1, n}$ and source function  $\epsilon_{1, n}^{+}$ regarded from the first to the n layers as a single layer are
+The reflectance $R_{1, n}$ and source function $\epsilon_{1, n}^{+}$ regarded from the first to the n layers as a single layer are
 $$
 \begin{equation}
 \begin{array}{c}
@@ -723,7 +754,7 @@ F^{\circ \pm}=\sum_{c} w_{c} F^{\circ \pm}
 \end{equation}
 $$
 
-If the radiation flux $F_{C}^{\pm}$ is found for each sub-channel in each layer, the wavelength-integrated flux is found by multiplying a weight $w_c$  correspondingly to a wavelength representative of the sub-channel and adding.  $C_cu$ is the horizontal coverage of the cumulus cloud. It is divided into the short wavelength range and long wavelength range and added together. In addition, the downward flux of a part of the short wavelength region (shorter than the wavelength of  0.7-0.8 μm) at the surface is obtained as PAR (photosynthetically active radiation). Also, the radiation flux in the clear-sky condition is calculated ( $F^{\circ \pm}$ ).
+If the radiation flux $F_{C}^{\pm}$ is found for each sub-channel in each layer, the wavelength-integrated flux is found by multiplying a weight $w_c$ correspondingly to a wavelength representative of the sub-channel and adding. $C_{cu}$ is the horizontal coverage of the cumulus cloud. It is divided into the short wavelength range and long wavelength range and added together. In addition, the downward flux of a part of the short wavelength region (shorter than the wavelength of  0.7-0.8 μm) at the surface is obtained as PAR (photosynthetically active radiation). Also, the radiation flux in the clear-sky condition is calculated ($F^{\circ \pm}$).
 
 Also, in the shortwave region, we find the downward radiation at the lower end of the atmosphere and the difference between the surface direct downward radiation flux.
 $$
@@ -738,11 +769,11 @@ F_{s f, d i f}^{+}=\sum_{c} w_{c}\left(1-C_{c u}\right)\left(\bar{F}_{N+1 / 2}^{
 \end{equation}
 $$
 
-##  **Calculating the temperature derivative of the flux [in RADFLX]**
+##  **Calculation of the temperature derivative of the flux [in RADFLX]**
 
-To implicitly solve for surface temperature, calculate differential term of upward flux with respect to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$                             . Therefore, we obtained the value for temperatures 1K higher than $T_g$  $\bar{B}^{w}\left(T_{g}+1\right)$ and used it to redo the flux calculation using the addition method, and the difference from the original value is set to   $\mathrm{d}F^{\mp}/dT_{g}$. This is a meaningful value only in the longwave region (earth radiation region).
+To implicitly solve for surface temperature, calculate differential term of upward flux with respect to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$. Therefore, we obtained the value for temperatures 1K higher than $T_g$  $\bar{B}^{w}\left(T_{g}+1\right)$ and used it to redo the flux calculation using the addition method, and the difference from the original value is set to $\mathrm{d}F^{\mp}/dT_{g}$. This is a meaningful value only in the longwave region (earth radiation region).
 
-## **Calculating the heating rate [RDTND]**
+## **Calculation of the heating rate [RDTND]**
 
 The heating rate of the nth layer $H_n$ is calculated by using the radiation flux obtained so far. It is calculated separately for shortwave and longwave ranges, and finally add together. 
 $$
@@ -776,7 +807,7 @@ $$
 \end{array}
 \end{equation}
 $$
-where $epsd$ and $vpid$  are the angle of the obliquity and the precession.
+where $epsd$ and $vpid$ are the angle of the obliquity and the precession.
 
 Earth position $\lambda_{m}$ at a time $t_m$ is represented by using the position of the vernal equinox $\lambda_{0}$.
 $$
@@ -794,7 +825,7 @@ $$
 \\V=\lambda_{m}-\varpi+b_{1} \sin \left(\lambda_{m}-\varpi\right)+b_{2} \sin 2\left(\lambda_{m}-\varpi\right)+b_{3} \sin 3\left(\lambda_{m}-\varpi\right)
 \end{equation}
 $$
-The incident angle $\cos \zeta$ is founded by using the latitude  $\varphi$ , the solar declination   $\delta$, and the hour angle at a point of longitude   $h$.
+The incident angle $\cos \zeta$ is founded by using the latitude $\varphi$, the solar declination $\delta$, and the hour angle at a point of longitude $h$.
 $$
 \begin{equation}
 \mu_{0}=\cos \zeta=\sin \varphi \sin \delta+\cos \varphi \cos \delta \cosh
@@ -809,7 +840,7 @@ r=\frac{1-e^{2}}{1+e(\cos V+\varpi)}
 \end{array}
 \end{equation}
 $$
-where $F_{00}$ is the solar constant and   is the ratio of the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$  (in the daytime) in time increments (set in NHSUB), is counted, and  $F_{0}$ and \cos \zeta are finally averaged.
+where $F_{00}$ is the solar constant and is the ratio of the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$ (in the daytime) in time increments (set in NHSUB), is counted, and $F_{0}$ and $\cos \zeta$ are finally averaged.
 
 It is also possible to give average annual insolation. In this case, the annual and day mean incidence and angle of incidence are approximated as follows.
 $$
@@ -829,12 +860,12 @@ In this subroutine, various parameters used for radiation calculation are read. 
 
 2. Read the band boundaries and the information of the pressure grid and temperature grid.
 
-3. First, the optical property flag, the number of channels, the weights for channels and the number of the molecules including in a waveband are read. The optical property flag is modified in order to distinguish the PAR, 0.67, 0.5, and 10.5  μm. Additionally, molecule ID and k-width are read for each molecule. Finally, the absorption coefficient for the self-broadening and CFC are also done only when the optical property flag in the band is positive. The k-width and the absorption coefficient for the self-broadening are arranged in the order of the grid of the temperatures, the grids of the pressures, and the channels. Step 3 is performed for each wavelength band.
+3. First, the optical property flag, the number of channels, the weights for channels and the number of the molecules including in a waveband are read. The optical property flag is modified in order to distinguish the PAR, 0.67, 0.5, and 10.5 μm. Additionally, molecule ID and k-width are read for each molecule. Finally, the absorption coefficient for the self-broadening and CFC are also done only when the optical property flag in the band is positive. The k-width and the absorption coefficient for the self-broadening are arranged in the order of the grid of the temperatures, the grids of the pressures, and the channels. Step 3 is performed for each wavelength band.
 
 4. First, the number of particles is read. Next, the numbers of the modes and the mode radius (or relative humidity) are read for each particle. Using the mode radius (or relative humidity), the following parameter required to interpolate the calculated values is calculated for each mode number.
    $$
    \begin{equation}
-   \left(\frac{1}{R_{n+1}^{(r e f)}-R_{n}^{(r e f)}}\right)
+   \frac{1}{R_{n+1}^{(r e f)}-R_{n}^{(r e f)}}
    \end{equation}
    $$
    
@@ -844,7 +875,7 @@ In this subroutine, various parameters used for radiation calculation are read. 
 
 ## **Other notes**
 
-The calculation of the radiation is usually not done at every step. Thus, the radiation flux is saved, and it is used if the time is not used for radiation calculation. As for the shortwave radiation, using the percentage of time (time is $\mu_{0}>0$) between the next calculation time $f$  and the solar incidence angle factor averaged over the daylight hours $\bar{\mu}_{0}$, seek the Flux $\bar{F}$,
+The calculation of the radiation is usually not done at every step. Thus, the radiation flux is saved, and it is used if the time is not used for radiation calculation. As for the shortwave radiation, using the percentage of time (time is $\mu_{0}>0$) between the next calculation time $f$ and the solar incidence angle factor averaged over the daylight hours $\bar{\mu}_{0}$, seek the Flux $\bar{F}$,
 $$
 \begin{equation}
 \mathrm{F}=f \frac{\mu_{0}}{\bar{\mu}_{0}} \bar{F}
