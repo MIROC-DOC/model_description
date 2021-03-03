@@ -60,57 +60,57 @@ $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\la
 
 where $R$ and $Q_l$ are cloud amount and liquid water computed from the probability distribution in the grids, respectively, and $Q_s$ is saturation water vapor.
 
-### Stability functions in the Level 2
-It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the behavior of growing turbulence realistically (Helfand and Labraga 1988). Therefore, the MYNN scheme first calculates the kinetic energy of turbulence in the Level2, ${q_2}^2/2$, where the local equilibrium is assumed, and then applies a correction when $q<q_2$, i.e., the turbulence is in the growth phase. The stability functions $S_{H2},S_{M2}$ of the Level 2, which are required for the calculation of $q_2$, can be obtained as follows.
+### Stability functions for the Level 2
+It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the behavior of growing turbulence realistically (Helfand and Labraga 1988). Thus, the MYNN scheme first calculates the twice turbulent kinetic energy of the Level2 ${q_2}^2$, and then make a correction to the diffusion when $q<q_2$, i.e., the turbulence is in a growing phase. The stability functions of the level 2, $S_{H2}$ and $S_{M2}$, required for the calculation of $q_2$, are represented by
 
-$$S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf}$$
+$$S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf},$$
 
-$$S_{M2}=S_{MC}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2}$$
+$$S_{M2}=S_{MC}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2},$$
 
-where $Rf$ denotes the flux Richardson number which is given as follows.
+where $Rf$ is the flux Richardson number and calculated as
 
-$$Rf=R_{i1}\left[Ri+R_{i2}-(Ri^2-R_{i3}Ri+{R_{i2}}^2)^{1/2}\right]$$
+$$Rf=R_{i1}\left[Ri+R_{i2}-(Ri^2-R_{i3}Ri+{R_{i2}}^2)^{1/2}\right].$$
 
-$Ri$ is the gradient Richardson number calculated as follows.
+Here, $Ri$ is the gradient Richardson number represented by
 
-$$Ri=\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right) \Bigg/ \left[ \left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2 \right]$$
+$$Ri=\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right) \Bigg/ \left[ \left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2 \right].$$
 
-The other symbols are quantities that are independent of the environmental field and are given as follows.
+The other symbols indicate quantities independent of the environmental field, which are given as follows.
 
-$$S_{HC}=3A_2(\gamma_1+\gamma_2)$$
+$$S_{HC}=3A_2(\gamma_1+\gamma_2),$$
 
-$$S_{MC}=\frac{A_1}{A_2}\frac{F_1}{F_2}$$
+$$S_{MC}=\frac{A_1}{A_2}\frac{F_1}{F_2},$$
 
-$$Rf_c=\frac{\gamma_1}{\gamma_1+\gamma_2}$$
+$$Rf_c=\frac{\gamma_1}{\gamma_1+\gamma_2},$$
 
-$$R_{f1}=B_1\frac{\gamma_1-C_1}{F_1}$$
+$$R_{f1}=B_1\frac{\gamma_1-C_1}{F_1},$$
 
-$$R_{f2}=B_1\frac{\gamma_1}{F_2}$$
+$$R_{f2}=B_1\frac{\gamma_1}{F_2},$$
 
-$$R_{i1}=\frac{1}{2S_{Mc}}$$
+$$R_{i1}=\frac{1}{2S_{Mc}},$$
 
-$$R_{i2}=R_{f1}S_{MC}$$
+$$R_{i2}=R_{f1}S_{MC},$$
 
-$$R_{i3}=4R_{f2}S_{MC}-2R_{i2}$$
+$$R_{i3}=4R_{f2}S_{MC}-2R_{i2},$$
 
 where
 
-$$A_1=B_1\frac{1-3\gamma_1}{6}$$
+$$A_1=B_1\frac{1-3\gamma_1}{6},$$
 
-$$A_2=A_1\frac{\gamma_1-C_1}{\gamma_1 Pr}$$
+$$A_2=A_1\frac{\gamma_1-C_1}{\gamma_1 Pr},$$
 
-$$C_1=\gamma_1-\frac{1}{3A_1{B_1}^{\frac{1}{3}}}$$
+$$C_1=\gamma_1-\frac{1}{3A_1{B_1}^{\frac{1}{3}}},$$
 
-$$F_1=B_1(\gamma_1-C_1)+2A_1(3-2C_2)+3A_2(1-C_2)(1-C_5)$$
+$$F_1=B_1(\gamma_1-C_1)+2A_1(3-2C_2)+3A_2(1-C_2)(1-C_5),$$
 
-$$F_2=B_1(\gamma_1+\gamma_2)-3A_1(1-C_2)$$
+$$F_2=B_1(\gamma_1+\gamma_2)-3A_1(1-C_2),$$
 
-$$\gamma_2=\frac{B_2}{B_1}\left(1-C_3\right)+\frac{2A_1}{B_1}\left(3-2C_2\right)$$
+$$\gamma_2=\frac{B_2}{B_1}\left(1-C_3\right)+\frac{2A_1}{B_1}\left(3-2C_2\right),$$
 
 and
 
 $$
-(Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2)
+(Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2).
 $$
 
 ### Master turbulent length scale
