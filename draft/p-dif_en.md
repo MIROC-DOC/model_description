@@ -26,14 +26,14 @@ The outline of the computational procedures is given as follows along with the n
 7. calculation of production and dissipation terms of twice turbulent kinetic energy [`VDFLEV3`]
 8. calculation of tendencies of prognostic variables with implicit scheme
 
-### Surface boundary layer
-The friction velocity $u_*$ and the Monin-Obukhov length $L_M$ are given as follows.
+### Surface layer
+The friction velocity $u_*$ and the Obukhov length $L_M$ are given as
 
-$$u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4}$$
+$$u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4},$$
 
-$$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g}$$
+$$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g},$$
 
-where the subscript $g$ indicates that the value is near the surface of the earth, and the value of the lowest layer of the model is used. $\Theta_v$ and $\theta_v$ denote virtual potential temperature, $k$ the Von Karman constant, and $g$ the gravitational acceleration.
+where the subscript $g$ indicates the values near the surface $\Theta_v$ and $\theta_v$ denote virtual potential temperature, $k$ the von Kármán constant, and $g$ the acceleration of gravity. The values of the lowest model layer is used for $\Theta_{v,g}$.
 
 ### Diagnosis of the buoyancy coefficients
 The calculation of the buoyancy term appearing in the turbulence equation requires the value of $\langle w\theta_v \rangle$. Following Mellor (1982), this term can be written as
