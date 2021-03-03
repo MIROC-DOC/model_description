@@ -1,30 +1,30 @@
 ## Turbulence scheme
-The turbulence scheme represents the effect of subgrid-scale turbulence on the grid-averaged quantities. The turbulence scheme accounts for the vertical diffusion of momentum, heat, water and other tracers. The Mellor-Yamada-Nakanishi-Niino scheme (the MYNN scheme; Nakanishi 2001; Nakanishi and Niino 2004), an improved version of the Mellor-Yamada scheme (Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982), has been used as the turbulence scheme in MIROC since version 5. Closure level is 2.5. The Level 3 is also available, but it is a non-standard option because it does not provide a performance gain worth the increase in computation.
+A turbulence scheme represents the effect of subgrid-scale turbulence on the grid-mean prognostic variables. It calculates the vertical diffusion of momentum, heat, water and other tracers. The Mellor-Yamada-Nakanishi-Niino scheme (MYNN scheme; Nakanishi 2001; Nakanishi and Niino 2004) has been used as a turbulence scheme in MIROC since its version 5, which is an improved version of the Mellor-Yamada scheme (Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982). Its closure level is 2.5. Level 3 is available, however it was not adopted as a standard option, since we could not gain large benefits despite its much greater computational costs.
 
-In the MYNN scheme, liquid water potential temperature $\theta_l$ and total water $q_w$ are used as thermodynamic variables and are defined as follows, respectively. These are conserved quantities that do not depend on the phase change of water.
+In the MYNN scheme, liquid water potential temperature $\theta_l$ and total water $q_w$ are used as key variables, which are defined as
 
-$$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}} $$
+$$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}}, $$
 
-$$ q_w \equiv q_v+q_l+q_i $$
+$$ q_w \equiv q_v+q_l+q_i, $$
 
-where $T$ and $p$ are temperature and pressure; $q_v$, $q_l$, and $q_i$ are specific humidity, cloud water, and cloud ice; $C_p$ and $R_d$ are specific heat at constant pressure and gas constant of dry air; and $L_v$ and $L_f$ are latent heat of vaporization and per unit mass, respectively. $p_s$ is 1000 hPa.
+where $T$ and $p$ are temperature and pressure; $q_v$, $q_l$ and $q_i$ are specific humidity, cloud water content, and cloud ice content respectively; $C_p$ and $R_d$ are specific heat at constant pressure and gas constant of dry air respectively; $L_v$ and $L_f$ are latent heat of vaporization and fusion per unit mass respectively. $p_s$ is $1000hPa$. These variables conserve for the phase change of water.
 
-In the Level 2.5, the amount of kinetic energy of turbulence multiplied by two is a prognostic variable, and its time evolution is also calculated within this scheme. This value is defined by
+In the level 2.5, the scheme predicts the time evolution of twice turbulent kinetic energy as a prognostic variable, which is defined by
 
 $$q^2 \equiv \langle u^2 + v^2 + w^2 \rangle$$
 
-where $u$, $v$, and $w$ are velocities in the zonal, meridional, and vertical directions, respectively. Hereafter in this chapter, uppercase variables will represent grid mean quantities, and the lowercase variables will represent the deviation from them. $\langle \ \rangle$ denotes an ensemble mean. For the Level 3,  $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ are also prognostic variables, but the details are not explained here.
+where $u$, $v$, and $w$ are velocities in zonal, meridional and vertical directions respectively. In this chapter, uppercase letters represent grid-mean variables and lowercase counterparts the deviation from the grid-mean. $\langle \ \rangle$ denotes an ensemble mean. In the Level 3, $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ are also predicted, but we skip the details here.
 
-The outline of the calculation procedure is given as follows along with the names of the subroutines. All subroutines listed here are in pvdfm.F.
+The outline of the computational procedures is given as follows along with the names of the subroutines. All the subroutines listed here are written in a Fortran source code of pvdfm.F.
 
-1. calculation of the friction velocity and the Monin-Obukhov length
-2. calculation of the buoyancy coefficients in consideration of partial condensation [`VDFCND`]
-3. calculation of the stability functions in the Level 2 [`VDFLEV2`]
-4. calculation of the depth of the planetary boundary layer [`PBLHGT`]
-5. calculation of the master turbulent length scale [`VDFMLS`]
-6. calculation of the diffusion coefficients, and the vertical fluxes and their derivatives [`VDFLEV3`]
-7. calculation of the generation and dissipation terms of turbulent flow [`VDFLEV3`]
-8. computation of implicit time integration of prognostic variables
+1. calculation of friction velocity and the Obukhov length
+2. calculation of buoyancy coefficients [`VDFCND`]
+3. calculation of stability functions of the Level 2 [`VDFLEV2`]
+4. calculation of planetary boundary layer depth [`PBLHGT`]
+5. calculation of master length scale [`VDFMLS`]
+6. calculation of diffusion coefficients, vertical fluxes and their derivatives [`VDFLEV3`]
+7. calculation of production and dissipation terms of twice turbulent kinetic energy [`VDFLEV3`]
+8. calculation of tendencies of prognostic variables with implicit scheme
 
 ### Surface boundary layer
 The friction velocity $u_*$ and the Monin-Obukhov length $L_M$ are given as follows.
