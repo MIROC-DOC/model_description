@@ -93,8 +93,6 @@ $$R_{i2}=R_{f1}S_{MC}$$
 
 $$R_{i3}=4R_{f2}S_{MC}-2R_{i2}$$
 
-$$R_{i4}={R_{i2}}^2$$
-
 where
 
 $$A_1=B_1\frac{1-3\gamma_1}{6}$$
@@ -401,3 +399,90 @@ $$
 $$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0)$$
 
 ### Time integration with implicit scheme
+
+#### Tendency of $q^2$
+The prognostic equation for $q^2$ is discretized as
+
+$$ \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right), \tag{p-dif.20} $$
+
+where $n$ and $n+1$ indicate the current and next time steps respectively, and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. The advection terms are omitted. $F_q$ at $n+1$ is computed by
+
+$$ F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n}). \tag{p-dif.21} $$
+
+With a definition of
+$$\mu_k = \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t},$$
+
+(20) and (21) lead to
+
+$$
+ X_{1,k}\,\mu_{k+1}+X_{2,k}\,\mu_k+X_{3,k}\,\mu_{k-1} = Y_k, \tag{p-dif.22}
+$$
+
+where 
+
+$$
+\begin{align}
+ X_{1,k} &= \frac{\partial F_{q,k+1/2}}{\partial q^2_{k+1}} \Delta t, \\
+ X_{2,k} &= \rho_k \Delta z_k \left(1+2\frac{q_{k,n}}{B_1 L}\Delta t \right) + \left( \frac{\partial F_{q,k+1/2}}{\partial q^2_k} - \frac{\partial F_{q,k-1/2}}{\partial q^2_k} \right)\Delta t, \\
+ X_{3,k} &= -\frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}} \Delta t, \\
+ Y_k &= F_{q,k-1/2,n} - F_{q,k+1/2,n} + 2\rho_k \Delta z_k \left( P_{s,k,n} + P_{b,k,n} - \frac{q^3_{k,n}}{B_1 L} \right).
+\end{align}
+$$
+
+(22) is represented as the following matrix equation,
+
+$$
+\left(\begin{array}{lllllll}
+ X_{2,K}   & X_{3,K}   & 0         & 0         & 0         & \cdots    & 0       \\
+ X_{1,K-1} & X_{2,K-1} & X_{3,K-1} & 0         & 0         & \cdots    & 0       \\
+ 0         & X_{1,K-2} & X_{2,K-2} & X_{3,K-2} & 0         & \cdots    & 0       \\
+ \vdots    &           &           & \ddots    &           &           & \vdots  \\
+ 0         & \cdots    & 0         & X_{1,3}   & X_{2,3}   & X_{3,3}   & 0       \\
+ 0         & \cdots    & 0         & 0         & X_{1,2}   & X_{2,2}   & X_{3,2} \\
+ 0         & \cdots    & 0         & 0         & 0         & X_{1,1}   & X_{2,1}
+\end{array}\right)
+\left(\begin{array}{l}
+ \mu_K \\
+ \mu_{K-1} \\
+ \mu_{K-2} \\
+ \vdots \\
+ \mu_3 \\
+ \mu_2 \\
+ \mu_1
+\end{array}\right)
+= \left(
+\begin{array}{l}
+ Y_K \\
+ Y_{K-1} \\
+ Y_{K-2} \\
+ \vdots \\
+ Y_3 \\
+ Y_2 \\
+ Y_1
+\end{array}
+\right), \tag{p-dif.23}
+$$
+
+where the subscript $K$ denote the index for the top model layer. (23) is solved for $\mu_k$ using the LU decomposition. 
+
+#### Tendencies of other prognostic variables
+
+Letting $\psi$ be a substitute for $u$, $v$, $T$, $q_w$, the tendency of $\psi$ is calculated by
+
+$$ \frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{\psi,k+1/2,n+1}-F_{\psi,k-1/2,n+1}\right), $$
+
+where
+
+$$ F_{\psi,k-1/2,n+1} = F_{\psi,k-1/2,n} + \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k}(\psi_{k,n+1}-\psi_{k,n}) +  \frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}}(\psi_{k-1,n+1}-\psi_{k-1,n}). $$
+
+These equations lead to (23) again and computed with the LU decomposition, but $\mu_k$, $X_{1,k}$, $X_{2,k}$, $X_{3,k}$ and $Y_k$ are redefined as
+
+$$
+\begin{align}
+ \mu_k &= \frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}, \\
+ X_{1,k} &= \frac{\partial F_{\psi,k+1/2}}{\partial \psi_{k+1}} \Delta t, \\
+ X_{2,k} &= \rho_k \Delta z_k + \left( \frac{\partial F_{\psi,k+1/2}}{\partial \psi_k} - \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k} \right)\Delta t, \\
+ X_{3,k} &= -\frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}} \Delta t, \\
+ Y_k &= F_{\psi,k-1/2,n} - F_{\psi,k+1/2,n}.
+\end{align}
+$$
