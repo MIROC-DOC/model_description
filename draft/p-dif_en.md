@@ -69,7 +69,7 @@ $$S_{M2}=S_{MC}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2}$$
 
 where $Rf$ denotes the flux Richardson number which is given as follows.
 
-$$Rf=R_{i1}\left(Ri+R_{i2}-\sqrt{Ri^2-R_{i3}Ri+R_{i4}}\right)$$
+$$Rf=R_{i1}\left[Ri+R_{i2}-(Ri^2-R_{i3}Ri+{R_{i2}}^2)^{1/2}\right]$$
 
 $Ri$ is the gradient Richardson number calculated as follows.
 
@@ -141,7 +141,7 @@ $$
 L_B=\left\{
     \begin{array}{ll}
       \alpha_2 q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
-      \left[\alpha_2+\alpha_3\sqrt{q_c/L_TN}\right]q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
+      \left[\alpha_2+\alpha_3(q_c/L_TN)^{1/2}\right]q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
       \infty, &\partial\Theta_v/\partial z\le 0\\
     \end{array}
   \right.
