@@ -7,7 +7,7 @@ $$ \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right)
 
 $$ q_w \equiv q_v+q_l+q_i, $$
 
-where $T$ and $p$ are temperature and pressure; $q_v$, $q_l$ and $q_i$ are specific humidity, cloud water content, and cloud ice content respectively; $C_p$ and $R_d$ are specific heat at constant pressure and gas constant of dry air respectively; $L_v$ and $L_f$ are latent heat of vaporization and fusion per unit mass respectively. $p_s$ is $1000hPa$. These variables conserve for the phase change of water.
+where $T$ and $p$ are temperature and pressure; $q_v$, $q_l$ and $q_i$ are specific humidity, liquid water content, and ice water content respectively; $C_p$ and $R_d$ are specific heat at constant pressure and gas constant of dry air respectively; $L_v$ and $L_f$ are latent heat of vaporization and fusion per unit mass respectively. $p_s$ is $1000hPa$. These variables conserve for the phase change of water.
 
 In the level 2.5, the scheme predicts the time evolution of twice turbulent kinetic energy as a prognostic variable, which is defined by
 
@@ -35,30 +35,30 @@ $$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g},$$
 
 where the subscript $g$ indicates the values near the surface $\Theta_v$ and $\theta_v$ denote virtual potential temperature, $k$ the von Kármán constant, and $g$ the acceleration of gravity. The values of the lowest model layer is used for $\Theta_{v,g}$.
 
-### Diagnosis of the buoyancy coefficients
-The calculation of the buoyancy term appearing in the turbulence equation requires the value of $\langle w\theta_v \rangle$. Following Mellor (1982), this term can be written as
+### Calculation of the buoyancy coefficients
+The buoyancy-production term in the prognostic equation of the twice turbulent kinetic energy contains $\langle w\theta_v \rangle$. Following Mellor (1982), we assume the probability distribution of $\theta_l$ and $q_w$ in a given grid and rewrite this term as
 
-$$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle$$
+$$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle.$$
 
-by assuming a probability distribution in the grid of $\theta_l$, $q_w$. However, unlike Mellor (1982) and Nakanishi and Niino (2004), the probability distribution is not Gaussian, but triangular in shape as given by the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2008). The buoyancy coefficients $\beta_\theta$, $\beta_q$ are written as follows.
+However, note that unlike Mellor (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2008). In this case, the buoyancy coefficients, $\beta_\theta$ and $\beta_q$ are written as
 
-$$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc$$
+$$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc,$$
 
-$$\beta_q=\epsilon \Theta +\tilde{R}ac$$
+$$\beta_q=\epsilon \Theta +\tilde{R}ac,$$
 
-where $\epsilon=R_v/R_d-1$. $R_d$ and $R_v$ are the gas constants for dry air and water vapor, respectively. Also,
+where $\epsilon=R_v/R_d-1$. $R_v$ is the gas constant for water vapor, and
 
-$$a=\left(1+\frac{L_v}{C_p}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\right)^{-1}$$
+$$a=\left(1+\frac{L_v}{C_p}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\right)^{-1},$$
 
-$$b=\frac{T}{\Theta}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}$$
+$$b=\frac{T}{\Theta}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l},$$
 
-$$c=\frac{\Theta}{T}\frac{L_v}{C_p}\left[1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i\right]-(1+\epsilon)\Theta$$
+$$c=\frac{\Theta}{T}\frac{L_v}{C_p}\left[1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i\right]-(1+\epsilon)\Theta,$$
 
-$$\tilde{R}=R\left\{1-a\left[Q_w-Q_s(T_l)\right]\frac{Q_l}{2\sigma_s}\right\}-\frac{{Q_l}^2}{4{\sigma_s}^2}$$
+$$\tilde{R}=R\left\{1-a\left[Q_w-Q_s(T_l)\right]\frac{Q_l}{2\sigma_s}\right\}-\frac{{Q_l}^2}{4{\sigma_s}^2},$$
 
-$${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle$$
+$${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle,$$
 
-where $R,Q_l$ are the amount of cloud and liquid water diagnosed from the probability distribution in the grid, respectively, and $Q_s$ is the amount of saturated water vapor.
+where $R$ and $Q_l$ are cloud amount and liquid water computed from the probability distribution in the grids, respectively, and $Q_s$ is saturation water vapor.
 
 ### Stability functions in the Level 2
 It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the behavior of growing turbulence realistically (Helfand and Labraga 1988). Therefore, the MYNN scheme first calculates the kinetic energy of turbulence in the Level2, ${q_2}^2/2$, where the local equilibrium is assumed, and then applies a correction when $q<q_2$, i.e., the turbulence is in the growth phase. The stability functions $S_{H2},S_{M2}$ of the Level 2, which are required for the calculation of $q_2$, can be obtained as follows.
