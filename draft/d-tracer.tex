@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[top=30truemm,botom=30truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage[dvipdfmx]{graphicx}
@@ -304,7 +304,7 @@ The following are the procedure for the calculation of tracer advection in the s
   \begin{equation}
     V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k}=C^{x}_{i,j,k}\Delta D_{j,k}, \quad V^{\lambda}_{i,j-\frac{1}{2},k}-V^{\lambda}_{i,j+\frac{1}{2},k}=C^{y}_{i,j,k}\Delta D_{j,k}
   \end{equation}
-  The boundry conditions are $V^{\varphi}=0$ at the North Pole and South Pole、$\sigma=1$ at surface and $V^{\sigma}=0$ at $\sigma=0$.
+  The boundry conditions are $V^{\varphi}=0$ at the North Pole and South Pole, $\sigma=1$ at surface and $V^{\sigma}=0$ at $\sigma=0$.
 The condition for $V^{\lambda}=0$ is:
   \begin{equation}
     \sum_{i}V^{\lambda}_{i-\frac{1}{2},j,k}=\sum_{i}P^{S}_{i,j,k}u_{i,j,k}\Delta y_{j}\Delta \sigma_{k}
@@ -326,7 +326,7 @@ The condition for $V^{\lambda}=0$ is:
     \label{a2}
     \frac{\partial P^{S}_{i,j,k}}{\partial t}\sum_{k}\Delta D_{j,k}=\sum_{k}(C^{x}_{i,j,k}+C^{y}_{i,j,k})
   \end{equation}
-  (The contents so far are in [TRACEG]。The rest of the content is in [GTRACE])
+  (The contents so far are in [TRACEG].  The rest of the content is in [GTRACE])
 \item $G^{\lambda}, G^{\varphi}, G^{\sigma}$ are calculated by PPM scheme from $V^{\lambda}, V^{\varphi}, V^{\sigma}$.
 
 \item $P^{s}_{i,j,k}q_{i,j,k}$ at time step $t+\Delta t$ is calulated by integration of Eq.(\ref{a1}) by leap frog method from $G^{\lambda}, G^{\varphi}, G^{\sigma}$.
