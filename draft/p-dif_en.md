@@ -283,109 +283,109 @@ where $\Delta z_{k-1/2}=z_k-z_{k-1}$. The fluxes for other tracers are also calc
 
 ### Calculation of turbulent variables
 
-#### Calculation of turbulent kinetic energy
+#### Calculation of twice turbulent kinetic energy
 
-The prognostic equation for $q^2$ is expressed as follows.
+The prognostic equation for $q^2$ is expressed as
 
-$$ \frac{d q^2}{dt}=-\frac{1}{\rho}\frac{\partial F_q}{\partial z}+2\left(P_s+P_b-\varepsilon\right) $$
+$$ \frac{d q^2}{dt}=-\frac{1}{\rho}\frac{\partial F_q}{\partial z}+2\left(P_s+P_b-\varepsilon\right). $$
 
-In the Level 2.5, $P_s,P_b,\varepsilon$ are written as follows.
+In the Level 2.5, $P_s,P_b,\varepsilon$ are written as
 
-$$P_s=Lq S_M \left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]$$
+$$P_s=Lq S_M \left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right],$$
 
-$$P_b=Lq S_H \frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)$$
+$$P_b=Lq S_H \frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right),$$
 
-$$\varepsilon=\frac{q^3}{B_1L}$$
+$$\varepsilon=\frac{q^3}{B_1L}.$$
 
-Advection terms are calculated using tracer transport routines in the dynamics scheme. In the turbulence scheme, the time evolution by diffusion, generation and dissipation terms of $q^2$ is calculated by the implicit scheme.
+Advection terms are calculated using the tracer transport routines in the dynamical core. The turbulence scheme calculates the time evolution by the diffusion, production and dissipation terms with an implicit scheme.
 
 #### Diagnosis of variance and covariance
 
-The prognostic equations for $\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ are expressed as follows.
+The prognostic equations for $\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ are expressed as
 
 $$
-\frac{d\left\langle{\theta_l}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l}^{2}\right\rangle-2\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-2 \varepsilon_{\theta l}
-$$
-
-$$
-\frac{d\left\langle {q_w}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w q_{w}^{2}\right\rangle-2\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{q w}
+\frac{d\left\langle{\theta_l}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l}^{2}\right\rangle-2\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-2 \varepsilon_{\theta l},
 $$
 
 $$
-\frac{d\left\langle\theta_{l} q_{w}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l} q_{w}\right\rangle-\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q}
-$$
-
-In the Level 2.5, the time derivative, advection, and diffusion terms in these equations are ignored, and the following balances are assumed locally.
-
-$$ -\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\varepsilon_{\theta l} = 0 \tag{p-dif.6}$$
-
-$$ -\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-\varepsilon_{q w} = 0 \tag{p-dif.7}$$
-
-$$ -\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q} = 0 \tag{p-dif.8}$$
-
-In the Level 2.5 of MYNN scheme, $-\left\langle w \theta_{l}\right\rangle$, $-\left\langle w q_{w}\right\rangle$, $\varepsilon_{\theta l}$, $\varepsilon_{q w}$, $\varepsilon_{\theta q}$ are represented as follows.
-
-$$ -\left\langle w \theta_{l}\right\rangle = LqS_H \frac{\partial \Theta_{l}}{\partial z} \tag{p-dif.9}$$
-
-$$ -\left\langle w q_{w}\right\rangle = LqS_H \frac{\partial Q_{w}}{\partial z} \tag{p-dif.10}$$
-
-$$
-\varepsilon_{\theta l}=\frac{q}{B_{2} L}\left\langle\theta_{l}^{2}\right\rangle \tag{p-dif.11}
+\frac{d\left\langle {q_w}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w q_{w}^{2}\right\rangle-2\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{q w},
 $$
 
 $$
-\varepsilon_{q w}=\frac{q}{B_{2} L}\left\langle q_{w}^{2}\right\rangle \tag{p-dif.12}
+\frac{d\left\langle\theta_{l} q_{w}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l} q_{w}\right\rangle-\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q}.
+$$
+
+In the Level 2.5, the time derivative, advection, and diffusion terms in these equations are neglected assuming the following local balances.
+
+$$ -\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\varepsilon_{\theta l} = 0 \tag{p-dif.6},$$
+
+$$ -\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-\varepsilon_{q w} = 0 \tag{p-dif.7},$$
+
+$$ -\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q} = 0 \tag{p-dif.8}.$$
+
+In the Level 2.5 of the MYNN scheme, $-\left\langle w \theta_{l}\right\rangle$, $-\left\langle w q_{w}\right\rangle$, $\varepsilon_{\theta l}$, $\varepsilon_{q w}$, $\varepsilon_{\theta q}$ are represented as
+
+$$ -\left\langle w \theta_{l}\right\rangle = LqS_H \frac{\partial \Theta_{l}}{\partial z} \tag{p-dif.9},$$
+
+$$ -\left\langle w q_{w}\right\rangle = LqS_H \frac{\partial Q_{w}}{\partial z} \tag{p-dif.10},$$
+
+$$
+\varepsilon_{\theta l}=\frac{q}{B_{2} L}\left\langle\theta_{l}^{2}\right\rangle \tag{p-dif.11},
 $$
 
 $$
-\varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \tag{p-dif.13}
+\varepsilon_{q w}=\frac{q}{B_{2} L}\left\langle q_{w}^{2}\right\rangle \tag{p-dif.12},
 $$
 
-from ([6](p-dif.6))-([13](p-dif.13)), $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ can be diagnosed as follows.
+$$
+\varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \tag{p-dif.13}.
+$$
 
-$$\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \Theta_l}{\partial z}\right)^2$$
+from ([6](p-dif.6))-([13](p-dif.13)), $\langle {\theta_l}^2 \rangle$, $\langle {q_w}^2 \rangle$, $\langle \theta_l q_w \rangle$ can be diagnosed as
 
-$$\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial Q_w}{\partial z}\right)^2$$
+$$\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \Theta_l}{\partial z}\right)^2,$$
 
-$$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}$$
+$$\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial Q_w}{\partial z}\right)^2,$$
+
+$$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}.$$
 
 #### Treatment in the bottom layer
 
-Since the lowest layer of the model corresponds to the ground layer where the vertical gradient of geophysical quantities change rapidly, the following Monin-Obukhov similarity theory is used to evaluate the vertical gradient accurately.
+Since the lowest model layer corresponds to the surface layer where values of physical variables rapidly change in the vertical direction, the following Monin-Obukhov similarity theory is used to accurately evaluate the vertical gradient of the variables.
 
-$$ \frac{\partial M}{\partial z} = \frac{u_*}{kz}\phi_m \tag{p-dif.14}$$
+$$ \frac{\partial M}{\partial z} = \frac{u_*}{kz}\phi_m \tag{p-dif.14},$$
 
-$$ \frac{\partial \Theta}{\partial z} = \frac{\theta_*}{kz}\phi_h \tag{p-dif.15}$$
+$$ \frac{\partial \Theta}{\partial z} = \frac{\theta_*}{kz}\phi_h \tag{p-dif.15},$$
 
-$$ \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \tag{p-dif.16}$$
+$$ \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \tag{p-dif.16},$$
 
-where $M$ is the wind speed when the horizontal axis is in the direction of the horizontal wind in the surface layer. $\phi_m$ and $\phi_h$ are the dimensionless gradient functions for momentum and heat, respectively. $\theta_*$, $q_{v*}$ are the scales of potential temperature and water vapor in the surface layer, respectively, and satisfy the following relationships.
+where $M$ is the horizontal wind velocity for the horizontal axis aligned to the direction of the horizontal wind in the surface layer. $\phi_m$ and $\phi_h$ are the dimensionless gradient functions for momentum and heat respectively. $\theta_*$ and $q_{v*}$ are the scales of potential temperature and water vapor in the surface layer respectively, and satisfy the following relationships.
 
-$$ \langle wm \rangle_g = -u_*^2 \tag{p-dif.17}$$
+$$ \langle wm \rangle_g = -u_*^2 \tag{p-dif.17},$$
 
-$$ \langle w\theta \rangle_g = -u_*\theta_* \tag{p-dif.18}$$
+$$ \langle w\theta \rangle_g = -u_*\theta_* \tag{p-dif.18},$$
 
-$$ \langle wq_v \rangle_g = -u_*q_{v*} \tag{p-dif.19}$$
+$$ \langle wq_v \rangle_g = -u_*q_{v*} \tag{p-dif.19},$$
 
-$m$ is the deviation of $M$ from the grid average. Using $M$ and $m$, the generation term of turbulence kinetic energy can be written as
+where $m$ is the deviation of $M$ from the grid mean. Using $M$ and $m$, the production term of the turbulence kinetic energy is written as
 
-$$ P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle $$
+$$ P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle. $$
 
-Using ([14](p-dif.14)), ([17](p-dif.17)) and the defining equation of the Monin-Obukhov length, this can be calculated as follows.
+Using ([14](p-dif.14)), ([17](p-dif.17)) and the definition of the Obukhov length, it is rewritten as
 
-$$ P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right] $$
+$$ P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right], $$
 
-Here, $\zeta_1$ is $\zeta$ at the full level of the lowest layer of the model.
+where $\zeta_1$ is $\zeta$ at the full level of the lowest model layer.
 
-By assuming that there are no cloud particles in the surface layer, $\langle {\theta_l}^2\rangle$, $\langle {q_w}^2\rangle$, $\langle \theta_lq_w\rangle$ can be calculated diagnostically from ([6](p-dif.6))-([8](p-dif.8)), ([11](p-dif.11))-([13](p-dif.13)), ([15](p-dif.15)), ([16](p-dif.16)), ([18](p-dif.18)), and ([19](p-dif.19)) as follows.
+Assuming that the effect of cloud particles are negligible in the surface layer, $\langle {\theta_l}^2\rangle$, $\langle {q_w}^2\rangle$, $\langle \theta_lq_w\rangle$ is calculated diagnostically from ([6](p-dif.6))-([8](p-dif.8)), ([11](p-dif.11))-([13](p-dif.13)), ([15](p-dif.15)), ([16](p-dif.16)), ([18](p-dif.18)), and ([19](p-dif.19)) as
 
-$$\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L} $$
+$$\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L}, $$
 
-$$\langle {q_w}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle wq_v\rangle_g}^2 \bigg/ \frac{q}{B_2L} $$
+$$\langle {q_w}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle wq_v\rangle_g}^2 \bigg/ \frac{q}{B_2L}, $$
 
-$$\langle \theta_lq_w\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}\langle w\theta \rangle_g\langle wq_v \rangle_g \bigg/ \frac{q}{B_2L} $$
+$$\langle \theta_lq_w\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}\langle w\theta \rangle_g\langle wq_v \rangle_g \bigg/ \frac{q}{B_2L}. $$
 
-$\phi_m,\phi_h$ are formulated as follows based on Businger et al. (1971).
+$\phi_m$ and $\phi_h$ are formulated following Businger et al. (1971) as
 
 $$
 \phi_m(\zeta)=\left\{
@@ -405,7 +405,7 @@ $$
   \right.
 $$
 
-$$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0)$$
+$$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0).$$
 
 ### Time integration with implicit scheme
 
