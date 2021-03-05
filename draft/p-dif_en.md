@@ -412,14 +412,14 @@ $$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0).$$
 #### Tendency of $q^2$
 The prognostic equation for $q^2$ is discretized as
 
-$$ \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right), \tag{p-dif.20} $$
+$$ \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right), \tag{p-dif.20} $$
 
-where $n$ and $n+1$ indicate the current and next time steps respectively, and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. The advection terms are omitted. $F_q$ at $n+1$ is computed by
+where $n$ and $n+1$ indicate the current and next time steps respectively, and $\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}$. The subscript _turb_ indicates the calculation by the turbulence scheme and the advection term is omitted. $F_q$ at $n+1$ is computed by
 
 $$ F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n}). \tag{p-dif.21} $$
 
 With a definition of
-$$\mu_k = \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t},$$
+$$\mu_k = \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}},$$
 
 (20) and (21) lead to
 
@@ -438,7 +438,7 @@ $$
 \end{align}
 $$
 
-(22) is represented as the following matrix equation,
+(22) makes the following matrix equation,
 
 $$
 \left(\begin{array}{lllllll}
@@ -478,7 +478,7 @@ where the subscript $K$ denote the index for the top model layer. (23) is solved
 
 Letting $\psi$ be a substitute for $u$, $v$, $T$, $q_w$, the tendency of $\psi$ is calculated by
 
-$$ \frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{\psi,k+1/2,n+1}-F_{\psi,k-1/2,n+1}\right), $$
+$$ \left(\frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}\right)_{\text{turb}} = -\frac{1}{\rho_k\Delta z_k}\left(F_{\psi,k+1/2,n+1}-F_{\psi,k-1/2,n+1}\right), $$
 
 where
 
@@ -488,7 +488,7 @@ These equations lead to (23) again and computed with the LU decomposition, but $
 
 $$
 \begin{align}
- \mu_k &= \frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}, \\
+ \mu_k &= \left(\frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}\right)_{\text{turb}}, \\
  X_{1,k} &= \frac{\partial F_{\psi,k+1/2}}{\partial \psi_{k+1}} \Delta t, \\
  X_{2,k} &= \rho_k \Delta z_k + \left( \frac{\partial F_{\psi,k+1/2}}{\partial \psi_k} - \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k} \right)\Delta t, \\
  X_{3,k} &= -\frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}} \Delta t, \\
