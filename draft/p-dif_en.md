@@ -113,70 +113,73 @@ $$
 (Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2).
 $$
 
-### Master turbulent length scale
+### Master length scale
 
-#### Formulation by Nakanishi (2001)
+#### Original formulation by Nakanishi (2001)
 
-Nakanishi (2001) proposed the following formula as the master length scale $L$.
+Nakanishi (2001) proposed the following formulation for the master length scale $L$.
 
-$$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \tag{p-dif.1} $$
+$$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \tag{p-dif.1}, $$
 
-$L_S, L_T, L_B$ represent the length scales in the surface layer, convective boundary layer, and stably stratified layer, respectively, and are formulated as follows.
+where $L_S$, $L_T$, $L_B$ represent length scales in the surface layer, convective boundary layer, and stably stratified layer respectively. These length scales are formulated as
 
 $$
 L_S=\left\{
     \begin{array}{lr}
-      kz/3.7, &\zeta\ge 1\\
-      kz/(2.7+\zeta), &0\le\zeta< 1\\
-      kz(1-\alpha_4\zeta)^{0.2}, &\zeta< 0\\
+      kz/3.7 &\zeta\ge 1\\
+      kz/(2.7+\zeta) &0\le\zeta< 1\\
+      kz(1-\alpha_4\zeta)^{0.2} &\zeta< 0,
     \end{array}
   \right.
 $$
 
-$$L_T=\alpha_1\frac{\displaystyle \int_0^\infty{qz}\,dz}{\displaystyle \int_0^\infty{q}\,dz}$$
+$$L_T=\alpha_1\frac{\displaystyle \int_0^\infty{qz}\,dz}{\displaystyle \int_0^\infty{q}\,dz},$$
 
 $$
 L_B=\left\{
     \begin{array}{ll}
-      \alpha_2 q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
-      \left[\alpha_2+\alpha_3(q_c/L_TN)^{1/2}\right]q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
-      \infty, &\partial\Theta_v/\partial z\le 0\\
+      \alpha_2 q/N &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
+      \left[\alpha_2+\alpha_3(q_c/L_TN)^{1/2}\right]q/N &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
+      \infty &\partial\Theta_v/\partial z\le 0,
     \end{array}
   \right.
 $$
 
-where $\zeta\equiv z/L_M$ is the height normalized by the Monin-Obukhov length $L_M$, $N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}$ is the Brunt-Väisälä frequency, and $q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ is the velocity scale in the convective boundary layer.
+where $\zeta\equiv z/L_M$ is a height normalized by the Monin-Obukhov length $L_M$, $N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}$ is the Brunt-Väisälä frequency and $q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ is a velocity scale in the convective boundary layer.
 
-#### Modifications in the implementation for MIROC
+#### Modifications in MIROC
 
-The above formulation in Nakanishi (2001) is appropriate when the domain of the model is limited to the atmospheric boundary layer and its peripheral region.
-However, when the model includes the upper troposphere, problems such as follows may arise depending on the conditions: $L_T$, the length scale of the convective boundary layer, is used in the free atmosphere, and the turbulent energy in the free atmosphere is included as $q$ in the calculation of $L_T$.
+The above formulation works well when the domain of the model is limited to the planetary boundary layer (PBL) and its surrounding area. However, if the the upper troposphere is included, the formulation gives inappropriate behaviors depending on the conditions: e.g. $L_T$, the length scale of the convective boundary layer, is used in the free atmosphere, and the turbulent kinetic energy in the free atmosphere is taken into account in the calculation of $L_T$.
 
-Therefore, for implementation in MIROC, the top height of the convective boundary layer $H_{PBL}$ is estimated and the region below $h=\sqrt{(F_H H_{PBL})^2+H_0^2}$ is considered as the region where boundary-layer turbulence is dominant. Here, $F_H=1.5$ and $H_0=500$m.
+In order to avoid such misbehaviors, the top height of the convective boundary layer $H_{PBL}$ is estimated in MIROC and we consider that the region below $h=\left[(F_H H_{PBL})^2+H_0^2\right)^{1/2}$ is the one where the PBL-derived turbulence is dominant. Here, we adopted $F_H=1.5$ and $H_0=500$m.
 
-Below the altitude $h$, equation ([1](p-dif.1)) is used as the master length scale, but in $L_T$, the range of integration is modified as follows.
+Below the altitude $h$, equation ([1](p-dif.1)) is used as the master length scale, but the vertical range of the integration in $L_T$ is modified as
+
+$$L_T=\alpha_1\frac{\displaystyle \int_0^h{qz}\,dz}{\displaystyle \int_0^h{q}\,dz},$$
+
+and then the master length scale above $h$ is represented as
 
 $$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}$$
 
-where $L_A=\alpha_5\,q/N$ is the length scale when an air mass moves vertically due to turbulence in stable stratification. $\alpha_5$ represents the effect of dissipation and $\alpha_5=0.53$.  $L_{max}=500$m gives the upper limit of $L$.
+where $L_A=\alpha_5\,q/N$ is a length scale of air parcel vertically transported by turbulence in a stably stratified layer. $\alpha_5$ represents the effect of dissipation set to $0.53$.  $L_{max}=500$m gives the upper limit of $L$.
 
-#### Estimation of the top height of the convection boundary layer
+#### Estimation of the top height of the convective boundary layer
 
-Based on Holtslag and Boville (1993), the estimate of $H_{PBL}$ is calculated using the bulk Richardson number $Ri_B$ given as follows.
+Based on Holtslag and Boville (1993), $H_{PBL}$ is estimated using the bulk Richardson number $Ri_B$ given as
 
-$$Ri_B=\frac{[g/\Theta_v(z_1)][\Theta_v(z_k)-\Theta_{v,g}](z_k-z_g)}{[U(z_k)-U(z_1)]^2+[V(z_k)-V(z_1)]^2+F_u{u_*}^2}$$
+$$Ri_B=\frac{[g/\Theta_v(z_1)][\Theta_v(z_k)-\Theta_{v,g}](z_k-z_g)}{[U(z_k)-U(z_1)]^2+[V(z_k)-V(z_1)]^2+F_u{u_*}^2},$$
 
-where $z_k$ is the full level altitude of the kth layer from the bottom, $z_1$ is the full level altitude of the lowest layer of the model, and $z_g$ is the surface altitude. $F_u$ is a dimensionless tuning parameter. Also,
+where $z_k$ is the altitude of a $k$-th model layer from the bottom at full level, $z_1$ the altitude of the lowest layer at full level, $z_g$ the altitude of the surface. $F_u$ is a dimensionless tuning parameter, and
 
-$$\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m}$$
+$$\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m},$$
 
-$$w_m=u_*/\phi_m$$
+$$w_m=u_*/\phi_m,$$
 
-$$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}}$$
+$$\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}},$$
 
-where $z_s$ is the altitude of the surface layer, and $z_s=0.1H_{PBL}$. $F_b$ is a dimensionless tuning parameter.
+where $z_s$ is the altitude of the surface layer assumed to be $0.1H_{PBL}$. $F_b$ is a dimensionless tuning parameter.
 
-$Ri_B$ is calculated in turn from $k=2$ upward, and is linearly interpolated between the layer where $Ri_B>0.5$ for the first time and the layer immediately below it. The height where $Ri_B=0.5$ exactly is used as $H_{PBL}$. Since $H_{PBL}$ is required for the calculation of $z_s$, $H_{PBL}$ is first calculated using $z_s$ with the temporary value $H_{PBL}=z_1-z_g$ substituted, and then the true $H_{PBL}$ is recalculated using $z_s$ with this $H_{PBL}$ substituted.
+$Ri_B$ is successively calculated from $k=2$ upward, and then if $Ri_B$ exceeds $0.5$ for the first time, it is linearly interpolated between this level and the level immediately below it. The height satiffying $Ri_B=0.5$ is used as $H_{PBL}$. Since $H_{PBL}$ is necessary for the calculation of $z_s$, we first calculate $z_s$ using a temporary value of $H_{PBL}=z_1-z_g$, from which we calculate the first guess of $H_{PBL}$. Then we use this value for the recalculation of $z_s$, and then it is used for the final estimate of $H_{PBL}$.
 
 ### Calculation of diffusion coefficients
 
