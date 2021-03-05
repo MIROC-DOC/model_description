@@ -7,8 +7,7 @@
 \usepackage{pxjahyper}
 
 \begin{document}
-\hypertarget{shallow-convection-scheme}{%
-\section{Shallow Convection Scheme}\label{shallow-convection-scheme}}
+\subsection{Shallow Convection Scheme}\label{shallow-convection-scheme}
 
 % ___
 % \_ \
@@ -17,9 +16,9 @@
 %     \ \
 %     _\ \_
 %     \____\
-\subsection{Overview of shallow convection}\label{overview-of-shallow-convection}
+\subsubsection{Overview of shallow convection}\label{overview-of-shallow-convection}
 Shallow convection is the most frequent type of convective cloud in the tropics and subtropics Its impact on climate through the energy budget due to atmospheric radiation is considered important (Stevens, 2005).
-Shallow convection is responsible for transporting the boundary layer air to the free atmosphere. It is often not accompanied by precipitation and is characterized by the fact that precipitation-induced downwdraft does not reach the surface as in deep convection.
+Shallow convection is responsible for transporting the boundary layer air to the free atmosphere. It is often not accompanied by precipitation and is characterized by the fact that precipitation-induced downdraft does not reach the surface as in deep convection.
 
 This section briefly describes the vertical structure of the boundary layer favorable for shallow convection.
 When the ground surface is heated by sunlight or cold air flows in from above, the energy of convective instability is dissipated by turbulence in the bottom of the atmosphere, forming a mixed layer with a nearly uniform vertical distribution of 
@@ -28,13 +27,13 @@ At the upper end of the mixed layer, there is a transition layer of weakly stabl
 Above LCL, the temperature decreases according to the moist adiabatic lapse rate, and the updraft is observed as clouds. Above the level of free convection (LFC), the cloud continues to grow while mixing with surrounding air. 
 The growth of these convective clouds is limited by the temperature inversion layer at the lower end of the free atmosphere, and the cloud tops are often located about 2 km from the surface.
 
-In the former versions of MIROC, A cumulus parameterization proposed by Chikira and Sugiyama (2010) deals with multiple cloud types including shallow cumulus and deep convective clouds. However, it tends to underestimate shallow convection.
-To cope with this bias and improve the performance for reproducing current climate, the shallow convection scheme fis introduced from the 6th version of MIROC (Tatebe et al., 2019, Ogura et al., 2017, Ogura, 2015)．
-The source code in concern (pshcn.F) consists of SUBROUTINE: [PSHCN] and [DISTANCE]. The input values for [PSHCN] are temperature, water vapor mixing ration, and liquid water mixing ratio, ice mixing ratio.
+In the former versions of MIROC, A cumulus parameterization proposed by Chikira and Sugiyama (2010) deals with multiple cloud types including shallow cumulus and deep convective clouds. However, it tends to overestimate low-level cloud amounts.
+To cope with this bias and improve the performance for reproducing current climate, the shallow convection scheme is introduced from the 6th version of MIROC (Tatebe et al., 2019, Ogura et al., 2017, Ogura, 2015)．
+The source code in concern (pshcn.F) consists of SUBROUTINE:[PSHCN] and SUBROUTINE:[DISTANCE]. The input values for SUBROUTINE:[PSHCN] are temperature, water vapor mixing ration, and liquid water mixing ratio, ice mixing ratio.
 It predicts liquid water potential temperature, total water mixing ratio, ice mixing ratio, and horizontal components of wind in response to vertical transport. It also diagnoses cloud fraction and precipitation.
-[DISTANCE], which is called inside [PSHCN], calculates the degree of buoyancy-induced updraft and mixing with the environment.
-Since the variables diagnosed in the cumulus scheme (SUBROUTINE: [CUMULUS]) are referenced to determine the conditions for shallow convection, SUBROUTINE: [PSHCN] is required to be run after [CUMULUS], followed by the diagnosis of cloud fraction.
-On the other hand, it should be run before the land surface process [SURFCE] because precipitation by convection is referenced in the land surface and ocean models.
+SUBROUTINE:[DISTANCE], which is called inside SUBROUTINE:[PSHCN], calculates the degree of buoyancy-induced updraft and mixing with the environment.
+Since the variables diagnosed in the cumulus scheme (SUBROUTINE:[CUMLUS]) are referenced to determine the conditions for shallow convection, SUBROUTINE:[PSHCN] is required to be run after SUBROUTINE:[CUMULUS], followed by the diagnosis of cloud fraction.
+On the other hand, it should be run before the land surface process SUBROUTINE:[SURFCE] because precipitation by convection is referenced in the land surface and ocean models.
 
 % ________
 % \______ \
@@ -43,11 +42,11 @@ On the other hand, it should be run before the land surface process [SURFCE] bec
 %    \ \    __
 %     \ \___\ \
 %      \_______\
-\subsection{Basics of cloud model}\label{basics-of-cloud-model}
+\subsubsection{Basics of cloud model}\label{basics-of-cloud-model}
 Subgrid clouds are modeled based on the frameworks proposed by Bretherton et al. (2004) and Park and Bretherton (2009).
 This scheme employs a simple plume model for cloud to calculate vertical transport of conserved variables and precipitation due to updraft.
 An ensemble of shallow convection in a horizontal grid, which is expressed as a single updraft plume, is supposed to experience horizontal mixing with the environment
-(entainment/detrainment). The flux of vertical transport of mass is assumed in the following form:
+(entrainment/detrainment). The flux of vertical transport of mass is assumed in the following form:
 \begin{equation}\label{def_Mu}
     \rho \overline {w' \psi '}\approx M_u (\psi_u-\overline{\psi}) ,
 \end{equation}
@@ -55,7 +54,7 @@ where $M_u=\rho_u\sigma_u w_u$ is mass flux of updraft ($\rho_u$,$\sigma_u$, and
 $\psi_u$ is a conserved variable transported by convection (e.g. liquid water potential temperature, total water mixing ratio, horizontal components of momentum) in updraft，
 $\overline{\psi}$ denotes the average value in the environmental field of the same conserved value.
 The effects of vertical transport due to shallow convection are represented by determining the vertical profiles of unknown values $M_u$ and $\psi_u$.
-Flux of mass and conseved values are diagnosed as
+Flux of mass and conserved values are diagnosed as
 \begin{align}
     \frac{\partial M_u}{\partial z} &= E - D \label{zprof_Mu}\\
     \frac{\partial}{\partial z} (\psi_u M_u) &= X_\psi + S_\psi M_u,\label{zprof_psi}
@@ -82,7 +81,7 @@ and solving differential equations along with boundary condition at cloud base, 
 %     __   \ \
 %     \ \___\ \
 %      \_______\
-\subsection{Computation in PSHCN}\label{computation-in-PSHCN}
+\subsubsection{Computation in PSHCN}\label{computation-in-PSHCN}
 
 The effect of convective updraft is calculated as follows.
 \begin{itemize}
@@ -95,7 +94,8 @@ The effect of convective updraft is calculated as follows.
     \item $T$, $q_v$, and $q_l$ are diagnosed according to $T_l$ and $q_t$.
 \end{itemize}
 
-\subsubsection{Lower boundary condition: diagnosis of cloud base mass flux}\label{lower-boundary-condition}
+\paragraph{Lower boundary condition: diagnosis of cloud base mass flux}\label{lower-boundary-condition}
+
 The mass flux at cloud base is formulated as it depends on turbulent kinetic energy (TKE) in boundary layer and convective inhibition (CIN) at the top of boundary layer.
 
 Firstly, the vertical profile of updraft velocity is supposed to fulfill 
@@ -123,7 +123,7 @@ Secondly, to obtain the information of vertical velocity at cloud base, the stat
     f(w) = \frac{1}{2\pi k_f e_{avg}}\exp\left[ -\frac{w^2}{2k_fe_{avg}}\right]
 \end{equation}
 with variance equal to $k_f e_{avg}$, where $e_{avg}$ is average TKE diagnosed in turbulent and vertical diffusion scheme.
-$k_f$ is an empirical parameter describing the partitioning of TKE between horizontal and vertical motions at the subcloud layer inversion, whose recomended value based on large eddy simulation is 0.5.
+$k_f$ is an empirical parameter describing the partitioning of TKE between horizontal and vertical motions at the subcloud layer inversion, whose recommended value based on large eddy simulation is 0.5.
 
 By taking average of vertical velocity above the critical value $w_c$, cloud base mass flux $M_{u,base}$ is diagnosed as
 \begin{equation}\label{Mubase}
@@ -132,7 +132,8 @@ By taking average of vertical velocity above the critical value $w_c$, cloud bas
 where $\overline{\rho_{base}}$ is density at LFC.
 This mass flux is larger for larger boundary layer TKE and smaller for larger CIN.
 
-\subsubsection{Diagnosing hight of cloud base}\label{diagno-height-of-cloud-base}
+\paragraph{Diagnosing hight of cloud base}\label{diagno-height-of-cloud-base}
+
 The cloud base height is set between the top of the boundary layer and the LCL. The larger the CIN is, the lower the cloud base becomes.
 The top of boundary layer is diagnosed as the level with maximum vertical gradient of relative humidity. 
 Let $z_{Hi}$ be the higher of this level and LCL, and $z_{Lo}$ be the lower, then the cloud base altitude $z_{base}$ is set
@@ -141,7 +142,8 @@ Let $z_{Hi}$ be the higher of this level and LCL, and $z_{Lo}$ be the lower, the
 \end{equation}
 $CIN_{Hi}$ and $CIN_{Lo}$ are coefficients which satisfy $CIN_{Lo}\le CIN \le CIN_{Hi}$ for a typical value of CIN.
 
-\subsubsection{Determination of the presence of shallow convection}\label{presence-of-shallow-convection}
+\paragraph{Determination of the presence of shallow convection}\label{presence-of-shallow-convection}
+
 For each horizontal column, whether shallow convection occurs is determined with following criteria.
 \begin{itemize}
     \item If estimated inversion strength (EIS; Wood and Bretherton, 2006) exceeds a certain threshold,
@@ -152,21 +154,23 @@ For each horizontal column, whether shallow convection occurs is determined with
      $EIS=\theta_{700}-\theta_{0}-\Gamma_m^{850}(z_{700}-LCL)$
     where $\theta_{700}$ and $\theta_0$ are potential temperature at 700hPa and surface, $\Gamma_m^{850}$ is moist adiabatic lapse rate at 850hPa, 
     and $z_{700}$ is height of 700hPa.
-   \item If the intensity of cumulus convection diagnosed by [CUMULUS] exceeds a threshold, the enviromental field is supposed to be dominated by deep convection and shallow convection is not generated.
-   \item If the areal fraction of shallow convection is under a threshold, computation of shallow convection is omitted.
+    \item If the intensity of cumulus convection diagnosed by SUBROUTINE:[CUMULUS] exceeds a threshold, the environmental 
+    field is supposed to be dominated by deep convection and shallow convection is not generated.
+    \item If the areal fraction of shallow convection is under a threshold, computation of shallow convection is omitted.
  \end{itemize}
 
-\subsubsection{Diagnosing vertical profile of updraft mass flux}\label{diagnosing-vertical-profile-of-updraft-mass-flux}
+\paragraph{Diagnosing vertical profile of updraft mass flux}\label{diagnosing-vertical-profile-of-updraft-mass-flux}
+
 For the grid boxes that contain shallow convection, entrainment and detrainment is calculated using the value of $\psi_u$ at cloud base and $M_{u,base}$.
 Fractional entrainment and detrainment are computed based on the framework of buoyancy sorting suggested by Kain and Fritsch (1990).
 In a layer of thickness $\delta z$, equal parts $\tilde{E_0} M_u \delta z$ of updraft and environmental air are involved in the lateral mixing process that creates a spectrum of mixtures.
 This yields a total mixing mass flux $2\tilde{E_0} M_u \delta z$, with fractional mixing rate $\tilde{E_0}=c_0/H$ ($c_0$ is a certain empirical coefficient and $H$ is the height from surface).
 In the mixed air, there exists states with probability density $\chi$ such that the air from the environmental field occupies a proportion $\chi$. Here, for simplicity of calculation, 
 it is considered that the state from pure moist air ($\chi=0$) to pure environmental air ($\chi=1$) is distributed with uniform probability (Kain-Fritsch scheme assumes Gaussian distribution).
-Based on the buoyancy force on the mixed air, the entrainment or detrainment is determined. SUBROUTINE: [DISTANCE] is called in [PSHCN].
+Based on the buoyancy force on the mixed air, the entrainment or detrainment is determined. SUBROUTINE:[DISTANCE] is called in SUBROUTINE:[PSHCN].
 The output variables in this subroutine are liquid water potential temperature (THETLU) and bool value for entrainment or detrainment (JUDGE).
 
-The occurence of entrainment is judged as follows. Firstly, if the udraft air is not saturated, entrainment is not assumed to occur.
+The occurrence of entrainment is judged as follows. Firstly, if the updraft air is not saturated, entrainment is not assumed to occur.
 Nextly, with virtual potential energy in the environmental field ($\overline{\theta_v}$) and updraft ($\theta_{vu}$), buoyancy force on the parcel is defined:
 \begin{equation}\label{buoy_u}
     B_u = g\frac{\theta_{vu} - \overline{\theta_{v}}}{ \overline{\theta_v}}
@@ -200,7 +204,7 @@ where $\chi_c$ is computed based on virtual potential temperature of mixed air
 \end{equation}
 (Bretherton et al., 2004). $\beta$ is a thermodynamic parameter which depends on temperature and pressure defined by Randall (1980), 
 $\theta_{lu}$ is liquid water potential temperature in updraft, $\theta_u$ is updraft potential temperature，$\overline{q_t}$ is total water mixing ratio of environment，
-$q_{tu}$ is total water mixing ratio of updraft, $L$ is latent heat of vaporization，$c_p$ is specific heat capacity of dry air at constant pressure, and $\Pi$ is Exner function.
+$q_{tu}$ is total water mixing ratio of updraft, $L$ is latent heat of vaporization，$c_p$ is specific heat capacity of dry air at constant pressure, and $\Pi$ is the Exner function.
 
 Consequently, the governing equations (\ref{zprof_wu}), (\ref{zprof_Mu_param}), and (\ref{zprof_psi_param}) for vertical profiles of $w_u$, $M_u$, and $\psi_u$ are obtained.
 These equations are discretized and integrated upward one layer at a time using the lower boundary condition in section \ref{lower-boundary-condition} to yield the vertical profile of each variables.
@@ -216,14 +220,14 @@ Therefore, the following limiter is imposed to prevent numerical instability whe
 
 \begin{thebibliography}{99}
     \bibitem{B04} Bretherton, C. S., J. R. McCaa, and H. Grenier, 2004: 
-        A new parameterization for shallow cumulus convection and its application to marine subtropical cloud-topped boundary layers. 
-        Part I: description and 1D results, \textit{Mon. Wea. Rev.}, 132, 864-882.
-    \bibitem{KF90}Kain, J. S., and J. M. Fritsch, 1990: 
-        A one-dimensional entraining/detraining plume model and its application in convective parameterization,
+        A new parameterization for shallow cumulus convection and its application to marine subtropical cloud-topped boundary layers. Part I: description and 1D results. 
+        \textit{Mon. Wea. Rev.}, 132, 864-882.
+    \bibitem{KF90} Kain, J. S., and J. M. Fritsch, 1990: 
+        A one-dimensional entraining/detraining plume model and its application in convective parameterization.
         \textit{J. Atmos. Sci.}, 47, 2784-2802.
     \bibitem{PB09} Park, S. and C. S. Bretherton, 2009: 
         The University of Washington shallow convection and moist turbulence schemes and their impact on 
-        climate simulations with the Community Atmosphere Model, \textit{J. Clim}, 22, 3449-3469.
+        climate simulations with the Community Atmosphere Model. \textit{J. Clim}, 22, 3449-3469.
     \bibitem{R80} Randall, D. A., 1980: 
         Conditional instability of the first kind upside-down. \textit{J. Atmos. Sci.}, 37, 125–130.
     \bibitem{SouseiRep} Ogura, T., 2015: 
@@ -233,7 +237,7 @@ Therefore, the following limiter is imposed to prevent numerical instability whe
         On the relationship between stratiform low cloud cover and lower-tropospheric stability. 
         \textit{J. Clim}, 19, 6425–6432.
     \bibitem{S05} Stevens, B., 2005: 
-        Atmospheric Moist Convection, \textit{Annu. Rev. Earth Planet. Sci.}, 33, 605-643．
+        Atmospheric Moist Convection. \textit{Annu. Rev. Earth Planet. Sci.}, 33, 605-643．
     \bibitem{Tatebe19} Tatebe, H., T. Ogura, T. Nitta, et al., 2019: 
         Description and basic evaluation of simulated mean state, internal variability, and climate sensitivity in MIROC6.
         \textit{Geosci. Model Dev.}, 12, 2727-2765.
