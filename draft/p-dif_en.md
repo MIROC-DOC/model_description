@@ -183,95 +183,101 @@ $Ri_B$ is successively calculated from $k=2$ upward, and then if $Ri_B$ exceeds 
 
 ### Calculation of diffusion coefficients
 
-#### Turbulent kinetic energy in the Level 2
+#### Twice turbulent kinetic energy of Level 2
 
-The turbulent kinetic energy of the Level 2, ${q_2}^2/2$, is calculated from the following equation, which neglects the time derivative, advection, and diffusion terms in the time evolution equation of the turbulent kinetic energy.
+The twice turbulent kinetic energy of the level 2, ${q_2}^2$, is calculated from the following equation, which neglects the time derivative, advection and diffusion terms in the prognostic equation of the twice turbulent kinetic energy.
 
-$$ P_s + P_b - \varepsilon = 0 \tag{p-dif.2} $$
+$$ P_s + P_b - \varepsilon = 0 \tag{p-dif.2}, $$
 
-where $P_s$, $P_b$, $\varepsilon$ denote the generation term by shear, the generation term by buoyancy, and the dissipation term, respectively. $P_s$, $P_b$ are represented as follows.
+where $P_s$ and $P_b$ denote the production terms by shear and buoyancy respectively. $\varepsilon$ is the dissipation term. $P_s$ and $P_b$ are written as
 
-$$ P_s = -\langle wu \rangle \frac{\partial U}{\partial z} - \langle wv \rangle \frac{\partial V}{\partial z} $$
+$$ P_s = -\langle wu \rangle \frac{\partial U}{\partial z} - \langle wv \rangle \frac{\partial V}{\partial z}, $$
 
-$$ P_b = \frac{g}{\Theta}\langle w\theta_v \rangle $$
+$$ P_b = \frac{g}{\Theta}\langle w\theta_v \rangle, $$
 
-In the Level 2 of the MYNN scheme, they are written as follows.
+respectively. In the level 2 of the MYNN scheme, these are represented as
 
-$$ P_s = LqS_{M2} \left[ \left(\frac{\partial U}{\partial z}\right)^2 + \left(\frac{\partial V}{\partial z}\right)^2 \right] \tag{p-dif.3} $$
+$$ P_s = LqS_{M2} \left[ \left(\frac{\partial U}{\partial z}\right)^2 + \left(\frac{\partial V}{\partial z}\right)^2 \right] \tag{p-dif.3}, $$
 
-$$ P_b = LqS_{H2} \frac{g}{\Theta}\left[ \beta_\theta \frac{\partial \Theta_l}{\partial z} + \beta_q \frac{\partial Q_w}{\partial z} \right] \tag{p-dif.4} $$
+$$ P_b = LqS_{H2} \frac{g}{\Theta}\left[ \beta_\theta \frac{\partial \Theta_l}{\partial z} + \beta_q \frac{\partial Q_w}{\partial z} \right] \tag{p-dif.4}, $$
 
-$$ \varepsilon = \frac{q^3}{B_1 L} \tag{p-dif.5} $$
+$$ \varepsilon = \frac{q^3}{B_1 L} \tag{p-dif.5}. $$
 
-From ([2](p-dif.2)), ([3](p-dif.3)), ([4](p-dif.4)), and ([5](p-dif.5)), ${q_2}^2$ is calculated as follows.
+From ([2](p-dif.2)), ([3](p-dif.3)), ([4](p-dif.4)), and ([5](p-dif.5)), $q_2^2$ is calculated by
 
-$${q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}$$
+$${q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}.$$
 
-#### Stability functions in the Level 2.5
+#### Stability functions of the Level 2.5
 
-When $q<q_2$, i.e., the turbulence is in the growth phase, the stability functions of the Level 2.5, $S_M$ and $S_H$, are calculated as follows using the coefficient $\alpha=q/q_2$ introduced by Helfand and Labraga (1998).
+When $q<q_2$, i.e., the turbulence is in a growing phase, the stability functions of the Level 2.5 for momentum and heat, $S_M$ and $S_H$ respectively, are calculated using $\alpha=q/q_2$ introduced by Helfand and Labraga (1998) as
 
-$$S_M=\alpha S_{M2},\quad S_H=\alpha S_{H2}$$
+$$S_M=\alpha S_{M2},$$
 
-On the other hand, when $q \geq q_2$, $S_M$ and $S_H$ are calculated as follows. The following equations differ from those in Nakanishi (2001) in the description method, but gives equivalent results with less computation.
+$$S_H=\alpha S_{H2}.$$
 
-$$S_M=A_1\frac{E_3-3C_1 E_4}{E_2 E_4+E_5 E_3}$$
+When $q \geq q_2$, $S_M$ and $S_H$ are calculated as
 
-$$S_H=A_2\frac{E_2+3C_1 E_5}{E_2 E_4+E_5 E_3}$$
+$$S_M=A_1\frac{E_3-3C_1 E_4}{E_2 E_4+E_5 E_3},$$
+
+$$S_H=A_2\frac{E_2+3C_1 E_5}{E_2 E_4+E_5 E_3},$$
 
 where
 
-$$E_1=1-3A_2B_2(1-C_3)G_H$$
+$$E_1=1-3A_2B_2(1-C_3)G_H,$$
 
-$$E_2=1-9A_1A_2(1-C_2)G_H$$
+$$E_2=1-9A_1A_2(1-C_2)G_H,$$
 
-$$E_3=E_1+9{A_2}^2(1-C_2)(1-C_5)G_H$$
+$$E_3=E_1+9{A_2}^2(1-C_2)(1-C_5)G_H,$$
 
-$$E_4=E_1-12A_1A_2(1-C_2)G_H$$
+$$E_4=E_1-12A_1A_2(1-C_2)G_H,$$
 
-$$E_5=6{A_1}^2G_M$$
+$$E_5=6{A_1}^2G_M,$$
 
-$$G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]$$
+$$G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right],$$
 
-$$G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)$$
+$$G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right).$$
+
+The above formulas appear to be different from those in Nakanishi (2001), but are equivalent and can be computed with a smaller computationnal cost.
 
 #### Calculation of diffusion coefficients
 
-The diffusion coefficients $K_M$, $K_q$, $K_H$, and $K_w$ for wind speed, turbulent energy, heat, and water are calculated as follows from $S_M,S_H$.
+The diffusion coefficients for momentum, twice turbulent kinetic energy, heat and water are represented by
 
-$$K_M=LqS_M$$
+$$K_M=LqS_M,$$
 
-$$K_q=3LqS_M$$
+$$K_q=3LqS_M,$$
 
-$$K_H=LqS_H$$
+$$K_H=LqS_H,$$
 
-$$K_w=LqS_H$$
+$$K_w=LqS_H,$$
+
+respectively.
 
 #### Calculation of fluxes
 
-The vertical flux $F$ of each physical quantity is calculated as follows.
+The vertical fluxes for $U$, $V$, $q^2$, $C_pT$ and $Q_w$ at half levels are calculated as
 
-$$F_{u,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{U_{k}-U_{k-1}}{\Delta z_{k-1/2}}$$
+$$F_{u,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{U_{k}-U_{k-1}}{\Delta z_{k-1/2}},$$
 
-$$F_{v,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{V_{k}-V_{k-1}}{\Delta z_{k-1/2}}$$
+$$F_{v,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{V_{k}-V_{k-1}}{\Delta z_{k-1/2}},$$
 
-$$F_{q,k-1/2}=-\rho_{k-1/2}K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{\Delta z_{k-1/2}}$$
+$$F_{q,k-1/2}=-\rho_{k-1/2}K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{\Delta z_{k-1/2}},$$
 
-$$F_{T,k-1/2}=-\rho_{k-1/2}K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\Theta_{l,k}-\Theta_{l,k-1}}{\Delta z_{k-1/2}}$$
+$$F_{T,k-1/2}=-\rho_{k-1/2}K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\Theta_{l,k}-\Theta_{l,k-1}}{\Delta z_{k-1/2}},$$
 
-$$F_{w,k-1/2}=-\rho_{k-1/2}K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}}$$
+$$F_{w,k-1/2}=-\rho_{k-1/2}K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}},$$
 
-where $\rho$ is density and $\Pi$ is the Exner function. In order to perform time integration with implicit scheme, the derivative of each vertical flux is also obtained as follows.
+respectively, where $\rho$ denotes density and $\Pi$ the Exner function. In order to perform time integration with an implicit scheme, the derivative of each of the vertical fluxes is also calculated as
 
-$$\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=\rho_{k-1/2}K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+$$\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=\rho_{k-1/2}K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}},$$
 
-$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=\rho_{k-1/2}K_{q,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+$$\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=\rho_{k-1/2}K_{q,k-1/2}\frac{1}{\Delta z_{k-1/2}},$$
 
-$$\frac{\partial F_{T,k-1/2}}{\partial T_{k-1}}=\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{\Delta z_{k-1/2}}$$
+$$\frac{\partial F_{T,k-1/2}}{\partial T_{k-1}}=\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{\Delta z_{k-1/2}},$$
 
-$$\frac{\partial F_{T,k-1/2}}{\partial T_{k}}=-\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k}}\frac{1}{\Delta z_{k-1/2}}$$
+$$\frac{\partial F_{T,k-1/2}}{\partial T_{k}}=-\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k}}\frac{1}{\Delta z_{k-1/2}},$$
 
-$$\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k}}=\rho_{k-1/2}K_{w,k-1/2}\frac{1}{\Delta z_{k-1/2}}$$
+$$\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k}}=\rho_{k-1/2}K_{w,k-1/2}\frac{1}{\Delta z_{k-1/2}},$$
 
 where $\Delta z_{k-1/2}=z_k-z_{k-1}$. The fluxes for other tracers are also calculated in the same way using $K_w$.
 
