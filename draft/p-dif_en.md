@@ -40,11 +40,7 @@ The buoyancy-production term in the prognostic equation of the twice turbulent k
 
 $$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle.$$
 
-<<<<<<< HEAD
 However, note that unlike Mellor and Yamada (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2009). In this case, the buoyancy coefficients, $\beta_\theta$ and $\beta_q$ are written as
-=======
-However, note that unlike Mellor and Yamada (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2008). In this case, the buoyancy coefficients, $\beta_\theta$ and $\beta_q$ are written as
->>>>>>> ffbc992b80e3d175dcd434169336600cf21391cb
 
 $$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc,$$
 
