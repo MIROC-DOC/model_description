@@ -36,11 +36,11 @@ $$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g},$$
 where the subscript $g$ indicates the values near the surface $\Theta_v$ and $\theta_v$ denote virtual potential temperature, $k$ the von Kármán constant, and $g$ the acceleration of gravity. The values of the lowest model layer is used for $\Theta_{v,g}$.
 
 ### Calculation of the buoyancy coefficients
-The buoyancy-production term in the prognostic equation of the twice turbulent kinetic energy contains $\langle w\theta_v \rangle$. Following Mellor (1982), we assume the probability distribution of $\theta_l$ and $q_w$ in a given grid and rewrite this term as
+The buoyancy-production term in the prognostic equation of the twice turbulent kinetic energy contains $\langle w\theta_v \rangle$. Following Mellor and Yamada (1982), we assume the probability distribution of $\theta_l$ and $q_w$ in a given grid and rewrite this term as
 
 $$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle.$$
 
-However, note that unlike Mellor (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2008). In this case, the buoyancy coefficients, $\beta_\theta$ and $\beta_q$ are written as
+However, note that unlike Mellor and Yamada (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic large-scale condensation scheme (Watanabe et al. 2009). In this case, the buoyancy coefficients, $\beta_\theta$ and $\beta_q$ are written as
 
 $$\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc,$$
 
@@ -421,13 +421,13 @@ $$ F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}
 With a definition of
 $$\mu_k = \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}},$$
 
-(20) and (21) lead to
+([20](p-dif.20)) and ([21](p-dif.21)) lead to
 
 $$
  X_{1,k}\,\mu_{k+1}+X_{2,k}\,\mu_k+X_{3,k}\,\mu_{k-1} = Y_k, \tag{p-dif.22}
 $$
 
-where 
+where
 
 $$
 \begin{align}
@@ -438,7 +438,7 @@ $$
 \end{align}
 $$
 
-(22) makes the following matrix equation,
+([22](p-dif.22)) makes the following matrix equation,
 
 $$
 \left(\begin{array}{lllllll}
@@ -472,7 +472,7 @@ $$
 \right), \tag{p-dif.23}
 $$
 
-where the subscript $K$ denote the index for the top model layer. (23) is solved for $\mu_k$ using the LU decomposition. 
+where the subscript $K$ denote the index for the top model layer. ([23](p-dif.23)) is solved for $\mu_k$ using the LU decomposition.
 
 #### Tendencies of other prognostic variables
 
@@ -484,7 +484,7 @@ where
 
 $$ F_{\psi,k-1/2,n+1} = F_{\psi,k-1/2,n} + \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k}(\psi_{k,n+1}-\psi_{k,n}) +  \frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}}(\psi_{k-1,n+1}-\psi_{k-1,n}). $$
 
-These equations lead to (23) again and computed with the LU decomposition, but $\mu_k$, $X_{1,k}$, $X_{2,k}$, $X_{3,k}$ and $Y_k$ are redefined as
+These equations lead to ([23](p-dif.23)) again and computed with the LU decomposition, but $\mu_k$, $X_{1,k}$, $X_{2,k}$, $X_{3,k}$ and $Y_k$ are redefined as
 
 $$
 \begin{align}
