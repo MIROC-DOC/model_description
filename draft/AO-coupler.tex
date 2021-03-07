@@ -26,8 +26,6 @@
     陸面からの水の流出
   \item
     河川から湖への水の流入
-  \item
-    河川の内陸消失点での陸面への水の流出
   \end{itemize}
 \item
   海洋モデルへのフラックス
@@ -104,6 +102,7 @@ model）によって考慮されている。
 ここで、融解熱の保存を保証するため、河川モデル内での相変化は考慮していない。
 また、河川の流量は河川グリッドに存在する水量をその面積で割ったものとして定義されている。
 河川モデル内で水と氷は河川流路網データに従って下流に運ばれる。
+MIROC6における河川モデルでは河川の内陸消失点での河川流量は全球海洋に散布することで水収支をとっている．
 
 \hypertarget{ux9678ux9762ux304bux3089ux306eux6c34ux306eux6d41ux51fa}{%
 \subsubsection{陸面からの水の流出}\label{ux9678ux9762ux304bux3089ux306eux6c34ux306eux6d41ux51fa}}
@@ -158,20 +157,6 @@ model）によって考慮されている。
 とすると河川グリッドでの流出量（陸面への流入量）は
 
 \begin{eqnarray} RUNINN^{riv}=RINN^{riv}*GDRIV \end{eqnarray}
-
-\hypertarget{ux6cb3ux5dddux306eux5185ux9678ux6d88ux5931ux70b9ux3067ux306eux9678ux9762ux3078ux306eux6c34ux306eux6d41ux51fa}{%
-\subsubsection{河川の内陸消失点での陸面への水の流出}\label{ux6cb3ux5dddux306eux5185ux9678ux6d88ux5931ux70b9ux3067ux306eux9678ux9762ux3078ux306eux6c34ux306eux6d41ux51fa}}
-
-河川モデルの内陸消失点での河川流量 \(BUDIND\)
-は陸面モデルの湖の水位および土壌の第1層目にそのまま加える。
-氷の場合は湖の氷と土壌被覆の積雪に加える。
-まず、河川グリッドの内陸消失点の \(GDRIV\) は \(BUDIND\)
-としてカップラーを通して陸面グリッドの内陸消失点の流量 \(BDINDL\)
-に変換する。
-河川グリッドの内陸消失点の流量はカップラーにデータを渡した時点で0にする。
-この後で、 \(BDINDL\) を陸面モデルに配分する。 ここで \(BDINDL\)
-は海陸分布の主にを付けていないので、内陸消失点に対応する陸面グリッドに海面の存在を許可しない。
-(\(BDINDL\) が存在する陸面グリッドは \(FLAND=1\) でなければならない)
 
 \hypertarget{ux6d77ux6d0bux30e2ux30c7ux30ebux3078ux306eux30d5ux30e9ux30c3ux30afux30b9}{%
 \subsection{海洋モデルへのフラックス}\label{ux6d77ux6d0bux30e2ux30c7ux30ebux3078ux306eux30d5ux30e9ux30c3ux30afux30b9}}

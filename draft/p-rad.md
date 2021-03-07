@@ -15,7 +15,7 @@ Major subroutines to calculate the radiation flux in DTRN31 are as follows.
 7. Make T, R, and S matrixes for maximal/random approximation [RTSMR]
 8. Calculate the radiation flux by adding method [ADDMR, ADDING]
 
-![放射](C:\Users\owner\Pictures\放射.png)
+<!-- ![放射](C:\Users\owner\Pictures\放射.png) -->
 
 To account for the partial coverage of clouds, the transmission and reflection coefficients and source functions for each layer are calculated at weighted average of the cloud cover, separately for cloud cover and clear-sky conditions. The cloud cover of the cumulus is also considered. In addition, it also performs several adding and calculates the clear-sky radiation flux.
 
@@ -578,7 +578,7 @@ This calculation is done for each sub-channel and each layer.
 
 By using transmission coefficient $T$, reflection coefficient $R$, and radiation source function $\varepsilon$ in all layers, the radiation fluxes $u$ at each layer boundary can be obtained by using the adding method. This means that the when two layers of $T$, $R$, $\varepsilon$ are known, the $T$, $R$, $\varepsilon$ of the whole combined layer of the two layers can be easily calculated.
 
-![Adding](C:\Users\owner\Pictures\Adding.png)
+<!-- ![Adding](C:\Users\owner\Pictures\Adding.png) -->
 
 ###  **ADDMR**
 

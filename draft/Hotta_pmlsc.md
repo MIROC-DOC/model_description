@@ -47,7 +47,7 @@ $$
 
 The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009). The HPC scheme proposes two types of shape for the PDF $G(s)$, Double-uniform PDF and Skewed-triangular PDF. Here we focus on Skewed-triangular scheme because MIROC6 adoptes the shape. The physical basics of the scheme are in common with Double-uniform PDF.
 
-![](https://cdn.mathpix.com/snip/images/sT9QRiYBjSFFuHN6tYy1yHx4Md81UVA2xIGKupuEoLE.original.fullsize.png)
+![](Hotta_pmlsc_PDF.png)
 
 Example of the basis PDF for HPC: skewed-triangular functions.
 Copied from Fig.1 in Watanabe et al. 2009.
