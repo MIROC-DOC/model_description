@@ -19,7 +19,7 @@ Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{\mathrm{i}m \lambda}
 $$
 
 
-However, it is $ n \geq | m | $.
+However, it is $n \geq | m |$.
 
 The expansion by spherical harmonic functions is ,
 

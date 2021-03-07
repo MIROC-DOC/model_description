@@ -5,10 +5,10 @@ core}\label{summary-of-the-dynamical-core}}
 In this section, we enumerate the calculations performed in the
 dynamical core, although they overlap with the previous descriptions.
 
-\hypertarget{conversion-of-horizontal-wind-to-vorticity-and-divergence-module-g2wpush-g2wtrans-g2wshift-w2gpush-w2gtrans-w2gshift}{%
+\hypertarget{conversion-of-horizontal-wind-to-vorticity-and-divergence-g2wpush-g2wtrans-g2wshift-w2gpush-w2gtrans-w2gshift-xdsphe.f}{%
 \subsubsection{\texorpdfstring{Conversion of Horizontal Wind to
 Vorticity and Divergence
-\texttt{MODULE:\ {[}G2Wpush,\ G2Wtrans,\ G2Wshift,\ W2Gpush,\ W2Gtrans,\ W2Gshift{]}}}{Conversion of Horizontal Wind to Vorticity and Divergence MODULE: {[}G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift{]}}}\label{conversion-of-horizontal-wind-to-vorticity-and-divergence-module-g2wpush-g2wtrans-g2wshift-w2gpush-w2gtrans-w2gshift}}
+\texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift,\ W2Gpush,\ W2Gtrans,\ W2Gshift\ (xdsphe.F){]}}}{Conversion of Horizontal Wind to Vorticity and Divergence {[}G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift (xdsphe.F){]}}}\label{conversion-of-horizontal-wind-to-vorticity-and-divergence-g2wpush-g2wtrans-g2wshift-w2gpush-w2gtrans-w2gshift-xdsphe.f}}
 
 Obtain grid point values of vorticity and divergence from the grid point
 values of \(u_{ij}, v_{ij}\) for horizontal wind. First, we obtain the
@@ -44,9 +44,9 @@ The grid point value is calculated by
 
 and so on.
 
-\hypertarget{calculating-a-virtual-temperature-module-virtmd}{%
+\hypertarget{calculating-a-virtual-temperature-virtmd-dvtmp.f}{%
 \subsubsection{\texorpdfstring{Calculating a virtual temperature
-\texttt{MODULE:\ {[}VIRTMD{]}}}{Calculating a virtual temperature MODULE: {[}VIRTMD{]}}}\label{calculating-a-virtual-temperature-module-virtmd}}
+\texttt{{[}VIRTMD\ (dvtmp.F){]}}}{Calculating a virtual temperature {[}VIRTMD (dvtmp.F){]}}}\label{calculating-a-virtual-temperature-virtmd-dvtmp.f}}
 
 virtual Temperature \(T_v\) is ,
 
@@ -58,9 +58,9 @@ However, it is \(\epsilon_v = R_v/R - 1\) and \(R_v\) is the gas
 constant for water vapor (461 Jkg\(^{-1}\)K\(^{-1}\)) and \(R\) is the
 gas constant for air (287.04 Jkg\(^{-1}\)K\(^{-1}\)).
 
-\hypertarget{calculating-the-pressure-gradient-term-module-psdot}{%
+\hypertarget{calculating-the-pressure-gradient-term-psdot-dgdyn.f}{%
 \subsubsection{\texorpdfstring{Calculating the pressure gradient term
-\texttt{MODULE:\ {[}PSDOT{]}}}{Calculating the pressure gradient term MODULE: {[}PSDOT{]}}}\label{calculating-the-pressure-gradient-term-module-psdot}}
+\texttt{{[}PSDOT\ (dgdyn.F){]}}}{Calculating the pressure gradient term {[}PSDOT (dgdyn.F){]}}}\label{calculating-the-pressure-gradient-term-psdot-dgdyn.f}}
 
 The pressure gradient term \(\nabla \pi = \frac{1}{p_S} \nabla p_S\) is
 first used to define the \(\pi_n^m\)
@@ -91,9 +91,9 @@ to a spectral representation and then ,
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 \end{eqnarray}
 
-\hypertarget{diagnosis-of-vertical-flow.-module-psdot}{%
+\hypertarget{diagnosis-of-vertical-flow.-psdot-dgdyn.f}{%
 \subsubsection{\texorpdfstring{Diagnosis of vertical flow.
-\texttt{MODULE:\ {[}PSDOT{]}}}{Diagnosis of vertical flow. MODULE: {[}PSDOT{]}}}\label{diagnosis-of-vertical-flow.-module-psdot}}
+\texttt{{[}PSDOT\ (dgdyn.F){]}}}{Diagnosis of vertical flow. {[}PSDOT (dgdyn.F){]}}}\label{diagnosis-of-vertical-flow.-psdot-dgdyn.f}}
 
 Pressure change term, and lead DC,
 
@@ -123,11 +123,11 @@ and its non-gravity components.
        \Delta B_{l}
 \end{eqnarray}
 
-\hypertarget{tendency-terms-due-to-advection-module-grtadv-gruadv}{%
+\hypertarget{tendency-terms-due-to-advection-grtadv-gruadv-dgdyn.f}{%
 \subsubsection{\texorpdfstring{Tendency terms due to advection
-\texttt{MODULE:\ {[}GRTADV,\ GRUADV{]}}}{Tendency terms due to advection MODULE: {[}GRTADV, GRUADV{]}}}\label{tendency-terms-due-to-advection-module-grtadv-gruadv}}
+\texttt{{[}GRTADV,\ GRUADV\ (dgdyn.F){]}}}{Tendency terms due to advection {[}GRTADV, GRUADV (dgdyn.F){]}}}\label{tendency-terms-due-to-advection-grtadv-gruadv-dgdyn.f}}
 
-Momentum advection term \texttt{MODULE:\ {[}GRUADV{]}}:
+Momentum advection term:
 
 \begin{eqnarray}
   (A_u)_k
@@ -149,7 +149,7 @@ Momentum advection term \texttt{MODULE:\ {[}GRUADV{]}}:
              + {\mathcal F}_y
 \end{eqnarray}
 
-Temperature advection term \texttt{MODULE:\ {[}GRTADV{]}}:
+Temperature advection term:
 
 \begin{eqnarray}
  (u T')_k  = u_k (T_k - \bar{T} )
@@ -192,10 +192,10 @@ R_k  =  q_k D_k
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 \end{eqnarray}
 
-\hypertarget{transformation-of-prognostic-variables-to-spectral-space-module-g2wpush-g2wtrans-g2wshift}{%
+\hypertarget{transformation-of-prognostic-variables-to-spectral-space-g2wpush-g2wtrans-g2wshift-xdsphe.f}{%
 \subsubsection{\texorpdfstring{Transformation of prognostic variables to
 spectral space
-\texttt{MODULE:\ {[}G2Wpush,\ G2Wtrans,\ G2Wshift{]}}}{Transformation of prognostic variables to spectral space MODULE: {[}G2Wpush, G2Wtrans, G2Wshift{]}}}\label{transformation-of-prognostic-variables-to-spectral-space-module-g2wpush-g2wtrans-g2wshift}}
+\texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift\ (xdsphe.F){]}}}{Transformation of prognostic variables to spectral space {[}G2Wpush, G2Wtrans, G2Wshift (xdsphe.F){]}}}\label{transformation-of-prognostic-variables-to-spectral-space-g2wpush-g2wtrans-g2wshift-xdsphe.f}}
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
@@ -217,10 +217,10 @@ humidity \(q^{t-\Delta t}\), and \(\pi = \ln p_S^{t-\Delta t}\) to
 
 to a spectral representation.
 
-\hypertarget{transformation-of-tendency-terms-to-spectral-space-module-g2wpush-g2wtrans-g2wshift}{%
+\hypertarget{transformation-of-tendency-terms-to-spectral-space-g2wpush-g2wtrans-g2wshift-xdsphe.f}{%
 \subsubsection{\texorpdfstring{Transformation of tendency terms to
 spectral space
-\texttt{MODULE:\ {[}G2Wpush,\ G2Wtrans,\ G2Wshift{]}}}{Transformation of tendency terms to spectral space MODULE: {[}G2Wpush, G2Wtrans, G2Wshift{]}}}\label{transformation-of-tendency-terms-to-spectral-space-module-g2wpush-g2wtrans-g2wshift}}
+\texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift\ (xdsphe.F){]}}}{Transformation of tendency terms to spectral space {[}G2Wpush, G2Wtrans, G2Wshift (xdsphe.F){]}}}\label{transformation-of-tendency-terms-to-spectral-space-g2wpush-g2wtrans-g2wshift-xdsphe.f}}
 
 Tendency Term of Vorticity
 
@@ -299,9 +299,9 @@ Tendency term of water vapor
           {Y_n^{m *}}_{ij} w_j
 \end{eqnarray}
 
-\hypertarget{time-integration-in-spectral-space-module-tintgr}{%
+\hypertarget{time-integration-in-spectral-space-tintgr-dintg.f}{%
 \subsubsection{\texorpdfstring{Time integration in spectral space
-\texttt{MODULE:\ {[}TINTGR{]}}}{Time integration in spectral space MODULE: {[}TINTGR{]}}}\label{time-integration-in-spectral-space-module-tintgr}}
+\texttt{{[}TINTGR\ (dintg.F){]}}}{Time integration in spectral space {[}TINTGR (dintg.F){]}}}\label{time-integration-in-spectral-space-tintgr-dintg.f}}
 
 Equations in matrix form
 
@@ -375,10 +375,10 @@ then calculate the value of the spectrum in \(t+\Delta t\) using
                                 +  2 \Delta t \frac{\partial{\pi}}{\partial {t}}
 \end{eqnarray}
 
-\hypertarget{transformation-of-prognostic-variables-to-grid-point-values-module-w2gpush-w2gtrans-w2gshift}{%
+\hypertarget{transformation-of-prognostic-variables-to-grid-point-values-w2gpush-w2gtrans-w2gshift-xdsphe.f}{%
 \subsubsection{\texorpdfstring{Transformation of prognostic variables to
 grid point Values
-\texttt{MODULE:\ {[}W2Gpush,\ W2Gtrans,\ W2Gshift{]}}}{Transformation of prognostic variables to grid point Values MODULE: {[}W2Gpush, W2Gtrans, W2Gshift{]}}}\label{transformation-of-prognostic-variables-to-grid-point-values-module-w2gpush-w2gtrans-w2gshift}}
+\texttt{{[}W2Gpush,\ W2Gtrans,\ W2Gshift\ (xdsphe.F){]}}}{Transformation of prognostic variables to grid point Values {[}W2Gpush, W2Gtrans, W2Gshift (xdsphe.F){]}}}\label{transformation-of-prognostic-variables-to-grid-point-values-w2gpush-w2gtrans-w2gshift-xdsphe.f}}
 
 Obtain grid values of horizontal wind speed from the spectral values of
 vorticity and divergence (\(\zeta_n^m, D_n^m\)) \(u_{ij}, v_{ij}\).
@@ -423,9 +423,9 @@ Furthermore,
 
 to calculate.
 
-\hypertarget{diffusion-correction-along-pressure-level-module-cordif}{%
+\hypertarget{diffusion-correction-along-pressure-level-cordif-ddifc.f}{%
 \subsubsection{\texorpdfstring{Diffusion Correction along pressure level
-\texttt{MODULE:\ {[}CORDIF{]}}}{Diffusion Correction along pressure level MODULE: {[}CORDIF{]}}}\label{diffusion-correction-along-pressure-level-module-cordif}}
+\texttt{{[}CORDIF\ (ddifc.F){]}}}{Diffusion Correction along pressure level {[}CORDIF (ddifc.F){]}}}\label{diffusion-correction-along-pressure-level-cordif-ddifc.f}}
 
 The horizontal diffusion is applied on the surface of \(\eta-\)plane,
 but it can cause problems in large slopes, such as transporting water
@@ -463,10 +463,10 @@ and so on. In \({\mathcal D}(\pi)\), the spectral value of \(\pi\) is
 converted to a grid by multiplying the spectral value of \(\pi_n^m\) by
 the spectral representation of the diffusion coefficient.
 
-\hypertarget{frictional-heat-associated-with-diffusion.-module-cordif}{%
+\hypertarget{frictional-heat-associated-with-diffusion.-cordif-ddifc.f}{%
 \subsubsection{\texorpdfstring{Frictional heat associated with
 diffusion.
-\texttt{MODULE:\ {[}CORDIF{]}}}{Frictional heat associated with diffusion. MODULE: {[}CORDIF{]}}}\label{frictional-heat-associated-with-diffusion.-module-cordif}}
+\texttt{{[}CORDIF\ (ddifc.F){]}}}{Frictional heat associated with diffusion. {[}CORDIF (ddifc.F){]}}}\label{frictional-heat-associated-with-diffusion.-cordif-ddifc.f}}
 
 Frictional heat from diffusion is ,
 
@@ -484,10 +484,10 @@ It is estimated that Therefore,
                  + v_{ij} {\mathcal D}(v)_{ij} \right)
 \end{eqnarray}
 
-\hypertarget{horizontal-diffusion-and-rayleigh-friction-module-dsetdf}{%
+\hypertarget{horizontal-diffusion-and-rayleigh-friction-dsetdf-dsetd.f}{%
 \subsubsection{\texorpdfstring{Horizontal Diffusion and Rayleigh
 Friction
-\texttt{MODULE:\ {[}DSETDF{]}}}{Horizontal Diffusion and Rayleigh Friction MODULE: {[}DSETDF{]}}}\label{horizontal-diffusion-and-rayleigh-friction-module-dsetdf}}
+\texttt{{[}DSETDF\ (dsetd.F){]}}}{Horizontal Diffusion and Rayleigh Friction {[}DSETDF (dsetd.F){]}}}\label{horizontal-diffusion-and-rayleigh-friction-dsetdf-dsetd.f}}
 
 The coefficients of horizontal diffusion can be expressed spectrally,
 
@@ -526,9 +526,9 @@ The results are approximate to those of \(K_R^0 = {(30day)}^{-1}\) and
 (\(\sigma_{top}\): top level of the model), \(H = 8000\) m, and
 \(H_R = 7000\) m.
 
-\hypertarget{time-filter-module-dadvnc}{%
+\hypertarget{time-filter-dadvnc-dadvn.f}{%
 \subsubsection{\texorpdfstring{Time Filter
-\texttt{MODULE:\ {[}DADVNC{]}}}{Time Filter MODULE: {[}DADVNC{]}}}\label{time-filter-module-dadvnc}}
+\texttt{{[}DADVNC\ (dadvn.F){]}}}{Time Filter {[}DADVNC (dadvn.F){]}}}\label{time-filter-dadvnc-dadvn.f}}
 
 To reduce numerical mode associated with leap frog scheme, time filter
 is applied every time step. MIORC6 used modified Asselin time filter
@@ -564,9 +564,9 @@ obtained later, time filter conduct at \texttt{MODULE\ {[}TFILT{]}},
 \bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha)[ \bar{\bar{X}}^{t-\Delta t} - 2\bar{X}^{t} + X^{t+\Delta t}]
  \end{eqnarray}
 
-\hypertarget{correction-for-conservation-of-mass-module-fixmas-masfix}{%
+\hypertarget{correction-for-conservation-of-mass-fixmas-masfix-dmfix.f}{%
 \subsubsection{\texorpdfstring{Correction for conservation of mass
-\texttt{MODULE:\ {[}FIXMAS,\ MASFIX{]}}}{Correction for conservation of mass MODULE: {[}FIXMAS, MASFIX{]}}}\label{correction-for-conservation-of-mass-module-fixmas-masfix}}
+\texttt{{[}FIXMAS,\ MASFIX\ (dmfix.F){]}}}{Correction for conservation of mass {[}FIXMAS, MASFIX (dmfix.F){]}}}\label{correction-for-conservation-of-mass-fixmas-masfix-dmfix.f}}
 
 In the spectral method, the global integral of \(\pi = \ln p_S\) is
 preserved with rounding errors removed, but the preservation of the
@@ -576,8 +576,8 @@ the water vapor grid points. For this reason, we perform a correction to
 preserve the masses of dry air, water vapor, and cloud water, and to
 remove the regions with negative water vapor content.
 
-Before entering dynamical calculations, \texttt{MODULE:{[}FIXMAS{]}},
-the global integrals of water vapor and cloud water are calculated for
+Before entering dynamical calculations, \texttt{{[}FIXMAS{]}}, the
+global integrals of water vapor and cloud water are calculated for
 \(M_q, M_l\).
 
 \begin{eqnarray}
@@ -592,7 +592,7 @@ and stored.
   M_d^0 = \sum_{ijk} (1-q-l) p_S \Delta\lambda_i w_j \Delta\sigma_k
 \end{eqnarray}
 
-After exiting dynamical calculation, \texttt{MODULE:{[}MASFIX{]}}, the
+After exiting dynamical calculation, \texttt{{[}MASFIX{]}}, the
 following procedure is followed.
 
 First, negative water vapor is removed by dividing the water vapor from
@@ -604,7 +604,7 @@ the grid points immediately below the grid points. Suppose that \$q\_k
         q_{k-1}'  =  q_{k-1} + \frac{\Delta p_k}{\Delta p_{k-1}} q_k
 \end{eqnarray}
 
-However, this should only be done if it is \$q\_\{k-1\}' \ge 0 \$.
+However, this should only be done if it is \(q_{k-1}' \ge 0\).
 
 Next, set the value to zero for the grid points not removed by the above
 procedure.

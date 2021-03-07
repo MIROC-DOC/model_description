@@ -573,7 +573,7 @@ $$
 
 
 
- However, this should only be done if it is $q_{k-1}' \ge 0 $.
+ However, this should only be done if it is $q_{k-1}' \ge 0$.
 
 Next, set the value to zero for the grid points not removed by the above procedure.
 

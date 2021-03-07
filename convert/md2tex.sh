@@ -12,11 +12,10 @@ dir=./draft
 
 # Get markdown file names to be compiled
 filelist=($(ls ${dir}/*.md | rev | cut -c 4-| rev))
-echo ${filelist}
-
 # Conversion from markdown to LaTeX
 for name in ${filelist[@]}
 do
+	echo ${name}
 	sed -e s/'\\('/'$'/g ${name}.md | \
 	sed -e s/'\\)'/'$'/g | \
 	sed -e s/'\[\(.*\)\](\(#.*\))'/'\[\]\(\2\)'/g >tmp.md
@@ -30,4 +29,5 @@ do
 	sed -e s/'\\protect\\hyperlink'/'\\ref'/g | \
 	sed -e 's/\(\\ref{.*}\)\({}\)/\1/g' \
 	> ${name}.tex
+	python tex2tex.py ${name}.tex
 done

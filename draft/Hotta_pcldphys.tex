@@ -1,11 +1,11 @@
 \hypertarget{pcldphys-cloud-microphysics}{%
-\section{pcldphys: Cloud
+\subsection{pcldphys: Cloud
 Microphysics}\label{pcldphys-cloud-microphysics}}
 
-The code is written in the `pcldphys' file.
+The SUBROUTINE:{[}CLDPHYS{]} is written in the pcldphys.F file.
 
 \hypertarget{overview-of-cloud-microphysics}{%
-\subsection{Overview of Cloud
+\subsubsection{Overview of Cloud
 Microphysics}\label{overview-of-cloud-microphysics}}
 
 Cloud microphysics control the conversion from water condensate to
@@ -69,7 +69,7 @@ described in pmlsc section. The sub-grid scale variability of water
 content within the cloudy area is not considered at present.
 
 \hypertarget{microphysical-processes}{%
-\subsection{Microphysical Processes}\label{microphysical-processes}}
+\subsubsection{Microphysical Processes}\label{microphysical-processes}}
 
 The time evolution of \(q_i\) by microphysical processes is written in
 symbolic form as follows.
@@ -155,7 +155,7 @@ sublimation, and fusion, respectively. \(C_p\) is the specific heat of
 moist air at constant pressure.
 
 \hypertarget{ice-properties}{%
-\subsubsection{Ice Properties}\label{ice-properties}}
+\paragraph{Ice Properties}\label{ice-properties}}
 
 The formulation of the ice conversion terms requires parametrization of
 the mass, fall speed and particle size distributions of ice. These are
@@ -219,7 +219,7 @@ ice water content.
 \end{eqnarray}
 
 \hypertarget{evaporation-of-rain-and-snow}{%
-\subsubsection{Evaporation of Rain and
+\paragraph{Evaporation of Rain and
 Snow}\label{evaporation-of-rain-and-snow}}
 
 The evaporation rate of rain
@@ -251,7 +251,7 @@ where \(F_i\) denotes sedimentation of cloud ice from above layers.
 \(V_{Ts}\) is set to \(5\mathrm{~m} \mathrm{~s}^{-1}\).
 
 \hypertarget{ice-fall}{%
-\subsubsection{Ice Fall}\label{ice-fall}}
+\paragraph{Ice Fall}\label{ice-fall}}
 
 The total ice flux from the layer `k' is \begin{eqnarray}
 F_i|_k = \int^\infty_0 N_{\mathrm{i}}(D) m_{\mathrm{i}}(D) v_{\text {i}}(D)dD.
@@ -284,7 +284,7 @@ The net ice fall in to the layer `k' is
 \end{eqnarray}
 
 \hypertarget{homogeneous-nucleation}{%
-\subsubsection{Homogeneous nucleation}\label{homogeneous-nucleation}}
+\paragraph{Homogeneous nucleation}\label{homogeneous-nucleation}}
 
 This term simply converts all liquid cloud water to ice if the
 temperature is less than a given threshold of \(233.15 \mathrm{~K}\).
@@ -296,8 +296,7 @@ temperature is less than a given threshold of \(233.15 \mathrm{~K}\).
 \end{eqnarray}
 
 \hypertarget{heterogeneous-nucleation}{%
-\subsubsection{Heterogeneous
-nucleation}\label{heterogeneous-nucleation}}
+\paragraph{Heterogeneous nucleation}\label{heterogeneous-nucleation}}
 
 A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS;
 Takemura et al.~2000, 2002, 2005, 2009) coupled with MIROC6 explicitly
@@ -322,7 +321,7 @@ The weight of nucleated drop, \(W_{nuc0}\), is set to
 \(1.0\times10^{-12}\).
 
 \hypertarget{depositionsublimation}{%
-\subsubsection{Deposition/Sublimation}\label{depositionsublimation}}
+\paragraph{Deposition/Sublimation}\label{depositionsublimation}}
 
 A single ice particle grows or disappears by water vapor diffusion
 according to the following equation:
@@ -387,7 +386,7 @@ the liquid drops that would lose mass by evaporation.
 The ice disappears (sublimation).
 
 \hypertarget{cloud-water-collection-by-ice-riming}{%
-\subsubsection{Cloud water collection by ice
+\paragraph{Cloud water collection by ice
 (riming)}\label{cloud-water-collection-by-ice-riming}}
 
 Riming process (the ice crystals settling through a population of
@@ -423,7 +422,7 @@ maximum dimension of the snow crystal. \(v_{t}\) is the cloud droplet
 terminal velocity. \(g\) is the acceleration due to gravity.
 
 \hypertarget{ice-melt}{%
-\subsubsection{Ice melt}\label{ice-melt}}
+\paragraph{Ice melt}\label{ice-melt}}
 
 Since this term is essentially a diffusion term, although of heat
 instead of moisture, its form is very similar to that of the deposition
@@ -445,7 +444,7 @@ ventilation factor, \(F\) is considered to be the same as in the
 deposition/sublimation process.
 
 \hypertarget{warm-rain-cloud-microphysics}{%
-\subsubsection{Warm rain cloud
+\paragraph{Warm rain cloud
 microphysics}\label{warm-rain-cloud-microphysics}}
 
 We assume \(N_c\) is the number of aerosols activated as droplets. The
@@ -482,7 +481,7 @@ treated as a diagnostic variables: \(q_r\) falls out to surface within
 the time step.
 
 \hypertarget{total-precipitation}{%
-\subsubsection{Total precipitation}\label{total-precipitation}}
+\paragraph{Total precipitation}\label{total-precipitation}}
 
 The total amount of precipitation at a certain pressure level, \(p,\) is
 obtained by integrating the relevant processes from the top of the model
