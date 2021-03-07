@@ -1,8 +1,8 @@
-# pcldphys: Cloud Microphysics
+## pcldphys: Cloud Microphysics
 
 The SUBROUTINE:[CLDPHYS] is written in the pcldphys.F file.
 
-## Overview of Cloud Microphysics
+### Overview of Cloud Microphysics
 
 Cloud microphysics control the conversion from water condensate to precipitate. The condensate parameterization closely links to the lifetime of and radiative properties of the clouds.
 
@@ -16,7 +16,7 @@ The scheme utilizes a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) 
 
 Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
 
-## Microphysical Processes
+### Microphysical Processes
 
 The time evolution of $q_i$ by microphysical processes is written in symbolic form as follows.
 
@@ -84,7 +84,7 @@ $$
 
 where $L_v, L_s,$ and $L_f$ is the latent heat of vaporization, sublimation, and fusion, respectively. $C_p$ is the specific heat of moist air at constant pressure.
 
-### Ice Properties
+#### Ice Properties
 
 The formulation of the ice conversion terms requires parametrization of the mass, fall speed and particle size distributions of ice. These are described first and then subsequently used to derive the conversion terms.
 
@@ -130,7 +130,7 @@ $$
 \Lambda_{\text {i}} = \left(\frac{2aN_{i0}\exp (-0.1222 (T-T_{0}))}{m_i}\right)^{\frac{1}{3}}
 $$
 
-### Evaporation of Rain and Snow
+#### Evaporation of Rain and Snow
 
 The evaporation rate of rain $\left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}$ is expressed as
 
@@ -150,7 +150,7 @@ $$
 
 where $F_i$ denotes sedimentation of cloud ice from above layers. $V_{Ts}$ is set to $5\mathrm{~m} \mathrm{~s}^{-1}$.
 
-### Ice Fall
+#### Ice Fall
 
 The total ice flux from the layer 'k' is
 $$
@@ -181,7 +181,7 @@ $$
 =\frac{\Delta t}{\rho \Delta z} \sum^{l=kmax}_{l=k+1}F_i|_{k=l} \times \text{iceweight}|_{l,k}
 $$
 
-### Homogeneous nucleation
+#### Homogeneous nucleation
 
 This term simply converts all liquid cloud water to ice if the temperature is less than a given threshold of $233.15 \mathrm{~K}$.
 
@@ -191,7 +191,7 @@ $$
 =  \frac{q_c}{\Delta t}
 $$
 
-### Heterogeneous nucleation
+#### Heterogeneous nucleation
 
 A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS; Takemura et al. 2000, 2002, 2005, 2009) coupled with MIROC6 explicitly predicts the masses and number concentrations for aerosol species. Heterogeneous freezing of cloud droplets takes place through contact and immersion freezing on ice cucleating particles (INPs), which are parameterized according to Lohmann and Diehl (2006) and Diehl et al. (2006). Soil dust and black carbon are assumed to act as INPs. Ratios of activated INPs to the total number concentration of soil dust and black carbon for the contact freezing and the immersion/condensation freezing are based on Fig. 1 in Lohmann and Diehl (2006). Using the number of INPs ($N_{nuc}$) predicted in SPRINTARS, the rate of heterogeneous freezing is diagnosed as follows.
 
@@ -203,7 +203,7 @@ $$
 
 The weight of nucleated drop, $W_{nuc0}$, is set to $1.0\times10^{-12}$.
 
-### Deposition/Sublimation
+#### Deposition/Sublimation
 
 A single ice particle grows or disappears by water vapor diffusion according to the following equation:
 
@@ -237,7 +237,7 @@ The basis of this theory is the fact that the saturation vapor pressure of water
 
 The ice disappears (sublimation).
 
-### Cloud water collection by ice (riming)
+#### Cloud water collection by ice (riming)
 
 Riming process (the ice crystals settling through a population of supercooled cloud droplets, freezing them upon collision) is based on the geometric sweep-out integrated over all ice sizes (Lohmann 2004):
 
@@ -260,7 +260,7 @@ $$
 
 $V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal. $v_{t}$ is the cloud droplet terminal velocity. $g$ is the acceleration due to gravity.
 
-### Ice melt
+#### Ice melt
 
 Since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
 
@@ -272,7 +272,7 @@ $$
 
 where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. Ice melt occurs when $T^{\mathrm{w}}-T_{0}>0$. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in the deposition/sublimation process.
 
-### Warm rain cloud microphysics
+#### Warm rain cloud microphysics
 
 We assume $N_c$ is the number of aerosols activated as droplets. The nucleation of cloud droplets is predicted in the aerosol module SPRINTARS (Takemura et al. 2000; 2002; 2005; 2009) based on the parameterization by Abdul-Razzak and Ghan (2000), which depends on the aerosol particle number concentrations, size distributions and chemical properties of of each aerosol species, and the updraft velocity.
 
@@ -298,7 +298,7 @@ $$
 
 Rain water $q_r$ into the layer is from above the layer. $q_r$ is treated as a diagnostic variables: $q_r$ falls out to surface within the time step.
 
-### Total precipitation
+#### Total precipitation
 
 The total amount of precipitation at a certain pressure level, $p,$ is obtained by integrating the relevant processes from the top of the model $(p=0)$ to the respective pressure level. The fluxes of rain and ice $\mathrm{kgm}^{-2} \mathrm{~s}^{-1}$ are then expressed as
 
