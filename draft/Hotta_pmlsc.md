@@ -1,9 +1,9 @@
-# pmlsc: Large Scale Condensation
+## pmlsc: Large Scale Condensation
 
 The SUBROUTINE:[PDF2CLD] and SUBROUTINE:[CLD2PDF] are written in pmlsc.F file.
 These are called in padmn.F, pcumc.F, pshcn.F, pcldphys.F and pvdfm.F files.
 
-## Physical basis for statistical PDF scheme
+### Physical basis for statistical PDF scheme
 
 General Circulation Models (GCMs) typically adopt fractional cloud cover (the volume of cloudy air per total air volume in a grid box) assumption to realistically represent clouds because of their coarse horizontal resolution ($O(100km)$). Statistical cloud schemes assume a subgrid‐scale probability density function (PDF) of humidity within the grid. Integration of the specific PDFs will give the cloud fraction and the amount of water condensate consistently.
 
@@ -31,11 +31,11 @@ $$
 For any choice of the PDF of $s$, denoted as $G(s)$, the grid-mean cloud fraction, $C$, and cloud water content, $q_c$, are obtained by integrating $G(s)$ and $(Qc + s)G(s)$,
 
 $$
-C=\int_{-Q_{c}}^{\infty} G(s) d s
+C=\int_{-Q_{c}}^{\infty}G(s)ds
 $$
 
 $$
-\bar{q}_{c}=\int_{-Q_{c}}^{\infty}\left(Q_{c}+s\right) G(s) ds,
+\bar{q}_{c}=\int_{-Q_{c}}^{\infty}\left(Q_{c}+s\right)G(s)ds,
 $$
 
 where $Qc$ denotes the grid-scale saturation deficit defined as
@@ -43,7 +43,7 @@ $$
 Q_{c} \equiv a_{L}\left\{\bar{q}_{t}-q_{s}\left(\bar{T}_{l}, \bar{p}\right)\right\}.
 $$
 
-## Hybrid Prognostic Cloud (HPC) scheme
+### Hybrid Prognostic Cloud (HPC) scheme
 
 The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009). The HPC scheme proposes two types of shape for the PDF $G(s)$, Double-uniform PDF and Skewed-triangular PDF. Here we focus on Skewed-triangular scheme because MIROC6 adoptes the shape. The physical basics of the scheme are in common with Double-uniform PDF.
 
@@ -55,7 +55,7 @@ Copied from Fig.1 in Watanabe et al. 2009.
 The scheme preicts variance ($V$) and skewness ($S$) of the PDF. $V$, $S$, the second moment $\mu_2$, and the third moment $\mu_3$ are defined as follows.
 
 $$
-\mu_{2} \equiv V=\int_{-\infty}^{\infty} s^{2} G(s) d s
+\mu_{2} \equiv V=\int_{-\infty}^{\infty} s^{2} G(s) ds
 $$
 
 $$
@@ -92,7 +92,7 @@ $$
 
 The relationship between (1, 2) and (4, 5) is quasireversible. The double-uniform function and skewed-triangular function PDFs are selected for $G(s)$ because of their feasibility in analytically nalderiving ${\tilde{I}}$.
 
-## PDF change through processes
+### PDF change through processes
 
 The HPC cloud scheme is composed using prognostic equations for four variables determining $I$, namely, $T_l$, $q_t$, $V$, and $S$. The prognostic variables can be $T_l$, $q_t$, $C$, and $q_c$ that determine $\tilde {I}$.
 
@@ -113,7 +113,7 @@ where subscripts 'conv.', 'micro.' and 'turb.' indicate cumulus convection, clou
 
 The HPC scheme is referred to as and $G(s)$ is updated every after the process that affects cloud water PDF. $G(s)$ is thus modified several times within a single time step.
 
-### Cumulus convection
+#### Cumulus convection
 
 The total effect of cumulus convection to the PDF moments is written as
 
@@ -147,7 +147,7 @@ $$
 $$
 where $\mathcal{X}$ is either $\mathcal{V}$ or $\mathcal{S}$.
 
-### Cloud Microphysics
+#### Cloud Microphysics
 
 The tendency due to microphysical processes can be written in a similar manner to the cumulus convection effect.
 
@@ -161,7 +161,7 @@ $$
 
 Changes in $\bar{T}_{l}, \bar{q}_{v}, \text{and} \bar{q}_{c}$  are derived from microphysical tendency terms including precipitation, evaporation, melting/freezing.
 
-### Turbulent mixing
+#### Turbulent mixing
 
 From the definition of $s$, the PDF variance $\mathcal{V}$ becomes
 
@@ -183,7 +183,7 @@ where $K_H$ and $K_q$ are the mixing coefficients for sensible heat and moisture
 
 Since the turbulence production does not affect the PDF shape parameter defined by the third moment (cf. Tompkins 2002), the skewness change $\Delta \mathcal{S} /\left.\Delta t\right|_{\text {turb.}}$ is simply calculated due to the variance change in (28).
 
-### Subgrid-scale horizontal eddy
+#### Subgrid-scale horizontal eddy
 
 In the planetary boundary layer, the subgrid-scale inhomogeneity is dissipated due to the turbulent mixing. In free atmosphere, the grid box will be homogenized mainly due to mesoscale motions, which are expressed by the Newtonian damping as in (Tompkins 2002): $\varepsilon_{\mathcal{V}}=\frac{\mathcal{V}}{\tau_{h}}, \varepsilon_{\mathcal{S}}=\frac{\mathcal{S}}{\tau_{h}}$, where the relaxation timescale is parameterized by the horizontal wind shear as
 
@@ -193,11 +193,11 @@ $$
 
 The coefficient $C_{s}$ is set to 0.23 following Tompkins 2002.
 
-### Other processes
+#### Other processes
 
 Dynamics, shallow convection, radiation, mass source, and dissipation heating processes change the grid-mean temperature and humidity. Such effects on the shape of PDF are included following (16).
 
-## Solving procedures
+### Solving procedures
 
 The shape of the Skewed-triangular PDF is represented as follows. The widths defined by positions of the left and right edges on the s-coordinate are denoted as $a$ and $b$, respectively. The position of the top, denoted as $q$, is constrained by $a+b+q=0$. By definition, $q \leq b$ and $a \leq q$ must be satisfied. The PDF is then expressed as
 
@@ -207,9 +207,9 @@ $$
 
 The pmlsc module includes two main subroutines, PDF2CLD and CLD2PDF. The subroutine PDF2CLD calculates $C$ and $\bar{q}_{c}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \mathcal{V}, \mathcal{S}$. The subroutine CLD2PDF calculates $\mathcal{V}$ and $\mathcal{S}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C$. We will derive the concrete calculation processes in this subsection.
 
-### SUBROUTINE:[PDF2CLD]
+#### SUBROUTINE:[PDF2CLD]
 
-#### From $\mu_{1}, \mu_{2}, \mu_{3}$ To $a,b,q$
+##### From $\mu_{1}, \mu_{2}, \mu_{3}$ To $a,b,q$
 
 The first, second, and third moments of the PDF is calculated as follows.
 
@@ -272,7 +272,7 @@ $$
 q=\mu_{1}-\delta / 3
 $$
 
-#### From PDF to C and qc
+##### From PDF to C and qc
 
 Once the PDF $G(s)$ is determined by the parameters $a,b,q$, the cloud fraction $C$ and grid-mean cloud water mixing ratio $\bar{q_c}$ are derived as follows.
 
@@ -296,9 +296,9 @@ Q_{c} & \text { if }-Q_{c}<a
 \tag{E08-16}
 $$
 
-### SUBROUTINE:[CLD2PDF]
+#### SUBROUTINE:[CLD2PDF]
 
-#### From $\bar{q_c}, C$ To $a,b,q$
+##### From $\bar{q_c}, C$ To $a,b,q$
 
 We can not determine the position of $Q_c$ in the triangle at the beginning of the calculation. Thus we calculate $a,b$ assuming that $a \leq-Q_{c} \leq q$ at first. If the calculated parameters are physically consistent with the PDF ($a+b \ge 0$), $a,b,q$ are determined. Otherwise, we regard $q \leq-Q_{c} \leq b$ and then $a,b,q$ are derived.
 
@@ -344,7 +344,7 @@ a=\left(-b-\sqrt{9 b^{2}-4\left(Q_{c}+b\right)^{2} / C}\right) / 2
 \tag{E08-18}
 $$
 
-#### Adjustment of Cloud Fraction
+##### Adjustment of Cloud Fraction
 
 When there is no physically meaningful solution for (18), $C$ is adjusted so that a reasonable solution is obtained. The critical conditions for the existence of real solutions for (18) are as follows.
 
@@ -387,7 +387,7 @@ Note that, $\gamma=\gamma_{1}, R=R_{1}\left(a \leq-Q_{c} \leq q\right)$ or $\gam
 
 The actual calculation procedure is as follows. If the solution for (18) is not a real number, $C$ is adjusted using (26). Then we solve (18) again.
 
-#### From $a,b,q$ To $\mu_{2}, \mu_{3}$
+##### From $a,b,q$ To $\mu_{2}, \mu_{3}$
 
 By definition, the PDF moments are expressed in terms of $a$ and $b$.
 
@@ -399,7 +399,7 @@ $$
 \mu_{3}=\frac{-(a+b) ab}{10}
 $$
 
-### Treatment of cloud ice and in-cloud water vapor
+#### Treatment of cloud ice and in-cloud water vapor
 
 Because the original HPC scheme by Watanabe et al. (2009) does not consider the cloud ice, it is modified when coupled with the Wilson and Ballard (1999) ice microphysics. Since the statistical PDF scheme employs a ‘fast condensation’ assumption that is no more valid for ice, the ice mixing ratio is assumed to be conserved in the large scale condensation process.
 
@@ -409,7 +409,7 @@ Here we assume that
 
 Based on these assumptions, the cloud fraction and each condensate mixing ratios are diagnosed. The notations for the mixing ratios ($q_l, q_i, q_v, q_{vi}$) of liquid water (subscript l), ice (subscript i), vapor (subscript v), in-cloud vapor (subscript vi) are employed.
 
-At first the total condensate mixing ratio $q_c =q_l + q_i$ is diagnosed from $q_t$ and $T_l$ assuming that ice does not exist in the grid. The saturation mixing ratio is set for liquid ($q_{\text{satl}}$).
+At first the total condensate mixing ratio $q_c=q_l+q_i$ is diagnosed from $q_t$ and $T_l$ assuming that ice does not exist in the grid. The saturation mixing ratio is set for liquid ($q_{\text{satl}}$).
 
 Mixed-phase cloud is generated when the condensate amount is more than the ice content ($q_c>q_i$), whereas the cloud fraction and vapor amount are adjusted in the case of a pure ice cloud when the condensate amount is less than the ice content ($q_c<q_i$). Specifically, $q_c$, $C$ and $q_{vi}$ are calculated as follows.
 
