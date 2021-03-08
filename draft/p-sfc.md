@@ -1,22 +1,6 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0
-
-- [Surface Flux](#surface-flux)
-- [Sea surface flux `[OCNFLX]`](#sea-surface-flux-ocnflx)
-	- [Sea Surface Conditions `[OCNBCS]`](#sea-surface-conditions-ocnbcs)
-		- [Sea Surface Albedo for Visible `[SEAALB]`](#sea-surface-albedo-for-visible-seaalb)
-		- [Sea Surface Roughness `[SEAZ0F]`](#sea-surface-roughness-seaz0f)
-	- [Sea Surface Flux `[SFCFLX]`](#sea-surface-flux-sfcflx)
-		- [Bulk factor `[BLKCOF]`](#bulk-factor-blkcof)
-	- [Radiation Flux at Sea Surface `[RADSFC]`](#radiation-flux-at-sea-surface-radsfc)
-	- [Sea Surface Heat Balance `[OCNSLV]`](#sea-surface-heat-balance-ocnslv)
-/TOC -->
-
-
-# Surface Flux
+## Surface Flux Scheme (Sea Surface)
 
 Until [CCSR/NIES AGCM (1997)](https://github.com/MIROC-DOC/model_description/blob/master/org/AGCM5.6-Tech.pdf), both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes became independent as MATSIRO. However, since MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes have been separated into MATSIRO ([Takata et al., 2003](https://www.sciencedirect.com/science/article/pii/S0921818103000304); [Nitta et al., 2014](https://journals.ametsoc.org/doi/pdf/10.1175/JCLI-D-13-00310.1)). In `SUBROUTINE:[SURFCE]` in pgsfc.F, `ENTRY:[OCNFLX]` (in `SUBROUTINE:[OCEAN]` of pgocn.F) is called for the sea surface, and `ENTRY:[LNDFLX]` (in `SUBROUTINE:[MATSIRO]` of matdrv.F) is called for the land surface, respectively. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes in MIROC6 ([Tatebe et al., 2019](https://www.geosci-model-dev.net/12/2727/2019/gmd-12-2727-2019.pdf))). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
-
-No progostic variables are used in this scheme.
 
 <!--
 - Inputs
@@ -43,8 +27,6 @@ No progostic variables are used in this scheme.
 The only 1st layer is practically handed to the surface schemes.
 -->
 
-# Sea surface flux `[OCNFLX]`
-
 Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. In `ENTRY:[OCNFLX]`, the following procedure is used to deal with sea surface processes.
 
 1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
@@ -54,6 +36,7 @@ Sea surface processes provide the boundary conditions at the lower end of the at
 5. Calculate the deposition by CHASER.
 6. solve the heat balance at the sea surface and update the skin temperature and each flux value.
 
+No prognostic variables are used in this scheme.
 <!--
 | Meaning                                        | Presentation  | Variable | dimension | unit    |
 |:-----------------------------------------------|:--------------|:---------|:----------|:--------|
@@ -83,33 +66,37 @@ $$
 	Pr = Pr_c + Pr_l
 $$
 
-In the sea ice area ($L=1$), the skin temperature ($T_s$) is the sea ice skin temperature ($T_{ice}$). However, if $T_{ice}$ is higher than $T_{melt}=0$, then $T_{melt}$ is used.
+where $Pr$ is total precipitation flux, $Pr_c$ is precipitation flux from the cumulus convection scheme, and $Pr_l$ is precipitation flux from the large scale condensation scheme, respectively.
+
+Sea ice covered/free areas are represented by $L=1,2$. Each area is calculated then weighted by  sea ice concentration ($R_{ice}$).
+
+In the sea ice area ($L=1$), the skin temperature ($T_s$) is the sea ice skin temperature ($T_{ice}$). However, if $T_{ice}$ is higher than the melting point ($T_{melt}=273.15 \mathrm{[K]}$), then $T_{melt}$ is used.
 
 $$
 	T_s = min(T_{ice},T_{melt})
 $$
 
-The sea ice bottom temperature $T_b$ is assumed to be the sea skin temperature ($T_{o(1)}$).
+The sea ice bottom temperature ($T_b$) is assumed to be the sea skin temperature ($T_{o(1)}$).
 
 $$
 	T_b = T_{o(1)}
 $$
 
-The amount of sea ice ($W_{ice}$) and the amount of snow on it ($W_{snow}$) are converted per unit area by considering $R_{ice}$ and used in the calculation. However, a limiter ($\epsilon$) is provided to prevent the values from becoming too small.
+The amount of sea ice ($W_{ice}$) and the amount of snow on it ($W_{snow}$) are converted per unit area by considering sea ice concentration ($R_{ice}$) and used in the calculation. However, a limiter ($\epsilon$) is provided to prevent the values from becoming too small.
 
 $$
 R_{ice} =\mathrm{max}( R_{ice,orginal}, \epsilon)
 $$
 
-In the ice-free region ($L=2$), the skin temperature ($T_s$) and sea ice bottom temperature ($T_b$) are assumed to be the sea temperature temperature ($T_{o(1)}$).
+In the ice-free area ($L=2$), the skin temperature ($T_s$) and sea ice bottom temperature ($T_b$) are assumed to be the sea temperature temperature ($T_{o(1)}$).
 
 $$
 	T_s = T_b = T_{o(1)}
 $$
 
-The evaporation efficiency ise set to 1 for both $L=1, 2$.
+The evaporation efficiency is set to 1 for both $L=1, 2$.
 
-If the sea ice concentration ($R_{ice}$) is not given, it can be diagnosed simply from the sea ice volume ($W_{ice}$) in `ENTRY:[OCNICR]` (in `SUBROUTINE:[OCNICR]` of pgocn.F).
+If sea ice concentration ($R_{ice}$) is not given (as a boundary condition or from an OGCM), it is simply diagnosed with the sea ice volume ($W_{ice}$) in `ENTRY:[OCNICR]` (in `SUBROUTINE:[OCNICR]` of pgocn.F).
 
 $$
 R_{ice} = \mathrm{min}\Big(\sqrt{\frac{\mathrm{max}(W_{ice},0)}{W_{ice,c}}},1.0\Big)
@@ -118,7 +105,7 @@ $$
 The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/m^2]}$.
 
 
-## Sea Surface Conditions `[OCNBCS]`
+### Boundary Conditions `[OCNBCS]`
 
 <!--
 - Output variables
@@ -147,17 +134,17 @@ The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/
 
 In `ENTRY[OCNBCS]` (in `SUBROUTINE:[OCNSUB]` of pgocn.F), surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified.
 
-First, let us consider the sea albedo. The sea level $\alpha_{(d,b)}$, $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.  The albedo for the visible bands are calculated in `SUBROUTINE [SEAALB]` (of pgocn.F), supposing ice-free conditions.  The albedo for near-infrared is set to same as the visible one. The albedo for infrared is uniformly set to a constant value.
+First, let us consider the sea surface level albedo ($\alpha_{(d,b)}$), $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.  The albedo for the visible bands are calculated in `SUBROUTINE [SEAALB]` (of pgocn.F), supposing ice-free conditions. The albedo for near-infrared is set to same as the visible one. The albedo for infrared is uniformly set to a constant value.
 
-The grid-averaged albedo, taking into account the sea ice concentration ($R_{ice}$), is
+The grid-averaged albedo, taking into account sea ice concentration ($R_{ice}$), is
 
 $$
 	\alpha = \alpha -R_{ice} \alpha_{ice}
 $$
 
-$\alpha_{ice}$ is given by the standard as $\alpha_{ice,1}=0.5,\alpha_{ice,2}=0.5,\alpha_{ice,3}=0.05$, respectively.
+$\alpha_{ice}$ is given as $\alpha_{ice,1}=0.5,\alpha_{ice,2}=0.5,\alpha_{ice,3}=0.05$, respectively.
 
-In addition, we want to consider the effect of snow cover. Here, we consider the albedo modification by temperature. The standard threshold values for snow temperature are $T_{al,2}=258.15 \mathrm{[K]}$ and $T_{al,1}=273.15 \mathrm{[K]}$. The snow albedo changes linearly with temperature change from $\alpha_{snow,1}=0.75$ to $\alpha_{ snow,2}$. Let the coefficient $\tau_{snow}$, which is $0\le \tau \le 1$.
+In addition, we want to consider the effect of snow cover. Here, we consider the albedo modification by temperature. Standard threshold values for snow temperature are $T_{al,2}=258.15 \mathrm{[K]}$ and $T_{al,1}=273.15 \mathrm{[K]}$. The snow albedo changes linearly with temperature change from $\alpha_{snow,1}=0.75$ to $\alpha_{ snow,2}$. Let the coefficient $\tau_{snow}$, which is $0\le \tau \le 1$.
 
 $$
 \tau_{snow} = \frac{T_s - T_{al,1}}{T_{al,2}-T_{al,1}}
@@ -169,9 +156,9 @@ $$
 	\alpha_{snow} = \alpha_{snow,0} + \tau_{snow}(\alpha_{snow,2}-\alpha_{snow,1})
 $$
 
-Second, let us consider the sea surface roughness. The roughnesses of for momentum, heat and vapor are calculated in `SUBROUTINE:[SEAZ0F]` (of pgocn.F), supposing the ice-free conditions.
+Second, let us consider sea surface roughnesses. Roughnesses of for momentum, heat and vapor are calculated in `SUBROUTINE:[SEAZ0F]` (of pgocn.F), supposing the ice-free conditions.
 
-When the sea ice exists ($L=1$),  each roughness is modified to take into account the sea concentration ($R_{ice}$),
+When the sea ice exists ($L=1$),  roughnesses of momentum, heat and vapor ($r_{0,M},r_{0,H},r_{0,E}$) is modified to take into account sea ice concentration ($R_{ice}$),
 
 $$
 	z_{0,M} = z_{0,M} + ( z_{0,ice,M} - z_{0,M})  R_{ice}
@@ -185,7 +172,7 @@ $$
 	z_{0,E} = z_{0,E} + ( z_{0,ice,E} - z_{0,E})  R_{ice}
 $$
 
-where, $r_{0,ice,*}$ is the roughness of sea ice for momentum, heat and vapor, respectively.
+where, $r_{0,ice,M},r_{0,ice,H},r_{0,ice,E}$ is the roughness of sea ice for momentum, heat and vapor, respectively.
 
 $$
 	z_{0,M} = z_{0,M} + ( z_{0,snow,M} - z_{0,M})  R_{snow}
@@ -199,17 +186,15 @@ $$
 	z_{0,E} = z_{0,E} + ( z_{0,snow,E} - z_{0,E})  R_{snow}
 $$
 
-where, $r_{0,snow,*}$ is the roughness of snow ice for momentum, heat and vapor, respectively.
+where, $r_{0,snow,M},r_{0,snow,H},r_{0,snow,E}$ is the roughness of snow ice for momentum, heat and vapor, respectively.
 
-Third, let us consider the conductivity of ice.
-
-When sea ice exists ($L=1$), the thermal conductivity $k_{ice}^\star$ of sea ice is obtained by
+Third, let us consider conductivity of ice. When sea ice exists ($L=1$), thermal conductivity  of sea ice ($k_{ice}^\star$) is obtained by
 
 $$
 k_{ice}^\star = \frac{D_{f,ice}}{\mathrm{max}(R_{ice}/\sigma_{ice}, \epsilon)}
 $$
 
-where $D_{f,ice}$ is the thermal diffusivity of sea ice, and $\sigma_{ice}$ sea ice density, respectively.
+where $D_{f,ice}$ is thermal diffusivity of sea ice, and $\sigma_{ice}$ is sea ice density, respectively.
 
 The calculated thermal conductivity is modified to $k_{ice}$ to take into account that it varies with snow cover.
 
@@ -225,9 +210,9 @@ $$
 k_{ice} = k_{ice}^\star (1-R_{ice}) + \frac{D_{ice}}{1+\| D_{ice}/D_{snow} \cdot h_{snow} \|} R_{ice}
 $$
 
-where $h_{snow}$ is the snow depth, $R_{snow}$ is the snow area fraction, $\sigma_{snow}$ is the snow density, $h_{snow,max}$ is the maximum snow depth, and $D_{snow}$ is the thermal diffusivity of snow, respectively.
+where $h_{snow}$ is snow depth, $R_{snow}$ is snow area fraction, $\sigma_{snow}$ is snow density, $h_{snow,max}$ is maximum snow depth, and $D_{snow}$ is thermal diffusivity of snow, respectively.
 
-Therefore, the heat conduction flux and its derivative are
+Therefore, heat conduction flux and its derivative are
 
 $$
  G = k_{ice} (T_b - T_s)
@@ -237,17 +222,18 @@ $$
  \frac{\partial G}{\partial T} = k_{ice}
 $$
 
-Note that in the ice-free region ($L=2$)
+Note that in the ice-free area ($L=2$)
 
 $$
 G=k_{ocn}
 $$
 
-where $k_{ocn}$ is the heat flux in the sea temperature layer, and $k_{ocn}$ is the heat flux in the sea temperature layer, respectively.
+where $k_{ocn}$ is heat flux in the sea temperature layer, and $k_{ocn}$ is heat flux in the sea temperature layer, respectively.
 
-### Sea Surface Albedo for Visible `[SEAALB]`
+#### Albedo for Visible `[SEAALB]`
 
-In `SUBROUTINE [SEAALB]` (of pgocn.F), the albedo for the visible bands are calculated supposing ice-free conditions.
+In `SUBROUTINE [SEAALB]` (of pgocn.F), albedo for the visible bands are calculated supposing ice-free conditions.
+
 <!--
 - Inputs
 
@@ -262,9 +248,9 @@ In `SUBROUTINE [SEAALB]` (of pgocn.F), the albedo for the visible bands are calc
 | sea surface albedo (direct, diffuse) | $\alpha_{L(d)}$ | GALB     | IJLODM ,2 | [-]  |
 -->
 
-For sea surface level albedo $\alpha_{L(d)}$, $d=1,2$ represents direct and scattered light, respectively.
+For sea surface level albedo ($\alpha_{L(d)}$), $d=1,2$ represents direct and scattered light, respectively.
 
-Using the solar zenith angle at latitude $\zeta$, the albedo for direct light is presented by
+Using the solar zenith angle at latitude $\zeta$, albedo for direct light is presented by
 
 $$
 	\alpha_{L(1)} = e^{(C_3A^* + C_2) A^* +C_1}
@@ -276,13 +262,15 @@ $$
 	A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
 $$
 
-On the other hand, the albedo for scattered light is uniformly set to a constant parameter.
+and $C_1,C_2,C_3$ are constant parameters, respectively.
+
+On the other hand, albedo for scattered light ($\alpha_{L(2)}$) is uniformly set to a constant parameter.
 
 $$
 	\alpha_{L(2)} = 0.06
 $$
 
-### Sea Surface Roughness `[SEAZ0F]`
+#### Roughnesses `[SEAZ0F]`
 
 In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated, according to [Miller et al. (1992)](https://journals.ametsoc.org/view/journals/clim/5/5/1520-0442_1992_005_0418_tsotem_2_0_co_2.xml).
 
@@ -303,16 +291,15 @@ In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and
 | v wind of the 1st layer of the atmosphere | $v_a$        | GDVA     | IJLODM    | [m/s] |
 -->
 
-The roughness variation of the sea surface is determined by the friction velocity $u^\star$.
+The roughness variation of the sea surface is determined by the friction velocity ($u^\star$).
 
 $$
 u^{\star} = \sqrt{C_{M_0} ({u_a}^2  +{v_a}^2)}
 $$
 
-where $u_a,v_a$ are the zonal and vertical winds of the 1st layer of the atmosphere.
+where $C_{M_0}$ is a bulk coefficient for momentum, and $u_a,v_a$ are zonal and vertical winds of the 1st layer of the atmosphere. We perform successive approximation calculation of ${C_{M_0}}$, because $F_u,F_v,F_\theta,F_q$ are required.
 
-
-We perform successive approximation calculation of ${C_{M_0}}$, because $F_u,F_v,F_\theta,F_q$ are required.
+Then, roughnesses of sea surface for momentum, heat and vapor are
 
 $$
 	z_{0,M} = z_{0,M_0} + z_{0,M_R} + \frac{z_{0,M_R} {u^\star }^2 }{g} + \frac{z_{0,M_S}\nu }{u^\star}
@@ -326,45 +313,43 @@ $$
 	z_{0,E} = z_{0,E_0} + z_{0,E_R} + \frac{z_{0,E_R} {u^\star }^2 }{g} + \frac{z_{0,E_S}\nu }{u^\star}
 $$
 
-where, $\nu = 1.5 \times 10^{-5} \mathrm{[m^2/s]}$ is the kinetic viscosity of the atmosphere,
-$z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and vapor, $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$), and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$), respectively.
+where, $\nu = 1.5 \times 10^{-5} \mathrm{[m^2/s]}$ is the kinetic viscosity of the atmosphere, $z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and vapor, $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$), and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$), respectively.
 
 
-## Sea Surface Flux `[SFCFLX]`
+### Calculation of Momentum, Heat and Water Vapor Fluxes `[SFCFLX]`
 
-Treatment of sea surface flux is basically the same with [CCSR/NIES AGCM (1997)](https://github.com/MIROC-DOC/model_description/blob/master/org/AGCM5.6-Tech.pdf). The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_s$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
+Treatment of sea surface flux is basically the same with [CCSR/NIES AGCM (1997)](https://github.com/MIROC-DOC/model_description/blob/master/org/AGCM5.6-Tech.pdf). The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are horizontal wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_a$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
-Surface fluxes ($F_u, F_v, F_\theta, F_q$) are expressed using the bulk coefficients ($C_M, C_H, C_E$) as follows
-
-$$
-	F_u  =  - \rho C_M |{\mathbf{v}}| u
-$$
-
+Surface fluxes ($F_u, F_v, F_\theta, F_q$) are expressed using bulk coefficients for momentum, head and vapor ($C_M, C_H, C_E$) as follows
 
 $$
-	F_v  =  - \rho C_M |{\mathbf{v}}| v
+	F_u  =  - \rho C_M |\mathbf{V_a}| u_a
 $$
 
 $$
-	F_\theta  = \rho c_p C_H |{\mathbf{v}}| ( \theta_g - \theta )
+	F_v  =  - \rho C_M |\mathbf{V_a}| v_a
 $$
 
 $$
-	F_q^P =  \rho C_E |{\mathbf{v}}| ( q_g - q_a )
+	F_\theta  = \rho c_p C_H |\mathbf{V_a}| ( \theta_s - \theta_a )
 $$
 
-Note that $F_q^P$ is the possible evaporation flux.
+$$
+	F_q^P =  \rho C_E |\mathbf{V_a}| ( q_s - q_a )
+$$
 
-The turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground skin temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
+note that $F_q^P$ is the possible evaporation flux, where $\mathbf{V_a}$ is horizontal wind vector, and $\theta_s, \theta_a$ are potential temperature of surface and 1st layer of the atmosphere, respectively.
+
+Turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground skin temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
 
 - Momentum flux
 
 $$
- \tau_x = - \rho C_{M}|V_a| u_a
+ \tau_x = - \rho C_{M}|\mathbf{V_a}| u_a
 $$
 
 $$
- \tau_y = - \rho C_{M}|V_a| v_a
+ \tau_y = - \rho C_{M}|\mathbf{V_a}| v_a
 $$
 
 
@@ -373,35 +358,34 @@ where $\tau_x$ and $\tau_y$  are the momentum fluxes (surface stress) of the zon
 - Sensible heat flux
 
 $$
- H_s = c_p \rho C_{Hs}|V_a| (T_s - (P_s/P_a)^{\kappa}T_a)
+ H_s = c_p \rho C_{Hs}|\mathbf{V_a}| (T_s - (P_s/P_a)^{\kappa}T_a)
 $$
 
-where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$are the gas constants of air; and $c_p$ is the specific heat of air.
+where $H_s$ is the sensible heat flux from the sea surface; $\kappa = R_{air} / c_p$ and $R_{air}$ are the gas constants of air, and $c_p$ is the specific heat of air.
 
 - Bare sea surface evaporation flux
 
 $$
-\hat{F}q^P_{1/2} = \rho_{1/2} C_E |{\mathbf{v}}_1| \left( q^\star(T_0) - q_1 \right)
+	F_q^P = \rho C_E |\mathbf{V_a}| \left( q^{\ast}(T_s) - q_a \right)
 $$
 
-
-### Bulk factor `[BLKCOF]`
+#### Bulk factors `[BLKCOF]`
 
 In `SUBROUTINE:[BLKCOF]` (of psfcl.F), the bulk factors are calculated. The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
 
 $$
 R_{iB} =
-			\frac{ \frac{g}{\theta_s} (\theta_1 - \theta(z_0))/z_1 }
-              { (u_1/z_1)^2                                  }
+			\frac{ \frac{g}{\theta_s} (\theta_a - \theta(z_0))/z_a }
+              { (u_a/z_1)^2                                  }
        = \frac{g}{\theta_s}
-         \frac{T_1 (p_s/p_1)^\kappa - T_0 }{u_1^2/z_1} f_T
+         \frac{T_a (p_s/p_a)^\kappa - T_0 }{u_a^2/z_1} f_T
 $$
 
 
-Here, $g$ is the gravitational accerelation\, $\theta_s$ ($\Theta_0$ in MATSIRO description) is the basic potential temperature, $T_1$ is the atmospheric temperature of the 1st layer, $T_0$ is the surface skin temperature, $p_s$ is the surface pressure, $p_1$ is the pressure of the 1st layer, $\kappa$ is the Karman constant, and
+Here, $g$ is the gravitational accerelation\, $\theta_s$ is surface potential temperature, $T_a$ is the atmospheric temperature of the 1st layer, $T_s$ is the surface skin temperature, $p_s$ is the surface pressure, $p_a$ is the pressure of the 1st layer, $\kappa$ is the Karman constant, and
 
 $$
-f_T = (\theta_1 - \theta(z_0))/(\theta_1 - \theta_0)
+f_T = (\theta_a - \theta(z_0))/(\theta_a - \theta_s)
 $$
 
 The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](https://link.springer.com/content/pdf/10.1007/BF00117978.pdf) and [Louis <span>*et al.*</span>(1982)](https://www.ecmwf.int/en/elibrary/10845-short-history-pbl-parameterization-ecmwf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$, then corrected.
@@ -473,7 +457,7 @@ $$
 Correction Factor $f_q$ is ,
 
 $$
-  f_q = (q_1 - q(z_0))/(q_1 - q^{\ast}(\theta_0))
+  f_q = (q_a - q(z_0))/(q_a - q^{\ast}(\theta_0))
 $$
 
 but the method of calculation is omitted. The coefficients of Louis factors are $( b_M, d_M, e_M ) = ( 9.4, 7.4, 2.0 )$, $( b_H, d_H, e_H ) = ( b_E, d_E, e_E ) = ( 9.4, 5.3, 2.0 )$.
@@ -481,16 +465,16 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
 
 
-## Radiation Flux at Sea Surface `[RADSFC]`
+### Radiation Flux Calculation `[RADSFC]`
 
-In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo $\alpha_{(d,b)}$, $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation $SW^\downarrow$ and upward shortwave radiation $SW^\uparrow$ incident on the earth's surface, the direct and scattered light together are
+In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo ($\alpha_{(d,b)}$), $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation ($SW^\downarrow$) and upward shortwave radiation ($SW^\uparrow$) incident on the earth's surface, the direct and scattered light together are
 
 $$
 	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
-## Sea Surface Heat Balance `[OCNSLV]`
+### Solving Heat Balance `[OCNSLV]`
 
 <!--
 The comments for some variables say "soil", but this is because the program was adapted from a land surface scheme, and has no particular meaning.
@@ -534,31 +518,34 @@ The comments for some variables say "soil", but this is because the program was 
 | the Stefan-Boltzmann constant                         | $\sigma$     | STB      | --        | --   |
 -->
 
-In `SUBROUTINE:[OCNSLV]` (of pgocn.F), the heat balance at the sea surface is solved. Downward radiative fluxes are not directly dependent on the condition of the sea surface, and their observed values are simply specified to drive the model ([Hasumi, 2015](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/COCO/coco4.pdf)). Shortwave emission from the sea surface is negligible, so the upward part of the shortwave radiative flux is accounted for solely by reflection of the incoming downward flux. Let $\alpha _S$ be the sea surface albedo for shortwave radiation. The upward shortwave radiative flux is represented by
+In `SUBROUTINE:[OCNSLV]` (of pgocn.F), heat balance at the sea surface is solved. Downward radiative fluxes are not directly dependent on the condition of the sea surface, and their observed values are simply specified to drive the model ([Hasumi, 2015](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/COCO/coco4.pdf)). Shortwave emission from the sea surface is negligible, so the upward part of the shortwave radiative flux is accounted for solely by reflection of the incoming downward flux. Let $\alpha _S$ be the sea surface albedo for shortwave radiation. The upward shortwave radiative flux is represented by
 
 $$
 	SW^\uparrow = - \alpha_S SW^\downarrow
 $$
 
-On the other hand, the upward longwave radiative flux has both reflection of the incoming flux and emission from the sea surface. Let $\alpha$ be the sea surface albedo for longwave radiation and $\epsilon$ be emissivity of the sea surface relative to the black body radiation. The upward shortwave radiative flux is represented by
+On the other hand, the upward longwave radiative flux ($LW^\uparrow$) has both reflection of the incoming flux and emission from the sea surface. Let $\alpha$ be the sea surface albedo for longwave radiation and $\epsilon$ be emissivity of the sea surface relative to the black body radiation, respectively. The upward shortwave radiative flux is represented by
 
 $$
 	LW^\uparrow = - \alpha LW^\downarrow + \epsilon \sigma T_s ^4
 $$
 
-where $\sigma$ is the Stefan-Boltzmann constant and $T_s$ is skin temperature. If sea ice exists, snow or sea ice temperature is considered by fractions. When radiative equilibrium is assumed, emissivity becomes identical to co-albedo:
+where $\sigma$ is the Stefan-Boltzmann constant and $T_s$ is skin temperature, respectively
+. If sea ice exists ($L=1$), snow or sea ice temperature is considered by fractions. When radiative equilibrium is assumed, emissivity becomes identical to co-albedo:
 
 $$
 	\epsilon = 1 - \alpha
 $$
 
-The net surface flux is presented by
+The net surface flux ($F^*$) is presented by
 
 $$
 	F^*=H + (1-\alpha)\sigma T_s^4 + \alpha LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
 $$
 
-The heat flux into the sea surface is presented, with the surface heat flux calculated in `SUBROUTINE:[SFCFLX]` (of psfcm.F).
+where $H$ is sensible heat flux.
+
+With the surface heat flux calculated in `SUBROUTINE:[SFCFLX]` (of psfcm.F) ($G$), heat flux into the sea surface ($G^*$) is presented as
 
 $$
 	G^* = G - F^*
@@ -566,32 +553,33 @@ $$
 
 Note that $G^*$ is downward positive.
 
-The temperature derivative term is
+The temperature derivative term of $G^*$ is
 
 $$
 	\frac{\partial G^*}{\partial T_s} = \frac{\partial G}{\partial T_s}+\frac{\partial H}{\partial T_s}+\frac{\partial R}{\partial T_s}
 $$
+<!--このRは放射?-->
 
-When the sea ice exists, the sublimation flux ($l_s E$) is considered
+When the sea ice exists ($L=1$), the surface flux $G_{ice}$ is considered with the sublimation flux ($l_s E$).
 
 $$
 	G_{ice} = G^* - l_s E
 $$
 
-The temperature derivative term is
+The temperature derivative term of $G_{ice}$ is
 
 $$
 	\frac{\partial G_{ice}}{\partial T_s}=\frac{\partial G^*}{\partial T_s} + l_s\frac{\partial E}{\partial T_s}
 $$
 
-Finally, we can update the skin temperature with the sea ice concentration with $\Delta T_s=G_{ice} ( \frac{\partial G_{ice}}{\partial T_s})^{-1}$
+We can update the skin temperature with sea ice concentration and $\Delta T_s=G_{ice} ( \frac{\partial G_{ice}}{\partial T_s})^{-1}$
 
 
 $$
 	T_s = T_s +R_{ice} \Delta T_s
 $$
 
-Then, the sensible and latent heat flux on the sea ice is updated.
+Then, the sensible and latent heat flux on the sea ice ($E_{ice},H_{ice}$) is updated.
 
 $$
 	E_{ice} = E + \frac{\partial E}{\partial T_s}\Delta T_s
@@ -601,45 +589,43 @@ $$
 	H_{ice} = H + \frac{\partial H}{\partial T_s}\Delta T_s
 $$
 
-When the sea ice does not existed, otherwise, the evaporation flux is added to the net flux.
+When the sea ice does not existed ($L=2$), otherwise, the surface heat flux ($G_{free}$) is calculated by addition of evaporation flux $l_cE$ and the net flux $F^\ast$.
 
 $$
-	G_{free}=F^* + l_cE
+	G_{free}=F^\ast + l_cE
 $$
 
-Finally each flux is updated.
-
-For the sensible heat flux, the temperature change on the sea ice is considered.
+Finally each flux is updated. For sensible heat flux ($H$), the temperature change on the sea ice is considered.
 
 $$
 	H=H+ R_{ice}  H_{ice}
 $$
 
-Then, the heat used for the temperature change is saved.
+Then, the heat used for the temperature change ($F$) is saved.
 
 $$
 	F = R_{ice} H_{ice}
 $$
 
-For the upward longwave radiative flux, the temperature change on the sea ice is considered.
+For upward longwave radiative flux ($LW^\uparrow$), temperature change on the sea ice ($\Delta T_s$) is considered.
 
 $$
 	LW^\uparrow=LW^\uparrow +  4\frac{\sigma}{T_s}R_{ice}  \Delta T_s
 $$
 
-For the surface heat flux, the sea ice  concentration is considered.
+For the surface heat flux ($G$), sea ice existence is considered.
 
 $$
 	G=(1-R_{ice})G_{free} + R_{ice}G_{ice}
 $$
 
-For the latent heat flux, the sea ice  concentration is considered.
+For latent heat flux $E$, sea ice existence is considered.
 
 $$
 	E=(1-R_{ice})E + R_{ice}E_{ice}
 $$
 
-Each term above are saved as freshwater flux.
+Then, each term above are saved as freshwater fluxes ($W_{free}, W_{ice}$) of ice covered and free areas.
 
 $$
 	W_{free} = (1-R_{ice}) E
