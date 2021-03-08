@@ -1,0 +1,540 @@
+\begin{itemize}
+\tightlist
+\item
+  \ref{ux4e71ux6d41}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \ref{ux63a5ux5730ux5883ux754cux5c64}
+  \item
+    \ref{ux6d6eux529bux4fc2ux6570ux306eux8a3aux65ad}
+  \item
+    \ref{ux30ecux30d9ux30eb2ux306eux5b89ux5b9aux5ea6ux95a2ux6570}
+  \item
+    \ref{ux4e71ux6d41ux306eux4ee3ux8868ux7684ux9577ux3055ux30b9ux30b1ux30fcux30eb}
+  \item
+    \ref{ux62e1ux6563ux4fc2ux6570ux306eux8a08ux7b97}
+  \item
+    \ref{ux30d5ux30e9ux30c3ux30afux30b9ux306eux8a08ux7b97}
+  \item
+    \ref{ux4e71ux6d41ux91cfux306eux8a08ux7b97}
+  \item
+    \ref{time-integration-with-implicit-scheme}
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{ux4e71ux6d41}{%
+\subsection{乱流}\label{ux4e71ux6d41}}
+
+本章では、サブグリッドスケールの乱流の格子平均量への影響を表現する乱流スキームについて記述する。乱流スキームは、乱流による運動量、熱、水およびその他のトレーサーの鉛直拡散を計算する。MIROCではバージョン5以降、乱流スキームとして、Mellor-Yamadaスキーム（Mellor
+1973; Mellor and Yamada 1974; Mellor and Yamada
+1982）の改良版であるMellor-Yamada-Nakanishi-Niinoスキーム（MYNNスキーム;
+Nakanishi 2001; Nakanishi and Niino
+2004）が採用されている。クロージャーレベルは2.5である。レベル3も使用可能であるが、計算量の増大に見合うパフォーマンスの向上が得られないため、非標準オプションとなっている。
+
+MYNNスキームでは、熱力学変数としてliquid water potential temperature
+\(\theta_l\) およびtotal water \(q_w\)
+が使用され、それぞれ以下のように定義される。これらは水の相変化によらず保存される量である。
+
+\begin{eqnarray} \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}} \end{eqnarray}
+
+\begin{eqnarray} q_w \equiv q_v+q_l+q_i \end{eqnarray}
+
+ここで、\(T\), \(p\)は、それぞれ温度と圧力、\(q_v\), \(q_l\),
+\(q_i\)は、それぞれ比湿、雲水、雲氷、\(C_p\),
+\(R_d\)は、それぞれ乾燥空気の定圧比熱および気体定数、\(L_v\),
+\(L_f\)は、それぞれ単位質量あたりの水蒸気の凝結熱および水の凝固熱である。\(p_s\)は1000hPaである。
+
+また、Level2.5においては、乱流の運動エネルギーを2倍した量である
+
+\begin{eqnarray}q^2 \equiv \langle u^2 + v^2 + w^2 \rangle\end{eqnarray}
+
+が予報変数となっており、この時間発展もこのスキーム内で計算される。ここで、\(u\),
+\(v\),
+\(w\)は、それぞれ東西方向、南北方向、鉛直方向の風速である。本章では、大文字の変数で格子平均量を表し、小文字の変数で格子平均からのずれを表すこととする。\(\langle \ \rangle\)はアンサンブル平均を表す。レベル3の場合、\(\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle\)
+が予報変数に追加されるが、ここでは省略する。
+
+計算手順の概略は以下の通りである。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  摩擦速度およびMonin-Obukhov長を計算する
+\item
+  部分凝結を考慮して浮力係数を計算する {[}\texttt{VDFCND}{]}
+\item
+  レベル2の安定度関数を計算する {[}\texttt{VDFLEV2}{]}
+\item
+  大気境界層の深さを計算する {[}\texttt{PBLHGT}{]}
+\item
+  乱流の代表的長さスケールを計算する {[}\texttt{VDFMLS}{]}
+\item
+  拡散係数および鉛直フラックスとその微分値を計算する
+  {[}\texttt{VDFLEV3}{]}
+\item
+  乱流量の生成項と散逸項を計算する {[}\texttt{VDFLEV3}{]}
+\item
+  予報変数のimplicit時間積分を計算する
+\end{enumerate}
+
+\hypertarget{ux63a5ux5730ux5883ux754cux5c64}{%
+\subsubsection{接地境界層}\label{ux63a5ux5730ux5883ux754cux5c64}}
+
+摩擦速度 \(u_*\) およびMonin-Obukhov長 \(L_M\)
+はそれぞれ以下のように与えられる。
+
+\begin{eqnarray}u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4}\end{eqnarray}
+
+\begin{eqnarray}L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g}\end{eqnarray}
+
+ここで、下付文字\(g\)は、地表付近での値であることを表す。\(\Theta_v\),
+\(\theta_v\)は仮温位、\(k\), \(g\)は、それぞれ、Von
+Karman定数および重力加速度である。
+
+\hypertarget{ux6d6eux529bux4fc2ux6570ux306eux8a3aux65ad}{%
+\subsubsection{浮力係数の診断}\label{ux6d6eux529bux4fc2ux6570ux306eux8a3aux65ad}}
+
+乱流の方程式に現れる浮力項の計算には \(\langle w\theta_v \rangle\)
+の値が必要である。Mellor (1982)に従い、\(\theta_l\),
+\(q_w\)のグリッド内の確率分布を仮定すると、この項は、
+
+\begin{eqnarray}\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle\end{eqnarray}
+
+と書ける。ただし、確率分布は、Mellor (1982), Nakanishi and Niino
+(2004)とは異なり、ガウス分布ではなく、PDF予報型大規模凝結スキーム（Watanabe
+et al.~2008）が与える三角形状の分布である。係数
+\(\beta_\theta , \beta_q\) は、以下のように表される。
+
+\begin{eqnarray}\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc\end{eqnarray}
+
+\begin{eqnarray}\beta_q=\epsilon \Theta +\tilde{R}ac\end{eqnarray}
+
+ここで、\(\epsilon=R_v/R_d-1\)であり、\(R_d\),
+\(R_v\)はそれぞれ、乾燥大気および水蒸気の気体定数である。また、
+
+\begin{eqnarray}a=\left(1+\frac{L_v}{C_p}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\right)^{-1}\end{eqnarray}
+
+\begin{eqnarray}b=\frac{T}{\Theta}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\end{eqnarray}
+
+\begin{eqnarray}c=\frac{\Theta}{T}\frac{L_v}{C_p}\left[1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i\right]-(1+\epsilon)\Theta\end{eqnarray}
+
+\begin{eqnarray}\tilde{R}=R\left\{1-a\left[Q_w-Q_s(T_l)\right]\frac{Q_l}{2\sigma_s}\right\}-\frac{{Q_l}^2}{4{\sigma_s}^2}\end{eqnarray}
+
+\begin{eqnarray}{\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle\end{eqnarray}
+
+である。ここで、\(R,Q_l\)
+はそれぞれグリッド内の確率分布から診断される雲量および液水量、\(Q_s\)は、飽和水蒸気量を表す。また、\(\sigma_s\)の計算に用いられる\(q_w\),
+\(\theta_l\)は、大規模凝結スキームで予報される量ではなく、MYNNスキーム内で診断される量であることに注意されたい（その診断式は後述）。
+
+\hypertarget{ux30ecux30d9ux30eb2ux306eux5b89ux5b9aux5ea6ux95a2ux6570}{%
+\subsubsection{レベル2の安定度関数}\label{ux30ecux30d9ux30eb2ux306eux5b89ux5b9aux5ea6ux95a2ux6570}}
+
+Mellor-YamadaスキームのLevel2.5では、乱流の成長段階のふるまいが悪いことが知られている(Helfand
+and Labraga
+1988)。そのため、MYNNスキームでは局所的に平衡が仮定されるLevel2の乱流の運動エネルギー、\({q_2}^2/2\)
+を計算し、\(q<q_2\)
+すなわち乱流が成長段階にある場合に補正をかける。\(q_2\)の計算に必要なLevel2の安定度関数
+\(S_{H2},S_{M2}\) は以下のように求められる。
+
+\begin{eqnarray}S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf}\end{eqnarray}
+
+\begin{eqnarray}S_{M2}=S_{MC}\frac{R_{f1}-Rf}{R_{f2}-Rf}S_{H2}\end{eqnarray}
+
+ここで、\(Rf\)は、フラックスRichardson数であり、以下のように計算される。
+
+\begin{eqnarray}Rf=R_{i1}\left(Ri+R_{i2}-\sqrt{Ri^2-R_{i3}Ri+R_{i4}}\right)\end{eqnarray}
+
+\(Ri\)はgradient Richardson数であり、以下のように計算される。
+
+\begin{eqnarray}Ri=\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right) \Bigg/ \left[ \left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2 \right]\end{eqnarray}
+
+その他の記号は、環境場に依存しない量であり、以下のように与えられる。
+
+\begin{eqnarray}S_{HC}=3A_2(\gamma_1+\gamma_2)\end{eqnarray}
+
+\begin{eqnarray}S_{MC}=\frac{A_1}{A_2}\frac{F_1}{F_2}\end{eqnarray}
+
+\begin{eqnarray}Rf_c=\frac{\gamma_1}{\gamma_1+\gamma_2}\end{eqnarray}
+
+\begin{eqnarray}R_{f1}=B_1\frac{\gamma_1-C_1}{F_1}\end{eqnarray}
+
+\begin{eqnarray}R_{f2}=B_1\frac{\gamma_1}{F_2}\end{eqnarray}
+
+\begin{eqnarray}R_{i1}=\frac{1}{2S_{MC}}\end{eqnarray}
+
+\begin{eqnarray}R_{i2}=R_{f1}S_{MC}\end{eqnarray}
+
+\begin{eqnarray}R_{i3}=4R_{f2}S_{MC}-2R_{i2}\end{eqnarray}
+
+\begin{eqnarray}R_{i4}={R_{i2}}^2\end{eqnarray}
+
+ここで、
+
+\begin{eqnarray}A_1=B_1\frac{1-3\gamma_1}{6}\end{eqnarray}
+
+\begin{eqnarray}A_2=A_1\frac{\gamma_1-C_1}{\gamma_1 Pr}\end{eqnarray}
+
+\begin{eqnarray}C_1=\gamma_1-\frac{1}{3A_1{B_1}^{\frac{1}{3}}}\end{eqnarray}
+
+\begin{eqnarray}F_1=B_1(\gamma_1-C_1)+2A_1(3-2C_2)+3A_2(1-C_2)(1-C_5)\end{eqnarray}
+
+\begin{eqnarray}F_2=B_1(\gamma_1+\gamma_2)-3A_1(1-C_2)\end{eqnarray}
+
+\begin{eqnarray}\gamma_2=\frac{B_2}{B_1}\left(1-C_3\right)+\frac{2A_1}{B_1}\left(3-2C_2\right)\end{eqnarray}
+
+また、
+
+\begin{eqnarray}
+(Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2)
+\end{eqnarray}
+
+\hypertarget{ux4e71ux6d41ux306eux4ee3ux8868ux7684ux9577ux3055ux30b9ux30b1ux30fcux30eb}{%
+\subsubsection{乱流の代表的長さスケール}\label{ux4e71ux6d41ux306eux4ee3ux8868ux7684ux9577ux3055ux30b9ux30b1ux30fcux30eb}}
+
+\hypertarget{nakanishi-2001ux306eux5b9aux5f0fux5316}{%
+\paragraph{Nakanishi
+(2001)の定式化}\label{nakanishi-2001ux306eux5b9aux5f0fux5316}}
+
+Nakanishi (2001)は、master length scale \(L\)
+として以下の式を提案している。
+\begin{eqnarray}\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \label{1} \end{eqnarray}
+
+\(L_S,L_T,L_B\)
+はそれぞれ接地層、対流混合層、安定成層における長さスケールを表し、以下のように定式化されている。
+\begin{eqnarray}
+L_S=\left\{
+    \begin{array}{lr}
+      kz/3.7, &\zeta\ge 1\\
+      kz/(2.7+\zeta), &0\le\zeta< 1\\
+      kz(1-\alpha_4\zeta)^{0.2}, &\zeta< 0\\
+    \end{array}
+  \right.
+\end{eqnarray}
+
+\begin{eqnarray}L_T=\alpha_1\frac{\displaystyle \int_0^\infty{qz}\,dz}{\displaystyle \int_0^\infty{q}\,dz}\end{eqnarray}
+
+\begin{eqnarray}
+L_B=\left\{
+    \begin{array}{ll}
+      \alpha_2 q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta\ge 0\\
+      \left[\alpha_2+\alpha_3\sqrt{q_c/L_TN}\right]q/N, &\partial\Theta_v/\partial z> 0 \quad\rm{and}\quad\zeta< 0\\
+      \infty, &\partial\Theta_v/\partial z\le 0\\
+    \end{array}
+  \right.
+\end{eqnarray}
+
+ここで \(\zeta\equiv z/L_M\) はMonin-Obukhov長 \(L_M\)
+で規格化された高さ、\(N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}\)
+はBrunt-Väisälä振動数、
+\(q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}\)
+は対流混合層内の速度スケールを表す。経験定数はLarge Eddy
+Simulationの結果に基づき、
+\begin{eqnarray}(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(0.23,1.0,5.0,100.0)\end{eqnarray}
+
+と定められている。
+
+\hypertarget{mirocux3078ux306eux5b9fux88c5ux4e0aux306eux4feeux6b63}{%
+\paragraph{MIROCへの実装上の修正}\label{mirocux3078ux306eux5b9fux88c5ux4e0aux306eux4feeux6b63}}
+
+Nakanishi
+(2001)における以上の定式化は、モデルの領域が大気境界層とその周辺域に限られている場合、適切な値をとる。しかし、モデルが対流圏上層まで含む場合、条件によっては、対流混合層の長さスケールである\(L_T\)が自由大気で使われてしまう、\(L_T\)の計算における\(q\)として自由大気の乱流エネルギーも含まれてしまう、などの問題が生じる。
+
+そこで、MIROCへの実装に当たり、対流混合層の上端の高さ\(H_{PBL}\)を見積もり、\(h=\sqrt{(F_H H_{PBL})^2+H_0^2}\)
+より下の領域を境界層乱流が卓越する領域とみなす。ここで\(F_H=1.5\)、\(H_0=500\)mである。
+
+高度\(h\)以下では、master length
+scaleとして(1)式を用いるが、\(L_T\)において、積分の範囲を以下のように修正する。
+
+\begin{eqnarray}L_T=\alpha_1\frac{\displaystyle \int_0^h{qz}\,dz}{\displaystyle \int_0^h{q}\,dz}\end{eqnarray}
+
+高度 \(h\) より上では、\(L\) は以下のように計算する。
+
+\begin{eqnarray}\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}\end{eqnarray}
+
+ここで、\(L_A=\alpha_5\,q/N\)
+は、安定成層において乱流により空気塊が鉛直方向に移動するときの長さスケールを表す。\(\alpha_5\)は散逸の効果を表し、\(\alpha_5=0.53\)
+である。 \(L_{max}=500\)mは\(L\)の上限を与える。
+
+\hypertarget{ux5bfeux6d41ux6df7ux5408ux5c64ux306eux4e0aux7aefux306eux9ad8ux3055ux306eux898bux7a4dux3082ux308a}{%
+\paragraph{対流混合層の上端の高さの見積もり}\label{ux5bfeux6d41ux6df7ux5408ux5c64ux306eux4e0aux7aefux306eux9ad8ux3055ux306eux898bux7a4dux3082ux308a}}
+
+\(H_{PBL}\)の見積もりはHoltslag and Boville
+(1993)に基づき、バルクRichardson数
+
+\begin{eqnarray}Ri_B=\frac{[g/\Theta_v(z_1)][\Theta_v(z_k)-\Theta_{v,g}](z_k-z_g)}{[U(z_k)-U(z_1)]^2+[V(z_k)-V(z_1)]^2+F_u{u_*}^2}\end{eqnarray}
+
+を用いて計算する。ここで、\(z_k\)は下からk番目の層のフルレベルの高度を表し、\(z_1\)はモデル最下層のフルレベルの高度、\(z_g\)は地表高度である。\(F_u\)は無次元のチューニングパラメータである。また、
+
+\begin{eqnarray}\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m}\end{eqnarray}
+
+\begin{eqnarray}w_m=u_*/\phi_m\end{eqnarray}
+
+\begin{eqnarray}\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}}\end{eqnarray}
+
+であり、\(z_s\)は接地層の高度で、\(z_s=0.1H_{PBL}\)としている。\(F_b\)は無次元のチューニングパラメータである。
+
+\(k=2\)から上に向かって\(Ri_B\)を順番に計算し、\(Ri_B>0.5\)
+となる層とそのすぐ下の層の間で\(Ri_B\)を線形内挿し、ちょうど\(Ri_B=0.5\)となる高さを\(H_{PBL}\)とする。\(z_s\)の計算に\(H_{PBL}\)が必要であるため、最初に仮の値\(H_{PBL}=z_1-z_g\)を代入した\(z_s\)を使って\(H_{PBL}\)計算し、この\(H_{PBL}\)を代入した\(z_s\)を用いて真の\(H_{PBL}\)を再計算する。
+
+\hypertarget{ux62e1ux6563ux4fc2ux6570ux306eux8a08ux7b97}{%
+\subsubsection{拡散係数の計算}\label{ux62e1ux6563ux4fc2ux6570ux306eux8a08ux7b97}}
+
+\hypertarget{ux30ecux30d9ux30eb2ux306eux4e71ux6d41ux306eux904bux52d5ux30a8ux30cdux30ebux30aeux30fc}{%
+\paragraph{レベル2の乱流の運動エネルギー}\label{ux30ecux30d9ux30eb2ux306eux4e71ux6d41ux306eux904bux52d5ux30a8ux30cdux30ebux30aeux30fc}}
+
+レベル2の乱流の運動エネルギー\({q_2}^2/2\)
+は、乱流の運動エネルギーの時間発展式において、時間微分項、移流項、拡散項を無視した以下の式から計算される。
+
+\begin{eqnarray} P_s + P_b - \varepsilon = 0 \label{2} \end{eqnarray}
+
+ここで、\(P_s\), \(P_b\),
+\(\varepsilon\)は、それぞれシアーによる生成項、浮力による生成項、消散項である。\(P_s\),
+\(P_b\)は、以下のように表される。
+
+\begin{eqnarray} P_s = -\langle wu \rangle \frac{\partial U}{\partial z} - \langle wv \rangle \frac{\partial V}{\partial z} \end{eqnarray}
+
+\begin{eqnarray} P_b = \frac{g}{\Theta}\langle w\theta_v \rangle \end{eqnarray}
+
+MYNNスキームのレベル2ではこれらは以下のように表される。
+
+\begin{eqnarray} P_s = LqS_{M2} \left[ \left(\frac{\partial U}{\partial z}\right)^2 + \left(\frac{\partial V}{\partial z}\right)^2 \right] \label{3} \end{eqnarray}
+
+\begin{eqnarray} P_b = LqS_{H2} \frac{g}{\Theta}\left[ \beta_\theta \frac{\partial \Theta_l}{\partial z} + \beta_q \frac{\partial Q_w}{\partial z} \right] \label{4} \end{eqnarray}
+
+\begin{eqnarray} \varepsilon = \frac{q^3}{B_1 L} \label{5} \end{eqnarray}
+
+(2), (3), (4), (5)より、\({q_2}^2\)は以下のように計算される。
+
+\begin{eqnarray}{q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}\end{eqnarray}
+
+\hypertarget{ux30ecux30d9ux30eb2.5ux306eux5b89ux5b9aux5ea6ux95a2ux6570}{%
+\paragraph{レベル2.5の安定度関数}\label{ux30ecux30d9ux30eb2.5ux306eux5b89ux5b9aux5ea6ux95a2ux6570}}
+
+\(q<q_2\) すなわち乱流が成長段階にある場合は、Helfand and Labraga (1998)
+で導入された係数 \(\alpha=q/q_2\)
+を使って、レベル2.5の安定度関数、\(S_M\),
+\(S_H\)を以下のように計算する。
+\begin{eqnarray}S_M=\alpha S_{M2},\quad S_H=\alpha S_{H2}\end{eqnarray}
+
+一方、\(q \geq q_2\)のときは、\(S_M\),
+\(S_H\)は、以下のように計算される。以下の式は、Nakanishi
+(2001)のものとは記述法が異なるが、より少ない計算量で同等の結果を与えるものである。
+
+\begin{eqnarray}S_M=A_1\frac{E_3-3C_1 E_4}{E_2 E_4+E_5 E_3}\end{eqnarray}
+
+\begin{eqnarray}S_H=A_2\frac{E_2+3C_1 E_5}{E_2 E_4+E_5 E_3}\end{eqnarray}
+
+ここで、
+
+\begin{eqnarray}E_1=1-3A_2B_2(1-C_3)G_H\end{eqnarray}
+
+\begin{eqnarray}E_2=1-9A_1A_2(1-C_2)G_H\end{eqnarray}
+
+\begin{eqnarray}E_3=E_1+9{A_2}^2(1-C_2)(1-C_5)G_H\end{eqnarray}
+
+\begin{eqnarray}E_4=E_1-12A_1A_2(1-C_2)G_H\end{eqnarray}
+
+\begin{eqnarray}E_5=6{A_1}^2G_M\end{eqnarray}
+
+\begin{eqnarray}G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]\end{eqnarray}
+
+\begin{eqnarray}G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\end{eqnarray}
+
+\hypertarget{ux62e1ux6563ux4fc2ux6570ux306eux8a08ux7b97-1}{%
+\paragraph{拡散係数の計算}\label{ux62e1ux6563ux4fc2ux6570ux306eux8a08ux7b97-1}}
+
+風速, 乱流エネルギー, 熱, 水に対する拡散係数 \(K_M\), \(K_q\), \(K_H\),
+\(K_w\) は、 \(S_M,S_H\) から以下のように計算される。 \begin{eqnarray}K_M=LqS_M\end{eqnarray}
+
+\begin{eqnarray}K_q=3LqS_M\end{eqnarray}
+
+\begin{eqnarray}K_H=LqS_H\end{eqnarray}
+
+\begin{eqnarray}K_w=LqS_H\end{eqnarray}
+
+\hypertarget{ux30d5ux30e9ux30c3ux30afux30b9ux306eux8a08ux7b97}{%
+\subsubsection{フラックスの計算}\label{ux30d5ux30e9ux30c3ux30afux30b9ux306eux8a08ux7b97}}
+
+各物理量の鉛直フラックス \(F\) は以下のように計算される。
+
+\begin{eqnarray}F_{u,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{U_{k}-U_{k-1}}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}F_{v,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{V_{k}-V_{k-1}}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}F_{q,k-1/2}=-\rho_{k-1/2}K_{q,k-1/2}\frac{{q^2}_ {k}-{q^2}_ {k-1}}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}F_{T,k-1/2}=-\rho_{k-1/2}K_{H,k-1/2}\,C_p\Pi_{k-1/2}\frac{\Theta_{l,k}-\Theta_{l,k-1}}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}F_{w,k-1/2}=-\rho_{k-1/2}K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}}\end{eqnarray}
+
+ここで、\(\rho\)は密度、\(\Pi\)はexner
+functionである。また、implicit法による時間積分を行うために、各鉛直フラックスの微分値を以下のように求めておく。
+
+\begin{eqnarray}\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=\rho_{k-1/2}K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k-1}}=-\frac{\partial F_{q,k-1/2}}{\partial {q^2}_ {k}}=\rho_{k-1/2}K_{q,k-1/2}\frac{1}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}\frac{\partial F_{T,k-1/2}}{\partial T_{k-1}}=\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k-1}}\frac{1}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}\frac{\partial F_{T,k-1/2}}{\partial T_{k}}=-\rho_{k-1/2}K_{H,k-1/2}C_p\frac{\Pi_{k-1/2}}{\Pi_{k}}\frac{1}{\Delta z_{k-1/2}}\end{eqnarray}
+
+\begin{eqnarray}\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k}}=\rho_{k-1/2}K_{w,k-1/2}\frac{1}{\Delta z_{k-1/2}}\end{eqnarray}
+
+ここで、\(\Delta z_{k-1/2}=z_k-z_{k-1}\)である。各種トレーサーについても、
+\(K_w\) を用いて同様にフラックスが計算される。
+
+\hypertarget{ux4e71ux6d41ux91cfux306eux8a08ux7b97}{%
+\subsubsection{乱流量の計算}\label{ux4e71ux6d41ux91cfux306eux8a08ux7b97}}
+
+\hypertarget{ux4e71ux6d41ux306eux904bux52d5ux30a8ux30cdux30ebux30aeux30fcux306eux8a08ux7b97}{%
+\paragraph{乱流の運動エネルギーの計算}\label{ux4e71ux6d41ux306eux904bux52d5ux30a8ux30cdux30ebux30aeux30fcux306eux8a08ux7b97}}
+
+\(q^2\) の予報式は以下で表される。
+\begin{eqnarray} \frac{d q^2}{dt}=-\frac{1}{\rho}\frac{\partial F_q}{\partial z}+2\left(P_s+P_b-\varepsilon\right) \end{eqnarray}
+
+\(P_s,P_b,\varepsilon\) は、レベル2.5では以下のように表される。
+
+\begin{eqnarray}P_s=Lq S_M \left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]\end{eqnarray}
+
+\begin{eqnarray}P_b=Lq S_H \frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\end{eqnarray}
+
+\begin{eqnarray}\varepsilon=\frac{q^3}{B_1L}\end{eqnarray}
+
+移流項は、力学スキームにおいてトレーサーの輸送ルーチンを使って計算される。乱流スキームでは、\(q^2\)の拡散項、生成項、消散項による時間発展がimplicit法を用いて計算される。
+
+\hypertarget{ux5206ux6563ux304aux3088ux3073ux5171ux5206ux6563ux306eux8a3aux65ad}{%
+\paragraph{分散および共分散の診断}\label{ux5206ux6563ux304aux3088ux3073ux5171ux5206ux6563ux306eux8a3aux65ad}}
+
+また、\(\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle\)
+の予報方程式は以下のように表される。
+
+\begin{eqnarray}
+\frac{d\left\langle{\theta_l}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l}^{2}\right\rangle-2\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-2 \varepsilon_{\theta l}
+\end{eqnarray}
+
+\begin{eqnarray}
+\frac{d\left\langle {q_w}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w q_{w}^{2}\right\rangle-2\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{q w}
+\end{eqnarray}
+
+\begin{eqnarray}
+\frac{d\left\langle\theta_{l} q_{w}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l} q_{w}\right\rangle-\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q}
+\end{eqnarray}
+
+レベル2.5では、これらの式で、時間微分項、移流項、拡散項を無視し、局所的に以下のバランスが成立していると仮定する。
+
+\begin{eqnarray} -\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\varepsilon_{\theta l} = 0 \label{6}\end{eqnarray}
+
+\begin{eqnarray} -\left\langle w q_{w}\right\rangle \frac{\partial Q_{w}}{\partial z}-\varepsilon_{q w} = 0 \label{7}\end{eqnarray}
+
+\begin{eqnarray} -\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q} = 0 \label{8}\end{eqnarray}
+
+MYNNスキームのレベル2.5では、\(-\left\langle w \theta_{l}\right\rangle\),
+\(-\left\langle w q_{w}\right\rangle\), \(\varepsilon_{\theta l}\),
+\(\varepsilon_{q w}\),
+\(\varepsilon_{\theta q}\)は以下のように表される。
+
+\begin{eqnarray} -\left\langle w \theta_{l}\right\rangle = LqS_H \frac{\partial \Theta_{l}}{\partial z} \label{9}\end{eqnarray}
+
+\begin{eqnarray} -\left\langle w q_{w}\right\rangle = LqS_H \frac{\partial Q_{w}}{\partial z} \label{10}\end{eqnarray}
+
+\begin{eqnarray}
+\varepsilon_{\theta l}=\frac{q}{B_{2} L}\left\langle\theta_{l}^{2}\right\rangle \label{11}
+\end{eqnarray}
+
+\begin{eqnarray}
+\varepsilon_{q w}=\frac{q}{B_{2} L}\left\langle q_{w}^{2}\right\rangle \label{12}
+\end{eqnarray}
+
+\begin{eqnarray}
+\varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \label{13}
+\end{eqnarray}
+
+(6)-(13)より、\(\langle {\theta_l}^2 \rangle\),
+\(\langle {q_w}^2 \rangle\),
+\(\langle \theta_l q_w \rangle\)は以下のように診断的に計算される。
+
+\begin{eqnarray}\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \Theta_l}{\partial z}\right)^2\end{eqnarray}
+
+\begin{eqnarray}\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial Q_w}{\partial z}\right)^2\end{eqnarray}
+
+\begin{eqnarray}\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}\end{eqnarray}
+
+\hypertarget{ux30e2ux30c7ux30ebux6700ux4e0bux5c64ux306eux6271ux3044}{%
+\paragraph{モデル最下層の扱い}\label{ux30e2ux30c7ux30ebux6700ux4e0bux5c64ux306eux6271ux3044}}
+
+モデル最下層は、物理量の鉛直勾配が急激に変化する接地層に相当するため、鉛直勾配を精度良く評価するために、以下のMonin-Obukhov相似則を用いる。
+
+\begin{eqnarray} \frac{\partial M}{\partial z} = \frac{u_*}{kz}\phi_m \label{14}\end{eqnarray}
+
+\begin{eqnarray} \frac{\partial \Theta}{\partial z} = \frac{\theta_*}{kz}\phi_h \label{15}\end{eqnarray}
+
+\begin{eqnarray} \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \label{16}\end{eqnarray}
+
+ここで、\(M\)は接地層における水平風の向きに横軸をとったときの風速を表す。\(\phi_m\),
+\(\phi_h\)は、それぞれ運動量と熱に対する無次元勾配関数である。\(\theta_*\),
+\(q_{v*}\)は、それぞれ、接地層における温位と水蒸気のスケールであり、以下の関係を満たす。
+
+\begin{eqnarray} \langle wm \rangle_g = -u_*^2 \label{17}\end{eqnarray}
+
+\begin{eqnarray} \langle w\theta \rangle_g = -u_*\theta_* \label{18}\end{eqnarray}
+
+\begin{eqnarray} \langle wq_v \rangle_g = -u_*q_{v*} \label{19}\end{eqnarray}
+
+\(m\)は\(M\)の格子平均からのズレである。\(M\),
+\(m\)を用いると、乱流エネルギーの生成項は、以下のように書ける。
+
+\begin{eqnarray} P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle \end{eqnarray}
+
+これは、(14),
+(17)およびMonin-Obukhov長の定義式を用いると、以下のように計算できる。
+
+\begin{eqnarray} P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right] \end{eqnarray}
+
+ここで、\(\zeta_1\)は、モデル最下層のフルレベルでの\(\zeta\)である。
+
+接地層では雲粒がないと仮定し、\(\langle {\theta_l}^2\rangle\),
+\(\langle {q_w}^2\rangle\), \(\langle \theta_lq_w\rangle\)は、(6)-(8),
+(11)-(13), (15), (16), (18), (19)より、以下のように診断的に計算できる。
+
+\begin{eqnarray}\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L} \end{eqnarray}
+
+\begin{eqnarray}\langle {q_w}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle wq_v\rangle_g}^2 \bigg/ \frac{q}{B_2L} \end{eqnarray}
+
+\begin{eqnarray}\langle \theta_lq_w\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}\langle w\theta \rangle_g\langle wq_v \rangle_g \bigg/ \frac{q}{B_2L} \end{eqnarray}
+
+\(\phi_m,\phi_h\) は、Businger et
+al.~(1971)に基づき以下のように定式化されている。 \begin{eqnarray}
+\phi_m(\zeta)=\left\{
+    \begin{array}{lr}
+      1+\beta_1\zeta, &\zeta\ge 0\\
+      \left(1-\gamma_1\zeta\right)^{-1/4}, &\zeta< 0\\
+    \end{array}
+  \right.
+\end{eqnarray}
+
+\begin{eqnarray}
+\phi_h(\zeta)=\left\{
+    \begin{array}{lr}
+      \beta_2+\beta_1\zeta, &\zeta\ge 0\\
+      \beta_2\left(1-\gamma_2\zeta\right)^{-1/2}, &\zeta< 0\\
+    \end{array}
+  \right.
+\end{eqnarray}
+
+\begin{eqnarray}(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0)\end{eqnarray}
+
+\hypertarget{time-integration-with-implicit-scheme}{%
+\subsubsection{Time integration with implicit
+scheme}\label{time-integration-with-implicit-scheme}}
+
+The prognostic equation for \(q^2\) is discretized as
+
+\begin{eqnarray} \frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right) \end{eqnarray}
+
+where \(n\) and \(n+1\) indicate the current and next time steps
+respectively, and \(\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}\). \(F_q\) at
+\(n+1\) is computed by
+
+\begin{eqnarray} F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n})\end{eqnarray}
