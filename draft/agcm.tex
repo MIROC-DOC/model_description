@@ -2,15 +2,27 @@
 %
 \usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
 \usepackage{amsmath,amssymb}
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
 \usepackage{bm}
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{ascmac}
 \usepackage{longtable}
 \usepackage{booktabs}
 \usepackage{ltablex,booktabs}
-\usepackage[dvipdfm]{hyperref}
+\usepackage[dvipdfm,hidelinks]{hyperref}
 %
-
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+%
 \title{\Huge Description for MIROC6}
 \author{}
 \date{\today}
@@ -79,4 +91,3 @@
 	%
 	%
 \end{document}
-
