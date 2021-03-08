@@ -1,0 +1,55 @@
+\hypertarget{computational-flow-of-dynamical-core}{%
+\subsection{Computational flow of dynamical
+core}\label{computational-flow-of-dynamical-core}}
+
+In this section, calculations of dynamical component based on coding are
+summarized. \texttt{{[}module\ name(file\ name){]}}
+
+\hypertarget{overview-of-dynamical-core}{%
+\subsubsection{Overview of dynamical
+core}\label{overview-of-dynamical-core}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  calculate dynamical term \texttt{{[}DYNTRM(dterm.F){]}}
+
+  1.1 calculate volticity and divergence on wave space and get grid
+  value. \texttt{{[}G2W,\ W2G(xdsphe.F){]}}
+
+  1.2 diagnose stream function and potential velocity
+  \texttt{{[}DYNTRM(dterm.F){]}}
+
+  1.3 diagnose surface pressure advection, its tendency \& vertical flow
+  \texttt{{[}PSDOT(dgdyn.F){]}}
+
+  1.4 calculate factor for hydrostatic eq. \& interporation of
+  temprature on Hybrid coord. \texttt{{[}CFACT(dcfct.F){]}}
+
+  1.5 calculate vartual temprature \texttt{{[}VIRTMD(dvtmp.F){]}}
+
+  1.6 calculate temperature advection \texttt{{[}GRTADV(dgdyn.F){]}}
+
+  1.7 calculate momentum advection \texttt{{[}GRUADV(dgdyn.F){]}}
+
+  1.8 spectral transform of tendency terms \texttt{{[}G2W(xdsphe.F){]}}
+\item
+  Time integration of equation \texttt{DYNSTP(dstep.F)}
+
+  2.1 calculate tracer transport \texttt{{[}TRACEG(dtrcr.F){]}}
+
+  2.2 time integration on wave space \texttt{{[}TINTGR(dintg.F){]}}
+
+  2.3 time integration of tracer terms \texttt{{[}GTRACE(dtrcr.F){]}}
+
+  2.4 time filter \texttt{{[}DADVNC(dadvn.F){]}}
+
+  2.5 get horizontal wind of grid value from wave space
+  \texttt{{[}W2G(xdsphe.F){]}}
+
+  2.6 correction of pressure-level diffusion
+  \texttt{{[}CORDIF(ddifc.F){]}}
+
+  2.7 correction of horizontal friction heating
+  \texttt{{[}CORFRC(ddifc.F){]}}
+\end{enumerate}
