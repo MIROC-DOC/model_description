@@ -1,152 +1,132 @@
-カップラー
+
+Coupler
 ==========
 
--   大気モデルへのフラックス
-    -   大気海洋間のフラックス
-    -   大気陸面間のフラックス
-    -   大気へのフラックスの合計
--   陸面モデルと河川モデル間のフラックス
-    -   河川陸面間のフラックスと河川モデル
-    -   陸面からの水の流出
-    -   河川から湖への水の流入
--   海洋モデルへのフラックス
-    -   海面グリッドでの海洋の境界条件
+-   Fluxes into atmospheric model
+    -   atmosphere/ocean flux
+    -   atmosphere/land flux 
+    -   total flux into atmospheric model
+-   land model/river model flux
+    -   land/river flux and river model
+    -   runoff of land
+    -   runin of lake from river
+-   Flux into ocean model
+    -   boudary condition at sea surface grid
     -   海面グリッドで計算した大気海洋間のフラックスの海洋グリッドへの変換
     -   海洋モデルでのフラックスの再配分
     -   河川から海洋への水の流出
     -   海面グリッドの分割個数と海洋モデルへの解像度
 
-大気モデルへのフラックス
-------------------------
+## Fluxes to Atmospheric Models
 
-### 大気海洋間のフラックス
+### Fluxes between atmosphere and ocean
 
-海面から大気へのフラックス（$FLXO$）は大気モデルの海面グリッドで計算する．
-境界条件としての海面水温，海氷密接度，海氷厚さ，海氷上の積雪深，海氷内部温度，海洋表層流速は海洋モデルからエクスチェンジャーを通して取得する（海氷面温度は海氷内部温度と海氷の厚さおよび海氷上の大気の状態から決定される．現在のところMIROCでは海氷速度はフラックス計算には用いていない）．
-大気の境界条件としての海上での風速，気温，比湿等は大気のグリッドから，線形もしくは3次スプライン補完を用いて，海面のグリッドに変換する．
-海面からのフラックスは海水面と海氷面でそれぞれ別々に計算され，面積の重みで平均し大気に渡される．
-（海氷厚さでカテゴリー分けされた海氷モデルを使用する場合はそれぞれの海氷厚のカテゴリーでフラックスを計算する必要があるかも知れないが，現在のモデルの仕様では平均の海氷厚さでフラックスを計算している．）
-エクスチェンジャーによる大気海洋間のフラックス，境界条件の変換に関しては後で詳しく記述する．
+Fluxes from the sea surface to the atmosphere ($FLXO$) are calculated on the sea surface grid of the atmospheric model.
 
-### 大気陸面間のフラックス
+Boundary conditions such as sea surface temperature, sea ice concentration, sea ice thickness, snow depth over sea ice, sea ice internal temperature, and ocean surface current velocity are obtained from the ocean model through an exchanger (sea ice surface temperature is determined from the sea ice internal temperature, sea ice thickness, and atmospheric conditions over the sea ice. The sea ice velocity is not currently used for flux calculations in MIROC).
+The atmospheric boundary conditions such as wind speed, temperature, and specific humidity at sea are converted from the atmospheric grid to the sea surface grid using linear or cubic spline completion.
+The fluxes from the sea surface are calculated separately for seawater and sea ice, averaged by area weight, and passed to the atmosphere.
+When using a sea ice model categorized by sea ice thickness, it may be necessary to calculate fluxes for each sea ice thickness category, but the current model specification calculates fluxes for the average sea ice thickness.
+The conversion of fluxes and boundary conditions between the atmosphere and ocean by the exchanger will be described in detail later.
 
-陸面から大気へのフラックス（$FLXL$）は陸面グリッドで計算する。
-1つの陸面グリッドは複数の土壌被覆と湖から構成される。
-湖の凍結・融解および積雪は鉛直1次元の氷モデル（0-layer
-model）によって考慮されている。
-ここで陸面グリッドの面積を$SL$とすると湖とそれぞれの土壌被覆の占める面積はそれぞれ
+### Fluxes between atmospheric land surfaces
+
+Fluxes from the land surface to the atmosphere ($FLXL$) are calculated on a land surface grid.
+A land surface grid consists of multiple soil covers and lakes.
+Freezing and thawing of lakes and snow cover are considered by a vertical 1D ice model (0-layer
+model).
+If the area of the land surface grid is $SL$, the area occupied by the lake and each soil cover is respectively
 
 $$ SL^{lake}=SL * LKFRC * FLND $$
 
 $$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND $$
 
-となる。ここで$LKFRC$は陸に占める湖の割合、$k$は土壌被覆の種類、$GRFRC_k$は湖を除く陸に占める土壌被覆$k$の割合で示す。
-陸面からのフラックスはこれらの土壌被覆、湖の上でそれぞれ別々に計算され、面積の重さで平均し、大気に渡される。
+where $LKFRC$ is the percentage of lakes on land, $k$ is the type of soil cover, and $GRFRC_k$ is the percentage of soil cover $k$ on land excluding lakes.
+Fluxes from the land surface are calculated separately over each of these soil covers and lakes, averaged by area weight, and passed to the atmosphere.
 
 $$ FLXL = LKFRC * FLXL^{lake} + (1-LKFRC) * \sum_{k=1}^{km} (GRFRC_k * FLXL_k^{grd}) $$
 
-ここで、$FLXL^{lake}$ は湖面でのフラックス、$FLXL_{k}^{grd}$ は土壌被覆$k$でのフラックス、$km$ は土壌被覆の種類の数。
+where $FLXL^{lake}$ is the flux at the lake surface, $FLXL_{k}^{grd}$ is the flux at soil cover $k$, and $km$ is the number of soil cover types.
 
-### 大気へのフラックスの合計
 
-河川モデルは面積を持たないので、大気へのフラックス（$FLXA$）は、陸面グリッドのフラックス（$FLXL$）・海面グリッドでのフラックス（$FLXO$）の海陸分布の重み付き平均として次式のように求まる。
 
-$$ FLXA = \frac{1}{SA} * [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} * FLND^{land} _ {ij}*FLXL_{ij}) + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv}(SO _ {ij} * (1-FLND^{oc} _ {ij}) * FLXO _ {ij})] $$
+### Total flux to the atmosphere
 
-降水のように大気モデルで計算されたフラックスも$FLXL$と$FLXO$に含まれる。
-このようなフラックスの場合、分割された陸面・海面グリッドのフラックスはすべて対応するグリッドと同じ値になる。
+Since the river model has no area, the flux to the atmosphere ($FLXA$) can be obtained as a weighted average of the sea-land distribution of the fluxes on the land grid ($FLXL$) and at the sea grid ($FLXO$) as follows
 
-陸面モデルと河川モデル間のフラックス
-------------------------------------
+$$ FLXA = \frac{1}{SA} * [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} * FLND^{land} _ {ij}*FLXL_{ij}) + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv }(SO _ {ij} * (1-FLND^{oc} _ {ij}) * FLXO _ {ij})] $$.
 
-### 河川陸面間のフラックスと河川モデル
+Fluxes computed in the atmospheric model, such as precipitation, are also included in $FLXL$ and $FLXO$.
+In the case of such fluxes, all the fluxes in the partitioned land and sea surface grids have the same value as the corresponding grid.
 
-現在のモデルの仕様では、河川陸面間の水のフラックスは、河川から湖への水の流入($RUNIN$)・湖から河川への流出($RUNOFF$)、内陸消失点での陸面への水の流入($RUNIN$)、土壌であふれた水の河川への流出($RUNOFF$)のみを取り扱っている。
-ここで、内陸消失点とは砂漠などで河川の終点が消滅している地点を示している。
-河川モデルでの水収支は氷と水に分けて取り扱っている。
-河川モデルで扱う氷は疑似的な氷河に対応する。
-ここで、融解熱の保存を保証するため、河川モデル内での相変化は考慮していない。
-また、河川の流量は河川グリッドに存在する水量をその面積で割ったものとして定義されている。
-河川モデル内で水と氷は河川流路網データに従って下流に運ばれる。
-MIROC6における河川モデルでは河川の内陸消失点での河川流量は全球海洋に散布することで水収支をとっている．
+## Fluxes between land surface model and river model
 
-### 陸面からの水の流出
+### Fluxes between river land surfaces and the river model
 
-陸面グリッドにおけるそれぞれの土壌被覆において水もしくは雪氷を保持できなくなった場合、各土壌モデルからカップラーを通して河川モデルに水もしくは氷が渡される。
+In the current specification of the model, the fluxes of water between river and land surfaces deal only with the inflow of water from the river to the lake ($RUNIN$), the outflow from the lake to the river ($RUNOFF$), the inflow of water to the land surface at the inland vanishing point ($RUNIN$), and the outflow of water overflowing the soil to the river ($RUNOFF$).
+Here, the inland vanishing point indicates the point where the endpoint of the river disappears, such as in deserts.
+The water balance in the river model is divided into ice and water.
+The ice in the river model corresponds to a pseudo-glacier.
+Here, the phase change in the river model is not considered to guarantee the conservation of melting heat.
+In addition, the flow rate of a river is defined as the amount of water present in the river grid divided by its area.
+Water and ice are transported downstream in the river model according to the river channel network data.
+In the river model in MIROC6, the river discharge at the inland vanishing point of the river is scattered over the global ocean to obtain the water balance.
+
+### Water Runoff from Land Surface
+
+When each soil cover in the land surface grid can no longer hold water or snow and ice, water or ice is passed from each soil model to the river model through the coupler.
 
 $$ RUNOFF^{grd}_{all} = 
     (1-LKFRC) * \sum_{k=1}^{km}(GFLRC_{k} * RUNOFF^{grd}_{k}) $$
 
-各土壌被覆からの流出量の詳細は陸面モデルMATSIROの資料を参照されたい。
-湖モデルにおいては湖の水位または雪氷の厚さ($H$)が一定値($H_c$)を超えた場合、時定数
-$\tau_h$ で河川に流出する。
+The details of the runoff from each soil cover can be found in the documentation of the land surface model MATSIRO.
+In the lake model, when the lake level or snow/ice thickness ($H$) exceeds a constant value ($H_c$), the water flows out to the river at a time constant $\tau_h
 
 $$ RUNOFF^{lake} = LKFRC * \frac{(H-H_c)}{\tau_h},~~~~~~ (H>H_c) $$
 
 $$ RUNOFF^{lake} = 0,~~~~~~~~~~ (H<H_c) $$
 
-陸面からの平均流出量は次のようになる。
+The average runoff from the land surface is as follows.
 
 $$ RUNOFF^{land}_{all} = RUNOFF^{lake} + RUNOFF^{grd}_{all} $$
 
-陸面グリッドの平均流出量で考えた場合上記の式に陸面の占める割合 $FLND$
-を乗じる必要がある。 河川モデルでは $RUNOFF^{land}_{all}$
-を海陸分布の重みを付けて河川グリッドに変換した流出量 $RUNOFF^{riv}$
-を用いて計算を行う。
 
-### 河川から湖への水の流入
+When considering the average runoff volume of the land surface grid, it is necessary to multiply the above equation by the percentage of land surface $FLND$. 
+In the river model, $RUNOFF^{land}_{all}$ is converted to the river grid with the weight of sea-land distribution, and the runoff amount $RUNOFF^{riv}$ is used for calculation.
 
-河川流路の途中に湖が存在する場合、河川流量に応じた水が湖に流入する。
-湖へ流入する水量を計算するため、カップラーを通して、河川グリッドの河川流量
-$GDRIV$ を陸面グリッドにおける河川流量 $GDRIVL$ に変換する。 ここで、
-$GDRIVL$ は、陸面グリッドの面積で規格化した量である。
-陸面グリッドにおいて、湖への河川からの流入量 $RUNINN$ は河川流量
-($GDRIVL$) と時定数 $\tau$ で次式のように定義する。
 
-$$ RUNINN^{lake}=GDRIVL/\tau $$
+### Runin of water from a river to a lake
 
-河川から陸面への流入は内陸消失点を除き、現在の仕様では湖への流入しか考慮していないので、陸面での平均の流入は
+When a lake exists in the middle of a river channel, water flows into the lake according to the river flow rate.
+In order to calculate the amount of water flowing into the lake, the river flow $GDRIV$ in the river grid is converted to the river flow $GDRIVL$ in the land surface grid through the coupler. 
+Here, $GDRIVL$ is the amount normalized by the area of the land surface grid.
+In the land surface grid, the river inflow to the lake, $RUNINN$, is defined by the river flow ($GDRIVL$) and the time constant $\tau$ as follows
 
-$$ RUNINN^{land}=RUNINN^{lake}*LKFRC $$
+$$ RUNINN^{lake}=GDRIVL/\tau $$.
 
-となる。
-陸面グリッドに対して河川グリッドが複数対応している場合、陸面グリッドで平均した陸面への河川水の流入を,
-$RUNOFF$
-と同様に面積の重みのみで河川グリッドに戻すと、河川グリッドに存在する流量以上の水が河川から流出してしまうということが起こり得る。
-そこで河川流量に対する流出量の比を陸面グリッドから河川グリッドへ変換し、それぞれの河川グリッドで河川流出量（陸面への流入量）を見積る。河川流量の陸面グリッドでの流出率は
+Since the current specification only considers inflow from rivers to lakes, except at the inland vanishing point, the average inflow at the land surface is
 
-$$ RINN^{land}=RUNINN^{land}/GDRIVL $$
+$$ RUNINN^{land}=RUNINN^{lake}*LKFRC $$.
 
-となり河川グリッドに変換した流出率を $RINN^{riv}$
-とすると河川グリッドでの流出量（陸面への流入量）は
+When there are multiple river grids corresponding to a land surface grid, if the river water inflow to the land surface averaged over the land surface grid is returned to the river grid using only the area weights as in $RUNOFF$, it is possible that more water will flow out of the river than exists in the river grid.
+Therefore, we convert the ratio of discharge to river flow from the land surface grid to the river grid, and estimate the river discharge (inflow to the land surface) in each river grid. 
+The runoff ratio of the river flow to the land surface grid is
 
-$$ RUNINN^{riv}=RINN^{riv}*GDRIV $$
+$$ RINN^{land}=RUNINN^{land}/GDRIVL $$.
 
-<!--
-### 河川の内陸消失点での陸面への水の流出
-* MIROC6では未実装
-* 章の初めに1行追記で対応
+If the discharge rate converted to the river grid is $RINN^{riv}$, the discharge (inflow to the land surface) in the river grid is
 
-河川モデルの内陸消失点での河川流量 $BUDIND$
-は陸面モデルの湖の水位および土壌の第1層目にそのまま加える。
-氷の場合は湖の氷と土壌被覆の積雪に加える。
-まず、河川グリッドの内陸消失点の $GDRIV$ は $BUDIND$
-としてカップラーを通して陸面グリッドの内陸消失点の流量 $BDINDL$ に変換する。
-河川グリッドの内陸消失点の流量はカップラーにデータを渡した時点で0にする。
-この後で、 $BDINDL$ を陸面モデルに配分する。 ここで $BDINDL$
-は海陸分布の重みを付けていないので、内陸消失点に対応する陸面グリッドに海面の存在を許可しない。
-($BDINDL$ が存在する陸面グリッドは $FLAND=1$ でなければならない)
--->
+$$ RUNINN^{riv}=RINN^{riv}*GDRIV $$.
 
-海洋モデルへのフラックス
-------------------------
+## Fluxes to the ocean model
 
-### 海面グリッドでの海洋の境界条件
+## Boundary conditions for the ocean on a sea level grid
 
-上述の通り、大気海洋間のフラックスは海面グリッドで計算される。ここでは海洋モデルのグリッドから海面グリッドへの変換について記述する。
-海洋モデルから大気の海面グリッドに変換する変数は標準では海面水温($SST$)、海氷密接度($AI$)、海氷厚さ($HI$)、海氷上の積雪深($HSN$)、海氷内部温度($TI$)、海洋表層流速($UO,VO$)である。
-今後、どのグリッドでの変数を扱っているか明らかにするため、海洋モデルのグリッドでの変数には上付きで$OGCM$、海面グリッドでの変数には上付きで$oc$と表記する。また、海洋グリッドでの位置を$LO$、海面グリッドの位置を$LC$とする。
-海面グリッドでの海洋の境界条件は以下のように定義される。
+As mentioned above, the fluxes between the atmosphere and the ocean are calculated on the sea level grid.
+In this section, we describe the conversion from the ocean model grid to the sea surface grid.
+The standard variables to be converted from the ocean model to the atmospheric sea surface grid are sea surface temperature ($SST$), sea ice concentration ($AI$), sea ice thickness ($HI$), snow depth over sea ice ($HSN$), sea ice internal temperature ($TI$), and ocean surface current velocity ($UO,VO$).
+In order to clarify which grid we are dealing with in the future, variables in the ocean model grid will be denoted by superscript $OGCM$ and variables in the sea surface grid by superscript $oc$. In addition, the position in the ocean grid is denoted by $LO$ and the position in the sea surface grid by $LC$.
+The boundary condition of the ocean in the sea level grid is defined as follows.
 
 $$ SST^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[SST^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC) $$
 
@@ -164,26 +144,26 @@ $$ VO^{oc}(LC)=-RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(
 
 $$ SOCNG(LC)= \sum_{N=1}^{IJO(LC)}SOCN(LC,N) $$
 
-ここで、
-$IJO(LC)$：大気ノード内の海面グリッド($LC$)に対応する海洋グリッドの数
+where,
+$IJO(LC)$: Number of ocean grids corresponding to the sea level grid ($LC$) in the atmospheric node.
 
-$IJO2C(LC,N)$：大気ノード内の海面グリッドに対応する海洋グリッドの位置
+$IJO2C(LC,N)$: Location of the ocean grid corresponding to the sea surface grid in the atmospheric node.
 
-$SOCN(LC,N)$：大気ノード内の海面グリッドに対応する海洋グリッドの面積
+$SOCN(LC,N)$: Area of the ocean grid corresponding to the sea surface grid in the atmospheric node.
 
-$RUO(LC)$：ベクトルの回転角の余弦
+$RUO(LC)$: Cosine of the rotation angle of the vector.
 
-$RVO(LC)$：ベクトルの回転角の正弦
+$RVO(LC)$: Sine of the rotation angle of the vector
 
-$SOCNG(LC)$：海面グリッドに海洋が占める面積
+$SOCNG(LC)$: Area of ocean occupied by sea surface grid.
 
-である。 海面グリッドに占める陸面の割合もここで定義され
+The ratio of land surface to the sea level grid is also defined as follow.
 
 $FLND^{oc}=(1-SOCNG)/SO$
 
-となる。 $SO$は海面グリッドの面積。
+where, $SO$ is the area of sea surface grid.
 
-また、海面グリッドに変換する海氷に関する変数は海氷層厚でカテゴリー分けした変数($AIM,HIM,HSM,TIM$)の平均値として以下のように計算されている。
+The variables related to sea ice that are converted to the sea surface grid are calculated as the average of variables categorized by sea ice layer thickness ($AIM,HIM,HSM,TIM$) as follows.
 
 $$ AI^{OGCM} = \sum_{L=1}^{NIC} AIM^{OGCM}(L) $$
 
@@ -193,16 +173,16 @@ $$ HSN^{OGCM} = \sum_{L=1}^{NIC} HSM^{OGCM}(L)*AIM^{OGCM}(L)/AI^{OGCM} $$
 
 $$ TI^{OGCM} = \sum_{L=1}^{NIC} TIM^{OGCM}(L)*AIM^{OGCM}(L)/(AI^{OGCM}*HI^{OGCM}) $$
 
-ここで $NIC$ は海氷カテゴリーの数。
+where, $NIC$ is the number of category of sea ice.
 
-### 海面グリッドで計算した大気海洋間のフラックスの海洋グリッドへの変換
 
-海面グリッドで計算されるフラックスは海水面と海氷面でそれぞれ計算され、大気へのフラックスは
+### Conversion of air-sea fluxes calculated on the sea surface grid to the ocean grid
+
+Fluxes calculated on the sea surface grid are calculated at sea surface and sea ice surface, respectively, and fluxes to the atmosphere are calculated as
 
 $$ FLXO=(1-AI)*FLUXO+AI*FLUXI $$
 
-となる。
-これらのフラックスは大気モデル内のフラックスカップラーで海水面、海氷面積の重みを付けて時間積算した後で、大気海洋の結合時間ステップで海洋グリッドに変換し、海洋モデルに渡される。
+These fluxes are time-integrated by the flux coupler in the atmospheric model with weights for sea surface and sea ice extent, and then converted to the ocean grid by the coupled atmosphere-ocean time step and passed to the ocean model.
 
 $$ FLUXOA^{OGCM}(LO) = ROCN(LO)*\sum_{N=1}^{IJA(LO)} [FLUXOA^{oc}(IJC2O(LO,N))*SATM(LO,N)]/SATMG(LO) $$
 
@@ -216,75 +196,66 @@ $$ FLUXOA^{oc}=(1-AI^{oc})*FLUXO^{oc} $$
 
 $$ FLUXIA^{oc}=AI^{oc}*FLUXI^{oc} $$
 
-ここで
+where,
+$IJA(LO)$：Number of sea level grids in the atmospheric model corresponding to the ocean grid ($LO$)
 
-$IJA(LO)$：海洋グリッド($LO$)に対応する大気モデルの海面グリッドの数
+$IJC2O(LO,N)$：Location of the sea surface grid of the atmospheric model corresponding to the ocean grid
 
-$IJC2O(LO,N)$：海洋グリッドに対応する大気モデルの海面グリッドの位置
+$SATM(LO,N)$：Area of the sea surface grid of the atmospheric model corresponding to the ocean grid
 
-$SATM(LO,N)$：海洋グリッドに対応する大気モデルの海面グリッドの面積
 $SATM(LO,N)=SOCN(LC,L),LC=IJC2O(LO,N),LO=IJO2C(LC,L)$
 
-$S^{OGCM}(LO)$：海洋グリッドの面積
+$S^{OGCM}(LO)$：Area of the ocean grid
 
-である。
-海洋グリッドの面積と対応する海面グリッドの面積の総和は一致するはずであるが、大気モデルと海洋モデルの座標系の違い(大気モデルと海洋モデルの地球の表面積が厳密に一致しない)。
-変換ファイル作成時に、大気モデルのグリッドを微小面積に分割し、その積算から対応する海洋グリッドの面積を見積っていることから厳密には一致しない。
-このため、その比(ROCN)を乗じることによって、大気海洋間のフラックスの収支を合わせている。
-海洋への風応力も同様に海水面上えの風応力(TXO,TYO),海氷面上での風応力(TXI,TYI)としてそれぞれ計算するが、積算時に海水面、海氷面積の重みを乗じない。
+The area of the ocean grid and the sum of the areas of the corresponding ocean grids should match, although the coordinate systems of the atmospheric model and the ocean model are different (the surface areas of the earth in the atmospheric model and the ocean model do not match exactly).
+
+When creating the conversion file, the grid of the atmospheric model is divided into small areas, and the area of the corresponding ocean grid is estimated from the sum of these areas, so they do not match exactly.
+For this reason, the flux balance between the atmosphere and the ocean is adjusted by multiplying by the ratio ($ROCN$).
+The wind stresses to the ocean are also calculated as wind stresses over sea level ($TXO$, $TYO$) and over sea ice ($TXI$, $TYI$), but without multiplying the weights of sea level and sea ice area.
 
 $$ TXO^{OGCM}(LO)=RU(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} + RV(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} $$
 
 $$ TYO^{OGCM}(LO)=-RV(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} + RU(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} $$
 
-ここで
+where,
 
-$RU(LO)$：ベクトルの回転角の余弦
+$RU(LO)$：ベcosine of the rotation angle of the vector
 
-$RV(LO)$：ベクトルの回転角の正弦
+$RV(LO)$：sine of the rotation angle of the vector
 
-である。
 
-### 海洋モデルでのフラックスの再配分
+### Redistribution of fluxes in the ocean model
 
-海洋のグリッドに変換されたフラックスは結合の時間ステップごとに更新される。
-結合の時間ステップは海洋モデルの時間ステップより長いため、海洋モデルの海水面・海氷面積の比はフラックスの計算に用いた値とは異なる値に更新されている。
-このため、正確に熱・水収支をとるためには更新された海水面・海氷面積比に応じたフラックスの分配が必要になる。
-海水面、海氷面でのフラックス
-$FLUXOA$,$FLUXIA$は海洋グリッド平均値である。
-各海氷カテゴリーへのフラックスは現在のところ海氷の厚さに依存せず均等に分配している。
+The fluxes converted to the ocean grid are updated at each time step of the coupling.
+Since the coupling time step is longer than the ocean model time step, the sea level/sea ice area ratio in the ocean model is updated to a different value than the one used to calculate the flux.
+Therefore, in order to obtain an accurate heat and water balance, the fluxes need to be distributed according to the updated sea surface and sea ice area ratios.
+The fluxes $FLUXOA$ and $FLUXIA$ at sea surface and sea ice surface are ocean grid-averaged values.
+Fluxes to each sea ice category are currently distributed evenly independent of sea ice thickness.
 
 $$ FLUXIAM(L)=FLUXIA*AIM(L)$$
 
 $$ FLUXOA=FLUXOA+FLUXIA*[1.0-\sum_{L=1}^{LMAX}AIM(L)]$$
 
-$AIM$ はグリッドに海氷の占める面積の割合（海氷密接度）、$L$ は海氷厚さのカテゴリーの種類、$LMAX$ は厚さカテゴリーの数を示す。
-海氷面が存在しなければ全て海水面にフラックスが入る。
-海氷が結合の時間ステップの途中に消滅した場合、昇華によるフラックスは、海氷面を仮定した熱フラックスと淡水フラックス（海氷の減少量）で分けて考える。
-熱フラックスはそのまま海洋1層目の温度変化に反映させる。
-一方、昇華による淡水フラックスは昇華分の海氷を生成したと仮定し、熱フラックス、淡水フラックスに換算し海洋1層目に与える。
-風応力に関しては、グリッド変換前に海水面・海氷面積の重みを付けていないので、海洋モデル内の各海氷厚さカテゴリーでそれぞれの面積の重みを付けて駆動することになる。
-このため、運動量は保存していない。
+where, $AIM$ denotes the percentage of area covered by sea ice in the grid (sea ice concentration), $L$ denotes the type of sea ice thickness category, and $LMAX$ denotes the number of thickness categories.
+If there is no sea ice surface, all fluxes will be at sea surface.
+If sea ice disappears in the middle of the coupling time step, the flux due to sublimation is divided into the heat flux assuming a sea ice surface and the freshwater flux (sea ice loss).
+The heat flux is directly reflected in the temperature change of the first layer of ocean.
+On the other hand, the freshwater flux due to sublimation is converted into heat flux and freshwater flux and given to the first layer of the ocean, assuming that sea ice is generated by the sublimation.
+As for the wind stress, it is not weighted by sea level and sea ice area before the grid transformation, so it is driven by the respective area weights in each sea ice thickness category in the ocean model.
+For this reason, momentum is not conserved.
 
-### 河川から海洋への水の流出
+### Water runoff from rivers to the ocean
 
-河川モデルの最後で加工から海に流れる水を計算する。
-河川グリッドの河口にきた水をまず、大気の海面グリッドに変換されフラックスカップラーで時間積算される。
-その後、大気の降水データと同様にエクスチェンジャー経由で海洋グリッドに変換し海洋モデルに渡される。
-このとき河川水の温度は降水などと同様に海面水温と同じとして取り扱う。
-このため、厳密には熱は保存しない。
-氷の流出に関しては降雪と同様に処理する。
+At the end of the river model, we calculate the water flowing from the estuary of river to the ocean.
+Water arriving at the estuary of the river grid is first converted to the atmospheric sea surface grid and time integrated in a flux coupler.
+After that, it is converted to the ocean grid via an exchanger and passed to the ocean model in the same way as the atmospheric precipitation data.
+At this point, the temperature of the river water is treated as the same as the sea surface temperature, as is the case with precipitation.
+Therefore, strictly speaking, heat is not conserved.
+Ice runoff is handled in the same way as snowfall.
 
-### 海面グリッドの分割個数と海洋モデルの解像度
 
-海面グリッドは大気のグリッドの緯度経度を分割して作成しているが、分割個数が十分ではなく、海洋モデルのグリッドが大気の海面グリッドと比べて高解像度の場合、エクスチェンジャーを通してフラックスを海洋のグリッドに変換した際に大気のグリッドサイズの構造が残る場合がある。
-また、大気からの降水などのデータは大気グリッドから海面グリッドに変換する際に補間を行わないため、これらのフラックスについては海洋グリッドで大気グリッドサイズの構造が残る。
-また、海面グリッドに変換する際に、3次スプライン補間はなく線形補間を用いた場合は風応力カールのような微分量で大気グリッドサイズの構造が残る場合がある。
+### Number of divisions in the sea surface grid and resolution of the ocean model
 
-Reference
-=========
-
-Suzuki, T., Saito, F., Nishimura, T., and Ogochi, K., 2009: Coupling
-procedures of heat and freshwater fluxes in the MIROC (Model for
-Interdiciplinary Research on Climate) version 4. JAMSTEC Report of
-Research and Development, 9, 1-9 (in Japanese)
+The sea surface grid is created by dividing the latitude and longitude of the atmospheric grid, but if the number of divisions is not sufficient and the ocean model grid has a higher resolution than the atmospheric sea surface grid, the structure of the atmospheric grid size may remain when the flux is converted to the ocean grid through the exchanger. .
+In addition, data such as precipitation from the atmosphere is not interpolated when converting from the atmospheric grid to the ocean grid, so the atmospheric grid structure remains in the ocean grid for these fluxes.
+When linear interpolation is used instead of cubic spline interpolation when converting to the sea surface grid, the atmospheric grid structure may remain for differential quantities such as wind stress curl.
