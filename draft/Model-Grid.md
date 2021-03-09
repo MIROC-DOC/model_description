@@ -1,30 +1,34 @@
 
-## モデルグリッドの基本的な構成
+## Configuration of model grid
 
-MIROCの大気モデルと海洋モデルは独立しており、異なる計算ノードで実行される。
-大気モデルが実行されるノードを大気ノード、海洋モデルが実行されるノードを海洋ノードと呼ぶ。
-大気ノード内ではサブモデルとして陸面モデル、海面モデル、河川モデルが実行される。大気海洋間の情報交換は大気ノードの海面モデルを通じて行われる．
-海洋ノード内の海洋モデルの海面水温、海氷密接度などの情報は、大気ノード内でモデルの境界条件として扱えるように海面モデルのグリッドに変換される。
-一方、大気ノードの海面モデルのグリッドで計算された熱・淡水・運動量フラックスは海洋モデルのグリッドに変換され、海洋ノードに送られる。
-これらの一連のデータ通信、変換はエクスチェンジャーで行われる。
-フラックスカップラーは境界条件や海面モデルや陸面モデルで計算した熱・淡水フラックスなどのデータを格納し必要に応じて、各モデルに振り分けている。
-一般にフラックスカップラーはエクスチェンジャ―の機能も含むがこのドキュメントでは区別して記述する。
+The atmospheric and oceanic models of MIROC are independent and run on different computational nodes.
+The node where the atmospheric model is executed is called the atmospheric node, and the node where the ocean model is executed is called the ocean node.
+In the atmospheric node, the land surface model, sea surface model, and river model are executed as sub-models. 
+Information exchange between the atmosphere and the oceans is performed through the sea surface model in the atmosphere node.
+Information such as sea surface temperature and sea ice concentration of the ocean model in the ocean node is converted to the grid of the sea surface model so that it can be treated as a boundary condition of the model in the atmosphere node.
+On the other hand, the heat, freshwater, and momentum fluxes calculated on the grid of the sea surface model in the atmospheric node are converted to the grid of the ocean model and sent to the ocean node.
+These series of data communication and conversion are done by the exchanger.
+The flux coupler stores data such as boundary conditions, heat and freshwater fluxes calculated by the sea surface model and land surface model, and distributes them to each model as needed.
+In general, the flux coupler also includes the function of the exchanger, but this document describes it separately.
 
-## モデルの水平グリッド
+## Horizontal grid of model
 
-MIROCの水平グリッドは大気ノード内の各モデルにおいて、大気グリッド、陸面グリッド、河川グリッド、海面グリッドとして定義される．
-大気ノード内の海面グリッドは海洋ノード内の海洋モデルの水平グリッドとは異なる。陸面グリッドおよび海面グリッドは大気モデルの水平グリッドを南北方向・東西方向に等分割したものであり、分割個数はそれぞれのグリッドで任意に設定可能である。
-ただし海面グリッドの分割個数は陸面モデルの分割個数で割り切れる必要がある。
-また、河川グリッドは大気グリッドと同じものもしくは等緯度経度間隔グリッドが使用可能である。海洋モデルの水平グリッドは水平一般曲線直交座標を採用しており、大気モデルと同じ座標系を扱う必要はない。
-大気モデルと海洋モデルのデータの交換はあらかじめ大気モデルの海面グリッドと重複する海洋グリッドの場所、数、面積、ベクトルの回転などの情報を用意しておき、エクスチェンジャーにより行われる。
+The horizontal grid of MIROC is defined as the atmospheric grid, the land grid, the river grid, and the sea surface grid for each model in the atmospheric node.
+The sea surface grid in the atmospheric node is different from the horizontal grid of the ocean model in the ocean node. 
+The land surface grid and the sea surface grid are the horizontal grid of the atmospheric model divided equally into north-south and east-west directions.
+The number of divisions can be set arbitrarily for each grid.
+However, the number of divisions for the sea surface grid must be divisible by the number of divisions for the land surface model.
+The river grid can be the same as the atmospheric grid or an equal latitude/longitude interval grid. The horizontal grid of the ocean model uses horizontal general curvilinear Cartesian coordinates, so it is not necessary to use the same coordinate system as the atmospheric model.
+The exchange of data between the atmospheric model and the ocean model is performed by using an exchanger, which is prepared in advance with information on the location, number, area, and vector rotation of the ocean grid that overlaps with the sea surface grid of the atmospheric model.
 
-## 海陸分布の定義
+## Definition of land-sea distribution
 
-MIROC内の海陸分布は海洋モデルによって定義された海陸分布が優先される。
-海洋モデルの1グリッドは陸または海だけで定義されているが、大気モデルの陸面グリッド、海洋面グリッドは海洋モデルの海陸分布と整合がとれるように陸と海の割合が決定される。
+The land-sea distribution in MIROC is prioritized by the land-sea distribution defined by the ocean model.
+While one grid in the ocean model is defined by land or sea only, the land and ocean grids in the atmospheric model are determined in proportion to the land and sea to be consistent with the ocean model's land-sea distribution.
 
-$SA$ を大気グリッドの面積、$SL _ {ij}$ を陸面のグリッドの面積、$SO _ {ij}$ を海面グリッドの面積、$FLND^{atm}$, $FLND^{land} _ {ij}$, $FLND^{oc} _ {ij}$ をそれぞれのグリッドに陸面の占める割合とすると次式を満たす。
+$SA$ : area of the atmospheric grid, $SL _ {ij}$ : area of the land grid, $SO _ {ij}$ : area of the sea surface grid, $FLND^{atm}$, $FLND^{land} _ {ij}$, $FLND^{oc} _ {ij}$ : percentage of land surface is occupied by each grid. Then, following equation is satisfied.
 
 $$ SA*FLND^{atm} = \sum _ {j=1}^{jldiv}\sum _ {i=1}^{ildiv}(SL _ {ij}*FLND^{land} _ {ij}) = \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv}(SO _ {ij}*FLND^{oc } _{ij}) $$
 
-ここで、(ildiv,jldiv)は陸面グリッドの東西・南北分割個数、(iodiv,jodiv)は海面グリッドの東西・南北方向の分割個数である。陸面グリッドにおいて、少しでも陸が存在すると定義された場合、陸面被覆などの境界値が必要となる。
+where, (ildiv,jldiv) is the number of east-west and north-south divisions of the land surface grid, and (iodiv,jodiv) is the number of east-west and north-south divisions of the sea surface grid.
+In the land surface grid, if even a small amount of land is defined to exist, boundary values such as land cover are required.
