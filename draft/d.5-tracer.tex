@@ -4,58 +4,6 @@
 \usepackage{amsmath}
 \usepackage[dvipdfmx]{graphicx}
 \begin{document}
-VARIABLES
-$t$: time
-
-$x$: zonal position                                                        
-
-$y$: meridional position                                                   
-
-$\lambda$: longitude             
-
-$\varphi$: latitude                                                      
-
-$a$: the Earth radius                                                       
-
-$p$: air pressure                                                        
-
-$i$: grid number in x-direction                                            
-
-$j$: grid number in y-direction                                            
-
-$k$: grid number in vertival direction                                      
-
-$q$: the amount of tracers *                                               
-
-$u$: zonal velocity *                                                      
-
-$v$: meridional velocity *                                                  
-
-$F$: the flux of tracers ($uq$) *                                           
-
-$G$: $uq\Delta y \Delta \sigma$ *                                           
-
-$V$: $F$ when $q=1$ *
-
-$\Delta D$: $\Delta D_{j,k}=a \cos \varphi_{j}\Delta \lambda \Delta \varphi_{j} \Delta \sigma$ *                               
-
-$C$: the Courant number *                                             
-
-$I_{C}$: integral fraction of the Courant number *                          
-
-$\hat{C}$ decimal fraction of the Courant number *                         
-
-$P^{S}$: Surface air pressure *                                         
-
-$\sigma$: normalized pressure ($p/p^{S}$) *                               
-
-$\eta$: $sigma$-$p$ hybrid coordinate *                              
-
-$A$: the coefficient for $\eta$ coordinate *                               
-
-$B$: the coefficient for $\eta$ coordinate *                       
-                                                                           
-  *: defined in this article    
 \section{Tracer advection Scheme}
 \subsection{Introduction of tracer advection scheme}
 MIROC6 adopts spectral method based on Spherical harmonic expansion to dynamic core.
@@ -326,7 +274,7 @@ The condition for $V^{\lambda}=0$ is:
     \label{a2}
     \frac{\partial P^{S}_{i,j,k}}{\partial t}\sum_{k}\Delta D_{j,k}=\sum_{k}(C^{x}_{i,j,k}+C^{y}_{i,j,k})
   \end{equation}
-  (The contents so far are in [TRACEG].  The rest of the content is in [GTRACE])
+  (The contents so far are in [TRACEG] of dtrcr.F.  The rest of the content is in [GTRACE] of dtrcr.F.)
 \item $G^{\lambda}, G^{\varphi}, G^{\sigma}$ are calculated by PPM scheme from $V^{\lambda}, V^{\varphi}, V^{\sigma}$.
 
 \item $P^{s}_{i,j,k}q_{i,j,k}$ at time step $t+\Delta t$ is calulated by integration of Eq.(\ref{a1}) by leap frog method from $G^{\lambda}, G^{\varphi}, G^{\sigma}$.
