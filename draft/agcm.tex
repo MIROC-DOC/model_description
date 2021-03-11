@@ -23,10 +23,20 @@
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 %
+\makeatletter
+\newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
+  {1.0\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+  {.1\Cvs \@plus.3\Cdp}%
+  {\reset@font\sffamily\normalsize}
+}
+\makeatother
+\setcounter{secnumdepth}{4}
+%
 \title{\Huge Description for MIROC6}
 \author{}
 \date{\today}
 \pagenumbering{arabic}
+%\usepackage{natbib} %全てのbibを表示
 %
 %
 %
@@ -39,30 +49,26 @@
 	\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
 	% please change the line below as your tex file (without ".tex")
 	% agcm の概念と構造
-	% \include{a-intro} % 渡部先生が書く
+	\include{a-intro} % 渡部先生が書く
 	% 基本設定
-	\include{a-setup}
+	\include{a.0-setup}
 	% Computational flow of dynamical core
-	\include{d-routine}
-	% 基本方程式
-	\include{d-basic}
-	% 力学:鉛直離散化
-	\include{d-vert}
-	% 力学:水平離散化
-	\include{d-hori}
-	% 力学:時間離散化
-	\include{d-time}
-	% トレーサー
-	\include{d-tracer}
+	\include{d.1-basic}
+	\include{d.2-vert}
+	\include{d.3-hori}
+	\include{d.4-time}
+	\include{d.5-tracer}
+	\include{d.6-summ}
+	\include{d.7-routine}
 	% カプラー
-	\include{AO-couple}
+	\include{AO-coupler}
 	\include{Model-Grid}
 	% 力学:拡散項等
 	% \include{d-diff} % 元々存在しない？
 	% 力学:まとめ
 	\include{d-summ}
 	% 物理過程:イントロ
-	%\include{p-intro} % 渡部先生が書く
+	\include{p-intro} % 渡部先生が書く
 	% 物理過程:cumulus scheme
 	\include{p-cum}
 	% 物理過程:shallow convection scheme
@@ -86,8 +92,13 @@
 	% 物理過程:対流調節
 	% \include{p-adj} % 廃止
 	% 参考文献
-	% \include{referenc} % まだ作っていない
-	\include{d-ref}
+	%\include{d-ref}
+	\include{referenc}
+
+
+%	\bibliographystyle{jplain}
+%	\bibliography{referenc}
+
 	%
 	%
 \end{document}
