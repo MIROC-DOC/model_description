@@ -1,10 +1,10 @@
-
+<!--
 Coupler
 ==========
 
 -   Fluxes into atmospheric model
     -   atmosphere/ocean flux
-    -   atmosphere/land flux 
+    -   atmosphere/land flux
     -   total flux into atmospheric model
 -   land model/river model flux
     -   land/river flux and river model
@@ -16,7 +16,7 @@ Coupler
     -   海洋モデルでのフラックスの再配分
     -   河川から海洋への水の流出
     -   海面グリッドの分割個数と海洋モデルへの解像度
-
+-->
 ## Fluxes to Atmospheric Models
 
 ### Fluxes between atmosphere and ocean
@@ -76,11 +76,11 @@ In the river model in MIROC6, the river discharge at the inland vanishing point 
 
 When each soil cover in the land surface grid can no longer hold water or snow and ice, water or ice is passed from each soil model to the river model through the coupler.
 
-$$ RUNOFF^{grd}_{all} = 
+$$ RUNOFF^{grd}_{all} =
     (1-LKFRC) * \sum_{k=1}^{km}(GFLRC_{k} * RUNOFF^{grd}_{k}) $$
 
 The details of the runoff from each soil cover can be found in the documentation of the land surface model MATSIRO.
-In the lake model, when the lake level or snow/ice thickness ($H$) exceeds a constant value ($H_c$), the water flows out to the river at a time constant $\tau_h
+In the lake model, when the lake level or snow/ice thickness ($H$) exceeds a constant value ($H_c$), the water flows out to the river at a time constant $\tau_h$
 
 $$ RUNOFF^{lake} = LKFRC * \frac{(H-H_c)}{\tau_h},~~~~~~ (H>H_c) $$
 
@@ -91,14 +91,14 @@ The average runoff from the land surface is as follows.
 $$ RUNOFF^{land}_{all} = RUNOFF^{lake} + RUNOFF^{grd}_{all} $$
 
 
-When considering the average runoff volume of the land surface grid, it is necessary to multiply the above equation by the percentage of land surface $FLND$. 
+When considering the average runoff volume of the land surface grid, it is necessary to multiply the above equation by the percentage of land surface $FLND$.
 In the river model, $RUNOFF^{land}_{all}$ is converted to the river grid with the weight of sea-land distribution, and the runoff amount $RUNOFF^{riv}$ is used for calculation.
 
 
 ### Runin of water from a river to a lake
 
 When a lake exists in the middle of a river channel, water flows into the lake according to the river flow rate.
-In order to calculate the amount of water flowing into the lake, the river flow $GDRIV$ in the river grid is converted to the river flow $GDRIVL$ in the land surface grid through the coupler. 
+In order to calculate the amount of water flowing into the lake, the river flow $GDRIV$ in the river grid is converted to the river flow $GDRIVL$ in the land surface grid through the coupler.
 Here, $GDRIVL$ is the amount normalized by the area of the land surface grid.
 In the land surface grid, the river inflow to the lake, $RUNINN$, is defined by the river flow ($GDRIVL$) and the time constant $\tau$ as follows
 
@@ -109,7 +109,7 @@ Since the current specification only considers inflow from rivers to lakes, exce
 $$ RUNINN^{land}=RUNINN^{lake}*LKFRC $$.
 
 When there are multiple river grids corresponding to a land surface grid, if the river water inflow to the land surface averaged over the land surface grid is returned to the river grid using only the area weights as in $RUNOFF$, it is possible that more water will flow out of the river than exists in the river grid.
-Therefore, we convert the ratio of discharge to river flow from the land surface grid to the river grid, and estimate the river discharge (inflow to the land surface) in each river grid. 
+Therefore, we convert the ratio of discharge to river flow from the land surface grid to the river grid, and estimate the river discharge (inflow to the land surface) in each river grid.
 The runoff ratio of the river flow to the land surface grid is
 
 $$ RINN^{land}=RUNINN^{land}/GDRIVL $$.
