@@ -1,6 +1,6 @@
 ## Surface Flux Scheme (Sea Surface)
 
-Until [CCSR/NIES AGCM (1997)](https://github.com/MIROC-DOC/model_description/blob/master/org/AGCM5.6-Tech.pdf), both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes became independent as MATSIRO. However, since MIROC3 ([Hasumi and Emori, 2004](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/miroc_description.pdf)), land surface processes have been separated into MATSIRO ([Takata et al., 2003](https://www.sciencedirect.com/science/article/pii/S0921818103000304); [Nitta et al., 2014](https://journals.ametsoc.org/doi/pdf/10.1175/JCLI-D-13-00310.1)). In `SUBROUTINE:[SURFCE]` in pgsfc.F, `ENTRY:[OCNFLX]` (in `SUBROUTINE:[OCEAN]` of pgocn.F) is called for the sea surface, and `ENTRY:[LNDFLX]` (in `SUBROUTINE:[MATSIRO]` of matdrv.F) is called for the land surface, respectively. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes in MIROC6 ([Tatebe et al., 2019](https://www.geosci-model-dev.net/12/2727/2019/gmd-12-2727-2019.pdf))). For the land surface processes, please refer to [Description of ILS](https://github.com/integrated-land-simulator/model_description).
+Until CCSR/NIES AGCM (1997), both land surface and sea surface were treated as one of the atmospheric physical processes, but after MIROC3 (Hasumi and Emori, 2004), land surface processes became independent as MATSIRO. However, since MIROC3 (Hasumi and Emori, 2004), land surface processes have been separated into MATSIRO (Takata et al., 2003; Nitta et al., 2014). In `SUBROUTINE:[SURFCE]` in pgsfc.F, `ENTRY:[OCNFLX]` (in `SUBROUTINE:[OCEAN]` of pgocn.F) is called for the sea surface, and `ENTRY:[LNDFLX]` (in `SUBROUTINE:[MATSIRO]` of matdrv.F) is called for the land surface, respectively. This chapter describes sea surface processes, which are still treated within the framework of atmospheric physical processes in MIROC6 (Tatebe et al., 2019)). For the land surface processes, please refer to Description of ILS (https://github.com/integrated-land-simulator/model_description).
 
 <!--
 - Inputs
@@ -105,7 +105,7 @@ $$
 The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/m^2]}$.
 
 
-### Boundary Conditions `[OCNBCS]`
+### Boundary Conditions
 
 <!--
 - Output variables
@@ -230,7 +230,7 @@ $$
 
 where $k_{ocn}$ is heat flux in the sea temperature layer, and $k_{ocn}$ is heat flux in the sea temperature layer, respectively.
 
-#### Albedo for Visible `[SEAALB]`
+#### Albedo for Visible
 
 In `SUBROUTINE [SEAALB]` (of pgocn.F), albedo for the visible bands are calculated supposing ice-free conditions.
 
@@ -270,9 +270,9 @@ $$
 	\alpha_{L(2)} = 0.06
 $$
 
-#### Roughnesses `[SEAZ0F]`
+#### Roughnesses
 
-In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated, according to [Miller et al. (1992)](https://journals.ametsoc.org/view/journals/clim/5/5/1520-0442_1992_005_0418_tsotem_2_0_co_2.xml).
+In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated, according to Miller et al. (1992).
 
 <!--
 - Outputs
@@ -316,9 +316,9 @@ $$
 where, $\nu = 1.5 \times 10^{-5} \mathrm{[m^2/s]}$ is the kinetic viscosity of the atmosphere, $z_{0,M},z_{0,H}$ and $z_{0,E}$ are surface roughness for momentum, heat, and vapor, $z_{0,M_0},z_{0,H_0}$ and $z_{0,E_0}$ are base, and rough factor ($z_{0,M_R},z_{0,M_R}$ and $z_{0,E_R}$), and smooth factor ($z_{0,M_S},z_{0,M_S}$ and $z_{0,E_S}$), respectively.
 
 
-### Calculation of Momentum, Heat and Water Vapor Fluxes `[SFCFLX]`
+### Calculation of Momentum, Heat and Water Vapor Fluxes
 
-Treatment of sea surface flux is basically the same with [CCSR/NIES AGCM (1997)](https://github.com/MIROC-DOC/model_description/blob/master/org/AGCM5.6-Tech.pdf). The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are horizontal wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_a$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
+Treatment of sea surface flux is basically the same with CCSR/NIES AGCM (1997). The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input are horizontal wind speed ($u_a, v_a$),  temperature ($T_a$), and specific humidity ($q_a$) from the 1st layer of the atmosphere. The output are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
 
 Surface fluxes ($F_u, F_v, F_\theta, F_q$) are expressed using bulk coefficients for momentum, head and vapor ($C_M, C_H, C_E$) as follows
 
@@ -369,7 +369,7 @@ $$
 	F_q^P = \rho C_E |\mathbf{V_a}| \left( q^{\ast}(T_s) - q_a \right)
 $$
 
-#### Bulk factors `[BLKCOF]`
+#### Bulk factors
 
 In `SUBROUTINE:[BLKCOF]` (of psfcl.F), the bulk factors are calculated. The bulk Richardson number ($R_{iB}$), which is used as a benchmark for the stability between the atmospheric surfaces, is
 
@@ -388,7 +388,7 @@ $$
 f_T = (\theta_a - \theta(z_0))/(\theta_a - \theta_s)
 $$
 
-The bulk coefficients of $C_M,C_H,C_E$ are calculated according to [Louis (1979)](https://link.springer.com/content/pdf/10.1007/BF00117978.pdf) and [Louis <span>*et al.*</span>(1982)](https://www.ecmwf.int/en/elibrary/10845-short-history-pbl-parameterization-ecmwf). However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$, then corrected.
+The bulk coefficients of $C_M,C_H,C_E$ are calculated according to Louis (1979) and Louis et al. (1982) However, corrections are made to take into account the difference between momentum and heat roughness. If the roughnesses for momentum, heat, and water vapor are set to $z_{0,M}, z_{0,H}, z_{0,E}$, respectively, the results are generally $z_{0,M} > z_{0,H}, z_{0,E}$, but the bulk coefficients for heat and water vapor for the fluxes from the height of $z_{0,M}$ are also set to $\widetilde{C_H}$, $\widetilde{C_E}$, then corrected.
 
 $$
 	C_M = \left\{
@@ -465,7 +465,7 @@ but the method of calculation is omitted. The coefficients of Louis factors are 
 is a correction factor, which is approximated from the uncorrected bulk Richardson number, but we abbreviate the calculation here.
 
 
-### Radiation Flux Calculation `[RADSFC]`
+### Radiation Flux Calculation
 
 In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo ($\alpha_{(d,b)}$), $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation ($SW^\downarrow$) and upward shortwave radiation ($SW^\uparrow$) incident on the earth's surface, the direct and scattered light together are
 
@@ -474,7 +474,7 @@ $$
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
-### Solving Heat Balance `[OCNSLV]`
+### Solving Heat Balance
 
 <!--
 The comments for some variables say "soil", but this is because the program was adapted from a land surface scheme, and has no particular meaning.
@@ -518,7 +518,7 @@ The comments for some variables say "soil", but this is because the program was 
 | the Stefan-Boltzmann constant                         | $\sigma$     | STB      | --        | --   |
 -->
 
-In `SUBROUTINE:[OCNSLV]` (of pgocn.F), heat balance at the sea surface is solved. Downward radiative fluxes are not directly dependent on the condition of the sea surface, and their observed values are simply specified to drive the model ([Hasumi, 2015](https://ccsr.aori.u-tokyo.ac.jp/~hasumi/COCO/coco4.pdf)). Shortwave emission from the sea surface is negligible, so the upward part of the shortwave radiative flux is accounted for solely by reflection of the incoming downward flux. Let $\alpha _S$ be the sea surface albedo for shortwave radiation. The upward shortwave radiative flux is represented by
+In `SUBROUTINE:[OCNSLV]` (of pgocn.F), heat balance at the sea surface is solved. Downward radiative fluxes are not directly dependent on the condition of the sea surface, and their observed values are simply specified to drive the model (Hasumi, 2015). Shortwave emission from the sea surface is negligible, so the upward part of the shortwave radiative flux is accounted for solely by reflection of the incoming downward flux. Let $\alpha _S$ be the sea surface albedo for shortwave radiation. The upward shortwave radiative flux is represented by
 
 $$
 	SW^\uparrow = - \alpha_S SW^\downarrow
