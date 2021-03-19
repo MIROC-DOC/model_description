@@ -1,5 +1,3 @@
-# Model Overview.
-
 ## Characteristics of CCSR/NIES AGCM
 
 AGCM5.4 is a three-dimensional global general circulation model developed by the Center for Climate System Research (CCSR) of the University of Tokyo and the National Institute for Environmental Studies (NIES). The features of the model are described below.
