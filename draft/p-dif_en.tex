@@ -247,7 +247,7 @@ the region below \(h=\left[(F_H H_{PBL})^2+H_0^2\right)^{1/2}\) is the
 one where the PBL-derived turbulence is dominant. Here, we adopted
 \(F_H=1.5\) and \(H_0=500\)m.
 
-Below the altitude \(h\), equation (\href{p-dif.1}{1}) is used as the
+Below the altitude \(h\), equation (\ref{p-dif.1}) is used as the
 master length scale, but the vertical range of the integration in
 \(L_T\) is modified as
 
@@ -327,8 +327,8 @@ as
 
 \begin{eqnarray} \varepsilon = \frac{q^3}{B_1 L} \label{p-dif.5}. \end{eqnarray}
 
-From (\href{p-dif.2}{2}), (\href{p-dif.3}{3}), (\href{p-dif.4}{4}), and
-(\href{p-dif.5}{5}), \(q_2^2\) is calculated by
+From (\ref{p-dif.2}), (\ref{p-dif.3}), (\ref{p-dif.4}), and
+(\ref{p-dif.5}), \(q_2^2\) is calculated by
 
 \begin{eqnarray}{q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}.\end{eqnarray}
 
@@ -496,7 +496,7 @@ In the Level 2.5 of the MYNN scheme,
 \varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \label{p-dif.13}.
 \end{eqnarray}
 
-from (\href{p-dif.6}{6})-(\href{p-dif.13}{13}),
+from (\ref{p-dif.6})-(\ref{p-dif.13}),
 \(\langle {\theta_l}^2 \rangle\), \(\langle {q_w}^2 \rangle\),
 \(\langle \theta_l q_w \rangle\) can be diagnosed as
 
@@ -540,7 +540,7 @@ written as
 
 \begin{eqnarray} P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle. \end{eqnarray}
 
-Using (\href{p-dif.14}{14}), (\href{p-dif.17}{17}) and the definition of
+Using (\ref{p-dif.14}), (\ref{p-dif.17}) and the definition of
 the Obukhov length, it is rewritten as
 
 \begin{eqnarray} P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right], \end{eqnarray}
@@ -551,9 +551,9 @@ layer.
 Assuming that the effect of cloud particles are negligible in the
 surface layer, \(\langle {\theta_l}^2\rangle\),
 \(\langle {q_w}^2\rangle\), \(\langle \theta_lq_w\rangle\) is calculated
-diagnostically from (\href{p-dif.6}{6})-(\href{p-dif.8}{8}),
-(\href{p-dif.11}{11})-(\href{p-dif.13}{13}), (\href{p-dif.15}{15}),
-(\href{p-dif.16}{16}), (\href{p-dif.18}{18}), and (\href{p-dif.19}{19})
+diagnostically from (\ref{p-dif.6})-(\ref{p-dif.8}),
+(\ref{p-dif.11})-(\ref{p-dif.13}), (\ref{p-dif.15}),
+(\ref{p-dif.16}), (\ref{p-dif.18}), and (\ref{p-dif.19})
 as
 
 \begin{eqnarray}\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L}, \end{eqnarray}
@@ -607,7 +607,7 @@ and the advection term is omitted. \(F_q\) at \(n+1\) is computed by
 With a definition of
 \begin{eqnarray}\mu_k = \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}},\end{eqnarray}
 
-(\href{p-dif.20}{20}) and (\href{p-dif.21}{21}) lead to
+(\ref{p-dif.20}) and (\ref{p-dif.21}) lead to
 
 \begin{eqnarray}
  X_{1,k}\,\mu_{k+1}+X_{2,k}\,\mu_k+X_{3,k}\,\mu_{k-1} = Y_k, \label{p-dif.22}
@@ -622,7 +622,7 @@ where
  Y_k &= F_{q,k-1/2,n} - F_{q,k+1/2,n} + 2\rho_k \Delta z_k \left( P_{s,k,n} + P_{b,k,n} - \frac{q^3_{k,n}}{B_1 L} \right).
 \end{align}
 
-(\href{p-dif.22}{22}) makes the following matrix equation,
+(\ref{p-dif.22}) makes the following matrix equation,
 
 \begin{eqnarray}
 \left(\begin{array}{lllllll}
@@ -657,7 +657,7 @@ where
 \end{eqnarray}
 
 where the subscript \(K\) denote the index for the top model layer.
-(\href{p-dif.23}{23}) is solved for \(\mu_k\) using the LU
+(\ref{p-dif.23}) is solved for \(\mu_k\) using the LU
 decomposition.
 
 \hypertarget{tendencies-of-other-prognostic-variables}{%
@@ -673,7 +673,7 @@ where
 
 \begin{eqnarray} F_{\psi,k-1/2,n+1} = F_{\psi,k-1/2,n} + \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k}(\psi_{k,n+1}-\psi_{k,n}) +  \frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}}(\psi_{k-1,n+1}-\psi_{k-1,n}). \end{eqnarray}
 
-These equations lead to (\href{p-dif.23}{23}) again and computed with
+These equations lead to (\ref{p-dif.23}) again and computed with
 the LU decomposition, but \(\mu_k\), \(X_{1,k}\), \(X_{2,k}\),
 \(X_{3,k}\) and \(Y_k\) are redefined as
 
