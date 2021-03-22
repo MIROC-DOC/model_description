@@ -1,5 +1,7 @@
 ## Solving the diffuse balance equation for atmospheric and surface systems
 
+**NOTE: the descriptions in this section are outdated.**
+
 ### Basic Solutions.
 
 Some of the terms in the radiation, vertical diffusion, and boundary layer and surface processes are treated as implicit terms, and the time integration is performed at the end of the calculation. As the time-varying term for the vector quantity <span>q</span>, we divide it into two terms, ${\mathcal A}$ for the Euler method and ${\mathcal B}$ for the implicit method.
