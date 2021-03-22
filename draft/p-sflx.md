@@ -1,5 +1,7 @@
 ## Surface Flux.
 
+**NOTE: the descriptions in this section are outdated.**
+
 ### Overview of the Surface Flux Scheme
 
 The surface flux scheme evaluates the physical quantity fluxes between the atmospheric surfaces due to turbulent transport in the boundary layer. The main input data are wind speed ($u, v$), temperature ($T$), and specific humidity ($q$), and the output data are the vertical fluxes and the differential values (for obtaining implicit solutions) of momentum, heat, and water vapor.
