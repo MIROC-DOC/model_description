@@ -36,7 +36,7 @@
 %\usepackage{natbib} %全てのbibを表示
 %
 \begin{document}
-  \begin{titlepage} % title page 
+  \begin{titlepage} % title page
     \topskip0pt
     \vspace*{\fill}
       \begin{center}
@@ -59,7 +59,8 @@
 	\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
 	% please change the line below as your tex file (without ".tex")
 	% agcm の概念と構造
-	\include{a-intro} % 渡部先生が書く
+  \include{summary}
+  \include{a-intro}
 	% 基本設定
 	\include{a.0-setup}
 	% Computational flow of dynamical core
@@ -73,12 +74,10 @@
 	% カプラー
 	\include{AO-coupler}
 	\include{Model-Grid}
-	% 力学:拡散項等
-	% \include{d-diff} % 元々存在しない？
 	% 力学:まとめ
 	\include{d-summ}
 	% 物理過程:イントロ
-	\include{p-intro} % 渡部先生が書く
+	\include{p-intro}
 	% 物理過程:cumulus scheme
 	\include{p-cum}
 	% 物理過程:shallow convection scheme
@@ -92,15 +91,9 @@
 	% 物理過程:拡散フラックス
 	\include{p-dif_en}
 	% 物理過程:地表フラックス
-	\include{p-sflx} % 廃止？
-	% 物理過程:地表モデル
 	\include{p-sfc}
-	% 物理過程:implicit 解法
-	\include{p-solv} % 担当者なし
 	% 物理過程:重力波抵抗
 	\include{p-grav} % 担当者なし
-	% 物理過程:対流調節
-	% \include{p-adj} % 廃止
 	% 参考文献
 	%\include{d-ref}
 	\include{referenc}
