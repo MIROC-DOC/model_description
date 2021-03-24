@@ -32,17 +32,27 @@
 \makeatother
 \setcounter{secnumdepth}{4}
 %
-\title{\Huge Description for MIROC6}
-\author{}
-\date{\today}
 \pagenumbering{arabic}
 %\usepackage{natbib} %全てのbibを表示
 %
-%
-%
 \begin{document}
+  \begin{titlepage} % title page 
+    \topskip0pt
+    \vspace*{\fill}
+      \begin{center}
+        {\Huge Description for MIROC6}\\
+        \vspace{100mm}
+        \input{authors}\\
+        \vspace{30mm}
+        {March 31, 2021}
+      \end{center}
+    \vspace*{\fill}
+  \end{titlepage}
 %
-	\maketitle
+  \clearpage
+  \include{acknowledgment}
+  \clearpage
+  \include{history}
 	\tableofcontents
 	\clearpage
 	%
