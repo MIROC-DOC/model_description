@@ -1,4 +1,4 @@
-## Gravitational wave resistance
+## Gravity Wave Drag
 
 **NOTE: the descriptions in this section are outdated.**
 
