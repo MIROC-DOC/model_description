@@ -5,8 +5,8 @@
 次のファイルはダミー（セクション名だけ)
 [Introduction](draft/a-intro.md)
 -->
-- 1.1 [Characteristics of CCSR/NIES AGCM (CCSR/NIES AGCMマニュアルより未改変)](org/md_en/summary.md)
-- 1.2 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](org/md_en/a-intro.md)
+- 1.1 [Characteristics of CCSR/NIES AGCM (CCSR/NIES AGCMマニュアルより未改変)](draft/summary.md)
+- 1.2 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/a-intro.md)
 - 1.3 [Basic Settings](draft/a.0-setup.md)
 
 2. Dynamics 力学過程
@@ -28,16 +28,15 @@
 - 2.14 [Definition of land-sea distribution](draft/Definition-of-land-sea-distribution)
 
 3. Physics 物理過程
-- 3.0 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](org/md_en/p-intro.md)
-- 3.1 [Cumulus scheme (積雲対流)](draft/p-cum.md)
-- 3.2 [Shallow convection scheme (浅い対流](draft/shallowconv_en.md)
-- 3.3 [Large scale condensation (大規模凝結)](draft/Hotta_pmlsc.md)
-- 3.4 [Cloud Microphysics (雲微物理)](draft/Hotta_pcldphys.md)
-- 3.5 [Radiation scheme (放射)](draft/p-rad.md)
-- 3.6 [Turbulance scheme (乱流)](draft/p-dif_en.md)
-- 3.7 [Surface flux scheme (地表フラックス)](draft/p-sfc.md) *陸面(地表)過程については、[ILS-DOC](https://github.com/integrated-land-simulator/model_description)を参照のこと*
-- 3.8 [Solving the diffuse balance equation for atmospheric and surface systems (implicit解法)(CCSR/NIES AGCMマニュアルより未改変)](org/md_en/p-intro.md)
-- 3.9 [Gravitational wave resistance (重力波抵抗)(CCSR/NIES AGCMマニュアルより未改変)](org/md_en/p-grav.md)
+- 3.1 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/p-intro.md)
+- 3.2 [Cumulus scheme (積雲対流)](draft/p-cum.md)
+- 3.3 [Shallow convection scheme (浅い対流](draft/shallowconv_en.md)
+- 3.4 [Large scale condensation (大規模凝結)](draft/Hotta_pmlsc.md)
+- 3.5 [Cloud Microphysics (雲微物理)](draft/Hotta_pcldphys.md)
+- 3.6 [Radiation scheme (放射)](draft/p-rad.md)
+- 3.7 [Turbulance scheme (乱流)](draft/p-dif_en.md)
+- 3.8 [Surface flux scheme (地表フラックス)](draft/p-sfc.md) *陸面(地表)過程については、[ILS-DOC](https://github.com/integrated-land-simulator/model_description)を参照のこと*
+- 3.9 [Gravity wave drug (重力波抵抗)(CCSR/NIES AGCMマニュアルより未改変)](draft/p-grav.md)
 
 4. [References 引用文献](https://paperpile.com/shared/naaVDv)
 -
