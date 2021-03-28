@@ -2,25 +2,21 @@
 
 ## Overview of Physical Processes.
 
-**NOTE: the descriptions in this section are outdated.**
-
 As a physical process, we can consider the following
 
- - cumulus convection process
-
- - large-scale condensation process
-
- - radiation process
-
- - vertical diffusion process
-
- - surface flux
-
- - Surface and underground processes
-
- - gravitational wave resistance
+- Cumulus convection
+- Shallow convection
+- Large scale condensation
+- Cloud microphysics
+- Radiation
+- Turbulence
+- Surface fluxes
+- Gravity wave drag
 
 We compute the time-varying terms $F_x, F_y, Q, M, S$ for the forecast variables from these processes, and perform time integration. In order to evaluate the atmospheric and surface fluxes, the ground surface sub-model is used. The ground surface sub-model uses such predictors as the ground temperature ($T_g$), ground moisture ($W_g$), and snow cover ($W_y$) as predictor variables.
+
+
+**NOTE: the descriptions in this section are outdated.**
 
 ### Fundamental Equations.
 
@@ -47,7 +43,6 @@ $$
                      + \frac{\partial{F{R}}}{\partial {\sigma}}
 $$
 
-
 $T$: Temperature; $c_p$: Constant Pressure Specific Heat; $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Temperature Level; $F\theta$: Vertical Sensible Heat Flux; $FR$: Vertical Radiation Flux.
 
 Here, with $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, this is,
@@ -67,53 +62,6 @@ $$
 $$
 
 $q$: Specific Humidity; $F{q}$: Vertical Water Vapor Flux.
-
-### Fundamental Equations in the Ground
-
-Consider the $z$ coordinates with the downward direction positive. As expected, the vertical fluxes are all positive in the upward direction.
-
-4. thermal formula
-
-$$
-  \frac{\partial{C_g G}}{\partial {t}} = \frac{\partial{Fg}}{\partial {z}} + Sg
-$$
-
-
-$G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat; $F{g}$: Vertical Heat Flux; $Sg$; Heating Term (due to phase change etc.).
-
-5. formula for ground moisture
-
-$$
-  C_w \frac{\partial{w}}{\partial {t}} = \frac{\partial{Fw}}{\partial {z}} + Sw
-$$
-
-$w$: Ground moisture; $F{w}$: Vertical water flux; $Sw$; Water sources (e.g., runoff).
-
-6. energy balance equation
-
- At the surface, an energy balance is established.
-
-$$
-    F{\theta} + L F{q} + F{R} - F{g} = \Delta s \; \; (\sigma=1, z=0)
-$$
-
-$L$: Latent heat of evaporation; $\Delta s$: Surface energy balance (associated with phase change, etc.).
-
-7. surface water balance
-
-$$
-  Pg + Fw - Rg = 0
-$$
-
-$Pg$: Precipitation; $Rg$: Surface Runoff.
-
-8. the snow balance
-
-$$
-  \frac{\partial{Wy}}{\partial {t}} = Py - Fy - My
-$$
-
-$Wy$: Snow cover (kg/m$^2$); $Py$: Snowfall; $Fy$: Sublimation; $My$: Snowmelt.
 
 ### Time integration of physical processes.
 
