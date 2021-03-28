@@ -5,25 +5,26 @@
 \subsection{Overview of Physical
 Processes.}\label{overview-of-physical-processes.}}
 
-\textbf{NOTE: the descriptions in this section are outdated.}
-
 As a physical process, we can consider the following
 
 \begin{itemize}
+\tightlist
 \item
-  cumulus convection process
+  Cumulus convection
 \item
-  large-scale condensation process
+  Shallow convection
 \item
-  radiation process
+  Large scale condensation
 \item
-  vertical diffusion process
+  Cloud microphysics
 \item
-  surface flux
+  Radiation
 \item
-  Surface and underground processes
+  Turbulence
 \item
-  gravitational wave resistance
+  Surface fluxes
+\item
+  Gravity wave drag
 \end{itemize}
 
 We compute the time-varying terms \(F_x, F_y, Q, M, S\) for the forecast
@@ -32,6 +33,8 @@ to evaluate the atmospheric and surface fluxes, the ground surface
 sub-model is used. The ground surface sub-model uses such predictors as
 the ground temperature (\(T_g\)), ground moisture (\(W_g\)), and snow
 cover (\(W_y\)) as predictor variables.
+
+\textbf{NOTE: the descriptions in this section are outdated.}
 
 \hypertarget{fundamental-equations.}{%
 \subsubsection{Fundamental Equations.}\label{fundamental-equations.}}
@@ -58,9 +61,7 @@ be positive for the upward direction.
   \rho \frac{d {v}}{d {t}} = \frac{\partial{Fv}}{\partial {\sigma}}
 \end{eqnarray}
 
-\begin{verbatim}
- $u, v$: East-West, North-South Wind; $Fu, Fv$: Their Vertical Flux.
-\end{verbatim}
+\(u, v\): East-West, North-South Wind; \(Fu, Fv\): Their Vertical Flux.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -75,9 +76,10 @@ be positive for the upward direction.
                      + \frac{\partial{F{R}}}{\partial {\sigma}}
 \end{eqnarray}
 
-\begin{verbatim}
- $T$: Temperature; $c_p$: Constant Pressure Specific Heat; $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Temperature Level; $F\theta$: Vertical Sensible Heat Flux; $FR$: Vertical Radiation Flux.
-\end{verbatim}
+\(T\): Temperature; \(c_p\): Constant Pressure Specific Heat;
+\(\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}\): Temperature Level;
+\(F\theta\): Vertical Sensible Heat Flux; \(FR\): Vertical Radiation
+Flux.
 
 Here, with \(\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}\), this is,
 
@@ -102,96 +104,7 @@ a risk of confusion, \(\theta'\) should be written as \(\theta\) below.
   \rho \frac{d {q}}{d {t}} = \frac{\partial{Fq}}{\partial {\sigma}}
 \end{eqnarray}
 
-\begin{verbatim}
- $q$: Specific Humidity; $F{q}$: Vertical Water Vapor Flux.
-
- ### Fundamental Equations in the Ground
-\end{verbatim}
-
-Consider the \(z\) coordinates with the downward direction positive. As
-expected, the vertical fluxes are all positive in the upward direction.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{3}
-\tightlist
-\item
-  thermal formula
-\end{enumerate}
-
-\begin{eqnarray}
-  \frac{\partial{C_g G}}{\partial {t}} = \frac{\partial{Fg}}{\partial {z}} + Sg
-\end{eqnarray}
-
-\begin{verbatim}
- $G$: Ground Temperature; $C_g$: Constant Pressure Specific Heat; $F{g}$: Vertical Heat Flux; $Sg$; Heating Term (due to phase change etc.).
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{4}
-\tightlist
-\item
-  formula for ground moisture
-\end{enumerate}
-
-\begin{eqnarray}
-  C_w \frac{\partial{w}}{\partial {t}} = \frac{\partial{Fw}}{\partial {z}} + Sw
-\end{eqnarray}
-
-\begin{verbatim}
- $w$: Ground moisture; $F{w}$: Vertical water flux; $Sw$; Water sources (e.g., runoff).
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{5}
-\tightlist
-\item
-  energy balance equation
-\end{enumerate}
-
-At the surface, an energy balance is established.
-
-\begin{eqnarray}
-    F{\theta} + L F{q} + F{R} - F{g} = \Delta s \; \; (\sigma=1, z=0)
-\end{eqnarray}
-
-\begin{verbatim}
- $L$: Latent heat of evaporation; $\Delta s$: Surface energy balance (associated with phase change, etc.).
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{6}
-\tightlist
-\item
-  surface water balance
-\end{enumerate}
-
-\begin{eqnarray}
-  Pg + Fw - Rg = 0
-\end{eqnarray}
-
-\begin{verbatim}
- $Pg$: Precipitation; $Rg$: Surface Runoff.
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{7}
-\tightlist
-\item
-  the snow balance
-\end{enumerate}
-
-\begin{eqnarray}
-  \frac{\partial{Wy}}{\partial {t}} = Py - Fy - My
-\end{eqnarray}
-
-\begin{verbatim}
- $Wy$: Snow cover (kg/m$^2$); $Py$: Snowfall; $Fy$: Sublimation; $My$: Snowmelt.
-\end{verbatim}
+\(q\): Specific Humidity; \(F{q}\): Vertical Water Vapor Flux.
 
 \hypertarget{time-integration-of-physical-processes.}{%
 \subsubsection{Time integration of physical
@@ -246,11 +159,9 @@ symbolically
                (\hat{T}^{t+\Delta t,(2)},\hat{T}^{t+\Delta t,(3)})
 \end{eqnarray}
 
-That would be.
-
-The gravitational wave resistance, mass modulation, and dry convection
-modulation are the same as those for cumulus convection and large-scale
-condensation.
+That would be the gravitational wave resistance, mass modulation, and
+dry convection modulation are the same as those for cumulus convection
+and large-scale condensation.
 
 \begin{eqnarray}
   \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}
@@ -358,7 +269,7 @@ q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
 Here, it is \(\epsilon=0.622\),
 
 \begin{eqnarray}
-\frac{1}{e^*_v} \frac{\partial{e^*_v}}{\partial {T}} = \frac{L}{R_v T^2}
+\frac{1}{e^*_v} \frac{\partial{e^*_v}}{\partial {T}} = \frac{L}{R_v T^2} \label{p199}
 \end{eqnarray}
 
 Therefore, if the latent heat of evaporation (\(L\)) and the gas
@@ -372,11 +283,9 @@ vaporized materials will be reduced,
                        \right] ,
 \end{eqnarray}
 
-\begin{verbatim}
- .....
+where \(e^*(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}\).
 
- (199) from ,
-\end{verbatim}
+From eq.\ref{p199},
 
 \begin{eqnarray}
 \frac{\partial{q^*}}{\partial {T}} = \frac{L}{R_v T^2} q^*(T,p) .
@@ -396,13 +305,11 @@ sublimation latent heat \(L+L_M\) is used as the latent heat \(L\).
 Dry static energy \(s\) is
 
 \begin{eqnarray}
-  s = C_p T + g z \; ,
+  s = C_p T + g z
 \end{eqnarray}
 
-Wet Static Energy \(h\) is
+Wet Static Energy \(h\) is defined by
 
 \begin{eqnarray}
-  h = C_p T + g z + L q \; ,
+  h = C_p T + g z + L q
 \end{eqnarray}
-
-. defined by .
