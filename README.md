@@ -1,11 +1,7 @@
 # Model Description for MIROC6-AGCM
 ## Contents
 1. Introduction 概論
-<!--
-次のファイルはダミー（セクション名だけ)
-[Introduction](draft/a-intro.md)
--->
-- 1.1 [Characteristics of CCSR/NIES AGCM (CCSR/NIES AGCMマニュアルより未改変)](draft/summary.tex)
+- 1.1 [Characteristics of MIROC6 AGCM](draft/summary.md)
 - 1.2 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/a-intro.md)
 - 1.3 [Basic Settings](draft/a.0-setup.md)
 
@@ -22,12 +18,8 @@
 - 2.8  [Flux to Atmospheric Models](draft/AO-coupler.md#Fluxes-to-Atmospheric-Models)
 - 2.9  [Fluxes between Land Surface Model and River Model](draft/AO-coupler.md#fluxes-between-land-surface-model-and-river-model)
 - 2.10 [Fluxes to the Ocean Model](draft/AO-coupler.md#fluxes-to-the-ocean-model)
-
-**以下座標系, introductionにもっていくべきか**
 - 2.11 [Boundary conditions for the ocean on a sea level grid](draft/AO-coupler.md#boundary-conditions-for-the-ocean-on-a-sea-level-grid)
-- 2.12 [configuration of model grid](draft/Model-Grid.md#configuration-of-model-grid)
-- 2.13 [Horizontal grid of model](draft/Model-Grid.md#horizontal-grid-of-model)
-- 2.14 [Definition of land-sea distribution](draft/Model-Grid.md#horizontal-grid-of-model)
+- 2.12 [Definition of land-sea distribution](draft/Model-Grid.md#horizontal-grid-of-model)
 
 3. Physics 物理過程
 - 3.1 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/p-intro.md)
