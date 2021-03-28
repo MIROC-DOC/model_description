@@ -470,7 +470,9 @@ is a correction factor, which is approximated from the uncorrected bulk Richards
 In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo ($\alpha_{(d,b)}$), $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation ($SW^\downarrow$) and upward shortwave radiation ($SW^\uparrow$) incident on the earth's surface, the direct and scattered light together are
 
 $$
-	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
+	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}
+$$
+$$
 SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
 $$
 
