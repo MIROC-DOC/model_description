@@ -1,6 +1,6 @@
 ## Radiation scheme
 ### Summary of the radiation flux calculation
-The  radiation scheme in the MIROC was created based on the Discrete Ordinate Method and the $k$-distribution Method (Nakajima et al., 2000), and updated by Sekiguchi and Nakajima (2008). The scheme calculates the value of the radiation flux at each level by considering the absorption, emission, and scattering processes of terrestrial and solar radiation by gases and clouds/aerosols. The main input data are temperature $T$, specific humidity $q$, cloud water $l$, and cloud cover $C$. The output data are shortwave or longwave upward and downward radiation fluxes $F^{\mp}$, and derivative coefficient to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$, surface downward radiation flux $F_{sf}^{+}$, and 0.5 and 0.67 µm optical thickness $\tau^{vis}$. 
+The  radiation scheme in the MIROC was created based on the Discrete Ordinate Method and the $k$-distribution Method (Nakajima et al., 2000), and updated by Sekiguchi and Nakajima (2008). The scheme calculates the value of the radiation flux at each level by considering the absorption, emission, and scattering processes of terrestrial and solar radiation by gases and clouds/aerosols. The main input data are temperature $T$, specific humidity $q$, cloud water $l$, and cloud cover $C$. The output data are shortwave or longwave upward and downward radiation fluxes $F^{\mp}$, and derivative coefficient to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$, surface downward radiation flux $F_{sf}^{+}$, and 0.5 and 0.67 µm optical thickness $\tau^{vis}$.
 
 The calculation is separated for several wavelength bands. It is further divided into several sub-channels, based on the $k$-distribution method. As for gaseous absorption, the line absorption in $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$, $\mathrm{O}_{2}$, $\mathrm{O}_{3}$, $\mathrm{N}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{H}_{4}$, the continuous absorption in $\mathrm{H}_{2} \mathrm{O}$, $\mathrm{C}\mathrm{O}_{2}$, $\mathrm{O}_{2}$, $\mathrm{O}_{3}$, and the CFC absorption are incorporated. As for scattering, Rayleigh scattering of gases and scattering by cloud and aerosol particles are considered.
 
@@ -46,7 +46,7 @@ $$
 $$
 where $\bar{F}^k(0)$ is the flux averaged over a wavelength having the absorption coefficient in this wavelength $k$ in $z=0$.
 
-If $\bar{F}^k(0)$ and $F(k)$ are a relatively smooth functions to the $k$, 
+If $\bar{F}^k(0)$ and $F(k)$ are a relatively smooth functions to the $k$,
 $$
 \begin{eqnarray}
  \int F^\lambda(0) exp (-k^\lambda z) d \lambda
@@ -59,7 +59,7 @@ In the MIROC 6.0, by changing the radiation parameter data, the calculations can
 
 ### Calculation of the Planck function
 
-In this section, `SUBROUTINE:[PLANKS, PLANKF]` in pradt.F is described. 
+In this section, `SUBROUTINE:[PLANKS, PLANKF]` in pradt.F is described.
 
 The Planck function $\bar{B}^{w}(T)$, integrated in each wavelength range, is evaluated by the following formula.
 $$
@@ -181,7 +181,7 @@ F X_{a e}=\left(R H-R H_{n f i t}^{(r e f)}\right)\left(\frac{1}{R H_{n f i t+1}
 \end{equation}
 $$
 
-where $RH$ is the local relative humidity and $R H_{n f i t}^{(r e f)}$ is the relative humidity given in the parameter and $nfit$ is the number of the prescribed relative humidity closest to the $RH$. $nfit$ and $FX_{ae}$ are calculated in the `SUBROUTINE:[RMDIDX]` in pradt.F and determined in advance. In the above formulas, $10^{-1}$ is multiplied to convert from $\mathrm{km}$ to $\mathrm{cm}$, and from ppmv to ratio. 
+where $RH$ is the local relative humidity and $R H_{n f i t}^{(r e f)}$ is the relative humidity given in the parameter and $nfit$ is the number of the prescribed relative humidity closest to the $RH$. $nfit$ and $FX_{ae}$ are calculated in the `SUBROUTINE:[RMDIDX]` in pradt.F and determined in advance. In the above formulas, $10^{-1}$ is multiplied to convert from $\mathrm{km}$ to $\mathrm{cm}$, and from ppmv to ratio.
 
 #### Rayleigh scattering `[SCATRY]`
 
@@ -221,7 +221,7 @@ $$
 \end{equation}
 $$
 
-####  Cloud 
+####  Cloud
 
 In this section, `SUBROUTINE:[SCATCL]` in pradt.F is described.
 
@@ -284,7 +284,7 @@ $$
 \end{equation}
 $$
 
-In addition, the moments of the normalized phase function $G$ are calculated up to the three orders. The zeroth moment $G_1$ is trivial from the normalization condition of the phase function. The first and second moments $G_2$, $G_3$, are referred as the asymmetry factor $g$ and the truncation factor $f$. 
+In addition, the moments of the normalized phase function $G$ are calculated up to the three orders. The zeroth moment $G_1$ is trivial from the normalization condition of the phase function. The first and second moments $G_2$, $G_3$, are referred as the asymmetry factor $g$ and the truncation factor $f$.
 $$
 \begin{equation}
 G_{1}=1.0
@@ -305,7 +305,7 @@ $$
 R^{(c t)}=\left(\frac{3}{4 \pi} \frac{\rho r^{(c t)}}{\rho_{w}^{(c t)} n_{c}^{(c t)}}\right)^{1 / 3}
 \end{equation}
 $$
-$\rho_{w}^{(c t)}$ is the liquid or ice density. $r^{ct}$ is the amount of the liquid or ice cloud and calculated as follows. 
+$\rho_{w}^{(c t)}$ is the liquid or ice density. $r^{ct}$ is the amount of the liquid or ice cloud and calculated as follows.
 $$
 \begin{equation}
 r^{(c t)}=\frac{C_{s t} r_{s t}^{(c t)}+C_{c u} r_{c u}^{(c t)}}{1-\left(1-C_{s t}\right)\left(1-C_{c u}\right)}
@@ -347,7 +347,7 @@ $$
 $$
 where because $\tau^{K D}$ is different for each subchannel, the calculation is done for each sub-channel and each layer, and divided into the cloudy, clear sky, and cumulus conditions.
 
-###  Expansion of the plank function 
+###  Expansion of the plank function
 
 In this section, `SUBROUTINE:[PLKEXP]` in pradt.F is described.
 
@@ -607,7 +607,7 @@ E x^{d i r}=e^{-\tau^{*}/ \mu_{0}}
 $$
 This calculation is done for each sub-channel and each layer and divided into the cloudy, clear sky, and cumulus conditions.
 
-### T, R, S matrixes for maximal/random approximation 
+### T, R, S matrixes for maximal/random approximation
 
 In this section, `SUBROUTINE:[RTSMR]` in pradt.F is described.
 
@@ -991,7 +991,7 @@ $$
 \epsilon^{\pm}=\hat{\epsilon}_{S}^{\pm} e^{-\left\langle\tau^{*}\right\rangle / \mu_{0}}+\hat{\epsilon}_{A}^{\pm}
 \end{equation}
 $$
-There are layers $1, 2…, N$ from the top. The surface layer is considered to be a single layer and the $N$ layer. Given the reflectance and source function of the layers from the n to the $N$ layer as a single layer $R_{n, N}$, $\epsilon_{n, N}^{-}$,
+There are layers $1, 2,\dots, N$ from the top. The surface layer is considered to be a single layer and the $N$ layer. Given the reflectance and source function of the layers from the n to the $N$ layer as a single layer $R_{n, N}$, $\epsilon_{n, N}^{-}$,
 $$
 \begin{equation}
 \begin{array}{c}
@@ -1025,7 +1025,7 @@ $$
 
 
 
-This can be solved by $n=N-1…,1$ in sequence, starting from the values at the surface $R_{N, N}$, $\epsilon_{N, N}^{-}$.
+This can be solved by $n=N-1,\dots,1$ in sequence, starting from the values at the surface $R_{N, N}$, $\epsilon_{N, N}^{-}$.
 $$
 \begin{equation}
 \begin{array}{c}
@@ -1057,7 +1057,7 @@ $$
 \end{equation}
 $$
 
-It can be solved by $n=2,…, N$, starting from  $R_{1,1}=R_{1},  \epsilon_{1,1}^{+}=\epsilon_{1}^{+}$.
+It can be solved by $n=2,\dots, N$, starting from  $R_{1,1}=R_{1},  \epsilon_{1,1}^{+}=\epsilon_{1}^{+}$.
 
 With these, downward flux at the boundary between layers $n$ and $n+1$, the downward and upward flux are came back to a problem between two layers of combined layer, the combinations of layers $1-n$ and $n+1-N$.
 $$
@@ -1143,15 +1143,15 @@ F_{s f, d i f}^{+}=\sum_{c} w_{c}\left(1-C_{c u}\right)\left(\bar{F}_{N+1 / 2}^{
 \end{equation}
 $$
 
-This calculation is done in `SUBROUTINE:[DTRN31]` 
+This calculation is done in `SUBROUTINE:[DTRN31]`
 
 ###  Calculation of the temperature derivative of the flux
 
 To implicitly solve for surface temperature, calculate differential term of upward flux with respect to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$. Therefore, we obtained the value for temperatures $1\text{K}$ higher than $T_g$  $\bar{B}^{w}\left(T_{g}+1\right)$ and used it to redo the flux calculation using the addition method, and the difference from the original value is set to $\mathrm{d}F^{\mp}/dT_{g}$. This is a meaningful value only in the longwave region (earth radiation region). This calculation is done in `SUBROUTINE:[RADFLX]` of pradt.F.
 
-### Calculation of the heating rate 
+### Calculation of the heating rate
 
-The heating rate of the nth layer $H_n$ is calculated by using the radiation flux obtained so far. It is calculated separately for shortwave and longwave ranges, and finally add together (`SUBROUTINE:[RDTND]` in pradm.F). 
+The heating rate of the nth layer $H_n$ is calculated by using the radiation flux obtained so far. It is calculated separately for shortwave and longwave ranges, and finally add together (`SUBROUTINE:[RDTND]` in pradm.F).
 $$
 \begin{equation}
 H_{n}=-\frac{\left(F_{n}^{-}-F_{n}^{-}\right)-\left(F_{n}^{+}-F_{n+1}^{+}\right)}{g C_{p} d p}
@@ -1321,7 +1321,7 @@ In `SUBROUTINE:[OPPARM2]`of pradt.F, various parameters used for radiation calcu
    \frac{1}{R_{n+1}^{(r e f)}-R_{n}^{(r e f)}}
    \end{equation}
    $$
-   
+
 5. Read the band boundaries again.
 
 6. Read the Plank function coefficient, solar insolation, surface properties (not output), Rayleigh scattering coefficient, Rayleigh scattering phase function. The moment for particle scattering phase function is read in the order of the particle and the optical number and read up to the second moment. Step 6 is performed for each wavelength band.
