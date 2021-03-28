@@ -31,3 +31,5 @@ do
 	> ${name}.tex
 	python tex2tex.py ${name}.tex
 done
+
+rm tmp.md
