@@ -1,7 +1,7 @@
-## pmlsc: Large Scale Condensation
+## Large Scale Condensation
 
-The SUBROUTINE:[PDF2CLD] and SUBROUTINE:[CLD2PDF] are written in pmlsc.F file.
-These are called in padmn.F, pcumc.F, pshcn.F, pcldphys.F and pvdfm.F files.
+The `SUBROUTINE:[PDF2CLD]` and `SUBROUTINE:[CLD2PDF]` are written in `pmlsc.F` file.
+These are called in `padmn.F, pcumc.F, pshcn.F, pcldphys.F and pvdfm.F` files.
 
 ### Physical basis for statistical PDF scheme
 
@@ -207,8 +207,9 @@ $$
 
 The pmlsc module includes two main subroutines, PDF2CLD and CLD2PDF. The subroutine PDF2CLD calculates $C$ and $\bar{q}_{c}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \mathcal{V}, \mathcal{S}$. The subroutine CLD2PDF calculates $\mathcal{V}$ and $\mathcal{S}$ given $\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C$. We will derive the concrete calculation processes in this subsection.
 
-#### SUBROUTINE:[PDF2CLD]
+#### Caluculation of cloud variables from PDF moments
 
+This is written in `SUBROUTINE:[PDF2CLD]`.
 ##### From $\mu_{1}, \mu_{2}, \mu_{3}$ To $a,b,q$
 
 The first, second, and third moments of the PDF is calculated as follows.
@@ -296,7 +297,9 @@ Q_{c} & \text { if }-Q_{c}<a
 \tag{E08-16}
 $$
 
-#### SUBROUTINE:[CLD2PDF]
+#### Caluculation of PDF moments from cloud variables.
+
+This is written in `SUBROUTINE:[CLD2PDF]`
 
 ##### From $\bar{q_c}, C$ To $a,b,q$
 
