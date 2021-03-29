@@ -1,6 +1,6 @@
-## pcldphys: Cloud Microphysics
+## Cloud Microphysics
 
-The SUBROUTINE:[CLDPHYS] is written in the pcldphys.F file.
+The `SUBROUTINE:[CLDPHYS]` is written in the `pcldphys.F` file.
 
 ### Overview of Cloud Microphysics
 
@@ -21,18 +21,20 @@ Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and
 The time evolution of $q_i$ by microphysical processes is written in symbolic form as follows.
 
 $$
+\begin{split}
 \left(\frac{\partial q_i}{\partial t}\right)_{\text {micro}}
-=\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
+&=\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {fallin}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {fallout}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}\\
+&+\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}},
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
+\end{split}
 $$
 
-where t is time. The terms of the right hand side denote evaporation of snow (sunscript esnw), ice fall in from above layers (subscript fallin), ice fall out to below layers (subscript fallout), homogeneous nucleation (subscript hom), heterogeneous nucleation (subscript het), deposition/sublimation (subscript dep), riming (subscript rim), and melting (subscript mlt). Similarly, the time evolution of $q_c$ by microphysical processes is
+, where t is time. The terms of the right hand side denote evaporation of snow (sunscript esnw), ice fall in from above layers (subscript fallin), ice fall out to below layers (subscript fallout), homogeneous nucleation (subscript hom), heterogeneous nucleation (subscript het), deposition/sublimation (subscript dep), riming (subscript rim), and melting (subscript mlt). Similarly, the time evolution of $q_c$ by microphysical processes is
 
 $$
 \left(\frac{\partial q_c}{\partial t}\right)_{\text {micro}}
@@ -41,10 +43,10 @@ $$
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {rim}}
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {evap}}
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {auto}}
-+\left(\frac{\partial q_c}{\partial t}\right)_{\text {accr}},
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {accr}}
 $$
 
-where the terms on the right hand side are homogeneous nucleation, heterogeneous nucleation, riming, evaporation (subscript evap), autoconversion (subscript auto), and accretion (subscript accr). The formulations of these processes are detailed in the following subsections.
+, where the terms on the right hand side are homogeneous nucleation, heterogeneous nucleation, riming, evaporation (subscript evap), autoconversion (subscript auto), and accretion (subscript accr). The formulations of these processes are detailed in the following subsections.
 
 The conversion terms of all processes are calculated at every layer downward from the top layer (k=kmax) to the bottom layer of the column (k=1). k is the vertical level increasing with height, i.e., k+1 is the next vertical level above k.
 
@@ -136,10 +138,10 @@ The evaporation rate of rain $\left(\frac{\partial q_r}{\partial t}\right)_{\tex
 
 $$
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}
-=\frac{1}{\rho \Delta z}k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}},
+=\frac{1}{\rho \Delta z}k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}}
 $$
 
-where $F_r$ denotes the net accumulation of rain water at the layer in $\mathrm{kg} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$, $V_{Tr}$ the terminal velocity, and $k_E$ the evaporation factor ($V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}$and $k_E = 0.5$). $q^w$ correcponds to the saturation water vapor mixing ratio at the wet-bulb temperature. The evaporation occurs only when $q^{w}-q_v>0$.
+, where $F_r$ denotes the net accumulation of rain water at the layer in $\mathrm{kg} \mathrm{~m}^{-2} \mathrm{~s}^{-1}$, $V_{Tr}$ the terminal velocity, and $k_E$ the evaporation factor ($V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}$and $k_E = 0.5$). $q^w$ correcponds to the saturation water vapor mixing ratio at the wet-bulb temperature. The evaporation occurs only when $q^{w}-q_v>0$.
 
 Similary to this, the evaporation rate of falling ice $\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}$ is expressed as
 
@@ -171,7 +173,7 @@ The net ice fall out from the layer is
 
 $$
 \left(\frac{\partial q_i}{\partial t}\right)_{\text {fallout}}
-=-\frac{\Delta t}{\rho \Delta z}F_i.
+=-\frac{\Delta t}{\rho \Delta z}F_i
 $$.
 
 The net ice fall in to the layer 'k' is
@@ -233,7 +235,7 @@ $$
 
 The basis of this theory is the fact that the saturation vapor pressure of water vapor with respect to ice is less than that with respect to liquid water at the same temperature. Thus, within a mixture of these particles, the ice would gain mass by vapor deposition at the expense of the liquid drops that would lose mass by evaporation.
 
-1. $(S_i - 1)<0$
+2. $(S_i - 1)<0$
 
 The ice disappears (sublimation).
 
@@ -255,7 +257,7 @@ $$
 
 The Stokes number (St) is given by
 $$
-\mathrm{St}=\frac{2\left(V_{t}-{v}_{t}\right) {v}_{t}}{D g}.
+\mathrm{St}=\frac{2\left(V_{t}-{v}_{t}\right) {v}_{t}}{D g}
 $$
 
 $V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal. $v_{t}$ is the cloud droplet terminal velocity. $g$ is the acceleration due to gravity.
@@ -267,10 +269,10 @@ Since this term is essentially a diffusion term, although of heat instead of moi
 $$
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {mlt}}
 =-\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
-=4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\},
+=4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\}
 $$
 
-where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. Ice melt occurs when $T^{\mathrm{w}}-T_{0}>0$. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in the deposition/sublimation process.
+,where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. Ice melt occurs when $T^{\mathrm{w}}-T_{0}>0$. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in the deposition/sublimation process.
 
 #### Warm rain cloud microphysics
 
