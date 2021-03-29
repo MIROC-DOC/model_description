@@ -1,35 +1,35 @@
 \hypertarget{vertical-discretization}{%
 \subsection{Vertical Discretization}\label{vertical-discretization}}
 
-Following Arakawa and Konor (1996) but in the Lorentz grid, the basic
+Following Arakawa and Konor (1996) except for using the Lorentz grid, the basic
 equations are discretized vertically by differences. This scheme has the
 following characteristics.
 
 \begin{itemize}
 \item
-  Save the total integrated mass
+  Conservation of the total integrated mass.
 \item
-  Save the total integrated energy
+  Conservation of the total integrated energy.
 \item
-  Preserving angular momentum for global integration
+  Conservation of the globally integrated angular momentum.
 \item
-  Conservation of total mass-integrated potential temperature
+  Conservation of the total mass-integrated potential temperature.
 \item
-  The hydrostatic pressure equation comes down to local (the altitude of
-  the lower level is independent of the temperature of the upper level)
+  The hydrostatic pressure equation is localized (the altitude of
+  the lower level is independent of the temperature of the upper level).
 \item
   For a given temperature distribution, constant in the horizontal
-  direction, the hydrostatic pressure equation becomes accurate and the
+  direction, the hydrostatic pressure equation becomes precisely accurate and the
   barometric gradient force becomes zero.
 \item
-  Isothermal atmosphere stays isothermal forever
+  Isothermal atmosphere stays permanently isothermal.
 \end{itemize}
 
 \hypertarget{model-levels}{%
 \subsubsection{Model levels}\label{model-levels}}
 
 Model level increases in altitude with the vertical level number $k$. $k=1/2$ corresponds with the model bottom (\(\eta=1\)), while $k=K+1/2$ corresponds to the model top ($\eta=0$).
-Variables $\zeta,D,T,q$ are defined at full levels ($k=1,2,\ldots K$), while the vertical velocity $\dot{\eta}$ is defined at half levels ($k=1/2,3/2,\ldots K+1/2$).
+Variables $\zeta,D,T,q$ are defined at integer levels ($k=1,2,\ldots K$), while the vertical velocity $\dot{\eta}$ is defined at half-integer levels ($k=1/2,3/2,\ldots K+1/2$).
 Using constants $A_{k+1/2}$ and $B_{k+1/2}$ and variable surface pressure $p_s$, air pressure at half levels are defined as below:
 \begin{eqnarray}
 p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s.
@@ -40,7 +40,7 @@ Thus, the normalized pressure \(\sigma\equiv p/p_s\) can be written as below:
 \sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.
 \end{eqnarray}
 
-Using a reference pressure \(p_0=1000\ \mathrm{hPa}\), the hybrid-normalized pressure \(\eta\) is defined as below:
+Using a reference pressure \(p_0\), the hybrid-normalized pressure \(\eta\) is defined as below:
 \begin{eqnarray}
 \eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},
 \end{eqnarray}

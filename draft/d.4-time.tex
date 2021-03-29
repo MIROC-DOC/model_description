@@ -330,7 +330,7 @@ In practice, this is multiplied by a factor smaller than 1 for further safety.
 integration}\label{handling-of-the-initiation-of-time-integration}}
 
 When starting from an initial condition that is not calculated by
-this AGCM, it is not possible to give values of all prognostic variables at two time steps \(t\)
+MIROC 6.0 itself, it is not possible to give values of all prognostic variables at two time steps \(t\)
 and \(t-\Delta t\) consistently with the model dynamics.
 However, giving inconsistent values for \(t-\Delta t\) results in a large computation mode.
 
@@ -348,4 +348,4 @@ Finally, in the normal time step,
 \begin{eqnarray}
   X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.
 \end{eqnarray}
-From here on, the leap-frog method is used in the usual manner.
+From here on, the leap-frog method is executed in the usual manner.
