@@ -1,5 +1,7 @@
 ## Gravity Waves
 
+Effects of sub-grid scale gravity waves on the grid scale flows are represented by two kinds of gravity wave parameterizations. The orographic gravity wave drag scheme represents decelerations of the grid scale flow due to momentum deposition of orographic gravity waves, which is described below. In contrast, the non-orographic gravity wave scheme may either accelerate or decelerate the grid scale flow. At present this document does not contain a detailed description of the non-orographic gravity wave scheme, and readers may find if in Watanabe (2008) and Tatebe et al. (2019).
+
 ### Overview of a gravity wave drag parameterization
 
 The orographic gravity wave drag scheme represents the upward momentum flux of the gravity waves induced by sub-grid scale topography and calculates the horizontal wind deceleration associated with its convergence (McFarlane, 1987). The main input data are eastward wind ($u$), northward wind ($v$), and temperature ($T$), and the output data are the tendency of eastward wind and northward wind, $\partial u/\partial t, \partial v/\partial t$.
