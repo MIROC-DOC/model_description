@@ -14,7 +14,7 @@ In this section, calculations of dynamical component based on coding are summari
 
    1.4 calculate factor for hydrostatic eq. & interporation of temprature on Hybrid coord. `[CFACT(dcfct.F)]`
 
-   1.5 calculate vartual temprature `[VIRTMD(dvtmp.F)]`
+   1.5 calculate virtual temprature `[VIRTMD(dvtmp.F)]`
 
    1.6 calculate temperature advection `[GRTADV(dgdyn.F)]`
 
