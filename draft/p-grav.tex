@@ -1,80 +1,74 @@
-\hypertarget{gravity-wave-drag}{%
-\subsection{Gravity Wave Drag}\label{gravity-wave-drag}}
+\hypertarget{gravity-waves}{%
+\subsection{Gravity Waves}\label{gravity-waves}}
 
-\textbf{NOTE: the descriptions in this section are outdated.}
+\hypertarget{overview-of-a-gravity-wave-drag-parameterization}{%
+\subsubsection{Overview of a gravity wave drag
+parameterization}\label{overview-of-a-gravity-wave-drag-parameterization}}
 
-\hypertarget{gravitational-wave-resistance-scheme-overview}{%
-\subsubsection{Gravitational Wave Resistance Scheme
-Overview}\label{gravitational-wave-resistance-scheme-overview}}
-
-The gravitational wave resistance scheme represents the upward momentum
-flux of the gravitational waves induced by sub-grid scale topography and
+The orographic gravity wave drag scheme represents the upward momentum
+flux of the gravity waves induced by sub-grid scale topography and
 calculates the horizontal wind deceleration associated with its
-convergence. The main input data are east-west wind (\(u\)), north-south
-wind (\(v\)), and temperature (\(T\)), and the output data are the rates
-of temporal variation of east-west wind and north-south wind,
+convergence (McFarlane, 1987). The main input data are eastward wind
+(\(u\)), northward wind (\(v\)), and temperature (\(T\)), and the output
+data are the tendency of eastward wind and northward wind,
 \(\partial u/\partial t, \partial v/\partial t\).
 
 The outline of the calculation procedure is as follows.
 
-The momentum flux at the ground surface is calculated from the
-dispersion of surface height, the horizontal wind speed at the lowest
-level, and the stratification stability.
-
-We consider the upward propagation of gravitational waves with momentum
-fluxes. If the momentum flux exceeds the critical fluid number, the
-momentum flux is determined by the critical fluid number, then breaking
-waves occur and the flux becomes the critical value of the momentum
-flux.
-
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
 \item
-  compute the time evolution of the horizontal wind as the momentum flux
-  converges in each layer.
+  The momentum flux at the ground surface is calculated from the
+  variance of sub-grid scale orography, the horizontal wind speed at the
+  lowest level, and the static stability.
+\item
+  The upward propagation of gravity waves is considered. If the momentum
+  flux exceeds its critical value, which is determined by the critical
+  Froude number, then wave breaking occurs and the momentum is limited
+  by the critical value.
+\item
+  The tendency of horizontal wind is obtained by calculating the
+  vertical convergence of momentum flux in each layer.
 \end{enumerate}
 
-\hypertarget{relationship-between-local-fluid-number-and-momentum-flux}{%
-\subsubsection{Relationship between local fluid number and momentum
-flux}\label{relationship-between-local-fluid-number-and-momentum-flux}}
+\hypertarget{relationship-between-local-froude-number-and-momentum-flux}{%
+\subsubsection{Relationship between local Froude number and momentum
+flux}\label{relationship-between-local-froude-number-and-momentum-flux}}
 
-Considering the vertical flux of horizontal momentum due to
-surface-derived gravitational waves, the difference between the flux
-(\(\tau\)) and the local fluid number (\(F_L = NH/U\)) at a certain
-altitude is
+Considering the vertical flux of horizontal momentum due to orographic
+gravity waves, the difference between the flux (\(\tau\)) and the local
+Froude number (\(F_L = NH/U\)) at a certain altitude is
 
 \begin{eqnarray}
    F_L = \left(
             \frac{\tau N}{E_f \rho U^3}
-           \right)^{1/2} \; ,
+           \right)^{1/2} \; , \label{p-grav.589}
 \end{eqnarray}
 
 This relationship holds for the following cases where
-\(N = g/\theta \partial \theta/\partial z\) is the Brant-Visala
+\(N = g/\theta \partial \theta/\partial z\) is the Brant-Väisälä
 frequency, \(\rho\) is the density of the atmosphere, \(U\) is the wind
 speed, and \(E_f\) is the proportional constant corresponding to the
-horizontal scale of the rippling at the surface. From now on,
+horizontal scale of the rippling of the surface. From now on,
 
 \begin{eqnarray}
-  \tau = \frac{E_f F_L^2 \rho U^3}{N}
+  \tau = \frac{E_f F_L^2 \rho U^3}{N} \label{p-grav.590}
 \end{eqnarray}
 
-The local fluid number (\(F_L\)) cannot exceed the critical fluid number
-(\(F_{c}\)) at a certain value. If the local fluid number calculated
-from (589) exceeds the critical fluid number \(F_{c}\), the
-gravitational wave becomes supersaturated and the flux decreases to the
-momentum flux corresponding to the critical fluid number.
+The local Froude number (\(F_L\)) cannot exceed the critical Froude
+number (\(F_{c}\)). If the local Froude number calculated from
+(\ref{p-grav.589}) exceeds the critical Froude number \(F_{c}\),
+the gravity wave becomes supersaturated and the flux decreases to the
+momentum flux corresponding to the critical Froude number.
 
 \hypertarget{momentum-fluxes-at-the-surface.}{%
 \subsubsection{Momentum fluxes at the
 surface.}\label{momentum-fluxes-at-the-surface.}}
 
-The magnitude of the vertical flux of horizontal momentum due to
-gravitational waves excited at the earth's surface, \(\tau_{1/2}\), is
-calculated by substituting the local fluid number
-\((F_L)_{1/2} = N_1 h/U_1\) into (590),
+The magnitude of the vertical flux of horizontal momentum due to gravity
+waves excited at the earth's surface, \(\tau_{1/2}\), is calculated by
+substituting the local Froude number \((F_L)_{1/2} = N_1 h/U_1\) into
+(\ref{p-grav.590}),
 
 \begin{eqnarray}
   \tau_{1/2} = E_f h^2 \rho_1 N_1 U_1 \; ,
@@ -82,17 +76,15 @@ calculated by substituting the local fluid number
 
 where \(U_1 = |{\mathbf v}_1| = (u_1^2 + v_1^2)^{1/2}\) is the surface
 wind speed, \(N_1, \rho_1\) are estimated to be the stability and
-density of the atmosphere near the earth's surface, respectively. where
-\(U_1 = |{\mathbf v}_1| = (u_1^2 + v_1^2)^{1/2}\) is the surface wind
-speed, and \(N_1, \rho_1\) are the stability and density of the
-atmosphere near the earth's surface, respectively. \(h\) is an indicator
-of the change in the surface height of the sub-grid and is assumed to be
-equal to the standard deviation of the surface height (\(Z_{SD}\)).
+density of the atmosphere near the earth's surface, respectively. \(h\)
+is an indicator of the change in the sub-grid orography and is assumed
+to be equal to the standard deviation of the surface height
+(\(Z_{SD}\)).
 
-Here, when the local fluid number (\((F_L)_{1/2} = N_1 Z_{SD}/U_1\))
-exceeds the critical fluid number (\(F_c\)), the momentum flux is
-suppressed to the value obtained by substituting (590) for \(F_c\). In
-other words,
+Here, when the local Froude number (\((F_L)_{1/2} = N_1 Z_{SD}/U_1\))
+exceeds the critical Froude number (\(F_c\)), the momentum flux is
+suppressed to the value obtained by substituting
+(\ref{p-grav.590}) for \(F_c\). In other words,
 
 \begin{eqnarray}
   \tau_{1/2} = \min \left(
@@ -105,12 +97,12 @@ other words,
 \subsubsection{Momentum fluxes in the upper
 levels.}\label{momentum-fluxes-in-the-upper-levels.}}
 
-Suppose that the momentum flux \(\tau_{k-1/2}\) is required for level
+Suppose that the momentum flux \(\tau_{k-1/2}\) is computed at level
 \(k-1/2\). When no saturation occurs, \(\tau_{k+1/2}\) is equal to
 \(\tau_{k-1/2}\). If the momentum flux (\(\tau_{k-1/2}\)) exceeds the
-momentum flux calculated from the critical fluid number at the \(k+1/2\)
-level, wave breaking occurs in the \(k\) layer and the momentum flux
-decreases to the critical flux.
+momentum flux calculated from the critical Froude number at the
+\(k+1/2\) level, wave breaking occurs in the \(k\) layer and the
+momentum flux decreases to the critical flux.
 
 \begin{eqnarray}
   \tau_{k+1/2} = \min \left(
@@ -119,9 +111,9 @@ decreases to the critical flux.
                       \right),
 \end{eqnarray}
 
-Note that \(U_{k+1/2}\) is the magnitude of the projective component of
-the wind speed vectors for each layer relative to the direction of the
-lowest level of the horizontal wind,
+Note that \(U_{k+1/2}\) is the magnitude of the horizontal wind speed
+projected on to the direction of the lowest level of the horizontal
+wind,
 
 \begin{eqnarray}
   U_{k+1/2} = \frac{{\mathbf v}_{k+1/2}
@@ -134,24 +126,24 @@ lowest level of the horizontal wind,
 due to momentum
 convergence.}\label{the-magnitude-of-the-time-variation-of-horizontal-wind-due-to-momentum-convergence.}}
 
-The temporal rate of change of the projective component of the
-horizontal wind, \(U_{k}\), is ,
+The tendency of the projected component of the horizontal wind,
+\(U_{k}\), is ,
 
 \begin{eqnarray}
   \frac{\partial U}{\partial t}
         = - \frac{1}{\rho} \frac{\partial \tau}{\partial z}
-        = g  \frac{\partial \tau}{\partial p}
+        = g  \frac{\partial \tau}{\partial p}.
 \end{eqnarray}
 
-as determined by i.e.~,
+That is
 
 \begin{eqnarray}
   \frac{\partial U_{k}}{\partial t}
         =  g  \frac{\tau_{k+1/2} - \tau{k-1/2}}{\Delta p}.
 \end{eqnarray}
 
-Using this, the temporal rates of change for the east-west and
-north-south winds are calculated as follows
+Using this, tendency for the eastward and northward winds are calculated
+as follows
 
 \begin{eqnarray}
   \frac{\partial u_{k}}{\partial t}  =
@@ -167,8 +159,7 @@ north-south winds are calculated as follows
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  it is assumed that no gravitational waves are excited at the ground
-  surface when the wind speed is small (\(U_{1} \le v_{min}\)) and when
-  the undulations at the surface are small
-  (\(Z_{SD} \le (Z_{SD})_{min}\)).
+  it is assumed that no gravity waves are excited at the ground surface
+  when the wind speed is small (\(U_{1} \le v_{min}\)) or when the
+  undulations at the surface are small (\(Z_{SD} \le (Z_{SD})_{min}\)).
 \end{enumerate}
