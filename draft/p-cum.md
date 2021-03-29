@@ -216,7 +216,7 @@ These calculations are made for each of the updraft types separately, but we omi
 
 ### Spectral representation
 
-Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$.
+Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$ for MIROC6. The minimum and maximum values and the interval can be changed.
 
 Then, the updraft properties are calculated upward with Eqs. ([2](p-cum.2)), ([4](p-cum.4)), ([5](p-cum.5)), ([6](p-cum.6)), and ([7](p-cum.7)). This upward calculation continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some level, the air parcel detrains at the neutral buoyancy level which is below and closest to the level. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of the convective inhibition (CIN) near cloud base is also represented by this method. Note, however, that an effect of overshooting above cloud top is not represented for simplicity (i.e., detrainment never occurs above cloud top).
 
