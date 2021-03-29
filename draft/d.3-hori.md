@@ -12,7 +12,7 @@ $$
 $$
 
 
-Using the Legendre jury function $P_n^m$ it is written as follows.
+Using the Associated Legendre function $P_n^m$ it is written as follows.
 
 $$
 Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{\mathrm{i}m \lambda}
@@ -50,9 +50,9 @@ $$
 
 
 
-The formula is expressed as To evaluate by replacing the integral with a sum, we use the Gauss trapezoidal formula for the $\lambda$ integral and the Gauss-Legendre integral formula for the $\mu$ integral. $\mu_j$ is the Gauss latitude and $w_j$ is the Gauss load. Also, $\lambda_i$ is a grid of evenly spaced Gauss loads.
+The formula is expressed as To evaluate by replacing the integral with a sum, we use the Gauss trapezoidal formula for the $\lambda$ integral and the Gauss-Legendre integral formula for the $\mu$ integral. $\mu_j$ is the Gauss latitude and $w_j$ is the Gaussian weights. Also, $\lambda_i$ is a grid of evenly spaced Gaussian weights.
 
-Using spectral expansion, the grid point values of the terms containing the derivatives can be calculated as follows.
+Using spectral harmonics transformation, the grid point values of the terms containing the derivatives can be calculated as follows.
 
 $$
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
@@ -147,7 +147,7 @@ to be used for the evaluation of the $\nabla^2$ section.
 
 ### Horizontal Diffusion Term
 
-The horizontal diffusion term is entered in the form $\nabla^{N_D}$ as follows.
+The horizontal diffusion term is implemented in the form $\nabla^{N_D}$ as follows.
 
 $$
   {\mathcal D}(\zeta) = K_{MH}
@@ -177,7 +177,7 @@ $$
 $$
 
 
-This horizontal diffusion term has strong implications for computational stability. In order to represent selective horizontal diffusion on small scales, 4 $\sim$ 16 is used as $N_D$. Here, the extra term for vorticity and divergence diffusion indicates that the term of rigid body rotation in $n=1$ does not decay.
+This horizontal diffusion term damps high frequency component occuring aliasing for computational stability. In order to represent selective horizontal diffusion on small scales, 4 $\sim$ 16 is used as $N_D$. Here, the extra term for vorticity and divergence diffusion indicates that the term of rigid body rotation in $n=1$ does not decay.
 
 ### Spectral representation of equations
 
@@ -192,7 +192,7 @@ $$
 
 
 
- Here,
+where,
 
 $$
 Z \equiv - \sum_{k=1}^{K} \mathbf{v}_k \cdot \nabla \pi .
@@ -243,10 +243,7 @@ $$
 $$
 
 
-
-
-
- However,
+where
 
 $$
 ({\mathcal D}_M)_n^m = K_{MH} \left[
@@ -278,11 +275,7 @@ $$
      - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
 $$
 
-
-
-
-
- However,
+ where,
 
 $$
 ({\mathcal D}_H)_n^m
@@ -311,11 +304,7 @@ $$
      + ({\mathcal D}_H)_n^m q_n^m
 $$
 
-
-
-
-
- However,
+where
 
 $$
 ({\mathcal D}_E)_n^m
