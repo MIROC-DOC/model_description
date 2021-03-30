@@ -110,7 +110,8 @@ The standard gives the amount of sea ice per area as
 
 In \texttt{ENTRY{[}OCNBCS{]}} (in \texttt{SUBROUTINE:{[}OCNSUB{]}} of
 pgocn.F), surface albedo and roughness are calculated. They are
-calculated supposing ice-free conditions, then modified.
+calculated supposing ice-free conditions, then modified to take into
+account the effects of ice and snow cover.
 
 First, let us consider the sea surface level albedo
 (\(\alpha_{(d,b)}\)), \(b=1,2,3\) represent the visible, near-infrared,
@@ -153,7 +154,8 @@ Update the snow albedo (\(\alpha_{snow}\)) as
 Second, let us consider sea surface roughnesses. Roughnesses of for
 momentum, heat and vapor are calculated in
 \texttt{SUBROUTINE:{[}SEAZ0F{]}} (of pgocn.F), supposing the ice-free
-conditions.
+conditions, then modified to take into account the effects of ice and
+snow cover.
 
 When the sea ice exists (\(L=1\)), roughnesses of momentum, heat and
 vapor (\(r_{0,M},r_{0,H},r_{0,E}\)) is modified to take into account sea
@@ -242,7 +244,8 @@ where \(k_{ocn}\) is heat flux in the sea temperature layer, and
 \paragraph{Albedo for Visible}\label{albedo-for-visible}}
 
 In \texttt{SUBROUTINE\ {[}SEAALB{]}} (of pgocn.F), albedo for the
-visible bands are calculated supposing ice-free conditions.
+visible bands are calculated supposing ice-free conditions, then
+modified to take into account the effects of ice and snow cover.
 
 For sea surface level albedo (\(\alpha_{L(d)}\)), \(d=1,2\) represents
 direct and scattered light, respectively.
@@ -257,7 +260,7 @@ light is presented by
 where
 
 \begin{eqnarray}
-    A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
+    A^* = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
 \end{eqnarray}
 
 and \(C_1,C_2,C_3\) are constant parameters, respectively.
@@ -274,7 +277,8 @@ uniformly set to a constant parameter.
 
 In \texttt{SUBROUTINE:{[}SEAZ0F{]}} (of pgocn.F), the roughnesses of for
 momentum, heat and vapor are calculated supposing the ice-free
-conditions. calculated, according to Miller et al.~(1992).
+conditions. calculated, according to Miller et al.~(1992), then modified
+to take into account the effects of ice and snow cover.
 
 The roughness variation of the sea surface is determined by the friction
 velocity (\(u^\star\)).
@@ -341,10 +345,14 @@ coefficients for momentum, head and vapor (\(C_M, C_H, C_E\)) as follows
     F_q^P =  \rho C_E |\mathbf{V_a}| ( q_s - q_a )
 \end{eqnarray}
 
-note that \(F_q^P\) is the possible evaporation flux, where
-\(\mathbf{V_a}\) is horizontal wind vector, and \(\theta_s, \theta_a\)
-are potential temperature of surface and 1st layer of the atmosphere,
-respectively.
+where \(F_q^P\) is the possible evaporation flux, where \(\mathbf{V_a}\)
+is horizontal wind vector, and \(\theta_s, \theta_a\) are potential
+temperature of surface and 1st layer of the atmosphere, respectively.
+Although there is no description, surface fluxes are calculated using
+wind speed relative to ocean current speed. For example, F\_u=-¥rho C\_M
+\textbar{} V\_a - V\_o \textbar{} (u\_a - u\_o). Here, V\_o = ( u\_o,
+v\_o) represents ocean current vector at the uppermost layer. Note that
+in a stand-alone AGCM, V\_o = (0,0) is assumed.
 
 Turbulent fluxes at the sea surface are solved by bulk formulae as
 follows. Then, by solving the surface energy balance, the ground skin
@@ -516,9 +524,10 @@ incident on the earth's surface, the direct and scattered light together
 are
 
 \begin{eqnarray}
-    SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}
-\end{eqnarray} \begin{eqnarray}
-SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
+\begin{array}{rl}
+    SW^\downarrow &= SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}\\
+SW^\uparrow &= SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
+\end{array}
 \end{eqnarray}
 
 \hypertarget{solving-heat-balance}{%
@@ -561,7 +570,7 @@ assumed, emissivity becomes identical to co-albedo:
 The net surface flux (\(F^*\)) is presented by
 
 \begin{eqnarray}
-    F^*=H + (1-\alpha)\sigma T_s^4 + \alpha LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow        
+    F^*=H + \Big((1-\alpha_{Lk})\sigma T_s^4 + \alpha_{Lk} LW^\downarrow\Big)  - LW^\downarrow +SW^\uparrow - SW^\downarrow
 \end{eqnarray}
 
 where \(H\) is sensible heat flux.

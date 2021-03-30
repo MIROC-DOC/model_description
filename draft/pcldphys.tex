@@ -1,8 +1,8 @@
-\hypertarget{pcldphys-cloud-microphysics}{%
-\subsection{pcldphys: Cloud
-Microphysics}\label{pcldphys-cloud-microphysics}}
+\hypertarget{cloud-microphysics}{%
+\subsection{Cloud Microphysics}\label{cloud-microphysics}}
 
-The SUBROUTINE:{[}CLDPHYS{]} is written in the pcldphys.F file.
+The \texttt{SUBROUTINE:{[}CLDPHYS{]}} is written in the
+\texttt{pcldphys.F} file.
 
 \hypertarget{overview-of-cloud-microphysics}{%
 \subsubsection{Overview of Cloud
@@ -12,7 +12,7 @@ Cloud microphysics control the conversion from water condensate to
 precipitate. The condensate parameterization closely links to the
 lifetime of and radiative properties of the clouds.
 
-The stratiform (non-convective) cloud microphysics in MIROC6 (Tetebe et
+The stratiform (non-convective) cloud microphysics in MIROC6 (Tatebe et
 al.~2019) are basically the same as those used in MIROC5 (Watanabe et
 al.~2010). MIROC5 implemented a physically based bulk microphysical
 scheme. The previous version of the scheme in MIROC3.2 diagnoses the
@@ -75,21 +75,23 @@ The time evolution of \(q_i\) by microphysical processes is written in
 symbolic form as follows.
 
 \begin{eqnarray}
+\begin{split}
 \left(\frac{\partial q_i}{\partial t}\right)_{\text {micro}}
-=\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
+&=\left(\frac{\partial q_i}{\partial t}\right)_{\text {esnw}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {fallin}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {fallout}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {hom}}\\
+&+\left(\frac{\partial q_i}{\partial t}\right)_{\text {het}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}
 +\left(\frac{\partial q_i}{\partial t}\right)_{\text {rim}}
-+\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}},
++\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
+\end{split}
 \end{eqnarray}
 
-where t is time. The terms of the right hand side denote evaporation of
-snow (sunscript esnw), ice fall in from above layers (subscript fallin),
-ice fall out to below layers (subscript fallout), homogeneous nucleation
-(subscript hom), heterogeneous nucleation (subscript het),
+, where t is time. The terms of the right hand side denote evaporation
+of snow (sunscript esnw), ice fall in from above layers (subscript
+fallin), ice fall out to below layers (subscript fallout), homogeneous
+nucleation (subscript hom), heterogeneous nucleation (subscript het),
 deposition/sublimation (subscript dep), riming (subscript rim), and
 melting (subscript mlt). Similarly, the time evolution of \(q_c\) by
 microphysical processes is
@@ -101,10 +103,10 @@ microphysical processes is
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {rim}}
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {evap}}
 +\left(\frac{\partial q_c}{\partial t}\right)_{\text {auto}}
-+\left(\frac{\partial q_c}{\partial t}\right)_{\text {accr}},
++\left(\frac{\partial q_c}{\partial t}\right)_{\text {accr}}
 \end{eqnarray}
 
-where the terms on the right hand side are homogeneous nucleation,
+, where the terms on the right hand side are homogeneous nucleation,
 heterogeneous nucleation, riming, evaporation (subscript evap),
 autoconversion (subscript auto), and accretion (subscript accr). The
 formulations of these processes are detailed in the following
@@ -228,11 +230,11 @@ expressed as
 
 \begin{eqnarray}
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {erain}}
-=\frac{1}{\rho \Delta z}k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}},
+=\frac{1}{\rho \Delta z}k_{E}\left(q^{w}-q_v\right) \frac{F_r}{V_{Tr}}
 \end{eqnarray}
 
-where \(F_r\) denotes the net accumulation of rain water at the layer in
-\(\mathrm{kg} \mathrm{~m}^{-2} \mathrm{~s}^{-1}\), \(V_{Tr}\) the
+, where \(F_r\) denotes the net accumulation of rain water at the layer
+in \(\mathrm{kg} \mathrm{~m}^{-2} \mathrm{~s}^{-1}\), \(V_{Tr}\) the
 terminal velocity, and \(k_E\) the evaporation factor
 (\(V_{Tr} = 5\mathrm{~m} \mathrm{~s}^{-1}\)and \(k_E = 0.5\)). \(q^w\)
 correcponds to the saturation water vapor mixing ratio at the wet-bulb
@@ -273,7 +275,7 @@ The net ice fall out from the layer is
 
 \begin{eqnarray}
 \left(\frac{\partial q_i}{\partial t}\right)_{\text {fallout}}
-=-\frac{\Delta t}{\rho \Delta z}F_i.
+=-\frac{\Delta t}{\rho \Delta z}F_i
 \end{eqnarray}.
 
 The net ice fall in to the layer `k' is
@@ -338,7 +340,7 @@ vapour; \(k_a\) is the thermal conductivity of air at temperature
 saturated vapour pressure over ice; \(L_{\mathrm{s}}\) is the latent
 heat of sublimation of ice; \(C\) is a capacitance term and \(F\) is a
 ventilation coefficient. \(C\) is assumed to appropriate to spheres, so
-is equal to \(D/2\) . \(F\) is given by Pruppacher and Klett (1978) as
+is equal to \(D/2\) . \(F\) is given by Pruppacher and Klett (1997) as
 \(F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}\), where \(S c\) is the Schmidt
 number, equal to \(0.6,\) and \(R e\) is the Reynolds number,
 \(v(D) \rho D / \mu,\) where \(\mu\) is the dynamic viscosity of air.
@@ -378,6 +380,7 @@ the liquid drops that would lose mass by evaporation.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
 \tightlist
 \item
   \((S_i - 1)<0\)
@@ -414,7 +417,7 @@ E_{\mathrm{SW}}^{\mathrm{agg}}=0.939 \mathrm{St}^{2.657}
 \end{eqnarray}
 
 The Stokes number (St) is given by \begin{eqnarray}
-\mathrm{St}=\frac{2\left(V_{t}-{v}_{t}\right) {v}_{t}}{D g}.
+\mathrm{St}=\frac{2\left(V_{t}-{v}_{t}\right) {v}_{t}}{D g}
 \end{eqnarray}
 
 \(V_{t}\) is the snow crystal terminal velocity, and \(D\) is the
@@ -432,10 +435,10 @@ particle is given by:
 \begin{eqnarray}
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {mlt}}
 =-\left(\frac{\partial q_i}{\partial t}\right)_{\text {mlt}}
-=4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\},
+=4 \pi C F\left\{k_{\mathrm{a}} / L_{\mathrm{m}}\left(T^{\mathrm{w}}-T_{0}\right)\right\}
 \end{eqnarray}
 
-where \(L_{\mathrm{m}}\) is the latent heat of melting of ice,
+,where \(L_{\mathrm{m}}\) is the latent heat of melting of ice,
 \(T^{\mathrm{w}}\) is the wet-bulb temperature of the air and
 \(T_{0}=273.15\mathrm{K}\) is the freezing point of ice. Ice melt occurs
 when \(T^{\mathrm{w}}-T_{0}>0\). The capacitance term, \(C,\) is
@@ -454,7 +457,7 @@ parameterization by Abdul-Razzak and Ghan (2000), which depends on the
 aerosol particle number concentrations, size distributions and chemical
 properties of of each aerosol species, and the updraft velocity.
 
-The autoconversion term following Berry (1967) is a function of \(q_c\)
+The autoconversion term following Berry (1968) is a function of \(q_c\)
 and \(N_c\).
 
 \begin{eqnarray}
