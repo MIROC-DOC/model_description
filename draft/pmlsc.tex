@@ -1,10 +1,10 @@
-\hypertarget{pmlsc-large-scale-condensation}{%
-\subsection{pmlsc: Large Scale
-Condensation}\label{pmlsc-large-scale-condensation}}
+\hypertarget{large-scale-condensation}{%
+\subsection{Large Scale Condensation}\label{large-scale-condensation}}
 
-The SUBROUTINE:{[}PDF2CLD{]} and SUBROUTINE:{[}CLD2PDF{]} are written in
-pmlsc.F file. These are called in padmn.F, pcumc.F, pshcn.F, pcldphys.F
-and pvdfm.F files.
+The \texttt{SUBROUTINE:{[}PDF2CLD{]}} and
+\texttt{SUBROUTINE:{[}CLD2PDF{]}} are written in \texttt{pmlsc.F} file.
+These are called in
+\texttt{padmn.F,\ pcumc.F,\ pshcn.F,\ pcldphys.F\ and\ pvdfm.F} files.
 
 \hypertarget{physical-basis-for-statistical-pdf-scheme}{%
 \subsubsection{Physical basis for statistical PDF
@@ -296,12 +296,12 @@ subroutine CLD2PDF calculates \(\mathcal{V}\) and \(\mathcal{S}\) given
 \(\bar{p}, T_{l,} \bar{q}_{t}, \bar{q}_{c}, C\). We will derive the
 concrete calculation processes in this subsection.
 
-\hypertarget{subroutinepdf2cld}{%
-\paragraph{SUBROUTINE:{[}PDF2CLD{]}}\label{subroutinepdf2cld}}
+\hypertarget{caluculation-of-cloud-variables-from-pdf-moments}{%
+\paragraph{Caluculation of cloud variables from PDF
+moments}\label{caluculation-of-cloud-variables-from-pdf-moments}}
 
-\hypertarget{from-mu_1-mu_2-mu_3-to-abq}{%
-\subparagraph{\texorpdfstring{From \(\mu_{1}, \mu_{2}, \mu_{3}\) To
-\(a,b,q\)}{From \textbackslash mu\_\{1\}, \textbackslash mu\_\{2\}, \textbackslash mu\_\{3\} To a,b,q}}\label{from-mu_1-mu_2-mu_3-to-abq}}
+This is written in \texttt{SUBROUTINE:{[}PDF2CLD{]}}. \#\#\#\#\# From
+\(\mu_{1}, \mu_{2}, \mu_{3}\) To \(a,b,q\)
 
 The first, second, and third moments of the PDF is calculated as
 follows.
@@ -397,8 +397,11 @@ Q_{c} & \text { if }-Q_{c}<a
 \label{E08-16}
 \end{eqnarray}
 
-\hypertarget{subroutinecld2pdf}{%
-\paragraph{SUBROUTINE:{[}CLD2PDF{]}}\label{subroutinecld2pdf}}
+\hypertarget{caluculation-of-pdf-moments-from-cloud-variables.}{%
+\paragraph{Caluculation of PDF moments from cloud
+variables.}\label{caluculation-of-pdf-moments-from-cloud-variables.}}
+
+This is written in \texttt{SUBROUTINE:{[}CLD2PDF{]}}
 
 \hypertarget{from-barq_c-c-to-abq}{%
 \subparagraph{\texorpdfstring{From \(\bar{q_c}, C\) To
