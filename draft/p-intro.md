@@ -17,6 +17,8 @@ We compute the time-varying terms $F_x, F_y, Q, M, S$ for the prognostic variabl
 
 ### Time Integration of Physical Parameterizations
 
+**NOTE: the descriptions in this section are outdated.**
+
 In terms of time integration of predictors, we can classify the physical Parameterizations in the following three orders of execution.
 
 1. Cumulus convection, shallow convection and large-scale condensation
