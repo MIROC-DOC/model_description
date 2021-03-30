@@ -6,7 +6,7 @@ The `SUBROUTINE:[CLDPHYS]` is written in the `pcldphys.F` file.
 
 Cloud microphysics control the conversion from water condensate to precipitate. The condensate parameterization closely links to the lifetime of and radiative properties of the clouds.
 
-The stratiform (non-convective) cloud microphysics in MIROC6 (Tetebe et al. 2019) are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme. The previous version of the scheme in MIROC3.2 diagnoses the fraction of liquid-phase condensate to total condensate simply as a function of the local temperature. In contrast, the explicit treatment of ice cloud processes allows flexible representation of the cloud liquid/ice partitioning in MIROC5 and MIROC6 (Watanabe et al. 2010; Cesana et al. 2015).
+The stratiform (non-convective) cloud microphysics in MIROC6 (Tatebe et al. 2019) are basically the same as those used in MIROC5 (Watanabe et al. 2010). MIROC5 implemented a physically based bulk microphysical scheme. The previous version of the scheme in MIROC3.2 diagnoses the fraction of liquid-phase condensate to total condensate simply as a function of the local temperature. In contrast, the explicit treatment of ice cloud processes allows flexible representation of the cloud liquid/ice partitioning in MIROC5 and MIROC6 (Watanabe et al. 2010; Cesana et al. 2015).
 
 The MIROC6 cloud microphysics scheme uses four quantities to describe water in the atmosphere: vapour; liquid-phase cloud droplets; raindrops; and frozen water. Only one quantity, which we will refer to as ‘ice’, is used to describe all frozen water in large-scale clouds, including aggregated snow, pristine ice crystals and rimed particles. Physically based transfer terms link the four water quantities. The scheme treats two prognostic condansate variables: ice water mixing ratio $q_i$ and cloud water mixing ratio $q_c$. Water vapor mixing ratio $q_v$ affects the rate of microphysical processes and $q_v$ itself is also modified via microphysical processes. Ice number concentration $N_i$ is diagnosed as a function of $q_i$ and air temperature $T$ in $\mathrm{~K}$. Cloud number concentration $N_c$ is predicted by the online aerosol module implemented. Rain water mixing ratio $q_r$ is treated as a diagnostic variable: $q_r$ falls out to the surface within the time step. Cloud fraction is predicted as described in the section 'pmlsc: Large Scale Condensation'.
 
@@ -213,7 +213,7 @@ $$
 \frac{\partial m_i(D)}{\partial t}=\left\{4 \pi C\left(S_{\mathrm{i}}-1\right) F\right\} /\left[\left\{L_{\mathrm{s}} /(R_{v} T)-1\right\} L_{\mathrm{s}} /\left(k_{\mathrm{a}} T\right)+R_v T /\left(X P_{\text {sati }}\right)\right]
 $$
 
-where $\frac{\partial m_i(D)}{\partial t}$ is the rate of change of the particle mass; $(S_i - 1)$ is the supersaturation of the atmosphere with respect to ice; $R_v$ is the gas constant for water vapour; $k_a$ is the thermal conductivity of air at temperature $T, X$ is the diffusivity of water vapour; $P_{\text {sati}}$ is the saturated vapour pressure over ice; $L_{\mathrm{s}}$ is the latent heat of sublimation of ice; $C$ is a capacitance term and $F$ is a ventilation coefficient. $C$ is assumed to appropriate to spheres, so is equal to $D/2$ . $F$ is given by Pruppacher and Klett (1978) as $F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}$, where $S c$ is the Schmidt number, equal to $0.6,$ and $R e$ is the Reynolds number, $v(D) \rho D / \mu,$ where $\mu$ is the dynamic viscosity of air.
+where $\frac{\partial m_i(D)}{\partial t}$ is the rate of change of the particle mass; $(S_i - 1)$ is the supersaturation of the atmosphere with respect to ice; $R_v$ is the gas constant for water vapour; $k_a$ is the thermal conductivity of air at temperature $T, X$ is the diffusivity of water vapour; $P_{\text {sati}}$ is the saturated vapour pressure over ice; $L_{\mathrm{s}}$ is the latent heat of sublimation of ice; $C$ is a capacitance term and $F$ is a ventilation coefficient. $C$ is assumed to appropriate to spheres, so is equal to $D/2$ . $F$ is given by Pruppacher and Klett (1997) as $F=0.65+0.44 S c^{1 / 3} R e^{1 / 2}$, where $S c$ is the Schmidt number, equal to $0.6,$ and $R e$ is the Reynolds number, $v(D) \rho D / \mu,$ where $\mu$ is the dynamic viscosity of air.
 
 Integrating ice size distribution, $\left(\frac{\partial q_i}{\partial t}\right)_{\text {dep}}$ is obtained as
 
@@ -278,7 +278,7 @@ $$
 
 We assume $N_c$ is the number of aerosols activated as droplets. The nucleation of cloud droplets is predicted in the aerosol module SPRINTARS (Takemura et al. 2000; 2002; 2005; 2009) based on the parameterization by Abdul-Razzak and Ghan (2000), which depends on the aerosol particle number concentrations, size distributions and chemical properties of of each aerosol species, and the updraft velocity.
 
-The autoconversion term following Berry (1967) is a function of $q_c$ and $N_c$.
+The autoconversion term following Berry (1968) is a function of $q_c$ and $N_c$.
 
 $$
 \left(\frac{\partial q_r}{\partial t}\right)_{\text {auto}}
