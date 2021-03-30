@@ -6,32 +6,32 @@
 %\begin{document}
 \subsection{Tracer advection Scheme}
 \subsubsection{Introduction of tracer advection scheme}
-MIROC6 adopts spectral method based on Spherical harmonic expansion to dynamic core.
+MIROC6 adopts a spectral method based on Spherical harmonic expansion to dynamic core.
 The spectral method is an excellent method, but it has some drawbacks.
 \begin{enumerate}
-\item Because of Gibbs phenomenon, noisy oscillations are produced when representing a field that is not smoot.
-\item Associated with Gibbs phenomenon, negative value may occure on grids whre they are not supposed to. ex.) specific humidity.
+\item Because of Gibbs phenomenon, noisy oscillations are produced when representing a non-smooth field.
+\item Associated with Gibbs phenomenon, negative value may occure on grids where they are not supposed to such as, eg., specific humidity.
 \item Global conservation of conservative quantity is good enough, but local conservation does not always hold.
 \item The property that information is transmitted from upstream to downstream is not always satisfied. In spherical model, information travels instantly to the other side of the world.
 \end{enumerate}
 Despite of these disadvantages, MIROC has adoptted spectral method as dynamic core.
 Gibbs phenomenon usually doesn't cause any problems.
-However, when describing the transport of materials with strong discontinuity, the noisy oscillation and unecpected negative values sometimes appear.
+However, when describing the transport of materials with strong discontinuity, the noisy oscillation and unexpected negative values sometimes appear.
 For example, water vapor in polar region and the stratosphere often shows discontinuous distribution because there is very small amount of water vapor.
 Tracers such as aerosols are also distributed locally and often show large discontinuity.
 These tracers are easy to affected by Gibbs phenomenon.
-Therefore, in MIROC6, water vapor transport and tracer transport are calculated using flux form semi-Lagrange (FFSL) scheme (Lin and Rood 1996) instead of using the spectral method.
+Therefore, in MIROC6, water vapor transport and tracer transport are calculated using a flux form semi-Lagrange (FFSL) scheme (Lin and Rood 1996) instead of using the spectral method.
 
 Merits of this scheme are described below.
 \begin{enumerate}
-\item Gibbs phenomenon doesn't occur because it's based on gridpoint method, it enables us to represent unsmooth fields with good accuracy.
+\item Gibbs phenomenon doesn't occur because it's based on gridpoint method. Therefore, non-smooth fields can be represented with better accuracy.
 \item Negative values of tracer quantity can be avoided even in unsmooth fields.
 \item No new extreme values are created.
 \item Information is transmitted from upstream to downstream.
 \item Conservation is satisfied locally and globally.
 \item Problems which is induced by narrow grid range in polar region can be avoided.
 \end{enumerate}
-In the next section, the principle of the tracer advection scheme is introduced in detail, and in the follwing section, we describe the actual implementation of the tracer advection scheme.
+In the next section, the principle of the tracer advection scheme is introduced in detail, and in the following section, we describe the actual implementation of the tracer advection scheme.
 
 \subsubsection{Principle of the tracer advection scheme}
 \subsubsubsection{Transport equation in flux form}
@@ -41,7 +41,7 @@ As example, three dimension advection equation in (x,y,p) rectangukar coordinate
 \begin{equation}
 \frac{\partial q}{\partial t} = -u \frac{\partial q}{\partial x}-v \frac{\partial q}{\partial y}-\omega \frac{\partial q}{\partial p}
 \end{equation}
-Here, $q$ is the amount of tracer (ex. specific humidity for water vapor), $u,v$ is zonal and merodinial velocity respectively.
+Here, $q$ is the amount of tracer (ex. specific humidity for water vapor), $u,v$ is zonal and meridional velocity respectively.
 By substituting continuity equation to this, we get the advection equation in flux form.
 \begin{equation}
   \frac{\partial q}{\partial t}=-\frac{\partial}{\partial x}(uq)-\frac{\partial}{\partial y}(vq)-\frac{\partial}{\partial p}(\omega q)
@@ -52,12 +52,12 @@ Discretizing by $x=x_{i} (i=1,2,3...), y=y_{j} (j=1,2,3...), p=p_{k} (k=1,2,3...
   \frac{\partial q_{i,j,k}}{\partial t}=\frac{1}{\Delta x_{i,j,k}}(F^{x}_{i-\frac{1}{2},j,k}-F^{x}_{i+\frac{1}{2},j,k})+\frac{1}{\Delta y_{i,j,k}}(F^{y}_{i,j-\frac{1}{2},k}-F^{y}_{i,j+\frac{1}{2},k})+\frac{1}{\Delta p_{i,j,k}}(F^{p}_{i,j,k-\frac{1}{2}}-F^{p}_{i,j,k+\frac{1}{2}})
 \end{equation}
 Here, $F^{x}_{i-\frac{1}{2},j,k}$ is the flux in $x$ direction at boundary between $(i,j,k)$ and $(i-1,j,k)$, $\Delta x_{i,j,k}$ is x-direction width of grid represented as $(i,j,k)$.
-This flux formed equation automatically satisfies conservation law.
+This flux formed equation automatically satisfies the conservation law.
 The accuracy of the scheme depends on how $F^{x}_{i-\frac{1}{2},j,k}$ is chosen.
 Next, how $F^{x}_{i-\frac{1}{2},j,k}$ is determind in MIRIOC6 is explianed in one dimension in x-direction, for simplicity.
 \subsubsection{The Piecewise Parobolic Method (PPM) scheme}
-In semi-Lagrange scheme, the flux of point $x_{i+\frac{1}{2}}$ at time $t$ is calculated by using $q$ of point $x_{i+\frac{1}{2}}-u\Delta t$ at time $t-\Delta t$.
-The value of $u$ at time $t$, and $q$ at time $t-\Delta t$ are used.
+In semi-Lagrange scheme, the flux at point $x_{i+\frac{1}{2}}$ at time $t$ is calculated by using $q$ at point $x_{i+\frac{1}{2}}-u\Delta t$ at time $t-\Delta t$.
+The velocity $u=u(t)$ is used assuming constant locally during this period, and $q$ at time $t-\Delta t$ are used.
 If CFL condition ($|\frac{u\Delta t}{\Delta x}|<1$) is satisfied and $u_{i+\frac{1}{2}}>0$, $x_{i+\frac{1}{2}}-u\Delta t$ is at a point inside grid $i$.
 
 As the value of $q$ at point $x_{i+\frac{1}{2}}-u\Delta t$, $q_{i}$, which is the average value of point $i$, can be chosen, assuming that $q$ is constant in the grid.
@@ -67,7 +67,7 @@ This discontinuity strengthens numerical viscosity, and is unwanted for numerica
 Therefore, we want to give some kind of distribution to $q$, which is assumed to be constant in a grid, in order to eliminate the discontinuity and enable us to calculate $q$ at $x_{i+\frac{1}{2}}-u\Delta t$ by interpolation.
 Given distribution must be satisfied a condition as follows.
 \begin{equation}
-  q_{i}=\frac{1}{\Delta x_{i}} \int_{x_{i+\frac{1}{2}}}^{i-\frac{1}{2}} q(x) dx
+  q_{i}=\frac{1}{\Delta x_{i}} \int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}} q(x) dx
 \end{equation}
 
 The old editions of MIROC adoptted van Leer method, in which interpolation function is a linear function, but MIROC6 adopts The Piecewise Parobolic Method (PPM) scheme (Colella and Woodward 1984) , in which interpolation function is a quadrative function (Fig.\ref{f1}). The FFSL scheme which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
@@ -148,12 +148,12 @@ flux $F^{x}_{i+\frac{1}{2}}$ is wriiten as follows.
 The above argument is stable only if $C<1$
 When the grid method is adapted to spherical coordinate, $\Delta x$ is very small in polar region.
 Therefore, we have to take very small $\Delta t$ to satisfy CFL condition.
-The method for avoiding $C>1$ and taking larger $\Delta t$ are described below.
+The special treatment when $C>1$ for taking larger $\Delta t$ are described below.
 Although this method is used for any grid widths, in this subsection we assume that $\Delta x$ does not depend on $i$ for simplicity.
 
 Courant number can be divided into a integral fraction and a decimal fraction.
 \begin{equation}
-  C=I_{C}+\hat{C},\quad I_{C}: a integral fraction,\quad -0.5\le \hat{C} \le 0.5
+  C=I_{C}+\hat{C},\quad I_{C}: \text{an integer fraction},\quad -0.5\le \hat{C} \le 0.5
 \end{equation}
 When $I_{C}>0$
 \begin{equation}
@@ -188,11 +188,11 @@ In the same way, when calculating y-direction flux $F^{x}_{i+\frac{1}{2},j}$,
   In the case of three dimensional tracer advection, this procedure is conducted in two dimension.
 
   \subsubsection{Actual tracer advection scheme in MIROC6}
-  In this subsection, actual procedure of the tracer advection scheme is described.
-  Although MIROC6 adopts $\sigma -p$ hybrid coordinate as vertical coordinate, the tracer advection scheme is largely based on $\sigma$ coordinate because previous version of MIROC adopted $\sigma$ coordinate.
+  In this subsection, the procedure implemented in MIROC6 of the tracer advection scheme is described.
+  Although MIROC6 adopts $\sigma$-$p$ hybrid coordinate as vertical coordinate, the tracer advection scheme is largely based on $\sigma$ coordinate because previous version of MIROC adopted $\sigma$ coordinate.
   Therefore, firstly the procedure under $\sigma$ coordinate system is described.
   After this, the changes in the hybrid coordinate system from the $\sigma$ coordinate system is described.
-  \subsubsubsection{$\sigma$ coordinate)}
+  \subsubsubsection{$\sigma$ coordinate}
 The transport equation in $\sigma$ coordinate on the sphere is expressed as
 \begin{eqnarray}
   \label{b1}
@@ -225,7 +225,7 @@ And
 \end{equation}
 This flux form equation ensure the conservation.
 
-For the calculation of the time-averaged mass flux across the cell boundary, the winds and the tracer distributions are staggered in the Arakawa C-grid (Mesinger and Arakawa 1976). Tne horizontal winds at the cell boundary, $u_{i-\frac{1}{2},j,k}, v_{i-\frac{1}{2},j,k}$, are reconstructed by using the mass convergence field in the spectral model and the discretized continuity eqution:
+For the calculation of the time-averaged mass flux across the cell boundary, the winds and the tracer distributions are staggered in the Arakawa C-grid (Mesinger and Arakawa 1976). The horizontal winds at the cell boundary, $u_{i-\frac{1}{2},j,k}, v_{i-\frac{1}{2},j,k}$, are reconstructed by using the mass convergence field in the spectral model and the discretized continuity eqution:
 \begin{equation}
   \frac{\partial P^{S}_{i,j,k} }{\partial t}=\frac{1}{\Delta D_{j,k}}[(V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k})+(V^{\varphi}_{i,j-\frac{1}{2},k}-V^{\varphi}_{i,j+\frac{1}{2},k}))+(V^{\sigma}_{i,j,k-\frac{1}{2}}-V^{\sigma}_{i,j,k+\frac{1}{2}})]
 \end{equation}
@@ -284,7 +284,7 @@ The condition for $V^{\lambda}=0$ is:
   $P^{s}_{t+\Delta t}$ from Eq. (\ref{a2}) is applied at present for the consistency of mass advection. Mass Conservation is not strictly satisfied because of the discrepancy between the surface pressure in the spectral model and from $P^{s}_{t+\Delta t}$ Eq. (\ref{a2}).
 \end{enumerate}
 
-\subsubsubsection{$\sigma-p$ hybrid coordinate}
+\subsubsubsection{$\sigma$-$p$ hybrid coordinate}
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid coordinate) on the sphere is:
 \begin{eqnarray}                                                             \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray}
