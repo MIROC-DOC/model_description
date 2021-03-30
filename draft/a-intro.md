@@ -1,4 +1,4 @@
-/## Features and structure of the model
+## Features and structure of the model
 
 **NOTE: the descriptions in this section are outdated.**
 
@@ -76,23 +76,23 @@ in (8). Note that $\Delta t$ in (8) is replaced by $2 \Delta t$.
 
 The flow of the model execution is briefly shown below. The entries in the index are the names of the corresponding subroutine.
 
-1. set the parameters of an experiment, coordinates, etc. `MODULE:[SETPAR,PCONST,SETCOR,SETZS]`
+1. set the parameters of an experiment, coordinates, etc. `SUBROUTINE:[PCONST,ASETCO,SETPAR,SETTSTRT,SETTEND]`
 
-2. read the initial values of the predictor variable `MODULE:[RDSTRT]`
+2. read the initial values of the prognostic variables `SUBROUTINE:[RDSTRT]`
 
-3. start the time step `MODULE:[TIMSTP]`
+3. start the time step `SUBROUTINE:[TIMSTP]`
 
-4. perform time integration by mechanical processes `MODULE:[DYNMCS]`
+4. perform time integration by mechanical processes `SUBROUTINE:[DYNMCS]`
 
-5. perform time integration by physical processes `MODULE:[PHYSCS]`
+5. perform time integration by physical processes `SUBROUTINE:[PHYSCS]`
 
-6. advance the time `MODULE:[STPTIM, TFILT]`
+6. advance the time `MODULE:[TFILT]`
 
-Output the data if necessary `MODULE:[HISTOU]`
+7. Output the data if necessary `MODULE:[HISTOU]`
 
-Output the restart data if necessary `MODULE:[WRRSTR]`
+8. Output the restart data if necessary `SUBROUTINE:[WRRSTR]`
 
-9. 3\. Back to
+9. Return to 3
 
 ### Prognostic variables
 
