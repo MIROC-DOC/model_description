@@ -101,24 +101,31 @@ Output the restart data if necessary `MODULE:[WRRSTR]`
 
 9. 3\. Back to
 
-### Prognostic variables.
+### Prognostic variables
 
 The prognostic variables are as follows. The values in parentheses are the coordinate system, and $\lambda,\varphi,\sigma, z$ indicate the longitude, latitude, dimensionless pressure, $\sigma$, and vertical depth, respectively. The values in the square brackets are in units of the index.
 
-| Header0 | Header1 | Header2 |
+| Element | Symbol | Unit |
 | ------- | ------- | ------- |
 | eastward wind speed | $u$ ($\lambda,\varphi,\sigma$) | $\mathrm{[m/s]}$|
 | northward wind speed | $v$ ($\lambda,\varphi,\sigma$) | $\mathrm{[m/s]}$|
 | atmospheric temperature | $T$ ($\lambda,\varphi,\sigma$) | $\mathrm{[K]}$ |
 | surface pressure | $p_S$ ($\lambda,\varphi$) |  $\mathrm{[hPa]}$ |
 | specific humidity | $q$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
-| Cloud water mixing ratio | $l$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
+| cloud water specific humidity | $l$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
+| cloud ice specific humidity | $q_i$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
+| total water PDF variance | $V$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
+| total water PDF skewness | $S$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
+| variance of liquid potential temperature | $TSQ$ ($\lambda,\varphi,\sigma$) |  $\mathrm{K^2}$ |
+| covariance of liquid potential temperature and total water | $COV$ ($\lambda,\varphi,\sigma$) |  $\mathrm{K}$ |
+| variance of total water | $QSQ$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
+| tracers | | |
 
-In the CCSR/NIES AGCM, $q$ and $l$ are not independent variables; in fact, $q+l$ is the prognostic variable.
+Of these quantities, the quantities for turbulence process, $TSQ, COV, QSQ$, store only one step at a time, while the quantities for the atmosphere, $u, v, T, p_S, q, l, q_i, V, S$, need to store two steps at a time. This is due to the fact that the leap frog method is used in the time integration of the dynamic process of the quantities related to the atmosphere.
 
-Of these quantities, the quantities for the surface and the subsurface, $T_g, W_g, W_y, h_I$, store only one step at a time, while the quantities for the atmosphere, $u, v, T, p_S, q, l$, need to store two steps at a time. This is due to the fact that the leap forg method is used in the time integration of the dynamic process of the quantities related to the atmosphere.
+The quantities of the atmosphere, $u, v, T, p_S, q, l$, are variables managed by the main routine, `Administration of the Atmosphere'[AGCM5\a]`. On the other hand, the quantities relating to the earth's surface and ground, $q_i, V, S, TSQ, COV, QSQ$, do not appear in the main routine, but are managed by the subroutine `MODULE:[PHYSCS]` of the physical process.
 
-The quantities of the atmosphere, $u, v, T, p_S, q, l$, are variables managed by the main routine, `Administration of the Atmosphere'[AGCM5\a]`. On the other hand, the quantities relating to the earth's surface and ground, $T_g, W_g, W_y, h_I$, do not appear in the main routine, but are managed by the subroutine `MODULE:[PHYSCS]` of the physical process.
+Tracers include mass concentrations of aerosol species,
 
 ### The flow of time evolution of variables
 
