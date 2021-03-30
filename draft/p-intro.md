@@ -21,13 +21,13 @@ We compute the time-varying terms $F_x, F_y, Q, M, S$ for the prognostic variabl
 
 In terms of time integration of predictors, we can classify the physical Parameterizations in the following three orders of execution.
 
-1. Cumulus convection, shallow convection and large-scale condensation
+1. Cumulus convection, shallow convection, large-scale condensation, and cloud microphysics
 
 2. Radiation, turbulence and surface fluxes
 
-3. Gravitational wave drag, and dry convective adjustment
+3. Gravitational wave drag
 
-Cumulus convection and large-scale condensation,
+For cumulus convection, shallow convection, large-scale condensation, and cloud microphysics, the values are updated by the usual Euler difference as follows.
 
 $$
   \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t}
@@ -41,7 +41,7 @@ $$
 $$
 
 
-where the values are updated by the usual Euler difference Note that the large-scale condensation scheme is updated by the cumulus convection scheme. In practice, the routines of cumulus convection and large-scale condensation output the heating rates and so on, and the time integration is performed immediately afterwards by `MODULE:[GDINTG]`.
+Note that the large-scale condensation scheme is updated by the cumulus convection scheme. In practice, the routines of cumulus convection and large-scale condensation output the heating rates and so on, and the time integration is performed immediately afterwards by `MODULE:[GDINTG]`.
 
 The calculations of the radiative, vertical diffusion, ground boundary layer and surface processes in the following groups are basically performed with these updated values ($\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}$, etc.). However, in order to calculate some of the terms as implicit, we calculate the heating rates and so on for all of these terms together, and then perform time integration at the end. In other words, if we write symbolically
 
