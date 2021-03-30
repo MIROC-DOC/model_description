@@ -1,6 +1,6 @@
 # Physics
 
-## Overview of Physical Processes.
+## Overview of Physical Parameterizations
 
 As a physical process, we can consider the following
 
@@ -13,28 +13,30 @@ As a physical process, we can consider the following
 - Surface fluxes
 - Gravity wave drag
 
-We compute the time-varying terms $F_x, F_y, Q, M, S$ for the forecast variables from these processes, and perform time integration. In order to evaluate the atmospheric and surface fluxes, the ground surface sub-model is used. The ground surface sub-model uses such predictors as the ground temperature ($T_g$), ground moisture ($W_g$), and snow cover ($W_y$) as predictor variables.
+We compute the time-varying terms $F_x, F_y, Q, M, S$ for the prognostic variables from these processes, and perform time integration.
 
 
+<!--
 **NOTE: the descriptions in this section are outdated.**
+-->
 
-### Fundamental Equations.
+### Fundamental Equations
 
-Considering the equation of motion of the atmosphere in $\sigma$ coordinate system, thermodynamic equations, and equations for continuity of materials such as water vapor etc. Considering the vertical fluxes of momentum, heat, water vapor, etc., the time variation of the fluxes is determined by their convergence. All the vertical fluxes are assumed to be positive for the upward direction.
+The equation of momentum, thermodynamics and continuity of materials such as water vapors in the \sigma coordinate system are derived as follows. Considering the vertical fluxes of momentum, heat, water vapor, etc., the time variation of the fluxes is determined by their convergence. All the vertical fluxes are defined to be positive for the upward direction.
 
 1. equation of motion
 
 $$
-  \rho \frac{d {u}}{d {t}} = \frac{\partial{Fu}}{\partial {\sigma}}
+  \rho \frac{d {u}}{d {t}} = \frac{\partial{F_u}}{\partial {\sigma}}
 $$
 
 
 $$
-  \rho \frac{d {v}}{d {t}} = \frac{\partial{Fv}}{\partial {\sigma}}
+  \rho \frac{d {v}}{d {t}} = \frac{\partial{F_v}}{\partial {\sigma}}
 $$
 
 
-$u, v$: East-West, North-South Wind; $Fu, Fv$: Their Vertical Flux.
+$u, v$: East-West, North-South Wind; $F_u, F_v$: Their Vertical Flux.
 
 2. thermodynamic equation
 
@@ -43,7 +45,7 @@ $$
                      + \frac{\partial{F{R}}}{\partial {\sigma}}
 $$
 
-$T$: Temperature; $c_p$: Constant Pressure Specific Heat; $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Temperature Level; $F\theta$: Vertical Sensible Heat Flux; $FR$: Vertical Radiation Flux.
+$T$: Temperature; $c_p$: Specific heat capacity at constant pressure; $\theta=T(p/p_0)^{-R/c_p}=T(p/p_0)^{-\kappa}$: Temperature Level; $F\theta$: Vertical Sensible Heat Flux; $FR$: Vertical Radiation Flux.
 
 Here, with $\theta'=T(p/p_s)^{-\kappa}=T\sigma^{-\kappa}$, this is,
 
@@ -58,20 +60,20 @@ As far as one-dimensional vertical processes are concerned, instead of $\theta$,
 3. water vapor continuity formula
 
 $$
-  \rho \frac{d {q}}{d {t}} = \frac{\partial{Fq}}{\partial {\sigma}}
+  \rho \frac{d {q}}{d {t}} = \frac{\partial{F_q}}{\partial {\sigma}}
 $$
 
-$q$: Specific Humidity; $F{q}$: Vertical Water Vapor Flux.
+$q$: Specific Humidity; $F_q$: Vertical Water Vapor Flux.
 
-### Time integration of physical processes.
+### Time Integration of Physical Parameterizations
 
-In terms of time integration of predictors, we can classify the physical processes in the following three orders of execution.
+In terms of time integration of predictors, we can classify the physical Parameterizations in the following three orders of execution.
 
-1. cumulus convection and large-scale condensation
+1. Cumulus convection, shallow convection and large-scale condensation
 
-2. radiation, vertical diffusion, ground boundary layer and surface processes
+2. Radiation, turbulence and surface fluxes
 
-3. gravitational wave resistance, mass regulation, dry convection regulation
+3. Gravitational wave drug, and dry convective adjustment
 
 Cumulus convection and large-scale condensation,
 
@@ -106,20 +108,20 @@ $$
 $$
 
 
-### Various physical quantities.
+### Various physical quantities
 
 Here are definitions of various geophysical quantities that can be computed simply from the predictors. Some of them are calculated with `MODULE:[PSETUP]`.
 
-1. temporary temperature
+1. Virtual temperature
 
- Provisional Temperature $T_v$ is ,
+Virtual Temperature $T_v$ is ,
 
 $$
   T_v = T ( 1 + \epsilon_v q - l )
 $$
 
 
-2. air density
+2. Air density
 
  The atmospheric density $\rho$ is calculated as follows
 
@@ -128,7 +130,7 @@ $$
 $$
 
 
-3. high degree
+3. Altitude
 
 The altitude $z$ is evaluated in the same way as the calculation of the geopotential for mechanical processes.
 
@@ -139,7 +141,6 @@ $$
 $$
  \Phi_{1}  =  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1}
 $$
-
 
 $$
  \Phi_k - \Phi_{k-1}
@@ -152,8 +153,7 @@ $$
               \right] T_{v,k-1}
 $$
 
-
-4. layer boundary temperature
+4. Temperature at the boundary layer
 
 The temperature at the boundary of the layer is calculated by performing a linear interpolation on $\ln p$, i.e., $\ln \sigma$.
 
@@ -165,49 +165,49 @@ $$
 $$
 
 
-5. saturated specific humidity
+5. Saturated specific humidity
 
-The saturated specific humidity $q^*(T,p)$ are approximated using the saturated vapor pressure $e^*(T)$,
+The saturated specific humidity $q^\*(T,p)$ are approximated using the saturated vapor pressure $e^\*(T)$,
 
 $$
-q^*(T,p) = \frac{\epsilon e^*(T)}{p} .
+q^\*(T,p) = \frac{\epsilon e^\*(T)}{p} .
 $$
 
 Here, it is $\epsilon=0.622$,
 
 $$
-\frac{1}{e^*_v} \frac{\partial{e^*_v}}{\partial {T}} = \frac{L}{R_v T^2} \tag{p199}
+\frac{1}{e^\*_v} \frac{\partial{e^\*_v}}{\partial {T}} = \frac{L}{R_v T^2} \tag{p199}
 $$
 
 Therefore, if the latent heat of evaporation ($L$) and the gas constant of water vapor ($R_v$) are held constant, the number of vaporized materials will be reduced,
 
 $$
-  e^*(T) = e^*(T=273{K})
+  e^\*(T) = e^\*(T=273{K})
                       \exp \left[ \frac{L}{R_v}
                             \left( \frac{1}{273} - \frac{1}{T} \right)
                        \right] ,
 $$
 
-where $e^*(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}$.
+where $e^\*(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}$.
 
 From eq.[p199](#p199),
 
 $$
-\frac{\partial{q^*}}{\partial {T}} = \frac{L}{R_v T^2} q^*(T,p) .
+\frac{\partial{q^\*}}{\partial {T}} = \frac{L}{R_v T^2} q^\*(T,p) .
 $$
 
 
 Here, if the temperature is lower than the freezing point 273.15K, the sublimation latent heat $L+L_M$ is used as the latent heat $L$.
 
-6. dry static energy, wet static energy
+6. Dry static energy and moisture static energy
 
-Dry static energy $s$ is
+The dry static energy $s$ is
 
 $$
   s = C_p T + g z
 $$
 
-Wet Static Energy $h$ is defined by
+The moisture static Energy $h$ is defined by
 
 $$
   h = C_p T + g z + L q
