@@ -10,7 +10,7 @@ In the beginning, the team converted the original Japanese document written in L
 
 - Mr. Yuki Takano supervised by Dr. Minoru Chikira for Cumulus Scheme (Ch.3.2)
 
-- Mr. Takuya Jinna supervised by Dr. Tomoo Ogura for Shallow Convection Scheme (Ch.3.3)
+- Mr. Takuya Jinno supervised by Dr. Tomoo Ogura for Shallow Convection Scheme (Ch.3.3)
 
 - Ms. Haruka Hotta supervised by Dr. Takuro Michibata and Dr. Kentaro Suzuki for Large Scale Condensation (Ch.3.4) and Cloud Microphysics (Ch.3.5)
 
