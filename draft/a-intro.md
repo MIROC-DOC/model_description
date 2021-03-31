@@ -1,7 +1,5 @@
 ## Features and structure of the model
 
-**NOTE: the descriptions in this section are outdated.**
-
 ### Basic Features of the Model.
 
 The MIROC6 AGCM is a numerical model for describing the global three-dimensional atmosphere based on physical laws and calculating the time evolution of the system as an initial value problem or a boundary value problem.
@@ -47,7 +45,7 @@ $$
 $$
 
 
-By making ,
+By making,
 
 $$
   q^{t+\Delta t} = q^{t}
@@ -100,28 +98,24 @@ The flow of the model execution is briefly shown below. The entries in the index
 
 The prognostic variables are as follows. The values in parentheses are the coordinate system, and $\lambda,\varphi,\sigma, z$ indicate the longitude, latitude, dimensionless pressure, $\sigma$, and vertical depth, respectively. The values in the square brackets are in units of the index.
 
-| Element | Symbol | Unit |
-| ------- | ------- | ------- |
-| eastward wind speed | $u$ ($\lambda,\varphi,\sigma$) | $\mathrm{[m/s]}$|
-| northward wind speed | $v$ ($\lambda,\varphi,\sigma$) | $\mathrm{[m/s]}$|
-| atmospheric temperature | $T$ ($\lambda,\varphi,\sigma$) | $\mathrm{[K]}$ |
-| surface pressure | $p_S$ ($\lambda,\varphi$) |  $\mathrm{[hPa]}$ |
-| specific humidity | $q$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
-| cloud water specific humidity | $l$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
-| cloud ice specific humidity | $q_i$ ($\lambda,\varphi,\sigma$) |  $\mathrm{[kg/kg]}$ |
-| total water PDF variance | $V$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
-| total water PDF skewness | $S$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
-| variance of liquid potential temperature | $TSQ$ ($\lambda,\varphi,\sigma$) |  $\mathrm{K^2}$ |
-| covariance of liquid potential temperature and total water | $COV$ ($\lambda,\varphi,\sigma$) |  $\mathrm{K}$ |
-| variance of total water | $QSQ$ ($\lambda,\varphi,\sigma$) |  $\mathrm{ND}$ |
-| tracers | | |
+| Element                                                    | Symbol                           | Unit               |
+| ---------------------------------------------------------- | -------------------------------- | ------------------ |
+| Eastward wind speed                                        | $u$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[m/s]}$   |
+| Northward wind speed                                       | $v$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[m/s]}$   |
+| Atmospheric temperature                                    | $T$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[K]}$     |
+| Surface pressure                                           | $p_S$ ($\lambda,\varphi$)        | $\mathrm{[hPa]}$   |
+| Specific humidity                                          | $q$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[kg/kg]}$ |
+| Cloud water specific humidity                              | $l$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[kg/kg]}$ |
+| Cloud ice specific humidity                                | $q_i$ ($\lambda,\varphi,\sigma$) | $\mathrm{[kg/kg]}$ |
+| Total water PDF variance                                   | $V$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[ND]}$    |
+| Total water PDF skewness                                   | $S$ ($\lambda,\varphi,\sigma$)   | $\mathrm{[ND]}$    |
+| Variance of liquid potential temperature                   | $TSQ$ ($\lambda,\varphi,\sigma$) | $\mathrm{[K^2]}$   |
+| Covariance of liquid potential temperature and total water | $COV$ ($\lambda,\varphi,\sigma$) | $\mathrm{[K]}$     |
+| Variance of total water                                    | $QSQ$ ($\lambda,\varphi,\sigma$) | $\mathrm{[ND]}$    |
+| Tracers                                                    | -                                | -                  |
 
 Of these quantities, the quantities for turbulence process, $TSQ, COV, QSQ$, store only one step at a time, while the quantities for the atmosphere, $u, v, T, p_S, q, l, q_i, V, S$, need to store two steps at a time. This is due to the fact that the leap frog method is used in the time integration of the dynamic process of the quantities related to the atmosphere.
 
 The quantities of the atmosphere, $u, v, T, p_S, q, l$, are variables managed by the main routine, `Administration of the Atmosphere'[AGCM5\a]`. On the other hand, the quantities relating to the earth's surface and ground, $q_i, V, S, TSQ, COV, QSQ$, do not appear in the main routine, but are managed by the subroutine `MODULE:[PHYSCS]` of the physical process.
 
 Tracers include mass concentrations of aerosol species,
-
-### The flow of time evolution of variables
-
-This subsection is to be written.
