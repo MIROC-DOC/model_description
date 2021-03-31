@@ -14,7 +14,7 @@ q_{c}=\left(q_{t}-q_{s}\right) \delta\left(q_{t}-q_{s}\right)
 \tag{hpc.1}
 $$
 
-where $q_s$ denotes the saturation mixing ratio and $q_c$ does the cloud water ratio. $q_t$ is sum of water vapor and cloud water mixing ratio. $\delta(x)$ denotes the Heviside function of x.
+where $q_s$ denotes the saturation //mixing ratio and $q_c$ does the cloud water ratio. $q_t$ is sum of water vapor and cloud water mixing ratio. $\delta(x)$ denotes the Heviside function of x.
 
 The majority of statistical cloud schemes use the so-called "s-distribution" following Sommeria and Deardorff (1977). A single variable $s$, which considers the subgrid-scale perturbations of liquid temperature $T_l$ and total water mixing ratio $q_t$, is employed. $s$ is defined as
 
@@ -210,6 +210,7 @@ The pmlsc module includes two main subroutines, PDF2CLD and CLD2PDF. The subrout
 #### Caluculation of cloud variables from PDF moments
 
 This is written in `SUBROUTINE:[PDF2CLD]`.
+
 ##### From $\mu_{1}, \mu_{2}, \mu_{3}$ To $a,b,q$
 
 The first, second, and third moments of the PDF is calculated as follows.
