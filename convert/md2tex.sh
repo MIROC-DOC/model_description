@@ -18,6 +18,8 @@ do
 	echo ${name}
 	sed -e s/'\\('/'$'/g ${name}.md | \
 	sed -e s/'\\)'/'$'/g | \
+	sed -e s/'<div style="text-align: right;"><!\\begin{flushright}>'/'\\begin{flushright}'/g | \
+	sed -e s/'<\/div> <!\\end{flushright}>'/'\\end{flushright}'/g | \
 	sed -e s/'\[\(.*\)\](\(#.*\))'/'\[\]\(\2\)'/g >tmp.md
 	pandoc -t latex tmp.md| \
 	sed -e s/'\\\['/'\\begin\{eqnarray\}'/g | \
