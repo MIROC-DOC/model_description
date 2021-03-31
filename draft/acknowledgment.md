@@ -4,7 +4,7 @@ The original first version of this document was written in Japanese by Dr. Numag
 
 Here, with the newest release of MIROC series, MIROC6 (Tatebe et al., 2019), it was decided to make an overhaul of the document for the first time since the late 1990’s. This decision was triggered by some students’ simple question: “Why is this document so obsolete?” Then, under the TOUGOU project, some of the PIs organized *the MIROC6 AGCM document writing team* in the spring of 2020. The team consists of two groups; the authors and the supervisors/editors. All of the authors are doctor course students of the University of Tokyo, who use or are interested in using MIROC6, and the supervisors/editors are researchers, who contributed to development of MIROC6 and/or its previous versions.
 
-In the beginning, the team converted the original Japanese document written in LaTeX format into English Markdown format. Ms. Kino Kanon, Ms. Haruka Hotta, Mr. Yuki Takano, and Dr. Fuyuki Saito contributed to make a semi-automated tool for this conversion. Then the team was divided into several groups, and each group became in charge of each section. These groups and corresponding sections are as follows:
+In the beginning, the team converted the original Japanese document written in LaTeX format into English Markdown format. Ms. Kanon Kino, Ms. Haruka Hotta, Mr. Yuki Takano, and Dr. Fuyuki Saito contributed to make a semi-automated tool for this conversion. Then the team was divided into several groups, and each group became in charge of each section. These groups and corresponding sections are as follows:
 
 - Mr. Tomoki Iwakiri, Mr. Masaki Toda, and Mr. Kazuya Yamazaki supervised by Dr. Fuyuki Saito for Dynamics (Ch.2) and Coupler Scheme (Ch.4.1)
 
