@@ -1075,7 +1075,7 @@ r=\frac{1-e^{2}}{1+e(\cos V+\varpi)}
 \end{array}
 $$
 
-where $F_{00}$ is the solar constant and is　the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$ (in the daytime) in time increments (set in NHSUB), is counted, and $F_{0}$ and $\cos \zeta$ are finally averaged.
+where $F_{00}$ is the solar constant and is the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$ (in the daytime) in time increments (set in NHSUB), is counted, and $F_{0}$ and $\cos \zeta$ are finally averaged.
 
 It is also possible to give average annual insolation. In this case, the annual and day mean incidence and angle of incidence are approximated as follows.
 
