@@ -29,12 +29,12 @@ The only 1st layer is practically handed to the surface schemes.
 
 Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. In `ENTRY:[OCNFLX]`, the following procedure is used to deal with sea surface processes.
 
-1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
+1. Prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
 2. Determine the surface boundary conditions.
 3. Calculate the flux balance.
 4. Calculate the radiation budget at the sea surface.
 5. Calculate the deposition by CHASER.
-6. solve the heat balance at the sea surface and update the skin temperature and each flux value.
+6. Solve the heat balance at the sea surface and update the skin temperature and each flux value.
 
 No prognostic variables are used in this scheme.
 <!--

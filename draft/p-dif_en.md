@@ -1,4 +1,4 @@
-## Turbulence scheme
+## Turbulence Scheme
 A turbulence scheme represents the effect of subgrid-scale turbulence on the grid-mean prognostic variables. It calculates the vertical diffusion of momentum, heat, water and other tracers. The Mellor-Yamada-Nakanishi-Niino scheme (MYNN scheme; Nakanishi 2001; Nakanishi and Niino 2004) has been used as a turbulence scheme in MIROC since its version 5, which is an improved version of the Mellor-Yamada scheme (Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982). Its closure level is 2.5. Level 3 is available, however it was not adopted as a standard option, since we could not gain large benefits despite its much greater computational costs.
 
 In the MYNN scheme, liquid water potential temperature $\theta_l$ and total water $q_w$ are used as key variables, which are defined as
@@ -17,16 +17,16 @@ where $u$, $v$, and $w$ are velocities in zonal, meridional and vertical directi
 
 The outline of the computational procedures is given as follows along with the names of the subroutines. All the subroutines listed here are written in a Fortran source code of pvdfm.F.
 
-1. calculation of friction velocity and the Obukhov length
-2. calculation of buoyancy coefficients [`VDFCND`]
-3. calculation of stability functions of the Level 2 [`VDFLEV2`]
-4. calculation of planetary boundary layer depth [`PBLHGT`]
-5. calculation of master length scale [`VDFMLS`]
-6. calculation of diffusion coefficients, vertical fluxes and their derivatives [`VDFLEV3`]
-7. calculation of production and dissipation terms of twice turbulent kinetic energy [`VDFLEV3`]
-8. calculation of tendencies of prognostic variables with implicit scheme
+1. Calculation of friction velocity and the Obukhov length
+2. Calculation of buoyancy coefficients [`VDFCND`]
+3. Calculation of stability functions of the Level 2 [`VDFLEV2`]
+4. Calculation of planetary boundary layer depth [`PBLHGT`]
+5. Calculation of master length scale [`VDFMLS`]
+6. Calculation of diffusion coefficients, vertical fluxes and their derivatives [`VDFLEV3`]
+7. Calculation of production and dissipation terms of twice turbulent kinetic energy [`VDFLEV3`]
+8. Calculation of tendencies of prognostic variables with implicit scheme
 
-### Surface layer
+### Surface Layer
 The friction velocity $u_*$ and the Obukhov length $L_M$ are given as
 
 $$u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4},$$
@@ -35,7 +35,7 @@ $$L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g},$$
 
 where the subscript $g$ indicates the values near the surface $\Theta_v$ and $\theta_v$ denote virtual potential temperature, $k$ the von Kármán constant, and $g$ the acceleration of gravity. The values of the lowest model layer is used for $\Theta_{v,g}$.
 
-### Calculation of the buoyancy coefficients
+### Calculation of the Buoyancy Coefficients
 The buoyancy-production term in the prognostic equation of the twice turbulent kinetic energy contains $\langle w\theta_v \rangle$. Following Mellor and Yamada (1982), we assume the probability distribution of $\theta_l$ and $q_w$ in a given grid and rewrite this term as
 
 $$\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle.$$
@@ -60,7 +60,7 @@ $${\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\la
 
 where $R$ and $Q_l$ are cloud amount and liquid water computed from the probability distribution in the grids, respectively, and $Q_s$ is saturation water vapor.
 
-### Stability functions for the Level 2
+### Stability Functions for the Level 2
 It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the behavior of growing turbulence realistically (Helfand and Labraga 1988). Thus, the MYNN scheme first calculates the twice turbulent kinetic energy of the Level2 ${q_2}^2$, and then make a correction to the diffusion when $q<q_2$, i.e., the turbulence is in a growing phase. The stability functions of the level 2, $S_{H2}$ and $S_{M2}$, required for the calculation of $q_2$, are represented by
 
 $$S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf},$$
@@ -113,9 +113,9 @@ $$
 (Pr,\gamma_1,B_1,B_2,C_2,C_3,C_4,C_5)=(0.74,0.235,24.0,15.0,0.7,0.323,0.0,0.2).
 $$
 
-### Master length scale
+### Master Length Scale
 
-#### Original formulation by Nakanishi (2001)
+#### Original Formulation by Nakanishi (2001)
 
 Nakanishi (2001) proposed the following formulation for the master length scale $L$.
 
@@ -163,7 +163,7 @@ $$\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}$$
 
 where $L_A=\alpha_5\,q/N$ is a length scale of air parcel vertically transported by turbulence in a stably stratified layer. $\alpha_5$ represents the effect of dissipation set to $0.53$.  $L_{max}=500$m gives the upper limit of $L$.
 
-#### Estimation of the top height of the convective boundary layer
+#### Estimation of the Top Height of the Convective Boundary Layer
 
 Based on Holtslag and Boville (1993), $H_{PBL}$ is estimated using the bulk Richardson number $Ri_B$ given as
 
@@ -181,9 +181,9 @@ where $z_s$ is the altitude of the surface layer assumed to be $0.1H_{PBL}$. $F_
 
 $Ri_B$ is successively calculated from $k=2$ upward, and then if $Ri_B$ exceeds $0.5$ for the first time, it is linearly interpolated between this level and the level immediately below it. The height satiffying $Ri_B=0.5$ is used as $H_{PBL}$. Since $H_{PBL}$ is necessary for the calculation of $z_s$, we first calculate $z_s$ using a temporary value of $H_{PBL}=z_1-z_g$, from which we calculate the first guess of $H_{PBL}$. Then we use this value for the recalculation of $z_s$, and then it is used for the final estimate of $H_{PBL}$.
 
-### Calculation of diffusion coefficients
+### Calculation of Diffusion Coefficients
 
-#### Twice turbulent kinetic energy of Level 2
+#### Twice Turbulent Kinetic Energy of Level 2
 
 The twice turbulent kinetic energy of the level 2, ${q_2}^2$, is calculated from the following equation, which neglects the time derivative, advection and diffusion terms in the prognostic equation of the twice turbulent kinetic energy.
 
@@ -207,7 +207,7 @@ From ([2](p-dif.2)), ([3](p-dif.3)), ([4](p-dif.4)), and ([5](p-dif.5)), $q_2^2$
 
 $${q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}.$$
 
-#### Stability functions of the Level 2.5
+#### Stability Functions of the Level 2.5
 
 When $q<q_2$, i.e., the turbulence is in a growing phase, the stability functions of the Level 2.5 for momentum and heat, $S_M$ and $S_H$ respectively, are calculated using $\alpha=q/q_2$ introduced by Helfand and Labraga (1998) as
 
@@ -237,9 +237,9 @@ $$G_M=\frac{L^2}{q^2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\f
 
 $$G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right).$$
 
-The above formulas appear to be different from those in Nakanishi (2001), but are equivalent and can be computed with a smaller computationnal cost.
+The above formulas appear to be different from those in Nakanishi (2001), but are equivalent and can be computed with a smaller computational cost.
 
-#### Calculation of diffusion coefficients
+#### Calculation of Diffusion Coefficients
 
 The diffusion coefficients for momentum, twice turbulent kinetic energy, heat and water are represented by
 
@@ -253,7 +253,7 @@ $$K_w=LqS_H,$$
 
 respectively.
 
-#### Calculation of fluxes
+#### Calculation of Fluxes
 
 The vertical fluxes for $U$, $V$, $q^2$, $C_pT$ and $Q_w$ at half levels are calculated as
 
@@ -281,9 +281,9 @@ $$\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\
 
 where $\Delta z_{k-1/2}=z_k-z_{k-1}$. The fluxes for other tracers are also calculated in the same way using $K_w$.
 
-### Calculation of turbulent variables
+### Calculation of Turbulent Variables
 
-#### Calculation of twice turbulent kinetic energy
+#### Calculation of Twice Turbulent Kinetic Energy
 
 The prognostic equation for $q^2$ is expressed as
 
@@ -299,7 +299,7 @@ $$\varepsilon=\frac{q^3}{B_1L}.$$
 
 Advection terms are calculated using the tracer transport routines in the dynamical core. The turbulence scheme calculates the time evolution by the diffusion, production and dissipation terms with an implicit scheme.
 
-#### Diagnosis of variance and covariance
+#### Diagnosis of Variance and Covariance
 
 The prognostic equations for $\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle$ are expressed as
 
@@ -349,7 +349,7 @@ $$\langle {q_w}^2 \rangle =B_2L^2S_H\left(\frac{\partial Q_w}{\partial z}\right)
 
 $$\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}.$$
 
-#### Treatment in the bottom layer
+#### Treatment in the Bottom Layer
 
 Since the lowest model layer corresponds to the surface layer where values of physical variables rapidly change in the vertical direction, the following Monin-Obukhov similarity theory is used to accurately evaluate the vertical gradient of the variables.
 
@@ -407,7 +407,7 @@ $$
 
 $$(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0).$$
 
-### Time integration with implicit scheme
+### Time Integration with Implicit Scheme
 
 #### Tendency of $q^2$
 The prognostic equation for $q^2$ is discretized as
@@ -474,7 +474,7 @@ $$
 
 where the subscript $K$ denote the index for the top model layer. ([23](p-dif.23)) is solved for $\mu_k$ using the LU decomposition.
 
-#### Tendencies of other prognostic variables
+#### Tendencies of the Other Prognostic Variables
 
 Letting $\psi$ be a substitute for $u$, $v$, $T$, $q_w$, the tendency of $\psi$ is calculated by
 

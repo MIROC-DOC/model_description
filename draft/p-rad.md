@@ -1,5 +1,5 @@
-## Radiation scheme
-### Summary of the radiation flux calculation
+## Radiation Scheme
+### Summary of the Radiation Flux Calculation
 The  radiation scheme in the MIROC was created based on the Discrete Ordinate Method and the $k$-distribution Method (Nakajima et al., 2000), and updated by Sekiguchi and Nakajima (2008). The scheme calculates the value of the radiation flux at each level by considering the absorption, emission, and scattering processes of terrestrial and solar radiation by gases and clouds/aerosols. The main input data are temperature $T$, specific humidity $q$, cloud water $l$, and cloud cover $C$. The output data are shortwave or longwave upward and downward radiation fluxes $F^{\mp}$, and derivative coefficient to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$, surface downward radiation flux $F_{sf}^{+}$, and 0.5 and 0.67 µm optical thickness $\tau^{vis}$.
 
 The calculation is separated for several wavelength bands. It is further divided into several sub-channels, based on the $k$-distribution method. As for gaseous absorption, the line absorption in $\mathrm{H_2O}$, $\mathrm{CO_2}$, $\mathrm{O_2}$, $\mathrm{O_3}$, $\mathrm{N_2} \mathrm{O}$, $\mathrm{CH_4}$, the continuous absorption in $\mathrm{H_2} \mathrm{O}$, $\mathrm{CO_2}$, $\mathrm{O_2}$, $\mathrm{O_3}$, and the CFC absorption are incorporated. As for scattering, Rayleigh scattering of gases and scattering by cloud and aerosol particles are considered.
@@ -19,7 +19,7 @@ Major subroutines used to calculate the radiation flux in `SUBROUTINE:[DTRN31]` 
 
 To account for the partial coverage of clouds, the transmission and reflection coefficients and source functions for each layer are calculated at weighted average of the cloud cover, separately for cloud cover and clear-sky conditions. The cloud cover of the cumulus is also considered. In addition, it also performs several adding and calculates the clear-sky radiation flux.
 
-###  Wavelength and Sub-channel
+###  Wavelength and Sub-Channel
 
 The basics of radiative flux calculations are represented by Beer-Lambert's Law.
 
@@ -53,7 +53,7 @@ the formula, as such above, can be relatively precisely calculated by the additi
 
 In the MIROC 6.0, by changing the radiation parameter data, the calculations can be performed at various wavelengths. In the standard version, the wavelength range is divided into 29 parts. In addition, each wavelength range is divided into 1 to 6 sub-channels (corresponding to the $i$ in the above formula). There are 111 channels in total. The wavelength range is divided by the wavenumber ( $\mathrm{cm}^{-1}$ ), 1, 250, 400, 530, 610, 670, 750, 820, 980, 1175, 1225, 1325, 1400, 2000, 2500, 3300, 3800, 4700, 5200, 6000, 10000, 12750, 13250, 14750, 23000, 30000, 33500, 36000, 43500, 50000. Additionally, a chemical version is also with 37 bands and 126 channels for chemical transport model and the boundary of the shortwave region is also changed to 54000 $\mathrm{cm}^{-1}$.
 
-### Calculation of the Planck function
+### Calculation of the Planck Function
 
 In this section, `SUBROUTINE:[PLANKS, PLANKF]` in pradt.F is described.
 
@@ -65,7 +65,7 @@ $$
 
 where $\bar{\lambda}^{w}$ is the averaged wavelength of the wavelength range, $B_{n}^{w}$ is the parameter determined by function fitting. This is calculated to the atmospheric temperature of each layer $T_l$, and the boundary atmospheric temperature of each layer $T_{l+1/2}$, surface temperature $T_g$ and temperature $1\mathrm{K}$ higher than surface temperature $T_{g+1K}$. The calculations are performed for each wavelength and each layer. In the following description, the subscript of the wavelength range $w$ is omitted.
 
-###  Calculation of the optical thickness to gas absorption
+###  Calculation of the Optical Thickness to Gas Absorption
 
 In this section, `SUBROUTINE:[PTFIT2]` in pradt.F is described.
 
@@ -103,7 +103,7 @@ $$
 
 $k^{(\mathrm{H_2O\_self})}$ is calculated in the same way as $k^{(m)}$. The self-broadening absorption coefficients in the reference temperatures $T_{ref1-3}$ are prescribed and dependent on the pressure. In the above formula, $10^{5}$ is multiplied to convert the unit from $\mathrm{km}$ to $\mathrm{cm}$. This calculation is done for each sub-channel and each layer.
 
-###  Calculation of the optical thickness to CFC absorption
+###  Calculation of the Optical Thickness to CFC Absorption
 
 In this section, `SUBROUTINE:[CNTCFC2]` in pradt.F is described.
 
@@ -115,7 +115,7 @@ $$
 
 In MIROC 6.0, the number of the considered CFCs $m$ is 28 (1:$\mathrm{CFC\text{-11}}$, 2:$\mathrm{CFC\text{-12}}$, 3:$\mathrm{CFC\text{-13}}$, 4:$\mathrm{CFC\text{-14}}$, 5:$\mathrm{CFC\text{-113}}$, 6:$\mathrm{CFC\text{-114}}$, 7:$\mathrm{CFC\text{-115}}$, 8:$\mathrm{HCFC\text{-21}}$, 9:$\mathrm{HCFC\text{-22}}$, 10:$\mathrm{HCFC\text{-123}}$, 11:$\mathrm{HCFC\text{-124}}$, 12:$\mathrm{HCFC\text{-141b}}$, 13:$\mathrm{HCFC\text{-142b}}$, 14:$\mathrm{HCFC\text{-225ca}}$, 15:$\mathrm{HCFC\text{-225cb}}$, 16:$\mathrm{HFC\text{-32}}$, 17:$\mathrm{HFC\text{-125}}$, 18:$\mathrm{HFC\text{-134}}$, 19:$\mathrm{HFC\text{-134a}}$, 20:$\mathrm{HFC\text{-143a}}$, 21:$\mathrm{HFC\text{-152a}}$, 22:$\mathrm{SF_6}$, 23:$\mathrm{ClONO_2}$, 24:$\mathrm{CCl_4}$, 25:$\mathrm{N_2O_5}$, 26:$\mathrm{C_2F_6}$, 27:$\mathrm{HNO_4}$, 28:$\mathrm{SF_5CF_3}$). In the above formula, $10^{-1}$ is multiplied to convert from $\mathrm{km}$ to $\mathrm{cm}$, and from ppmv to ratio. This calculation is done for each sub-channel and each layer. This calculation is performed for each layer and the wavelength range from about 540 to 1800 $\mathrm{cm}^{-1}$.
 
-### Optical thickness to scattering and scattering moment
+### Optical Thickness to Scattering and Scattering Moment
 
 Calculate the optical thickness of scattering and the scattering moment. These calculations are performed for each wavelength and each layer. The optical parameters for the particle matter $q_{m}^{(p)}$ are prepared, including the extinction coefficient ($m = 1$) including the scattering and absorption process and the absorption coefficient ($m = 2$) the moments of the volume scattering phase function ($m=3\text{-}4$: first-second order).
 
@@ -159,7 +159,7 @@ $$
 
 where $RH$ is the local relative humidity and $R H_{n f i t}^{(r e f)}$ is the relative humidity given in the parameter and $nfit$ is the number of the prescribed relative humidity closest to the $RH$. $nfit$ and $FX_{ae}$ are calculated in the `SUBROUTINE:[RMDIDX]` in pradt.F and determined in advance. In the above formulas, $10^{-1}$ is multiplied to convert from $\mathrm{km}$ to $\mathrm{cm}$, and from ppmv to ratio.
 
-#### Rayleigh scattering
+#### Rayleigh Scattering
 
 In this section, `SUBROUTINE:[SCATRY]` in pradt.F is described.
 
@@ -280,7 +280,7 @@ $$
 f_{l i q}=\frac{w_{s t} f_{l i q, s t}+w_{c u} f_{l i q, c u}}{w_{s t}+w_{c u}}
 $$
 
-###  Total optical thickness
+###  Total Optical Thickness
 
 All optical thickness including gaseous band absorption, and scattering is,
 
@@ -290,7 +290,7 @@ $$
 
 where because $\tau^{K D}$ is different for each subchannel, the calculation is done for each sub-channel and each layer, and divided into the cloudy, clear sky, and cumulus conditions.
 
-###  Expansion of the plank function
+###  Expansion of the Plank Function
 
 In this section, `SUBROUTINE:[PLKEXP]` in pradt.F is described.
 
@@ -318,7 +318,7 @@ $$
 
 This calculation is done for each sub-channel and each layer and divided into the cloudy, clear sky and cumulus conditions.
 
-###  Transmission and reflection coefficients, and source function
+###  Transmission and Reflection Coefficients, and Source Function
 
 In this section, `SUBROUTINE:[TWST]` in pradt.F is described.
 
@@ -506,7 +506,7 @@ $$
 
 This calculation is done for each sub-channel and each layer and divided into the cloudy, clear sky, and cumulus conditions.
 
-### T, R, S matrixes for maximal/random approximation
+### T, R, S Matrixes for Maximal/Random Approximation
 
 In this section, `SUBROUTINE:[RTSMR]` in pradt.F is described.
 
@@ -689,7 +689,7 @@ $$
 
 This calculation is done for each sub-channel and each layer.
 
-###  Adding of source functions for each layer
+###  Adding of Source Functions for Each Layer
 
 In this section, `SUBROUTINE:[ADDMR]` and `SUBROTINE:[ADDING]` in pradt.F is described.
 
@@ -697,7 +697,7 @@ By using transmission coefficient $T$, reflection coefficient $R$, and radiation
 
 ![Schematic illustration of the adding method](Prad_Fig3.png)
 
-####  `SUBROUTINE:[ADDMR]`
+#### `SUBROUTINE:[ADDMR]`
 
 In this subroutine, the maximal/random flux in cloudy conditions is calculated by the adding method and the T, R, and S matrixes are used for calculations.
 
@@ -815,7 +815,7 @@ $$
 
 This calculation is done for each sub-channel.
 
-####  `SUBROUTINE:[ADDING]`
+#### `SUBROUTINE:[ADDING]`
 
 Since the maximal/random approximation cannot be used under the clear sky condition, this subroutine is used to calculate the flux.
 
@@ -925,7 +925,7 @@ $$
 F_{s f}^{+}=\mu_{0} F_{0} e^{-\left\langle\tau^{*}\rangle\ \mu_{0}\right.}
 $$
 
-### Adding in the flux
+### Adding in the Flux
 
 $$
 F^{\pm}=\sum_{c} w_{c}\left(1-C_{c u}\right) \bar{F}^{\pm}+\sum_{c} w_{c} C_{c u} F^{c \pm}
@@ -949,11 +949,11 @@ $$
 
 This calculation is done in `SUBROUTINE:[DTRN31]`
 
-###  Calculation of the temperature derivative of the flux
+### Calculation of the Temperature Derivative of the Flux
 
 To implicitly solve for surface temperature, calculate differential term of upward flux with respect to surface temperature $\mathrm{d}F^{\mp}/dT_{g}$. Therefore, we obtained the value for temperatures $1\text{K}$ higher than $T_g$  $\bar{B}^{w}\left(T_{g}+1\right)$ and used it to redo the flux calculation using the addition method, and the difference from the original value is set to $\mathrm{d}F^{\mp}/dT_{g}$. This is a meaningful value only in the longwave region (earth radiation region). This calculation is done in `SUBROUTINE:[RADFLX]` of pradt.F.
 
-### Calculation of the heating rate
+### Calculation of theHheating Rate
 
 The heating rate of the nth layer $H_n$ is calculated by using the radiation flux obtained so far. It is calculated separately for shortwave and longwave ranges, and finally add together (`SUBROUTINE:[RDTND]` in pradm.F).
 
@@ -961,7 +961,7 @@ $$
 H_{n}=-\frac{\left(F_{n}^{-}-F_{n}^{-}\right)-\left(F_{n}^{+}-F_{n+1}^{+}\right)}{g C_{p} d p}
 $$
 
-### Flux of incidence and incident angle
+### Flux of Incidence and Incident Angle
 
 In this section, `SUBROUTINE:[SHTINS]` in pradi.F is described.
 
@@ -1085,7 +1085,7 @@ $$
 \end{array}
 $$
 
-###  Reading the each parameter
+###  Reading Each Parameter
 
 In `SUBROUTINE:[OPPARM2]`of pradt.F, various parameters used for radiation calculation are read. The outline of the procedure is shown below.
 
@@ -1105,7 +1105,7 @@ $$
 
 6. Read the Plank function coefficient, solar insolation, surface properties (not output), Rayleigh scattering coefficient, Rayleigh scattering phase function. The moment for particle scattering phase function is read in the order of the particle and the optical number and read up to the second moment. Step 6 is performed for each wavelength band.
 
-### Other notes
+### Other Notes
 
 The calculation of the radiation is usually not done at every step. Thus, the radiation flux is saved, and it is used if the time is not used for radiation calculation. As for the shortwave radiation, using the percentage of time (time is $\mu_{0}>0$) between the next calculation time $f$ and the solar incidence angle factor averaged over the daylight hours $\bar{\mu}_{0}$, seek the Flux $\bar{F}$,
 
