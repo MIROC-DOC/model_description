@@ -1,4 +1,4 @@
-## Features and structure of the model
+## Features and Structure of the Model
 
 ### Basic Features of the Model.
 
@@ -70,7 +70,7 @@ $$
 
 in (8). Note that $\Delta t$ in (8) is replaced by $2 \Delta t$.
 
-### Model Execution Flow.
+### Model Execution Flow
 
 The flow of the model execution is briefly shown below. The entries in the index are the names of the corresponding subroutine.
 
@@ -94,7 +94,7 @@ The flow of the model execution is briefly shown below. The entries in the index
 
 9. Return to 3
 
-### Prognostic variables
+### Prognostic Variables
 
 The prognostic variables are as follows. The values in parentheses are the coordinate system, and $\lambda,\varphi,\sigma, z$ indicate the longitude, latitude, dimensionless pressure, $\sigma$, and vertical depth, respectively. The values in the square brackets are in units of the index.
 

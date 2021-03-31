@@ -11,7 +11,8 @@
 dir=./draft
 
 # Get markdown file names to be compiled
-filelist=($(ls ${dir}/*.md | rev | cut -c 4-| rev))
+#filelist=($(ls ${dir}/*.md | rev | cut -c 4-| rev))
+filelist=(draft/pmlsc)
 # Conversion from markdown to LaTeX
 for name in ${filelist[@]}
 do

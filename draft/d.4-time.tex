@@ -12,8 +12,8 @@ the gravitational wave term to make the \(\Delta t\) larger (Bourke,
 1988).
 
 \hypertarget{time-integration-and-time-filtering-with-leap-frog}{%
-\subsubsection{Time integration and time filtering with the leap
-frog method}\label{time-integration-and-time-filtering-with-leap-frog}}
+\subsubsection{Time Integration and Time Filtering with the Leap
+Frog Method}\label{time-integration-and-time-filtering-with-leap-frog}}
 
 We use leap frog as the time integration scheme for advection terms and
 other dynamic terms.
@@ -31,13 +31,13 @@ calculation of the prognositc veriables of vertical diffusion is treated
 as a backward difference. Please refer to the chapter on physical
 processes for details.)
 
-Expressing each prognistic variable as \({X}\),
+Expressing each prognostic variable as \({X}\),
 \begin{eqnarray}
-  \hat{X}^{t+\Delta t} 
+  \hat{X}^{t+\Delta t}
     =  \bar{X}^{t-\Delta t}
-    + 2 \Delta t 
+    + 2 \Delta t
       \dot{X}_{adv}\left( {X}^{t} \right)
-    + 2 \Delta t 
+    + 2 \Delta t
       \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right),
 \end{eqnarray}
 where \(\dot{X}_{adv}\) is the advection term etc., and
@@ -48,11 +48,11 @@ where \(\dot{X}_{adv}\) is the advection term etc., and
 friction) and physical processes (\(\dot{X}_{phy}\)), yielding
 \({X}^{t+\Delta t}\).
 \begin{eqnarray}
-  {X}^{t+\Delta t} 
+  {X}^{t+\Delta t}
     =  \hat{X}^{t+\Delta t}
-    + 2 \Delta t 
+    + 2 \Delta t
       \dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
-    + 2 \Delta t 
+    + 2 \Delta t
       \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)
 \end{eqnarray}
 
@@ -67,8 +67,8 @@ The time filter is given below, where terms with over bars are filtered.
 where \(\nu=0.05\) and \(\alpha=0.5\).
 
 \hypertarget{semi-implicit-time-integration}{%
-\subsubsection{Semi-implicit time
-integration}\label{semi-implicit-time-integration}}
+\subsubsection{Semi-Implicit Time
+Integration}\label{semi-implicit-time-integration}}
 
 Basically, the leap frog is used for the dynamic processes, but the
 trapezoidal implicit scheme is used for some terms. For a vector
@@ -83,24 +83,24 @@ the other (\({\mathcal B}\)) for the trapezoidal implicit method. We
 assume that (\({\mathcal A}\)) is nonlinear to \({\mathbf q}\), while
 (\({\mathcal B}\)) is linear. In other words,
 \begin{eqnarray}
-  {\mathbf q}^+ 
-      = {\mathbf q}^- 
+  {\mathbf q}^+
+      = {\mathbf q}^-
       + 2 \Delta t {\mathcal A}( {\mathbf q}  )
-      + 2 \Delta t B (   {\mathbf q}^+ 
+      + 2 \Delta t B (   {\mathbf q}^+
                        + {\mathbf q}^-   )/2,
 \end{eqnarray}
 where (\({\mathcal B}\)) is a square matrix. Defining
 \(\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}\), we get
 \begin{eqnarray}
-  ( I - \Delta t B ) \Delta {\mathbf q} 
+  ( I - \Delta t B ) \Delta {\mathbf q}
       = 2 \Delta t \left( {\mathcal A}({\mathbf q})
                          + B {\mathbf q} \right).
 \end{eqnarray}
 This can be easily solved by matrix operations.
 
 \hypertarget{applying-the-semi-implicit-time-integration}{%
-\subsubsection{Applying the semi-implicit time
-integration}\label{applying-the-semi-implicit-time-integration}}
+\subsubsection{Applying the Semi-Implicit Time
+Integration}\label{applying-the-semi-implicit-time-integration}}
 
 Here, we apply the semi-implicit method and treat terms associated with
 linear gravity waves as implicit, which allows us to increase the time
@@ -112,18 +112,18 @@ We divide the basic equation into a linear gravity wave term
 vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and
 \({\mathbf{T}}=\{ T_{k} \}\)),
 \begin{eqnarray}
-   \frac{\partial \pi}{\partial t} &=& 
-          \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
+   \frac{\partial \pi}{\partial t} &=&
+          \left( \frac{\partial \pi}{\partial t} \right)_{NG}
      - {\mathbf{C}} \cdot {\mathbf{D}}, \\
-  \frac{\partial {\mathbf{D}}}{\partial t} &=& 
-          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S} 
+  \frac{\partial {\mathbf{D}}}{\partial t} &=&
+          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
+          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
                                   + \underline{W} {\mathbf{T}}
-                                  + {\mathbf{G}} \pi )  
+                                  + {\mathbf{G}} \pi )
           - {\mathcal D}_M {\mathbf{D}} , \\
-  \frac{\partial {\mathbf{T}}}{\partial t} 
+  \frac{\partial {\mathbf{T}}}{\partial t}
       &=&   \left( \frac{\partial {\mathbf{T}}}
-                        {\partial t}       \right)_{NG}  
+                        {\partial t}       \right)_{NG}
          - \underline{h} {\mathbf{D}}
          - {\mathcal D}_H {\mathbf{T}}.
 \end{eqnarray}
@@ -131,7 +131,7 @@ vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and
 Here, the non-gravitational wave term is
 \begin{eqnarray}
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   &=&   - \sum_{k=1}^{K} {\mathbf{v}}_{k} \cdot \nabla \pi  
+   &=&   - \sum_{k=1}^{K} {\mathbf{v}}_{k} \cdot \nabla \pi
        \Delta B_{k}, \\
   \frac{(m\dot{\eta})^{NG}_{k-1/2}}{p_s}
  &=& - B_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
@@ -142,30 +142,30 @@ Here, the non-gravitational wave term is
             \frac{\partial (A_u)_{k}}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
-          - \nabla^{2}_{\eta} \hat{E}_{k} 
+          - \nabla^{2}_{\eta} \hat{E}_{k}
           - {\mathcal D}(D_{k}), \\
-  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG} 
-      &=&   - \frac{1}{a\cos\varphi} 
+  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG}
+      &=&   - \frac{1}{a\cos\varphi}
                \frac{\partial u_k T'_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
-          + \hat{H}_{k} 
+          + \hat{H}_{k}
           - {\mathcal D}(T_{k}), \\
  \hat{H}_k  &=&  T_{k}^{\prime} D_{k} - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \\
          &+& \hat{\kappa}_{k} T_{v,k} {\mathbf{v}}_{k} \cdot \nabla \pi \\
          &-& \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
+             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
                \Delta B_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
+             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
                \Delta B_{l} \\
         &-& \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
          + \frac{Q_k + (Q_{diff})_k}{C_p}, \\
-  \hat{E}_k &=& E_{k} 
+  \hat{E}_k &=& E_{k}
             + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} ),
 \end{eqnarray}
 where the vector and matrix of the gravitational wave term (underlined)
@@ -182,7 +182,7 @@ otherwise.\\
 
 We now use the following expressions for time differences:
 \begin{eqnarray}
-  \delta_{t} {X} &\equiv & \frac{1}{2 \Delta t} 
+  \delta_{t} {X} &\equiv & \frac{1}{2 \Delta t}
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right), \\
     \overline{X}^{t} &\equiv & \frac{1}{2} \left( {X}^{t+\Delta t}  + {X}^{t-\Delta t} \right) \\
   &=&  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t.
@@ -191,21 +191,21 @@ Then, applying the semi-implicit method to the system of equations, we get
 \begin{eqnarray}
 \label{eqn_for_pi}
   \delta_{t} \pi &=&
-          \left( \frac{\partial \pi}{\partial t} \right)_{NG}  
+          \left( \frac{\partial \pi}{\partial t} \right)_{NG}
      - {\mathbf{C}} \cdot \overline{ {\mathbf{D}} }^{t}, \\
   \delta_{t} {\mathbf{D}} &=&
-          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  
-          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S} 
-                                  + \underline{W} 
+          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
+          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
+                                  + \underline{W}
                                      \overline{ {\mathbf{T}} }^{t}
                                   + {\mathbf{G}}
-                                  \overline{\pi}^{t} ) 
-          - {\mathcal D}_M ( {\mathbf{D}}^{t-\Delta t} 
+                                  \overline{\pi}^{t} )
+          - {\mathcal D}_M ( {\mathbf{D}}^{t-\Delta t}
                          + 2 \Delta t \delta_{t} {\mathbf{D}} ), \\
 \label{eqn_for_t}
   \delta_{t} {\mathbf{T}} &=&
-        \left( \frac{\partial {\mathbf{T}}}{\partial t} \right)_{NG}  
-         - \underline{h} \overline{ {\mathbf{D}} }^{t} 
+        \left( \frac{\partial {\mathbf{T}}}{\partial t} \right)_{NG}
+         - \underline{h} \overline{ {\mathbf{D}} }^{t}
          - {\mathcal D}_H ( {\mathbf{T}}^{t-\Delta t}
                         + 2 \Delta t \delta_{t} {\mathbf{T}} ).
 \end{eqnarray}
@@ -213,31 +213,31 @@ Then, applying the semi-implicit method to the system of equations, we get
 Thus,
 \begin{eqnarray}
       & &\left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
-           \underline{I}  
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h} 
+           \underline{I}
+      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
            + (1+2\Delta t {\mathcal D}_M)
              {\mathbf{G}} {\mathbf{C}}^{T} ) \nabla^{2}_{\eta}
   \right\}
       \overline{ {\mathbf{D}} }^{t} \\
-  &=& ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M ) 
+  &=& ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
        {\mathbf{D}}^{t-\Delta t}
-  + \Delta t 
+  + \Delta t
      \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  \\
-  &-&  \Delta t \nabla^{2}_{\eta}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S} 
-                          + \underline{W} 
-                            \left[ ( 1+2\Delta t {\mathcal D}_H ) 
+  &-&  \Delta t \nabla^{2}_{\eta}
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S}
+                          + \underline{W}
+                            \left[ ( 1+2\Delta t {\mathcal D}_H )
                                     {\mathbf{T}}^{t-\Delta t}
-                                  + \Delta t 
+                                  + \Delta t
                                       \left( \frac{\partial {\mathbf{T}}}
-                                                  {\partial t}     
+                                                  {\partial t}
                                       \right)_{NG} \right]
                    \right. \\
-                 &+& \hspace{1.4cm} \left. ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}} 
-                            \left[ \pi^{t-\Delta t} 
-                                  + \Delta t \left( \frac{\partial \pi}{\partial t} 
+                 &+& \hspace{1.4cm} \left. ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}}
+                            \left[ \pi^{t-\Delta t}
+                                  + \Delta t \left( \frac{\partial \pi}{\partial t}
                                      \right)_{NG}  \right]
-                   \right\} . 
+                   \right\} .
 \end{eqnarray}
 
 Since the spherical harmonic expansion is used, we can rewrite
@@ -253,8 +253,8 @@ we can obtain the value of prognostic variables \(\hat{X}^{t+\Delta t}\)
 at \(t+\Delta t\).
 
 \hypertarget{time-scheme-properties-and-requiments-for-time-steps}{%
-\subsubsection{Time scheme properties and requiments for time
-steps}\label{time-scheme-properties-and-requiments-for-time-steps}}
+\subsubsection{Time Scheme Properties and Requiments for Time
+Steps}\label{time-scheme-properties-and-requiments-for-time-steps}}
 
 Let us consider solving the advection equation with the leap-frog
 method:
@@ -280,7 +280,7 @@ Defining \(p \equiv kc \Delta t\), the solution becomes:
 
 The absolute value of those solutions are
 \begin{eqnarray}
-  |\lambda| = \left\{ 
+  |\lambda| = \left\{
              \begin{array}{ll}
                1 & |p| \le 1 \\
                p \pm \sqrt{p^2-1} & |p| > 1
@@ -326,8 +326,8 @@ With the gravity waves taken account of by the semi-implicit method, however, th
 In practice, this is multiplied by a factor smaller than 1 for further safety.
 
 \hypertarget{handling-of-the-initiation-of-time-integration}{%
-\subsubsection{Handling of the initiation of time
-integration}\label{handling-of-the-initiation-of-time-integration}}
+\subsubsection{Handling of the Initiation of Time
+Integration}\label{handling-of-the-initiation-of-time-integration}}
 
 When starting from an initial condition that is not calculated by
 MIROC 6.0 itself, it is not possible to give values of all prognostic variables at two time steps \(t\)
