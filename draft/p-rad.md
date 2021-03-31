@@ -1023,9 +1023,7 @@ $$
 \end{array}
 $$
 
-where $epsd$ and $vpid$ are the angle of the obliquity and the precession.
-
-The mean longitude $\lambda_{m}$ at a time $t_m$ is represented by using the position of the vernal equinox $\lambda_{0}$.
+where $epsd$ and $vpid$ are the angle of the obliquity, and the precession represented by the true longitude of the perihelion measured from the vernal equinox.
 
 The mean longitude of the vernal equinox $\lambda_{0}$ is computed.
 
@@ -1039,7 +1037,7 @@ The mean longitude of the Earth position $\lambda_{m}$ at time $t_m$ is represen
 
 $$
 \begin{array}{c}
-\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \time　t_{year}}+\lambda_{0}
+\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times　t_{year}}+\lambda_{0}
 \end{array}
 $$
 
