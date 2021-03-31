@@ -76,7 +76,9 @@ in (8). Note that $\Delta t$ in (8) is replaced by $2 \Delta t$.
 
 The flow of the model execution is briefly shown below. The entries in the index are the names of the corresponding subroutine.
 
-1. set the parameters of an experiment, coordinates, etc. `SUBROUTINE:[PCONST,ASETCO,SETPAR,SETTSTRT,SETTEND]`
+1. set the parameters of an experiment, coordinates, etc.
+
+`SUBROUTINE:[PCONST,ASETCO,SETPAR,SETTSTRT,SETTEND]`
 
 2. read the initial values of the prognostic variables `SUBROUTINE:[RDSTRT]`
 
