@@ -29,12 +29,12 @@ The only 1st layer is practically handed to the surface schemes.
 
 Sea surface processes provide the boundary conditions at the lower end of the atmosphere through the exchange of momentum, heat, and water fluxes between the atmosphere and the surface. In `ENTRY:[OCNFLX]`, the following procedure is used to deal with sea surface processes.
 
-1. prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
+1. Prepare variables for sea ice extent and no ice extent, respectively, using sea ice concentration.
 2. Determine the surface boundary conditions.
 3. Calculate the flux balance.
 4. Calculate the radiation budget at the sea surface.
 5. Calculate the deposition by CHASER.
-6. solve the heat balance at the sea surface and update the skin temperature and each flux value.
+6. Solve the heat balance at the sea surface and update the skin temperature and each flux value.
 
 No prognostic variables are used in this scheme.
 <!--
@@ -132,7 +132,7 @@ The standard gives the amount of sea ice per area as $W_{ice,c}=300 \mathrm{[kg/
 -->
 
 
-In `ENTRY[OCNBCS]` (in `SUBROUTINE:[OCNSUB]` of pgocn.F), surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified.
+In `ENTRY[OCNBCS]` (in `SUBROUTINE:[OCNSUB]` of pgocn.F), surface albedo and roughness are calculated. They are calculated supposing ice-free conditions, then modified to take into account the effects of ice and snow cover.
 
 First, let us consider the sea surface level albedo ($\alpha_{(d,b)}$), $b=1,2,3$ represent the visible, near-infrared, and infrared wavelength bands, respectively. Also, $d=1,2$ represents direct and scattered light, respectively.  The albedo for the visible bands are calculated in `SUBROUTINE [SEAALB]` (of pgocn.F), supposing ice-free conditions. The albedo for near-infrared is set to same as the visible one. The albedo for infrared is uniformly set to a constant value.
 
@@ -156,7 +156,7 @@ $$
 	\alpha_{snow} = \alpha_{snow,0} + \tau_{snow}(\alpha_{snow,2}-\alpha_{snow,1})
 $$
 
-Second, let us consider sea surface roughnesses. Roughnesses of for momentum, heat and vapor are calculated in `SUBROUTINE:[SEAZ0F]` (of pgocn.F), supposing the ice-free conditions.
+Second, let us consider sea surface roughnesses. Roughnesses of for momentum, heat and vapor are calculated in `SUBROUTINE:[SEAZ0F]` (of pgocn.F), supposing the ice-free conditions, then modified to take into account the effects of ice and snow cover.
 
 When the sea ice exists ($L=1$),  roughnesses of momentum, heat and vapor ($r_{0,M},r_{0,H},r_{0,E}$) is modified to take into account sea ice concentration ($R_{ice}$),
 
@@ -232,7 +232,7 @@ where $k_{ocn}$ is heat flux in the sea temperature layer, and $k_{ocn}$ is heat
 
 #### Albedo for Visible
 
-In `SUBROUTINE [SEAALB]` (of pgocn.F), albedo for the visible bands are calculated supposing ice-free conditions.
+In `SUBROUTINE [SEAALB]` (of pgocn.F), albedo for the visible bands are calculated supposing ice-free conditions, then modified to take into account the effects of ice and snow cover.
 
 <!--
 - Inputs
@@ -259,7 +259,7 @@ $$
 where
 
 $$
-	A = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
+	A^* = \mathrm{min}(\mathrm{max}(\mathrm{cos}(\theta),0.03459),0.961)
 $$
 
 and $C_1,C_2,C_3$ are constant parameters, respectively.
@@ -272,7 +272,7 @@ $$
 
 #### Roughnesses
 
-In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated, according to Miller et al. (1992).
+In `SUBROUTINE:[SEAZ0F]` (of pgocn.F), the roughnesses of for momentum, heat and vapor are calculated supposing the ice-free conditions. calculated, according to Miller et al. (1992), then modified to take into account the effects of ice and snow cover.
 
 <!--
 - Outputs
@@ -338,7 +338,7 @@ $$
 	F_q^P =  \rho C_E |\mathbf{V_a}| ( q_s - q_a )
 $$
 
-note that $F_q^P$ is the possible evaporation flux, where $\mathbf{V_a}$ is horizontal wind vector, and $\theta_s, \theta_a$ are potential temperature of surface and 1st layer of the atmosphere, respectively.
+where $F_q^P$ is the possible evaporation flux, where $\mathbf{V_a}$ is horizontal wind vector, and $\theta_s, \theta_a$ are potential temperature of surface and 1st layer of the atmosphere, respectively. Although there is no description, surface fluxes are calculated using wind speed relative to ocean current speed. For example, F_u=-¥rho C_M | V_a - V_o | (u_a - u_o). Here, V_o = ( u_o, v_o) represents ocean current vector at the uppermost layer. Note that in a stand-alone AGCM, V_o = (0,0) is assumed.
 
 Turbulent fluxes at the sea surface are solved by bulk formulae as follows. Then, by solving the surface energy balance, the ground skin temperature ($T_s$) is updated, and the surface flux values with respect to those values are also updated. The solutions obtained here are temporary values. In order to solve the energy balance by linearizing with respect to $T_s$, the differential with respect to $T_s$ of each flux is calculated beforehand.
 
@@ -470,8 +470,10 @@ is a correction factor, which is approximated from the uncorrected bulk Richards
 In `SUBROUTINE:[RADSFC]` (of pgsfc.F), the radiation flux at sea surface is calculated. For the ground surface albedo ($\alpha_{(d,b)}$), $b=1,2$ represent the visible and near-infrared wavelength bands, respectively. Also, $d=1,2$ are direct and scattered, respectively. For the downward shortwave radiation ($SW^\downarrow$) and upward shortwave radiation ($SW^\uparrow$) incident on the earth's surface, the direct and scattered light together are
 
 $$
-	SW^\downarrow = SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)} \\
-SW^\uparrow = SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
+\begin{array}{rl}
+	SW^\downarrow &= SW^\downarrow_{(1,1)}+SW^\downarrow_{(1,2)}+SW^\downarrow_{(2,1)}+SW^\downarrow_{(2,2)}\\
+SW^\uparrow &= SW^\downarrow_{(1,1)}\cdot\alpha_{(1,1)}+SW^\downarrow_{(1,2)}\cdot\alpha_{(1,2)}+SW^\downarrow_{(2,1)}\cdot\alpha_{(2,1)}+SW^\downarrow_{(2,2)}\cdot\alpha_{(2,2)}
+\end{array}
 $$
 
 ### Solving Heat Balance
@@ -540,7 +542,7 @@ $$
 The net surface flux ($F^*$) is presented by
 
 $$
-	F^*=H + (1-\alpha)\sigma T_s^4 + \alpha LW^\uparrow - LW^\downarrow +SW^\uparrow - SW^\downarrow		
+	F^*=H + \Big((1-\alpha_{Lk})\sigma T_s^4 + \alpha_{Lk} LW^\downarrow\Big)  - LW^\downarrow +SW^\uparrow - SW^\downarrow
 $$
 
 where $H$ is sensible heat flux.

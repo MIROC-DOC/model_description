@@ -1,6 +1,6 @@
-## Cumulus scheme
+## Cumulus Scheme
 
-### Outline of cumulus scheme
+### Outline of Cumulus Scheme
 
 The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since version 5 of MIROC. It represents updrafts, downdrafts, their detrainment and compensating downward motion over the surrounding area as well as microphysical processes associated with updrafts and downdrafts.
 
@@ -18,21 +18,21 @@ The input variables to this scheme are temperature $T$, specific humidity $q$, c
 
 The procedure of the calculations is given as follows along with the names of the subroutines.
 
-1. calculation of cloud base `CUMBAS`.
-2. calculation of in-cloud properties `CUMUP`.
-3. calculation of cloud base mass flux `CUMBMX`.
-4. calculation of cloud mass flux, detrainment, and precipitation `CUMFLX`.
-5. diagnosis of cloud water and cloud cover by cumulus `CUMCLD`.
-6. calculation of tendencies by detrainment `CLDDET`.
-7. calculation of freezing, melting, evaporation, sublimation, and downdraft mass flux `CUMDWN`.
-8. calculation of tendencies by compensating subsidence `CLDSBH`.
-9. calculation of cumulus momentum transport `CUMCMT`.
-10. calculation of tracer updraft `CUMUPR`.
-11. calculation of tracer downdraft `CUMDNR`.
-12. calculation of tracer subsidence `CUMSBR`.
-13. fixing tracer mass `CUMFXR` .
+1. Calculation of cloud base `CUMBAS`.
+2. Calculation of in-cloud properties `CUMUP`.
+3. Calculation of cloud base mass flux `CUMBMX`.
+4. Calculation of cloud mass flux, detrainment, and precipitation `CUMFLX`.
+5. Diagnosis of cloud water and cloud cover by cumulus `CUMCLD`.
+6. Calculation of tendencies by detrainment `CLDDET`.
+7. Calculation of freezing, melting, evaporation, sublimation, and downdraft mass flux `CUMDWN`.
+8. Calculation of tendencies by compensating subsidence `CLDSBH`.
+9. Calculation of cumulus momentum transport `CUMCMT`.
+10. Calculation of tracer updraft `CUMUPR`.
+11. Calculation of tracer downdraft `CUMDNR`.
+12. Calculation of tracer subsidence `CUMSBR`.
+13. Fixing tracer mass `CUMFXR` .
 
-### Interaction between cumulus ensemble and large-scale environment
+### Interaction between Cumulus Ensemble and Large-Scale Environment
 
 Following Arakawa and Schubert (1974), the equations for tendencies of the grid-mean variables are written as
 
@@ -64,7 +64,7 @@ $$
 
 where $M_B$ and $\eta$ are the updraft mass flux at its cloud base and normalized mass flux.
 
-### Cloud base
+### Cloud Base
 
 The cloud base is determined as the lifting condensation level of the air at the lowest model layer. It is defined as the smallest $z$ which satisfies
 
@@ -82,7 +82,7 @@ $C_p$ denotes the specific heat of dry air at constant pressure and the stars in
 
 The normalized mass flux below the cloud base is given by $\eta = (z/z_B)^{1/2}$ for all of the updraft types where $z_B$ denotes the cloud base height.
 
-### Updraft velocity and entrainment rate
+### Updraft Velocity and Entrainment Rate
 
 The entrainment rate is defined by
 
@@ -144,7 +144,7 @@ where $g$ and $T_v$ denote gravity and virtual temperature respectively. $\varep
 
 $\hat{w}$, $B$ and $\epsilon$ are calculated for each of the updraft types separately, but we omit the subscript $j$ for convenience.
 
-### Normalized mass flux and updraft properties
+### Normalized Mass Flux and Updraft Properties
 
 The properties of the updraft are determined by
 
@@ -214,13 +214,13 @@ which shows that $\hat{h}_{k+1/2}$ is a linear interpolation between $\hat{h}_{k
 
 These calculations are made for each of the updraft types separately, but we omit the subscript $j$ for convenience.
 
-### Spectral representation
+### Spectral Representation
 
-Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$.
+Following the spirit of the Arakawa–Schubert scheme, updraft types are spectrally represented. Different values of cloud-base updraft velocities are given from the minimum to the maximum values with a fixed interval. The minimum and maximum values are set to 0.1 and 1.4 $m s^{-1}$, with an interval of 0.1 $m s^{-1}$ for MIROC6. The minimum and maximum values and the interval can be changed.
 
 Then, the updraft properties are calculated upward with Eqs. ([2](p-cum.2)), ([4](p-cum.4)), ([5](p-cum.5)), ([6](p-cum.6)), and ([7](p-cum.7)). This upward calculation continues even if the buoyancy is negative as long as the updraft velocity is positive. If the velocity becomes negative at some level, the air parcel detrains at the neutral buoyancy level which is below and closest to the level. That is, the scheme automatically judges whether the rising parcel can penetrate the negative buoyancy layers when there is a positive buoyancy layer above. The effect of the convective inhibition (CIN) near cloud base is also represented by this method. Note, however, that an effect of overshooting above cloud top is not represented for simplicity (i.e., detrainment never occurs above cloud top).
 
-### Cloud-base mass flux
+### Cloud-Base Mass Flux
 
 The cloud-base mass flux is determined with the prognostic convective kinetic energy closure proposed by Arakawa and Xu (1990). That is, the cloud kinetic energy for each of the updraft types is explicitly predicted by
 
@@ -276,7 +276,7 @@ Strictly, the ratio of the cloud ice to the cloud condensate should be recalcula
 
 Melting and freezing of precipitation occurs depending on wet-bulb temperature of large-scale environment and cumulus mass flux.
 
-### Evaporation, sublimation and downdraft
+### Evaporation, Sublimation and Downdraft
 
 A part of precipitation is evaporated at each level as
 

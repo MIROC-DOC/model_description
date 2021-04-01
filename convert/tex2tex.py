@@ -26,5 +26,9 @@ if __name__ == '__main__':
     after_str = r'\\end{eqnarray}'
     body = re.sub(before_str, after_str, body, flags=re.DOTALL)
 
+    before_str = r'\\href{(.*?)}{.*?}'
+    after_str = r'\\ref{\1}'
+    body = re.sub(before_str, after_str, body)
+
     with open(sys.argv[1], 'w') as f:
         f.write(body)

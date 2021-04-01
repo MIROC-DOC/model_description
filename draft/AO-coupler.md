@@ -1,4 +1,5 @@
 <!--
+
 Coupler
 ==========
 
@@ -17,9 +18,13 @@ Coupler
     -   河川から海洋への水の流出
     -   海面グリッドの分割個数と海洋モデルへの解像度
 -->
-## Fluxes to Atmospheric Models
 
-### Fluxes between atmosphere and ocean
+# Miscellaneous
+
+## Coupler
+### Fluxes to Atmospheric Models
+
+#### Fluxes between Atmosphere and Ocean
 
 Fluxes from the sea surface to the atmosphere ($FLXO$) are calculated on the sea surface grid of the atmospheric model.
 
@@ -29,7 +34,7 @@ The fluxes from the sea surface are calculated separately for seawater and sea i
 When using a sea ice model categorized by sea ice thickness, it may be necessary to calculate fluxes for each sea ice thickness category, but the current model specification calculates fluxes for the average sea ice thickness.
 The conversion of fluxes and boundary conditions between the atmosphere and ocean by the exchanger will be described in detail later.
 
-### Fluxes between atmospheric land surfaces
+#### Fluxes between Atmospheric land Surface
 
 Fluxes from the land surface to the atmosphere ($FLXL$) are calculated on a land surface grid.
 A land surface grid consists of multiple soil covers and lakes.
@@ -37,31 +42,32 @@ Freezing and thawing of lakes and snow cover are considered by a vertical 1D ice
 model).
 If the area of the land surface grid is $SL$, the area occupied by the lake and each soil cover is respectively
 
-$$ SL^{lake}=SL * LKFRC * FLND $$
+$$ SL^{lake}=SL  \times  LKFRC \times FLND $$
 
-$$ SL^{grd}_k = SL * GRFRC_k * (1-LKFRC) * FLND $$
+$$ SL^{grd}_k = SL \times GRFRC_k \times (1-LKFRC) \times FLND $$
 
 where $LKFRC$ is the percentage of lakes on land, $k$ is the type of soil cover, and $GRFRC_k$ is the percentage of soil cover $k$ on land excluding lakes.
 Fluxes from the land surface are calculated separately over each of these soil covers and lakes, averaged by area weight, and passed to the atmosphere.
 
-$$ FLXL = LKFRC * FLXL^{lake} + (1-LKFRC) * \sum_{k=1}^{km} (GRFRC_k * FLXL_k^{grd}) $$
+$$ FLXL = LKFRC \times FLXL^{lake} + (1-LKFRC) \times \sum_{k=1}^{km} (GRFRC_k \times FLXL_k^{grd}) $$
 
 where $FLXL^{lake}$ is the flux at the lake surface, $FLXL_{k}^{grd}$ is the flux at soil cover $k$, and $km$ is the number of soil cover types.
 
 
 
-### Total flux to the atmosphere
+#### Total Flux to the Atmosphere
 
-Since the river model has no area, the flux to the atmosphere ($FLXA$) can be obtained as a weighted average of the sea-land distribution of the fluxes on the land grid ($FLXL$) and at the sea grid ($FLXO$) as follows
+Since the river is treated without area property in the model, the flux to the atmosphere ($FLXA$) can be obtained as a weighted average of the sea-land distribution of the fluxes on the land grid ($FLXL$) and at the sea grid ($FLXO$) as follows
 
-$$ FLXA = \frac{1}{SA} * [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} * FLND^{land} _ {ij}*FLXL_{ij}) + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv }(SO _ {ij} * (1-FLND^{oc} _ {ij}) * FLXO _ {ij})] $$.
+$$ FLXA = \frac{1}{SA} \times [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} \times FLND^{land} _ {ij} \times FLXL_{ij}) \notag\\ + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv }(SO _ {ij} \times (1-FLND^{oc} _ {ij}) \times FLXO _ {ij})] $$.
 
+where, (ildiv,jldiv) is the number of east-west and north-south divisions of the land surface grid.
 Fluxes computed in the atmospheric model, such as precipitation, are also included in $FLXL$ and $FLXO$.
 In the case of such fluxes, all the fluxes in the partitioned land and sea surface grids have the same value as the corresponding grid.
 
-## Fluxes between land surface model and river model
+### Fluxes between Land Surface Model and River Model
 
-### Fluxes between river land surfaces and the river model
+#### Fluxes between Land Surfaces and the River
 
 In the current specification of the model, the fluxes of water between river and land surfaces deal only with the inflow of water from the river to the lake ($RUNIN$), the outflow from the lake to the river ($RUNOFF$), the inflow of water to the land surface at the inland vanishing point ($RUNIN$), and the outflow of water overflowing the soil to the river ($RUNOFF$).
 Here, the inland vanishing point indicates the point where the endpoint of the river disappears, such as in deserts.
@@ -72,17 +78,17 @@ In addition, the flow rate of a river is defined as the amount of water present 
 Water and ice are transported downstream in the river model according to the river channel network data.
 In the river model in MIROC6, the river discharge at the inland vanishing point of the river is scattered over the global ocean to obtain the water balance.
 
-### Water Runoff from Land Surface
+#### Water Runoff from Land Surface
 
 When each soil cover in the land surface grid can no longer hold water or snow and ice, water or ice is passed from each soil model to the river model through the coupler.
 
 $$ RUNOFF^{grd}_{all} =
-    (1-LKFRC) * \sum_{k=1}^{km}(GFLRC_{k} * RUNOFF^{grd}_{k}) $$
+    (1-LKFRC) \times \sum_{k=1}^{km}(GFLRC_{k} \times RUNOFF^{grd}_{k}) $$
 
 The details of the runoff from each soil cover can be found in the documentation of the land surface model MATSIRO.
 In the lake model, when the lake level or snow/ice thickness ($H$) exceeds a constant value ($H_c$), the water flows out to the river at a time constant $\tau_h$
 
-$$ RUNOFF^{lake} = LKFRC * \frac{(H-H_c)}{\tau_h},~~~~~~ (H>H_c) $$
+$$ RUNOFF^{lake} = LKFRC \times \frac{(H-H_c)}{\tau_h},~~~~~~ (H>H_c) $$
 
 $$ RUNOFF^{lake} = 0,~~~~~~~~~~ (H<H_c) $$
 
@@ -95,7 +101,7 @@ When considering the average runoff volume of the land surface grid, it is neces
 In the river model, $RUNOFF^{land}_{all}$ is converted to the river grid with the weight of sea-land distribution, and the runoff amount $RUNOFF^{riv}$ is used for calculation.
 
 
-### Runin of water from a river to a lake
+#### Runin of Water from a River to a Lake
 
 When a lake exists in the middle of a river channel, water flows into the lake according to the river flow rate.
 In order to calculate the amount of water flowing into the lake, the river flow $GDRIV$ in the river grid is converted to the river flow $GDRIVL$ in the land surface grid through the coupler.
@@ -106,7 +112,7 @@ $$ RUNINN^{lake}=GDRIVL/\tau $$.
 
 Since the current specification only considers inflow from rivers to lakes, except at the inland vanishing point, the average inflow at the land surface is
 
-$$ RUNINN^{land}=RUNINN^{lake}*LKFRC $$.
+$$ RUNINN^{land}=RUNINN^{lake} \times LKFRC $$.
 
 When there are multiple river grids corresponding to a land surface grid, if the river water inflow to the land surface averaged over the land surface grid is returned to the river grid using only the area weights as in $RUNOFF$, it is possible that more water will flow out of the river than exists in the river grid.
 Therefore, we convert the ratio of discharge to river flow from the land surface grid to the river grid, and estimate the river discharge (inflow to the land surface) in each river grid.
@@ -116,11 +122,11 @@ $$ RINN^{land}=RUNINN^{land}/GDRIVL $$.
 
 If the discharge rate converted to the river grid is $RINN^{riv}$, the discharge (inflow to the land surface) in the river grid is
 
-$$ RUNINN^{riv}=RINN^{riv}*GDRIV $$.
+$$ RUNINN^{riv}=RINN^{riv} \times GDRIV $$.
 
-## Fluxes to the ocean model
+### Fluxes to the Ocean Model
 
-## Boundary conditions for the ocean on a sea level grid
+#### Boundary Conditions for the Ocean on a Sea Level Grid
 
 As mentioned above, the fluxes between the atmosphere and the ocean are calculated on the sea level grid.
 In this section, we describe the conversion from the ocean model grid to the sea surface grid.
@@ -128,19 +134,19 @@ The standard variables to be converted from the ocean model to the atmospheric s
 In order to clarify which grid we are dealing with in the future, variables in the ocean model grid will be denoted by superscript $OGCM$ and variables in the sea surface grid by superscript $oc$. In addition, the position in the ocean grid is denoted by $LO$ and the position in the sea surface grid by $LC$.
 The boundary condition of the ocean in the sea level grid is defined as follows.
 
-$$ SST^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[SST^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC) $$
+$$ SST^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[SST^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]/SOCNG(LC) $$
 
-$$ AI^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC) $$
+$$ AI^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]/SOCNG(LC) $$
 
-$$ HI^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[HI^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)} {SOCNG(LC)*AI^{oc}(LC)} $$
+$$ HI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HI^{OGCM}(IJO2C(LC,N)) \notag\\ \times AI^{OGCM}(IJO2C(LC,N))   \times SOCN(LC,N)] $$
 
-$$ HSN^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)} {SOCNG(LC)*AI^{oc}(LC)} $$
+$$ HSN^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N)) \notag\\ \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)] $$
 
-$$ TI^{oc}(LC) = \frac{\sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N))*HI^{OGCM}(IJO2C(LC,N))*AI^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]/SOCNG(LC)} {SOCNG(LC)*HI^{oc}(LC)*AI^{oc}(LC)} $$
+$$ TI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times HI^{oc}(LC) \times AI^{oc}(LC)}}  \sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N)) \notag\\ \times HI^{OGCM}(IJO2C(LC,N)) \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]  $$
 
-$$ UO^{oc}(LC)=RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}+RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ UO^{oc}(LC)= RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)}  \notag\\ + RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
 
-$$ VO^{oc}(LC)=-RVO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)}+RUO(LC)* \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N))*SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ VO^{oc}(LC)=-RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} \notag\\ + RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
 
 $$ SOCNG(LC)= \sum_{N=1}^{IJO(LC)}SOCN(LC,N) $$
 
@@ -167,34 +173,34 @@ The variables related to sea ice that are converted to the sea surface grid are 
 
 $$ AI^{OGCM} = \sum_{L=1}^{NIC} AIM^{OGCM}(L) $$
 
-$$ HI^{OGCM} = \sum_{L=1}^{NIC} HIM^{OGCM}(L)*AIM^{OGCM}(L)/AI^{OGCM} $$
+$$ HI^{OGCM} = \sum_{L=1}^{NIC} HIM^{OGCM}(L) \times AIM^{OGCM}(L)/AI^{OGCM} $$
 
-$$ HSN^{OGCM} = \sum_{L=1}^{NIC} HSM^{OGCM}(L)*AIM^{OGCM}(L)/AI^{OGCM} $$
+$$ HSN^{OGCM} = \sum_{L=1}^{NIC} HSM^{OGCM}(L) \times AIM^{OGCM}(L)/AI^{OGCM} $$
 
-$$ TI^{OGCM} = \sum_{L=1}^{NIC} TIM^{OGCM}(L)*AIM^{OGCM}(L)/(AI^{OGCM}*HI^{OGCM}) $$
+$$ TI^{OGCM} = \sum_{L=1}^{NIC} TIM^{OGCM}(L) \times AIM^{OGCM}(L)/(AI^{OGCM} \times HI^{OGCM}) $$
 
 where, $NIC$ is the number of category of sea ice.
 
 
-### Conversion of air-sea fluxes calculated on the sea surface grid to the ocean grid
+#### Conversion of Air-Sea Fluxes Calculated on the Sea Surface Grid to the Ocean Grid
 
 Fluxes calculated on the sea surface grid are calculated at sea surface and sea ice surface, respectively, and fluxes to the atmosphere are calculated as
 
-$$ FLXO=(1-AI)*FLUXO+AI*FLUXI $$
+$$ FLXO=(1-AI) \times FLUXO+AI \times FLUXI $$
 
 These fluxes are time-integrated by the flux coupler in the atmospheric model with weights for sea surface and sea ice extent, and then converted to the ocean grid by the coupled atmosphere-ocean time step and passed to the ocean model.
 
-$$ FLUXOA^{OGCM}(LO) = ROCN(LO)*\sum_{N=1}^{IJA(LO)} [FLUXOA^{oc}(IJC2O(LO,N))*SATM(LO,N)]/SATMG(LO) $$
+$$ FLUXOA^{OGCM}(LO) = ROCN(LO) \notag\\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
-$$ FLUXIA^{OGCM}(LO) = ROCN(LO)*\sum_{N=1}^{IJA(LO)} [FLUXIA^{oc}(IJC2O(LO,N))*SATM(LO,N)]/SATMG(LO) $$
+$$ FLUXIA^{OGCM}(LO) = ROCN(LO) \notag\\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
-$$ SATMG(LO)=ROCN(LO)*\sum_{N=1}^{IJA(LO)} SATM(LO,N) $$
+$$ SATMG(LO)=ROCN(LO) \times \sum_{N=1}^{IJA(LO)} SATM(LO,N) $$
 
 $$ ROCN(LO)=SATMG(LO)/S^{OGCM}(LO) $$
 
-$$ FLUXOA^{oc}=(1-AI^{oc})*FLUXO^{oc} $$
+$$ FLUXOA^{oc}=(1-AI^{oc}) \times FLUXO^{oc} $$
 
-$$ FLUXIA^{oc}=AI^{oc}*FLUXI^{oc} $$
+$$ FLUXIA^{oc}=AI^{oc} \times FLUXI^{oc} $$
 
 where,
 $IJA(LO)$：Number of sea level grids in the atmospheric model corresponding to the ocean grid ($LO$)
@@ -213,18 +219,18 @@ When creating the conversion file, the grid of the atmospheric model is divided 
 For this reason, the flux balance between the atmosphere and the ocean is adjusted by multiplying by the ratio ($ROCN$).
 The wind stresses to the ocean are also calculated as wind stresses over sea level ($TXO$, $TYO$) and over sea ice ($TXI$, $TYI$), but without multiplying the weights of sea level and sea ice area.
 
-$$ TXO^{OGCM}(LO)=RU(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} + RV(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} $$
+$$ TXO^{OGCM}(LO) =  \notag\\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \notag\\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
-$$ TYO^{OGCM}(LO)=-RV(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} + RU(LO)*ROCN(LO)*\sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N))*SATM(LO,N)]}{SATMG(LO)} $$
+$$ TYO^{OGCM}(LO)= \notag\\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \notag\\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
 where,
 
-$RU(LO)$：ベcosine of the rotation angle of the vector
+$RU(LO)$：cosine of the rotation angle of the vector
 
 $RV(LO)$：sine of the rotation angle of the vector
 
 
-### Redistribution of fluxes in the ocean model
+#### Redistribution of Fluxes in the Ocean Model
 
 The fluxes converted to the ocean grid are updated at each time step of the coupling.
 Since the coupling time step is longer than the ocean model time step, the sea level/sea ice area ratio in the ocean model is updated to a different value than the one used to calculate the flux.
@@ -232,9 +238,9 @@ Therefore, in order to obtain an accurate heat and water balance, the fluxes nee
 The fluxes $FLUXOA$ and $FLUXIA$ at sea surface and sea ice surface are ocean grid-averaged values.
 Fluxes to each sea ice category are currently distributed evenly independent of sea ice thickness.
 
-$$ FLUXIAM(L)=FLUXIA*AIM(L)$$
+$$ FLUXIAM(L)=FLUXIA \times AIM(L)$$
 
-$$ FLUXOA=FLUXOA+FLUXIA*[1.0-\sum_{L=1}^{LMAX}AIM(L)]$$
+$$ FLUXOA=FLUXOA+FLUXIA \times [1.0-\sum_{L=1}^{LMAX}AIM(L)]$$
 
 where, $AIM$ denotes the percentage of area covered by sea ice in the grid (sea ice concentration), $L$ denotes the type of sea ice thickness category, and $LMAX$ denotes the number of thickness categories.
 If there is no sea ice surface, all fluxes will be at sea surface.
@@ -244,7 +250,7 @@ On the other hand, the freshwater flux due to sublimation is converted into heat
 As for the wind stress, it is not weighted by sea level and sea ice area before the grid transformation, so it is driven by the respective area weights in each sea ice thickness category in the ocean model.
 For this reason, momentum is not conserved.
 
-### Water runoff from rivers to the ocean
+#### Water Runoff from Rivers to the Ocean
 
 At the end of the river model, we calculate the water flowing from the estuary of river to the ocean.
 Water arriving at the estuary of the river grid is first converted to the atmospheric sea surface grid and time integrated in a flux coupler.
@@ -254,7 +260,7 @@ Therefore, strictly speaking, heat is not conserved.
 Ice runoff is handled in the same way as snowfall.
 
 
-### Number of divisions in the sea surface grid and resolution of the ocean model
+#### Number of Divisions in the Sea Surface Grid and Resolution of the Ocean Model
 
 The sea surface grid is created by dividing the latitude and longitude of the atmospheric grid, but if the number of divisions is not sufficient and the ocean model grid has a higher resolution than the atmospheric sea surface grid, the structure of the atmospheric grid size may remain when the flux is converted to the ocean grid through the exchanger. .
 In addition, data such as precipitation from the atmosphere is not interpolated when converting from the atmospheric grid to the ocean grid, so the atmospheric grid structure remains in the ocean grid for these fluxes.

@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,onecolumn]{jarticle}
+\documentclass[11pt,a4paper,onecolumn]{article}
 %
 \usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
 \usepackage{amsmath,amssymb}
@@ -24,32 +24,56 @@
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 %
 \makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                    {3.25ex \@plus1ex \@minus.2ex}%
+                                  {1.5ex \@plus .2ex}%
+                                    %{-1em}%
+                                    {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+                                       {3.25ex \@plus1ex \@minus .2ex}%
+                                  {1.5ex \@plus .2ex}%
+                                  %{-1em}%
+                                      {\normalfont\normalsize\bfseries}}
 \newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
   {1.0\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
-  {.1\Cvs \@plus.3\Cdp}%
-  {\reset@font\sffamily\normalsize}
+  {1.5ex \@plus .2ex}%
+  %{.1\Cvs \@plus.3\Cdp}%
+{\reset@font\sffamily\normalsize}
 }
 \makeatother
 \setcounter{secnumdepth}{4}
 %
-\title{\Huge Description for MIROC6}
-\author{}
-\date{\today}
 \pagenumbering{arabic}
 %\usepackage{natbib} %全てのbibを表示
 %
-%
-%
 \begin{document}
+  \begin{titlepage} % title page
+    \topskip0pt
+    \vspace*{\fill}
+      \begin{center}
+        {\Huge \textbf{Description of MIROC6 AGCM}}\\
+        \vspace{100mm}
+        {\Large \textbf{MIROC6 AGCM document writing team$^*$}}\\
+        \vspace{30mm}
+        {\Large \textbf{March 31, 2021}}
+      \end{center}
+    \vspace*{\fill}
+    $^*${\bf\textbf{MIROC6 AGCM document writing team}} (in alphabetical order)
+    \input{authors}
+  \end{titlepage}
 %
-	\maketitle
+  \clearpage
+  \include{acknowledgment}
+  \clearpage
+  \include{history}
 	\tableofcontents
 	\clearpage
 	%
 	\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
 	% please change the line below as your tex file (without ".tex")
 	% agcm の概念と構造
-	\include{a-intro} % 渡部先生が書く
+  \include{summary}
+  \include{a-intro}
 	% 基本設定
 	\include{a.0-setup}
 	% Computational flow of dynamical core
@@ -60,37 +84,29 @@
 	\include{d.5-tracer}
 	\include{d.6-summ}
 	\include{d.7-routine}
-	% カプラー
-	\include{AO-coupler}
-	\include{Model-Grid}
-	% 力学:拡散項等
-	% \include{d-diff} % 元々存在しない？
 	% 力学:まとめ
 	\include{d-summ}
 	% 物理過程:イントロ
-	\include{p-intro} % 渡部先生が書く
+	\include{p-intro}
 	% 物理過程:cumulus scheme
 	\include{p-cum}
 	% 物理過程:shallow convection scheme
 	\include{shallowconv_en}
 	% 物理過程:大規模凝結
-	\include{Hotta_pmlsc}
+	\include{pmlsc}
 	% 物理過程:雲微物理
-	\include{Hotta_pcldphys}
+	\include{pcldphys}
 	% 物理過程:放射
 	\include{p-rad}
 	% 物理過程:拡散フラックス
 	\include{p-dif_en}
 	% 物理過程:地表フラックス
-	% \include{p-sflx} % 廃止？
-	% 物理過程:地表モデル
 	\include{p-sfc}
-	% 物理過程:implicit 解法
-	% \include{p-solv} % 担当者なし
 	% 物理過程:重力波抵抗
-	% \include{p-grav} % 担当者なし
-	% 物理過程:対流調節
-	% \include{p-adj} % 廃止
+	\include{p-grav} % 担当者なし
+	% カプラー
+	\include{AO-coupler}
+	\include{Model-Grid}
 	% 参考文献
 	%\include{d-ref}
 	\include{referenc}

@@ -92,7 +92,7 @@ The basic equations are a system of primitive equations at the spherical
   Tracers
 \end{enumerate}
 
-For any tracer whose mixing ratio is denoted as \(q\),
+For any tracer whose conservative quantity (e.g. mixing ratio) is denoted as \(q\),
 \begin{eqnarray}
   \frac{\partial q}{\partial t}
    &=&  - \frac{1}{a\cos\varphi}
@@ -152,21 +152,21 @@ m &\equiv & \left(\frac{\partial p}{\partial \eta}\right)_{p_s}, \\
                        \frac{\partial }{\partial \varphi} \right].
 \end{eqnarray}
 
-\({\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)\)
+$f$ is the Coriolis parameter. \({\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)\)
 are horizontal diffusion terms,
 \({\mathcal F}_\lambda, {\mathcal F}_\varphi\) are forces due to
 small-scale kinetic processes (treated as `physical processes'), \(Q\)
 are forces due to radiation, condensation, small-scale kinetic
 processes, etc. Heating and temperature change due to `physical
 processes', and \(S_q\) is a water vapor source term due to `physical
-processes' such as condensation and small-scale motion. \(Q_{diff}\) is
+processes' such as condensation and small-scale motion. \(Q_{\mathrm{diff}}\) is
 the heat of friction and
 \begin{eqnarray}
-  Q_{diff}
- = - {\mathbf{v}} \cdot  \left( \frac{\partial {\mathbf{v}}}{\partial t} \right)_{diff} .
+  Q_{\mathrm{diff}}
+ = - {\mathbf{v}} \cdot  \left( \frac{\partial {\mathbf{v}}}{\partial t} \right)_{\mathrm{diff}} .
 \end{eqnarray}
 
-\(( \frac{\partial {\mathbf{v}}}{\partial t} )_{diff}\) is a
+\(( \frac{\partial {\mathbf{v}}}{\partial t} )_{\mathrm{diff}}\) is a
 time-varying term of \(u,v\) due to horizontal and vertical diffusion.
 
 \hypertarget{boundary-conditions}{%
@@ -174,7 +174,7 @@ time-varying term of \(u,v\) due to horizontal and vertical diffusion.
 
 Upper and lower boundary conditions for the vertical velocity is:
 \begin{eqnarray}
-  \dot{\eta} = 0  \ \ \ at \ \ \eta = 0 , \ 1 .
+  \dot{\eta} = 0  \ \ \ \text{at~} \ \ \eta = 0 , \ 1 .
 \end{eqnarray}
 The prognostic equation for \(p_s\) and the diagnostic equation for the
 vertical velocity can be derived by integrating the continuity equation
