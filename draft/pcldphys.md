@@ -14,7 +14,7 @@ The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i
 
 The scheme utilizes a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i$). A number concentraion is in units $\mathrm{~m}^{-3}$.
 
-Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
+Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$ represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
 
 ### Microphysical Processes
 

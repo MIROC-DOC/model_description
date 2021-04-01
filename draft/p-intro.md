@@ -118,33 +118,33 @@ $$
 
 5. Saturated specific humidity
 
-The saturated specific humidity $q^\*(T,p)$ is approximated using the saturated vapor pressure $e^\*(T)$,
+The saturated specific humidity $q^{\*}(T,p)$ is approximated using the saturated vapor pressure $e^{\*}(T)$,
 
 $$
-q^\*(T,p) = \frac{\epsilon e^\*(T)}{p} .
+q^{\*}(T,p) = \frac{\epsilon e^{\*}(T)}{p} .
 $$
 
 Here, it is $\epsilon=0.622$,
 
 $$
-\frac{1}{e^\*_v} \frac{\partial{e^\*_v}}{\partial {T}} = \frac{L}{R_v T^2} \tag{p199}
+\frac{1}{e^{\*}_v} \frac{\partial{e^{\*}_v}}{\partial {T}} = \frac{L}{R_v T^2} \tag{p199}
 $$
 
 Therefore, if the latent heat of evaporation ($L$) and the gas constant of water vapor ($R_v$) are held constant,
 
 $$
-  e^\*(T) = e^\*(T=273{K})
+  e^{\*}(T) = e^{\*}(T=273{K})
                       \exp \left[ \frac{L}{R_v}
                             \left( \frac{1}{273} - \frac{1}{T} \right)
                        \right] ,
 $$
 
-where $e^\*(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}$.
+where $e^{\*}(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}$.
 
 From eq.[p199](#p199),
 
 $$
-\frac{\partial{q^\*}}{\partial {T}} = \frac{L}{R_v T^2} q^\*(T,p) .
+\frac{\partial{q^{\*}}}{\partial {T}} = \frac{L}{R_v T^2} q^{\*}(T,p) .
 $$
 
 

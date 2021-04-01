@@ -14,7 +14,7 @@ q_{c}=\left(q_{t}-q_{s}\right) \delta\left(q_{t}-q_{s}\right)
 \tag{hpc.1}
 $$
 
-where $q_s$ denotes the saturation //mixing ratio and $q_c$ does the cloud water ratio. $q_t$ is sum of water vapor and cloud water mixing ratio. $\delta(x)$ denotes the Heviside function of x.
+where $q_s$ denotes the saturation //mixing ratio and $q_c$ does the cloud water mixing ratio. $q_t$ is sum of water vapor and cloud water mixing ratio. $\delta(x)$ denotes the Heviside function of x.
 
 The majority of statistical cloud schemes use the so-called "s-distribution" following Sommeria and Deardorff (1977). A single variable $s$, which considers the subgrid-scale perturbations of liquid temperature $T_l$ and total water mixing ratio $q_t$, is employed. $s$ is defined as
 
@@ -47,12 +47,13 @@ $$
 
 The statistical scheme implemented in MIROC6 is called Hybrid Prognostic Cloud (HPC) scheme (Watanabe et al. 2009). The HPC scheme proposes two types of shape for the PDF $G(s)$, Double-uniform PDF and Skewed-triangular PDF. Here we focus on Skewed-triangular scheme because MIROC6 adoptes the shape. The physical basics of the scheme are in common with Double-uniform PDF.
 
+<!--
 ![](Hotta_pmlsc_PDF.png)
-
+-->
 Example of the basis PDF for HPC: skewed-triangular functions.
 Copied from Fig.1 in Watanabe et al. 2009.
 
-The scheme preicts variance ($V$) and skewness ($S$) of the PDF. $V$, $S$, the second moment $\mu_2$, and the third moment $\mu_3$ are defined as follows.
+The scheme predicts variance ($V$) and skewness ($S$) of the PDF. $V$, $S$, the second moment $\mu_2$, and the third moment $\mu_3$ are defined as follows.
 
 $$
 \mu_{2} \equiv V=\int_{-\infty}^{\infty} s^{2} G(s) ds
@@ -64,7 +65,7 @@ $$
 
 $V$ and $S$ are affected by cumulus convection, cloud microphysics, turbulent mixing, and advection.
 
-The integrals to obtain $C$ and $q_c$ is symbolically expressed as
+The integrals to obtain $C$ and $q_c$ are symbolically expressed as
 
 $$
 C=I_{C}\left(\bar{p}, \bar{T}_{l}, \bar{q}_{t}, \mathcal{V}, \mathcal{S}\right)
@@ -109,7 +110,7 @@ $$
 \right|_{\mathrm{turb.}}+\left.\frac{\Delta \mathcal{S}}{\Delta t}\right|_{\text {others}}-\varepsilon_{\mathcal{S}}
 $$
 
-where subscripts 'conv.', 'micro.' and 'turb.' indicate cumulus convection, cloud microphysics and turbulent mixing processes, which all affect the PDF shape. The last terms represent dissipation due to subgrid-scale horizontal motions. The specific formulations for each term are described below.
+where subscripts 'conv.', 'micro.' and 'turb.' indicate cumulus convection, cloud microphysics and turbulent mixing processes respectively, which all affect the PDF shape. The last terms represent dissipation due to subgrid-scale horizontal motions. The specific formulations for each term are described below.
 
 The HPC scheme is referred to as and $G(s)$ is updated every after the process that affects cloud water PDF. $G(s)$ is thus modified several times within a single time step.
 
@@ -159,7 +160,7 @@ $$
 \left.\frac{\Delta \mathcal{S}}{\Delta t}\right|_{\text {micro. }}=\frac{\Delta \tilde{I}_{\mathcal{S}}}{\Delta t}
 $$
 
-Changes in $\bar{T}_{l}, \bar{q}_{v}, \text{and} \bar{q}_{c}$  are derived from microphysical tendency terms including precipitation, evaporation, melting/freezing.
+Changes in $\bar{T}_{l}, \bar{q}_{v}, \text{and} \bar{q}_{c}$  are derived from microphysical tendency terms including precipitation, evaporation,and melting/freezing.
 
 #### Turbulent mixing
 
@@ -191,7 +192,7 @@ $$
 \tau_{h}^{-1}=C_{s}^{2}\left\{\left(\frac{\partial \bar{u}}{\partial x}\right)^{2}+\left(\frac{\partial \bar{v}}{\partial y}\right)^{2}\right\}^{1 / 2}
 $$
 
-The coefficient $C_{s}$ is set to 0.23 following Tompkins 2002.
+The coefficient $C_{s}$ is set to 0.23 following Tompkins (2002).
 
 #### Other processes
 
