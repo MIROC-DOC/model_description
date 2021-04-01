@@ -190,9 +190,9 @@ $$ FLXO=(1-AI) \times FLUXO+AI \times FLUXI $$
 
 These fluxes are time-integrated by the flux coupler in the atmospheric model with weights for sea surface and sea ice extent, and then converted to the ocean grid by the coupled atmosphere-ocean time step and passed to the ocean model.
 
-$$ FLUXOA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
+$$ FLUXOA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
-$$ FLUXIA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
+$$ FLUXIA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
 $$ SATMG(LO)=ROCN(LO) \times \sum_{N=1}^{IJA(LO)} SATM(LO,N) $$
 
@@ -202,7 +202,7 @@ $$ FLUXOA^{oc}=(1-AI^{oc}) \times FLUXO^{oc} $$
 
 $$ FLUXIA^{oc}=AI^{oc} \times FLUXI^{oc} $$
 
-where,
+where, 
 $IJA(LO)$：Number of sea level grids in the atmospheric model corresponding to the ocean grid ($LO$)
 
 $IJC2O(LO,N)$：Location of the sea surface grid of the atmospheric model corresponding to the ocean grid
@@ -219,9 +219,9 @@ When creating the conversion file, the grid of the atmospheric model is divided 
 For this reason, the flux balance between the atmosphere and the ocean is adjusted by multiplying by the ratio ($ROCN$).
 The wind stresses to the ocean are also calculated as wind stresses over sea level ($TXO$, $TYO$) and over sea ice ($TXI$, $TYI$), but without multiplying the weights of sea level and sea ice area.
 
-$$ TXO^{OGCM}(LO)=RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
+$$ TXO^{OGCM}(LO) =  \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
-$$ TYO^{OGCM}(LO)=-RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
+$$ TYO^{OGCM}(LO)= \\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
 where,
 
