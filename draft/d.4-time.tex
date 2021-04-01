@@ -184,7 +184,7 @@ We now use the following expressions for time differences:
 \begin{eqnarray}
   \delta_{t} {X} &\equiv & \frac{1}{2 \Delta t}
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right), \\
-    \overline{X}^{t} &\equiv & \frac{1}{2} \left( {X}^{t+\Delta t}  + {X}^{t-\Delta t} \right) \\
+    \overline{X}^{t} &\equiv & \frac{1}{2} \left( {X}^{t+\Delta t}  + {X}^{t-\Delta t} \right)\notag\\
   &=&  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t.
 \end{eqnarray}
 Then, applying the semi-implicit method to the system of equations, we get
@@ -218,7 +218,7 @@ Thus,
            + (1+2\Delta t {\mathcal D}_M)
              {\mathbf{G}} {\mathbf{C}}^{T} ) \nabla^{2}_{\eta}
   \right\}
-      \overline{ {\mathbf{D}} }^{t} \\
+      \overline{ {\mathbf{D}} }^{t} \notag\\
   &=& ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
        {\mathbf{D}}^{t-\Delta t}
   + \Delta t
