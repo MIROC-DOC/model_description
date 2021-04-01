@@ -1,4 +1,4 @@
-## Definition of land-sea distribution
+## Definition of Land-Sea Distribution
 
 The land-sea distribution in MIROC is prioritized by the land-sea distribution defined by the ocean model.
 While one grid in the ocean model is defined by land or sea only, the land and ocean grids in the atmospheric model are determined in proportion to the land and sea to be consistent with the ocean model's land-sea distribution.

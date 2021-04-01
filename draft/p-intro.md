@@ -59,7 +59,7 @@ $$
               +  2 \Delta t Q_{ADJ}(\hat{T}^{t+\Delta t,(3)})
 $$
 
-### Various physical quantities
+### Various Physical Quantities
 
 Here are definitions of various physical quantities that can be computed simply from the prognostic variables. Some of them are calculated with `MODULE:[PSETUP]`.
 

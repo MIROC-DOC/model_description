@@ -1,6 +1,6 @@
 \hypertarget{summary-of-the-dynamical-core}{%
-\subsection{Summary of the dynamical
-core}\label{summary-of-the-dynamical-core}}
+\subsection{Summary of the Dynamical
+Core}\label{summary-of-the-dynamical-core}}
 
 In this section, we enumerate the calculations performed in the
 dynamical core, although they overlap with the previous descriptions.
@@ -47,8 +47,8 @@ Corresponding file \& subroutines:
 \texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift,\ W2Gpush,\ W2Gtrans,\ W2Gshift\ (xdsphe.F){]}}
 
 \hypertarget{calculating-a-virtual-temperature}{%
-\subsubsection{Calculating a virtual
-temperature}\label{calculating-a-virtual-temperature}}
+\subsubsection{Calculating a Virtual
+Temperature}\label{calculating-a-virtual-temperature}}
 
 virtual Temperature \(T_v\) is ,
 
@@ -60,8 +60,8 @@ However, it is \(\epsilon_v = R_v/R - 1\) and \(R_v\) is the gas
 constant for water vapor (461 Jkg\(^{-1}\)K\(^{-1}\)) and \(R\) is the
 gas constant for air (287.04 Jkg\(^{-1}\)K\(^{-1}\)).
 
-Corresponding file \& subroutines: \texttt{{[}VIRTMD\ (dvtmp.F){]}}
-\#\#\# Calculating the pressure gradient term
+Corresponding file \& subroutine: \texttt{{[}VIRTMD\ (dvtmp.F){]}}
+\#\#\# Calculating the Pressure Gradient Term
 
 The pressure gradient term \(\nabla \pi = \frac{1}{p_S} \nabla p_S\) is
 first used to define the \(\pi_n^m\)
@@ -94,9 +94,9 @@ to a spectral representation and then ,
 
 Corresponding file \& subroutine: \texttt{{[}PSDOT\ (dgdyn.F){]}}
 
-\hypertarget{diagnosis-of-vertical-flow}{%
-\subsubsection{Diagnosis of vertical
-flow}\label{diagnosis-of-vertical-flow}}
+\hypertarget{diagnosis-of-vertical-dlow}{%
+\subsubsection{Diagnosis of Vertical
+Dlow}\label{diagnosis-of-vertical-dlow}}
 
 Pressure change term, and lead DC,
 
@@ -129,8 +129,8 @@ and its non-gravity components.
 Corresponding file and subroutine: \texttt{{[}PSDOT\ (dgdyn.F){]}}
 
 \hypertarget{tendency-terms-due-to-advection}{%
-\subsubsection{Tendency terms due to
-advection}\label{tendency-terms-due-to-advection}}
+\subsubsection{Tendency Terms due to
+Advection}\label{tendency-terms-due-to-advection}}
 
 Momentum advection term:
 
@@ -197,12 +197,12 @@ R_k  =  q_k D_k
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 \end{eqnarray}
 
-Corresponding file \& subroutine
+Corresponding file \& subroutine:
 \texttt{{[}GRTADV,\ GRUADV\ (dgdyn.F){]}}
 
 \hypertarget{transformation-of-prognostic-variables-to-spectral-space}{%
-\subsubsection{Transformation of prognostic variables to spectral
-space}\label{transformation-of-prognostic-variables-to-spectral-space}}
+\subsubsection{Transformation of Prognostic Variables to Spectral
+Space}\label{transformation-of-prognostic-variables-to-spectral-space}}
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
@@ -228,8 +228,8 @@ Corresponding file \& subroutine:
 \texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift\ (xdsphe.F){]}}
 
 \hypertarget{transformation-of-tendency-terms-to-spectral-space}{%
-\subsubsection{Transformation of tendency terms to spectral
-space}\label{transformation-of-tendency-terms-to-spectral-space}}
+\subsubsection{Transformation of Tendency Terms to Spectral
+Space}\label{transformation-of-tendency-terms-to-spectral-space}}
 
 Tendency Term of Vorticity
 
@@ -312,8 +312,8 @@ Corresponding file \& subroutines:
 \texttt{{[}G2Wpush,\ G2Wtrans,\ G2Wshift\ (xdsphe.F){]}}
 
 \hypertarget{time-integration-in-spectral-space}{%
-\subsubsection{Time integration in spectral
-space}\label{time-integration-in-spectral-space}}
+\subsubsection{Time Integration in Spectral
+Space}\label{time-integration-in-spectral-space}}
 
 Equations in matrix form
 
@@ -390,7 +390,7 @@ then calculate the value of the spectrum in \(t+\Delta t\) using
 Corresponding file \& subroutine: \texttt{{[}TINTGR\ (dintg.F){]}}
 
 \hypertarget{transformation-of-prognostic-variables-to-grid-point-values}{%
-\subsubsection{Transformation of prognostic variables to grid point
+\subsubsection{Transformation of Prognostic Variables to Grid Point
 Values}\label{transformation-of-prognostic-variables-to-grid-point-values}}
 
 Obtain grid values of horizontal wind speed from the spectral values of
@@ -440,8 +440,8 @@ Corresponding file \& subroutines:
 \texttt{{[}W2Gpush,\ W2Gtrans,\ W2Gshift\ (xdsphe.F){]}}
 
 \hypertarget{diffusion-correction-along-pressure-level}{%
-\subsubsection{Diffusion Correction along pressure
-level}\label{diffusion-correction-along-pressure-level}}
+\subsubsection{Diffusion Correction along Pressure
+Level}\label{diffusion-correction-along-pressure-level}}
 
 The horizontal diffusion is applied on the surface of \(\eta-\)plane,
 but it can cause problems in large slopes, such as transporting water
@@ -481,9 +481,9 @@ the spectral representation of the diffusion coefficient.
 
 Corresponding file \& subroutine: \texttt{{[}CORDIF\ (ddifc.F){]}}
 
-\hypertarget{frictional-heat-associated-with-diffusion.}{%
-\subsubsection{Frictional heat associated with
-diffusion.}\label{frictional-heat-associated-with-diffusion.}}
+\hypertarget{frictional-heat-associated-with-diffusion}{%
+\subsubsection{Frictional Heat Associated with
+Diffusion}\label{frictional-heat-associated-with-diffusion}}
 
 Frictional heat from diffusion is ,
 
@@ -586,8 +586,8 @@ obtained later, time filter conduct at \texttt{MODULE\ {[}TFILT{]}},
 Corresponding file \& subroutine: \texttt{{[}DADVNC\ (dadvn.F){]}}
 
 \hypertarget{correction-for-conservation-of-mass}{%
-\subsubsection{Correction for conservation of
-mass}\label{correction-for-conservation-of-mass}}
+\subsubsection{Correction for Conservation of
+Mass}\label{correction-for-conservation-of-mass}}
 
 In the spectral method, the global integral of \(\pi = \ln p_S\) is
 preserved with rounding errors removed, but the preservation of the

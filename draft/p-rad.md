@@ -166,11 +166,11 @@ In this section, `SUBROUTINE:[SCATRY]` in pradt.F is described.
 The optical thickness $\tau^{r}$ of Rayleigh scattering and the part of the optical thickness  due to absorption $\tau_{ab}^{r}$ are
 
 $$
-\tau^{r}=\frac{e^{r} d p q m o l_{1}}{p_{S T D}}
+\tau^{r}=\frac{e^{r}qmol_{1}dp}{p_{S T D}}
 $$
 
 $$
-\tau_{ab}^{r}=\frac{e^{r} d p q m o l_{2}}{p_{S T D}}
+\tau_{ab}^{r}=\frac{e^{r}qmol_{2}dp}{p_{S T D}}
 $$
 
 $$
@@ -965,7 +965,7 @@ $$
 
 In this section, `SUBROUTINE:[SHTINS]` in pradi.F is described.
 
-The following parameters are determined using the eccentricity $e$, with reference to Berger (1978).
+The following parameters are determined using the orbital eccentricity $e$, with reference to Berger (1978).
 
 $$
 \begin{array}{l}
@@ -1023,9 +1023,9 @@ $$
 \end{array}
 $$
 
-where $epsd$ and $vpid$ are the angle of the obliquity and the precession.
+where $epsd$ and $vpid$ are the angle of the obliquity, and the precession represented by the true longitude of the perihelion measured from the vernal equinox.
 
-Earth position $\lambda_{m}$ at a time $t_m$ is represented by using the position of the vernal equinox $\lambda_{0}$.
+The mean longitude of the vernal equinox $\lambda_{0}$ is computed.
 
 $$
 \begin{array}{c}
@@ -1033,20 +1033,26 @@ $$
 \end{array}
 $$
 
+The mean longitude of the Earth position $\lambda_{m}$ at time $t_m$ is represented by using the position of the vernal equinox $\lambda_{0}$.
+
 $$
 \begin{array}{c}
-\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times 365 \times 86400}+\lambda_{0}
+\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times　t_{year}}+\lambda_{0}
 \end{array}
+$$
+
+where $t_{year}$ is  the number of seconds in year, and the origin of the time $t_0$ is defined as the time of the vernal (march) equinox. 
+
+The true longitude of the Earth position $V$ at time $t_m$ is calculated as below.
+
+$$
+\\V=\lambda_{m}-\varpi+b_{1} \sin \left(\lambda_{m}-\varpi\right)+b_{2} \sin 2\left(\lambda_{m}-\varpi\right)+b_{3} \sin 3\left(\lambda_{m}-\varpi\right)
 $$
 
 The solar declination $\delta$ is
 
 $$
 \delta=\arcsin (\sin \epsilon \sin (V+\varpi))
-$$
-
-$$
-\\V=\lambda_{m}-\varpi+b_{1} \sin \left(\lambda_{m}-\varpi\right)+b_{2} \sin 2\left(\lambda_{m}-\varpi\right)+b_{3} \sin 3\left(\lambda_{m}-\varpi\right)
 $$
 
 The incident angle $\cos \zeta$ is founded by using the latitude $\varphi$, the solar declination $\delta$, and the hour angle at a point of longitude $h$.
@@ -1069,7 +1075,7 @@ r=\frac{1-e^{2}}{1+e(\cos V+\varpi)}
 \end{array}
 $$
 
-where $F_{00}$ is the solar constant and is the ratio of the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$ (in the daytime) in time increments (set in NHSUB), is counted, and $F_{0}$ and $\cos \zeta$ are finally averaged.
+where $F_{00}$ is the solar constant and is the ratio to the time of the distance between the sun and the earth. The number of times when $\cos \zeta \geq 0$ (in the daytime) in time increments (set in NHSUB), is counted, and $F_{0}$ and $\cos \zeta$ are finally averaged.
 
 It is also possible to give average annual insolation. In this case, the annual and day mean incidence and angle of incidence are approximated as follows.
 
