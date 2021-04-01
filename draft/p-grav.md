@@ -2,7 +2,7 @@
 
 Effects of sub-grid scale gravity waves on the grid scale flows are represented by two kinds of gravity wave parameterizations. The orographic gravity wave drag scheme represents decelerations of the grid scale flow due to momentum deposition of orographic gravity waves, which is described below. In contrast, the non-orographic gravity wave scheme may either accelerate or decelerate the grid scale flow. At present this document does not contain a detailed description of the non-orographic gravity wave scheme, and readers may find if in Watanabe (2008) and Tatebe et al. (2019).
 
-### Overview of a gravity wave drag parameterization
+### Overview of a Gravity Wave Drag Parameterization
 
 The orographic gravity wave drag scheme represents the upward momentum flux of the gravity waves induced by sub-grid scale topography and calculates the horizontal wind deceleration associated with its convergence (McFarlane, 1987). The main input data are eastward wind ($u$), northward wind ($v$), and temperature ($T$), and the output data are the tendency of eastward wind and northward wind, $\partial u/\partial t, \partial v/\partial t$.
 
@@ -14,7 +14,7 @@ The outline of the calculation procedure is as follows.
 
 3. The tendency of horizontal wind is obtained by calculating the vertical convergence of momentum flux in each layer.
 
-### Relationship between local Froude number and momentum flux
+### Relationship between Local FroudeNnumber and Momentum Flux
 
 Considering the vertical flux of horizontal momentum due to orographic gravity waves, the difference between the flux ($\tau$) and the local Froude number ($F_L = NH/U$) at a certain altitude is
 
@@ -32,7 +32,7 @@ $$
 
 The local Froude number ($F_L$) cannot exceed the critical Froude number ($F_{c}$). If the local Froude number calculated from ([589](p-grav.589)) exceeds the critical Froude number $F_{c}$, the gravity wave becomes supersaturated and the flux decreases to the momentum flux corresponding to the critical Froude number.
 
-### Momentum fluxes at the surface.
+### Momentum Fluxes at the Surface
 
 The magnitude of the vertical flux of horizontal momentum due to gravity waves excited at the earth's surface, $\tau_{1/2}$, is calculated by substituting the local Froude number $(F_L)_{1/2} = N_1 h/U_1$ into ([590](p-grav.590)),
 
@@ -51,7 +51,7 @@ $$
                \right)
 $$
 
-### Momentum fluxes in the upper levels.
+### Momentum Fluxes in the Upper Levels
 
 Suppose that the momentum flux $\tau_{k-1/2}$ is computed at level $k-1/2$. When no saturation occurs, $\tau_{k+1/2}$ is equal to $\tau_{k-1/2}$. If the momentum flux ($\tau_{k-1/2}$) exceeds the momentum flux calculated from the critical Froude number at the $k+1/2$ level, wave breaking occurs in the $k$ layer and the momentum flux decreases to the critical flux.
 
@@ -70,7 +70,7 @@ $$
                    {|{\mathbf v}_{1}|       }
 $$
 
-### The magnitude of the time variation of horizontal wind due to momentum convergence.
+### The Magnitude of the Time Variation of Horizontal Wind due to Momentum Convergence
 
 The tendency of the projected component of the horizontal wind, $U_{k}$, is ,
 
@@ -96,6 +96,6 @@ $$
            \frac{\partial U_{k}}{\partial t} \frac{v_{1}}{U_{1}}
 $$
 
-### Other Notes.
+### Other Notes
 
-1. it is assumed that no gravity waves are excited at the ground surface when the wind speed is small ($U_{1} \le v_{min}$) or when the undulations at the surface are small ($Z_{SD} \le (Z_{SD})_{min}$).
+1. It is assumed that no gravity waves are excited at the ground surface when the wind speed is small ($U_{1} \le v_{min}$) or when the undulations at the surface are small ($Z_{SD} \le (Z_{SD})_{min}$).

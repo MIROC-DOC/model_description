@@ -9,8 +9,8 @@
 Models}\label{fluxes-to-atmospheric-models}}
 
 \hypertarget{fluxes-between-atmosphere-and-ocean}{%
-\paragraph{Fluxes between atmosphere and
-ocean}\label{fluxes-between-atmosphere-and-ocean}}
+\paragraph{Fluxes between Atmosphere and
+Ocean}\label{fluxes-between-atmosphere-and-ocean}}
 
 Fluxes from the sea surface to the atmosphere (\(FLXO\)) are calculated
 on the sea surface grid of the atmospheric model.
@@ -33,9 +33,9 @@ fluxes for the average sea ice thickness. The conversion of fluxes and
 boundary conditions between the atmosphere and ocean by the exchanger
 will be described in detail later.
 
-\hypertarget{fluxes-between-atmospheric-land-surfaces}{%
-\paragraph{Fluxes between atmospheric land
-surfaces}\label{fluxes-between-atmospheric-land-surfaces}}
+\hypertarget{fluxes-between-atmospheric-land-surface}{%
+\paragraph{Fluxes between Atmospheric land
+Surface}\label{fluxes-between-atmospheric-land-surface}}
 
 Fluxes from the land surface to the atmosphere (\(FLXL\)) are calculated
 on a land surface grid. A land surface grid consists of multiple soil
@@ -61,8 +61,8 @@ where \(FLXL^{lake}\) is the flux at the lake surface,
 number of soil cover types.
 
 \hypertarget{total-flux-to-the-atmosphere}{%
-\paragraph{Total flux to the
-atmosphere}\label{total-flux-to-the-atmosphere}}
+\paragraph{Total Flux to the
+Atmosphere}\label{total-flux-to-the-atmosphere}}
 
 Since the river is treated without area property in the model, the flux
 to the atmosphere (\(FLXA\)) can be obtained as a weighted average of
@@ -79,12 +79,12 @@ land and sea surface grids have the same value as the corresponding
 grid.
 
 \hypertarget{fluxes-between-land-surface-model-and-river-model}{%
-\subsubsection{Fluxes between land surface model and river
-model}\label{fluxes-between-land-surface-model-and-river-model}}
+\subsubsection{Fluxes between Land Surface Model and River
+Model}\label{fluxes-between-land-surface-model-and-river-model}}
 
-\hypertarget{fluxes-between-river-land-surfaces-and-the-river-model}{%
-\paragraph{Fluxes between river land surfaces and the river
-model}\label{fluxes-between-river-land-surfaces-and-the-river-model}}
+\hypertarget{fluxes-between-land-surfaces-and-the-river}{%
+\paragraph{Fluxes between Land Surfaces and the
+River}\label{fluxes-between-land-surfaces-and-the-river}}
 
 In the current specification of the model, the fluxes of water between
 river and land surfaces deal only with the inflow of water from the
@@ -135,8 +135,8 @@ converted to the river grid with the weight of sea-land distribution,
 and the runoff amount \(RUNOFF^{riv}\) is used for calculation.
 
 \hypertarget{runin-of-water-from-a-river-to-a-lake}{%
-\paragraph{Runin of water from a river to a
-lake}\label{runin-of-water-from-a-river-to-a-lake}}
+\paragraph{Runin of Water from a River to a
+Lake}\label{runin-of-water-from-a-river-to-a-lake}}
 
 When a lake exists in the middle of a river channel, water flows into
 the lake according to the river flow rate. In order to calculate the
@@ -173,12 +173,12 @@ discharge (inflow to the land surface) in the river grid is
 \begin{eqnarray} RUNINN^{riv}=RINN^{riv} \times GDRIV \end{eqnarray}.
 
 \hypertarget{fluxes-to-the-ocean-model}{%
-\subsubsection{Fluxes to the ocean
-model}\label{fluxes-to-the-ocean-model}}
+\subsubsection{Fluxes to the Ocean
+Model}\label{fluxes-to-the-ocean-model}}
 
 \hypertarget{boundary-conditions-for-the-ocean-on-a-sea-level-grid}{%
-\paragraph{Boundary conditions for the ocean on a sea level
-grid}\label{boundary-conditions-for-the-ocean-on-a-sea-level-grid}}
+\paragraph{Boundary Conditions for the Ocean on a Sea Level
+Grid}\label{boundary-conditions-for-the-ocean-on-a-sea-level-grid}}
 
 As mentioned above, the fluxes between the atmosphere and the ocean are
 calculated on the sea level grid. In this section, we describe the
@@ -248,9 +248,9 @@ layer thickness (\(AIM,HIM,HSM,TIM\)) as follows.
 where, \(NIC\) is the number of category of sea ice.
 
 \hypertarget{conversion-of-air-sea-fluxes-calculated-on-the-sea-surface-grid-to-the-ocean-grid}{%
-\paragraph{Conversion of air-sea fluxes calculated on the sea surface
-grid to the ocean
-grid}\label{conversion-of-air-sea-fluxes-calculated-on-the-sea-surface-grid-to-the-ocean-grid}}
+\paragraph{Conversion of Air-Sea Fluxes Calculated on the Sea Surface
+Grid to the Ocean
+Grid}\label{conversion-of-air-sea-fluxes-calculated-on-the-sea-surface-grid-to-the-ocean-grid}}
 
 Fluxes calculated on the sea surface grid are calculated at sea surface
 and sea ice surface, respectively, and fluxes to the atmosphere are
@@ -263,9 +263,9 @@ model with weights for sea surface and sea ice extent, and then
 converted to the ocean grid by the coupled atmosphere-ocean time step
 and passed to the ocean model.
 
-\begin{eqnarray} FLUXOA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} FLUXOA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
 
-\begin{eqnarray} FLUXIA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} FLUXIA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
 
 \begin{eqnarray} SATMG(LO)=ROCN(LO) \times \sum_{N=1}^{IJA(LO)} SATM(LO,N) \end{eqnarray}
 
@@ -303,9 +303,9 @@ the ocean are also calculated as wind stresses over sea level (\(TXO\),
 \(TYO\)) and over sea ice (\(TXI\), \(TYI\)), but without multiplying
 the weights of sea level and sea ice area.
 
-\begin{eqnarray} TXO^{OGCM}(LO)=RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} TXO^{OGCM}(LO) =  \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
 
-\begin{eqnarray} TYO^{OGCM}(LO)=-RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} TYO^{OGCM}(LO)= \\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
 
 where,
 
@@ -314,8 +314,8 @@ where,
 \(RV(LO)\)：sine of the rotation angle of the vector
 
 \hypertarget{redistribution-of-fluxes-in-the-ocean-model}{%
-\paragraph{Redistribution of fluxes in the ocean
-model}\label{redistribution-of-fluxes-in-the-ocean-model}}
+\paragraph{Redistribution of Fluxes in the Ocean
+Model}\label{redistribution-of-fluxes-in-the-ocean-model}}
 
 The fluxes converted to the ocean grid are updated at each time step of
 the coupling. Since the coupling time step is longer than the ocean
@@ -349,8 +349,8 @@ respective area weights in each sea ice thickness category in the ocean
 model. For this reason, momentum is not conserved.
 
 \hypertarget{water-runoff-from-rivers-to-the-ocean}{%
-\paragraph{Water runoff from rivers to the
-ocean}\label{water-runoff-from-rivers-to-the-ocean}}
+\paragraph{Water Runoff from Rivers to the
+Ocean}\label{water-runoff-from-rivers-to-the-ocean}}
 
 At the end of the river model, we calculate the water flowing from the
 estuary of river to the ocean. Water arriving at the estuary of the
@@ -364,9 +364,9 @@ speaking, heat is not conserved. Ice runoff is handled in the same way
 as snowfall.
 
 \hypertarget{number-of-divisions-in-the-sea-surface-grid-and-resolution-of-the-ocean-model}{%
-\paragraph{Number of divisions in the sea surface grid and resolution of
-the ocean
-model}\label{number-of-divisions-in-the-sea-surface-grid-and-resolution-of-the-ocean-model}}
+\paragraph{Number of Divisions in the Sea Surface Grid and Resolution of
+the Ocean
+Model}\label{number-of-divisions-in-the-sea-surface-grid-and-resolution-of-the-ocean-model}}
 
 The sea surface grid is created by dividing the latitude and longitude
 of the atmospheric grid, but if the number of divisions is not

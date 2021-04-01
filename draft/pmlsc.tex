@@ -7,8 +7,8 @@ These are called in
 \texttt{padmn.F,\ pcumc.F,\ pshcn.F,\ pcldphys.F\ and\ pvdfm.F} files.
 
 \hypertarget{physical-basis-for-statistical-pdf-scheme}{%
-\subsubsection{Physical basis for statistical PDF
-scheme}\label{physical-basis-for-statistical-pdf-scheme}}
+\subsubsection{Physical Basis for Statistical PDF
+Scheme}\label{physical-basis-for-statistical-pdf-scheme}}
 
 General Circulation Models (GCMs) typically adopt fractional cloud cover
 (the volume of cloudy air per total air volume in a grid box) assumption
@@ -27,8 +27,8 @@ q_{c}=\left(q_{t}-q_{s}\right) \delta\left(q_{t}-q_{s}\right)
 \end{eqnarray}
 
 where \(q_s\) denotes the saturation //mixing ratio and \(q_c\) does the
-cloud water ratio. \(q_t\) is sum of water vapor and cloud water mixing
-ratio. \(\delta(x)\) denotes the Heviside function of x.
+cloud water mixing ratio. \(q_t\) is sum of water vapor and cloud water
+mixing ratio. \(\delta(x)\) denotes the Heviside function of x.
 
 The majority of statistical cloud schemes use the so-called
 ``s-distribution'' following Sommeria and Deardorff (1977). A single
@@ -62,9 +62,9 @@ where \(Qc\) denotes the grid-scale saturation deficit defined as \begin{eqnarra
 Q_{c} \equiv a_{L}\left\{\bar{q}_{t}-q_{s}\left(\bar{T}_{l}, \bar{p}\right)\right\}.
 \end{eqnarray}
 
-\hypertarget{hybrid-prognostic-cloud-hpc-scheme}{%
-\subsubsection{Hybrid Prognostic Cloud (HPC)
-scheme}\label{hybrid-prognostic-cloud-hpc-scheme}}
+\hypertarget{hybrid-prognostic-cloud-scheme}{%
+\subsubsection{Hybrid Prognostic Cloud
+scheme}\label{hybrid-prognostic-cloud-scheme}}
 
 The statistical scheme implemented in MIROC6 is called Hybrid Prognostic
 Cloud (HPC) scheme (Watanabe et al.~2009). The HPC scheme proposes two
@@ -73,12 +73,10 @@ Skewed-triangular PDF. Here we focus on Skewed-triangular scheme because
 MIROC6 adoptes the shape. The physical basics of the scheme are in
 common with Double-uniform PDF.
 
-%\includegraphics{Hotta_pmlsc_PDF.png}
-
 Example of the basis PDF for HPC: skewed-triangular functions. Copied
 from Fig.1 in Watanabe et al.~2009.
 
-The scheme preicts variance (\(V\)) and skewness (\(S\)) of the PDF.
+The scheme predicts variance (\(V\)) and skewness (\(S\)) of the PDF.
 \(V\), \(S\), the second moment \(\mu_2\), and the third moment
 \(\mu_3\) are defined as follows.
 
@@ -93,7 +91,7 @@ The scheme preicts variance (\(V\)) and skewness (\(S\)) of the PDF.
 \(V\) and \(S\) are affected by cumulus convection, cloud microphysics,
 turbulent mixing, and advection.
 
-The integrals to obtain \(C\) and \(q_c\) is symbolically expressed as
+The integrals to obtain \(C\) and \(q_c\) are symbolically expressed as
 
 \begin{eqnarray}
 C=I_{C}\left(\bar{p}, \bar{T}_{l}, \bar{q}_{t}, \mathcal{V}, \mathcal{S}\right)
@@ -127,8 +125,8 @@ for \(G(s)\) because of their feasibility in analytically nalderiving
 \({\tilde{I}}\).
 
 \hypertarget{pdf-change-through-processes}{%
-\subsubsection{PDF change through
-processes}\label{pdf-change-through-processes}}
+\subsubsection{PDF Change Through
+Processes}\label{pdf-change-through-processes}}
 
 The HPC cloud scheme is composed using prognostic equations for four
 variables determining \(I\), namely, \(T_l\), \(q_t\), \(V\), and \(S\).
@@ -149,17 +147,17 @@ Prognostic equations for the PDF variance and skewness are expressed as
 \end{eqnarray}
 
 where subscripts `conv.', `micro.' and `turb.' indicate cumulus
-convection, cloud microphysics and turbulent mixing processes, which all
-affect the PDF shape. The last terms represent dissipation due to
-subgrid-scale horizontal motions. The specific formulations for each
-term are described below.
+convection, cloud microphysics and turbulent mixing processes
+respectively, which all affect the PDF shape. The last terms represent
+dissipation due to subgrid-scale horizontal motions. The specific
+formulations for each term are described below.
 
 The HPC scheme is referred to as and \(G(s)\) is updated every after the
 process that affects cloud water PDF. \(G(s)\) is thus modified several
 times within a single time step.
 
 \hypertarget{cumulus-convection}{%
-\paragraph{Cumulus convection}\label{cumulus-convection}}
+\paragraph{Cumulus Convection}\label{cumulus-convection}}
 
 The total effect of cumulus convection to the PDF moments is written as
 
@@ -216,10 +214,10 @@ manner to the cumulus convection effect.
 
 Changes in \(\bar{T}_{l}, \bar{q}_{v}, \text{and} \bar{q}_{c}\) are
 derived from microphysical tendency terms including precipitation,
-evaporation, melting/freezing.
+evaporation,and melting/freezing.
 
 \hypertarget{turbulent-mixing}{%
-\paragraph{Turbulent mixing}\label{turbulent-mixing}}
+\paragraph{Turbulent Mixing}\label{turbulent-mixing}}
 
 From the definition of \(s\), the PDF variance \(\mathcal{V}\) becomes
 
@@ -251,8 +249,8 @@ defined by the third moment (cf.~Tompkins 2002), the skewness change
 calculated due to the variance change in (28).
 
 \hypertarget{subgrid-scale-horizontal-eddy}{%
-\paragraph{Subgrid-scale horizontal
-eddy}\label{subgrid-scale-horizontal-eddy}}
+\paragraph{Subgrid-Scale Horizontal
+Eddy}\label{subgrid-scale-horizontal-eddy}}
 
 In the planetary boundary layer, the subgrid-scale inhomogeneity is
 dissipated due to the turbulent mixing. In free atmosphere, the grid box
@@ -266,17 +264,17 @@ shear as
 \tau_{h}^{-1}=C_{s}^{2}\left\{\left(\frac{\partial \bar{u}}{\partial x}\right)^{2}+\left(\frac{\partial \bar{v}}{\partial y}\right)^{2}\right\}^{1 / 2}
 \end{eqnarray}
 
-The coefficient \(C_{s}\) is set to 0.23 following Tompkins 2002.
+The coefficient \(C_{s}\) is set to 0.23 following Tompkins (2002).
 
 \hypertarget{other-processes}{%
-\paragraph{Other processes}\label{other-processes}}
+\paragraph{Other Processes}\label{other-processes}}
 
 Dynamics, shallow convection, radiation, mass source, and dissipation
 heating processes change the grid-mean temperature and humidity. Such
 effects on the shape of PDF are included following (16).
 
 \hypertarget{solving-procedures}{%
-\subsubsection{Solving procedures}\label{solving-procedures}}
+\subsubsection{Solving Procedures}\label{solving-procedures}}
 
 The shape of the Skewed-triangular PDF is represented as follows. The
 widths defined by positions of the left and right edges on the
@@ -297,14 +295,14 @@ subroutine CLD2PDF calculates \(\mathcal{V}\) and \(\mathcal{S}\) given
 concrete calculation processes in this subsection.
 
 \hypertarget{caluculation-of-cloud-variables-from-pdf-moments}{%
-\paragraph{Caluculation of cloud variables from PDF
-moments}\label{caluculation-of-cloud-variables-from-pdf-moments}}
+\paragraph{Caluculation of Cloud Variables from PDF
+Moments}\label{caluculation-of-cloud-variables-from-pdf-moments}}
 
 This is written in \texttt{SUBROUTINE:{[}PDF2CLD{]}}.
 
 \hypertarget{from-mu_1-mu_2-mu_3-to-abq}{%
-\subparagraph{\texorpdfstring{From \(\mu_{1}, \mu_{2}, \mu_{3}\) To
-\(a,b,q\)}{From \textbackslash mu\_\{1\}, \textbackslash mu\_\{2\}, \textbackslash mu\_\{3\} To a,b,q}}\label{from-mu_1-mu_2-mu_3-to-abq}}
+\subparagraph{\texorpdfstring{From \(\mu_{1}, \mu_{2}, \mu_{3}\) to
+\(a,b,q\)}{From \textbackslash mu\_\{1\}, \textbackslash mu\_\{2\}, \textbackslash mu\_\{3\} to a,b,q}}\label{from-mu_1-mu_2-mu_3-to-abq}}
 
 The first, second, and third moments of the PDF is calculated as
 follows.
@@ -407,8 +405,8 @@ variables.}\label{caluculation-of-pdf-moments-from-cloud-variables.}}
 This is written in \texttt{SUBROUTINE:{[}CLD2PDF{]}}
 
 \hypertarget{from-barq_c-c-to-abq}{%
-\subparagraph{\texorpdfstring{From \(\bar{q_c}, C\) To
-\(a,b,q\)}{From \textbackslash bar\{q\_c\}, C To a,b,q}}\label{from-barq_c-c-to-abq}}
+\subparagraph{\texorpdfstring{From \(\bar{q_c}, C\) to
+\(a,b,q\)}{From \textbackslash bar\{q\_c\}, C to a,b,q}}\label{from-barq_c-c-to-abq}}
 
 We can not determine the position of \(Q_c\) in the triangle at the
 beginning of the calculation. Thus we calculate \(a,b\) assuming that
@@ -525,8 +523,8 @@ is not a real number, \(C\) is adjusted using (26). Then we solve (18)
 again.
 
 \hypertarget{from-abq-to-mu_2-mu_3}{%
-\subparagraph{\texorpdfstring{From \(a,b,q\) To
-\(\mu_{2}, \mu_{3}\)}{From a,b,q To \textbackslash mu\_\{2\}, \textbackslash mu\_\{3\}}}\label{from-abq-to-mu_2-mu_3}}
+\subparagraph{\texorpdfstring{From \(a,b,q\) to
+\(\mu_{2}, \mu_{3}\)}{From a,b,q to \textbackslash mu\_\{2\}, \textbackslash mu\_\{3\}}}\label{from-abq-to-mu_2-mu_3}}
 
 By definition, the PDF moments are expressed in terms of \(a\) and
 \(b\).
@@ -540,8 +538,8 @@ By definition, the PDF moments are expressed in terms of \(a\) and
 \end{eqnarray}
 
 \hypertarget{treatment-of-cloud-ice-and-in-cloud-water-vapor}{%
-\paragraph{Treatment of cloud ice and in-cloud water
-vapor}\label{treatment-of-cloud-ice-and-in-cloud-water-vapor}}
+\paragraph{Treatment of Cloud Ice and in-Cloud Water
+Vapor}\label{treatment-of-cloud-ice-and-in-cloud-water-vapor}}
 
 Because the original HPC scheme by Watanabe et al.~(2009) does not
 consider the cloud ice, it is modified when coupled with the Wilson and
