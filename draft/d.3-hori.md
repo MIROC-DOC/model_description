@@ -1,8 +1,8 @@
-## Horizontal discretization
+## Horizontal Discretization
 
 The horizontal discretization is based on the spectral transformation method (Bourke, 1988). The differential terms for longitude and latitude are evaluated by the orthogonal function expansion, while the non-linear terms are calculated on the grid.
 
-### Spectral Expansion.
+### Spectral Expansion
 
 As an expansion function, the spherical harmonic functions $Y_n^m(\lambda,\mu)$, which are eigenfunction of Laplacian on a sphere, are used. However, $\mu \equiv \sin\varphi$ is used. $Y_n^m$ satisfies the following equation,
 
@@ -179,9 +179,9 @@ $$
 
 This horizontal diffusion term damps high frequency component occuring aliasing for computational stability. In order to represent selective horizontal diffusion on small scales, 4 $\sim$ 16 is used as $N_D$. Here, the extra term for vorticity and divergence diffusion indicates that the term of rigid body rotation in $n=1$ does not decay.
 
-### Spectral representation of equations
+### Spectral Representation of Equations
 
-1. a series of equations
+1. A series of equations
 
 $$
   \frac{\partial{\pi_m^m}}{\partial {t}}
@@ -199,7 +199,7 @@ Z \equiv - \sum_{k=1}^{K} \mathbf{v}_k \cdot \nabla \pi .
 $$
 
 
-2. equation of motion
+2. Equation of motion
 
 $$
   \frac{\partial{\zeta_n^m}}{\partial {t}}
@@ -253,7 +253,7 @@ $$
 $$
 
 
-3. thermodynamic equation
+3. Thermodynamic equation
 
 $$
   \frac{\partial{T_n^m}}{\partial {t}}
@@ -283,7 +283,7 @@ $$
 $$
 
 
-4. water vapor formula
+4. Water vapor formula
 
 $$
   \frac{\partial{q_n^m}}{\partial {t}}

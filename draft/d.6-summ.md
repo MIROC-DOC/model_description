@@ -1,4 +1,4 @@
-## Summary of the dynamical core
+## Summary of the Dynamical Core
 
 In this section, we enumerate the calculations performed in the dynamical core, although they overlap with the previous descriptions.
 
@@ -40,7 +40,7 @@ and so on.
 
 Corresponding file & subroutines: `[G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
 
-### Calculating a virtual temperature
+### Calculating a Virtual Temperature
 
 virtual Temperature $T_v$ is ,
 
@@ -51,8 +51,8 @@ $$
 
 However, it is $\epsilon_v = R_v/R - 1$ and $R_v$ is the gas constant for water vapor (461 Jkg$^{-1}$K$^{-1}$) and $R$ is the gas constant for air (287.04 Jkg$^{-1}$K$^{-1}$).
 
-Corresponding file & subroutines:  `[VIRTMD (dvtmp.F)]`
-### Calculating the pressure gradient term
+Corresponding file & subroutine: `[VIRTMD (dvtmp.F)]`
+### Calculating the Pressure Gradient Term
 
 The pressure gradient term $\nabla \pi = \frac{1}{p_S} \nabla p_S$ is first used to define the $\pi_n^m$
 
@@ -83,9 +83,9 @@ $$
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 $$
 
-Corresponding file & subroutine:  `[PSDOT (dgdyn.F)]`
+Corresponding file & subroutine: `[PSDOT (dgdyn.F)]`
 
-### Diagnosis of vertical flow
+### Diagnosis of Vertical Dlow
 
 Pressure change term, and lead DC,
 
@@ -116,9 +116,9 @@ $$
        \Delta B_{l}
 $$
 
-Corresponding file and subroutine:  `[PSDOT (dgdyn.F)]`
+Corresponding file and subroutine: `[PSDOT (dgdyn.F)]`
 
-### Tendency terms due to advection
+### Tendency Terms due to Advection
 
 Momentum advection term:
 
@@ -190,9 +190,9 @@ R_k  =  q_k D_k
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 $$
 
-Corresponding file & subroutine `[GRTADV, GRUADV (dgdyn.F)]`
+Corresponding file & subroutine: `[GRTADV, GRUADV (dgdyn.F)]`
 
-### Transformation of prognostic variables to spectral space
+### Transformation of Prognostic Variables to Spectral Space
 
 (122) and (123).
 
@@ -208,7 +208,7 @@ to a spectral representation.
 
 Corresponding file & subroutine:  `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
 
-### Transformation of tendency terms to spectral space
+### Transformation of Tendency Terms to Spectral Space
 
 Tendency Term of Vorticity
 
@@ -298,9 +298,9 @@ $$
 $$
 
 
-Corresponding file & subroutines:  `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
+Corresponding file & subroutines: `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
 
-### Time integration in spectral space
+### Time Integration in Spectral Space
 
 Equations in matrix form
 
@@ -381,7 +381,7 @@ $$
 
 Corresponding file & subroutine:  `[TINTGR (dintg.F)]`
 
-### Transformation of prognostic variables to grid point Values
+### Transformation of Prognostic Variables to Grid Point Values
 
 Obtain grid values of horizontal wind speed from the spectral values of vorticity and divergence ($\zeta_n^m, D_n^m$) $u_{ij}, v_{ij}$.
 
@@ -431,7 +431,7 @@ to calculate.
 
 Corresponding file & subroutines:  `[W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
 
-### Diffusion Correction along pressure level
+### Diffusion Correction along Pressure Level
 
 The horizontal diffusion is applied on the surface of $\eta-$plane, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for $T,q,l$.
 
@@ -467,7 +467,7 @@ and so on. In ${\mathcal D}(\pi)$, the spectral value of $\pi$ is converted to a
 
 Corresponding file & subroutine:  `[CORDIF (ddifc.F)]`
 
-### Frictional heat associated with diffusion.
+### Frictional Heat Associated with Diffusion
 
 Frictional heat from diffusion is ,
 
@@ -560,7 +560,7 @@ $$
 
  Corresponding file & subroutine:  `[DADVNC (dadvn.F)]`
 
-### Correction for conservation of mass
+### Correction for Conservation of Mass
 
 In the spectral method, the global integral of $\pi = \ln p_S$ is preserved with rounding errors removed, but the preservation of the mass, i.e. the global integral of $p_S$ is not guaranteed. Moreover, a wavenumber break in the spectra sometimes results in negative values of the water vapor grid points. For this reason, we perform a correction to preserve the masses of dry air, water vapor, and cloud water, and to remove the regions with negative water vapor content.
 

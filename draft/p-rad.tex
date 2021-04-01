@@ -337,11 +337,11 @@ The optical thickness \(\tau^{r}\) of Rayleigh scattering and the part
 of the optical thickness due to absorption \(\tau_{ab}^{r}\) are
 
 \begin{eqnarray}
-\tau^{r}=\frac{e^{r} d p q m o l_{1}}{p_{S T D}}
+\tau^{r}=\frac{e^{r}qmol_{1}dp}{p_{S T D}}
 \end{eqnarray}
 
 \begin{eqnarray}
-\tau_{ab}^{r}=\frac{e^{r} d p q m o l_{2}}{p_{S T D}}
+\tau_{ab}^{r}=\frac{e^{r}qmol_{2}dp}{p_{S T D}}
 \end{eqnarray}
 
 \begin{eqnarray}
@@ -1277,8 +1277,8 @@ angle}\label{flux-of-incidence-and-incident-angle}}
 In this section, \texttt{SUBROUTINE:{[}SHTINS{]}} in pradi.F is
 described.
 
-The following parameters are determined using the eccentricity \(e\),
-with reference to Berger (1978).
+The following parameters are determined using the orbital eccentricity
+\(e\), with reference to Berger (1978).
 
 \begin{eqnarray}
 \begin{array}{l}
@@ -1336,11 +1336,11 @@ Additionally,
 \end{array}
 \end{eqnarray}
 
-where \(epsd\) and \(vpid\) are the angle of the obliquity and the
-precession.
+where \(epsd\) and \(vpid\) are the angle of the obliquity, and the
+precession represented by the true longitude of the perihelion measured
+from the vernal equinox.
 
-Earth position \(\lambda_{m}\) at a time \(t_m\) is represented by using
-the position of the vernal equinox \(\lambda_{0}\).
+The mean longitude of the vernal equinox \(\lambda_{0}\) is computed.
 
 \begin{eqnarray}
 \begin{array}{c}
@@ -1348,20 +1348,30 @@ the position of the vernal equinox \(\lambda_{0}\).
 \end{array}
 \end{eqnarray}
 
+The mean longitude of the Earth position \(\lambda_{m}\) at time \(t_m\)
+is represented by using the position of the vernal equinox
+\(\lambda_{0}\).
+
 \begin{eqnarray}
 \begin{array}{c}
-\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times 365 \times 86400}+\lambda_{0}
+\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times　t_{year}}+\lambda_{0}
 \end{array}
+\end{eqnarray}
+
+where \(t_{year}\) is the number of seconds in year, and the origin of
+the time \(t_0\) is defined as the time of the vernal (march) equinox.
+
+The true longitude of the Earth position \(V\) at time \(t_m\) is
+calculated as below.
+
+\begin{eqnarray}
+\\V=\lambda_{m}-\varpi+b_{1} \sin \left(\lambda_{m}-\varpi\right)+b_{2} \sin 2\left(\lambda_{m}-\varpi\right)+b_{3} \sin 3\left(\lambda_{m}-\varpi\right)
 \end{eqnarray}
 
 The solar declination \(\delta\) is
 
 \begin{eqnarray}
 \delta=\arcsin (\sin \epsilon \sin (V+\varpi))
-\end{eqnarray}
-
-\begin{eqnarray}
-\\V=\lambda_{m}-\varpi+b_{1} \sin \left(\lambda_{m}-\varpi\right)+b_{2} \sin 2\left(\lambda_{m}-\varpi\right)+b_{3} \sin 3\left(\lambda_{m}-\varpi\right)
 \end{eqnarray}
 
 The incident angle \(\cos \zeta\) is founded by using the latitude
@@ -1386,10 +1396,10 @@ r=\frac{1-e^{2}}{1+e(\cos V+\varpi)}
 \end{array}
 \end{eqnarray}
 
-where \(F_{00}\) is the solar constant and is the ratio of the ratio to
-the time of the distance between the sun and the earth. The number of
-times when \(\cos \zeta \geq 0\) (in the daytime) in time increments
-(set in NHSUB), is counted, and \(F_{0}\) and \(\cos \zeta\) are finally
+where \(F_{00}\) is the solar constant and is the ratio to the time of
+the distance between the sun and the earth. The number of times when
+\(\cos \zeta \geq 0\) (in the daytime) in time increments (set in
+NHSUB), is counted, and \(F_{0}\) and \(\cos \zeta\) are finally
 averaged.
 
 It is also possible to give average annual insolation. In this case, the
