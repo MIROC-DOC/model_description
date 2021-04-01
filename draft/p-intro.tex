@@ -2,8 +2,7 @@
 \section{Physics}\label{physics}}
 
 \hypertarget{overview-of-physical-parameterizations}{%
-\subsection{Overview of Physical
-Parameterizations}\label{overview-of-physical-parameterizations}}
+\subsection{Overview of Physical Parameterizations}\label{overview-of-physical-parameterizations}}
 
 As a physical process, we can consider the following
 
@@ -27,32 +26,26 @@ As a physical process, we can consider the following
   Gravity wave drag
 \end{itemize}
 
-We compute the time-varying terms \(F_x, F_y, Q, M, S\) for the
-prognostic variables from these processes, and perform time integration.
+We compute the time-varying terms \(F_x, F_y, Q, M, S\) for the prognostic variables from these processes, and perform time integration.
 
 \hypertarget{time-integration-of-physical-parameterizations}{%
-\subsubsection{Time Integration of Physical
-Parameterizations}\label{time-integration-of-physical-parameterizations}}
+\subsubsection{Time Integration of Physical Parameterizations}\label{time-integration-of-physical-parameterizations}}
 
 \textbf{NOTE: the descriptions in this section are outdated.}
 
-In terms of time integration of predictors, we can classify the physical
-Parameterizations in the following three orders of execution.
+In terms of time integration of predictors, we can classify the physical Parameterizations in the following three orders of execution.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Cumulus convection, shallow convection, large-scale condensation, and
-  cloud microphysics
+  Cumulus convection, shallow convection, large-scale condensation, and cloud microphysics
 \item
   Radiation, turbulence and surface fluxes
 \item
   Gravitational wave drag
 \end{enumerate}
 
-For cumulus convection, shallow convection, large-scale condensation,
-and cloud microphysics, the values are updated by the usual Euler
-difference as follows.
+For cumulus convection, shallow convection, large-scale condensation, and cloud microphysics, the values are updated by the usual Euler difference as follows.
 
 \begin{eqnarray}
   \hat{T}^{t+\Delta t,(1)} = \hat{T}^{t+\Delta t}
@@ -64,20 +57,12 @@ difference as follows.
                          +  2 \Delta t Q_{LSC}(\hat{T}^{t+\Delta t,(1)})
 \end{eqnarray}
 
-Note that the large-scale condensation scheme is updated by the cumulus
-convection scheme. In practice, the routines of cumulus convection and
-large-scale condensation output the heating rates and so on, and the
-time integration is performed immediately afterwards by
-\texttt{MODULE:{[}GDINTG{]}}.
+Note that the large-scale condensation scheme is updated by the cumulus convection scheme. In practice, the routines of cumulus convection and large-scale condensation output the heating rates and so
+on, and the time integration is performed immediately afterwards by \texttt{MODULE:{[}GDINTG{]}}.
 
-The calculations of the radiative, vertical diffusion, ground boundary
-layer and surface processes in the following groups are basically
-performed with these updated values
-(\(\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}\), etc.). However,
-in order to calculate some of the terms as implicit, we calculate the
-heating rates and so on for all of these terms together, and then
-perform time integration at the end. In other words, if we write
-symbolically
+The calculations of the radiative, vertical diffusion, ground boundary layer and surface processes in the following groups are basically performed with these updated values
+(\(\hat{T}^{t+\Delta t,(1)}, \hat{q}^{t+\Delta t,(2)}\), etc.). However, in order to calculate some of the terms as implicit, we calculate the heating rates and so on for all of these terms together,
+and then perform time integration at the end. In other words, if we write symbolically
 
 \begin{eqnarray}
   \hat{T}^{t+\Delta t,(3)} = \hat{T}^{t+\Delta t,(2)}
@@ -85,9 +70,7 @@ symbolically
                (\hat{T}^{t+\Delta t,(2)},\hat{T}^{t+\Delta t,(3)})
 \end{eqnarray}
 
-That would be the gravitational wave resistance, mass modulation, and
-dry convection modulation are the same as those for cumulus convection
-and large-scale condensation.
+That would be the gravitational wave resistance, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
 
 \begin{eqnarray}
   \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}
@@ -95,12 +78,9 @@ and large-scale condensation.
 \end{eqnarray}
 
 \hypertarget{various-physical-quantities}{%
-\subsubsection{Various Physical
-Quantities}\label{various-physical-quantities}}
+\subsubsection{Various Physical Quantities}\label{various-physical-quantities}}
 
-Here are definitions of various physical quantities that can be computed
-simply from the prognostic variables. Some of them are calculated with
-\texttt{MODULE:{[}PSETUP{]}}.
+Here are definitions of various physical quantities that can be computed simply from the prognostic variables. Some of them are calculated with \texttt{MODULE:{[}PSETUP{]}}.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -137,8 +117,7 @@ The air density \(\rho\) is calculated as follows.
   Altitude
 \end{enumerate}
 
-The altitude \(z\) is evaluated in the same way as the calculation of
-the geopotential height in the dynamics.
+The altitude \(z\) is evaluated in the same way as the calculation of the geopotential height in the dynamics.
 
 \begin{eqnarray}
   z = \frac{\Phi}{g}
@@ -167,8 +146,7 @@ the geopotential height in the dynamics.
   Half-level temperature
 \end{enumerate}
 
-Half-level temperature is calculated by performing a linear
-interpolation on \(\ln p\), i.e., \(\ln \sigma\).
+Half-level temperature is calculated by performing a linear interpolation on \(\ln p\), i.e., \(\ln \sigma\).
 
 \begin{eqnarray}
   T_{k-1/2} = \frac{\ln \sigma_{k-1} - \ln \sigma_{k-1/2}}
@@ -185,40 +163,36 @@ interpolation on \(\ln p\), i.e., \(\ln \sigma\).
   Saturated specific humidity
 \end{enumerate}
 
-The saturated specific humidity \(q^{\*}(T,p)\) is approximated using
-the saturated vapor pressure \(e^{\*}(T)\),
+The saturated specific humidity \(q^{*}(T,p)\) is approximated using the saturated vapor pressure \(e^{*}(T)\),
 
 \begin{eqnarray}
-q^{\*}(T,p) = \frac{\epsilon e^{\*}(T)}{p} .
+q^{*}(T,p) = \frac{\epsilon e^{*}(T)}{p} .
 \end{eqnarray}
 
 Here, it is \(\epsilon=0.622\),
 
 \begin{eqnarray}
-\frac{1}{e^{\*}_v} \frac{\partial{e^{\*}_v}}{\partial {T}} = \frac{L}{R_v T^2} \label{p199}
+\frac{1}{e^{*}_v} \frac{\partial{e^{*}_v}}{\partial {T}} = \frac{L}{R_v T^2} \label{p199}
 \end{eqnarray}
 
-Therefore, if the latent heat of evaporation (\(L\)) and the gas
-constant of water vapor (\(R_v\)) are held constant,
+Therefore, if the latent heat of evaporation (\(L\)) and the gas constant of water vapor (\(R_v\)) are held constant,
 
 \begin{eqnarray}
-  e^{\*}(T) = e^{\*}(T=273{K})
+  e^{*}(T) = e^{*}(T=273{K})
                       \exp \left[ \frac{L}{R_v}
                             \left( \frac{1}{273} - \frac{1}{T} \right)
                        \right] ,
 \end{eqnarray}
 
-where \(e^{\*}(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}\).
+where \(e^{*}(T=273 \mathrm{[K]}) = 611 \mathrm{[hPa]}\).
 
 From eq.\ref{p199},
 
 \begin{eqnarray}
-\frac{\partial{q^{\*}}}{\partial {T}} = \frac{L}{R_v T^2} q^{\*}(T,p) .
+\frac{\partial{q^{*}}}{\partial {T}} = \frac{L}{R_v T^2} q^{*}(T,p) .
 \end{eqnarray}
 
-It is noted that if the temperature is lower than the freezing point
-\(273.15 \mathrm{[K]}\), the sublimation latent heat \(L+L_M\) is used
-as the latent heat \(L\).
+It is noted that if the temperature is lower than the freezing point \(273.15 \mathrm{[K]}\), the sublimation latent heat \(L+L_M\) is used as the latent heat \(L\).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
