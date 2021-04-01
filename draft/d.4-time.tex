@@ -155,10 +155,10 @@ Here, the non-gravitational wave term is
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \notag\\
          &&+ \hat{\kappa}_{k} T_{v,k} {\mathbf{v}}_{k} \cdot \nabla \pi \notag\\
          &&- \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
+             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
                \Delta B_{l}
            - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi 
+             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
                \Delta B_{l} \notag\\
         &&- \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
              \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
@@ -221,21 +221,23 @@ Thus,
       \overline{ {\mathbf{D}} }^{t} \\
   &=& ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
        {\mathbf{D}}^{t-\Delta t}
-  + \Delta t 
+  + \Delta t
      \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  \notag\\
-  &&-  \Delta t \nabla^{2}_{\eta}     
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S} 
-                          + \underline{W} 
-                            \left[ ( 1+2\Delta t {\mathcal D}_H ) 
+  &-&  \Delta t \nabla^{2}_{\eta}
+                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S}
+                          + \underline{W}
+                            \left[ ( 1+2\Delta t {\mathcal D}_H )
                                     {\mathbf{T}}^{t-\Delta t}
                                   + \Delta t
                                       \left( \frac{\partial {\mathbf{T}}}
                                                   {\partial t}
                                       \right)_{NG} \right]
-                   \right. \notag\\
-                 &&+ \hspace{1.4cm} \left. ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}} 
-                            \left[ \pi^{t-\Delta t} 
-                                  + \Delta t \left( \frac{\partial \pi}{\partial t} 
+                   \right\} \notag \\
+                 &+& \hspace{1.4cm} \left. ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}}
+                            \left[ \pi^{t-\Delta t}
+                                  + \Delta t \left( \frac{\partial \pi}{\partial t}
+                                  \right)_{NG}  \right]
+                                  \right\}.
 \end{eqnarray}
 
 Since the spherical harmonic expansion is used, we can rewrite
