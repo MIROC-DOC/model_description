@@ -58,7 +58,7 @@ Pressure at full levels are interpolated from half-level pressure by the followi
 
 For later use, let us define the following:
 \begin{eqnarray}
-  \Delta\sigma_k &\equiv & \sigma_{k-1/2} - \sigma_{k+1/2}, \\
+  \Delta\sigma_k &\equiv & \sigma_{k-1/2} - \sigma_{k+1/2}, \notag\\
   \Delta B_k &\equiv & B_{k-1/2} - B_{k+1/2}.
 \end{eqnarray}
 
@@ -100,7 +100,7 @@ Furthermore, vertical advection \(\dot{\eta}(\partial/\partial\eta)\) is replace
   Hydrostatic equation
 \end{enumerate}
 \begin{eqnarray}
- \Phi_{1}  &=&  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \\
+ \Phi_{1}  &=&  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \notag\\
            &=&  \Phi_{s} + C_{p} \alpha_{1} T_{v,1}
 \end{eqnarray}
 \begin{eqnarray}
@@ -111,7 +111,7 @@ Furthermore, vertical advection \(\dot{\eta}(\partial/\partial\eta)\) is replace
        + C_{p}
    \left[ 1-
          \left( \frac{ p_{k-1/2} }{ p_{k-1} } \right)^{\kappa}
-              \right] T_{v,k-1} \\
+              \right] T_{v,k-1} \notag\\
    &=&    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}
 \end{eqnarray}
 Here,
@@ -198,16 +198,16 @@ Here,
                           - \sum_{l=k+1}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                     \right]
-              \right\} 
-              \frac{1}{\Delta \sigma_k} T_{v,k}\\
-     &= & T_k' D_k 
+              \right\}
+              \frac{1}{\Delta \sigma_k} T_{v,k}\notag\\
+     &= & T_k' D_k
           - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right] \notag\\
         &&+ \hat{\kappa}_k ({\mathbf{v}}_k \cdot \nabla \pi) T_{v,k} \notag\\
-        &&- \alpha_k \sum_{l=k}^{K} 
+        &&- \alpha_k \sum_{l=k}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                             \frac{T_{v,k}}{\Delta \sigma_k} \notag\\
-        &&- \beta_k \sum_{l=k+1}^{K} 
+        &&- \beta_k \sum_{l=k+1}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                             \frac{T_{v,k}}{\Delta \sigma_k}, \\
   \hat{T}_{k-1/2}

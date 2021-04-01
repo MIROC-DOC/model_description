@@ -104,10 +104,10 @@ $$
   \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m
    =  \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \\
+          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \notag\\
    =  \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda \,
-          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \\
+          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \notag\\
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m A_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
@@ -121,11 +121,11 @@ $$
          \frac{\partial{}}{\partial {\varphi}} (A\cos\varphi) \right)_n^m
     =  \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \\
+           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \notag\\
     =  - \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
            A \cos\varphi \frac{\partial }{\partial \mu} Y_n^{m *}
-            \\
+            \notag\\
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           A_{ij}  \cos\varphi_j
           (1-\mu_j^2)  \frac{\partial }{\partial \mu}
