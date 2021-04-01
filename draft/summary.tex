@@ -1,0 +1,45 @@
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+This document describes about the atmospheric general circulation model (AGCM) of MIROC6 (the sixth version of MIROC or Model for Interdisciplinary Research on Climate; Tatebe et al., 2019), which has
+been cooperatively developed at the Center for Climate System Research (CCSR; the precursor of a part of the Atmosphere and Ocean Research Institute), the University of Tokyo, the Japan Agency for
+Marine-Earth Science and Technology (JAMSTEC), and the National Institute for Environmental Studies (NIES). All the descriptions are basically corresponded with the source codes of MIROC6,
+specifically the version used for CMIP6 DECK experiment, whereas the original document written in Japanese by Dr.~Numaguti in 1995 was corresponded with those of CCSR/NIES AGCM5.4.
+
+\hypertarget{characteristics-of-miroc6-agcm}{%
+\subsection{Characteristics of MIROC6 AGCM}\label{characteristics-of-miroc6-agcm}}
+
+MIROC6 AGCM are summarized below.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{System of equations}: Hydrostatic primitive equations
+\item
+  \textbf{Area}: Global 3D
+\item
+  \textbf{Prognostic variables}: Horizontal wind speed, temperature, surface pressure, specific humidity, cloud water
+\item
+  \textbf{Horizontal discretization}: Spectral transformation (Bourke, 1988) method
+\item
+  \textbf{Vertical discretization}: Hybrid \(\sigma - p\) coordinate, based on Arakawa and Konor (1996)
+\item
+  \textbf{Resolution for default}: T85 (150 km), 81 levels up to 0.004 hPa
+\item
+  \textbf{Time integration}: Essentially the leap frog scheme, with a time filter (Williams, 2009)
+\item
+  \textbf{Cumulus}: An entrainment plume model with multiple cloud types (Chikira and Sugiyama, 2010)
+\item
+  \textbf{Shallow convection}: A mass-flux-based single-plume model based on Park and Bretherton (2009)
+\item
+  \textbf{Large scale condensation \& Cloud microphysics}: A prognostic large scale condensation scheme (Watanabe et al., 2009) and the implementation of a bulk mirco-physical scheme (Wilson and
+  Ballard, 1999)
+\item
+  \textbf{Radiation}: k-distribution scheme (Sekiguchi and Nakajima, 2008) with a hexagonal solid column as ice particle habit and extended mode radius of cloud particles
+\item
+  \textbf{Turbulence}: The Mellor-Yamada-Nakanishi-Niino scheme (Nakanishi 2001; Nakanishi and Niino 2004)'s level 2.5 closure scheme
+\item
+  \textbf{Surface flux}: Bulk coefficients (Louis, 1979; Louis et al., 1982) with convection effects at sea surface (Miller et al., 1992)
+\item
+  \textbf{Gravity wave drag}: An orographic gravity wave parameterization (McFarlane, 1987) with a non-orographic gravity wave parameterization (Hines, 1997; Watanabe et al., 2011)
+\end{itemize}

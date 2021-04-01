@@ -1,8 +1,8 @@
-## Summary of the dynamical core
+## Summary of the Dynamical Core
 
 In this section, we enumerate the calculations performed in the dynamical core, although they overlap with the previous descriptions.
 
-### Conversion of Horizontal Wind to Vorticity and Divergence `[G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
+### Conversion of Horizontal Wind to Vorticity and Divergence
 
 Obtain grid point values of vorticity and divergence from the grid point values of $u_{ij}, v_{ij}$ for horizontal wind. First, we obtain the vorticity and divergence in spectral space,  $\zeta_n^m, D_n^m$,
 
@@ -38,7 +38,9 @@ $$
 
 and so on.
 
-### Calculating a virtual temperature `[VIRTMD (dvtmp.F)]`
+Corresponding file & subroutines: `[G2Wpush, G2Wtrans, G2Wshift, W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
+
+### Calculating a Virtual Temperature
 
 virtual Temperature $T_v$ is ,
 
@@ -49,7 +51,8 @@ $$
 
 However, it is $\epsilon_v = R_v/R - 1$ and $R_v$ is the gas constant for water vapor (461 Jkg$^{-1}$K$^{-1}$) and $R$ is the gas constant for air (287.04 Jkg$^{-1}$K$^{-1}$).
 
-### Calculating the pressure gradient term `[PSDOT (dgdyn.F)]`
+Corresponding file & subroutine: `[VIRTMD (dvtmp.F)]`
+### Calculating the Pressure Gradient Term
 
 The pressure gradient term $\nabla \pi = \frac{1}{p_S} \nabla p_S$ is first used to define the $\pi_n^m$
 
@@ -80,8 +83,9 @@ $$
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}  \; .
 $$
 
+Corresponding file & subroutine: `[PSDOT (dgdyn.F)]`
 
-### Diagnosis of vertical flow. `[PSDOT (dgdyn.F)]`
+### Diagnosis of Vertical Dlow
 
 Pressure change term, and lead DC,
 
@@ -112,7 +116,9 @@ $$
        \Delta B_{l}
 $$
 
-### Tendency terms due to advection  `[GRTADV, GRUADV (dgdyn.F)]`
+Corresponding file and subroutine: `[PSDOT (dgdyn.F)]`
+
+### Tendency Terms due to Advection
 
 Momentum advection term:
 
@@ -184,7 +190,9 @@ R_k  =  q_k D_k
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]
 $$
 
-### Transformation of prognostic variables to spectral space `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
+Corresponding file & subroutine: `[GRTADV, GRUADV (dgdyn.F)]`
+
+### Transformation of Prognostic Variables to Spectral Space
 
 (122) and (123).
 
@@ -198,7 +206,9 @@ $$
 
 to a spectral representation.
 
-### Transformation of tendency terms to spectral space `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
+Corresponding file & subroutine:  `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
+
+### Transformation of Tendency Terms to Spectral Space
 
 Tendency Term of Vorticity
 
@@ -288,9 +298,9 @@ $$
 $$
 
 
+Corresponding file & subroutines: `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
 
-
-### Time integration in spectral space `[TINTGR (dintg.F)]`
+### Time Integration in Spectral Space
 
 Equations in matrix form
 
@@ -369,11 +379,9 @@ $$
 $$
 
 
+Corresponding file & subroutine:  `[TINTGR (dintg.F)]`
 
-
-
-
-### Transformation of prognostic variables to grid point Values `[W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
+### Transformation of Prognostic Variables to Grid Point Values
 
 Obtain grid values of horizontal wind speed from the spectral values of vorticity and divergence ($\zeta_n^m, D_n^m$) $u_{ij}, v_{ij}$.
 
@@ -421,7 +429,9 @@ $$
 
 to calculate.
 
-### Diffusion Correction along pressure level `[CORDIF (ddifc.F)]`
+Corresponding file & subroutines:  `[W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
+
+### Diffusion Correction along Pressure Level
 
 The horizontal diffusion is applied on the surface of $\eta-$plane, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for $T,q,l$.
 
@@ -455,7 +465,9 @@ $$
 
 and so on. In ${\mathcal D}(\pi)$, the spectral value of $\pi$ is converted to a grid by multiplying the spectral value of $\pi_n^m$ by the spectral representation of the diffusion coefficient.
 
-### Frictional heat associated with diffusion. `[CORDIF (ddifc.F)]`
+Corresponding file & subroutine:  `[CORDIF (ddifc.F)]`
+
+### Frictional Heat Associated with Diffusion
 
 Frictional heat from diffusion is ,
 
@@ -474,7 +486,9 @@ $$
                  + v_{ij} {\mathcal D}(v)_{ij} \right)
 $$
 
-### Horizontal Diffusion and Rayleigh Friction `[DSETDF (dsetd.F)]`
+Corresponding file & subroutine:  `[CORDIF (ddifc.F)]`
+
+### Horizontal Diffusion and Rayleigh Friction
 
 The coefficients of horizontal diffusion can be expressed spectrally,
 
@@ -513,7 +527,9 @@ $$
 
 The results are approximate to those of $K_R^0 = {(30day)}^{-1}$ and $z_R = -H \ln \sigma_{top}$. The standard values are $K_R^0 = {(30day)}^{-1}$, $z_R = -H \ln \sigma_{top}$ ($\sigma_{top}$: top level of the model), $H = 8000$ m, and $H_R = 7000$ m.
 
-### Time Filter `[DADVNC (dadvn.F)]`
+Corresponding file & subroutine `[DSETDF (dsetd.F)]`
+
+### Time Filter
 
 To reduce numerical mode associated with leap frog scheme, time filter is applied every time step. MIORC6 used modified Asselin time filter (Williams, 2009), which is updated version of Asselin(1972) used previous version of MIROC. Although Asselin time filter attenuate high frequency physical mode, bringing low accuracy of leap frog scheme, current time filter succeeded in suppressing it.
 
@@ -542,7 +558,9 @@ $$
 \bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha)[ \bar{\bar{X}}^{t-\Delta t} - 2\bar{X}^{t} + X^{t+\Delta t}]
  $$
 
-### Correction for conservation of mass `[FIXMAS, MASFIX (dmfix.F)]`
+ Corresponding file & subroutine:  `[DADVNC (dadvn.F)]`
+
+### Correction for Conservation of Mass
 
 In the spectral method, the global integral of $\pi = \ln p_S$ is preserved with rounding errors removed, but the preservation of the mass, i.e. the global integral of $p_S$ is not guaranteed. Moreover, a wavenumber break in the spectra sometimes results in negative values of the water vapor grid points. For this reason, we perform a correction to preserve the masses of dry air, water vapor, and cloud water, and to remove the regions with negative water vapor content.
 
@@ -589,3 +607,5 @@ $$
 $$
         p_S'' = \frac{M_d^0}{M_d} p_S
 $$
+
+Corresponding file & subroutine:  `[FIXMAS, MASFIX (dmfix.F)]`
