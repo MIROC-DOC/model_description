@@ -145,7 +145,7 @@ L_B=\left\{
   \right.
 $$
 
-where $\zeta\equiv z/L_M$ is a height normalized by the Monin-Obukhov length $L_M$, $N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}$ is the Brunt-Väisälä frequency and $q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ is a velocity scale in the convective boundary layer.
+where $\zeta\equiv z/L_M$ is a height normalized by the Monin-Obukhov length $L_M$, $N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}$ is the $\mathrm{Brunt-V\\mathaccent{a}is\\mathaccent{a}l\\mathaccent{a}}$ frequency and $q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}$ is a velocity scale in the convective boundary layer.
 
 #### Modifications in MIROC
 
