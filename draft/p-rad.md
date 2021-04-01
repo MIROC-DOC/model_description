@@ -1037,11 +1037,11 @@ The mean longitude of the Earth position $\lambda_{m}$ at time $t_m$ is represen
 
 $$
 \begin{array}{c}
-\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times　t_{year}}+\lambda_{0}
+\lambda_{m}=\frac{t_{m}-t_{0}}{2 \pi \times t_{year}}+\lambda_{0}
 \end{array}
 $$
 
-where $t_{year}$ is  the number of seconds in year, and the origin of the time $t_0$ is defined as the time of the vernal (march) equinox. 
+where $t_{year}$ is  the number of seconds in year, and the origin of the time $t_0$ is defined as the time of the vernal (March) equinox.
 
 The true longitude of the Earth position $V$ at time $t_m$ is calculated as below.
 

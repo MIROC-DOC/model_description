@@ -1,17 +1,13 @@
 \hypertarget{horizontal-discretization}{%
 \subsection{Horizontal Discretization}\label{horizontal-discretization}}
 
-The horizontal discretization is based on the spectral transformation
-method (Bourke, 1988). The differential terms for longitude and latitude
-are evaluated by the orthogonal function expansion, while the non-linear
-terms are calculated on the grid.
+The horizontal discretization is based on the spectral transformation method (Bourke, 1988). The differential terms for longitude and latitude are evaluated by the orthogonal function expansion, while
+the non-linear terms are calculated on the grid.
 
 \hypertarget{spectral-expansion}{%
 \subsubsection{Spectral Expansion}\label{spectral-expansion}}
 
-As an expansion function, the spherical harmonic functions
-\(Y_n^m(\lambda,\mu)\), which are eigenfunction of Laplacian on a
-sphere, are used. However, \(\mu \equiv \sin\varphi\) is used. \(Y_n^m\)
+As an expansion function, the spherical harmonic functions \(Y_n^m(\lambda,\mu)\), which are eigenfunction of Laplacian on a sphere, are used. However, \(\mu \equiv \sin\varphi\) is used. \(Y_n^m\)
 satisfies the following equation,
 
 \begin{eqnarray}
@@ -19,8 +15,7 @@ satisfies the following equation,
 = - \frac{n(n+1)}{a^{2}} Y_n^m(\lambda,\mu)
 \end{eqnarray}
 
-Using the Associated Legendre function \(P_n^m\) it is written as
-follows.
+Using the Associated Legendre function \(P_n^m\) it is written as follows.
 
 \begin{eqnarray}
 Y_n^m(\lambda,\mu) = P_n^m (\mu) e^{\mathrm{i}m \lambda}
@@ -53,14 +48,10 @@ The inverse of that is ,
                X_{ij} {Y_n^{m*}}_{ij} w_j
 \end{eqnarray}
 
-The formula is expressed as To evaluate by replacing the integral with a
-sum, we use the Gauss trapezoidal formula for the \(\lambda\) integral
-and the Gauss-Legendre integral formula for the \(\mu\) integral.
-\(\mu_j\) is the Gauss latitude and \(w_j\) is the Gaussian weights.
-Also, \(\lambda_i\) is a grid of evenly spaced Gaussian weights.
+The formula is expressed as To evaluate by replacing the integral with a sum, we use the Gauss trapezoidal formula for the \(\lambda\) integral and the Gauss-Legendre integral formula for the \(\mu\)
+integral. \(\mu_j\) is the Gauss latitude and \(w_j\) is the Gaussian weights. Also, \(\lambda_i\) is a grid of evenly spaced Gaussian weights.
 
-Using spectral harmonics transformation, the grid point values of the
-terms containing the derivatives can be calculated as follows.
+Using spectral harmonics transformation, the grid point values of the terms containing the derivatives can be calculated as follows.
 
 \begin{eqnarray}
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
@@ -76,8 +67,7 @@ terms containing the derivatives can be calculated as follows.
        ( 1-\mu^{2} ) \frac{\partial }{\partial \mu} {Y_n^m}_{ij}
 \end{eqnarray}
 
-Furthermore, the grid point values of \(u,v\) can be obtained from the
-spectral components of \(\zeta\) and \(D\) as follows
+Furthermore, the grid point values of \(u,v\) can be obtained from the spectral components of \(\zeta\) and \(D\) as follows
 
 \begin{eqnarray}
   u_{ij}
@@ -103,8 +93,7 @@ spectral components of \(\zeta\) and \(D\) as follows
     \right\}
 \end{eqnarray}
 
-The derivative appearing in the advection term of the equation is
-calculated as
+The derivative appearing in the advection term of the equation is calculated as
 
 \begin{eqnarray}
   \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m
@@ -145,11 +134,9 @@ Furthermore,
 to be used for the evaluation of the \(\nabla^2\) section.
 
 \hypertarget{horizontal-diffusion-term}{%
-\subsubsection{Horizontal Diffusion
-Term}\label{horizontal-diffusion-term}}
+\subsubsection{Horizontal Diffusion Term}\label{horizontal-diffusion-term}}
 
-The horizontal diffusion term is implemented in the form
-\(\nabla^{N_D}\) as follows.
+The horizontal diffusion term is implemented in the form \(\nabla^{N_D}\) as follows.
 
 \begin{eqnarray}
   {\mathcal D}(\zeta) = K_{MH}
@@ -175,15 +162,11 @@ The horizontal diffusion term is implemented in the form
     {\mathcal D}(q) = (-1)^{N_D/2} K_{EH} \nabla^{N_D} q .
 \end{eqnarray}
 
-This horizontal diffusion term damps high frequency component occuring
-aliasing for computational stability. In order to represent selective
-horizontal diffusion on small scales, 4 \(\sim\) 16 is used as \(N_D\).
-Here, the extra term for vorticity and divergence diffusion indicates
-that the term of rigid body rotation in \(n=1\) does not decay.
+This horizontal diffusion term damps high frequency component occuring aliasing for computational stability. In order to represent selective horizontal diffusion on small scales, 4 \(\sim\) 16 is used
+as \(N_D\). Here, the extra term for vorticity and divergence diffusion indicates that the term of rigid body rotation in \(n=1\) does not decay.
 
 \hypertarget{spectral-representation-of-equations}{%
-\subsubsection{Spectral Representation of
-Equations}\label{spectral-representation-of-equations}}
+\subsubsection{Spectral Representation of Equations}\label{spectral-representation-of-equations}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
