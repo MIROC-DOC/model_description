@@ -1,22 +1,13 @@
 \hypertarget{definition-of-land-sea-distribution}{%
-\subsection{Definition of land-sea
-distribution}\label{definition-of-land-sea-distribution}}
+\subsection{Definition of Land-Sea Distribution}\label{definition-of-land-sea-distribution}}
 
-The land-sea distribution in MIROC is prioritized by the land-sea
-distribution defined by the ocean model. While one grid in the ocean
-model is defined by land or sea only, the land and ocean grids in the
-atmospheric model are determined in proportion to the land and sea to be
-consistent with the ocean model's land-sea distribution.
+The land-sea distribution in MIROC is prioritized by the land-sea distribution defined by the ocean model. While one grid in the ocean model is defined by land or sea only, the land and ocean grids in
+the atmospheric model are determined in proportion to the land and sea to be consistent with the ocean model's land-sea distribution.
 
-\(SA\) : area of the atmospheric grid, \(SL _ {ij}\) : area of the land
-grid, \(SO _ {ij}\) : area of the sea surface grid, \(FLND^{atm}\),
-\(FLND^{land} _ {ij}\), \(FLND^{oc} _ {ij}\) : percentage of land
-surface is occupied by each grid. Then, following equation is satisfied.
+\(SA\) : area of the atmospheric grid, \(SL _ {ij}\) : area of the land grid, \(SO _ {ij}\) : area of the sea surface grid, \(FLND^{atm}\), \(FLND^{land} _ {ij}\), \(FLND^{oc} _ {ij}\) : percentage of
+land surface is occupied by each grid. Then, following equation is satisfied.
 
 \begin{eqnarray} SA*FLND^{atm} = \sum _ {j=1}^{jldiv}\sum _ {i=1}^{ildiv}(SL _ {ij}*FLND^{land} _ {ij}) = \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv}(SO _ {ij}*FLND^{oc } _{ij}) \end{eqnarray}
 
-where, (ildiv,jldiv) is the number of east-west and north-south
-divisions of the land surface grid, and (iodiv,jodiv) is the number of
-east-west and north-south divisions of the sea surface grid. In the land
-surface grid, if even a small amount of land is defined to exist,
-boundary values such as land cover are required.
+where, (ildiv,jldiv) is the number of east-west and north-south divisions of the land surface grid, and (iodiv,jodiv) is the number of east-west and north-south divisions of the sea surface grid. In
+the land surface grid, if even a small amount of land is defined to exist, boundary values such as land cover are required.

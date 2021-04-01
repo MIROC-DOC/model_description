@@ -14,7 +14,7 @@ The cold rain parameterization following Wilson and Ballard (1999) predicts $q_i
 
 The scheme utilizes a “dry” mixing ratio ($\mathrm{~kg} \mathrm{~kg}^{-1}$) to define the amount of water condensate. For example, $q_c$ is the mass of cloud water per mass of dry air in the layer. The dry air density $\rho \mathrm{~kg} \mathrm{~m}^{-3}$ is calculated as $\rho =P/(R_{air}T)$, where $P$ is the pressure in Pa, and the gas constant of air $R_{air} =287.04 \mathrm{~J} \mathrm{~kg}^{-1} \mathrm{~K}^{-1}$. A condensate mass is obtained by multiplying the mixing ratio by the air density. (e.g., the mass of ice $m_i = \rho q_i$). A number concentraion is in units $\mathrm{~m}^{-3}$.
 
-Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
+Hereafter, unless stated otherwise, the cloud variables $q_c, q_i,N_c, \text{and } N_i$ represent grid-averaged values; prime variables represent mean in-cloud quantities (e.g., such that $q_c = C q_c^{'}$, where $C$ is cloud fraction). Note that $q_v{'} \neq q_v$. $q_v{'}$ for ice clouds is determined as described in pmlsc section. The sub-grid scale variability of water content within the cloudy area is not considered at present.
 
 ### Microphysical Processes
 
@@ -183,7 +183,7 @@ $$
 =\frac{\Delta t}{\rho \Delta z} \sum^{l=kmax}_{l=k+1}F_i|_{k=l} \times \text{iceweight}|_{l,k}
 $$
 
-#### Homogeneous nucleation
+#### Homogeneous Nucleation
 
 This term simply converts all liquid cloud water to ice if the temperature is less than a given threshold of $233.15 \mathrm{~K}$.
 
@@ -193,7 +193,7 @@ $$
 =  \frac{q_c}{\Delta t}
 $$
 
-#### Heterogeneous nucleation
+#### Heterogeneous Nucleation
 
 A Spectral Radiation-Transport Model for Aerosol Species (SPRINTARS; Takemura et al. 2000, 2002, 2005, 2009) coupled with MIROC6 explicitly predicts the masses and number concentrations for aerosol species. Heterogeneous freezing of cloud droplets takes place through contact and immersion freezing on ice cucleating particles (INPs), which are parameterized according to Lohmann and Diehl (2006) and Diehl et al. (2006). Soil dust and black carbon are assumed to act as INPs. Ratios of activated INPs to the total number concentration of soil dust and black carbon for the contact freezing and the immersion/condensation freezing are based on Fig. 1 in Lohmann and Diehl (2006). Using the number of INPs ($N_{nuc}$) predicted in SPRINTARS, the rate of heterogeneous freezing is diagnosed as follows.
 
@@ -239,7 +239,7 @@ The basis of this theory is the fact that the saturation vapor pressure of water
 
 The ice disappears (sublimation).
 
-#### Cloud water collection by ice (riming)
+#### Cloud water Collection by Ice (Riming)
 
 Riming process (the ice crystals settling through a population of supercooled cloud droplets, freezing them upon collision) is based on the geometric sweep-out integrated over all ice sizes (Lohmann 2004):
 
@@ -262,7 +262,7 @@ $$
 
 $V_{t}$ is the snow crystal terminal velocity, and $D$ is the maximum dimension of the snow crystal. $v_{t}$ is the cloud droplet terminal velocity. $g$ is the acceleration due to gravity.
 
-#### Ice melt
+#### Ice Melt
 
 Since this term is essentially a diffusion term, although of heat instead of moisture, its form is very similar to that of the deposition and evaporation of ice term. The rate of change of ice mass of a melting particle is given by:
 
@@ -274,7 +274,7 @@ $$
 
 ,where $L_{\mathrm{m}}$ is the latent heat of melting of ice, $T^{\mathrm{w}}$ is the wet-bulb temperature of the air and $T_{0}=273.15\mathrm{K}$ is the freezing point of ice. Ice melt occurs when $T^{\mathrm{w}}-T_{0}>0$. The capacitance term, $C,$ is considered to be that for spherical particles. Hence $C=D / 2 .$ The ventilation factor, $F$ is considered to be the same as in the deposition/sublimation process.
 
-#### Warm rain cloud microphysics
+#### Warm Rain Cloud Microphysics
 
 We assume $N_c$ is the number of aerosols activated as droplets. The nucleation of cloud droplets is predicted in the aerosol module SPRINTARS (Takemura et al. 2000; 2002; 2005; 2009) based on the parameterization by Abdul-Razzak and Ghan (2000), which depends on the aerosol particle number concentrations, size distributions and chemical properties of of each aerosol species, and the updraft velocity.
 
@@ -300,7 +300,7 @@ $$
 
 Rain water $q_r$ into the layer is from above the layer. $q_r$ is treated as a diagnostic variables: $q_r$ falls out to surface within the time step.
 
-#### Total precipitation
+#### Total Precipitation
 
 The total amount of precipitation at a certain pressure level, $p,$ is obtained by integrating the relevant processes from the top of the model $(p=0)$ to the respective pressure level. The fluxes of rain and ice $\mathrm{kgm}^{-2} \mathrm{~s}^{-1}$ are then expressed as
 

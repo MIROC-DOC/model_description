@@ -2,7 +2,7 @@
 ## Contents
 1. Introduction 概論
 - 1.1 [Characteristics of MIROC6 AGCM](draft/summary.md)
-- 1.2 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/a-intro.md)
+- 1.2 [Features and Structure of the Model](draft/a-intro.md)
 - 1.3 [Basic Settings](draft/a.0-setup.md)
 
 2. Dynamics 力学過程
@@ -14,33 +14,25 @@
 - 2.6  [Summary of the Dynamical Core (力学過程のまとめ)](draft/d.6-summ.md)
 - 2.7  [Computational Flow of Dynamical Core](draft/d.7-routine.md)
 
-**以下coupler, physicsのさらにうしろへもっていくべきか**
-- 2.8  [Flux to Atmospheric Models](draft/AO-coupler.md#Fluxes-to-Atmospheric-Models)
-- 2.9  [Fluxes between Land Surface Model and River Model](draft/AO-coupler.md#fluxes-between-land-surface-model-and-river-model)
-- 2.10 [Fluxes to the Ocean Model](draft/AO-coupler.md#fluxes-to-the-ocean-model)
-- 2.11 [Boundary conditions for the ocean on a sea level grid](draft/AO-coupler.md#boundary-conditions-for-the-ocean-on-a-sea-level-grid)
-- 2.12 [Definition of land-sea distribution](draft/Model-Grid.md#horizontal-grid-of-model)
-
 3. Physics 物理過程
-- 3.1 [Features and structure of the model (CCSR/NIES AGCMマニュアルより未改変)](draft/p-intro.md)
-- 3.2 [Cumulus scheme (積雲対流)](draft/p-cum.md)
-- 3.3 [Shallow convection scheme (浅い対流)](draft/shallowconv_en.tex)
-- 3.4 [Large scale condensation (大規模凝結)](draft/Hotta_pmlsc.md)
+- 3.1 [Overview of Physical Parameterizations](draft/p-intro.md)
+- 3.2 [Cumulus Scheme (積雲対流)](draft/p-cum.md)
+- 3.3 [Shallow Convection Scheme (浅い対流)](draft/shallowconv_en.tex)
+- 3.4 [Large Scale Condensation (大規模凝結)](draft/Hotta_pmlsc.md)
 - 3.5 [Cloud Microphysics (雲微物理)](draft/Hotta_pcldphys.md)
-- 3.6 [Radiation scheme (放射)](draft/p-rad.md)
-- 3.7 [Turbulance scheme (乱流)](draft/p-dif_en.md)
-- 3.8 [Surface flux scheme (地表フラックス)](draft/p-sfc.md) *陸面(地表)過程については、[ILS-DOC](https://github.com/integrated-land-simulator/model_description)を参照のこと*
-- 3.9 [Gravity wave drug (重力波抵抗)(CCSR/NIES AGCMマニュアルより未改変)](draft/p-grav.md)
+- 3.6 [Radiation Scheme (放射)](draft/p-rad.md)
+- 3.7 [Turbulance Scheme (乱流)](draft/p-dif_en.md)
+- 3.8 [Surface Flux Scheme (地表フラックス)](draft/p-sfc.md) *陸面(地表)過程については、[ILS-DOC](https://github.com/integrated-land-simulator/model_description)を参照のこと*
+- 3.9 [Gravity Waves (重力波)](draft/p-grav.md)
 
-4. [References 引用文献](draft/referenc.bib)
--
+4. Miscellaneous その他
+- 4.1 [Coupler](draft/AO-coupler.md)
+- 4.2 [Definition of Land-Sea Distribution](draft/Model-Grid.md)
 
-## ディレクトリ構成
--   draft/ 執筆者はこのディレクトリ内でファイルを作成・編集する
--   org/ 元のドキュメントの英訳&Markdown化作業ディレクトリ
--   org/md_en 英語&Markdownファイル。元のドキュメントの誤りに気づいたらこのファイルを修正。
+5. [References 引用文献](draft/referenc.tex)
 
-## リンク集
+
+# リンク集
 -   [Wiki](../../wiki)
     -   [プロジェクトの目標](../../wiki/プロジェクトの目標)
     -   [自動変換作業](../../wiki/自動変換作業)

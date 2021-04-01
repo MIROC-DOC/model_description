@@ -2,26 +2,32 @@
 
 The original first version of this document was written in Japanese by Dr. Numaguti (deceased) in 1995 about the former version of the model, CCSR/NIES AGCM5.4, which was created by himself. Since then, the AGCM has been significantly upgraded with continuous community efforts, and it has been periodically renamed by newer version number (e.g., CCSR/NIES AGCM5.6, MIROC3, MIROC4, and MIROC5) with almost the same phases of releases of IPCC’s Assessment Reports (TAR, AR4, and AR5). Even though there are multiple published papers (e.g., K-1 model developers (2004) for MIROC3 and Watanabe et al. (2010) for MIROC5) explained about the different versions of the model, the description were made only for key points without details, and there were no major updates of the original descriptive document by Dr. Numaguti for a long time.
 
-Here, with the newest release of MIROC series, MIROC6(Tatebe et al., 2019), it was decided to make an overhaul of the document for the first time since the late 1990’s. This decision was triggered by some students’ simple question: “Why is this document so obsolete?” Then, under the TOUGOU project, some of the PIs organized the MIROC6 AGCM document writing team in the spring of 2020.The team consists of two groups; the authors and the supervisors/editors. All of the authors are doctor course students of the University of Tokyo, who use or are interested in using MIROC6, and the supervisors/editors are researchers, who contributed to development of MIROC6 and/or its previous versions.
+Here, with the newest release of MIROC series, MIROC6 (Tatebe et al., 2019), it was decided to make an overhaul of the document for the first time since the late 1990’s. This decision was triggered by some students’ simple question: “Why is this document so obsolete?” Then, under the TOUGOU project, some of the PIs organized *the MIROC6 AGCM document writing team* in the spring of 2020. The team consists of two groups; the authors and the supervisors/editors. All of the authors are doctor course students of the University of Tokyo, who use or are interested in using MIROC6, and the supervisors/editors are researchers, who contributed to development of MIROC6 and/or its previous versions.
 
-In the beginning, the team converted the original Japanese document written in LaTeX format into English Markdown format. Ms. Kino Kanon, Ms. Haruka Hotta, Mr. Yuki Takano, and Dr. Fuyuki Saito contributed to make a semi-automated tool for this conversion. Then the team was divided into several groups, and each group became in charge of each section. These groups and corresponding sections are as follows:
+In the beginning, the team converted the original Japanese document written in LaTeX format into English Markdown format. Ms. Kanon Kino, Ms. Haruka Hotta, Mr. Yuki Takano, and Dr. Fuyuki Saito contributed to make a semi-automated tool for this conversion. Then the team was divided into several groups, and each group became in charge of each section. These groups and corresponding sections are as follows:
 
 - Mr. Tomoki Iwakiri, Mr. Masaki Toda, and Mr. Kazuya Yamazaki supervised by Dr. Fuyuki Saito for Dynamics (Ch.2) and Coupler Scheme (Ch.4.1)
 
-- Mr. Yuki Takano supervised by Dr. Minoru Chikira for Cumulus Scheme(Ch.3.2)
+- Mr. Yuki Takano supervised by Dr. Minoru Chikira for Cumulus Scheme (Ch.3.2)
 
-- Mr. Takuya Jinna supervised by Dr. Tomoo Ogura for Shallow Convection Scheme (Ch.3.3)
+- Mr. Takuya Jinno supervised by Dr. Tomoo Ogura for Shallow Convection Scheme (Ch.3.3)
 
-- Ms. Haruka Hotta supervised by Dr. Takuro Michibata and Dr. Kentaro Suzuki for Large Scale Condensation (Ch.3.4) and Cloud Microphysics (Ch.3.5)
+- Ms. Haruka Hotta supervised by Dr. Takuro Michibata and Dr. Kentaroh Suzuki for Large Scale Condensation (Ch.3.4) and Cloud Microphysics (Ch.3.5)
 
 - Mr. Taro Higuchi supervised by Dr. Takanori Kodama and Dr. Miho Sekiguchi for Radiation Scheme (Ch.3.6)
 
 - Mr. Taigo Ando supervised by Dr. Minoru Chikira for Trubulence Scheme (Ch.3.7)
 
-- Ms. Kanon Kino supervised by Dr. Tatsuo Suzuki for Surface Flux Scheme(Ch.3.8)
+- Ms. Kanon Kino supervised by Dr. Tatsuo Suzuki for Surface Flux Scheme (Ch.3.8)
 
-It took about six months to draft, and the whole draft was reviewed by all supervisors/editors. At last, the rest of the sections were amended and improved by all. The team thanks the support of “Integrated Research Program for Advancing Climate Models (TOUGOU Program)” from the Ministry of Education, Culture, Sports, Science, and Technology (MEXT), Japan.Finally, the team would sincerely express our respect and condolences to Dr. Numaguti, the first developer of the model and the author of the original version of this document.
+It took about six months to draft, and the whole draft was reviewed by all supervisors/editors. At last, the rest of the sections were amended and improved by all. The team thanks the support of “Integrated Research Program for Advancing Climate Models (TOUGOU Program)” from the Ministry of Education, Culture, Sports, Science, and Technology (MEXT), Japan. Finally, the team would sincerely express our respect and condolences to Dr. Numaguti, the first developer of the model and the author of the original version of this document.
 
+<div style="text-align: right;"><!\begin{flushright}>
 
 Hiroaki Tatebe, Masahiro Watanabe, and Kei Yoshimura
-lead member of the teamMarch 31, 2021
+
+lead member of the team
+
+March 31, 2021
+
+</div> <!\end{flushright}>
