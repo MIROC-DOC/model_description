@@ -263,9 +263,9 @@ model with weights for sea surface and sea ice extent, and then
 converted to the ocean grid by the coupled atmosphere-ocean time step
 and passed to the ocean model.
 
-\begin{eqnarray} FLUXOA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} FLUXOA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
 
-\begin{eqnarray} FLUXIA^{OGCM}(LO) = ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} FLUXIA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} \end{eqnarray}
 
 \begin{eqnarray} SATMG(LO)=ROCN(LO) \times \sum_{N=1}^{IJA(LO)} SATM(LO,N) \end{eqnarray}
 
@@ -303,9 +303,9 @@ the ocean are also calculated as wind stresses over sea level (\(TXO\),
 \(TYO\)) and over sea ice (\(TXI\), \(TYI\)), but without multiplying
 the weights of sea level and sea ice area.
 
-\begin{eqnarray} TXO^{OGCM}(LO)=RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} TXO^{OGCM}(LO) =  \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
 
-\begin{eqnarray} TYO^{OGCM}(LO)=-RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
+\begin{eqnarray} TYO^{OGCM}(LO)= \\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \end{eqnarray}
 
 where,
 
