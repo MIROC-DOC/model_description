@@ -52,6 +52,7 @@ $$
 However, it is $\epsilon_v = R_v/R - 1$ and $R_v$ is the gas constant for water vapor (461 Jkg$^{-1}$K$^{-1}$) and $R$ is the gas constant for air (287.04 Jkg$^{-1}$K$^{-1}$).
 
 Corresponding file & subroutine: `[VIRTMD (dvtmp.F)]`
+
 ### Calculating the Pressure Gradient Term
 
 The pressure gradient term $\nabla \pi = \frac{1}{p_S} \nabla p_S$ is first used to define the $\pi_n^m$
@@ -123,25 +124,25 @@ Corresponding file and subroutine: `[PSDOT (dgdyn.F)]`
 Momentum advection term:
 
 $$
+\begin{eqnarray}
   (A_u)_k
-    =  ( \zeta_k + f ) v_k
+    =&&  ( \zeta_k + f ) v_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{u_{k-1} - u_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
-$$
-$$
-           - \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \notag\\
+           &-& \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
              + {\mathcal F}_x
+             \end{eqnarray}
 $$
 
 $$
+\begin{eqnarray}
   (A_v)_k
-    =  - ( \zeta_k + f ) u_k
+    =&&  - ( \zeta_k + f ) u_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{v_{k-1} - v_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right]
-$$
-$$
-           - \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \notag\\
+           &-& \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
              + {\mathcal F}_y
+             \end{eqnarray}
 $$
 
 Temperature advection term:
@@ -155,22 +156,18 @@ $$
 $$
 
 $$
-   H_k =  T_k' D_k
+\begin{eqnarray}
+   H_k =&&  T_k' D_k
           - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right]
-$$
-$$
-        + \hat{\kappa}_k {\mathbf{v}}_k \cdot \nabla \pi T_{v,k}
-$$
-$$
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right]\notag\\
+        &+& \hat{\kappa}_k {\mathbf{v}}_k \cdot \nabla \pi T_{v,k}
         - \alpha_k \sum_{l=k}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
-                            \frac{T_{v,k}}{\Delta \sigma_k}
-$$
-$$
-        - \beta_k \sum_{l=k+1}^{K}
+                            \frac{T_{v,k}}{\Delta \sigma_k}\notag\\
+        &-& \beta_k \sum_{l=k+1}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
                             \frac{T_{v,k}}{\Delta \sigma_k}
+                            \end{eqnarray}
 $$
 
 Water vapor advection term:
@@ -214,17 +211,19 @@ Tendency Term of Vorticity
 
 
 $$
+\begin{eqnarray}
   \frac{\partial{\zeta_n^m}}{\partial {t}}
-    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+    =&&  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
     \mathrm{i}m (A_v)_{ij} \cos \varphi_j
     {Y_n^{m *}}_{ij}
     \frac{w_j}{a(1-\mu_j^{2})}
-\\
-  +\frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+\notag\\
+  &+&\frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
     (A_u)_{ij} \cos \varphi_j
     (1-\mu_j^2)
     \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
     \frac{w_j}{a(1-\mu_j^{2})}
+    \end{eqnarray}
 $$
 
 
@@ -232,22 +231,23 @@ $$
 The non-gravity wave component of the tendency term of the divergence
 
 $$
+\begin{eqnarray}
   \left( \frac{\partial{D_n^m}}{\partial {t}} \right)^{NG}
-   =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   =&&  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m (A_u)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-   -\frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \notag\\
+   &-&\frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_v)_{ij} \cos \varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-   -\frac{n(n+1)}{a^{2}}
+          \notag\\
+   &-&\frac{n(n+1)}{a^{2}}
          \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \hat{E}_{ij}  {Y_n^{m *}}_{ij} w_j
-          \\
+          \end{eqnarray}
 $$
 
 
@@ -257,21 +257,23 @@ $$
 The non-gravity wave component of the tendency term of temperature
 
 $$
+\begin{eqnarray}
   \left( \frac{\partial{T_n^m}}{\partial {t}} \right)^{NG}
-   =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   =&&  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m (u T')_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \notag\\
+     &+& \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (v T')_{ij} \cos \varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \notag\\
+     &+& \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \hat{H}_{ij}
           {Y_n^{m *}}_{ij} w_j
+          \end{eqnarray}
 $$
 
 
@@ -280,21 +282,23 @@ $$
 Tendency term of water vapor
 
 $$
+\begin{eqnarray}
   \frac{\partial{q_n^m}}{\partial {t}}
-   =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   =&&  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m (uq)_{ij} \cos \varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \notag\\
+     &+& \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (vq)_{ij} \cos \varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \notag\\
+     &+& \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           R_{ij}
           {Y_n^{m *}}_{ij} w_j
+          \end{eqnarray}
 $$
 
 
@@ -305,6 +309,7 @@ Corresponding file & subroutines: `[G2Wpush, G2Wtrans, G2Wshift (xdsphe.F)]`
 Equations in matrix form
 
 $$
+\begin{eqnarray}
       \left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}  
       - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
@@ -312,12 +317,12 @@ $$
              {\mathbf{G}} {\mathbf{C}}^{T} ) \nabla^{2}_{\sigma}
   \right\}
       \overline{ {\mathbf{D}} }^{t}
-       \\
+       \notag\\
   = ( 1+2\Delta t {\mathcal D}_H )( 1-\Delta t {\mathcal D}_M )
        {\mathbf{D}}^{t-\Delta t}
   +\Delta t
          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  
-  \\
+  \notag\\
   -\Delta t \nabla^{2}_{\sigma}     
                    \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S}
                           + \underline{W}
@@ -328,7 +333,7 @@ $$
                                                   {\partial t}     
                                       \right)_{NG} \right]
                    \right.
-  \\
+  \notag\\
                  \left.  \hspace*{20mm}
                           + ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}}
                             \left[ \pi^{t-\Delta t}
@@ -337,6 +342,7 @@ $$
                                                  {\partial t}
                                      \right)_{NG}  \right]
                    \right\} .
+          \end{eqnarray}
 $$
 
 
@@ -373,7 +379,7 @@ $$
                           ( 1 + 2 \Delta t {\mathcal D}_H )^{-1} \\
   q^{t+\Delta t}  =  \left( q^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial{q}}{\partial {t}} \right)
-                          ( 1 + 2 \Delta t {\mathcal D}_E )^{-1} \\
+                          ( 1 + 2 \Delta t {\mathcal D}_E )^{-1} \notag\\
 \pi^{t+\Delta t}  =  \pi^{t-\Delta t}
                                 +  2 \Delta t \frac{\partial{\pi}}{\partial {t}}
 $$
@@ -436,21 +442,19 @@ Corresponding file & subroutines:  `[W2Gpush, W2Gtrans, W2Gshift (xdsphe.F)]`
 The horizontal diffusion is applied on the surface of $\eta-$plane, but it can cause problems in large slopes, such as transporting water vapor uphill and causing false precipitation at the top of a mountain. To mitigate this problem, corrections have been made for $T,q,l$ to make the diffusion closer to that of the $p$ surface, e.g., for $T,q,l$.
 
 $$
-  {\mathcal D}_p (T) = (-1)^{N_D/2} K \nabla^{N_D}_p T  
+\begin{eqnarray}
+  {\mathcal D}_p (T) &=& (-1)^{N_D/2} K \nabla^{N_D}_p T  
                 \simeq  (-1)^{N_D/2} K \nabla^{N_D}_{\eta} T  
                       - \frac{\partial{\sigma}}{\partial {p}}
                       (-1)^{N_D/2} K \nabla^{N_D}_{\eta} p
-                      \cdot \frac{\partial{T}}{\partial {\sigma}}
-$$
-$$
-                =      (-1)^{N_D/2} K \nabla^{N_D}_{\eta} T  
+                      \cdot \frac{\partial{T}}{\partial {\sigma}}\notag\\
+                &=&      (-1)^{N_D/2} K \nabla^{N_D}_{\eta} T  
                     -  (-1)^{N_D/2} K \nabla^{N_D}_{\eta} \pi
-                          \cdot \sigma \frac{\partial{T}}{\partial {\sigma}}
-$$
-$$
-                =    {\mathcal D} (T)
+                          \cdot \sigma \frac{\partial{T}}{\partial {\sigma}}\notag\\
+                &=&    {\mathcal D} (T)
                     -  {\mathcal D} (\pi)
                        \sigma \frac{\partial{T}}{\partial {\sigma}}
+                       \end{eqnarray}
 $$
 
 So,
@@ -497,16 +501,8 @@ $$
                       \left[ \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
                                 - \left( \frac{2}{a^2} \right)^{N_D/2}
                       \right]
-                  + K_R
-$$
-
-
-$$
-  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
-$$
-
-
-$$
+                  + K_R \notag\\
+  {{\mathcal D}_H}_n^m = K_M \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}\notag\\
   {{\mathcal D}_E}_n^m = K_E \left( \frac{n(n+1)}{a^2} \right)^{N_D/2}
 $$
 
@@ -552,10 +548,10 @@ $$
 is firstly calculated at `MODULE: [DADVNC]` where transformation of prognostic variableto grid point values. And then, $X^{t-\Delta t}-2X^t$ is stored. When the $X^{t+\Delta t}$ is obtained later, time filter conduct at `MODULE [TFILT]`,
 
 $$
- \bar{\bar{X}}^{t} = (1-\nu\alpha)\bar{\bar{X}}^{t*} +\nu\alpha X^{t+\Delta t}
-$$
-$$
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha)[ \bar{\bar{X}}^{t-\Delta t} - 2\bar{X}^{t} + X^{t+\Delta t}]
+\begin{eqnarray}
+ \bar{\bar{X}}^{t} &=& (1-\nu\alpha)\bar{\bar{X}}^{t*} +\nu\alpha X^{t+\Delta t}\\
+\bar{X}^{t+\Delta t} &=& X^{t+\Delta t} + \nu (1-\alpha)[ \bar{\bar{X}}^{t-\Delta t} - 2\bar{X}^{t} + X^{t+\Delta t}]
+\end{eqnarray}
  $$
 
  Corresponding file & subroutine:  `[DADVNC (dadvn.F)]`
