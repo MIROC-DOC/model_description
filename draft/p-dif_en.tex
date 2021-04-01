@@ -1,5 +1,5 @@
 \hypertarget{turbulence-scheme}{%
-\subsection{Turbulence scheme}\label{turbulence-scheme}}
+\subsection{Turbulence Scheme}\label{turbulence-scheme}}
 
 A turbulence scheme represents the effect of subgrid-scale turbulence on
 the grid-mean prognostic variables. It calculates the vertical diffusion
@@ -48,28 +48,28 @@ written in a Fortran source code of pvdfm.F.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  calculation of friction velocity and the Obukhov length
+  Calculation of friction velocity and the Obukhov length
 \item
-  calculation of buoyancy coefficients {[}\texttt{VDFCND}{]}
+  Calculation of buoyancy coefficients {[}\texttt{VDFCND}{]}
 \item
-  calculation of stability functions of the Level 2
+  Calculation of stability functions of the Level 2
   {[}\texttt{VDFLEV2}{]}
 \item
-  calculation of planetary boundary layer depth {[}\texttt{PBLHGT}{]}
+  Calculation of planetary boundary layer depth {[}\texttt{PBLHGT}{]}
 \item
-  calculation of master length scale {[}\texttt{VDFMLS}{]}
+  Calculation of master length scale {[}\texttt{VDFMLS}{]}
 \item
-  calculation of diffusion coefficients, vertical fluxes and their
+  Calculation of diffusion coefficients, vertical fluxes and their
   derivatives {[}\texttt{VDFLEV3}{]}
 \item
-  calculation of production and dissipation terms of twice turbulent
+  Calculation of production and dissipation terms of twice turbulent
   kinetic energy {[}\texttt{VDFLEV3}{]}
 \item
-  calculation of tendencies of prognostic variables with implicit scheme
+  Calculation of tendencies of prognostic variables with implicit scheme
 \end{enumerate}
 
 \hypertarget{surface-layer}{%
-\subsubsection{Surface layer}\label{surface-layer}}
+\subsubsection{Surface Layer}\label{surface-layer}}
 
 The friction velocity \(u_*\) and the Obukhov length \(L_M\) are given
 as
@@ -84,8 +84,8 @@ where the subscript \(g\) indicates the values near the surface
 The values of the lowest model layer is used for \(\Theta_{v,g}\).
 
 \hypertarget{calculation-of-the-buoyancy-coefficients}{%
-\subsubsection{Calculation of the buoyancy
-coefficients}\label{calculation-of-the-buoyancy-coefficients}}
+\subsubsection{Calculation of the Buoyancy
+Coefficients}\label{calculation-of-the-buoyancy-coefficients}}
 
 The buoyancy-production term in the prognostic equation of the twice
 turbulent kinetic energy contains \(\langle w\theta_v \rangle\).
@@ -123,7 +123,7 @@ the probability distribution in the grids, respectively, and \(Q_s\) is
 saturation water vapor.
 
 \hypertarget{stability-functions-for-the-level-2}{%
-\subsubsection{Stability functions for the Level
+\subsubsection{Stability Functions for the Level
 2}\label{stability-functions-for-the-level-2}}
 
 It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the
@@ -186,10 +186,10 @@ and
 \end{eqnarray}
 
 \hypertarget{master-length-scale}{%
-\subsubsection{Master length scale}\label{master-length-scale}}
+\subsubsection{Master Length Scale}\label{master-length-scale}}
 
 \hypertarget{original-formulation-by-nakanishi-2001}{%
-\paragraph{Original formulation by Nakanishi
+\paragraph{Original Formulation by Nakanishi
 (2001)}\label{original-formulation-by-nakanishi-2001}}
 
 Nakanishi (2001) proposed the following formulation for the master
@@ -263,8 +263,8 @@ represents the effect of dissipation set to \(0.53\). \(L_{max}=500\)m
 gives the upper limit of \(L\).
 
 \hypertarget{estimation-of-the-top-height-of-the-convective-boundary-layer}{%
-\paragraph{Estimation of the top height of the convective boundary
-layer}\label{estimation-of-the-top-height-of-the-convective-boundary-layer}}
+\paragraph{Estimation of the Top Height of the Convective Boundary
+Layer}\label{estimation-of-the-top-height-of-the-convective-boundary-layer}}
 
 Based on Holtslag and Boville (1993), \(H_{PBL}\) is estimated using the
 bulk Richardson number \(Ri_B\) given as
@@ -296,11 +296,11 @@ recalculation of \(z_s\), and then it is used for the final estimate of
 \(H_{PBL}\).
 
 \hypertarget{calculation-of-diffusion-coefficients}{%
-\subsubsection{Calculation of diffusion
-coefficients}\label{calculation-of-diffusion-coefficients}}
+\subsubsection{Calculation of Diffusion
+Coefficients}\label{calculation-of-diffusion-coefficients}}
 
 \hypertarget{twice-turbulent-kinetic-energy-of-level-2}{%
-\paragraph{Twice turbulent kinetic energy of Level
+\paragraph{Twice Turbulent Kinetic Energy of Level
 2}\label{twice-turbulent-kinetic-energy-of-level-2}}
 
 The twice turbulent kinetic energy of the level 2, \({q_2}^2\), is
@@ -333,7 +333,7 @@ From (\ref{p-dif.2}), (\ref{p-dif.3}), (\ref{p-dif.4}), and
 \begin{eqnarray}{q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}.\end{eqnarray}
 
 \hypertarget{stability-functions-of-the-level-2.5}{%
-\paragraph{Stability functions of the Level
+\paragraph{Stability Functions of the Level
 2.5}\label{stability-functions-of-the-level-2.5}}
 
 When \(q<q_2\), i.e., the turbulence is in a growing phase, the
@@ -369,11 +369,11 @@ where
 
 The above formulas appear to be different from those in Nakanishi
 (2001), but are equivalent and can be computed with a smaller
-computationnal cost.
+computational cost.
 
 \hypertarget{calculation-of-diffusion-coefficients-1}{%
-\paragraph{Calculation of diffusion
-coefficients}\label{calculation-of-diffusion-coefficients-1}}
+\paragraph{Calculation of Diffusion
+Coefficients}\label{calculation-of-diffusion-coefficients-1}}
 
 The diffusion coefficients for momentum, twice turbulent kinetic energy,
 heat and water are represented by
@@ -389,7 +389,7 @@ heat and water are represented by
 respectively.
 
 \hypertarget{calculation-of-fluxes}{%
-\paragraph{Calculation of fluxes}\label{calculation-of-fluxes}}
+\paragraph{Calculation of Fluxes}\label{calculation-of-fluxes}}
 
 The vertical fluxes for \(U\), \(V\), \(q^2\), \(C_pT\) and \(Q_w\) at
 half levels are calculated as
@@ -422,12 +422,12 @@ where \(\Delta z_{k-1/2}=z_k-z_{k-1}\). The fluxes for other tracers are
 also calculated in the same way using \(K_w\).
 
 \hypertarget{calculation-of-turbulent-variables}{%
-\subsubsection{Calculation of turbulent
-variables}\label{calculation-of-turbulent-variables}}
+\subsubsection{Calculation of Turbulent
+Variables}\label{calculation-of-turbulent-variables}}
 
 \hypertarget{calculation-of-twice-turbulent-kinetic-energy}{%
-\paragraph{Calculation of twice turbulent kinetic
-energy}\label{calculation-of-twice-turbulent-kinetic-energy}}
+\paragraph{Calculation of Twice Turbulent Kinetic
+Energy}\label{calculation-of-twice-turbulent-kinetic-energy}}
 
 The prognostic equation for \(q^2\) is expressed as
 
@@ -447,8 +447,8 @@ by the diffusion, production and dissipation terms with an implicit
 scheme.
 
 \hypertarget{diagnosis-of-variance-and-covariance}{%
-\paragraph{Diagnosis of variance and
-covariance}\label{diagnosis-of-variance-and-covariance}}
+\paragraph{Diagnosis of Variance and
+Covariance}\label{diagnosis-of-variance-and-covariance}}
 
 The prognostic equations for
 \(\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle\)
@@ -507,8 +507,8 @@ from (\ref{p-dif.6})-(\ref{p-dif.13}),
 \begin{eqnarray}\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}.\end{eqnarray}
 
 \hypertarget{treatment-in-the-bottom-layer}{%
-\paragraph{Treatment in the bottom
-layer}\label{treatment-in-the-bottom-layer}}
+\paragraph{Treatment in the Bottom
+Layer}\label{treatment-in-the-bottom-layer}}
 
 Since the lowest model layer corresponds to the surface layer where
 values of physical variables rapidly change in the vertical direction,
@@ -586,8 +586,8 @@ al.~(1971) as
 \begin{eqnarray}(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0).\end{eqnarray}
 
 \hypertarget{time-integration-with-implicit-scheme}{%
-\subsubsection{Time integration with implicit
-scheme}\label{time-integration-with-implicit-scheme}}
+\subsubsection{Time Integration with Implicit
+Scheme}\label{time-integration-with-implicit-scheme}}
 
 \hypertarget{tendency-of-q2}{%
 \paragraph{\texorpdfstring{Tendency of
@@ -660,9 +660,9 @@ where the subscript \(K\) denote the index for the top model layer.
 (\ref{p-dif.23}) is solved for \(\mu_k\) using the LU
 decomposition.
 
-\hypertarget{tendencies-of-other-prognostic-variables}{%
-\paragraph{Tendencies of other prognostic
-variables}\label{tendencies-of-other-prognostic-variables}}
+\hypertarget{tendencies-of-the-other-prognostic-variables}{%
+\paragraph{Tendencies of the Other Prognostic
+Variables}\label{tendencies-of-the-other-prognostic-variables}}
 
 Letting \(\psi\) be a substitute for \(u\), \(v\), \(T\), \(q_w\), the
 tendency of \(\psi\) is calculated by

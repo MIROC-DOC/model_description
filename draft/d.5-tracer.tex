@@ -4,8 +4,8 @@
 %\usepackage{amsmath}
 %\usepackage[dvipdfmx]{graphicx}
 %\begin{document}
-\subsection{Tracer advection Scheme}
-\subsubsection{Introduction of tracer advection scheme}
+\subsection{Tracer Advection Scheme}
+\subsubsection{Introduction of Tracer Advection Scheme}
 MIROC6 adopts a spectral method based on Spherical harmonic expansion to dynamic core.
 The spectral method is an excellent method, but it has some drawbacks.
 \begin{enumerate}
@@ -33,8 +33,8 @@ Merits of this scheme are described below.
 \end{enumerate}
 In the next section, the principle of the tracer advection scheme is introduced in detail, and in the following section, we describe the actual implementation of the tracer advection scheme.
 
-\subsubsection{Principle of the tracer advection scheme}
-\subsubsubsection{Transport equation in flux form}
+\subsubsection{Principle of the Tracer Advection Scheme}
+\subsubsubsection{Transport Equation in Flux Form}
 The winds and the tracer distributions are staggered in the Arakawa C-grid (Mesinger and Arakawa 1976).
 As example, three dimension advection equation in (x,y,p) rectangukar coordinate system is given as follows.
 
@@ -55,7 +55,7 @@ Here, $F^{x}_{i-\frac{1}{2},j,k}$ is the flux in $x$ direction at boundary betwe
 This flux formed equation automatically satisfies the conservation law.
 The accuracy of the scheme depends on how $F^{x}_{i-\frac{1}{2},j,k}$ is chosen.
 Next, how $F^{x}_{i-\frac{1}{2},j,k}$ is determind in MIRIOC6 is explianed in one dimension in x-direction, for simplicity.
-\subsubsection{The Piecewise Parobolic Method (PPM) scheme}
+\subsubsection{The Piecewise Parobolic Method  Scheme}
 In semi-Lagrange scheme, the flux at point $x_{i+\frac{1}{2}}$ at time $t$ is calculated by using $q$ at point $x_{i+\frac{1}{2}}-u\Delta t$ at time $t-\Delta t$.
 The velocity $u=u(t)$ is used assuming constant locally during this period, and $q$ at time $t-\Delta t$ are used.
 If CFL condition ($|\frac{u\Delta t}{\Delta x}|<1$) is satisfied and $u_{i+\frac{1}{2}}>0$, $x_{i+\frac{1}{2}}-u\Delta t$ is at a point inside grid $i$.
@@ -75,7 +75,7 @@ The old editions of MIROC adoptted van Leer method, in which interpolation funct
 \begin{figure}
   \centering
   \includegraphics[width=5cm]{ppm_interpolate.png}
-  \caption{The image of interpolation function in PPM scheme. The interpolation function is in the solid line, the grid mean value is in the dot line.}
+  \caption{The image of interpolation function in The piecewise parobolic method (PPM) scheme. The interpolation function is in the solid line, the grid mean value is in the dot line.}
   \label{f1}
 \end{figure}
 
@@ -144,7 +144,7 @@ flux $F^{x}_{i+\frac{1}{2}}$ is wriiten as follows.
   u_{i+\frac{1}{2}}[q_{L,i+1}+\frac{C}{2}(\Delta q_{i+1}+(1-\frac{2}{3}C)q_{6,i+1})] & (u_{i+\frac{1}{2}}\leq0)
   \end{cases}
 \end{equation}
-\subsubsubsection{Devices for taking long time steps}
+\subsubsubsection{Devices for Taking Long Time Steps}
 The above argument is stable only if $C<1$
 When the grid method is adapted to spherical coordinate, $\Delta x$ is very small in polar region.
 Therefore, we have to take very small $\Delta t$ to satisfy CFL condition.
@@ -168,7 +168,7 @@ Where $\hat{F^{x}_{i-I_{C}+\frac{1}{2}}}$ is the flux of point $(i-I_{C}+\frac{1
 As indicated above, in the case the fluid moves in multiple grids during $\Delta t$, we can avoid instability of numerical calculation by evaluating the flux using the quantity $q_{i'}$ corresponding to each grids passed.
 In actual, these argument is applied only to zonal flux, which can break CFL condition.
 
-\subsubsubsection{The treatment of cross terms}
+\subsubsubsection{The Treatment of Cross Terms}
 In the case velocity of the fluid is not only in the x-direction or y-direction, only adding the flux contributions in the x- and y-directions together underestimate the effect of diagonal advection.
 To take these cross term into considering, the following procedure is taken.
 Here, we discuss this in two-dimensional space, not in one-dimensional.
@@ -187,12 +187,12 @@ In the same way, when calculating y-direction flux $F^{x}_{i+\frac{1}{2},j}$,
 
   In the case of three dimensional tracer advection, this procedure is conducted in two dimension.
 
-  \subsubsection{Actual tracer advection scheme in MIROC6}
+  \subsubsection{Actual Tracer Advection Scheme in MIROC6}
   In this subsection, the procedure implemented in MIROC6 of the tracer advection scheme is described.
   Although MIROC6 adopts $\sigma$-$p$ hybrid coordinate as vertical coordinate, the tracer advection scheme is largely based on $\sigma$ coordinate because previous version of MIROC adopted $\sigma$ coordinate.
   Therefore, firstly the procedure under $\sigma$ coordinate system is described.
   After this, the changes in the hybrid coordinate system from the $\sigma$ coordinate system is described.
-  \subsubsubsection{$\sigma$ coordinate}
+  \subsubsubsection{$\sigma$-Coordinate}
 The transport equation in $\sigma$ coordinate on the sphere is expressed as
 \begin{eqnarray}
   \label{b1}
@@ -284,7 +284,7 @@ The condition for $V^{\lambda}=0$ is:
   $P^{s}_{t+\Delta t}$ from Eq. (\ref{a2}) is applied at present for the consistency of mass advection. Mass Conservation is not strictly satisfied because of the discrepancy between the surface pressure in the spectral model and from $P^{s}_{t+\Delta t}$ Eq. (\ref{a2}).
 \end{enumerate}
 
-\subsubsubsection{$\sigma$-$p$ hybrid coordinate}
+\subsubsubsection{$\sigma$-$p$ Hybrid Coordinate}
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid coordinate) on the sphere is:
 \begin{eqnarray}                                                             \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray}
@@ -310,7 +310,7 @@ In actual source code, conbining to dividing by $m$ to calculate $q$ at time ste
 Here,$A,B$ is the coefficients for $\eta$ coordinate, $\eta_{k+\frac{1}{2}}=A_{k+\frac{1}{2}}/p_{0}+B_{k+\frac{1}{2}}$ and $\Delta A_{k}=A_{k-\frac{1}{2}}-A_{k+\frac{1}{2}},\quad \Delta B_{k}=B_{k-\frac{1}{2}}-B_{k+\frac{1}{2}}$.
 And $\Delta A_{k}+\Delta B_{k} P^{S}_{i,j,k}=\Delta p_{i,j,k}$(More details in the section of the vertical discretization).
 
-\subsubsubsection{The mass fluxes into/out of polar caps}
+\subsubsubsection{The Mass Fluxes into/out of Polar Caps}
 The mass fluxes into/out of polar caps are calculated by using the semi–Lagrangian scheme in the polar stereo projection (cf. Fig.\ref{f2}).
 The horizontal average at the highest latitude band is assumed to be preserved before/after flux calculation for the mass conservation. The sequence of calculation is:
 \begin{enumerate}

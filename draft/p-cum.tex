@@ -1,9 +1,9 @@
 \hypertarget{cumulus-scheme}{%
-\subsection{Cumulus scheme}\label{cumulus-scheme}}
+\subsection{Cumulus Scheme}\label{cumulus-scheme}}
 
 \hypertarget{outline-of-cumulus-scheme}{%
-\subsubsection{Outline of cumulus
-scheme}\label{outline-of-cumulus-scheme}}
+\subsubsection{Outline of Cumulus
+Scheme}\label{outline-of-cumulus-scheme}}
 
 The Chikira scheme (Chikira and Sugiyama 2010) has been adopted since
 version 5 of MIROC. It represents updrafts, downdrafts, their
@@ -63,38 +63,38 @@ names of the subroutines.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  calculation of cloud base \texttt{CUMBAS}.
+  Calculation of cloud base \texttt{CUMBAS}.
 \item
-  calculation of in-cloud properties \texttt{CUMUP}.
+  Calculation of in-cloud properties \texttt{CUMUP}.
 \item
-  calculation of cloud base mass flux \texttt{CUMBMX}.
+  Calculation of cloud base mass flux \texttt{CUMBMX}.
 \item
-  calculation of cloud mass flux, detrainment, and precipitation
+  Calculation of cloud mass flux, detrainment, and precipitation
   \texttt{CUMFLX}.
 \item
-  diagnosis of cloud water and cloud cover by cumulus \texttt{CUMCLD}.
+  Diagnosis of cloud water and cloud cover by cumulus \texttt{CUMCLD}.
 \item
-  calculation of tendencies by detrainment \texttt{CLDDET}.
+  Calculation of tendencies by detrainment \texttt{CLDDET}.
 \item
-  calculation of freezing, melting, evaporation, sublimation, and
+  Calculation of freezing, melting, evaporation, sublimation, and
   downdraft mass flux \texttt{CUMDWN}.
 \item
-  calculation of tendencies by compensating subsidence \texttt{CLDSBH}.
+  Calculation of tendencies by compensating subsidence \texttt{CLDSBH}.
 \item
-  calculation of cumulus momentum transport \texttt{CUMCMT}.
+  Calculation of cumulus momentum transport \texttt{CUMCMT}.
 \item
-  calculation of tracer updraft \texttt{CUMUPR}.
+  Calculation of tracer updraft \texttt{CUMUPR}.
 \item
-  calculation of tracer downdraft \texttt{CUMDNR}.
+  Calculation of tracer downdraft \texttt{CUMDNR}.
 \item
-  calculation of tracer subsidence \texttt{CUMSBR}.
+  Calculation of tracer subsidence \texttt{CUMSBR}.
 \item
-  fixing tracer mass \texttt{CUMFXR} .
+  Fixing tracer mass \texttt{CUMFXR} .
 \end{enumerate}
 
 \hypertarget{interaction-between-cumulus-ensemble-and-large-scale-environment}{%
-\subsubsection{Interaction between cumulus ensemble and large-scale
-environment}\label{interaction-between-cumulus-ensemble-and-large-scale-environment}}
+\subsubsection{Interaction between Cumulus Ensemble and Large-Scale
+Environment}\label{interaction-between-cumulus-ensemble-and-large-scale-environment}}
 
 Following Arakawa and Schubert (1974), the equations for tendencies of
 the grid-mean variables are written as
@@ -135,7 +135,7 @@ where \(M_B\) and \(\eta\) are the updraft mass flux at its cloud base
 and normalized mass flux.
 
 \hypertarget{cloud-base}{%
-\subsubsection{Cloud base}\label{cloud-base}}
+\subsubsection{Cloud Base}\label{cloud-base}}
 
 The cloud base is determined as the lifting condensation level of the
 air at the lowest model layer. It is defined as the smallest \(z\) which
@@ -161,8 +161,8 @@ The normalized mass flux below the cloud base is given by
 denotes the cloud base height.
 
 \hypertarget{updraft-velocity-and-entrainment-rate}{%
-\subsubsection{Updraft velocity and entrainment
-rate}\label{updraft-velocity-and-entrainment-rate}}
+\subsubsection{Updraft Velocity and Entrainment
+Rate}\label{updraft-velocity-and-entrainment-rate}}
 
 The entrainment rate is defined by
 
@@ -249,8 +249,8 @@ updraft types separately, but we omit the subscript \(j\) for
 convenience.
 
 \hypertarget{normalized-mass-flux-and-updraft-properties}{%
-\subsubsection{Normalized mass flux and updraft
-properties}\label{normalized-mass-flux-and-updraft-properties}}
+\subsubsection{Normalized Mass Flux and Updraft
+Properties}\label{normalized-mass-flux-and-updraft-properties}}
 
 The properties of the updraft are determined by
 
@@ -339,7 +339,7 @@ These calculations are made for each of the updraft types separately,
 but we omit the subscript \(j\) for convenience.
 
 \hypertarget{spectral-representation}{%
-\subsubsection{Spectral representation}\label{spectral-representation}}
+\subsubsection{Spectral Representation}\label{spectral-representation}}
 
 Following the spirit of the Arakawa--Schubert scheme, updraft types are
 spectrally represented. Different values of cloud-base updraft
@@ -363,7 +363,7 @@ represented for simplicity (i.e., detrainment never occurs above cloud
 top).
 
 \hypertarget{cloud-base-mass-flux}{%
-\subsubsection{Cloud-base mass flux}\label{cloud-base-mass-flux}}
+\subsubsection{Cloud-Base Mass Flux}\label{cloud-base-mass-flux}}
 
 The cloud-base mass flux is determined with the prognostic convective
 kinetic energy closure proposed by Arakawa and Xu (1990). That is, the
@@ -438,8 +438,8 @@ Melting and freezing of precipitation occurs depending on wet-bulb
 temperature of large-scale environment and cumulus mass flux.
 
 \hypertarget{evaporation-sublimation-and-downdraft}{%
-\subsubsection{Evaporation, sublimation and
-downdraft}\label{evaporation-sublimation-and-downdraft}}
+\subsubsection{Evaporation, Sublimation and
+Downdraft}\label{evaporation-sublimation-and-downdraft}}
 
 A part of precipitation is evaporated at each level as
 

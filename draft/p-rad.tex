@@ -1,9 +1,9 @@
 \hypertarget{radiation-scheme}{%
-\subsection{Radiation scheme}\label{radiation-scheme}}
+\subsection{Radiation Scheme}\label{radiation-scheme}}
 
 \hypertarget{summary-of-the-radiation-flux-calculation}{%
-\subsubsection{Summary of the radiation flux
-calculation}\label{summary-of-the-radiation-flux-calculation}}
+\subsubsection{Summary of the Radiation Flux
+Calculation}\label{summary-of-the-radiation-flux-calculation}}
 
 The radiation scheme in the MIROC was created based on the Discrete
 Ordinate Method and the \(k\)-distribution Method (Nakajima et al.,
@@ -75,7 +75,7 @@ the clear-sky radiation flux.
 
 \hypertarget{wavelength-and-sub-channel}{%
 \subsubsection{Wavelength and
-Sub-channel}\label{wavelength-and-sub-channel}}
+Sub-Channel}\label{wavelength-and-sub-channel}}
 
 The basics of radiative flux calculations are represented by
 Beer-Lambert's Law.
@@ -138,7 +138,7 @@ boundary of the shortwave region is also changed to 54000
 
 \hypertarget{calculation-of-the-planck-function}{%
 \subsubsection{Calculation of the Planck
-function}\label{calculation-of-the-planck-function}}
+Function}\label{calculation-of-the-planck-function}}
 
 In this section, \texttt{SUBROUTINE:{[}PLANKS,\ PLANKF{]}} in pradt.F is
 described.
@@ -160,8 +160,8 @@ each wavelength and each layer. In the following description, the
 subscript of the wavelength range \(w\) is omitted.
 
 \hypertarget{calculation-of-the-optical-thickness-to-gas-absorption}{%
-\subsubsection{Calculation of the optical thickness to gas
-absorption}\label{calculation-of-the-optical-thickness-to-gas-absorption}}
+\subsubsection{Calculation of the Optical Thickness to Gas
+Absorption}\label{calculation-of-the-optical-thickness-to-gas-absorption}}
 
 In this section, \texttt{SUBROUTINE:{[}PTFIT2{]}} in pradt.F is
 described.
@@ -223,8 +223,8 @@ the unit from \(\mathrm{km}\) to \(\mathrm{cm}\). This calculation is
 done for each sub-channel and each layer.
 
 \hypertarget{calculation-of-the-optical-thickness-to-cfc-absorption}{%
-\subsubsection{Calculation of the optical thickness to CFC
-absorption}\label{calculation-of-the-optical-thickness-to-cfc-absorption}}
+\subsubsection{Calculation of the Optical Thickness to CFC
+Absorption}\label{calculation-of-the-optical-thickness-to-cfc-absorption}}
 
 In this section, \texttt{SUBROUTINE:{[}CNTCFC2{]}} in pradt.F is
 described.
@@ -257,8 +257,8 @@ layer. This calculation is performed for each layer and the wavelength
 range from about 540 to 1800 \(\mathrm{cm}^{-1}\).
 
 \hypertarget{optical-thickness-to-scattering-and-scattering-moment}{%
-\subsubsection{Optical thickness to scattering and scattering
-moment}\label{optical-thickness-to-scattering-and-scattering-moment}}
+\subsubsection{Optical Thickness to Scattering and Scattering
+Moment}\label{optical-thickness-to-scattering-and-scattering-moment}}
 
 Calculate the optical thickness of scattering and the scattering moment.
 These calculations are performed for each wavelength and each layer. The
@@ -328,7 +328,7 @@ In the above formulas, \(10^{-1}\) is multiplied to convert from
 \(\mathrm{km}\) to \(\mathrm{cm}\), and from ppmv to ratio.
 
 \hypertarget{rayleigh-scattering}{%
-\paragraph{Rayleigh scattering}\label{rayleigh-scattering}}
+\paragraph{Rayleigh Scattering}\label{rayleigh-scattering}}
 
 In this section, \texttt{SUBROUTINE:{[}SCATRY{]}} in pradt.F is
 described.
@@ -490,7 +490,7 @@ f_{l i q}=\frac{w_{s t} f_{l i q, s t}+w_{c u} f_{l i q, c u}}{w_{s t}+w_{c u}}
 \end{eqnarray}
 
 \hypertarget{total-optical-thickness}{%
-\subsubsection{Total optical thickness}\label{total-optical-thickness}}
+\subsubsection{Total Optical Thickness}\label{total-optical-thickness}}
 
 All optical thickness including gaseous band absorption, and scattering
 is,
@@ -504,8 +504,8 @@ calculation is done for each sub-channel and each layer, and divided
 into the cloudy, clear sky, and cumulus conditions.
 
 \hypertarget{expansion-of-the-plank-function}{%
-\subsubsection{Expansion of the plank
-function}\label{expansion-of-the-plank-function}}
+\subsubsection{Expansion of the Plank
+Function}\label{expansion-of-the-plank-function}}
 
 In this section, \texttt{SUBROUTINE:{[}PLKEXP{]}} in pradt.F is
 described.
@@ -546,8 +546,8 @@ This calculation is done for each sub-channel and each layer and divided
 into the cloudy, clear sky and cumulus conditions.
 
 \hypertarget{transmission-and-reflection-coefficients-and-source-function}{%
-\subsubsection{Transmission and reflection coefficients, and source
-function}\label{transmission-and-reflection-coefficients-and-source-function}}
+\subsubsection{Transmission and Reflection Coefficients, and Source
+Function}\label{transmission-and-reflection-coefficients-and-source-function}}
 
 In this section, \texttt{SUBROUTINE:{[}TWST{]}} in pradt.F is described.
 
@@ -748,8 +748,8 @@ This calculation is done for each sub-channel and each layer and divided
 into the cloudy, clear sky, and cumulus conditions.
 
 \hypertarget{t-r-s-matrixes-for-maximalrandom-approximation}{%
-\subsubsection{T, R, S matrixes for maximal/random
-approximation}\label{t-r-s-matrixes-for-maximalrandom-approximation}}
+\subsubsection{T, R, S Matrixes for Maximal/Random
+Approximation}\label{t-r-s-matrixes-for-maximalrandom-approximation}}
 
 In this section, \texttt{SUBROUTINE:{[}RTSMR{]}} in pradt.F is
 described.
@@ -938,8 +938,8 @@ R^{-(\text {clear}, 2)}=R^{(\text {clear})} B^{(2)}
 This calculation is done for each sub-channel and each layer.
 
 \hypertarget{adding-of-source-functions-for-each-layer}{%
-\subsubsection{Adding of source functions for each
-layer}\label{adding-of-source-functions-for-each-layer}}
+\subsubsection{Adding of Source Functions for Each
+Layer}\label{adding-of-source-functions-for-each-layer}}
 
 In this section, \texttt{SUBROUTINE:{[}ADDMR{]}} and
 \texttt{SUBROTINE:{[}ADDING{]}} in pradt.F is described.
@@ -1208,7 +1208,7 @@ F_{s f}^{+}=\mu_{0} F_{0} e^{-\left\langle\tau^{*}\rangle\ \mu_{0}\right.}
 \end{eqnarray}
 
 \hypertarget{adding-in-the-flux}{%
-\subsubsection{Adding in the flux}\label{adding-in-the-flux}}
+\subsubsection{Adding in the Flux}\label{adding-in-the-flux}}
 
 \begin{eqnarray}
 F^{\pm}=\sum_{c} w_{c}\left(1-C_{c u}\right) \bar{F}^{\pm}+\sum_{c} w_{c} C_{c u} F^{c \pm}
@@ -1244,8 +1244,8 @@ F_{s f, d i f}^{+}=\sum_{c} w_{c}\left(1-C_{c u}\right)\left(\bar{F}_{N+1 / 2}^{
 This calculation is done in \texttt{SUBROUTINE:{[}DTRN31{]}}
 
 \hypertarget{calculation-of-the-temperature-derivative-of-the-flux}{%
-\subsubsection{Calculation of the temperature derivative of the
-flux}\label{calculation-of-the-temperature-derivative-of-the-flux}}
+\subsubsection{Calculation of the Temperature Derivative of the
+Flux}\label{calculation-of-the-temperature-derivative-of-the-flux}}
 
 To implicitly solve for surface temperature, calculate differential term
 of upward flux with respect to surface temperature
@@ -1257,9 +1257,9 @@ original value is set to \(\mathrm{d}F^{\mp}/dT_{g}\). This is a
 meaningful value only in the longwave region (earth radiation region).
 This calculation is done in \texttt{SUBROUTINE:{[}RADFLX{]}} of pradt.F.
 
-\hypertarget{calculation-of-the-heating-rate}{%
-\subsubsection{Calculation of the heating
-rate}\label{calculation-of-the-heating-rate}}
+\hypertarget{calculation-of-thehheating-rate}{%
+\subsubsection{Calculation of theHheating
+Rate}\label{calculation-of-thehheating-rate}}
 
 The heating rate of the nth layer \(H_n\) is calculated by using the
 radiation flux obtained so far. It is calculated separately for
@@ -1271,8 +1271,8 @@ H_{n}=-\frac{\left(F_{n}^{-}-F_{n}^{-}\right)-\left(F_{n}^{+}-F_{n+1}^{+}\right)
 \end{eqnarray}
 
 \hypertarget{flux-of-incidence-and-incident-angle}{%
-\subsubsection{Flux of incidence and incident
-angle}\label{flux-of-incidence-and-incident-angle}}
+\subsubsection{Flux of Incidence and Incident
+Angle}\label{flux-of-incidence-and-incident-angle}}
 
 In this section, \texttt{SUBROUTINE:{[}SHTINS{]}} in pradi.F is
 described.
@@ -1408,9 +1408,8 @@ follows.
 \end{array}
 \end{eqnarray}
 
-\hypertarget{reading-the-each-parameter}{%
-\subsubsection{Reading the each
-parameter}\label{reading-the-each-parameter}}
+\hypertarget{reading-each-parameter}{%
+\subsubsection{Reading Each Parameter}\label{reading-each-parameter}}
 
 In \texttt{SUBROUTINE:{[}OPPARM2{]}}of pradt.F, various parameters used
 for radiation calculation are read. The outline of the procedure is
@@ -1464,7 +1463,7 @@ shown below.
 \end{enumerate}
 
 \hypertarget{other-notes}{%
-\subsubsection{Other notes}\label{other-notes}}
+\subsubsection{Other Notes}\label{other-notes}}
 
 The calculation of the radiation is usually not done at every step.
 Thus, the radiation flux is saved, and it is used if the time is not

@@ -12,7 +12,7 @@ In the beginning, the team converted the original Japanese document written in L
 
 - Mr. Takuya Jinno supervised by Dr. Tomoo Ogura for Shallow Convection Scheme (Ch.3.3)
 
-- Ms. Haruka Hotta supervised by Dr. Takuro Michibata and Dr. Kentaro Suzuki for Large Scale Condensation (Ch.3.4) and Cloud Microphysics (Ch.3.5)
+- Ms. Haruka Hotta supervised by Dr. Takuro Michibata and Dr. Kentaroh Suzuki for Large Scale Condensation (Ch.3.4) and Cloud Microphysics (Ch.3.5)
 
 - Mr. Taro Higuchi supervised by Dr. Takanori Kodama and Dr. Miho Sekiguchi for Radiation Scheme (Ch.3.6)
 
@@ -22,9 +22,12 @@ In the beginning, the team converted the original Japanese document written in L
 
 It took about six months to draft, and the whole draft was reviewed by all supervisors/editors. At last, the rest of the sections were amended and improved by all. The team thanks the support of “Integrated Research Program for Advancing Climate Models (TOUGOU Program)” from the Ministry of Education, Culture, Sports, Science, and Technology (MEXT), Japan. Finally, the team would sincerely express our respect and condolences to Dr. Numaguti, the first developer of the model and the author of the original version of this document.
 
+<div style="text-align: right;"><!\begin{flushright}>
 
 Hiroaki Tatebe, Masahiro Watanabe, and Kei Yoshimura
 
 lead member of the team
 
 March 31, 2021
+
+</div> <!\end{flushright}>
