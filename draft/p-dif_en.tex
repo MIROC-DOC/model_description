@@ -1,48 +1,30 @@
 \hypertarget{turbulence-scheme}{%
 \subsection{Turbulence Scheme}\label{turbulence-scheme}}
 
-A turbulence scheme represents the effect of subgrid-scale turbulence on
-the grid-mean prognostic variables. It calculates the vertical diffusion
-of momentum, heat, water and other tracers. The
-Mellor-Yamada-Nakanishi-Niino scheme (MYNN scheme; Nakanishi 2001;
-Nakanishi and Niino 2004) has been used as a turbulence scheme in MIROC
-since its version 5, which is an improved version of the Mellor-Yamada
-scheme (Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982).
-Its closure level is 2.5. Level 3 is available, however it was not
-adopted as a standard option, since we could not gain large benefits
-despite its much greater computational costs.
+A turbulence scheme represents the effect of subgrid-scale turbulence on the grid-mean prognostic variables. It calculates the vertical diffusion of momentum, heat, water and other tracers. The
+Mellor-Yamada-Nakanishi-Niino scheme (MYNN scheme; Nakanishi 2001; Nakanishi and Niino 2004) has been used as a turbulence scheme in MIROC since its version 5, which is an improved version of the
+Mellor-Yamada scheme (Mellor 1973; Mellor and Yamada 1974; Mellor and Yamada 1982). Its closure level is 2.5. Level 3 is available, however it was not adopted as a standard option, since we could not
+gain large benefits despite its much greater computational costs.
 
-In the MYNN scheme, liquid water potential temperature \(\theta_l\) and
-total water \(q_w\) are used as key variables, which are defined as
+In the MYNN scheme, liquid water potential temperature \(\theta_l\) and total water \(q_w\) are used as key variables, which are defined as
 
 \begin{eqnarray} \theta_l \equiv \left(T - \frac{L_v}{C_p}q_l - \frac{L_v+L_f}{C_p}q_i \right) \left(\frac{p_s}{p}\right)^{\frac{R_d}{C_p}}, \end{eqnarray}
 
 \begin{eqnarray} q_w \equiv q_v+q_l+q_i, \end{eqnarray}
 
-where \(T\) and \(p\) are temperature and pressure; \(q_v\), \(q_l\) and
-\(q_i\) are specific humidity, liquid water content, and ice water
-content respectively; \(C_p\) and \(R_d\) are specific heat at constant
-pressure and gas constant of dry air respectively; \(L_v\) and \(L_f\)
-are latent heat of vaporization and fusion per unit mass respectively.
-\(p_s\) is \(1000hPa\). These variables conserve for the phase change of
-water.
+where \(T\) and \(p\) are temperature and pressure; \(q_v\), \(q_l\) and \(q_i\) are specific humidity, liquid water content, and ice water content respectively; \(C_p\) and \(R_d\) are specific heat
+at constant pressure and gas constant of dry air respectively; \(L_v\) and \(L_f\) are latent heat of vaporization and fusion per unit mass respectively. \(p_s\) is \(1000hPa\). These variables
+conserve for the phase change of water.
 
-In the level 2.5, the scheme predicts the time evolution of twice
-turbulent kinetic energy as a prognostic variable, which is defined by
+In the level 2.5, the scheme predicts the time evolution of twice turbulent kinetic energy as a prognostic variable, which is defined by
 
 \begin{eqnarray}q^2 \equiv \langle u^2 + v^2 + w^2 \rangle\end{eqnarray}
 
-where \(u\), \(v\), and \(w\) are velocities in zonal, meridional and
-vertical directions respectively. In this chapter, uppercase letters
-represent grid-mean variables and lowercase counterparts the deviation
-from the grid-mean. \(\langle \ \rangle\) denotes an ensemble mean. In
-the Level 3, \(\langle {\theta_l}^2 \rangle\),
-\(\langle {q_w}^2 \rangle\), \(\langle \theta_l q_w \rangle\) are also
+where \(u\), \(v\), and \(w\) are velocities in zonal, meridional and vertical directions respectively. In this chapter, uppercase letters represent grid-mean variables and lowercase counterparts the
+deviation from the grid-mean. \(\langle \ \rangle\) denotes an ensemble mean. In the Level 3, \(\langle {\theta_l}^2 \rangle\), \(\langle {q_w}^2 \rangle\), \(\langle \theta_l q_w \rangle\) are also
 predicted, but we skip the details here.
 
-The outline of the computational procedures is given as follows along
-with the names of the subroutines. All the subroutines listed here are
-written in a Fortran source code of pvdfm.F.
+The outline of the computational procedures is given as follows along with the names of the subroutines. All the subroutines listed here are written in a Fortran source code of pvdfm.F.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -52,18 +34,15 @@ written in a Fortran source code of pvdfm.F.
 \item
   Calculation of buoyancy coefficients {[}\texttt{VDFCND}{]}
 \item
-  Calculation of stability functions of the Level 2
-  {[}\texttt{VDFLEV2}{]}
+  Calculation of stability functions of the Level 2 {[}\texttt{VDFLEV2}{]}
 \item
   Calculation of planetary boundary layer depth {[}\texttt{PBLHGT}{]}
 \item
   Calculation of master length scale {[}\texttt{VDFMLS}{]}
 \item
-  Calculation of diffusion coefficients, vertical fluxes and their
-  derivatives {[}\texttt{VDFLEV3}{]}
+  Calculation of diffusion coefficients, vertical fluxes and their derivatives {[}\texttt{VDFLEV3}{]}
 \item
-  Calculation of production and dissipation terms of twice turbulent
-  kinetic energy {[}\texttt{VDFLEV3}{]}
+  Calculation of production and dissipation terms of twice turbulent kinetic energy {[}\texttt{VDFLEV3}{]}
 \item
   Calculation of tendencies of prognostic variables with implicit scheme
 \end{enumerate}
@@ -71,42 +50,31 @@ written in a Fortran source code of pvdfm.F.
 \hypertarget{surface-layer}{%
 \subsubsection{Surface Layer}\label{surface-layer}}
 
-The friction velocity \(u_*\) and the Obukhov length \(L_M\) are given
-as
+The friction velocity \(u_*\) and the Obukhov length \(L_M\) are given as
 
 \begin{eqnarray}u_*=\left({\langle uw \rangle_g}^2+{\langle vw \rangle_g}^2 \right)^\frac{1}{4},\end{eqnarray}
 
 \begin{eqnarray}L_M=-\frac{\Theta_{v,g} {u_*}^3}{kg \langle w\theta_v \rangle_g},\end{eqnarray}
 
-where the subscript \(g\) indicates the values near the surface
-\(\Theta_v\) and \(\theta_v\) denote virtual potential temperature,
-\(k\) the von Kármán constant, and \(g\) the acceleration of gravity.
-The values of the lowest model layer is used for \(\Theta_{v,g}\).
+where the subscript \(g\) indicates the values near the surface \(\Theta_v\) and \(\theta_v\) denote virtual potential temperature, \(k\) the von Kármán constant, and \(g\) the acceleration of
+gravity. The values of the lowest model layer is used for \(\Theta_{v,g}\).
 
 \hypertarget{calculation-of-the-buoyancy-coefficients}{%
-\subsubsection{Calculation of the Buoyancy
-Coefficients}\label{calculation-of-the-buoyancy-coefficients}}
+\subsubsection{Calculation of the Buoyancy Coefficients}\label{calculation-of-the-buoyancy-coefficients}}
 
-The buoyancy-production term in the prognostic equation of the twice
-turbulent kinetic energy contains \(\langle w\theta_v \rangle\).
-Following Mellor and Yamada (1982), we assume the probability
-distribution of \(\theta_l\) and \(q_w\) in a given grid and rewrite
-this term as
+The buoyancy-production term in the prognostic equation of the twice turbulent kinetic energy contains \(\langle w\theta_v \rangle\). Following Mellor and Yamada (1982), we assume the probability
+distribution of \(\theta_l\) and \(q_w\) in a given grid and rewrite this term as
 
 \begin{eqnarray}\langle w\theta_v \rangle=\beta_\theta \langle w\theta_l \rangle + \beta_q \langle wq_w \rangle.\end{eqnarray}
 
-However, note that unlike Mellor and Yamada (1982) and Nakanishi and
-Niino (2004), the probability distribution assumed here is not Gaussian.
-It is triangular documented in the PDF-based prognostic large-scale
-condensation scheme (Watanabe et al.~2009). In this case, the buoyancy
-coefficients, \(\beta_\theta\) and \(\beta_q\) are written as
+However, note that unlike Mellor and Yamada (1982) and Nakanishi and Niino (2004), the probability distribution assumed here is not Gaussian. It is triangular documented in the PDF-based prognostic
+large-scale condensation scheme (Watanabe et al.~2009). In this case, the buoyancy coefficients, \(\beta_\theta\) and \(\beta_q\) are written as
 
 \begin{eqnarray}\beta_\theta=1+\epsilon Q_w-(1+\epsilon)Q_l-Q_i-\tilde{R}abc,\end{eqnarray}
 
 \begin{eqnarray}\beta_q=\epsilon \Theta +\tilde{R}ac,\end{eqnarray}
 
-where \(\epsilon=R_v/R_d-1\). \(R_v\) is the gas constant for water
-vapor, and
+where \(\epsilon=R_v/R_d-1\). \(R_v\) is the gas constant for water vapor, and
 
 \begin{eqnarray}a=\left(1+\frac{L_v}{C_p}\left.\frac{\partial Q_s}{\partial T}\right|_{T=T_l}\right)^{-1},\end{eqnarray}
 
@@ -118,21 +86,14 @@ vapor, and
 
 \begin{eqnarray}{\sigma_s}^2=\langle {q_w}^2 \rangle -2b \langle \theta_l q_w \rangle + b^2\langle {\theta_l}^2 \rangle,\end{eqnarray}
 
-where \(R\) and \(Q_l\) are cloud amount and liquid water computed from
-the probability distribution in the grids, respectively, and \(Q_s\) is
-saturation water vapor.
+where \(R\) and \(Q_l\) are cloud amount and liquid water computed from the probability distribution in the grids, respectively, and \(Q_s\) is saturation water vapor.
 
 \hypertarget{stability-functions-for-the-level-2}{%
-\subsubsection{Stability Functions for the Level
-2}\label{stability-functions-for-the-level-2}}
+\subsubsection{Stability Functions for the Level 2}\label{stability-functions-for-the-level-2}}
 
-It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the
-behavior of growing turbulence realistically (Helfand and Labraga 1988).
-Thus, the MYNN scheme first calculates the twice turbulent kinetic
-energy of the Level2 \({q_2}^2\), and then make a correction to the
-diffusion when \(q<q_2\), i.e., the turbulence is in a growing phase.
-The stability functions of the level 2, \(S_{H2}\) and \(S_{M2}\),
-required for the calculation of \(q_2\), are represented by
+It is known that the Mellor-Yamada Level 2.5 scheme fails to capture the behavior of growing turbulence realistically (Helfand and Labraga 1988). Thus, the MYNN scheme first calculates the twice
+turbulent kinetic energy of the Level2 \({q_2}^2\), and then make a correction to the diffusion when \(q<q_2\), i.e., the turbulence is in a growing phase. The stability functions of the level 2,
+\(S_{H2}\) and \(S_{M2}\), required for the calculation of \(q_2\), are represented by
 
 \begin{eqnarray}S_{H2}=S_{HC}\frac{Rf_c-Rf}{1-Rf},\end{eqnarray}
 
@@ -146,8 +107,7 @@ Here, \(Ri\) is the gradient Richardson number represented by
 
 \begin{eqnarray}Ri=\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right) \Bigg/ \left[ \left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2 \right].\end{eqnarray}
 
-The other symbols indicate quantities independent of the environmental
-field, which are given as follows.
+The other symbols indicate quantities independent of the environmental field, which are given as follows.
 
 \begin{eqnarray}S_{HC}=3A_2(\gamma_1+\gamma_2),\end{eqnarray}
 
@@ -189,17 +149,13 @@ and
 \subsubsection{Master Length Scale}\label{master-length-scale}}
 
 \hypertarget{original-formulation-by-nakanishi-2001}{%
-\paragraph{Original Formulation by Nakanishi
-(2001)}\label{original-formulation-by-nakanishi-2001}}
+\paragraph{Original Formulation by Nakanishi (2001)}\label{original-formulation-by-nakanishi-2001}}
 
-Nakanishi (2001) proposed the following formulation for the master
-length scale \(L\).
+Nakanishi (2001) proposed the following formulation for the master length scale \(L\).
 
 \begin{eqnarray}\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_T}+\frac{1}{L_B} \label{p-dif.1}, \end{eqnarray}
 
-where \(L_S\), \(L_T\), \(L_B\) represent length scales in the surface
-layer, convective boundary layer, and stably stratified layer
-respectively. These length scales are formulated as
+where \(L_S\), \(L_T\), \(L_B\) represent length scales in the surface layer, convective boundary layer, and stably stratified layer respectively. These length scales are formulated as
 
 \begin{eqnarray}
 L_S=\left\{
@@ -223,33 +179,20 @@ L_B=\left\{
   \right.
 \end{eqnarray}
 
-where \(\zeta\equiv z/L_M\) is a height normalized by the Monin-Obukhov
-length \(L_M\),
-\(N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}\) is
-the Brunt-Väisälä frequency and
-\(q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}\) is a
-velocity scale in the convective boundary layer.
+where \(\zeta\equiv z/L_M\) is a height normalized by the Monin-Obukhov length \(L_M\), \(N\equiv\left[(g/\Theta)(\partial\Theta_v/\partial z)\right]^{1/2}\) is the Brunt-Väisälä frequency and
+\(q_c\equiv [(g/\Theta)\langle w\theta_v \rangle_gL_T]^{1/3}\) is a velocity scale in the convective boundary layer.
 
 \hypertarget{modifications-in-miroc}{%
 \paragraph{Modifications in MIROC}\label{modifications-in-miroc}}
 
-The above formulation works well when the domain of the model is limited
-to the planetary boundary layer (PBL) and its surrounding area. However,
-if the the upper troposphere is included, the formulation gives
-inappropriate behaviors depending on the conditions: e.g.~\(L_T\), the
-length scale of the convective boundary layer, is used in the free
-atmosphere, and the turbulent kinetic energy in the free atmosphere is
-taken into account in the calculation of \(L_T\).
+The above formulation works well when the domain of the model is limited to the planetary boundary layer (PBL) and its surrounding area. However, if the the upper troposphere is included, the
+formulation gives inappropriate behaviors depending on the conditions: e.g.~\(L_T\), the length scale of the convective boundary layer, is used in the free atmosphere, and the turbulent kinetic energy
+in the free atmosphere is taken into account in the calculation of \(L_T\).
 
-In order to avoid such misbehaviors, the top height of the convective
-boundary layer \(H_{PBL}\) is estimated in MIROC and we consider that
-the region below \(h=\left[(F_H H_{PBL})^2+H_0^2\right)^{1/2}\) is the
-one where the PBL-derived turbulence is dominant. Here, we adopted
-\(F_H=1.5\) and \(H_0=500\)m.
+In order to avoid such misbehaviors, the top height of the convective boundary layer \(H_{PBL}\) is estimated in MIROC and we consider that the region below
+\(h=\left[(F_H H_{PBL})^2+H_0^2\right)^{1/2}\) is the one where the PBL-derived turbulence is dominant. Here, we adopted \(F_H=1.5\) and \(H_0=500\)m.
 
-Below the altitude \(h\), equation (\ref{p-dif.1}) is used as the
-master length scale, but the vertical range of the integration in
-\(L_T\) is modified as
+Below the altitude \(h\), equation (\ref{p-dif.1}) is used as the master length scale, but the vertical range of the integration in \(L_T\) is modified as
 
 \begin{eqnarray}L_T=\alpha_1\frac{\displaystyle \int_0^h{qz}\,dz}{\displaystyle \int_0^h{q}\,dz},\end{eqnarray}
 
@@ -257,24 +200,18 @@ and then the master length scale above \(h\) is represented as
 
 \begin{eqnarray}\frac{1}{L}=\frac{1}{L_S}+\frac{1}{L_A}+\frac{1}{L_{max}}\end{eqnarray}
 
-where \(L_A=\alpha_5\,q/N\) is a length scale of air parcel vertically
-transported by turbulence in a stably stratified layer. \(\alpha_5\)
-represents the effect of dissipation set to \(0.53\). \(L_{max}=500\)m
-gives the upper limit of \(L\).
+where \(L_A=\alpha_5\,q/N\) is a length scale of air parcel vertically transported by turbulence in a stably stratified layer. \(\alpha_5\) represents the effect of dissipation set to \(0.53\).
+\(L_{max}=500\)m gives the upper limit of \(L\).
 
 \hypertarget{estimation-of-the-top-height-of-the-convective-boundary-layer}{%
-\paragraph{Estimation of the Top Height of the Convective Boundary
-Layer}\label{estimation-of-the-top-height-of-the-convective-boundary-layer}}
+\paragraph{Estimation of the Top Height of the Convective Boundary Layer}\label{estimation-of-the-top-height-of-the-convective-boundary-layer}}
 
-Based on Holtslag and Boville (1993), \(H_{PBL}\) is estimated using the
-bulk Richardson number \(Ri_B\) given as
+Based on Holtslag and Boville (1993), \(H_{PBL}\) is estimated using the bulk Richardson number \(Ri_B\) given as
 
 \begin{eqnarray}Ri_B=\frac{[g/\Theta_v(z_1)][\Theta_v(z_k)-\Theta_{v,g}](z_k-z_g)}{[U(z_k)-U(z_1)]^2+[V(z_k)-V(z_1)]^2+F_u{u_*}^2},\end{eqnarray}
 
-where \(z_k\) is the altitude of a \(k\)-th model layer from the bottom
-at full level, \(z_1\) the altitude of the lowest layer at full level,
-\(z_g\) the altitude of the surface. \(F_u\) is a dimensionless tuning
-parameter, and
+where \(z_k\) is the altitude of a \(k\)-th model layer from the bottom at full level, \(z_1\) the altitude of the lowest layer at full level, \(z_g\) the altitude of the surface. \(F_u\) is a
+dimensionless tuning parameter, and
 
 \begin{eqnarray}\Theta_{v,g}=\Theta_v(z_1)+F_b \frac{\langle w\theta_v \rangle_g}{w_m},\end{eqnarray}
 
@@ -282,44 +219,30 @@ parameter, and
 
 \begin{eqnarray}\phi_m=\left(1-15\frac{z_s}{L_M}\right)^{-\frac{1}{3}},\end{eqnarray}
 
-where \(z_s\) is the altitude of the surface layer assumed to be
-\(0.1H_{PBL}\). \(F_b\) is a dimensionless tuning parameter.
+where \(z_s\) is the altitude of the surface layer assumed to be \(0.1H_{PBL}\). \(F_b\) is a dimensionless tuning parameter.
 
-\(Ri_B\) is successively calculated from \(k=2\) upward, and then if
-\(Ri_B\) exceeds \(0.5\) for the first time, it is linearly interpolated
-between this level and the level immediately below it. The height
-satiffying \(Ri_B=0.5\) is used as \(H_{PBL}\). Since \(H_{PBL}\) is
-necessary for the calculation of \(z_s\), we first calculate \(z_s\)
-using a temporary value of \(H_{PBL}=z_1-z_g\), from which we calculate
-the first guess of \(H_{PBL}\). Then we use this value for the
-recalculation of \(z_s\), and then it is used for the final estimate of
-\(H_{PBL}\).
+\(Ri_B\) is successively calculated from \(k=2\) upward, and then if \(Ri_B\) exceeds \(0.5\) for the first time, it is linearly interpolated between this level and the level immediately below it. The
+height satiffying \(Ri_B=0.5\) is used as \(H_{PBL}\). Since \(H_{PBL}\) is necessary for the calculation of \(z_s\), we first calculate \(z_s\) using a temporary value of \(H_{PBL}=z_1-z_g\), from
+which we calculate the first guess of \(H_{PBL}\). Then we use this value for the recalculation of \(z_s\), and then it is used for the final estimate of \(H_{PBL}\).
 
 \hypertarget{calculation-of-diffusion-coefficients}{%
-\subsubsection{Calculation of Diffusion
-Coefficients}\label{calculation-of-diffusion-coefficients}}
+\subsubsection{Calculation of Diffusion Coefficients}\label{calculation-of-diffusion-coefficients}}
 
 \hypertarget{twice-turbulent-kinetic-energy-of-level-2}{%
-\paragraph{Twice Turbulent Kinetic Energy of Level
-2}\label{twice-turbulent-kinetic-energy-of-level-2}}
+\paragraph{Twice Turbulent Kinetic Energy of Level 2}\label{twice-turbulent-kinetic-energy-of-level-2}}
 
-The twice turbulent kinetic energy of the level 2, \({q_2}^2\), is
-calculated from the following equation, which neglects the time
-derivative, advection and diffusion terms in the prognostic equation of
-the twice turbulent kinetic energy.
+The twice turbulent kinetic energy of the level 2, \({q_2}^2\), is calculated from the following equation, which neglects the time derivative, advection and diffusion terms in the prognostic equation
+of the twice turbulent kinetic energy.
 
 \begin{eqnarray} P_s + P_b - \varepsilon = 0 \label{p-dif.2}, \end{eqnarray}
 
-where \(P_s\) and \(P_b\) denote the production terms by shear and
-buoyancy respectively. \(\varepsilon\) is the dissipation term. \(P_s\)
-and \(P_b\) are written as
+where \(P_s\) and \(P_b\) denote the production terms by shear and buoyancy respectively. \(\varepsilon\) is the dissipation term. \(P_s\) and \(P_b\) are written as
 
 \begin{eqnarray} P_s = -\langle wu \rangle \frac{\partial U}{\partial z} - \langle wv \rangle \frac{\partial V}{\partial z}, \end{eqnarray}
 
 \begin{eqnarray} P_b = \frac{g}{\Theta}\langle w\theta_v \rangle, \end{eqnarray}
 
-respectively. In the level 2 of the MYNN scheme, these are represented
-as
+respectively. In the level 2 of the MYNN scheme, these are represented as
 
 \begin{eqnarray} P_s = LqS_{M2} \left[ \left(\frac{\partial U}{\partial z}\right)^2 + \left(\frac{\partial V}{\partial z}\right)^2 \right] \label{p-dif.3}, \end{eqnarray}
 
@@ -327,19 +250,15 @@ as
 
 \begin{eqnarray} \varepsilon = \frac{q^3}{B_1 L} \label{p-dif.5}. \end{eqnarray}
 
-From (\ref{p-dif.2}), (\ref{p-dif.3}), (\ref{p-dif.4}), and
-(\ref{p-dif.5}), \(q_2^2\) is calculated by
+From (\ref{p-dif.2}), (\ref{p-dif.3}), (\ref{p-dif.4}), and (\ref{p-dif.5}), \(q_2^2\) is calculated by
 
 \begin{eqnarray}{q_2}^2=B_1L^2\left\{S_{M2}\left[\left(\frac{\partial U}{\partial z}\right)^2+\left(\frac{\partial V}{\partial z}\right)^2\right]+S_{H2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right)\right\}.\end{eqnarray}
 
 \hypertarget{stability-functions-of-the-level-2.5}{%
-\paragraph{Stability Functions of the Level
-2.5}\label{stability-functions-of-the-level-2.5}}
+\paragraph{Stability Functions of the Level 2.5}\label{stability-functions-of-the-level-2.5}}
 
-When \(q<q_2\), i.e., the turbulence is in a growing phase, the
-stability functions of the Level 2.5 for momentum and heat, \(S_M\) and
-\(S_H\) respectively, are calculated using \(\alpha=q/q_2\) introduced
-by Helfand and Labraga (1998) as
+When \(q<q_2\), i.e., the turbulence is in a growing phase, the stability functions of the Level 2.5 for momentum and heat, \(S_M\) and \(S_H\) respectively, are calculated using \(\alpha=q/q_2\)
+introduced by Helfand and Labraga (1998) as
 
 \begin{eqnarray}S_M=\alpha S_{M2},\end{eqnarray}
 
@@ -367,16 +286,12 @@ where
 
 \begin{eqnarray}G_H=-\frac{L^2}{q^2}\frac{g}{\Theta}\left(\beta_\theta \frac{\partial \Theta_l}{\partial z}+\beta_q \frac{\partial Q_w}{\partial z}\right).\end{eqnarray}
 
-The above formulas appear to be different from those in Nakanishi
-(2001), but are equivalent and can be computed with a smaller
-computational cost.
+The above formulas appear to be different from those in Nakanishi (2001), but are equivalent and can be computed with a smaller computational cost.
 
 \hypertarget{calculation-of-diffusion-coefficients-1}{%
-\paragraph{Calculation of Diffusion
-Coefficients}\label{calculation-of-diffusion-coefficients-1}}
+\paragraph{Calculation of Diffusion Coefficients}\label{calculation-of-diffusion-coefficients-1}}
 
-The diffusion coefficients for momentum, twice turbulent kinetic energy,
-heat and water are represented by
+The diffusion coefficients for momentum, twice turbulent kinetic energy, heat and water are represented by
 
 \begin{eqnarray}K_M=LqS_M,\end{eqnarray}
 
@@ -391,8 +306,7 @@ respectively.
 \hypertarget{calculation-of-fluxes}{%
 \paragraph{Calculation of Fluxes}\label{calculation-of-fluxes}}
 
-The vertical fluxes for \(U\), \(V\), \(q^2\), \(C_pT\) and \(Q_w\) at
-half levels are calculated as
+The vertical fluxes for \(U\), \(V\), \(q^2\), \(C_pT\) and \(Q_w\) at half levels are calculated as
 
 \begin{eqnarray}F_{u,k-1/2}=-\rho_{k-1/2}K_{M,k-1/2}\frac{U_{k}-U_{k-1}}{\Delta z_{k-1/2}},\end{eqnarray}
 
@@ -404,9 +318,8 @@ half levels are calculated as
 
 \begin{eqnarray}F_{w,k-1/2}=-\rho_{k-1/2}K_{w,k-1/2}\frac{Q_{w,k}-Q_{w,k-1}}{\Delta z_{k-1/2}},\end{eqnarray}
 
-respectively, where \(\rho\) denotes density and \(\Pi\) the Exner
-function. In order to perform time integration with an implicit scheme,
-the derivative of each of the vertical fluxes is also calculated as
+respectively, where \(\rho\) denotes density and \(\Pi\) the Exner function. In order to perform time integration with an implicit scheme, the derivative of each of the vertical fluxes is also
+calculated as
 
 \begin{eqnarray}\frac{\partial F_{u,k-1/2}}{\partial U_{k-1}}=\frac{\partial F_{v,k-1/2}}{\partial V_{k-1}}=-\frac{\partial F_{u,k-1/2}}{\partial U_{k}}=-\frac{\partial F_{v,k-1/2}}{\partial V_{k}}=\rho_{k-1/2}K_{M,k-1/2}\frac{1}{\Delta z_{k-1/2}},\end{eqnarray}
 
@@ -418,16 +331,13 @@ the derivative of each of the vertical fluxes is also calculated as
 
 \begin{eqnarray}\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k-1}}=-\frac{\partial F_{w,k-1/2}}{\partial Q_{w,k}}=\rho_{k-1/2}K_{w,k-1/2}\frac{1}{\Delta z_{k-1/2}},\end{eqnarray}
 
-where \(\Delta z_{k-1/2}=z_k-z_{k-1}\). The fluxes for other tracers are
-also calculated in the same way using \(K_w\).
+where \(\Delta z_{k-1/2}=z_k-z_{k-1}\). The fluxes for other tracers are also calculated in the same way using \(K_w\).
 
 \hypertarget{calculation-of-turbulent-variables}{%
-\subsubsection{Calculation of Turbulent
-Variables}\label{calculation-of-turbulent-variables}}
+\subsubsection{Calculation of Turbulent Variables}\label{calculation-of-turbulent-variables}}
 
 \hypertarget{calculation-of-twice-turbulent-kinetic-energy}{%
-\paragraph{Calculation of Twice Turbulent Kinetic
-Energy}\label{calculation-of-twice-turbulent-kinetic-energy}}
+\paragraph{Calculation of Twice Turbulent Kinetic Energy}\label{calculation-of-twice-turbulent-kinetic-energy}}
 
 The prognostic equation for \(q^2\) is expressed as
 
@@ -441,18 +351,13 @@ In the Level 2.5, \(P_s,P_b,\varepsilon\) are written as
 
 \begin{eqnarray}\varepsilon=\frac{q^3}{B_1L}.\end{eqnarray}
 
-Advection terms are calculated using the tracer transport routines in
-the dynamical core. The turbulence scheme calculates the time evolution
-by the diffusion, production and dissipation terms with an implicit
-scheme.
+Advection terms are calculated using the tracer transport routines in the dynamical core. The turbulence scheme calculates the time evolution by the diffusion, production and dissipation terms with an
+implicit scheme.
 
 \hypertarget{diagnosis-of-variance-and-covariance}{%
-\paragraph{Diagnosis of Variance and
-Covariance}\label{diagnosis-of-variance-and-covariance}}
+\paragraph{Diagnosis of Variance and Covariance}\label{diagnosis-of-variance-and-covariance}}
 
-The prognostic equations for
-\(\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle\)
-are expressed as
+The prognostic equations for \(\langle {\theta_l}^2 \rangle,\langle {q_w}^2 \rangle,\langle \theta_l q_w \rangle\) are expressed as
 
 \begin{eqnarray}
 \frac{d\left\langle{\theta_l}^{2}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l}^{2}\right\rangle-2\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-2 \varepsilon_{\theta l},
@@ -466,8 +371,7 @@ are expressed as
 \frac{d\left\langle\theta_{l} q_{w}\right\rangle}{d t}=-\frac{\partial}{\partial z}\left\langle w \theta_{l} q_{w}\right\rangle-\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q}.
 \end{eqnarray}
 
-In the Level 2.5, the time derivative, advection, and diffusion terms in
-these equations are neglected assuming the following local balances.
+In the Level 2.5, the time derivative, advection, and diffusion terms in these equations are neglected assuming the following local balances.
 
 \begin{eqnarray} -\left\langle w \theta_{l}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\varepsilon_{\theta l} = 0 \label{p-dif.6},\end{eqnarray}
 
@@ -475,10 +379,8 @@ these equations are neglected assuming the following local balances.
 
 \begin{eqnarray} -\left\langle w q_{w}\right\rangle \frac{\partial \Theta_{l}}{\partial z}-\left\langle w \theta_{l}\right\rangle \frac{\partial Q_{w}}{\partial z}-2 \varepsilon_{\theta q} = 0 \label{p-dif.8}.\end{eqnarray}
 
-In the Level 2.5 of the MYNN scheme,
-\(-\left\langle w \theta_{l}\right\rangle\),
-\(-\left\langle w q_{w}\right\rangle\), \(\varepsilon_{\theta l}\),
-\(\varepsilon_{q w}\), \(\varepsilon_{\theta q}\) are represented as
+In the Level 2.5 of the MYNN scheme, \(-\left\langle w \theta_{l}\right\rangle\), \(-\left\langle w q_{w}\right\rangle\), \(\varepsilon_{\theta l}\), \(\varepsilon_{q w}\), \(\varepsilon_{\theta q}\)
+are represented as
 
 \begin{eqnarray} -\left\langle w \theta_{l}\right\rangle = LqS_H \frac{\partial \Theta_{l}}{\partial z} \label{p-dif.9},\end{eqnarray}
 
@@ -496,9 +398,7 @@ In the Level 2.5 of the MYNN scheme,
 \varepsilon_{\theta q}=\frac{q}{B_{2} L}\left\langle\theta_{l} q_{w}\right\rangle \label{p-dif.13}.
 \end{eqnarray}
 
-from (\ref{p-dif.6})-(\ref{p-dif.13}),
-\(\langle {\theta_l}^2 \rangle\), \(\langle {q_w}^2 \rangle\),
-\(\langle \theta_l q_w \rangle\) can be diagnosed as
+from (\ref{p-dif.6})-(\ref{p-dif.13}), \(\langle {\theta_l}^2 \rangle\), \(\langle {q_w}^2 \rangle\), \(\langle \theta_l q_w \rangle\) can be diagnosed as
 
 \begin{eqnarray}\langle {\theta_l}^2 \rangle =B_2L^2S_H\left(\frac{\partial \Theta_l}{\partial z}\right)^2,\end{eqnarray}
 
@@ -507,13 +407,10 @@ from (\ref{p-dif.6})-(\ref{p-dif.13}),
 \begin{eqnarray}\langle \theta_l q_w \rangle =B_2L^2S_H\frac{\partial \Theta_l}{\partial z}\frac{\partial Q_w}{\partial z}.\end{eqnarray}
 
 \hypertarget{treatment-in-the-bottom-layer}{%
-\paragraph{Treatment in the Bottom
-Layer}\label{treatment-in-the-bottom-layer}}
+\paragraph{Treatment in the Bottom Layer}\label{treatment-in-the-bottom-layer}}
 
-Since the lowest model layer corresponds to the surface layer where
-values of physical variables rapidly change in the vertical direction,
-the following Monin-Obukhov similarity theory is used to accurately
-evaluate the vertical gradient of the variables.
+Since the lowest model layer corresponds to the surface layer where values of physical variables rapidly change in the vertical direction, the following Monin-Obukhov similarity theory is used to
+accurately evaluate the vertical gradient of the variables.
 
 \begin{eqnarray} \frac{\partial M}{\partial z} = \frac{u_*}{kz}\phi_m \label{p-dif.14},\end{eqnarray}
 
@@ -521,12 +418,9 @@ evaluate the vertical gradient of the variables.
 
 \begin{eqnarray} \frac{\partial Q_v}{\partial z} = \frac{q_{v*}}{kz}\phi_h \label{p-dif.16},\end{eqnarray}
 
-where \(M\) is the horizontal wind velocity for the horizontal axis
-aligned to the direction of the horizontal wind in the surface layer.
-\(\phi_m\) and \(\phi_h\) are the dimensionless gradient functions for
-momentum and heat respectively. \(\theta_*\) and \(q_{v*}\) are the
-scales of potential temperature and water vapor in the surface layer
-respectively, and satisfy the following relationships.
+where \(M\) is the horizontal wind velocity for the horizontal axis aligned to the direction of the horizontal wind in the surface layer. \(\phi_m\) and \(\phi_h\) are the dimensionless gradient
+functions for momentum and heat respectively. \(\theta_*\) and \(q_{v*}\) are the scales of potential temperature and water vapor in the surface layer respectively, and satisfy the following
+relationships.
 
 \begin{eqnarray} \langle wm \rangle_g = -u_*^2 \label{p-dif.17},\end{eqnarray}
 
@@ -534,26 +428,18 @@ respectively, and satisfy the following relationships.
 
 \begin{eqnarray} \langle wq_v \rangle_g = -u_*q_{v*} \label{p-dif.19},\end{eqnarray}
 
-where \(m\) is the deviation of \(M\) from the grid mean. Using \(M\)
-and \(m\), the production term of the turbulence kinetic energy is
-written as
+where \(m\) is the deviation of \(M\) from the grid mean. Using \(M\) and \(m\), the production term of the turbulence kinetic energy is written as
 
 \begin{eqnarray} P_s + P_b = \langle wm \rangle \frac{\partial M}{\partial z} + \frac{g}{\Theta} \langle w\theta_v \rangle. \end{eqnarray}
 
-Using (\ref{p-dif.14}), (\ref{p-dif.17}) and the definition of
-the Obukhov length, it is rewritten as
+Using (\ref{p-dif.14}), (\ref{p-dif.17}) and the definition of the Obukhov length, it is rewritten as
 
 \begin{eqnarray} P_s + P_b = \frac{u_*^3}{kz_1}\left[\phi_m\left(\zeta_1\right)-\zeta_1\right], \end{eqnarray}
 
-where \(\zeta_1\) is \(\zeta\) at the full level of the lowest model
-layer.
+where \(\zeta_1\) is \(\zeta\) at the full level of the lowest model layer.
 
-Assuming that the effect of cloud particles are negligible in the
-surface layer, \(\langle {\theta_l}^2\rangle\),
-\(\langle {q_w}^2\rangle\), \(\langle \theta_lq_w\rangle\) is calculated
-diagnostically from (\ref{p-dif.6})-(\ref{p-dif.8}),
-(\ref{p-dif.11})-(\ref{p-dif.13}), (\ref{p-dif.15}),
-(\ref{p-dif.16}), (\ref{p-dif.18}), and (\ref{p-dif.19})
+Assuming that the effect of cloud particles are negligible in the surface layer, \(\langle {\theta_l}^2\rangle\), \(\langle {q_w}^2\rangle\), \(\langle \theta_lq_w\rangle\) is calculated
+diagnostically from (\ref{p-dif.6})-(\ref{p-dif.8}), (\ref{p-dif.11})-(\ref{p-dif.13}), (\ref{p-dif.15}), (\ref{p-dif.16}), (\ref{p-dif.18}), and (\ref{p-dif.19})
 as
 
 \begin{eqnarray}\langle {\theta_l}^2\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}{\langle w\theta \rangle_g}^2 \bigg/ \frac{q}{B_2L}, \end{eqnarray}
@@ -562,8 +448,7 @@ as
 
 \begin{eqnarray}\langle \theta_lq_w\rangle=\frac{\phi_h\left(\zeta_1\right)}{u_*kz_1}\langle w\theta \rangle_g\langle wq_v \rangle_g \bigg/ \frac{q}{B_2L}. \end{eqnarray}
 
-\(\phi_m\) and \(\phi_h\) are formulated following Businger et
-al.~(1971) as
+\(\phi_m\) and \(\phi_h\) are formulated following Businger et al.~(1971) as
 
 \begin{eqnarray}
 \phi_m(\zeta)=\left\{
@@ -586,26 +471,21 @@ al.~(1971) as
 \begin{eqnarray}(\beta_1,\beta_2,\gamma_1,\gamma_2)=(4.7,0.74,15.0,9.0).\end{eqnarray}
 
 \hypertarget{time-integration-with-implicit-scheme}{%
-\subsubsection{Time Integration with Implicit
-Scheme}\label{time-integration-with-implicit-scheme}}
+\subsubsection{Time Integration with Implicit Scheme}\label{time-integration-with-implicit-scheme}}
 
 \hypertarget{tendency-of-q2}{%
-\paragraph{\texorpdfstring{Tendency of
-\(q^2\)}{Tendency of q\^{}2}}\label{tendency-of-q2}}
+\paragraph{\texorpdfstring{Tendency of \(q^2\)}{Tendency of q\^{}2}}\label{tendency-of-q2}}
 
 The prognostic equation for \(q^2\) is discretized as
 
 \begin{eqnarray} \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}} = -\frac{1}{\rho_k\Delta z_k}\left(F_{q,k+1/2,n+1}-F_{q,k-1/2,n+1}\right) +2\left( P_{s,k,n} + P_{b,k,n} - \frac{q_{k,n}}{B_1L}q^2_{k,n+1}\right), \label{p-dif.20} \end{eqnarray}
 
-where \(n\) and \(n+1\) indicate the current and next time steps
-respectively, and \(\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}\). The
-subscript \emph{turb} indicates the calculation by the turbulence scheme
-and the advection term is omitted. \(F_q\) at \(n+1\) is computed by
+where \(n\) and \(n+1\) indicate the current and next time steps respectively, and \(\Delta z_k \equiv z_{k+1/2}-z_{k-1/2}\). The subscript \emph{turb} indicates the calculation by the turbulence
+scheme and the advection term is omitted. \(F_q\) at \(n+1\) is computed by
 
 \begin{eqnarray} F_{q,k-1/2,n+1} = F_{q,k-1/2,n} + \frac{\partial F_{q,k-1/2}}{\partial q^2_k}(q^2_{k,n+1}-q^2_{k,n}) +  \frac{\partial F_{q,k-1/2}}{\partial q^2_{k-1}}(q^2_{k-1,n+1}-q^2_{k-1,n}). \label{p-dif.21} \end{eqnarray}
 
-With a definition of
-\begin{eqnarray}\mu_k = \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}},\end{eqnarray}
+With a definition of \begin{eqnarray}\mu_k = \left(\frac{q^2_{k,n+1}-q^2_{k,n}}{\Delta t}\right)_{\text{turb}},\end{eqnarray}
 
 (\ref{p-dif.20}) and (\ref{p-dif.21}) lead to
 
@@ -656,16 +536,12 @@ where
 \right), \label{p-dif.23}
 \end{eqnarray}
 
-where the subscript \(K\) denote the index for the top model layer.
-(\ref{p-dif.23}) is solved for \(\mu_k\) using the LU
-decomposition.
+where the subscript \(K\) denote the index for the top model layer. (\ref{p-dif.23}) is solved for \(\mu_k\) using the LU decomposition.
 
 \hypertarget{tendencies-of-the-other-prognostic-variables}{%
-\paragraph{Tendencies of the Other Prognostic
-Variables}\label{tendencies-of-the-other-prognostic-variables}}
+\paragraph{Tendencies of the Other Prognostic Variables}\label{tendencies-of-the-other-prognostic-variables}}
 
-Letting \(\psi\) be a substitute for \(u\), \(v\), \(T\), \(q_w\), the
-tendency of \(\psi\) is calculated by
+Letting \(\psi\) be a substitute for \(u\), \(v\), \(T\), \(q_w\), the tendency of \(\psi\) is calculated by
 
 \begin{eqnarray} \left(\frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}\right)_{\text{turb}} = -\frac{1}{\rho_k\Delta z_k}\left(F_{\psi,k+1/2,n+1}-F_{\psi,k-1/2,n+1}\right), \end{eqnarray}
 
@@ -673,9 +549,7 @@ where
 
 \begin{eqnarray} F_{\psi,k-1/2,n+1} = F_{\psi,k-1/2,n} + \frac{\partial F_{\psi,k-1/2}}{\partial \psi_k}(\psi_{k,n+1}-\psi_{k,n}) +  \frac{\partial F_{\psi,k-1/2}}{\partial \psi_{k-1}}(\psi_{k-1,n+1}-\psi_{k-1,n}). \end{eqnarray}
 
-These equations lead to (\ref{p-dif.23}) again and computed with
-the LU decomposition, but \(\mu_k\), \(X_{1,k}\), \(X_{2,k}\),
-\(X_{3,k}\) and \(Y_k\) are redefined as
+These equations lead to (\ref{p-dif.23}) again and computed with the LU decomposition, but \(\mu_k\), \(X_{1,k}\), \(X_{2,k}\), \(X_{3,k}\) and \(Y_k\) are redefined as
 
 \begin{align}
  \mu_k &= \left(\frac{\psi_{k,n+1}-\psi_{k,n}}{\Delta t}\right)_{\text{turb}}, \\
