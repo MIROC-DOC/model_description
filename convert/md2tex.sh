@@ -22,6 +22,7 @@ do
 	sed -e s/'<\/div> <!\\end{flushright}>'/'\\end{flushright}'/g | \
 	sed -e s/'<!--beginlandscape-->'/'\n beginlandscape \n'/g | \
 	sed -e s/'<!--endlandscape-->'/'\n endlandscape \n'/g | \
+	sed -e s/'ä'/'tmpaum'/g | \
 	sed -e s/'\[\(.*\)\](\(#.*\))'/'\[\]\(\2\)'/g >tmp.md
 	pandoc -t latex --columns=200 tmp.md| \
 	sed -e s/'\\\['/'\\begin\{eqnarray\}'/g | \
@@ -29,6 +30,7 @@ do
 	sed -e s/'\\tag'/'\\label'/g | \
 	sed -e s/'beginlandscape'/'\\begin{landscape}'/g | \
 	sed -e s/'endlandscape'/'\\end{landscape}'/g | \
+	sed -e s/'tmpaum'/'\\"{a}'/g | \
 	sed -e s/'\\protect\\hyperlink'/'\\ref'/g | \
 	sed -e 's/\(\\ref{.*}\)\({}\)/\1/g' \
 	> ${name}.tex

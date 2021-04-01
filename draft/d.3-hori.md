@@ -43,7 +43,7 @@ $$
   X_n^m
          =  \frac{1}{4 \pi}
              \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-               X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \\
+               X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \notag\\
          =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                X_{ij} {Y_n^{m*}}_{ij} w_j
 $$
@@ -104,10 +104,10 @@ $$
   \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m
    =  \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \\
+          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \notag\\
    =  \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda \,
-          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \\
+          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \notag\\
    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m A_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
@@ -121,11 +121,11 @@ $$
          \frac{\partial{}}{\partial {\varphi}} (A\cos\varphi) \right)_n^m
     =  \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \\
+           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \notag\\
     =  - \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
            A \cos\varphi \frac{\partial }{\partial \mu} Y_n^{m *}
-            \\
+            \notag\\
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           A_{ij}  \cos\varphi_j
           (1-\mu_j^2)  \frac{\partial }{\partial \mu}
@@ -185,7 +185,7 @@ This horizontal diffusion term damps high frequency component occuring aliasing 
 
 $$
   \frac{\partial{\pi_m^m}}{\partial {t}}
-  =  - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k  \\
+  =  - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k  \notag\\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
                Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
 $$
@@ -207,13 +207,13 @@ $$
           \mathrm{i}m (A_v)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-         \\
+         \notag\\
     +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_u)_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
     -   ({\mathcal D}_M)_n^m \zeta_n^m  \; ,
 $$
 
@@ -226,17 +226,17 @@ $$
           \mathrm{i}m (A_u)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
     -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           (A_v)_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
     -   \frac{n(n+1)}{a^{2}}
          \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           E_{ij} {Y_n^{m *}}_{ij} w_j
-          \\
+          \notag\\
     +   \frac{n(n+1)}{a^{2}}
           ( \Phi_n^m + C_{p} \hat{\kappa}_k \bar{T}_k \pi_n^m )
           -  ({\mathcal D}_M)_n^m D_n^m  ,
@@ -261,17 +261,17 @@ $$
           \mathrm{i}m u_{ij} T'_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           v_{ij} T'_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \left( H_{ij} + \frac{Q_{ij}+Q_{diff}}{C_{p}} \right)
           {Y_n^{m *}}_{ij} w_j
-          \\
+          \notag\\
      - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
 $$
 
@@ -290,17 +290,17 @@ $$
    =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \mathrm{i}m u_{ij} q_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           v_{ij} q_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \\
+          \notag\\
      + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
           \left( \hat{R}_{ij} + S_{q,ij} \right)
           {Y_n^{m *}}_{ij} w_j
-          \\
+          \notag\\
      + ({\mathcal D}_H)_n^m q_n^m
 $$
 
