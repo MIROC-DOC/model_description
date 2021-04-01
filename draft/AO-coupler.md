@@ -59,7 +59,7 @@ where $FLXL^{lake}$ is the flux at the lake surface, $FLXL_{k}^{grd}$ is the flu
 
 Since the river is treated without area property in the model, the flux to the atmosphere ($FLXA$) can be obtained as a weighted average of the sea-land distribution of the fluxes on the land grid ($FLXL$) and at the sea grid ($FLXO$) as follows
 
-$$ FLXA = \frac{1}{SA} \times [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} \times FLND^{land} _ {ij} \times FLXL_{ij}) \\ + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv }(SO _ {ij} \times (1-FLND^{oc} _ {ij}) \times FLXO _ {ij})] $$.
+$$ FLXA = \frac{1}{SA} \times [ \sum _ {j=1}^{jldiv} \sum_{i=1}^{ildiv}(SL _ {ij} \times FLND^{land} _ {ij} \times FLXL_{ij}) \notag\\ + \sum _ {j=1}^{jodiv}\sum _ {i=1}^{iodiv }(SO _ {ij} \times (1-FLND^{oc} _ {ij}) \times FLXO _ {ij})] $$.
 
 where, (ildiv,jldiv) is the number of east-west and north-south divisions of the land surface grid.
 Fluxes computed in the atmospheric model, such as precipitation, are also included in $FLXL$ and $FLXO$.
@@ -138,15 +138,15 @@ $$ SST^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[SST^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)
 
 $$ AI^{oc}(LC) = \sum_{N=1}^{IJO(LC)}[AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]/SOCNG(LC) $$
 
-$$ HI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HI^{OGCM}(IJO2C(LC,N)) \\ \times AI^{OGCM}(IJO2C(LC,N))   \times SOCN(LC,N)] $$
+$$ HI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HI^{OGCM}(IJO2C(LC,N)) \notag\\ \times AI^{OGCM}(IJO2C(LC,N))   \times SOCN(LC,N)] $$
 
-$$ HSN^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N)) \\ \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)] $$
+$$ HSN^{oc}(LC) = \frac{1}{{SOCNG(LC) \times AI^{oc}(LC)}}\sum_{N=1}^{IJO(LC)}[HSN^{OGCM}(IJO2C(LC,N)) \notag\\ \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)] $$
 
-$$ TI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times HI^{oc}(LC) \times AI^{oc}(LC)}}  \sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N)) \\ \times HI^{OGCM}(IJO2C(LC,N)) \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]  $$
+$$ TI^{oc}(LC) = \frac{1}{{SOCNG(LC) \times HI^{oc}(LC) \times AI^{oc}(LC)}}  \sum_{N=1}^{IJO(LC)}[TI^{OGCM}(IJO2C(LC,N)) \notag\\ \times HI^{OGCM}(IJO2C(LC,N)) \times AI^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]  $$
 
-$$ UO^{oc}(LC)= RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)}  \\ + RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ UO^{oc}(LC)= RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)}  \notag\\ + RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
 
-$$ VO^{oc}(LC)=-RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} \\ + RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
+$$ VO^{oc}(LC)=-RVO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[UO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} \notag\\ + RUO(LC) \times  \frac{\sum_{N=1}^{IJO(LC)}[VO^{OGCM}(IJO2C(LC,N)) \times SOCN(LC,N)]}{SOCNG(LC)} $$
 
 $$ SOCNG(LC)= \sum_{N=1}^{IJO(LC)}SOCN(LC,N) $$
 
@@ -190,9 +190,9 @@ $$ FLXO=(1-AI) \times FLUXO+AI \times FLUXI $$
 
 These fluxes are time-integrated by the flux coupler in the atmospheric model with weights for sea surface and sea ice extent, and then converted to the ocean grid by the coupled atmosphere-ocean time step and passed to the ocean model.
 
-$$ FLUXOA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
+$$ FLUXOA^{OGCM}(LO) = ROCN(LO) \notag\\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXOA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
-$$ FLUXIA^{OGCM}(LO) = ROCN(LO) \\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
+$$ FLUXIA^{OGCM}(LO) = ROCN(LO) \notag\\ \times \sum_{N=1}^{IJA(LO)} \frac{FLUXIA^{oc}(IJC2O(LO,N)) \times SATM(LO,N)}{SATMG(LO)} $$
 
 $$ SATMG(LO)=ROCN(LO) \times \sum_{N=1}^{IJA(LO)} SATM(LO,N) $$
 
@@ -202,7 +202,7 @@ $$ FLUXOA^{oc}=(1-AI^{oc}) \times FLUXO^{oc} $$
 
 $$ FLUXIA^{oc}=AI^{oc} \times FLUXI^{oc} $$
 
-where, 
+where,
 $IJA(LO)$：Number of sea level grids in the atmospheric model corresponding to the ocean grid ($LO$)
 
 $IJC2O(LO,N)$：Location of the sea surface grid of the atmospheric model corresponding to the ocean grid
@@ -219,9 +219,9 @@ When creating the conversion file, the grid of the atmospheric model is divided 
 For this reason, the flux balance between the atmosphere and the ocean is adjusted by multiplying by the ratio ($ROCN$).
 The wind stresses to the ocean are also calculated as wind stresses over sea level ($TXO$, $TYO$) and over sea ice ($TXI$, $TYI$), but without multiplying the weights of sea level and sea ice area.
 
-$$ TXO^{OGCM}(LO) =  \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
+$$ TXO^{OGCM}(LO) =  \notag\\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \notag\\ + RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
-$$ TYO^{OGCM}(LO)= \\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
+$$ TYO^{OGCM}(LO)= \notag\\ -RV(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)} \frac{[TXO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} \notag\\ + RU(LO) \times ROCN(LO) \times \sum_{N=1}^{IJA(LO)}\frac{[TYO^{oc}(IJC2O(LO,N)) \times SATM(LO,N)]}{SATMG(LO)} $$
 
 where,
 
