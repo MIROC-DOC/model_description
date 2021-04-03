@@ -196,7 +196,7 @@ In the same way, when calculating y-direction flux $F^{x}_{i+\frac{1}{2},j}$,
 The transport equation in $\sigma$ coordinate on the sphere is expressed as
 \begin{eqnarray}
   \label{b1}
-  \frac{\partial P^{S} q}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q)\\
+  \frac{\partial P^{S} q}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q)\notag\\
   &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})
 \end{eqnarray}
 $P^{S}$ is surface pressure, $q$ is quantity of tracers.
@@ -286,9 +286,11 @@ The condition for $V^{\lambda}=0$ is:
 
 \subsubsubsection{$\sigma$-$p$ Hybrid Coordinate}
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid coordinate) on the sphere is:
-\begin{eqnarray}                                                             \frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})
+\begin{eqnarray}
+\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})
 \end{eqnarray}
-Here,$m$ corresponds to the density of the coordinate and is defined as $m=\frac{\partial p}{\partial \eta}$.
+
+Here, $m$ corresponds to the density of the coordinate and is defined as $m=\frac{\partial p}{\partial \eta}$.
 if you look at Eq. (\ref{b1}), you can find that difference of $\sigma$ coordinate and $\eta$ coordinate is only that $P^{S}$ replaces $m$.
 The actual tracer advection in $\eta$ coordinate is mostly the same as $\sigma$ coordinate.
 
