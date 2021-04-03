@@ -18,12 +18,12 @@ where $u$, $v$, and $w$ are velocities in zonal, meridional and vertical directi
 The outline of the computational procedures is given as follows along with the names of the subroutines. All the subroutines listed here are written in a Fortran source code of pvdfm.F.
 
 1. Calculation of friction velocity and the Obukhov length
-2. Calculation of buoyancy coefficients [`VDFCND`]
-3. Calculation of stability functions of the Level 2 [`VDFLEV2`]
-4. Calculation of planetary boundary layer depth [`PBLHGT`]
-5. Calculation of master length scale [`VDFMLS`]
-6. Calculation of diffusion coefficients, vertical fluxes and their derivatives [`VDFLEV3`]
-7. Calculation of production and dissipation terms of twice turbulent kinetic energy [`VDFLEV3`]
+2. Calculation of buoyancy coefficients [SUBROUTINE:`VDFCND`]
+3. Calculation of stability functions of the Level 2 [SUBROUTINE:`VDFLEV2`]
+4. Calculation of planetary boundary layer depth [SUBROUTINE:`PBLHGT`]
+5. Calculation of master length scale [SUBROUTINE:`VDFMLS`]
+6. Calculation of diffusion coefficients, vertical fluxes and their derivatives [SUBROUTINE:`VDFLEV3`]
+7. Calculation of production and dissipation terms of twice turbulent kinetic energy [SUBROUTINE:`VDFLEV3`]
 8. Calculation of tendencies of prognostic variables with implicit scheme
 
 ### Surface Layer
