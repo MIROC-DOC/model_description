@@ -56,26 +56,24 @@
     - [VS Code で Markdown をプレビューするには？](https://www.atmarkit.co.jp/ait/articles/1804/20/news030.html)
     - LaTeX language support LaTeX のシンタックスハイライト
   - [Atom](https://atom.io/)
-    - Git の GUI はこちらのほうが直観的かも
-    - ~/.atom/packagesのおすすめは?以下、木野の場合
-      - markdown-scroll-sync
-      - markdown-writer
-      - tool-bar-markdown-writer
-      - tool-bar
-      - markdown-to-pdf
-      - tree-view-copy-relative-path
-      - japanese-menu
-      - atom-html-preview
-      - markdown-preview-enhanced
-      - markdown-table-formatter
-      - highlight-line
+    - markdown-scroll-sync
+    - markdown-writer
+    - tool-bar-markdown-writer
+    - tool-bar
+    - markdown-to-pdf
+    - tree-view-copy-relative-path
+    - japanese-menu
+    - atom-html-preview
+    - markdown-preview-enhanced
+    - markdown-table-formatter
+    - highlight-line
 
 ## Git リポジトリの運用
 
 - 使用フォーマット
 
   - 新たに書く原稿は、基本的に Markdown or Latex
-  - 形式で迷ったら、[Markdown原稿](../descript/)や[Latex原稿](../descript/)を参照
+  - 形式で迷ったら、[原稿](../descript/)を参照
   - Markdownで書く場合
     - エディタ上でリアルタイムにプレビューできる
     - [Chrome拡張](https://chrome.google.com/webstore/detail/mathjax-3-plugin-for-gith/peoghobgdhejhcmgoppjpjcidngdfkod)を入れるとブラウザのGitHubから数式プレビューできる
@@ -84,8 +82,7 @@
 
 - 使用言語
 
-  - 最終的には英語で原稿を揃えるが、日本語で原稿を作成してOK。
-  - DeepL Proの力を借りて英訳する。
+  - 最終的には英語で原稿を揃えるが、日本語で原稿を作成・DeepL Proなどの力を借りて英訳してOK。
 
 - ディレクトリ構成
 
@@ -96,15 +93,15 @@
 - 開発フロー（執筆者）
 
   - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
-  - 2)ローカルの資料を最新に `git pull origin develop`
-  - 3)執筆担当の人は issue に基づいて develop ブランチを元に feature/MYFEATURE(章の名前など、各自で特徴的な名前を設定) ブランチを作成する(./git.md)`git checkout -b feature/MYFEATURE develop`。すでにあるリモートブランチから作成する場合、`git checkout -b feature/MYFEATURE feature/MYFEATURE`
+  - 2)ローカルの資料を最新のdevelopに `git pull origin develop`
+  - 3)執筆担当の人は issue に基づいて develop ブランチを元に featureE(章の名前など、各自で特徴的な名前を設定) ブランチを作成する(./git.md)`git checkout -b feature develop`。すでにあるリモートブランチを変更する場合、`git checkout -b feature feature`
   - 今いるブランチを確認する。`git branch`
-  - 4)feature/MYFEATURE ブランチで執筆する。
+  - 4)feature ブランチで執筆する。
     - a)ファイル変更が一段落するたびに、コミットする
       - コミットするファイルを選択（ステージング）`git add hogehoge`
       - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
       - コミット状況を確認`git status`
-    - b)ローカルのファイル変更をリモートのfeature/MYFEATURE ブランチへ反映する`git push origin feature/MYFEATURE`
+    - b)ローカルのファイル変更をリモートのfeature ブランチへ反映する`git push origin feature`
   - 5)執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からdevelopブランチへプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
   - review が行われ、問題があれば執筆者が再度修正する
     - プルリクエストの一覧は[ここ](https://github.com/pulls)から見れる
