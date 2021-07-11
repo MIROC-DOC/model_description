@@ -4,7 +4,7 @@
 
 ### [convert](./convert)
 
-Tools to compile md and tex files to pdf file, etc.
+Tools to compile md and tex files in [descript](./descript) to single pdf file in [draft](./draft), etc.
 
 ### [descript](./descript)
 
@@ -12,15 +12,15 @@ Md and tex files. These are part of Model Description for MIROC6-AGCM.
 
 ### [draft](./draft)
 
-Compiled PDF file from [descript](./descript) to Model Description for MIROC6-AGCM.
+Compiled PDF file "Model Description for MIROC6-AGCM".
 
 ### [memo](./memo)
 
 ### [org](./org)
 
-Original old files for the AGCM description.
+Original old files for the AGCM.
 
-## If you are interested in updating Model Description for MIROC6-AGCM
+## Help us with updating [Model Description for MIROC6-AGCM](https://github.com/MIROC-DOC/model_description/blob/master/draft/agcm.pdf)
 
 - Create your GitHub account and contact MIROC-DOC Admin via e-mail to miroc.github.info [at] gmail.com.
 - Write down the part you are going to update in [issue](https://github.com/MIROC-DOC/model_description/issues)
@@ -28,6 +28,7 @@ Original old files for the AGCM description.
 - Send pull request for the [develop branch](https://github.com/MIROC-DOC/model_description/tree/develop)
 
 Otherwise, send an e-mail to miroc.github.info [at] gmail.com.
+If the content of your email is not relevant to the case, we may not respond.
 
 ## Contents
 1. Introduction 概論
@@ -67,3 +68,4 @@ Otherwise, send an e-mail to miroc.github.info [at] gmail.com.
     -   [自動変換作業](../../wiki/自動変換作業)
     -   [コンパイルの方法](../../wiki/コンパイルの方法)
     -   [これまでの経緯](../../wiki/これまでの経緯)
+    -   [管理者の仕事](../../wiki/管理者の仕事)
