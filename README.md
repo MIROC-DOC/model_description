@@ -1,4 +1,34 @@
 # Model Description for MIROC6-AGCM
+
+## GitHub directory structure
+
+### [convert](./convert)
+
+Tools to compile md and tex files to pdf file, etc.
+
+### [descript](./descript)
+
+Md and tex files. These are part of Model Description for MIROC6-AGCM.
+
+### [draft](./draft)
+
+Compiled PDF file from [descript](./descript) to Model Description for MIROC6-AGCM.
+
+### [memo](./memo)
+
+### [org](./org)
+
+Original old files for the AGCM description.
+
+## If you are interested in updating Model Description for MIROC6-AGCM
+
+- Create your GitHub account and contact MIROC-DOC Admin via e-mail to miroc.github.info [at] gmail.com.
+- Write down the part you are going to update in [issue](https://github.com/MIROC-DOC/model_description/issues)
+- Edit md or tex files in [descript](./descript) following [develop](./memo/develop.md)
+- Send pull request for the [develop branch](https://github.com/MIROC-DOC/model_description/tree/develop)
+
+Otherwise, send an e-mail to miroc.github.info [at] gmail.com.
+
 ## Contents
 1. Introduction 概論
 - 1.1 [Characteristics of MIROC6 AGCM](draft/summary.md)
@@ -34,8 +64,6 @@
 
 # リンク集
 -   [Wiki](../../wiki)
-    -   [プロジェクトの目標](../../wiki/プロジェクトの目標)
     -   [自動変換作業](../../wiki/自動変換作業)
+    -   [コンパイルの方法](../../wiki/コンパイルの方法)
     -   [これまでの経緯](../../wiki/これまでの経緯)
--   [develop.md](./memo/develop.md) 開発の手引き
--   [Table_Of_Contents.md](./memo/Table_Of_Contents.md) ドキュメントの目次
