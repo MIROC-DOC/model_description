@@ -38,5 +38,4 @@
     -   [自動変換作業](../../wiki/自動変換作業)
     -   [これまでの経緯](../../wiki/これまでの経緯)
 -   [develop.md](./memo/develop.md) 開発の手引き
--   [Table_Of_Contents.md](./reference/Table_Of_Contents.md) ドキュメントの目次
-    -   _tex ファイルが存在する既存ドキュメント(agcm5.4.zip;内部資料)と[AGCM5.6-Tech.pdf](./org/AGCM5.6-Tech.pdf) がすでに異なるバージョンなので注意_
+-   [Table_Of_Contents.md](./memo/Table_Of_Contents.md) ドキュメントの目次
