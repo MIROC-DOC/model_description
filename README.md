@@ -23,9 +23,7 @@ Original old files for the AGCM.
 ## Help us with updating [Model Description for MIROC6-AGCM](https://github.com/MIROC-DOC/model_description/blob/master/draft/agcm.pdf)
 
 - Create your GitHub account and contact MIROC-DOC Admin via e-mail to miroc.github.info [at] gmail.com.
-- Write down the part you are going to update in [issue](https://github.com/MIROC-DOC/model_description/issues)
-- Edit md or tex files in [descript](./descript) following [develop](./memo/develop.md)
-- Send pull request for the [develop branch](https://github.com/MIROC-DOC/model_description/tree/develop)
+- Edit the file on GitHub Blowser(easy way, [procedure](https://github.com/MIROC-DOC/model_description/blob/develop/memo/develop.md#%E9%96%8B%E7%99%BA%E3%83%95%E3%83%AD%E3%83%BC%E7%B0%A1%E6%98%93%E7%89%88)) or your local([procedure](https://github.com/MIROC-DOC/model_description/blob/develop/memo/develop.md#%E9%96%8B%E7%99%BA%E3%83%95%E3%83%AD%E3%83%BC%E8%A9%B3%E7%B4%B0%E7%89%88%E6%96%B0%E3%81%97%E3%81%8F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%9C%E3%82%8B%E5%A0%B4%E5%90%88%E8%A4%87%E6%95%B0%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88%E3%81%AA%E3%81%A9)).
 
 Otherwise, send an e-mail to miroc.github.info [at] gmail.com.
 If the content of your email is not relevant to the case, we may not respond.
