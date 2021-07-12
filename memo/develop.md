@@ -6,91 +6,27 @@
 - ユーザーが現代的な開発手法(git)に慣れる
   - 直接 master ブランチに push しないやり方を学ぶ
 
-## Git に慣れてない人向け解説
-
-- [Git ことはじめ](./git.md)
-
-## GitHub の準備とリポジトリのクローン
-
-- GitHub のアカウント作成
-
-  - https://github.com/
-  - 無料。大学や研究機関のメールアドレスで作る
-  - Google や GitLab のアカウントに紐付けて作れる
-
-- GitHub  への公開鍵の登録
-  - 作業したい環境で、公開鍵を生成・登録する
-  - [GitHubでssh接続する手順~公開鍵・秘密鍵の生成から~](https://qiita.com/shizuma/items/2b2f873a0034839e47ce)
-  - [GitHubに公開鍵認証方式でSSH接続する](https://hacknote.jp/archives/56523/)
-- .ssh/config の編集
-
-  ```ssh:config
-  Host github.com
-      User git
-      HostName github.com
-      identitiesonly yes
-      identityFile ~/.ssh/id_rsa
-  ```
-
-- リポジトリを clone する(リモートからローカルへ資料を引っ張ってくる)
-  - `git clone https://github.com/MIROC-DOC/model_description.git`
-  - Gitの操作はmodel_descriptionディレクトリで
-
-- 練習用のリポジトリは何しても大丈夫です
-  - `git clone https://github.com/MIROC-DOC/SandBox.git`
-
-## テキストエディタのインストール
-
-- かならず必要なわけではないが、出来れば一度試してほしい
-
-- 基本的な欲しい機能
-
-  - git の管理 (fetch, pull, add, commit, push) が GUI でできる
-  - Markdown のプレビューができる
-
-- 最近のおすすめ
-  - [VS Code](https://azure.microsoft.com/ja-jp/products/visual-studio-code/) (\*)
-    - Japanese Language Package for Visual Studio Code 日本語化
-    - Git History 履歴を表示する拡張
-    - Markdown All in One マークダウン用拡張
-    - [VS Code で Markdown をプレビューするには？](https://www.atmarkit.co.jp/ait/articles/1804/20/news030.html)
-    - LaTeX language support LaTeX のシンタックスハイライト
-  - [Atom](https://atom.io/)
-    - markdown-scroll-sync
-    - markdown-writer
-    - tool-bar-markdown-writer
-    - tool-bar
-    - markdown-to-pdf
-    - tree-view-copy-relative-path
-    - japanese-menu
-    - atom-html-preview
-    - markdown-preview-enhanced
-    - markdown-table-formatter
-    - highlight-line
-
-## Git リポジトリの運用
-
-- 使用フォーマット
+## 使用フォーマット
 
   - 新たに書く原稿は、基本的に Markdown or Latex
   - 形式で迷ったら、[原稿](../descript/)を参照
-  - Markdownで書く場合
-    - エディタ上でリアルタイムにプレビューできる
-    - [Chrome拡張](https://chrome.google.com/webstore/detail/mathjax-3-plugin-for-gith/peoghobgdhejhcmgoppjpjcidngdfkod)を入れるとブラウザのGitHubから数式プレビューできる
-    - [pandoc](https://pandoc.org/) を使って LaTeX に translate する → [Pandoc メモ](./pandoc.md)
-  - [Mathpix Snip](https://gigazine.net/news/20200106-mathpix-snip/)は数式画像をLatex形式に変換してくれる
+ 
 
-- 使用言語
+## 使用言語
 
-  - 最終的には英語で原稿を揃えるが、日本語で原稿を作成・DeepL Proなどの力を借りて英訳してOK。
+  - 最終的には英語。日本語で原稿を作成・DeepL Proなどの力を借りて英訳してOK。
 
-- ディレクトリ構成
+## 開発フロー（簡易版）
 
-  - draft/ 原稿ファイルを置く
-  - memo/ 主に Markdown で書かれたプロジェクトに関するメモ書き
-  - org/ 既存のCCSR/NIES AGCMマニュアルやその英訳
+ブラウザ版GitHubのDevelopブランチを直接編集する。
+
+  - 1)developブランチに移動する。[ここをクリック](https://github.com/MIROC-DOC/model_description/tree/develop)
+  - 2)3)4)ファイルを編集する。
+  - 5)"Commit changes"を押す。
+
+<img src="./210712_MIROC_GitHub_develop.key-1.png" width=800x>
   
-- 開発フロー（執筆者）
+## 開発フロー（詳細版。新しくファイルを作る場合・複数ファイルを編集する場合など）
 
   - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
   - 2)ローカルの資料を最新のdevelopに `git pull origin develop`
@@ -111,9 +47,3 @@
 
 Gitについてはブランチを切る&コミットログを残す、ができれば細かい操作は自由。エディタのGUIを使うと楽。
 ローカルのファイル削除などしない限り、Gitの操作は大体取り返しがつく。
-
-
-## 関連項目
-
-- [Pandoc メモ](./pandoc.md)
-- [LaTeX メモ](./latex.md)
