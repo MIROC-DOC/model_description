@@ -31,7 +31,7 @@ If the content of your email is not relevant to the case, we may not respond.
 ## Contents
 1. Introduction 概論
 - 1.1 [Characteristics of MIROC6 AGCM](draft/summary.md)
-- 1.2 [Features and Structure of the Model](draft/a-intro.md)
+- 1.2 [Features and Structure of the Model](descript/a-intro.md)
 - 1.3 [Basic Settings](draft/a.0-setup.md)
 
 2. Dynamics 力学過程
