@@ -8,7 +8,7 @@
 # Copyright (C) 2006-2020 John MacFarlane. Web:  https://pandoc.org
 
 # Specify the directory markdown file existed
-dir=./descript
+dir=../../descript_files/markdown
 
 # Get markdown file names to be compiled
 filelist=($(ls ${dir}/*.md | rev | cut -c 4-| rev))
@@ -35,6 +35,7 @@ do
 	sed -e 's/\(\\ref{.*}\)\({}\)/\1/g' \
 	> ${name}.tex
 	python tex2tex.py ${name}.tex
+	mv ${name}.tex ../../descript_files/tex/
 done
 
 rm tmp.md

@@ -15,7 +15,7 @@ Major subroutines used to calculate the radiation flux in `SUBROUTINE:[DTRN31]` 
 7. Make T, R, and S matrixes for maximal/random approximation `SUBROUTINE:[RTSMR]`
 8. Calculate the radiation flux by adding method `SUBROUTINE:[ADDMR, ADDING]`
 
-![Flowchart of `SUBROUTINE:[DTRN31]`](Prad_Fig1.png)
+![Flowchart of `SUBROUTINE:[DTRN31]`](../figures/Prad_Fig1.png)
 
 To account for the partial coverage of clouds, the transmission and reflection coefficients and source functions for each layer are calculated at weighted average of the cloud cover, separately for cloud cover and clear-sky conditions. The cloud cover of the cumulus is also considered. In addition, it also performs several adding and calculates the clear-sky radiation flux.
 
@@ -314,7 +314,7 @@ $$
 b_{2}=2({~B}(\tau)-{B}(0)-2{~B}(\tau / 2)) / \tau^{2}
 $$
 
-![Second-order expansion using the optical thickness of the plank function](Prad_Fig2.png)
+![Second-order expansion using the optical thickness of the plank function](../figures/Prad_Fig2.png)
 
 This calculation is done for each sub-channel and each layer and divided into the cloudy, clear sky and cumulus conditions.
 
@@ -695,7 +695,7 @@ In this section, `SUBROUTINE:[ADDMR]` and `SUBROTINE:[ADDING]` in pradt.F is des
 
 By using transmission coefficient $T$, reflection coefficient $R$, and radiation source function $\varepsilon$ in all layers, the radiation fluxes $u$ at each layer boundary can be obtained by using the adding method. This means that the when two layers of $T$, $R$, $\varepsilon$ are known, the $T$, $R$, $\varepsilon$ of the whole combined layer of the two layers can be easily calculated.
 
-![Schematic illustration of the adding method](Prad_Fig3.png)
+![Schematic illustration of the adding method](../figures/Prad_Fig3.png)
 
 #### `SUBROUTINE:[ADDMR]`
 
