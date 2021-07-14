@@ -31,11 +31,16 @@ the spectral method.
 
 Air pressure $p$ is defined at half levels
 ($p_{k+1/2},\ k = 1, 2, \ldots K$) using the following formula using
-constants $A_{k+1/2},\ B_{k+1/2}$: $$\begin{aligned}
-p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}$$ where
+constants $A_{k+1/2},\ B_{k+1/2}$:
+$$
+\begin{aligned}
+p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}$$
+where
 $A_{1/2}=A_{K+1/2}=0,\ B_{1/2}=1,\ B_{K+1/2}=0$ and thus
-$p_{1/2}=p_s,\ p_{K+1/2}=0$. Therefore, the normalized pressure
-$\sigma\equiv p/p_s$ can be written as below: $$\begin{aligned}
+$p_{1/2}=p_s,\ p_{K+1/2}=0$.
+Therefore, the normalized pressure
+$\sigma\equiv p/p_s$ can be written as below:
+$$\begin{aligned}
 \sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.\end{aligned}$$
 
 Furthermore, a hybrid normalized pressure $\eta$ is defined as below:
@@ -50,20 +55,22 @@ and $\sigma_{k+1/2}$ is used instead to commonize source codes with the
 $\sigma$-coordinate system used in MIROC 5.
 
 Air pressure $p_k$ at full levels ($p_k,\ k=1,2,\ldots K)$ is
-interpolated from half-level pressure as below: $$\begin{aligned}
+interpolated from half-level pressure as below:
+$$\begin{aligned}
  p_k = \left\{ \frac{1}{1+\kappa}
                      \left( \frac{  p^{\kappa +1}_{k-1/2}
                                   - p^{\kappa +1}_{k+1/2}      }
                                   { p_{k-1/2} - p_{k+1/2} }
                      \right)
-              \right\}^{1/\kappa}.\end{aligned}$$ Full-level pressure in
+              \right\}^{1/\kappa}.\end{aligned}$$
+Full-level pressure in
 a 80-level configuration is shown in Fig.
 [1](#levels){reference-type="ref" reference="levels"}. While lower
 layers follow the terrain, upper layers are isobaric, and the two are
 smoothly connected.
 
 ![Default arangement of vertical levels for 80-level
-simulations.[\[levels\]]{#levels label="levels"}](levels.pdf){#levels}
+simulations.[\[levels\]]{#levels label="levels"}](./figures/levels.pdf){#levels}
 
 All prognostic variables are defined either on a grid of
 $(\lambda_i, \varphi_j, \eta_k)$ or $(\lambda_i, \varphi_j, z_l)$. (The

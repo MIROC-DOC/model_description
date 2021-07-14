@@ -16,43 +16,46 @@ and Konor 1996).
 
 1.  Continuity equation
 
-$$\begin{aligned}
+$$
   \frac{\partial m}{\partial t}
-    + \nabla_{\eta} \cdot (m\mathbf{v}_H)+ \frac{\partial (m\dot{\eta})}{\partial \eta} = 0\end{aligned}$$
+    + \nabla_{\eta} \cdot (m\mathbf{v}_H)+ \frac{\partial (m\dot{\eta})}{\partial \eta} = 0  $$
 
 1.  Hydrostatic equation
 
-$$\begin{aligned}
-  \frac{\partial \Phi}{\partial \eta} = - \frac{RT_v}{p} m\end{aligned}$$
+$$
+  \frac{\partial \Phi}{\partial \eta} = - \frac{RT_v}{p} m
+$$
 
 1.  Equation of motion
 
-$$\begin{aligned}
-  \frac{\partial \zeta}{\partial t} 
+$$
+  \frac{\partial \zeta}{\partial t}
      =   \frac{1}{a\cos\varphi}
             \frac{\partial A_v}{\partial \lambda}
           - \frac{1}{a\cos \varphi}
             \frac{\partial}{\partial \varphi} ( A_u \cos\varphi )
-          - {\mathcal D}(\zeta) \end{aligned}$$ $$\begin{aligned}
-  \frac{\partial D}{\partial t} 
+          - {\mathcal D}(\zeta)
+$$
+$$
+  \frac{\partial D}{\partial t}
      =    \frac{1}{a\cos\varphi}
             \frac{\partial A_u}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} ( A_v \cos\varphi )
           - \nabla^{2}_{\eta}
-           ( \Phi + R \bar{T} \pi + E ) 
-          - {\mathcal D}(D) \end{aligned}$$
+           ( \Phi + R \bar{T} \pi + E )
+          - {\mathcal D}(D)   $$
 
 1.  Thermodynamic equation
 
-$$\begin{aligned}
+$$
   \frac{\partial T}{\partial t}
      &=&  - \frac{1}{a\cos\varphi}
                \frac{\partial uT'}{\partial \lambda}
           - \frac{1}{a}
                \frac{\partial }{\partial \varphi} ( vT' \cos\varphi )
           + T' D \notag \\
-        &-& \dot{\eta} 
+        &-& \dot{\eta}
               \frac{\partial T }{\partial \eta}
           + \frac{\kappa T}{\sigma} \left[ B\left( \frac{\partial \pi}{\partial t}
                             + {\mathbf{v}}_{H} \cdot \nabla_{\eta}\pi \right)
@@ -60,12 +63,13 @@ $$\begin{aligned}
                      \right]
           + \frac{Q}{C_{p}}
           + \frac{Q_{diff}}{C_{p}}
-          - {\mathcal D}(T) \end{aligned}$$
+          - {\mathcal D}(T)   $$
 
 1.  Tracers
 
 For any tracer whose conservative quantity (e.g. mixing ratio) is
-denoted as $q$, $$\begin{aligned}
+denoted as $q$,
+$$
   \frac{\partial q}{\partial t}
    &=&  - \frac{1}{a\cos\varphi}
                \frac{\partial uq}{\partial \lambda}
@@ -74,9 +78,10 @@ denoted as $q$, $$\begin{aligned}
           + q D \notag \\
         &-& \dot{\eta} \frac{\partial q }{\partial \eta}
           + S_{q}
-          - {\mathcal D}(q) \end{aligned}$$
+          - {\mathcal D}(q)   $$
 
-Here, $$\begin{aligned}
+Here,
+$$
 m &\equiv & \left(\frac{\partial p}{\partial \eta}\right)_{p_s}, \\
 \theta  &\equiv &  T \left( p/p_{0} \right)^{-\kappa}, \\
 \kappa  &\equiv &  R/C_{p}, \\
@@ -87,39 +92,39 @@ m &\equiv & \left(\frac{\partial p}{\partial \eta}\right)_{p_s}, \\
      T  &\equiv &   \bar{T} + T^{\prime}, \\
      \bar{T}&\equiv & 300 \ \mathrm{K}, \\
  \zeta  &\equiv &  \frac{1}{a \cos\varphi }
-                    \frac{\partial v}{\partial \lambda} 
+                    \frac{\partial v}{\partial \lambda}
              -    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
                     ( u \cos\varphi ), \\
      D  &\equiv &  \frac{1}{a \cos\varphi }
-                    \frac{\partial u}{\partial \lambda} 
+                    \frac{\partial u}{\partial \lambda}
              +    \frac{1}{a \cos\varphi }
                     \frac{\partial }{\partial \varphi}
                     ( v \cos\varphi ), \\
     A_u  &\equiv &   ( \zeta + f ) v
-             - \dot{\eta} \frac{\partial u}{\partial \eta} 
-             - \frac{RT^{\prime}}{a\cos\varphi} 
-                  \frac{\partial \pi}{\partial \lambda} 
+             - \dot{\eta} \frac{\partial u}{\partial \eta}
+             - \frac{RT^{\prime}}{a\cos\varphi}
+                  \frac{\partial \pi}{\partial \lambda}
              + {\mathcal F}_x, \\
     A_v  &\equiv &  - ( \zeta + f ) u
-             - \dot{\eta} \frac{\partial v}{\partial \eta} 
+             - \dot{\eta} \frac{\partial v}{\partial \eta}
              - \frac{RT^{\prime}}{a}
-                  \frac{\partial \pi}{\partial \varphi} 
+                  \frac{\partial \pi}{\partial \varphi}
              + {\mathcal F}_y, \\
      E  &\equiv &   \frac{u^{2}+v^{2}}{2}, \\
  {\mathbf{v}}_{H} \cdot \nabla
-        &\equiv &  \frac{u}{a \cos \varphi} 
+        &\equiv &  \frac{u}{a \cos \varphi}
          \left( \frac{\partial }{\partial \lambda} \right)_{\sigma}
      + \frac{v}{a}
          \left( \frac{\partial }{\partial \varphi} \right)_{\sigma}, \\
-  \nabla^{2}_{\eta}  
-        &\equiv &  
-               \frac{1}{a^{2}\cos^2\varphi} 
-                 \frac{\partial^{2} }{\partial \lambda^{2}} 
-             + \frac{1}{a^{2}\cos\varphi} 
+  \nabla^{2}_{\eta}
+        &\equiv &
+               \frac{1}{a^{2}\cos^2\varphi}
+                 \frac{\partial^{2} }{\partial \lambda^{2}}
+             + \frac{1}{a^{2}\cos\varphi}
                  \frac{\partial }{\partial \varphi}
                  \left[ \cos\varphi
-                       \frac{\partial }{\partial \varphi} \right].\end{aligned}$$
+                       \frac{\partial }{\partial \varphi} \right].  $$
 
 $f$ is the Coriolis parameter.
 ${\mathcal D}(\zeta), {\mathcal D}(D), {\mathcal D}(T), {\mathcal D}(q)$
@@ -130,9 +135,9 @@ forces due to radiation, condensation, small-scale kinetic processes,
 etc. Heating and temperature change due to 'physical processes', and
 $S_q$ is a water vapor source term due to 'physical processes' such as
 condensation and small-scale motion. $Q_{\mathrm{diff}}$ is the heat of
-friction and $$\begin{aligned}
+friction and $$
   Q_{\mathrm{diff}}
- = - {\mathbf{v}} \cdot  \left( \frac{\partial {\mathbf{v}}}{\partial t} \right)_{\mathrm{diff}} .\end{aligned}$$
+ = - {\mathbf{v}} \cdot  \left( \frac{\partial {\mathbf{v}}}{\partial t} \right)_{\mathrm{diff}} .  $$
 
 $( \frac{\partial {\mathbf{v}}}{\partial t} )_{\mathrm{diff}}$ is a
 time-varying term of $u,v$ due to horizontal and vertical diffusion.
@@ -142,8 +147,8 @@ time-varying term of $u,v$ due to horizontal and vertical diffusion.
 :::
 
 Upper and lower boundary conditions for the vertical velocity is:
-$$\begin{aligned}
-  \dot{\eta} = 0  \ \ \ \text{at~} \ \ \eta = 0 , \ 1 .\end{aligned}$$
+$$
+  \dot{\eta} = 0  \ \ \ \text{at~} \ \ \eta = 0 , \ 1 .  $$
 The prognostic equation for $p_s$ and the diagnostic equation for the
 vertical velocity can be derived by integrating the continuity equation
 and applying these boundary conditions.

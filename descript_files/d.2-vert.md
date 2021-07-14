@@ -7,20 +7,20 @@ Following Arakawa and Konor (1996) except for using the Lorentz grid,
 the basic equations are discretized vertically by differences. This
 scheme has the following characteristics.
 
--   Conservation of the total integrated mass.
+- Conservation of the total integrated mass.
 
--   Conservation of the total integrated energy.
+- Conservation of the total integrated energy.
 
--   Conservation of the globally integrated angular momentum.
+- Conservation of the globally integrated angular momentum.
 
--   Conservation of the total mass-integrated potential temperature.
+- Conservation of the total mass-integrated potential temperature.
 
--   The hydrostatic pressure equation is localized (the altitude of the
-    lower level is independent of the temperature of the upper level).
+- The hydrostatic pressure equation is localized (the altitude of the
+  lower level is independent of the temperature of the upper level).
 
--   For a given temperature distribution, constant in the horizontal
-    direction, the hydrostatic pressure equation becomes precisely
-    accurate and the barometric gradient force becomes zero.
+- For a given temperature distribution, constant in the horizontal
+  direction, the hydrostatic pressure equation becomes precisely
+  accurate and the barometric gradient force becomes zero.
 
 -   Isothermal atmosphere stays permanently isothermal.
 
@@ -35,31 +35,36 @@ defined at integer levels ($k=1,2,\ldots K$), while the vertical
 velocity $\dot{\eta}$ is defined at half-integer levels
 ($k=1/2,3/2,\ldots K+1/2$). Using constants $A_{k+1/2}$ and $B_{k+1/2}$
 and variable surface pressure $p_s$, air pressure at half levels are
-defined as below: $$\begin{aligned}
-p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s.\end{aligned}$$
+defined as below:
+$$
+p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s.  $$
 
 Thus, the normalized pressure $\sigma\equiv p/p_s$ can be written as
-below: $$\begin{aligned}
-\sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.\end{aligned}$$
+below:
+$$
+\sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.  $$
 
 Using a reference pressure $p_0$, the hybrid-normalized pressure $\eta$
-is defined as below: $$\begin{aligned}
-\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},\end{aligned}$$ which is
+is defined as below:
+$$
+\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},  $$ which is
 a constant at all levels and is used as the vertical coordinate by
 default in MIROC 6.0.
 
 Pressure at full levels are interpolated from half-level pressure by the
-following formula: $$\begin{aligned}
+following formula:
+$$
  p_k = \left\{ \frac{1}{1+\kappa}
                      \left( \frac{  p^{\kappa +1}_{k-1/2}
                                   - p^{\kappa +1}_{k+1/2}      }
                                   { p_{k-1/2} - p_{k+1/2} }
                      \right)
-              \right\}^{1/\kappa}.\end{aligned}$$
+              \right\}^{1/\kappa}.  $$
 
-For later use, let us define the following: $$\begin{aligned}
+For later use, let us define the following:
+$$
   \Delta\sigma_k &\equiv & \sigma_{k-1/2} - \sigma_{k+1/2}, \notag\\
-  \Delta B_k &\equiv & B_{k-1/2} - B_{k+1/2}.\end{aligned}$$
+  \Delta B_k &\equiv & B_{k-1/2} - B_{k+1/2}.  $$
 
 ::: {#vertical-discretization-1}
 ### Vertical Discretization
@@ -70,9 +75,9 @@ are shown below.
 
 1.  Continuity equation and diagnosis of the vertical velocity
 
-$$\begin{aligned}
+$$
   \frac{\partial \pi}{\partial t}
- = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}\end{aligned}$$
+ = - \sum_{k=1}^{K} \left\{ D_k \Delta\sigma_k + ({\mathbf{v}}_k \cdot \nabla \pi)\Delta B_k \right\}  $$
 
 In MIRCO 6.0, the discretization is conducted in a manner similar to the
 $\sigma$ coordinate, which can be optionally selected and was the
@@ -80,19 +85,20 @@ default in previous versions, to commonize source codes. Thus, the
 vertical velocity is represented as $\dot{\sigma}=m\dot{\eta}/p_s$.
 Furthermore, vertical advection $\dot{\eta}(\partial/\partial\eta)$ is
 replaced with an equivalent form
-$m\dot{\eta}/p_s(\partial/\partial\sigma)$. $$\begin{aligned}
+$m\dot{\eta}/p_s(\partial/\partial\sigma)$.
+$$
   \left(\dot{\sigma}=\right)\frac{(m\dot{\eta})_{k-1/2}}{p_s}
  = - B_{k-1/2} \frac{\partial \pi}{\partial t}
-   - \sum_{l=k}^{K}\left\{ D_l \Delta\sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l \right\}\end{aligned}$$
-$$\begin{aligned}
-  \frac{(m\dot{\eta})_{1/2}}{p_s} = \frac{(m\dot{\eta})_{k+1/2}}{p_s} = 0\end{aligned}$$
+   - \sum_{l=k}^{K}\left\{ D_l \Delta\sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l \right\}  $$
+$$
+  \frac{(m\dot{\eta})_{1/2}}{p_s} = \frac{(m\dot{\eta})_{k+1/2}}{p_s} = 0  $$
 
 1.  Hydrostatic equation
 
-$$\begin{aligned}
+$$
  \Phi_{1}  &=&  \Phi_{s} + C_{p} ( \sigma_{1}^{-\kappa} - 1  ) T_{v,1} \notag\\
-           &=&  \Phi_{s} + C_{p} \alpha_{1} T_{v,1}\end{aligned}$$
-$$\begin{aligned}
+           &=&  \Phi_{s} + C_{p} \alpha_{1} T_{v,1}  $$
+$$
  \Phi_k - \Phi_{k-1}
   &=&  C_{p}
    \left[ \left( \frac{ p_{k-1/2} }{ p_k } \right)^{\kappa}
@@ -101,16 +107,17 @@ $$\begin{aligned}
    \left[ 1-
          \left( \frac{ p_{k-1/2} }{ p_{k-1} } \right)^{\kappa}
               \right] T_{v,k-1} \notag\\
-   &=&    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}\end{aligned}$$
-Here, $$\begin{aligned}
+   &=&    C_{p} \alpha_k T_{v,k} + C_{p} \beta_{k-1} T_{v,k-1}  $$
+Here,
+$$
  \alpha_k &\equiv & \left( \frac{ p_{k-1/2} }
                                { p_k } \right)^{\kappa} -1, \\
  \beta_k &\equiv &  1- \left( \frac{ p_{k+1/2} }
-                               { p_k } \right)^{\kappa} .\end{aligned}$$
+                               { p_k } \right)^{\kappa} .  $$
 
 1.  Equations of motion
 
-$$\begin{aligned}
+$$
   \frac{\partial \zeta_k}{\partial t}
         &=&   \frac{1}{a\cos\varphi}
             \frac{\partial (A_v)_k}{\partial \lambda}
@@ -140,11 +147,11 @@ $$\begin{aligned}
              + {\mathcal F}_y \\
    \hat{\kappa}_k
     &=& \frac{ B_{k-1/2} \alpha_k + B_{k+1/2} \beta_k }
-            { \Delta\sigma_k                                  }\end{aligned}$$
+            { \Delta\sigma_k                                  }  $$
 
 1.  Thermodynamic equation
 
-$$\begin{aligned}
+$$
   \frac{\partial T_k}{\partial t}
      =  - \frac{1}{a\cos\varphi}
                \frac{\partial u_k T'_k}{\partial \lambda}
@@ -153,9 +160,10 @@ $$\begin{aligned}
           + H_k
         + \frac{Q_k}{C_{p}}
           + \frac{(Q_{diff})_k}{C_p}
-          - {\mathcal D}(T_k)\end{aligned}$$
+          - {\mathcal D}(T_k)  $$
 
-Here, $$\begin{aligned}
+Here,
+$$
    H_k
      &\equiv &  T_k' D_k
               - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
@@ -190,11 +198,11 @@ Here, $$\begin{aligned}
                         \right)^{\kappa} \right]^{-1},  \\
   b_k  &=&  \beta_k
               \left[ \left( \frac{ p_k }{ p_{k+1} }
-                     \right)^{\kappa} - 1 \right]^{-1} .\end{aligned}$$
+                     \right)^{\kappa} - 1 \right]^{-1} .  $$
 
 1.  Tracers
 
-$$\begin{aligned}
+$$
   \frac{\partial q_k}{\partial t}
       &=&   - \frac{1}{a\cos\varphi}
                \frac{\partial u_k q_k}{\partial \lambda}
@@ -206,7 +214,7 @@ $$\begin{aligned}
 R_k  &=&  q_k D_k
        - \frac{1}{2}
              \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{q_{k-1} - q_k}{\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]\end{aligned}$$
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]  $$
 
 ::: {#differences-from-the-sigma-coordinate}
 ### Differences from the $\sigma$-Coordinate

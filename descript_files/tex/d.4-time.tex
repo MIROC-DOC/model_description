@@ -14,26 +14,26 @@ correction of the diffusion term and the frictional heat due to horizontal diffu
 \({\mathcal F}_\lambda, {\mathcal F}_\varphi, Q, S_q\)). However, the calculation of the prognositc veriables of vertical diffusion is treated as a backward difference. Please refer to the chapter on
 physical processes for details.)
 
-Expressing each prognostic variable as \({X}\), \begin{eqnarray}\begin{aligned}
+Expressing each prognostic variable as \({X}\), \begin{eqnarray}
   \hat{X}^{t+\Delta t}
     =  \bar{X}^{t-\Delta t}
     + 2 \Delta t
       \dot{X}_{adv}\left( {X}^{t} \right)
     + 2 \Delta t
-      \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right),\end{aligned}\end{eqnarray} where \(\dot{X}_{adv}\) is the advection term etc., and \(\dot{X}_{dif}\) is the horizontal diffusion term.
+      \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right),   \end{eqnarray} where \(\dot{X}_{adv}\) is the advection term etc., and \(\dot{X}_{dif}\) is the horizontal diffusion term.
 
 \(\hat{X}^{t+\Delta t}\) is then corrected for diffusion (\(\dot{X}_{dis}\) for \(p\)-surface correction and the heat of friction) and physical processes (\(\dot{X}_{phy}\)), yielding
-\({X}^{t+\Delta t}\). \begin{eqnarray}\begin{aligned}
+\({X}^{t+\Delta t}\). \begin{eqnarray}
   {X}^{t+\Delta t}
     =  \hat{X}^{t+\Delta t}
     + 2 \Delta t
       \dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
     + 2 \Delta t
-      \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)\end{aligned}\end{eqnarray}
+      \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)   \end{eqnarray}
 
-To damp numerical modes, a time filter (Williams, 2009) is applied to leap-frog method at every steps. The time filter is given below, where terms with over bars are filtered. \begin{eqnarray}\begin{aligned}
-\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - \bar{X}^{t} + X^{t+\Delta t}],\end{aligned}\end{eqnarray} \begin{eqnarray}\begin{aligned}
-\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}],\end{aligned}\end{eqnarray} where \(\nu=0.05\) and \(\alpha=0.5\).
+To damp numerical modes, a time filter (Williams, 2009) is applied to leap-frog method at every steps. The time filter is given below, where terms with over bars are filtered. \begin{eqnarray}
+\bar{\bar{X}}^{t} = \bar{X}^{t} + \nu \alpha [\bar{\bar{X}}^{t-\Delta t} - \bar{X}^{t} + X^{t+\Delta t}],   \end{eqnarray} \begin{eqnarray}
+\bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}],   \end{eqnarray} where \(\nu=0.05\) and \(\alpha=0.5\).
 
 \hypertarget{semi-implicit-time-integration}{%
 \subsubsection{Semi-Implicit Time Integration}\label{semi-implicit-time-integration}}
@@ -42,15 +42,15 @@ Basically, the leap frog is used for the dynamic processes, but the trapezoidal 
 \({\mathbf q}\), the value at \(t+\Delta t\) as \({\mathbf q}^+\), and the value at \(t-\Delta t\) as \({\mathbf q}^-\). Then, in the trapezoidal implicit scheme, the time change term is evaluated for
 \(({\mathbf q}^+ + {\mathbf q}^- )/2\), instead of \({\mathbf q}\) used in the simple leap forg method. We now divide \({\mathbf q}\) into two time varying terms, one (\({\mathcal A}\)) for the leap
 forg method and the other (\({\mathcal B}\)) for the trapezoidal implicit method. We assume that (\({\mathcal A}\)) is nonlinear to \({\mathbf q}\), while (\({\mathcal B}\)) is linear. In other words,
-\begin{eqnarray}\begin{aligned}
+\begin{eqnarray}
   {\mathbf q}^+
       = {\mathbf q}^-
       + 2 \Delta t {\mathcal A}( {\mathbf q}  )
       + 2 \Delta t B (   {\mathbf q}^+
-                       + {\mathbf q}^-   )/2,\end{aligned}\end{eqnarray} where (\({\mathcal B}\)) is a square matrix. Defining \(\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}\), we get \begin{eqnarray}\begin{aligned}
+                       + {\mathbf q}^-   )/2,   \end{eqnarray} where (\({\mathcal B}\)) is a square matrix. Defining \(\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}\), we get \begin{eqnarray}
   ( I - \Delta t B ) \Delta {\mathbf q}
       = 2 \Delta t \left( {\mathcal A}({\mathbf q})
-                         + B {\mathbf q} \right).\end{aligned}\end{eqnarray} This can be easily solved by matrix operations.
+                         + B {\mathbf q} \right).   \end{eqnarray} This can be easily solved by matrix operations.
 
 \hypertarget{applying-the-semi-implicit-time-integration}{%
 \subsubsection{Applying the Semi-Implicit Time Integration}\label{applying-the-semi-implicit-time-integration}}
@@ -58,7 +58,7 @@ forg method and the other (\({\mathcal B}\)) for the trapezoidal implicit method
 Here, we apply the semi-implicit method and treat terms associated with linear gravity waves as implicit, which allows us to increase the time step \(\Delta t\).
 
 We divide the basic equation into a linear gravity wave term (\(T=\bar{T}_k\)) with a static field as the basic field and other terms (with the indices \(NG\)). Using a vector representation for the
-vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and \({\mathbf{T}}=\{ T_{k} \}\)), \begin{eqnarray}\begin{aligned}
+vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and \({\mathbf{T}}=\{ T_{k} \}\)), \begin{eqnarray}
    \frac{\partial \pi}{\partial t} &=&
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}
      - {\mathbf{C}} \cdot {\mathbf{D}}, \\
@@ -72,9 +72,9 @@ vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and \({\mathbf{T}}=\{ T_{k} \}\
       &=&   \left( \frac{\partial {\mathbf{T}}}
                         {\partial t}       \right)_{NG}
          - \underline{h} {\mathbf{D}}
-         - {\mathcal D}_H {\mathbf{T}}.\end{aligned}\end{eqnarray}
+         - {\mathcal D}_H {\mathbf{T}}.   \end{eqnarray}
 
-Here, the non-gravitational wave term is \begin{eqnarray}\begin{aligned}
+Here, the non-gravitational wave term is \begin{eqnarray}
   \left( \frac{\partial \pi}{\partial t} \right)^{NG}
    &=&   - \sum_{k=1}^{K} {\mathbf{v}}_{k} \cdot \nabla \pi
        \Delta B_{k}, \\
@@ -111,18 +111,18 @@ Here, the non-gravitational wave term is \begin{eqnarray}\begin{aligned}
              \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
          + \frac{Q_k + (Q_{diff})_k}{C_p}, \\
   \hat{E}_k &=& E_{k}
-            + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} ),\end{aligned}\end{eqnarray} where the vector and matrix of the gravitational wave term (underlined) are \begin{eqnarray}\begin{aligned}
+            + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} ),   \end{eqnarray} where the vector and matrix of the gravitational wave term (underlined) are \begin{eqnarray}
   C_{k} &=& \Delta \sigma_{k}, \\
   W_{kl} &=& C_{p} \alpha_{l} \delta_{k \geq l}
          + C_{p} \beta_{l} \delta_{k-1 \geq l}, \\
   G_{k} &=& R\bar{T}, \\
-h_{kl} &=& \frac{\bar{T}}{\Delta\sigma_k}\left[\alpha_k \Delta\sigma_l \delta_{k\ge l}+\beta_k \Delta\sigma_l \delta_{k+1\le l}\right].\end{aligned}\end{eqnarray} Here, \(\delta_{k \leq l}\) is 1 if \(k \leq l\)
-is valid and 0 otherwise.\\
-We now use the following expressions for time differences: \begin{eqnarray}\begin{aligned}
+h_{kl} &=& \frac{\bar{T}}{\Delta\sigma_k}\left[\alpha_k \Delta\sigma_l \delta_{k\ge l}+\beta_k \Delta\sigma_l \delta_{k+1\le l}\right].   \end{eqnarray} Here, \(\delta_{k \leq l}\) is 1 if \(k \leq l\) is valid
+and 0 otherwise.\\
+We now use the following expressions for time differences: \begin{eqnarray}
   \delta_{t} {X} &\equiv & \frac{1}{2 \Delta t}
         \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right), \\
     \overline{X}^{t} &\equiv & \frac{1}{2} \left( {X}^{t+\Delta t}  + {X}^{t-\Delta t} \right)\notag\\
-  &=&  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t.\end{aligned}\end{eqnarray} Then, applying the semi-implicit method to the system of equations, we get \begin{eqnarray}\begin{aligned}
+  &=&  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t.   \end{eqnarray} Then, applying the semi-implicit method to the system of equations, we get \begin{eqnarray}
 \label{eqn_for_pi}
   \delta_{t} \pi &=&
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}
@@ -141,9 +141,9 @@ We now use the following expressions for time differences: \begin{eqnarray}\begi
         \left( \frac{\partial {\mathbf{T}}}{\partial t} \right)_{NG}
          - \underline{h} \overline{ {\mathbf{D}} }^{t}
          - {\mathcal D}_H ( {\mathbf{T}}^{t-\Delta t}
-                        + 2 \Delta t \delta_{t} {\mathbf{T}} ).\end{aligned}\end{eqnarray}
+                        + 2 \Delta t \delta_{t} {\mathbf{T}} ).   \end{eqnarray}
 
-Thus, \begin{eqnarray}\begin{aligned}
+Thus, \begin{eqnarray}
       & &\left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
            \underline{I}
       - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
@@ -169,47 +169,47 @@ Thus, \begin{eqnarray}\begin{aligned}
                             \left[ \pi^{t-\Delta t}
                                   + \Delta t \left( \frac{\partial \pi}{\partial t}
                                   \right)_{NG}  \right]
-                                  \right\}.\end{aligned}\end{eqnarray}
+                                  \right\}.   \end{eqnarray}
 
-Since the spherical harmonic expansion is used, we can rewrite \(\nabla_{\eta}^2\) as the following: \begin{eqnarray}\begin{aligned}
-\nabla_{\eta}^2=-\frac{n(n+1)}{a^2},\end{aligned}\end{eqnarray} which enables us to solve the above equations for \(\overline{ {\mathbf{D}}_n^m }^{t}\). Then, using (\ref{eqn_for_pi}),
+Since the spherical harmonic expansion is used, we can rewrite \(\nabla_{\eta}^2\) as the following: \begin{eqnarray}
+\nabla_{\eta}^2=-\frac{n(n+1)}{a^2},   \end{eqnarray} which enables us to solve the above equations for \(\overline{ {\mathbf{D}}_n^m }^{t}\). Then, using (\ref{eqn_for_pi}),
 (\ref{eqn_for_t}) and \(D^{t+\Delta t} = 2\overline{ {\mathbf{D}} }^{t} - D^{t-\Delta t},\) we can obtain the value of prognostic variables \(\hat{X}^{t+\Delta t}\) at \(t+\Delta t\).
 
 \hypertarget{time-scheme-properties-and-requiments-for-time-steps}{%
 \subsubsection{Time Scheme Properties and Requiments for Time Steps}\label{time-scheme-properties-and-requiments-for-time-steps}}
 
-Let us consider solving the advection equation with the leap-frog method: \begin{eqnarray}\begin{aligned}
-  \frac{\partial{X}}{\partial {t}} = c \frac{\partial{X}}{\partial {x}}.\end{aligned}\end{eqnarray}
+Let us consider solving the advection equation with the leap-frog method: \begin{eqnarray}
+  \frac{\partial{X}}{\partial {t}} = c \frac{\partial{X}}{\partial {x}}.   \end{eqnarray}
 
-Assuming \(X = X_0 \exp(ikx)\), the descretized form of the above equation becomes: \begin{eqnarray}\begin{aligned}
-  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.\end{aligned}\end{eqnarray} Assuming \(X\) evolves exponentially, we can define \(\lambda\) such that \begin{eqnarray}\begin{aligned}
+Assuming \(X = X_0 \exp(ikx)\), the descretized form of the above equation becomes: \begin{eqnarray}
+  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.   \end{eqnarray} Assuming \(X\) evolves exponentially, we can define \(\lambda\) such that \begin{eqnarray}
   \lambda &=& X^{n+1}/X^n = X^n/X^{n-1}, \\
-  \lambda^2 &=& 1 + 2 i kc \Delta t \lambda \; .\end{aligned}\end{eqnarray} Defining \(p \equiv kc \Delta t\), the solution becomes: \begin{eqnarray}\begin{aligned}
- \lambda = -i p \pm \sqrt{1-p^2}.\end{aligned}\end{eqnarray}
+  \lambda^2 &=& 1 + 2 i kc \Delta t \lambda \; .   \end{eqnarray} Defining \(p \equiv kc \Delta t\), the solution becomes: \begin{eqnarray}
+ \lambda = -i p \pm \sqrt{1-p^2}.   \end{eqnarray}
 
-The absolute value of those solutions are \begin{eqnarray}\begin{aligned}
+The absolute value of those solutions are \begin{eqnarray}
   |\lambda| = \left\{
              \begin{array}{ll}
                1 & |p| \le 1 \\
                p \pm \sqrt{p^2-1} & |p| > 1
              \end{array}
-             \right.\end{aligned}\end{eqnarray} and in the case of \(|p|>1\), we get \(|\lambda| > 1\), and the absolute value of the solution increases exponentially with time. This indicates that the
-computation is unstable.
+             \right.   \end{eqnarray} and in the case of \(|p|>1\), we get \(|\lambda| > 1\), and the absolute value of the solution increases exponentially with time. This indicates that the computation is
+unstable.
 
 In the case of \(|p| \le 1\), however, the calculation is neutral since the value of \(|\lambda| = 1\). However, there are two solutions to \(\lambda\), one of which, when set to
 \(\Delta t \rightarrow 1\), leads to \(\lambda \rightarrow 1\), while the other leads to \(\lambda \rightarrow -1\), which indicates an osscilating solution. This mode is called ``computational mode''
 and is one of the problems of the leap frog method. This mode can be damped by applying a time filter described later.
 
-Given the horizontal grid spacing \(\Delta x\), the maximum value of \(k\) becomes \begin{eqnarray}\begin{aligned}
-  \max k = \frac{\pi}{\Delta x}.\end{aligned}\end{eqnarray} Then, the condition \(|p|=kc \Delta t \le 1\) requires \begin{eqnarray}\begin{aligned}
-   \Delta t \le \frac{\Delta x}{\pi c}.\end{aligned}\end{eqnarray}
+Given the horizontal grid spacing \(\Delta x\), the maximum value of \(k\) becomes \begin{eqnarray}
+  \max k = \frac{\pi}{\Delta x}.   \end{eqnarray} Then, the condition \(|p|=kc \Delta t \le 1\) requires \begin{eqnarray}
+   \Delta t \le \frac{\Delta x}{\pi c}.   \end{eqnarray}
 
-In case of a spectral model, using the Earth's radius \(a\) and the maximum wavenumber \(N\), the requirement becomes \begin{eqnarray}\begin{aligned}
-   \Delta t \le \frac{a}{N c},\end{aligned}\end{eqnarray} which is a condition for the numerical stability.\\
+In case of a spectral model, using the Earth's radius \(a\) and the maximum wavenumber \(N\), the requirement becomes \begin{eqnarray}
+   \Delta t \le \frac{a}{N c},   \end{eqnarray} which is a condition for the numerical stability.\\
 To guarantee the stability of the integration, one needs to take the time step \(\Delta t\) smaller than that required by the fastest-propagating mode. If the semi-implicit scheme is not used, the
 propagation speed of gravity waves, which can be as fast as 300 m\(/\)s, sets the criterion for stability. With the gravity waves taken account of by the semi-implicit method, however, the fastest
-mode usually becomes the maximum easterly wind \(U_{\mathrm{max}}\). Therefore, \begin{eqnarray}\begin{aligned}
-   \Delta t \le \frac{a}{N U_{max}} .\end{aligned}\end{eqnarray} In practice, this is multiplied by a factor smaller than 1 for further safety.
+mode usually becomes the maximum easterly wind \(U_{\mathrm{max}}\). Therefore, \begin{eqnarray}
+   \Delta t \le \frac{a}{N U_{max}} .   \end{eqnarray} In practice, this is multiplied by a factor smaller than 1 for further safety.
 
 \hypertarget{handling-of-the-initiation-of-time-integration}{%
 \subsubsection{Handling of the Initiation of Time Integration}\label{handling-of-the-initiation-of-time-integration}}
@@ -218,8 +218,8 @@ When starting from an initial condition that is not calculated by MIROC 6.0 itse
 consistently with the model dynamics. However, giving inconsistent values for \(t-\Delta t\) results in a large computation mode.
 
 To avoid this, a special procedure is followed at the initiation of time integration. Firstly, assuming \(X^{\Delta t/4} = X^0\), a \(1/4\)-step integration is performed to obtain \(X^{\Delta t/2}\):
-\begin{eqnarray}\begin{aligned}
+\begin{eqnarray}
   X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
-                 = X^0 + \Delta t/2 \dot{X}^0.\end{aligned}\end{eqnarray} Then, a \(1/2\)-step integration is performed to yield \(X^{\Delta t}\): \begin{eqnarray}\begin{aligned}
-  X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.\end{aligned}\end{eqnarray} Finally, in the normal time step, \begin{eqnarray}\begin{aligned}
-  X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.\end{aligned}\end{eqnarray} From here on, the leap-frog method is executed in the usual manner.
+                 = X^0 + \Delta t/2 \dot{X}^0.   \end{eqnarray} Then, a \(1/2\)-step integration is performed to yield \(X^{\Delta t}\): \begin{eqnarray}
+  X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.   \end{eqnarray} Finally, in the normal time step, \begin{eqnarray}
+  X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.   \end{eqnarray} From here on, the leap-frog method is executed in the usual manner.

@@ -114,7 +114,7 @@ which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
 
 ![The image of interpolation function in The piecewise parobolic method
 (PPM) scheme. The interpolation function is in the solid line, the grid
-mean value is in the dot line.](ppm_interpolate.png){#f1 width="5cm"}
+mean value is in the dot line.](../figures/ppm_interpolate.png){#f1 width="5cm"}
 
 In PPM scheme, the distribution is determined as follows.
 $$\begin{split}
@@ -135,7 +135,8 @@ $$A(x_{i+\frac{1}{2}})=A_{i+\frac{1}{2}}=\sum_{k\leq i}q_{k}\Delta x_{k}$$
 $q_{i+\frac{1}{2}}$ is calculated by discretization of
 $q_{i+\frac{1}{2}}=dA/dx |_{x_{i+\frac{1}{2}}}$ by using
 $(A_{j+k+\frac{1}{2}},x_{j+k+\frac{1}{2}})$, $k=0,\pm 1, \pm 2$.
-Specifically, $q_{i+\frac{1}{2}}$ is calculated as follows. $$\label{a3}
+Specifically, $q_{i+\frac{1}{2}}$ is calculated as follows.
+$$\label{a3}
   \begin{split}
     q_{i+\frac{1}{2}}=&q_{i}+\Delta x_{i} \frac{q_{i+1}-q_{i}}{\Delta x_{i+1}+\Delta x_{i}}+\frac{1}{\sum_{k=i-1}^{i+2}\Delta x_{k}}\\
     &\times \Bigl[\frac{2\Delta x_{i}\Delta x_{i+1}}{\Delta x_{i+1}+\Delta x_{i}}(\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}}-\frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}})(q_{i+1}-q_{i})\\
@@ -150,11 +151,13 @@ $$\delta q_{i}=\frac{\Delta x_{i}}{\Delta x_{i-1}+\Delta x_{i}+\Delta x_{i+1}}\b
 However, in this case, the interpolation function may have extremes in
 the grid and may not satisfy monotonicity. In order to avoid such a
 situation, $q_{i+\frac{1}{2}}$ should be between $q_{i}$ as $q_{i+1}$,
-and $\delta q_{i}$ is modified as follows for that. $$\begin{aligned}
-    \delta_{m} q_{i} & =\min(|\delta
-    q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
-    & =0 && \qquad \text{otherwise}
-  \end{aligned}$$ This $\delta q_{i}$ is used in
+and $\delta q_{i}$ is modified as follows for that.
+$$
+\delta_{m} q_{i} & =\min(|\delta
+q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
+& =0 && \qquad \text{otherwise}
+$$
+This $\delta q_{i}$ is used in
 Eq.([\[a3\]](#a3){reference-type="ref" reference="a3"}) to calculate
 $q_{i+\frac{1}{2}}$.
 
@@ -218,15 +221,17 @@ adopted $\sigma$ coordinate. Therefore, firstly the procedure under
 $\sigma$ coordinate system is described. After this, the changes in the
 hybrid coordinate system from the $\sigma$ coordinate system is
 described. The transport equation in $\sigma$ coordinate on the sphere
-is expressed as $$\begin{aligned}
+is expressed as
+$$
   \label{b1}
   \frac{\partial P^{S} q}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q)\notag\\
-  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})\end{aligned}$$
+  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})$$
 $P^{S}$ is surface pressure, $q$ is quantity of tracers. Continuity
 equation is given by considering the case of $q=1$.
 $$\frac{\partial P^{S}}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S}u)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S}v \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma})$$
 Assuming that grid is equally spaced in zonal direction, the transport
-equation is discretized as follows. $$\label{a1}
+equation is discretized as follows.
+$$\label{a1}
   \frac{\partial P^{S}_{,i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}[(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k})+(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}))+(G^{\sigma}_{i,j,k-\frac{1}{2}}-G^{\sigma}_{i,j,k+\frac{1}{2}})]$$
 Here,
 $$G^{\lambda}_{i-\frac{1}{2},j,k}=F^{\lambda}_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}=(P^{S}uq)_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}$$
@@ -317,8 +322,9 @@ in the staggering-grided horizontal and vertical wind fields:
     Eq. ([\[a2\]](#a2){reference-type="ref" reference="a2"}).
 
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid
-coordinate) on the sphere is: $$\begin{aligned}
-\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})\end{aligned}$$
+coordinate) on the sphere is:
+$$
+\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})$$
 
 Here, $m$ corresponds to the density of the coordinate and is defined as
 $m=\frac{\partial p}{\partial \eta}$. if you look at Eq.
@@ -338,9 +344,10 @@ $G^{\lambda}, G^{\varphi}, G^{\eta}$ is calculated. After that, $mq$ at
 time step $t+\Delta t$ is calculated by leap-frog method as well as
 $\sigma$ coordinate.
 
-In actual source code, conbining to dividing by $m$ to calculate $q$ at
+In actual source code, combining to dividing by $m$ to calculate $q$ at
 time step $t+\Delta t$, $q$ at point $(i,j,k)$ in time step $t+\Delta t$
-is calculated as follows. $$\begin{split}
+is calculated as follows.
+$$\begin{split}
         q^{t+\Delta t}=&\frac{\Delta A_{k}+\Delta B_{k} P^{S,t-\Delta t}_{i,j,k}}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}q^{t-\Delta t}_{i,j,k}+\frac{2\Delta t}{\Delta D}\\
     &\times [(G^{\prime \lambda,t}_{i-\frac{1}{2},j,k}-G^{\prime \lambda,t}_{i+\frac{1}{2},j,k})+(G^{\prime \varphi,t}_{i,j-\frac{1}{2},k}-G^{\prime \varphi,t}_{i,j+\frac{1}{2},k}))+(G^{\prime \eta,t}_{i,j,k-\frac{1}{2}}-G^{\prime \eta,t}_{i,j,k+\frac{1}{2}})]\\
     &\times \frac{\Delta A_{k}+\Delta B_{k} P^{S,t}_{i,j,k}}{P^{S,t}_{i,j,k}}\frac{1}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}
@@ -370,4 +377,4 @@ calculation is:
     at $t$.
 
 ![Conceptual figure for the flux on pole-most
-grids.](polar_tracer_advection.png){#f2 width="5cm"}
+grids.](../figures/polar_tracer_advection.png){#f2 width="5cm"}

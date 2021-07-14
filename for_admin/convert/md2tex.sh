@@ -8,7 +8,7 @@
 # Copyright (C) 2006-2020 John MacFarlane. Web:  https://pandoc.org
 
 # Specify the directory markdown file existed
-dir=../../descript_files/markdown
+dir=../../descript_files
 
 # Get markdown file names to be compiled
 filelist=($(ls ${dir}/*.md | rev | cut -c 4-| rev))

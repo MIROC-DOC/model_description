@@ -79,7 +79,7 @@ which interpolation function is a quadrative function (Fig.\ref{f1}). The FFSL s
 \begin{figure}
 \hypertarget{f1}{%
 \centering
-\includegraphics[width=5cm,height=\textheight]{ppm_interpolate.png}
+\includegraphics[width=5cm,height=\textheight]{../figures/ppm_interpolate.png}
 \caption{The image of interpolation function in The piecewise parobolic method (PPM) scheme. The interpolation function is in the solid line, the grid mean value is in the dot line.}\label{f1}
 }
 \end{figure}
@@ -103,11 +103,11 @@ For calculationg \(q_{i+\frac{1}{2}}\) by interpolation, a finite integration of
 \begin{eqnarray}\delta q_{i}=\frac{\Delta x_{i}}{\Delta x_{i-1}+\Delta x_{i}+\Delta x_{i+1}}\biggl[\frac{2\Delta x_{i-1}+\Delta x_{i}}{\Delta x_{i+1}+\Delta x_{i}}(q_{i+1}-q_{i})+\frac{\Delta x_{i}+2\Delta x_{i+1}}{\Delta x_{i-1}+\Delta x_{i}}(q_{i}-q_{i-1})\biggr]\end{eqnarray}
 
 However, in this case, the interpolation function may have extremes in the grid and may not satisfy monotonicity. In order to avoid such a situation, \(q_{i+\frac{1}{2}}\) should be between \(q_{i}\)
-as \(q_{i+1}\), and \(\delta q_{i}\) is modified as follows for that. \begin{eqnarray}\begin{aligned}
-    \delta_{m} q_{i} & =\min(|\delta
-    q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
-    & =0 && \qquad \text{otherwise}
-  \end{aligned}\end{eqnarray} This \(\delta q_{i}\) is used in Eq.(\ref{a3}) to calculate \(q_{i+\frac{1}{2}}\).
+as \(q_{i+1}\), and \(\delta q_{i}\) is modified as follows for that. \begin{eqnarray}
+\delta_{m} q_{i} & =\min(|\delta
+q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
+& =0 && \qquad \text{otherwise}
+\end{eqnarray} This \(\delta q_{i}\) is used in Eq.(\ref{a3}) to calculate \(q_{i+\frac{1}{2}}\).
 
 When \(q(x)\) is interpolated as Eq.(\ref{a4}), by using Courant number defined as \begin{eqnarray}C=\frac{u_{i+\frac{1}{2}}\Delta t}{\Delta x_{i+1}}\end{eqnarray} flux \(F^{x}_{i+\frac{1}{2}}\) is wriiten as
 follows. \begin{eqnarray}F^{x}_{i+\frac{1}{2}}=\begin{cases}u_{i+\frac{1}{2}}[q_{R,i}-\frac{C}{2}(\Delta q_{i}-(1-\frac{2}{3}C)q_{6,i})] & (u_{i+\frac{1}{2}}\ge0)\\
@@ -138,11 +138,10 @@ In the case of three dimensional tracer advection, this procedure is conducted i
 
 In this subsection, the procedure implemented in MIROC6 of the tracer advection scheme is described. Although MIROC6 adopts \(\sigma\)-\(p\) hybrid coordinate as vertical coordinate, the tracer
 advection scheme is largely based on \(\sigma\) coordinate because previous version of MIROC adopted \(\sigma\) coordinate. Therefore, firstly the procedure under \(\sigma\) coordinate system is
-described. After this, the changes in the hybrid coordinate system from the \(\sigma\) coordinate system is described. The transport equation in \(\sigma\) coordinate on the sphere is expressed as
-\begin{eqnarray}\begin{aligned}
+described. After this, the changes in the hybrid coordinate system from the \(\sigma\) coordinate system is described. The transport equation in \(\sigma\) coordinate on the sphere is expressed as \begin{eqnarray}
   \label{b1}
   \frac{\partial P^{S} q}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q)\notag\\
-  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})\end{aligned}\end{eqnarray}
+  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})\end{eqnarray}
 \(P^{S}\) is surface pressure, \(q\) is quantity of tracers. Continuity equation is given by considering the case of \(q=1\).
 \begin{eqnarray}\frac{\partial P^{S}}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S}u)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S}v \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma})\end{eqnarray}
 Assuming that grid is equally spaced in zonal direction, the transport equation is discretized as follows. \begin{eqnarray}\label{a1}
@@ -196,8 +195,8 @@ The following are the procedure for the calculation of tracer advection in the s
   \(P^{s}_{t+\Delta t}\) Eq. (\ref{a2}).
 \end{enumerate}
 
-The transport equation in \(\eta\) coordinate (\(\sigma-p\) hybrid coordinate) on the sphere is: \begin{eqnarray}\begin{aligned}
-\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})\end{aligned}\end{eqnarray}
+The transport equation in \(\eta\) coordinate (\(\sigma-p\) hybrid coordinate) on the sphere is: \begin{eqnarray}
+\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})\end{eqnarray}
 
 Here, \(m\) corresponds to the density of the coordinate and is defined as \(m=\frac{\partial p}{\partial \eta}\). if you look at Eq. (\ref{b1}), you can find that difference of
 \(\sigma\) coordinate and \(\eta\) coordinate is only that \(P^{S}\) replaces \(m\). The actual tracer advection in \(\eta\) coordinate is mostly the same as \(\sigma\) coordinate.
@@ -208,7 +207,7 @@ In the scheme in \(\eta\) coordinate, the following variables are calculated in 
 In the time integration step, multiplying \(G\prime\) by \(m/P^{S}\), \(G^{\lambda}, G^{\varphi}, G^{\eta}\) is calculated. After that, \(mq\) at time step \(t+\Delta t\) is calculated by leap-frog
 method as well as \(\sigma\) coordinate.
 
-In actual source code, conbining to dividing by \(m\) to calculate \(q\) at time step \(t+\Delta t\), \(q\) at point \((i,j,k)\) in time step \(t+\Delta t\) is calculated as follows. \begin{eqnarray}\begin{split}
+In actual source code, combining to dividing by \(m\) to calculate \(q\) at time step \(t+\Delta t\), \(q\) at point \((i,j,k)\) in time step \(t+\Delta t\) is calculated as follows. \begin{eqnarray}\begin{split}
         q^{t+\Delta t}=&\frac{\Delta A_{k}+\Delta B_{k} P^{S,t-\Delta t}_{i,j,k}}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}q^{t-\Delta t}_{i,j,k}+\frac{2\Delta t}{\Delta D}\\
     &\times [(G^{\prime \lambda,t}_{i-\frac{1}{2},j,k}-G^{\prime \lambda,t}_{i+\frac{1}{2},j,k})+(G^{\prime \varphi,t}_{i,j-\frac{1}{2},k}-G^{\prime \varphi,t}_{i,j+\frac{1}{2},k}))+(G^{\prime \eta,t}_{i,j,k-\frac{1}{2}}-G^{\prime \eta,t}_{i,j,k+\frac{1}{2}})]\\
     &\times \frac{\Delta A_{k}+\Delta B_{k} P^{S,t}_{i,j,k}}{P^{S,t}_{i,j,k}}\frac{1}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}
@@ -233,7 +232,7 @@ latitude band is assumed to be preserved before/after flux calculation for the m
 \begin{figure}
 \hypertarget{f2}{%
 \centering
-\includegraphics[width=5cm,height=\textheight]{polar_tracer_advection.png}
+\includegraphics[width=5cm,height=\textheight]{../figures/polar_tracer_advection.png}
 \caption{Conceptual figure for the flux on pole-most grids.}\label{f2}
 }
 \end{figure}

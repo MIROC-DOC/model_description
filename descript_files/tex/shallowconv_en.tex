@@ -34,17 +34,16 @@ horizontal mixing with the environment (entrainment/detrainment). The flux of ve
     \rho \overline {w' \psi '}\approx M_u (\psi_u-\overline{\psi}) ,\end{eqnarray} where \(M_u=\rho_u\sigma_u w_u\) is mass flux of updraft (\(\rho_u\),\(\sigma_u\), and \(w_u\) stand for density in updraft, area
 fraction of updraft in a grid, and vertical velocity, respectively)， \(\psi_u\) is a conserved variable transported by convection (e.g.~liquid water potential temperature, total water mixing ratio,
 horizontal components of momentum) in updraft， \(\overline{\psi}\) denotes the average value in the environmental field of the same conserved value. The effects of vertical transport due to shallow
-convection are represented by determining the vertical profiles of unknown values \(M_u\) and \(\psi_u\). Flux of mass and conserved values are diagnosed as \begin{eqnarray}\begin{aligned}
+convection are represented by determining the vertical profiles of unknown values \(M_u\) and \(\psi_u\). Flux of mass and conserved values are diagnosed as \begin{eqnarray}
     \frac{\partial M_u}{\partial z} &= E - D \label{zprof_Mu}\\
-    \frac{\partial}{\partial z} (\psi_u M_u) &= X_\psi + S_\psi M_u,\label{zprof_psi}\end{aligned}\end{eqnarray} where \(X_\psi\) represents horizontal mixing with environmental air, and \(S_\psi\) is source
-term. \(E\) and \(D\) are rates of entrainment and detrainment, which are described in fractional from \begin{eqnarray}\begin{aligned}
+    \frac{\partial}{\partial z} (\psi_u M_u) &= X_\psi + S_\psi M_u,\label{zprof_psi}\end{eqnarray} where \(X_\psi\) represents horizontal mixing with environmental air, and \(S_\psi\) is source term. \(E\) and
+\(D\) are rates of entrainment and detrainment, which are described in fractional from \begin{eqnarray}
     E &=\epsilon M_u \label{fracE}\\
-    D &=\delta M_u. \label{fracD}\end{aligned}\end{eqnarray} Substituting \(\overline{\psi}\) for grid value and assuming the horizontal mixing term as \(X_{\psi}=E \overline{\psi} - D\psi_u\) results in
-\begin{eqnarray}\begin{aligned}
+    D &=\delta M_u. \label{fracD}\end{eqnarray} Substituting \(\overline{\psi}\) for grid value and assuming the horizontal mixing term as \(X_{\psi}=E \overline{\psi} - D\psi_u\) results in \begin{eqnarray}
     \frac{\partial M_u}{\partial z} &= M_u (\epsilon - \delta) \label{zprof_Mu'}\\
-    \frac{\partial \psi_u}{\partial z} &= \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \label{zprof_psi'}\end{aligned}\end{eqnarray} In MIROC6, changes in liquid water potential temperature due to precipitation
-and the effect of subgrid pressure gradient on horizontal momentum are included in \(S_{\psi}\). Consequently, equations (\ref{zprof_Muux27}{}) and (\ref{zprof_psiux27})
-results in a closure problem of two parameters \(\delta\) and \(\epsilon\). By determining \(\delta\) and \(\epsilon\) by the formulation described in section
+    \frac{\partial \psi_u}{\partial z} &= \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \label{zprof_psi'}\end{eqnarray} In MIROC6, changes in liquid water potential temperature due to precipitation and the
+effect of subgrid pressure gradient on horizontal momentum are included in \(S_{\psi}\). Consequently, equations (\ref{zprof_Muux27}{}) and (\ref{zprof_psiux27}) results
+in a closure problem of two parameters \(\delta\) and \(\epsilon\). By determining \(\delta\) and \(\epsilon\) by the formulation described in section
 \ref{diagnosing-vertical-profile-of-updraft-mass-flux} and solving differential equations along with boundary condition at cloud base, vertical profiles of \(M_u\) and \(\psi_u\) are
 calculated.
 
@@ -141,14 +140,14 @@ The occurrence of entrainment is judged as follows. Firstly, if the updraft air 
 entrainment occurs if the parcel can travel longer than a certain eddy mixing distance \(l_c=c_1 H\), where \(c_1=0.1\) is an empirical constant, chosen to optimize the trade-cumulus case. This
 criterion corresponds to the critical buoyancy value \begin{eqnarray}\label{buoy_c}
     B_c = -\frac{1}{2}\frac{w_u^2}{l_c}\end{eqnarray} and otherwise, all the mixed air is detrained. Therefore, Once the critical value of the mixing state \(\chi_c\) is obtained, which allows the updraft to rise
-a distance \(l_c\) under negative buoyancy, the air in the environmental field entrained into the cloud and the air in the updraft that is detrained can be determined as follows \begin{eqnarray}\begin{aligned}
+a distance \(l_c\) under negative buoyancy, the air in the environmental field entrained into the cloud and the air in the updraft that is detrained can be determined as follows \begin{eqnarray}
     M_u\epsilon&=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \label{flux_entre}\\
-    M_u\delta&=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \label{flux_detre}\end{aligned}\end{eqnarray} Thus, letting \begin{eqnarray}\begin{aligned}
+    M_u\delta&=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \label{flux_detre}\end{eqnarray} Thus, letting \begin{eqnarray}
     \epsilon&=\epsilon_0\chi_c^2 \label{Etilde}\\
-    \delta&=\epsilon_0(1-\chi_c)^2, \label{Dtilde}\end{aligned}\end{eqnarray} equatinons (\ref{zprof_Muux27}{}) and (\ref{zprof_psiux27}) are expressed as follows \begin{eqnarray}\begin{aligned}
+    \delta&=\epsilon_0(1-\chi_c)^2, \label{Dtilde}\end{eqnarray} equatinons (\ref{zprof_Muux27}{}) and (\ref{zprof_psiux27}) are expressed as follows \begin{eqnarray}
     \frac{1}{M_u}\frac{\partial M_u}{\partial z} &= \epsilon - \delta = \epsilon_0(2\chi_c - 1) \label{zprof_Mu_param}\\
-    \frac{\partial \psi_u}{\partial z} &= \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \label{zprof_psi_param}\end{aligned}\end{eqnarray} where \(\chi_c\)
-is computed based on virtual potential temperature of mixed air \begin{eqnarray}\label{virt_pot_t}
+    \frac{\partial \psi_u}{\partial z} &= \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \label{zprof_psi_param}\end{eqnarray} where \(\chi_c\) is computed
+based on virtual potential temperature of mixed air \begin{eqnarray}\label{virt_pot_t}
     \theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{lu})-\left(\frac{\beta L}{c_p\Pi}-\theta_u\right)(\overline{q_t}-q_{tu})\right]\end{eqnarray} (Bretherton et al., 2004). \(\beta\) is a
 thermodynamic parameter which depends on temperature and pressure defined by Randall (1980), \(\theta_{lu}\) is liquid water potential temperature in updraft, \(\theta_u\) is updraft potential
 temperature，\(\overline{q_t}\) is total water mixing ratio of environment， \(q_{tu}\) is total water mixing ratio of updraft, \(L\) is latent heat of vaporization，\(c_p\) is specific heat capacity

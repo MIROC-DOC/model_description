@@ -17,7 +17,8 @@ Latitude grids \(\varphi_j\) are derived from the Gauss-Legendre integral formul
   \varphi_j =  \pi \left( \frac{1}{2}- \frac{j-1/2}{J} \right), \;\;\; j = 1, \ldots J.\end{aligned}\end{eqnarray} Usually, the grid spacing of longitude and latitude is taken to be approximately equal to
 \(J = I/2\), based on the triangular truncation of the spectral method.
 
-Air pressure \(p\) is defined at half levels (\(p_{k+1/2},\ k = 1, 2, \ldots K\)) using the following formula using constants \(A_{k+1/2},\ B_{k+1/2}\): \begin{eqnarray}\begin{aligned}
+Air pressure \(p\) is defined at half levels (\(p_{k+1/2},\ k = 1, 2, \ldots K\)) using the following formula using constants \(A_{k+1/2},\ B_{k+1/2}\): \begin{eqnarray}
+\begin{aligned}
 p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}\end{eqnarray} where \(A_{1/2}=A_{K+1/2}=0,\ B_{1/2}=1,\ B_{K+1/2}=0\) and thus \(p_{1/2}=p_s,\ p_{K+1/2}=0\). Therefore, the normalized pressure
 \(\sigma\equiv p/p_s\) can be written as below: \begin{eqnarray}\begin{aligned}
 \sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.\end{aligned}\end{eqnarray}
@@ -41,7 +42,7 @@ isobaric, and the two are smoothly connected.
 \begin{figure}
 \hypertarget{levels}{%
 \centering
-\includegraphics{levels.pdf}
+\includegraphics{./figures/levels.pdf}
 \caption{Default arangement of vertical levels for 80-level simulations.\protect\hypertarget{levels}{}{{[}levels{]}}}\label{levels}
 }
 \end{figure}
