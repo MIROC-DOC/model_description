@@ -35,7 +35,7 @@ do
 	sed -e 's/\(\\ref{.*}\)\({}\)/\1/g' \
 	> ${name}.tex
 	python tex2tex.py ${name}.tex
-	mv ${name}.tex ../../descript_files/tex/
+	mv ${name}.tex tex/
 done
 
-rm tmp.md
+cp ../../descript_files/figures/* ./figures/

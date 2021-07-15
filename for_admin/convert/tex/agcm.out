@@ -1,0 +1,120 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Characteristics of MIROC6 AGCM}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Features and Structure of the Model}{section.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Basic Features of the Model.}{subsection.1.2}% 4
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Model Execution Flow}{subsection.1.2}% 5
+\BOOKMARK [3][-]{subsubsection.1.2.3}{Prognostic Variables}{subsection.1.2}% 6
+\BOOKMARK [3][-]{subsubsection.1.2.4}{Coordinate System}{subsection.1.2}% 7
+\BOOKMARK [3][-]{subsubsection.1.2.5}{Physical Constants}{subsection.1.2}% 8
+\BOOKMARK [1][-]{section.2}{Dynamics}{}% 9
+\BOOKMARK [2][-]{subsection.2.1}{Basic Equations}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Basic Equations}{subsection.2.1}% 11
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Boundary Conditions}{subsection.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.2}{Vertical Discretization}{section.2}% 13
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Model Levels}{subsection.2.2}% 14
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Vertical Discretization}{subsection.2.2}% 15
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Differences from the \134sigma-Coordinate}{subsection.2.2}% 16
+\BOOKMARK [2][-]{subsection.2.3}{Horizontal Discretization}{section.2}% 17
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Spectral Expansion}{subsection.2.3}% 18
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Horizontal Diffusion Term}{subsection.2.3}% 19
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Spectral Representation of Equations}{subsection.2.3}% 20
+\BOOKMARK [2][-]{subsection.2.4}{Time Integration}{section.2}% 21
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Time Integration and Time Filtering with the Leap Frog Method}{subsection.2.4}% 22
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Semi-Implicit Time Integration}{subsection.2.4}% 23
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Applying the Semi-Implicit Time Integration}{subsection.2.4}% 24
+\BOOKMARK [3][-]{subsubsection.2.4.4}{Time Scheme Properties and Requiments for Time Steps}{subsection.2.4}% 25
+\BOOKMARK [3][-]{subsubsection.2.4.5}{Handling of the Initiation of Time Integration}{subsection.2.4}% 26
+\BOOKMARK [2][-]{subsection.2.5}{Tracer Advection Scheme}{section.2}% 27
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Introduction of Tracer Advection Scheme}{subsection.2.5}% 28
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Principle of the Tracer Advection Scheme}{subsection.2.5}% 29
+\BOOKMARK [3][-]{subsubsection.2.5.3}{The Piecewise Parobolic Method Scheme}{subsection.2.5}% 30
+\BOOKMARK [3][-]{subsubsection.2.5.4}{Actual Tracer Advection Scheme in MIROC6}{subsection.2.5}% 31
+\BOOKMARK [2][-]{subsection.2.6}{Summary of the Dynamical Core}{section.2}% 32
+\BOOKMARK [3][-]{subsubsection.2.6.1}{Conversion of Horizontal Wind to Vorticity and Divergence}{subsection.2.6}% 33
+\BOOKMARK [3][-]{subsubsection.2.6.2}{Calculating a Virtual Temperature}{subsection.2.6}% 34
+\BOOKMARK [3][-]{subsubsection.2.6.3}{Calculating the Pressure Gradient Term}{subsection.2.6}% 35
+\BOOKMARK [3][-]{subsubsection.2.6.4}{Diagnosis of Vertical Dlow}{subsection.2.6}% 36
+\BOOKMARK [3][-]{subsubsection.2.6.5}{Tendency Terms due to Advection}{subsection.2.6}% 37
+\BOOKMARK [3][-]{subsubsection.2.6.6}{Transformation of Prognostic Variables to Spectral Space}{subsection.2.6}% 38
+\BOOKMARK [3][-]{subsubsection.2.6.7}{Transformation of Tendency Terms to Spectral Space}{subsection.2.6}% 39
+\BOOKMARK [3][-]{subsubsection.2.6.8}{Time Integration in Spectral Space}{subsection.2.6}% 40
+\BOOKMARK [3][-]{subsubsection.2.6.9}{Transformation of Prognostic Variables to Grid Point Values}{subsection.2.6}% 41
+\BOOKMARK [3][-]{subsubsection.2.6.10}{Diffusion Correction along Pressure Level}{subsection.2.6}% 42
+\BOOKMARK [3][-]{subsubsection.2.6.11}{Frictional Heat Associated with Diffusion}{subsection.2.6}% 43
+\BOOKMARK [3][-]{subsubsection.2.6.12}{Horizontal Diffusion and Rayleigh Friction}{subsection.2.6}% 44
+\BOOKMARK [3][-]{subsubsection.2.6.13}{Time Filter}{subsection.2.6}% 45
+\BOOKMARK [3][-]{subsubsection.2.6.14}{Correction for Conservation of Mass}{subsection.2.6}% 46
+\BOOKMARK [2][-]{subsection.2.7}{Computational Flow of Dynamical Core}{section.2}% 47
+\BOOKMARK [3][-]{subsubsection.2.7.1}{Overview of Dynamical Core}{subsection.2.7}% 48
+\BOOKMARK [1][-]{section.3}{Physics}{}% 49
+\BOOKMARK [2][-]{subsection.3.1}{Overview of Physical Parameterizations}{section.3}% 50
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Time Integration of Physical Parameterizations}{subsection.3.1}% 51
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Various Physical Quantities}{subsection.3.1}% 52
+\BOOKMARK [2][-]{subsection.3.2}{Cumulus Scheme}{section.3}% 53
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Outline of Cumulus Scheme}{subsection.3.2}% 54
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Interaction between Cumulus Ensemble and Large-Scale Environment}{subsection.3.2}% 55
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Cloud Base}{subsection.3.2}% 56
+\BOOKMARK [3][-]{subsubsection.3.2.4}{Updraft Velocity and Entrainment Rate}{subsection.3.2}% 57
+\BOOKMARK [3][-]{subsubsection.3.2.5}{Normalized Mass Flux and Updraft Properties}{subsection.3.2}% 58
+\BOOKMARK [3][-]{subsubsection.3.2.6}{Spectral Representation}{subsection.3.2}% 59
+\BOOKMARK [3][-]{subsubsection.3.2.7}{Cloud-Base Mass Flux}{subsection.3.2}% 60
+\BOOKMARK [3][-]{subsubsection.3.2.8}{Microphysics}{subsection.3.2}% 61
+\BOOKMARK [3][-]{subsubsection.3.2.9}{Evaporation, Sublimation and Downdraft}{subsection.3.2}% 62
+\BOOKMARK [3][-]{subsubsection.3.2.10}{Cloudiness}{subsection.3.2}% 63
+\BOOKMARK [3][-]{subsubsection.3.2.11}{Cumulus Momentum Transport}{subsection.3.2}% 64
+\BOOKMARK [2][-]{subsection.3.3}{Shallow Convection Scheme}{section.3}% 65
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Overview of Shallow Convection}{subsection.3.3}% 66
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Basics of Cloud Model}{subsection.3.3}% 67
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Computation in PSHCN}{subsection.3.3}% 68
+\BOOKMARK [2][-]{subsection.3.4}{Large Scale Condensation}{section.3}% 69
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Physical Basis for Statistical PDF Scheme}{subsection.3.4}% 70
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Hybrid Prognostic Cloud scheme}{subsection.3.4}% 71
+\BOOKMARK [3][-]{subsubsection.3.4.3}{PDF Change Through Processes}{subsection.3.4}% 72
+\BOOKMARK [3][-]{subsubsection.3.4.4}{Solving Procedures}{subsection.3.4}% 73
+\BOOKMARK [2][-]{subsection.3.5}{Cloud Microphysics}{section.3}% 74
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Overview of Cloud Microphysics}{subsection.3.5}% 75
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Microphysical Processes}{subsection.3.5}% 76
+\BOOKMARK [2][-]{subsection.3.6}{Radiation Scheme}{section.3}% 77
+\BOOKMARK [3][-]{subsubsection.3.6.1}{Summary of the Radiation Flux Calculation}{subsection.3.6}% 78
+\BOOKMARK [3][-]{subsubsection.3.6.2}{Wavelength and Sub-Channel}{subsection.3.6}% 79
+\BOOKMARK [3][-]{subsubsection.3.6.3}{Calculation of the Planck Function}{subsection.3.6}% 80
+\BOOKMARK [3][-]{subsubsection.3.6.4}{Calculation of the Optical Thickness to Gas Absorption}{subsection.3.6}% 81
+\BOOKMARK [3][-]{subsubsection.3.6.5}{Calculation of the Optical Thickness to CFC Absorption}{subsection.3.6}% 82
+\BOOKMARK [3][-]{subsubsection.3.6.6}{Optical Thickness to Scattering and Scattering Moment}{subsection.3.6}% 83
+\BOOKMARK [3][-]{subsubsection.3.6.7}{Total Optical Thickness}{subsection.3.6}% 84
+\BOOKMARK [3][-]{subsubsection.3.6.8}{Expansion of the Plank Function}{subsection.3.6}% 85
+\BOOKMARK [3][-]{subsubsection.3.6.9}{Transmission and Reflection Coefficients, and Source Function}{subsection.3.6}% 86
+\BOOKMARK [3][-]{subsubsection.3.6.10}{T, R, S Matrixes for Maximal/Random Approximation}{subsection.3.6}% 87
+\BOOKMARK [3][-]{subsubsection.3.6.11}{Adding of Source Functions for Each Layer}{subsection.3.6}% 88
+\BOOKMARK [3][-]{subsubsection.3.6.12}{Adding in the Flux}{subsection.3.6}% 89
+\BOOKMARK [3][-]{subsubsection.3.6.13}{Calculation of the Temperature Derivative of the Flux}{subsection.3.6}% 90
+\BOOKMARK [3][-]{subsubsection.3.6.14}{Calculation of the Heating Rate}{subsection.3.6}% 91
+\BOOKMARK [3][-]{subsubsection.3.6.15}{Flux of incidence and incident angle}{subsection.3.6}% 92
+\BOOKMARK [3][-]{subsubsection.3.6.16}{Reading Each Parameter}{subsection.3.6}% 93
+\BOOKMARK [3][-]{subsubsection.3.6.17}{Other Notes}{subsection.3.6}% 94
+\BOOKMARK [2][-]{subsection.3.7}{Turbulence Scheme}{section.3}% 95
+\BOOKMARK [3][-]{subsubsection.3.7.1}{Surface Layer}{subsection.3.7}% 96
+\BOOKMARK [3][-]{subsubsection.3.7.2}{Calculation of the Buoyancy Coefficients}{subsection.3.7}% 97
+\BOOKMARK [3][-]{subsubsection.3.7.3}{Stability Functions for the Level 2}{subsection.3.7}% 98
+\BOOKMARK [3][-]{subsubsection.3.7.4}{Master Length Scale}{subsection.3.7}% 99
+\BOOKMARK [3][-]{subsubsection.3.7.5}{Calculation of Diffusion Coefficients}{subsection.3.7}% 100
+\BOOKMARK [3][-]{subsubsection.3.7.6}{Calculation of Turbulent Variables}{subsection.3.7}% 101
+\BOOKMARK [3][-]{subsubsection.3.7.7}{Time Integration with Implicit Scheme}{subsection.3.7}% 102
+\BOOKMARK [2][-]{subsection.3.8}{Surface Flux Scheme \(Sea Surface\)}{section.3}% 103
+\BOOKMARK [3][-]{subsubsection.3.8.1}{Boundary Conditions}{subsection.3.8}% 104
+\BOOKMARK [3][-]{subsubsection.3.8.2}{Calculation of Momentum, Heat and Water Vapor Fluxes}{subsection.3.8}% 105
+\BOOKMARK [3][-]{subsubsection.3.8.3}{Radiation Flux Calculation}{subsection.3.8}% 106
+\BOOKMARK [3][-]{subsubsection.3.8.4}{Solving Heat Balance}{subsection.3.8}% 107
+\BOOKMARK [2][-]{subsection.3.9}{Gravity Waves}{section.3}% 108
+\BOOKMARK [3][-]{subsubsection.3.9.1}{Overview of a Gravity Wave Drag Parameterization}{subsection.3.9}% 109
+\BOOKMARK [3][-]{subsubsection.3.9.2}{Relationship between Local FroudeNnumber and Momentum Flux}{subsection.3.9}% 110
+\BOOKMARK [3][-]{subsubsection.3.9.3}{Momentum Fluxes at the Surface}{subsection.3.9}% 111
+\BOOKMARK [3][-]{subsubsection.3.9.4}{Momentum Fluxes in the Upper Levels}{subsection.3.9}% 112
+\BOOKMARK [3][-]{subsubsection.3.9.5}{The Magnitude of the Time Variation of Horizontal Wind due to Momentum Convergence}{subsection.3.9}% 113
+\BOOKMARK [3][-]{subsubsection.3.9.6}{Other Notes}{subsection.3.9}% 114
+\BOOKMARK [1][-]{section.4}{Miscellaneous}{}% 115
+\BOOKMARK [2][-]{subsection.4.1}{Coupler}{section.4}% 116
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Fluxes to Atmospheric Models}{subsection.4.1}% 117
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Fluxes between Land Surface Model and River Model}{subsection.4.1}% 118
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Fluxes to the Ocean Model}{subsection.4.1}% 119
+\BOOKMARK [2][-]{subsection.4.2}{Definition of Land-Sea Distribution}{section.4}% 120
