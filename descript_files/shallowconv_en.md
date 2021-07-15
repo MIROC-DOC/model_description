@@ -61,7 +61,7 @@ shallow convection in a horizontal grid, which is expressed as a single
 updraft plume, is supposed to experience horizontal mixing with the
 environment (entrainment/detrainment). The flux of vertical transport of
 mass is assumed in the following form:
-$$\label{def_Mu}
+$$ \tag{def-Mu}
     \rho \overline {w' \psi '}\approx M_u (\psi_u-\overline{\psi}) ,$$
 where $M_u=\rho_u\sigma_u w_u$ is mass flux of updraft
 ($\rho_u$,$\sigma_u$, and $w_u$ stand for density in updraft, area
@@ -74,30 +74,32 @@ The effects of vertical transport due to shallow convection are
 represented by determining the vertical profiles of unknown values $M_u$
 and $\psi_u$. Flux of mass and conserved values are diagnosed as
 $$
-    \frac{\partial M_u}{\partial z} &= E - D \label{zprof_Mu}\\
-    \frac{\partial}{\partial z} (\psi_u M_u) &= X_\psi + S_\psi M_u,\label{zprof_psi}$$
+    \frac{\partial M_u}{\partial z} = E - D \tag{zprof-Mu}
+$$
+$$
+    \frac{\partial}{\partial z} (\psi_u M_u) = X_\psi + S_\psi M_u,\tag{zprof-psi} $$
 where $X_\psi$ represents horizontal mixing with environmental air, and
 $S_\psi$ is source term. $E$ and $D$ are rates of entrainment and
 detrainment, which are described in fractional from
 $$
-    E &=\epsilon M_u \label{fracE}\\
-    D &=\delta M_u. \label{fracD}$$ Substituting
+    E =\epsilon M_u \tag{fracE}
+$$
+$$
+    D =\delta M_u. \tag{fracD} $$ Substituting
 $\overline{\psi}$ for grid value and assuming the horizontal mixing term
 as $X_{\psi}=E \overline{\psi} - D\psi_u$ results in
 $$
-    \frac{\partial M_u}{\partial z} &= M_u (\epsilon - \delta) \label{zprof_Mu'}\\
-    \frac{\partial \psi_u}{\partial z} &= \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \label{zprof_psi'}$$
+    \frac{\partial M_u}{\partial z} = M_u (\epsilon - \delta) \tag{zprof-Mu'}
+$$
+$$
+    \frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \tag{zprof-psi'}$$
 In MIROC6, changes in liquid water potential temperature due to
 precipitation and the effect of subgrid pressure gradient on horizontal
 momentum are included in $S_{\psi}$. Consequently, equations
-([\[zprof\_Mu\'\]](#zprof_Mu'){reference-type="ref"
-reference="zprof_Mu'"}) and
-([\[zprof\_psi\'\]](#zprof_psi'){reference-type="ref"
-reference="zprof_psi'"}) results in a closure problem of two parameters
+([zprof_Mu](zprof-Mu')) and ([zprof_psi](zprof-psi')) results in a closure problem of two parameters
 $\delta$ and $\epsilon$. By determining $\delta$ and $\epsilon$ by the
 formulation described in section
-[0.1.3.4](#diagnosing-vertical-profile-of-updraft-mass-flux){reference-type="ref"
-reference="diagnosing-vertical-profile-of-updraft-mass-flux"} and
+([0.1.3.4](diagnosing-vertical-profile-of-updraft-mass-flux)) and
 solving differential equations along with boundary condition at cloud
 base, vertical profiles of $M_u$ and $\psi_u$ are calculated.
 
@@ -130,24 +132,22 @@ kinetic energy (TKE) in boundary layer and convective inhibition (CIN)
 at the top of boundary layer.
 
 Firstly, the vertical profile of updraft velocity is supposed to fulfill
-$$\label{zprof_wu}
+$$\tag{zprof-wu}
     \frac{1}{2}\frac{\partial}{\partial z}w_u^2=aB_u-b\epsilon w_u^2$$
 all over the layers with shallow convection. $B_u$ means updraft
 buoyancy, $a$ and $b$ are empirical parameters. The first term of the
-right-hand side of ([\[zprof\_wu\]](#zprof_wu){reference-type="ref"
-reference="zprof_wu"}) is acceleration by buoyancy, and the second term
+right-hand side of ([zprof_wu](zprof-wu)) is acceleration by buoyancy, and the second term
 represents drag by entrainment. By assuming no entrainment below LFC and
-integrating ([\[zprof\_wu\]](#zprof_wu){reference-type="ref"
-reference="zprof_wu"}) from cloud base to LFC, The critical value of
+integrating ([zprof_wu](zprof-wu)) from cloud base to LFC, The critical value of
 upward velocity for updraft plume to reach LFC, $w_c$, can be determined
 
-$$\label{wc}
+$$\tag{wc}
     w_c = \sqrt{2a(CIN)}.$$ Updrafts that exceed this critical value
 penetrates from cloud base.
 
 Computation of CIN is based on Appendix C of Bretherton et al.,
 $$\begin{aligned}
-\label{def_CIN}
+\tag{def-CIN}
     CIN = [B_u(p_{base}) + B_u(p_{LCL})]\frac{p_{LCL}-p_{base}}{g(\rho_{LCL}+\rho_{base})} + B_u(p_{LCL})\frac{p_{LFC}-p_{LCL}}{g(\rho_{LFC}+\rho_{LCL})}.\end{aligned}$$
 In the following, subscript $\mathit{base}$ represents the value at the
 top of mixing layer. In MIROC6, for simplicity, $B_u(p_{base})$ is set
@@ -156,7 +156,7 @@ to zero.
 Secondly, to obtain the information of vertical velocity at cloud base,
 the statistical distribution of $w$ is assumed to follow Gaussian
 distribution
-$$\label{distr_w}
+$$\tag{distr-w}
     f(w) = \frac{1}{2\pi k_f e_{avg}}\exp\left[ -\frac{w^2}{2k_fe_{avg}}\right]$$
 with variance equal to $k_f e_{avg}$, where $e_{avg}$ is average TKE
 diagnosed in turbulent and vertical diffusion scheme. $k_f$ is an
@@ -166,7 +166,7 @@ recommended value based on large eddy simulation is 0.5.
 
 By taking average of vertical velocity above the critical value $w_c$,
 cloud base mass flux $M_{u,base}$ is diagnosed as
-$$\label{Mubase}
+$$\tag{Mubase}
     M_{u,base}=\overline{\rho_{base}}\int_{w_c}^{\infty}wf(w)dw =\overline{\rho_{base}}\sqrt{\frac{k_f e_{avg}}{2\pi}}\exp\left[-\frac{w_c^2}{2k_fe_{avg}}\right],$$
 where $\overline{\rho_{base}}$ is density at LFC. This mass flux is
 larger for larger boundary layer TKE and smaller for larger CIN.
@@ -179,7 +179,7 @@ top of boundary layer is diagnosed as the level with maximum vertical
 gradient of relative humidity. Let $z_{Hi}$ be the higher of this level
 and LCL, and $z_{Lo}$ be the lower, then the cloud base altitude
 $z_{base}$ is set
-$$\label{zbase}
+$$\tag{zbase}
     z_{base} = z_{Hi} - (z_{Hi}-z_{Lo})\frac{CIN-CIN_{Lo}}{CIN_{Hi} - CIN_{Lo}}.$$
 $CIN_{Hi}$ and $CIN_{Lo}$ are coefficients which satisfy
 $CIN_{Lo}\le CIN \le CIN_{Hi}$ for a typical value of CIN.
@@ -238,7 +238,7 @@ updraft air is not saturated, entrainment is not assumed to occur.
 Nextly, with virtual potential energy in the environmental field
 ($\overline{\theta_v}$) and updraft ($\theta_{vu}$), buoyancy force on
 the parcel is defined:
-$$\label{buoy_u}
+$$\tag{buoy-u}
     B_u = g\frac{\theta_{vu} - \overline{\theta_{v}}}{ \overline{\theta_v}}$$
 and entrainment occurs when the buoyancy on parcel is positive.
 Furthermore, even when the buoyancy is negative, entrainment occurs if
@@ -246,7 +246,7 @@ the parcel can travel longer than a certain eddy mixing distance
 $l_c=c_1 H$, where $c_1=0.1$ is an empirical constant, chosen to
 optimize the trade-cumulus case. This criterion corresponds to the
 critical buoyancy value
-$$\label{buoy_c}
+$$\tag{buoy-c}
     B_c = -\frac{1}{2}\frac{w_u^2}{l_c}$$ and otherwise, all the mixed
 air is detrained. Therefore, Once the critical value of the mixing state
 $\chi_c$ is obtained, which allows the updraft to rise a distance $l_c$
@@ -254,22 +254,26 @@ under negative buoyancy, the air in the environmental field entrained
 into the cloud and the air in the updraft that is detrained can be
 determined as follows
 $$
-    M_u\epsilon&=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \label{flux_entre}\\
-    M_u\delta&=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \label{flux_detre}$$
+    M_u\epsilon=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \tag{flux-entre}
+    $$
+$$
+    M_u\delta=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \tag{flux-detre}$$
 Thus, letting
 $$
-    \epsilon&=\epsilon_0\chi_c^2 \label{Etilde}\\
-    \delta&=\epsilon_0(1-\chi_c)^2, \label{Dtilde}$$
-equatinons ([\[zprof\_Mu\'\]](#zprof_Mu'){reference-type="ref"
-reference="zprof_Mu'"}) and
-([\[zprof\_psi\'\]](#zprof_psi'){reference-type="ref"
-reference="zprof_psi'"}) are expressed as follows
+    \epsilon=\epsilon_0\chi_c^2 \tag{Etilde}\\
 $$
-    \frac{1}{M_u}\frac{\partial M_u}{\partial z} &= \epsilon - \delta = \epsilon_0(2\chi_c - 1) \label{zprof_Mu_param}\\
-    \frac{\partial \psi_u}{\partial z} &= \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \label{zprof_psi_param}$$
+$$
+    \delta=\epsilon_0(1-\chi_c)^2, \tag{Dtilde}$$
+equatinons ([zprof_Mu](zprof-Mu')) and
+([zprof_psi](zprof_psi')) are expressed as follows
+$$
+    \frac{1}{M_u}\frac{\partial M_u}{\partial z} = \epsilon - \delta = \epsilon_0(2\chi_c - 1) \tag{zprof-Mu-param}
+$$
+$$
+    \frac{\partial \psi_u}{\partial z} = \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \tag{zprof-psi-param}$$
 where $\chi_c$ is computed based on virtual potential temperature of
 mixed air
-$$\label{virt_pot_t}
+$$\tag{virt-pot-t}
     \theta_v(\chi)=\theta_{vu}+\chi\left[ \beta(\overline{\theta_l}-\theta_{lu})-\left(\frac{\beta L}{c_p\Pi}-\theta_u\right)(\overline{q_t}-q_{tu})\right]$$
 (Bretherton et al., 2004). $\beta$ is a thermodynamic parameter which
 depends on temperature and pressure defined by Randall (1980),
@@ -281,15 +285,12 @@ capacity of dry air at constant pressure, and $\Pi$ is the Exner
 function.
 
 Consequently, the governing equations
-([\[zprof\_wu\]](#zprof_wu){reference-type="ref" reference="zprof_wu"}),
-([\[zprof\_Mu\_param\]](#zprof_Mu_param){reference-type="ref"
-reference="zprof_Mu_param"}), and
-([\[zprof\_psi\_param\]](#zprof_psi_param){reference-type="ref"
-reference="zprof_psi_param"}) for vertical profiles of $w_u$, $M_u$, and
+([zprof_wu](zprof-wu)),
+([zprof_Mu_param](zprof-Mu-param)), and
+([zprof\_psi\_param](zprof-psi-param)) for vertical profiles of $w_u$, $M_u$, and
 $\psi_u$ are obtained. These equations are discretized and integrated
 upward one layer at a time using the lower boundary condition in section
-[0.1.3.1](#lower-boundary-condition){reference-type="ref"
-reference="lower-boundary-condition"} to yield the vertical profile of
+[0.1.3.1](lower-boundary-condition) to yield the vertical profile of
 each variables.
 
 Afterward, from liquid water potential temperature and total water
@@ -297,13 +298,12 @@ mixing ratio, liquid water mixing ratio $q_l$ and water vapor mixing
 ratio $q_v$ are diagnosed. The cloud water that exceeds a threshold is
 disposed as rainwater $q_r$, and liquid water potential temperature is
 updated according to the amount of $q_r$. This corresponds to $S_\psi$
-in ([\[virt\_pot\_t\]](#virt_pot_t){reference-type="ref"
-reference="virt_pot_t"}).
+in ([virt_pot_t](virt-pot-t)).
 
 The formulation of the vertical flux in this scheme is equal to the
 assumption that the updraft is not large enough to replace all of the
 air in a grid box in the time step $\Delta t$. Therefore, the following
 limiter is imposed to prevent numerical instability when diagnosing mass
 flux of the updraft.
-$$\label{Mu_limit}
+$$\tag{Mu-limit}
     M_u = min.\left(M_u, \frac{\rho\Delta z}{\Delta t}\right)$$

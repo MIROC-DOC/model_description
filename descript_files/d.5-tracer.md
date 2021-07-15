@@ -109,7 +109,7 @@ The old editions of MIROC adoptted van Leer method, in which
 interpolation function is a linear function, but MIROC6 adopts The
 Piecewise Parobolic Method (PPM) scheme (Colella and Woodward 1984) , in
 which interpolation function is a quadrative function
-(Fig.[1](#f1){reference-type="ref" reference="f1"}). The FFSL scheme
+(Fig.([a1](a1)). The FFSL scheme
 which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
 
 ![The image of interpolation function in The piecewise parobolic method
@@ -117,11 +117,14 @@ which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
 mean value is in the dot line.](../figures/ppm_interpolate.png){#f1 width="5cm"}
 
 In PPM scheme, the distribution is determined as follows.
-$$\begin{split}
-\label{a4}
-  q(x)=q_{L,i}+\xi (\Delta q_{i}+q_{6,i}(1-\xi))\\
-  \xi=\frac{x-x_{i-\frac{1}{2}}}{\Delta x_{i}},  x_{i-\frac{1}{2}}\leq x \leq x_{i+\frac{1}{2}}
-  \end{split}$$ Here, $q_{L,i}$ is defined as
+$$
+\begin{array}{c}
+q(x)=q_{L, i}+\xi\left(\Delta q_{i}+q_{6, i}(1-\xi)\right) \\
+\xi=\frac{x-x_{i-\frac{1}{2}}}{\Delta x_{i}}, x_{i-\frac{1}{2}} \leq x \leq x_{i+\frac{1}{2}}
+\end{array}
+$$
+
+Here, $q_{L,i}$ is defined as
 $\lim_{x \to x_{i+\frac{1}{2}}}=q_{L,i}$. $q_{R,i}$ is defined as
 $\lim_{x \to x_{i+\frac{1}{2}}}=q_{R,i}$ as well. In PPM scheme, $q$ is
 continuous at boundary $i+\frac{1}{2}$, therefore
@@ -136,13 +139,15 @@ $q_{i+\frac{1}{2}}$ is calculated by discretization of
 $q_{i+\frac{1}{2}}=dA/dx |_{x_{i+\frac{1}{2}}}$ by using
 $(A_{j+k+\frac{1}{2}},x_{j+k+\frac{1}{2}})$, $k=0,\pm 1, \pm 2$.
 Specifically, $q_{i+\frac{1}{2}}$ is calculated as follows.
-$$\label{a3}
-  \begin{split}
+$$\tag{a3}
+  \begin{aligned}
     q_{i+\frac{1}{2}}=&q_{i}+\Delta x_{i} \frac{q_{i+1}-q_{i}}{\Delta x_{i+1}+\Delta x_{i}}+\frac{1}{\sum_{k=i-1}^{i+2}\Delta x_{k}}\\
     &\times \Bigl[\frac{2\Delta x_{i}\Delta x_{i+1}}{\Delta x_{i+1}+\Delta x_{i}}(\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}}-\frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}})(q_{i+1}-q_{i})\\
      & -\Delta x_{i}\frac{\Delta x_{i}+\Delta x_{i-1}}{\Delta x_{i+1}+2\Delta x_{i}} \delta q_{i+1}+\Delta x_{i+1} \frac{\Delta x_{i+2}+\Delta x_{i+1}}{2\Delta x_{i+1}+\Delta x_{i}} \delta q_{i}\Bigr]
-  \end{split}$$ In case the grid width is equal in all grids,
-Eq.([\[a3\]](#a3){reference-type="ref" reference="a3"}) can be simply
+  \end{aligned}$$
+
+In case the grid width is equal in all grids,
+Eq.([a3](a3)) can be simply
 rewritten as
 $$q_{i+\frac{1}{2}}=\frac{1}{2}(q_{i-1}+q{i})-\frac{1}{6}(\delta q_{i}-\delta q_{i-1})$$
 Here, $\delta q_{i}$ is given as
@@ -153,16 +158,17 @@ the grid and may not satisfy monotonicity. In order to avoid such a
 situation, $q_{i+\frac{1}{2}}$ should be between $q_{i}$ as $q_{i+1}$,
 and $\delta q_{i}$ is modified as follows for that.
 $$
+\begin{aligned}
 \delta_{m} q_{i} & =\min(|\delta
 q_{i}|,2|q_{i}-q_{i-1}|,|q_{i+1}-q_{i}|) && \qquad \text{if$\quad(q_{i+1}-q_{i})(q_{i}-q_{i-1}) >0$}, \\
 & =0 && \qquad \text{otherwise}
+\end{aligned}
 $$
 This $\delta q_{i}$ is used in
-Eq.([\[a3\]](#a3){reference-type="ref" reference="a3"}) to calculate
+Eq.([a3](a3)) to calculate
 $q_{i+\frac{1}{2}}$.
 
-When $q(x)$ is interpolated as Eq.([\[a4\]](#a4){reference-type="ref"
-reference="a4"}), by using Courant number defined as
+When $q(x)$ is interpolated as Eq.([a4](a4)), by using Courant number defined as
 $$C=\frac{u_{i+\frac{1}{2}}\Delta t}{\Delta x_{i+1}}$$ flux
 $F^{x}_{i+\frac{1}{2}}$ is wriiten as follows.
 $$F^{x}_{i+\frac{1}{2}}=\begin{cases}u_{i+\frac{1}{2}}[q_{R,i}-\frac{C}{2}(\Delta q_{i}-(1-\frac{2}{3}C)q_{6,i})] & (u_{i+\frac{1}{2}}\ge0)\\
@@ -223,15 +229,16 @@ hybrid coordinate system from the $\sigma$ coordinate system is
 described. The transport equation in $\sigma$ coordinate on the sphere
 is expressed as
 $$
-  \label{b1}
-  \frac{\partial P^{S} q}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q)\notag\\
-  &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})$$
+\begin{aligned}
+  \tag{b1}
+  \frac{\partial P^{S} q}{\partial t} &= - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S} uq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S} vq \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma} q) \\
+  &= \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})- \frac{\partial}{\partial \sigma} (F^{\sigma})\end{aligned}$$
 $P^{S}$ is surface pressure, $q$ is quantity of tracers. Continuity
 equation is given by considering the case of $q=1$.
 $$\frac{\partial P^{S}}{\partial t} = - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(P^{S}u)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(P^{S}v \cos \varphi)- \frac{\partial}{\partial \sigma} (P^{S} \dot{\sigma})$$
 Assuming that grid is equally spaced in zonal direction, the transport
 equation is discretized as follows.
-$$\label{a1}
+$$\tag{a1}
   \frac{\partial P^{S}_{,i,j,k} q_{i,j,k}}{\partial t}=\frac{1}{\Delta D_{j,k}}[(G^{\lambda}_{i-\frac{1}{2},j,k}-G^{\lambda}_{i+\frac{1}{2},j,k})+(G^{\varphi}_{i,j-\frac{1}{2},k}-G^{\varphi}_{i,j+\frac{1}{2},k}))+(G^{\sigma}_{i,j,k-\frac{1}{2}}-G^{\sigma}_{i,j,k+\frac{1}{2}})]$$
 Here,
 $$G^{\lambda}_{i-\frac{1}{2},j,k}=F^{\lambda}_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}=(P^{S}uq)_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}$$
@@ -286,7 +293,8 @@ in the staggering-grided horizontal and vertical wind fields:
     That means zonal mean of zonal mass transport is equal to that in
     the spectral model grid. Here, the following equation must be
     satisfied for boundary condition $V^{\varphi}=0$ at the North Pole
-    and the South Pole. $$\sum_{j}C^{y}_{i,j,k}\Delta D_{j,k}=0$$
+    and the South Pole.
+    $$\sum_{j}C^{y}_{i,j,k}\Delta D_{j,k}=0$$
     However, this is not always satisfied (On the other hand,
     $\sum_{i} \sum_{j}C^{y}_{i,j,k}\Delta D_{j,k}=0$ is valid within
     numerical error.).
@@ -296,39 +304,38 @@ in the staggering-grided horizontal and vertical wind fields:
     $$C^{y}_{i,j,k}\leftarrow C^{y}_{i,j,k}-\delta C, \quad C^{y}_{i,j,k}\leftarrow C^{x}_{i,j,k}+\delta C$$
     Here,
     $\delta C=\sum_{j}C^{y}_{i,j,k}\Delta D_{j,k}/\sum_{j}\Delta D_{j,k}$.
-    Vertical velocity $V^{\eta}$ is obtained by using $$\label{a2}
+    Vertical velocity $V^{\eta}$ is obtained by using
+    $$\tag{a2}
         \frac{\partial P^{S}_{i,j,k}}{\partial t}\sum_{k}\Delta D_{j,k}=\sum_{k}(C^{x}_{i,j,k}+C^{y}_{i,j,k})$$
-    (The contents so far are in \[TRACEG\] of dtrcr.F. The rest of the
-    content is in \[GTRACE\] of dtrcr.F.)
+    (The contents so far are in [TRACEG] of dtrcr.F. The rest of the
+    content is in [GTRACE] of dtrcr.F.)
 
 4.  $G^{\lambda}, G^{\varphi}, G^{\sigma}$ are calculated by PPM scheme
     from $V^{\lambda}, V^{\varphi}, V^{\sigma}$.
 
 5.  $P^{s}_{i,j,k}q_{i,j,k}$ at time step $t+\Delta t$ is calulated by
-    integration of Eq.([\[a1\]](#a1){reference-type="ref"
-    reference="a1"}) by leap frog method from
+    integration of Eq.([a1](a1)) by leap frog method from
     $G^{\lambda}, G^{\varphi}, G^{\sigma}$.
 
 6.  $q_{t+\Delta t}$ is calculated by dividing $(P^{s}q)_{t+\Delta t}$
     by $P^{s}_{t+\Delta t}$. There is small quantity of difference
-    between $P^{s}_{t+\Delta t}$ from Eq.
-    ([\[a2\]](#a2){reference-type="ref" reference="a2"}) and
+    between $P^{s}_{t+\Delta t}$ from Eq.([a2](a2)) and
     $P^{s}_{t+\Delta t}$ in the spectral model, because semi-implicit
-    time integration scheme is applied. $P^{s}_{t+\Delta t}$ from Eq.
-    ([\[a2\]](#a2){reference-type="ref" reference="a2"}) is applied at
+    time integration scheme is applied. $P^{s}_{t+\Delta t}$ from Eq.([a2](a2)) is applied at
     present for the consistency of mass advection. Mass Conservation is
     not strictly satisfied because of the discrepancy between the
     surface pressure in the spectral model and from $P^{s}_{t+\Delta t}$
-    Eq. ([\[a2\]](#a2){reference-type="ref" reference="a2"}).
+    Eq. ([a2](a2)).
 
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid
 coordinate) on the sphere is:
 $$
-\frac{\partial mq}{\partial t} &=& - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q)\notag\\                                                                         &=& \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})$$
+\begin{aligned}
+\frac{\partial mq}{\partial t} &= - \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(muq)- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(mvq \cos \varphi)- \frac{\partial}{\partial \eta} (m \dot{\eta} q \\                                                                         &= \frac{1}{a \cos \varphi} \frac{\partial}{\partial \lambda}(F^{\lambda})- \frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}(F^{\varphi})-\frac{\partial}{\partial \eta} (F^{\eta})\end{aligned}$$
 
 Here, $m$ corresponds to the density of the coordinate and is defined as
 $m=\frac{\partial p}{\partial \eta}$. if you look at Eq.
-([\[b1\]](#b1){reference-type="ref" reference="b1"}), you can find that
+([b1](b1)), you can find that
 difference of $\sigma$ coordinate and $\eta$ coordinate is only that
 $P^{S}$ replaces $m$. The actual tracer advection in $\eta$ coordinate
 is mostly the same as $\sigma$ coordinate.
@@ -359,7 +366,7 @@ details in the section of the vertical discretization).
 
 The mass fluxes into/out of polar caps are calculated by using the
 semi--Lagrangian scheme in the polar stereo projection (cf.
-Fig.[2](#f2){reference-type="ref" reference="f2"}). The horizontal
+Fig.([2](f2))). The horizontal
 average at the highest latitude band is assumed to be preserved
 before/after flux calculation for the mass conservation. The sequence of
 calculation is:

@@ -65,7 +65,7 @@ And write .
 
 ### implicit time difference
 
-For terms that can be linearized, such as the vertical diffusion term, we use the implicit method. Although the diffusion coefficients depend on the forecast variables, we only obtain the coefficients first and do not solve them iteratively. However, in order to improve the stability of the method, the time step is treated differently (see below).
+For terms that can be linearized, such as the vertical diffusion term, we use the implicit method. Although the diffusion coefficients depend on the prognostic variables, we only obtain the coefficients first and do not solve them iteratively. However, in order to improve the stability of the method, the time step is treated differently (see below).
 
 For example, the discretized equation of $u$ (178) is
 

@@ -52,7 +52,7 @@ $$
 $$
 
 
-That would be the gravitational wave resistance, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
+That would be the gravitational wave drag, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
 
 $$
   \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}

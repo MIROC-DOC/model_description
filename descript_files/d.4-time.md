@@ -1,7 +1,5 @@
-::: {#time-integration}
 Time Integration
 ----------------
-:::
 
 The time discretization is essentially the leap frog scheme. However,
 backward or forward differences are used for diffusion terms and
@@ -10,9 +8,7 @@ modified version of the Asselin time filter (Asselin 1972), is used to
 suppress computational modes. A semi-implicit method is applied to the
 gravitational wave term to make the $\Delta t$ larger (Bourke, 1988).
 
-::: {#time-integration-and-time-filtering-with-leap-frog}
 ### Time Integration and Time Filtering with the Leap Frog Method {#time-integration-and-time-filtering-with-leap-frog}
-:::
 
 We use leap frog as the time integration scheme for advection terms and
 other dynamic terms. A backward difference of $2 \Delta t$ is used for
@@ -58,9 +54,7 @@ $$
 \bar{X}^{t+\Delta t} = X^{t+\Delta t} + \nu (1-\alpha) [\bar{\bar{X}}^{t-\Delta t} - 2 \bar{X}^{t} + X^{t+\Delta t}],   $$
 where $\nu=0.05$ and $\alpha=0.5$.
 
-::: {#semi-implicit-time-integration}
 ### Semi-Implicit Time Integration
-:::
 
 Basically, the leap frog is used for the dynamic processes, but the
 trapezoidal implicit scheme is used for some terms. For a vector
@@ -75,22 +69,22 @@ other (${\mathcal B}$) for the trapezoidal implicit method. We assume
 that (${\mathcal A}$) is nonlinear to ${\mathbf q}$, while
 (${\mathcal B}$) is linear. In other words,
 $$
+\begin{aligned}
   {\mathbf q}^+
       = {\mathbf q}^-
       + 2 \Delta t {\mathcal A}( {\mathbf q}  )
       + 2 \Delta t B (   {\mathbf q}^+
-                       + {\mathbf q}^-   )/2,   $$ where
+                       + {\mathbf q}^-   )/2,  \end{aligned}$$ where
 (${\mathcal B}$) is a square matrix. Defining
 $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$, we get
 $$
+\begin{aligned}
   ( I - \Delta t B ) \Delta {\mathbf q}
       = 2 \Delta t \left( {\mathcal A}({\mathbf q})
-                         + B {\mathbf q} \right).   $$ This
+                         + B {\mathbf q} \right). \end{aligned}$$ This
 can be easily solved by matrix operations.
 
-::: {#applying-the-semi-implicit-time-integration}
 ### Applying the Semi-Implicit Time Integration
-:::
 
 Here, we apply the semi-implicit method and treat terms associated with
 linear gravity waves as implicit, which allows us to increase the time
@@ -101,142 +95,93 @@ We divide the basic equation into a linear gravity wave term
 (with the indices $NG$). Using a vector representation for the vertical
 direction (${\mathbf{D}}=\{ D_{k} \}$ and ${\mathbf{T}}=\{ T_{k} \}$),
 $$
-   \frac{\partial \pi}{\partial t} &=&
+\begin{aligned}
+   \frac{\partial \pi}{\partial t} &=
           \left( \frac{\partial \pi}{\partial t} \right)_{NG}
      - {\mathbf{C}} \cdot {\mathbf{D}}, \\
-  \frac{\partial {\mathbf{D}}}{\partial t} &=&
+  \frac{\partial {\mathbf{D}}}{\partial t} &=
           \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
           - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
                                   + \underline{W} {\mathbf{T}}
                                   + {\mathbf{G}} \pi )
           - {\mathcal D}_M {\mathbf{D}} , \\
   \frac{\partial {\mathbf{T}}}{\partial t}
-      &=&   \left( \frac{\partial {\mathbf{T}}}
+      &=   \left( \frac{\partial {\mathbf{T}}}
                         {\partial t}       \right)_{NG}
          - \underline{h} {\mathbf{D}}
-         - {\mathcal D}_H {\mathbf{T}}.   $$
+         - {\mathcal D}_H {\mathbf{T}}.  \end{aligned}$$
 
 Here, the non-gravitational wave term is
 $$
-  \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   &=&   - \sum_{k=1}^{K} {\mathbf{v}}_{k} \cdot \nabla \pi
-       \Delta B_{k}, \\
-  \frac{(m\dot{\eta})^{NG}_{k-1/2}}{p_s}
- &=& - B_{k-1/2} \left( \frac{\partial \pi}{\partial t} \right)^{NG}
-   - \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-       \Delta B_{l}, \\
-  \left( \frac{\partial D}{\partial t} \right)^{NG}
-       &=&   \frac{1}{a\cos\varphi}
-            \frac{\partial (A_u)_{k}}{\partial \lambda}
-          + \frac{1}{a\cos\varphi}
-            \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
-          - \nabla^{2}_{\eta} \hat{E}_{k}
-          - {\mathcal D}(D_{k}), \\
-  \left( \frac{\partial T_{k}}{\partial t} \right)^{NG}
-      &=&   - \frac{1}{a\cos\varphi}
-               \frac{\partial u_k T'_k}{\partial \lambda}
-          - \frac{1}{a\cos\varphi}
-               \frac{\partial }{\partial \varphi} (v_k T'_k \cos\varphi)
-          + \hat{H}_{k}
-          - {\mathcal D}(T_{k}), \\
- \hat{H}_k  &=&  T_{k}^{\prime} D_{k} - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \notag\\
-         &&+ \hat{\kappa}_{k} T_{v,k} {\mathbf{v}}_{k} \cdot \nabla \pi \notag\\
-         &&- \frac{\alpha_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-               \Delta B_{l}
-           - \frac{\beta_{k}}{\Delta \sigma_{k} } T_{v,k}
-             \sum_{l=k+1}^{K} {\mathbf{v}}_{l} \cdot \nabla \pi
-               \Delta B_{l} \notag\\
-        &&- \frac{\alpha_{k}}{\Delta \sigma_{k} } T'_{v,k}
-             \sum_{l=k}^{K} D_l  \Delta \sigma_{l}
-           - \frac{\beta_{k}}{\Delta \sigma_{k} } T'_{v,k}
-             \sum_{l=k+1}^{K} D_l  \Delta \sigma_{l}
-         + \frac{Q_k + (Q_{diff})_k}{C_p}, \\
-  \hat{E}_k &=& E_{k}
-            + \sum_{k=1}^{K} W_{kl} ( T_{v,l}-T_{l} ),   $$
+\begin{aligned}
+\left(\frac{\partial \pi}{\partial t}\right)^{N G}=&-\sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi \Delta B_{k}, \\
+\frac{(m \dot{\eta})_{k-1 / 2}^{N G}}{p_{s}}=&-B_{k-1 / 2}\left(\frac{\partial \pi}{\partial t}\right)^{N G}-\sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l}, \\
+\left(\frac{\partial D}{\partial t}\right)^{N G}=& \frac{1}{a \cos \varphi} \frac{\partial\left(A_{u}\right)_{k}}{\partial \lambda}+\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(A_{v} \cos \varphi\right)_{k}-\nabla_{\eta}^{2} \hat{E}_{k}-\mathcal{D}\left(D_{k}\right), \\
+\left(\frac{\partial T_{k}}{\partial t}\right)^{N G}=&-\frac{1}{a \cos \varphi} \frac{\partial u_{k} T_{k}^{\prime}}{\partial \lambda}-\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(v_{k} T_{k}^{\prime} \cos \varphi\right)+\hat{H}_{k}-\mathcal{D}\left(T_{k}\right), \\
+\hat{H}_{k}=& T_{k}^{\prime} D_{k}-\left[\frac{(m \dot{\eta})_{k-1 / 2}}{p_{s}} \frac{\hat{T}_{k-1 / 2}-T_{k}}{\Delta \sigma_{k}}+\frac{(m \dot{\eta})_{k+1 / 2}}{p_{s}} \frac{T_{k}-\hat{T}_{k+1 / 2}}{\Delta \sigma_{k}}\right] \\
+&+\hat{\kappa}_{k} T_{v, k} \mathbf{v}_{k} \cdot \nabla \pi \\
+&-\frac{\alpha_{k}}{\Delta \sigma_{k}} T_{v, k} \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l}-\frac{\beta_{k}}{\Delta \sigma_{k}} T_{v, k} \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l} \\
+&-\frac{\alpha_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k}^{K} D_{l} \Delta \sigma_{l}-\frac{\beta_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k+1}^{K} D_{l} \Delta \sigma_{l}+\frac{Q_{k}+\left(Q_{d i f f}\right)_{k}}{C_{p}}, \\
+\hat{E}_{k}=& E_{k}+\sum_{k=1}^{K} W_{k l}\left(T_{v, l}-T_{l}\right),
+\end{aligned}
+$$
+
+
 where the vector and matrix of the gravitational wave term (underlined)
 are
+
 $$
-  C_{k} &=& \Delta \sigma_{k}, \\
-  W_{kl} &=& C_{p} \alpha_{l} \delta_{k \geq l}
-         + C_{p} \beta_{l} \delta_{k-1 \geq l}, \\
-  G_{k} &=& R\bar{T}, \\
-h_{kl} &=& \frac{\bar{T}}{\Delta\sigma_k}\left[\alpha_k \Delta\sigma_l \delta_{k\ge l}+\beta_k \Delta\sigma_l \delta_{k+1\le l}\right].   $$
+\begin{aligned}
+C_{k} &=\Delta \sigma_{k} \\
+W_{k l} &=C_{p} \alpha_{l} \delta_{k \geq l}+C_{p} \beta_{l} \delta_{k-1 \geq l}, \\
+G_{k} &=R \bar{T} \\
+h_{k l} &=\frac{\bar{T}}{\Delta \sigma_{k}}\left[\alpha_{k} \Delta \sigma_{l} \delta_{k \geq l}+\beta_{k} \Delta \sigma_{l} \delta_{k+1 \leq l}\right]
+\end{aligned}
+$$
+
 Here, $\delta_{k \leq l}$ is 1 if $k \leq l$ is valid and 0 otherwise.\
 We now use the following expressions for time differences:
 $$
-  \delta_{t} {X} &\equiv & \frac{1}{2 \Delta t}
-        \left( {X}^{t+\Delta t} - {X}^{t-\Delta t} \right), \\
-    \overline{X}^{t} &\equiv & \frac{1}{2} \left( {X}^{t+\Delta t}  + {X}^{t-\Delta t} \right)\notag\\
-  &=&  {X}^{t-\Delta t} + \delta_{t} {X} \Delta t.   $$ Then,
-applying the semi-implicit method to the system of equations, we get
+\begin{aligned}
+\delta_{t} X & \equiv \frac{1}{2 \Delta t}\left(X^{t+\Delta t}-X^{t-\Delta t}\right) \\
+\bar{X}^{t} & \equiv \frac{1}{2}\left(X^{t+\Delta t}+X^{t-\Delta t}\right) \\
+&=X^{t-\Delta t}+\delta_{t} X \Delta t
+\end{aligned}
 $$
-\label{eqn_for_pi}
-  \delta_{t} \pi &=&
-          \left( \frac{\partial \pi}{\partial t} \right)_{NG}
-     - {\mathbf{C}} \cdot \overline{ {\mathbf{D}} }^{t}, \\
-  \delta_{t} {\mathbf{D}} &=&
-          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
-          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
-                                  + \underline{W}
-                                     \overline{ {\mathbf{T}} }^{t}
-                                  + {\mathbf{G}}
-                                  \overline{\pi}^{t} )
-          - {\mathcal D}_M ( {\mathbf{D}}^{t-\Delta t}
-                         + 2 \Delta t \delta_{t} {\mathbf{D}} ), \\
-\label{eqn_for_t}
-  \delta_{t} {\mathbf{T}} &=&
-        \left( \frac{\partial {\mathbf{T}}}{\partial t} \right)_{NG}
-         - \underline{h} \overline{ {\mathbf{D}} }^{t}
-         - {\mathcal D}_H ( {\mathbf{T}}^{t-\Delta t}
-                        + 2 \Delta t \delta_{t} {\mathbf{T}} ).   $$
+Then, applying the semi-implicit method to the system of equations, we get
+
+$$ \delta_{t} \pi =\left(\frac{\partial \pi}{\partial t}\right)_{N G}-\mathbf{C} \cdot \overline{\mathbf{D}}^{t} \tag{eq-for-pi} $$
+
+$$
+\delta_{t} \mathbf{D} =\left(\frac{\partial \mathbf{D}}{\partial t}\right)_{N G}-\nabla_{\eta}^{2}\left(\mathbf{\Phi}_{S}+\underline{W} \overline{\mathbf{T}}^{t}+\mathbf{G} \bar{\pi}^{t}\right)-\mathcal{D}_{M}\left(\mathbf{D}^{t-\Delta t}+2 \Delta t \delta_{t} \mathbf{D}\right)
+$$
+
+$$
+\delta_{t} \mathbf{T} =\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}-\underline{h} \overline{\mathbf{D}}^{t}-\mathcal{D}_{H}\left(\mathbf{T}^{t-\Delta t}+2 \Delta t \delta_{t} \mathbf{T}\right)
+\tag{eq-for-t}
+$$
 
 Thus,
 $$
-      & &\left\{ ( 1+2\Delta t {\mathcal D}_H )( 1+2\Delta t {\mathcal D}_M )
-           \underline{I}
-      - ( \Delta t )^{2}  ( \underline{W} \ \underline{h}
-           + (1+2\Delta t {\mathcal D}_M)
-             {\mathbf{G}} {\mathbf{C}}^{T} ) \nabla^{2}_{\eta}
-  \right\}
-      \overline{ {\mathbf{D}} }^{t} \notag\\
-  &=& ( 1+2\Delta t {\mathcal D}_H )( 1+\Delta t {\mathcal D}_M )
-       {\mathbf{D}}^{t-\Delta t}
-  + \Delta t
-     \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}  \notag\\
-  &-&  \Delta t \nabla^{2}_{\eta}
-                   \left\{  ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{\Phi}}_{S}
-                          + \underline{W}
-                            \left[ ( 1+2\Delta t {\mathcal D}_H )
-                                    {\mathbf{T}}^{t-\Delta t}
-                                  + \Delta t
-                                      \left( \frac{\partial {\mathbf{T}}}
-                                                  {\partial t}
-                                      \right)_{NG} \right]
-                   \right\} \notag \\
-                 &+& \hspace{1.4cm} \left. ( 1+2\Delta t {\mathcal D}_H ) {\mathbf{G}}
-                            \left[ \pi^{t-\Delta t}
-                                  + \Delta t \left( \frac{\partial \pi}{\partial t}
-                                  \right)_{NG}  \right]
-                                  \right\}.   $$
+\begin{aligned}
+&\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+2 \Delta t \mathcal{D}_{M}\right) \underline{I}-(\Delta t)^{2}\left(\underline{W} \underline{h}+\left(1+2 \Delta t \mathcal{D}_{M}\right) \mathbf{G} \mathbf{C}^{T}\right) \nabla_{\eta}^{2}\right\} \overline{\mathbf{D}}^{t} \\
+=&\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+\Delta t \mathcal{D}_{M}\right) \mathbf{D}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{D}}{\partial t}\right)_{N G} \\
+-& \Delta t \nabla_{\eta}^{2}\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{\Phi}_{S}+\underline{W}\left[\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{T}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}\right]\right\} \\
++&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partial t}\right)_{N G}\right]\right\} .
+\end{aligned}
+$$
 
 Since the spherical harmonic expansion is used, we can rewrite
 $\nabla_{\eta}^2$ as the following:
 $$
 \nabla_{\eta}^2=-\frac{n(n+1)}{a^2},   $$ which enables us to
 solve the above equations for $\overline{ {\mathbf{D}}_n^m }^{t}$. Then,
-using ([\[eqn\_for\_pi\]](#eqn_for_pi){reference-type="ref"
-reference="eqn_for_pi"}),
-([\[eqn\_for\_t\]](#eqn_for_t){reference-type="ref"
-reference="eqn_for_t"}) and
+using  ([95](eq-for-pi)),  ([97](eq-for)) and
 $D^{t+\Delta t} = 2\overline{ {\mathbf{D}} }^{t} - D^{t-\Delta t},$ we
 can obtain the value of prognostic variables $\hat{X}^{t+\Delta t}$ at
 $t+\Delta t$.
 
-::: {#time-scheme-properties-and-requiments-for-time-steps}
 ### Time Scheme Properties and Requiments for Time Steps
-:::
 
 Let us consider solving the advection equation with the leap-frog
 method:
@@ -246,11 +191,13 @@ $$
 Assuming $X = X_0 \exp(ikx)$, the descretized form of the above equation
 becomes:
 $$
-  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.   $$ Assuming $X$
-evolves exponentially, we can define $\lambda$ such that
+  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.  $$
+Assuming $X$ evolves exponentially, we can define $\lambda$ such that
 $$
-  \lambda &=& X^{n+1}/X^n = X^n/X^{n-1}, \\
-  \lambda^2 &=& 1 + 2 i kc \Delta t \lambda \; .   $$ Defining
+\begin{aligned}
+  \lambda & =  X^{n+1}/X^n = X^n/X^{n-1}, \\
+  \lambda^2 & =  1 + 2 i kc \Delta t \lambda \; .\end{aligned} $$
+Defining
 $p \equiv kc \Delta t$, the solution becomes:
 $$
  \lambda = -i p \pm \sqrt{1-p^2}.   $$
