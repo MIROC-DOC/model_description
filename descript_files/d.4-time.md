@@ -68,21 +68,27 @@ varying terms, one (${\mathcal A}$) for the leap forg method and the
 other (${\mathcal B}$) for the trapezoidal implicit method. We assume
 that (${\mathcal A}$) is nonlinear to ${\mathbf q}$, while
 (${\mathcal B}$) is linear. In other words,
+
 $$
 \begin{aligned}
-  {\mathbf q}^+
-      = {\mathbf q}^-
-      + 2 \Delta t {\mathcal A}( {\mathbf q}  )
-      + 2 \Delta t B (   {\mathbf q}^+
-                       + {\mathbf q}^-   )/2,  \end{aligned}$$ where
-(${\mathcal B}$) is a square matrix. Defining
+{\mathbf q}^+
+= {\mathbf q}^-
++ 2 \Delta t {\mathcal A}( {\mathbf q}  )
++ 2 \Delta t B (   {\mathbf q}^+
++ {\mathbf q}^-   )/2,  \end{aligned}
+$$
+
+where (${\mathcal B}$) is a square matrix. Defining
 $\Delta {\mathbf q} \equiv {\mathbf q}^+ - {\mathbf q}$, we get
+
 $$
 \begin{aligned}
-  ( I - \Delta t B ) \Delta {\mathbf q}
-      = 2 \Delta t \left( {\mathcal A}({\mathbf q})
-                         + B {\mathbf q} \right). \end{aligned}$$ This
-can be easily solved by matrix operations.
+( I - \Delta t B ) \Delta {\mathbf q}
+= 2 \Delta t \left( {\mathcal A}({\mathbf q})
++ B {\mathbf q} \right)
+\end{aligned}
+$$
+This can be easily solved by matrix operations.
 
 ### Applying the Semi-Implicit Time Integration
 
@@ -167,7 +173,7 @@ $$
 &\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+2 \Delta t \mathcal{D}_{M}\right) \underline{I}-(\Delta t)^{2}\left(\underline{W} \underline{h}+\left(1+2 \Delta t \mathcal{D}_{M}\right) \mathbf{G} \mathbf{C}^{T}\right) \nabla_{\eta}^{2}\right\} \overline{\mathbf{D}}^{t} \\
 =&\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+\Delta t \mathcal{D}_{M}\right) \mathbf{D}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{D}}{\partial t}\right)_{N G} \\
 -& \Delta t \nabla_{\eta}^{2}\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{\Phi}_{S}+\underline{W}\left[\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{T}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}\right]\right\} \\
-+&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partial t}\right)_{N G}\right]\right\} .
++&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partisquare matrix. al t}\right)_{N G}\right]\right\} .
 \end{aligned}
 $$
 
@@ -185,13 +191,18 @@ $t+\Delta t$.
 
 Let us consider solving the advection equation with the leap-frog
 method:
+
 $$
-  \frac{\partial{X}}{\partial {t}} = c \frac{\partial{X}}{\partial {x}}.   $$
+\frac{\partial{X}}{\partial {t}} = c \frac{\partial{X}}{\partial {x}}.
+$$
 
 Assuming $X = X_0 \exp(ikx)$, the descretized form of the above equation
 becomes:
+
 $$
-  X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.  $$
+X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.
+$$
+
 Assuming $X$ evolves exponentially, we can define $\lambda$ such that
 $$
 \begin{aligned}
@@ -226,7 +237,9 @@ described later.
 Given the horizontal grid spacing $\Delta x$, the maximum value of $k$
 becomes
 $$
-  \max k = \frac{\pi}{\Delta x}.   $$ Then, the condition
+\max k = \frac{\pi}{\Delta x}.
+$$
+Then, the condition
 $|p|=kc \Delta t \le 1$ requires
 $$
    \Delta t \le \frac{\Delta x}{\pi c}.   $$
@@ -243,13 +256,15 @@ propagation speed of gravity waves, which can be as fast as 300 m$/$s,
 sets the criterion for stability. With the gravity waves taken account
 of by the semi-implicit method, however, the fastest mode usually
 becomes the maximum easterly wind $U_{\mathrm{max}}$. Therefore,
+
 $$
-   \Delta t \le \frac{a}{N U_{max}} .   $$ In practice, this
+\Delta t \le \frac{a}{N U_{max}} .
+$$
+
+In practice, this
 is multiplied by a factor smaller than 1 for further safety.
 
-::: {#handling-of-the-initiation-of-time-integration}
 ### Handling of the Initiation of Time Integration
-:::
 
 When starting from an initial condition that is not calculated by MIROC
 6.0 itself, it is not possible to give values of all prognostic
@@ -260,10 +275,14 @@ results in a large computation mode.
 To avoid this, a special procedure is followed at the initiation of time
 integration. Firstly, assuming $X^{\Delta t/4} = X^0$, a $1/4$-step
 integration is performed to obtain $X^{\Delta t/2}$:
+
 $$
-  X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
-                 = X^0 + \Delta t/2 \dot{X}^0.   $$ Then, a
+X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
+                 = X^0 + \Delta t/2 \dot{X}^0.
+$$
+Then, a
 $1/2$-step integration is performed to yield $X^{\Delta t}$:
+
 $$
   X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.   $$
 Finally, in the normal time step,

@@ -171,9 +171,14 @@ $q_{i+\frac{1}{2}}$.
 When $q(x)$ is interpolated as Eq.([a4](a4)), by using Courant number defined as
 $$C=\frac{u_{i+\frac{1}{2}}\Delta t}{\Delta x_{i+1}}$$ flux
 $F^{x}_{i+\frac{1}{2}}$ is wriiten as follows.
-$$F^{x}_{i+\frac{1}{2}}=\begin{cases}u_{i+\frac{1}{2}}[q_{R,i}-\frac{C}{2}(\Delta q_{i}-(1-\frac{2}{3}C)q_{6,i})] & (u_{i+\frac{1}{2}}\ge0)\\
+
+$$
+F^{x}_{i+\frac{1}{2}}=\begin{cases}u_{i+\frac{1}{2}}[q_{R,i}-\frac{C}{2}(\Delta q_{i}-(1-\frac{2}{3}C)q_{6,i})] & (u_{i+\frac{1}{2}}\ge0)\\
   u_{i+\frac{1}{2}}[q_{L,i+1}+\frac{C}{2}(\Delta q_{i+1}+(1-\frac{2}{3}C)q_{6,i+1})] & (u_{i+\frac{1}{2}}\leq0)
-  \end{cases}$$ The above argument is stable only if $C<1$ When the grid
+  \end{cases}
+$$
+
+The above argument is stable only if $C<1$ When the grid
 method is adapted to spherical coordinate, $\Delta x$ is very small in
 polar region. Therefore, we have to take very small $\Delta t$ to
 satisfy CFL condition. The special treatment when $C>1$ for taking
@@ -207,12 +212,20 @@ one-dimensional.
 When calculating x-direction flux $F^{x}_{i+\frac{1}{2},j}$, upstream
 value of $q$ in y-direction is used as value of $q$. That is expressed
 by the following equation.
-$$q^{y}_{i,j}=\frac{1}{2} {q(x_{i},y_{i}-v_{i,j}\Delta t)+q_{i,j}}$$
+
+$$
+q^{y}_{i,j}=\frac{1}{2} {q(x_{i},y_{i}-v_{i,j}\Delta t)+q_{i,j}}
+$$
+
 Here, $q(x_{i},y_{i}-v_{i,j}\Delta t)$ is calculated by linear
 interpolation of the two nearest grid points. In the same way, when
 calculating y-direction flux $F^{x}_{i+\frac{1}{2},j}$,
-$$q^{x}_{i,j}=\frac{1}{2} {q(x_{i}-u_{i,j}\Delta t,y_{i})+q_{i,j}}$$ is
-used as $q$.
+
+$$
+q^{x}_{i,j}=\frac{1}{2} {q(x_{i}-u_{i,j}\Delta t,y_{i})+q_{i,j}}
+$$
+
+is used as $q$.
 
 In the case of three dimensional tracer advection, this procedure is
 conducted in two dimension.
@@ -250,7 +263,7 @@ This flux form equation ensure the conservation.
 
 For the calculation of the time-averaged mass flux across the cell
 boundary, the winds and the tracer distributions are staggered in the
-Arakawa C-grid (Mesinger and Arakawa 1976). The horizontal winds at the
+Arakawa C-grid (Mesinger and Arakawa 176). The horizontal winds at the
 cell boundary, $u_{i-\frac{1}{2},j,k}, v_{i-\frac{1}{2},j,k}$, are
 reconstructed by using the mass convergence field in the spectral model
 and the discretized continuity eqution:
@@ -259,9 +272,19 @@ Here,
 $V^{\lambda}_{i-\frac{1}{2},j,k}, V^{\varphi}_{i,j-\frac{1}{2},k}, V^{\sigma}_{i,j,k-\frac{1}{2}}$
 denote zonal, meridional, and vertical mass-weighted wind at the cell
 boundary, rspectively. That is,
-$$V^{\lambda}_{i-\frac{1}{2},j,k}=(P^{S}u)_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}$$
-$$V^{\varphi}_{i,j-\frac{1}{2},k}=(P^{S}v)_{i,j-\frac{1}{2},k} \Delta x_{j-\frac{1}{2}} \Delta \eta_{k}$$
-$$V^{\sigma}_{i,j,k-\frac{1}{2}}=(P^{S}\dot{\sigma})_{i,j,k-\frac{1}{2}} \Delta x_{j} \Delta y_{j}$$
+
+$$
+V^{\lambda}_{i-\frac{1}{2},j,k}=(P^{S}u)_{i-\frac{1}{2},j,k} \Delta y_{j} \Delta \sigma_{k}
+$$
+
+$$
+V^{\varphi}_{i,j-\frac{1}{2},k}=(P^{S}v)_{i,j-\frac{1}{2},k} \Delta x_{j-\frac{1}{2}} \Delta \eta_{k}
+$$
+
+$$
+V^{\sigma}_{i,j,k-\frac{1}{2}}=(P^{S}\dot{\sigma})_{i,j,k-\frac{1}{2}} \Delta x_{j} \Delta y_{j}
+$$
+
 $\Delta D_{j,k}$ denotes the cell volume, and
 $\Delta x_{j}, \Delta y_{j}$, and $\Delta \sigma_{k}$ denote zonal,
 meridional and vertical width of the cell, respectively. That is
@@ -305,8 +328,11 @@ in the staggering-grided horizontal and vertical wind fields:
     Here,
     $\delta C=\sum_{j}C^{y}_{i,j,k}\Delta D_{j,k}/\sum_{j}\Delta D_{j,k}$.
     Vertical velocity $V^{\eta}$ is obtained by using
-    $$\tag{a2}
-        \frac{\partial P^{S}_{i,j,k}}{\partial t}\sum_{k}\Delta D_{j,k}=\sum_{k}(C^{x}_{i,j,k}+C^{y}_{i,j,k})$$
+    $$
+    \tag{a2}
+    \frac{\partial P^{S}_{i,j,k}}{\partial t}\sum_{k}\Delta D_{j,k}=\sum_{k}(C^{x}_{i,j,k}+C^{y}_{i,j,k})
+    $$
+
     (The contents so far are in [TRACEG] of dtrcr.F. The rest of the
     content is in [GTRACE] of dtrcr.F.)
 
@@ -355,10 +381,12 @@ In actual source code, combining to dividing by $m$ to calculate $q$ at
 time step $t+\Delta t$, $q$ at point $(i,j,k)$ in time step $t+\Delta t$
 is calculated as follows.
 $$\begin{split}
-        q^{t+\Delta t}=&\frac{\Delta A_{k}+\Delta B_{k} P^{S,t-\Delta t}_{i,j,k}}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}q^{t-\Delta t}_{i,j,k}+\frac{2\Delta t}{\Delta D}\\
-    &\times [(G^{\prime \lambda,t}_{i-\frac{1}{2},j,k}-G^{\prime \lambda,t}_{i+\frac{1}{2},j,k})+(G^{\prime \varphi,t}_{i,j-\frac{1}{2},k}-G^{\prime \varphi,t}_{i,j+\frac{1}{2},k}))+(G^{\prime \eta,t}_{i,j,k-\frac{1}{2}}-G^{\prime \eta,t}_{i,j,k+\frac{1}{2}})]\\
-    &\times \frac{\Delta A_{k}+\Delta B_{k} P^{S,t}_{i,j,k}}{P^{S,t}_{i,j,k}}\frac{1}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}
-  \end{split}$$ Here,$A,B$ is the coefficients for $\eta$ coordinate,
+q^{t+\Delta t}=&\frac{\Delta A_{k}+\Delta B_{k} P^{S,t-\Delta t}_{i,j,k}}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}q^{t-\Delta t}_{i,j,k}+\frac{2\Delta t}{\Delta D}\\
+&\times [(G^{\prime \lambda,t}_{i-\frac{1}{2},j,k}-G^{\prime \lambda,t}_{i+\frac{1}{2},j,k})+(G^{\prime \varphi,t}_{i,j-\frac{1}{2},k}-G^{\prime \varphi,t}_{i,j+\frac{1}{2},k}))+(G^{\prime \eta,t}_{i,j,k-\frac{1}{2}}-G^{\prime \eta,t}_{i,j,k+\frac{1}{2}})]\\
+&\times \frac{\Delta A_{k}+\Delta B_{k} P^{S,t}_{i,j,k}}{P^{S,t}_{i,j,k}}\frac{1}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}
+\end{split}
+$$
+Here,$A,B$ is the coefficients for $\eta$ coordinate,
 $\eta_{k+\frac{1}{2}}=A_{k+\frac{1}{2}}/p_{0}+B_{k+\frac{1}{2}}$ and
 $\Delta A_{k}=A_{k-\frac{1}{2}}-A_{k+\frac{1}{2}},\quad \Delta B_{k}=B_{k-\frac{1}{2}}-B_{k+\frac{1}{2}}$.
 And $\Delta A_{k}+\Delta B_{k} P^{S}_{i,j,k}=\Delta p_{i,j,k}$(More

@@ -88,11 +88,15 @@ $$
     D =\delta M_u. \tag{fracD} $$ Substituting
 $\overline{\psi}$ for grid value and assuming the horizontal mixing term
 as $X_{\psi}=E \overline{\psi} - D\psi_u$ results in
+
 $$
-    \frac{\partial M_u}{\partial z} = M_u (\epsilon - \delta) \tag{zprof-Mu'}
+\frac{\partial M_u}{\partial z} = M_u (\epsilon - \delta) \tag{zprof-Mu'}
 $$
+
 $$
-    \frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \tag{zprof-psi'}$$
+\frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \tag{zprof-psi'}
+
+$$
 In MIROC6, changes in liquid water potential temperature due to
 precipitation and the effect of subgrid pressure gradient on horizontal
 momentum are included in $S_{\psi}$. Consequently, equations
@@ -253,24 +257,31 @@ $\chi_c$ is obtained, which allows the updraft to rise a distance $l_c$
 under negative buoyancy, the air in the environmental field entrained
 into the cloud and the air in the updraft that is detrained can be
 determined as follows
+
 $$
-    M_u\epsilon=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \tag{flux-entre}
-    $$
+M_u\epsilon=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \tag{flux-entre}
 $$
-    M_u\delta=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \tag{flux-detre}$$
+
+$$
+M_u\delta=2\epsilon_0 M_u\int_{\chi_c}^{1}(1-\chi) q(\chi) d\chi = \epsilon_0 M_u (1-\chi_c)^2. \tag{flux-detre}$$
+
 Thus, letting
 $$
-    \epsilon=\epsilon_0\chi_c^2 \tag{Etilde}\\
+\epsilon=\epsilon_0\chi_c^2 \tag{Etilde}\\
 $$
+
 $$
-    \delta=\epsilon_0(1-\chi_c)^2, \tag{Dtilde}$$
+\delta=\epsilon_0(1-\chi_c)^2, \tag{Dtilde}$$
+
 equatinons ([zprof_Mu](zprof-Mu')) and
 ([zprof_psi](zprof_psi')) are expressed as follows
+
 $$
-    \frac{1}{M_u}\frac{\partial M_u}{\partial z} = \epsilon - \delta = \epsilon_0(2\chi_c - 1) \tag{zprof-Mu-param}
+\frac{1}{M_u}\frac{\partial M_u}{\partial z} = \epsilon - \delta = \epsilon_0(2\chi_c - 1) \tag{zprof-Mu-param}
 $$
+
 $$
-    \frac{\partial \psi_u}{\partial z} = \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \tag{zprof-psi-param}$$
+\frac{\partial \psi_u}{\partial z} = \epsilon (\overline{\psi}-\psi_u) + S_{\psi} = \epsilon_0\chi_c^2(\overline{\psi}-\psi_u) + S_{\psi}, \tag{zprof-psi-param}$$
 where $\chi_c$ is computed based on virtual potential temperature of
 mixed air
 $$\tag{virt-pot-t}

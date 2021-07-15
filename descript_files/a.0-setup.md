@@ -12,15 +12,19 @@ However, $z$ is used for the vertical coordinate in the ground, which is
 treated in a land physics component.
 
 Longitude is discretized at equal intervals (`SUBROUTINE: [SETLO]` in
-asetc.F). $$\begin{aligned}
-  \lambda_i = 2 \pi \frac{i-1}{I},  \;\;\; i = 1, \ldots I.\end{aligned}$$
+asetc.F).
+
+$$\begin{aligned}
+\lambda_i = 2 \pi \frac{i-1}{I},  \;\;\; i = 1, \ldots I.\end{aligned}$$
 
 Latitude grids $\varphi_j$ are derived from the Gauss-Legendre integral
 formula (`SUBROUTINE: [SETLA]` in asetc.F). This is the zero point of
 the Legendre polynomial of order J with $\mu = \sin \varphi$ as the
 argument (`SUBROUTINE: [GAUSS]` in uspst.F). If J is large, we can
-approximate $$\begin{aligned}
-  \varphi_j =  \pi \left( \frac{1}{2}- \frac{j-1/2}{J} \right), \;\;\; j = 1, \ldots J.\end{aligned}$$
+approximate
+
+$$\begin{aligned}
+\varphi_j =  \pi \left( \frac{1}{2}- \frac{j-1/2}{J} \right), \;\;\; j = 1, \ldots J.\end{aligned}$$
 Usually, the grid spacing of longitude and latitude is taken to be
 approximately equal to $J = I/2$, based on the triangular truncation of
 the spectral method.
@@ -28,9 +32,12 @@ the spectral method.
 Air pressure $p$ is defined at half-integer levels
 ($p_{k+1/2},\ k = 1, 2, \ldots K$) using the following formula using
 constants $A_{k+1/2},\ B_{k+1/2}$:
+
 $$
 \begin{aligned}
-p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}$$
+p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}
+$$
+
 where
 $A_{1/2}=A_{K+1/2}=0,\ B_{1/2}=1,\ B_{K+1/2}=0$ and thus
 $p_{1/2}=p_s,\ p_{K+1/2}=0$.
@@ -52,20 +59,20 @@ $\sigma$-coordinate system used in MIROC 5.
 
 Air pressure $p_k$ at integer levels ($p_k,\ k=1,2,\ldots K)$ is
 interpolated from half-level pressure as below:
-$$\begin{aligned}
- p_k = \left\{ \frac{1}{1+\kappa}
-                     \left( \frac{  p^{\kappa +1}_{k-1/2}
-                                  - p^{\kappa +1}_{k+1/2}      }
-                                  { p_{k-1/2} - p_{k+1/2} }
-                     \right)
-              \right\}^{1/\kappa}.\end{aligned}$$
+  $$\begin{aligned}
+  p_k = \left\{ \frac{1}{1+\kappa}
+  \left( \frac{  p^{\kappa +1}_{k-1/2}
+  - p^{\kappa +1}_{k+1/2}      }
+  { p_{k-1/2} - p_{k+1/2} }
+  \right)
+  \right\}^{1/\kappa}.\end{aligned}$$
 Full-level pressure in a 80-level configuration is shown in Fig.
 [1](#levels){reference-type="ref" reference="levels"}. While lower
 layers follow the terrain, upper layers are isobaric, and the two are
 smoothly connected.
 
 ![Default arangement of vertical levels for 80-level
-simulations.[\[levels\]]{#levels label="levels"}](./figures/levels.pdf){#levels}
+simulations.](../figures/levels.pdf)
 
 All prognostic variables are defined either on a grid of
 $(\lambda_i, \varphi_j, \eta_k)$ or $(\lambda_i, \varphi_j, z_l)$. (The
