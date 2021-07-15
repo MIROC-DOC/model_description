@@ -24,26 +24,31 @@ as a backward difference. Please refer to the chapter on physical
 processes for details.)
 
 Expressing each prognostic variable as ${X}$,
+
 $$
-  \hat{X}^{t+\Delta t}
-    =  \bar{X}^{t-\Delta t}
-    + 2 \Delta t
-      \dot{X}_{adv}\left( {X}^{t} \right)
-    + 2 \Delta t
-      \dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right),   $$
+\hat{X}^{t+\Delta t}
+=  \bar{X}^{t-\Delta t}
++ 2 \Delta t
+\dot{X}_{adv}\left( {X}^{t} \right)
++ 2 \Delta t
+\dot{X}_{dif}\left( \hat{X}^{t+\Delta t} \right),
+$$
+
 where $\dot{X}_{adv}$ is the advection term etc., and $\dot{X}_{dif}$ is
 the horizontal diffusion term.
 
 $\hat{X}^{t+\Delta t}$ is then corrected for diffusion ($\dot{X}_{dis}$
 for $p$-surface correction and the heat of friction) and physical
 processes ($\dot{X}_{phy}$), yielding ${X}^{t+\Delta t}$.
+
 $$
-  {X}^{t+\Delta t}
-    =  \hat{X}^{t+\Delta t}
-    + 2 \Delta t
-      \dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
-    + 2 \Delta t
-      \dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)   $$
+{X}^{t+\Delta t}
+=  \hat{X}^{t+\Delta t}
++ 2 \Delta t
+\dot{X}_{dis}\left( \hat{X}^{t+\Delta t} \right)
++ 2 \Delta t
+\dot{X}_{phy}\left( \hat{X}^{t+\Delta t} \right)
+$$
 
 To damp numerical modes, a time filter (Williams, 2009) is applied to
 leap-frog method at every steps. The time filter is given below, where
@@ -100,24 +105,28 @@ We divide the basic equation into a linear gravity wave term
 ($T=\bar{T}_k$) with a static field as the basic field and other terms
 (with the indices $NG$). Using a vector representation for the vertical
 direction (${\mathbf{D}}=\{ D_{k} \}$ and ${\mathbf{T}}=\{ T_{k} \}$),
+
 $$
 \begin{aligned}
-   \frac{\partial \pi}{\partial t} &=
-          \left( \frac{\partial \pi}{\partial t} \right)_{NG}
-     - {\mathbf{C}} \cdot {\mathbf{D}}, \\
-  \frac{\partial {\mathbf{D}}}{\partial t} &=
-          \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
-          - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
-                                  + \underline{W} {\mathbf{T}}
-                                  + {\mathbf{G}} \pi )
-          - {\mathcal D}_M {\mathbf{D}} , \\
-  \frac{\partial {\mathbf{T}}}{\partial t}
-      &=   \left( \frac{\partial {\mathbf{T}}}
-                        {\partial t}       \right)_{NG}
-         - \underline{h} {\mathbf{D}}
-         - {\mathcal D}_H {\mathbf{T}}.  \end{aligned}$$
+\frac{\partial \pi}{\partial t} &=
+\left( \frac{\partial \pi}{\partial t} \right)_{NG}
+- {\mathbf{C}} \cdot {\mathbf{D}}, \\
+\frac{\partial {\mathbf{D}}}{\partial t} &=
+\left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
+- \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
++ \underline{W} {\mathbf{T}}
++ {\mathbf{G}} \pi )
+- {\mathcal D}_M {\mathbf{D}} , \\
+\frac{\partial {\mathbf{T}}}{\partial t}
+&=   \left( \frac{\partial {\mathbf{T}}}
+{\partial t}       \right)_{NG}
+- \underline{h} {\mathbf{D}}
+- {\mathcal D}_H {\mathbf{T}}.
+\end{aligned}
+$$
 
 Here, the non-gravitational wave term is
+
 $$
 \begin{aligned}
 \left(\frac{\partial \pi}{\partial t}\right)^{N G}=&-\sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi \Delta B_{k}, \\
@@ -147,6 +156,7 @@ $$
 
 Here, $\delta_{k \leq l}$ is 1 if $k \leq l$ is valid and 0 otherwise.\
 We now use the following expressions for time differences:
+
 $$
 \begin{aligned}
 \delta_{t} X & \equiv \frac{1}{2 \Delta t}\left(X^{t+\Delta t}-X^{t-\Delta t}\right) \\
@@ -154,6 +164,7 @@ $$
 &=X^{t-\Delta t}+\delta_{t} X \Delta t
 \end{aligned}
 $$
+
 Then, applying the semi-implicit method to the system of equations, we get
 
 $$ \delta_{t} \pi =\left(\frac{\partial \pi}{\partial t}\right)_{N G}-\mathbf{C} \cdot \overline{\mathbf{D}}^{t} \tag{eq-for-pi} $$
@@ -168,19 +179,24 @@ $$
 $$
 
 Thus,
+
 $$
 \begin{aligned}
 &\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+2 \Delta t \mathcal{D}_{M}\right) \underline{I}-(\Delta t)^{2}\left(\underline{W} \underline{h}+\left(1+2 \Delta t \mathcal{D}_{M}\right) \mathbf{G} \mathbf{C}^{T}\right) \nabla_{\eta}^{2}\right\} \overline{\mathbf{D}}^{t} \\
 =&\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+\Delta t \mathcal{D}_{M}\right) \mathbf{D}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{D}}{\partial t}\right)_{N G} \\
 -& \Delta t \nabla_{\eta}^{2}\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{\Phi}_{S}+\underline{W}\left[\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{T}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}\right]\right\} \\
-+&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partisquare matrix. al t}\right)_{N G}\right]\right\} .
++&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partisquare matrix. al t}\right)_{N G}\right]\right\}.
 \end{aligned}
 $$
 
 Since the spherical harmonic expansion is used, we can rewrite
 $\nabla_{\eta}^2$ as the following:
+
 $$
-\nabla_{\eta}^2=-\frac{n(n+1)}{a^2},   $$ which enables us to
+\nabla_{\eta}^2=-\frac{n(n+1)}{a^2},
+$$
+
+which enables us to
 solve the above equations for $\overline{ {\mathbf{D}}_n^m }^{t}$. Then,
 using  ([95](eq-for-pi)),  ([97](eq-for)) and
 $D^{t+\Delta t} = 2\overline{ {\mathbf{D}} }^{t} - D^{t-\Delta t},$ we
@@ -206,21 +222,28 @@ $$
 Assuming $X$ evolves exponentially, we can define $\lambda$ such that
 $$
 \begin{aligned}
-  \lambda & =  X^{n+1}/X^n = X^n/X^{n-1}, \\
-  \lambda^2 & =  1 + 2 i kc \Delta t \lambda \; .\end{aligned} $$
+\lambda & =  X^{n+1}/X^n = X^n/X^{n-1}, \\
+\lambda^2 & =  1 + 2 i kc \Delta t \lambda \; .\end{aligned}
+$$
+
 Defining
 $p \equiv kc \Delta t$, the solution becomes:
+
 $$
- \lambda = -i p \pm \sqrt{1-p^2}.   $$
+\lambda = -i p \pm \sqrt{1-p^2}.
+$$
 
 The absolute value of those solutions are
+
 $$
-  |\lambda| = \left\{
-             \begin{array}{ll}
-               1 & |p| \le 1 \\
-               p \pm \sqrt{p^2-1} & |p| > 1
-             \end{array}
-             \right.   $$ and in the case of $|p|>1$, we get
+|\lambda| = \left\{
+\begin{array}{ll}
+1 & |p| \le 1 \\
+p \pm \sqrt{p^2-1} & |p| > 1
+\end{array}
+\right.
+$$
+and in the case of $|p|>1$, we get
 $|\lambda| > 1$, and the absolute value of the solution increases
 exponentially with time. This indicates that the computation is
 unstable.
@@ -236,18 +259,26 @@ described later.
 
 Given the horizontal grid spacing $\Delta x$, the maximum value of $k$
 becomes
+
 $$
 \max k = \frac{\pi}{\Delta x}.
 $$
+
 Then, the condition
 $|p|=kc \Delta t \le 1$ requires
+
 $$
-   \Delta t \le \frac{\Delta x}{\pi c}.   $$
+\Delta t \le \frac{\Delta x}{\pi c}.
+$$
 
 In case of a spectral model, using the Earth's radius $a$ and the
 maximum wavenumber $N$, the requirement becomes
+
 $$
-   \Delta t \le \frac{a}{N c},   $$ which is a condition for
+\Delta t \le \frac{a}{N c},
+$$
+
+which is a condition for
 the numerical stability.\
 To guarantee the stability of the integration, one needs to take the
 time step $\Delta t$ smaller than that required by the
@@ -278,14 +309,19 @@ integration is performed to obtain $X^{\Delta t/2}$:
 
 $$
 X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
-                 = X^0 + \Delta t/2 \dot{X}^0.
+= X^0 + \Delta t/2 \dot{X}^0.
 $$
+
 Then, a
 $1/2$-step integration is performed to yield $X^{\Delta t}$:
 
 $$
-  X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.   $$
+X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.
+$$
+
 Finally, in the normal time step,
 $$
-  X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.   $$
+X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.
+$$
+
 From here on, the leap-frog method is executed in the usual manner.

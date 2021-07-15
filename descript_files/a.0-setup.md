@@ -1,5 +1,4 @@
 Basic Settings
---------------
 
 Here we present the basic setup of the model.
 
@@ -14,8 +13,10 @@ treated in a land physics component.
 Longitude is discretized at equal intervals (`SUBROUTINE: [SETLO]` in
 asetc.F).
 
-$$\begin{aligned}
-\lambda_i = 2 \pi \frac{i-1}{I},  \;\;\; i = 1, \ldots I.\end{aligned}$$
+$$
+\begin{aligned}
+\lambda_i = 2 \pi \frac{i-1}{I},  \;\;\; i = 1, \ldots I.\end{aligned}
+$$
 
 Latitude grids $\varphi_j$ are derived from the Gauss-Legendre integral
 formula (`SUBROUTINE: [SETLA]` in asetc.F). This is the zero point of
@@ -23,8 +24,10 @@ the Legendre polynomial of order J with $\mu = \sin \varphi$ as the
 argument (`SUBROUTINE: [GAUSS]` in uspst.F). If J is large, we can
 approximate
 
-$$\begin{aligned}
-\varphi_j =  \pi \left( \frac{1}{2}- \frac{j-1/2}{J} \right), \;\;\; j = 1, \ldots J.\end{aligned}$$
+$$
+\begin{aligned}
+\varphi_j =  \pi \left( \frac{1}{2}- \frac{j-1/2}{J} \right), \;\;\; j = 1, \ldots J.\end{aligned}
+$$
 Usually, the grid spacing of longitude and latitude is taken to be
 approximately equal to $J = I/2$, based on the triangular truncation of
 the spectral method.
@@ -43,12 +46,19 @@ $A_{1/2}=A_{K+1/2}=0,\ B_{1/2}=1,\ B_{K+1/2}=0$ and thus
 $p_{1/2}=p_s,\ p_{K+1/2}=0$.
 Therefore, the normalized pressure
 $\sigma\equiv p/p_s$ can be written as below:
-$$\begin{aligned}
-\sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.\end{aligned}$$
+
+$$
+\begin{aligned}
+\sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.\end{aligned}
+$$
 
 Furthermore, a hybrid normalized pressure $\eta$ is defined as below:
-$$\begin{aligned}
-\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},\ \ \ p_0\equiv 1000\ \mathrm{hPa}.\end{aligned}$$
+
+$$
+\begin{aligned}
+\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},\ \ \ p_0\equiv 1000\ \mathrm{hPa}.
+\end{aligned}
+$$
 
 Since $A_{k+1/2},\ B_{k+1/2}, p_0$ are constants, $\eta_{k+1/2}$ is also
 a constant and we use it as the vertical coordinate of the atmopheric
@@ -59,15 +69,20 @@ $\sigma$-coordinate system used in MIROC 5.
 
 Air pressure $p_k$ at integer levels ($p_k,\ k=1,2,\ldots K)$ is
 interpolated from half-level pressure as below:
-  $$\begin{aligned}
-  p_k = \left\{ \frac{1}{1+\kappa}
-  \left( \frac{  p^{\kappa +1}_{k-1/2}
-  - p^{\kappa +1}_{k+1/2}      }
-  { p_{k-1/2} - p_{k+1/2} }
-  \right)
-  \right\}^{1/\kappa}.\end{aligned}$$
+
+$$
+\begin{aligned}
+p_k = \left\{ \frac{1}{1+\kappa}
+\left( \frac{  p^{\kappa +1}_{k-1/2}
+- p^{\kappa +1}_{k+1/2}      }
+{ p_{k-1/2} - p_{k+1/2} }
+\right)
+\right\}^{1/\kappa}.
+\end{aligned}
+$$
+
 Full-level pressure in a 80-level configuration is shown in Fig.
-[1](#levels){reference-type="ref" reference="levels"}. While lower
+[1](levels). While lower
 layers follow the terrain, upper layers are isobaric, and the two are
 smoothly connected.
 
