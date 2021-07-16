@@ -27,6 +27,7 @@ do
 	pandoc -t latex --columns=200 tmp.md| \
 	sed -e s/'\\\['/'\\begin\{eqnarray\}'/g | \
 	sed -e s/'\\\]'/'\\end\{eqnarray\}'/g | \
+        #sed -e s/'\end{array}'/'\\notag\\end{array}'/g | \
 	sed -e s/'\\tag'/'\\label'/g | \
 	sed -e s/'beginlandscape'/'\\begin{landscape}'/g | \
 	sed -e s/'endlandscape'/'\\end{landscape}'/g | \

@@ -5,8 +5,8 @@ The time discretization is essentially the leap frog scheme. However, backward o
 a modified version of the Asselin time filter (Asselin 1972), is used to suppress computational modes. A semi-implicit method is applied to the gravitational wave term to make the \(\Delta t\) larger
 (Bourke, 1988).
 
-\hypertarget{time-integration-and-time-filtering-with-leap-frog}{%
-\subsubsection{Time Integration and Time Filtering with the Leap Frog Method}\label{time-integration-and-time-filtering-with-leap-frog}}
+\hypertarget{time-integration-and-time-filtering-with-the-leap-frog-method}{%
+\subsubsection{Time Integration and Time Filtering with the Leap Frog Method}\label{time-integration-and-time-filtering-with-the-leap-frog-method}}
 
 We use leap frog as the time integration scheme for advection terms and other dynamic terms. A backward difference of \(2 \Delta t\) is used for the horizontal diffusion term. The \(p\)-surface
 correction of the diffusion term and the frictional heat due to horizontal diffusion are treated by forward differences of \(2 \Delta t\). The physical process terms
@@ -79,57 +79,64 @@ We divide the basic equation into a linear gravity wave term (\(T=\bar{T}_k\)) w
 vertical direction (\({\mathbf{D}}=\{ D_{k} \}\) and \({\mathbf{T}}=\{ T_{k} \}\)),
 
 \begin{eqnarray}
-\begin{aligned}
-\frac{\partial \pi}{\partial t} &=
+\frac{\partial \pi}{\partial t} =
 \left( \frac{\partial \pi}{\partial t} \right)_{NG}
-- {\mathbf{C}} \cdot {\mathbf{D}}, \\
-\frac{\partial {\mathbf{D}}}{\partial t} &=
+- {\mathbf{C}} \cdot {\mathbf{D}},
+\end{eqnarray} \begin{eqnarray}
+\frac{\partial {\mathbf{D}}}{\partial t} =
 \left( \frac{\partial {\mathbf{D}}}{\partial t} \right)_{NG}
 - \nabla^{2}_{\eta} ( {\mathbf{\Phi}}_{S}
 + \underline{W} {\mathbf{T}}
 + {\mathbf{G}} \pi )
-- {\mathcal D}_M {\mathbf{D}} , \\
+- {\mathcal D}_M {\mathbf{D}} ,
+\end{eqnarray} \begin{eqnarray}
 \frac{\partial {\mathbf{T}}}{\partial t}
-&=   \left( \frac{\partial {\mathbf{T}}}
+=   \left( \frac{\partial {\mathbf{T}}}
 {\partial t}       \right)_{NG}
 - \underline{h} {\mathbf{D}}
 - {\mathcal D}_H {\mathbf{T}}.
-\end{aligned}
 \end{eqnarray}
 
 Here, the non-gravitational wave term is
 
 \begin{eqnarray}
+\left(\frac{\partial \pi}{\partial t}\right)^{N G}=-\sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi \Delta B_{k},
+\end{eqnarray} \begin{eqnarray}
+\frac{(m \dot{\eta})_{k-1 / 2}^{N G}}{p_{s}}=-B_{k-1 / 2}\left(\frac{\partial \pi}{\partial t}\right)^{N G}-\sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l},
+\end{eqnarray} \begin{eqnarray}
+\left(\frac{\partial D}{\partial t}\right)^{N G}= \frac{1}{a \cos \varphi} \frac{\partial\left(A_{u}\right)_{k}}{\partial \lambda}+\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(A_{v} \cos \varphi\right)_{k}-\nabla_{\eta}^{2} \hat{E}_{k}-\mathcal{D}\left(D_{k}\right),
+\end{eqnarray} \begin{eqnarray}
+\left(\frac{\partial T_{k}}{\partial t}\right)^{N G}=-\frac{1}{a \cos \varphi} \frac{\partial u_{k} T_{k}^{\prime}}{\partial \lambda}-\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(v_{k} T_{k}^{\prime} \cos \varphi\right)+\hat{H}_{k}-\mathcal{D}\left(T_{k}\right),
+\end{eqnarray} \begin{eqnarray}
 \begin{aligned}
-\left(\frac{\partial \pi}{\partial t}\right)^{N G}=&-\sum_{k=1}^{K} \mathbf{v}_{k} \cdot \nabla \pi \Delta B_{k}, \\
-\frac{(m \dot{\eta})_{k-1 / 2}^{N G}}{p_{s}}=&-B_{k-1 / 2}\left(\frac{\partial \pi}{\partial t}\right)^{N G}-\sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l}, \\
-\left(\frac{\partial D}{\partial t}\right)^{N G}=& \frac{1}{a \cos \varphi} \frac{\partial\left(A_{u}\right)_{k}}{\partial \lambda}+\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(A_{v} \cos \varphi\right)_{k}-\nabla_{\eta}^{2} \hat{E}_{k}-\mathcal{D}\left(D_{k}\right), \\
-\left(\frac{\partial T_{k}}{\partial t}\right)^{N G}=&-\frac{1}{a \cos \varphi} \frac{\partial u_{k} T_{k}^{\prime}}{\partial \lambda}-\frac{1}{a \cos \varphi} \frac{\partial}{\partial \varphi}\left(v_{k} T_{k}^{\prime} \cos \varphi\right)+\hat{H}_{k}-\mathcal{D}\left(T_{k}\right), \\
 \hat{H}_{k}=& T_{k}^{\prime} D_{k}-\left[\frac{(m \dot{\eta})_{k-1 / 2}}{p_{s}} \frac{\hat{T}_{k-1 / 2}-T_{k}}{\Delta \sigma_{k}}+\frac{(m \dot{\eta})_{k+1 / 2}}{p_{s}} \frac{T_{k}-\hat{T}_{k+1 / 2}}{\Delta \sigma_{k}}\right] \\
 &+\hat{\kappa}_{k} T_{v, k} \mathbf{v}_{k} \cdot \nabla \pi \\
 &-\frac{\alpha_{k}}{\Delta \sigma_{k}} T_{v, k} \sum_{l=k}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l}-\frac{\beta_{k}}{\Delta \sigma_{k}} T_{v, k} \sum_{l=k+1}^{K} \mathbf{v}_{l} \cdot \nabla \pi \Delta B_{l} \\
-&-\frac{\alpha_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k}^{K} D_{l} \Delta \sigma_{l}-\frac{\beta_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k+1}^{K} D_{l} \Delta \sigma_{l}+\frac{Q_{k}+\left(Q_{d i f f}\right)_{k}}{C_{p}}, \\
-\hat{E}_{k}=& E_{k}+\sum_{k=1}^{K} W_{k l}\left(T_{v, l}-T_{l}\right),
+&-\frac{\alpha_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k}^{K} D_{l} \Delta \sigma_{l}-\frac{\beta_{k}}{\Delta \sigma_{k}} T_{v, k}^{\prime} \sum_{l=k+1}^{K} D_{l} \Delta \sigma_{l}+\frac{Q_{k}+\left(Q_{d i f f}\right)_{k}}{C_{p}},
 \end{aligned}
+\end{eqnarray} \begin{eqnarray}
+\hat{E}_{k}= E_{k}+\sum_{k=1}^{K} W_{k l}\left(T_{v, l}-T_{l}\right),
 \end{eqnarray}
 
 where the vector and matrix of the gravitational wave term (underlined) are
 
 \begin{eqnarray}
-\begin{aligned}
-C_{k} &=\Delta \sigma_{k} \\
-W_{k l} &=C_{p} \alpha_{l} \delta_{k \geq l}+C_{p} \beta_{l} \delta_{k-1 \geq l}, \\
-G_{k} &=R \bar{T} \\
-h_{k l} &=\frac{\bar{T}}{\Delta \sigma_{k}}\left[\alpha_{k} \Delta \sigma_{l} \delta_{k \geq l}+\beta_{k} \Delta \sigma_{l} \delta_{k+1 \leq l}\right]
-\end{aligned}
+C_{k} =\Delta \sigma_{k}
+\end{eqnarray} \begin{eqnarray}
+W_{k l} =C_{p} \alpha_{l} \delta_{k \geq l}+C_{p} \beta_{l} \delta_{k-1 \geq l},
+\end{eqnarray} \begin{eqnarray}
+G_{k} =R \bar{T}
+\end{eqnarray} \begin{eqnarray}
+h_{k l} =\frac{\bar{T}}{\Delta \sigma_{k}}\left[\alpha_{k} \Delta \sigma_{l} \delta_{k \geq l}+\beta_{k} \Delta \sigma_{l} \delta_{k+1 \leq l}\right]
 \end{eqnarray}
 
 Here, \(\delta_{k \leq l}\) is 1 if \(k \leq l\) is valid and 0 otherwise.\\
 We now use the following expressions for time differences:
 
 \begin{eqnarray}
+\delta_{t} X  \equiv \frac{1}{2 \Delta t}\left(X^{t+\Delta t}-X^{t-\Delta t}\right)
+\end{eqnarray} \begin{eqnarray}
 \begin{aligned}
-\delta_{t} X & \equiv \frac{1}{2 \Delta t}\left(X^{t+\Delta t}-X^{t-\Delta t}\right) \\
 \bar{X}^{t} & \equiv \frac{1}{2}\left(X^{t+\Delta t}+X^{t-\Delta t}\right) \\
 &=X^{t-\Delta t}+\delta_{t} X \Delta t
 \end{aligned}
@@ -154,8 +161,8 @@ Thus,
 \begin{aligned}
 &\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+2 \Delta t \mathcal{D}_{M}\right) \underline{I}-(\Delta t)^{2}\left(\underline{W} \underline{h}+\left(1+2 \Delta t \mathcal{D}_{M}\right) \mathbf{G} \mathbf{C}^{T}\right) \nabla_{\eta}^{2}\right\} \overline{\mathbf{D}}^{t} \\
 =&\left(1+2 \Delta t \mathcal{D}_{H}\right)\left(1+\Delta t \mathcal{D}_{M}\right) \mathbf{D}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{D}}{\partial t}\right)_{N G} \\
--& \Delta t \nabla_{\eta}^{2}\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{\Phi}_{S}+\underline{W}\left[\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{T}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}\right]\right\} \\
-+&\left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partisquare matrix. al t}\right)_{N G}\right]\right\}.
+& - \Delta t \nabla_{\eta}^{2}\left\{\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{\Phi}_{S}+\underline{W}\left[\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{T}^{t-\Delta t}+\Delta t\left(\frac{\partial \mathbf{T}}{\partial t}\right)_{N G}\right]\right\} \\
+& + \left.\quad\left(1+2 \Delta t \mathcal{D}_{H}\right) \mathbf{G}\left[\pi^{t-\Delta t}+\Delta t\left(\frac{\partial \pi}{\partial t}\right)_{N G}\right]\right\}.
 \end{aligned}
 \end{eqnarray}
 
@@ -165,7 +172,7 @@ Since the spherical harmonic expansion is used, we can rewrite \(\nabla_{\eta}^2
 \nabla_{\eta}^2=-\frac{n(n+1)}{a^2},
 \end{eqnarray}
 
-which enables us to solve the above equations for \(\overline{ {\mathbf{D}}_n^m }^{t}\). Then, using (\ref{eq-for-pi}), (\ref{eq-for}) and
+which enables us to solve the above equations for \(\overline{ {\mathbf{D}}_n^m }^{t}\). Then, using (\ref{eq-for-pi}), (\ref{eq-for-t}) and
 \(D^{t+\Delta t} = 2\overline{ {\mathbf{D}} }^{t} - D^{t-\Delta t},\) we can obtain the value of prognostic variables \(\hat{X}^{t+\Delta t}\) at \(t+\Delta t\).
 
 \hypertarget{time-scheme-properties-and-requiments-for-time-steps}{%
@@ -184,9 +191,9 @@ X^{n+1} = X^{n-1} + 2 i k \Delta t X^n.
 \end{eqnarray}
 
 Assuming \(X\) evolves exponentially, we can define \(\lambda\) such that \begin{eqnarray}
-\begin{aligned}
-\lambda & =  X^{n+1}/X^n = X^n/X^{n-1}, \\
-\lambda^2 & =  1 + 2 i kc \Delta t \lambda \; .\end{aligned}
+\lambda =  X^{n+1}/X^n = X^n/X^{n-1},
+\end{eqnarray} \begin{eqnarray}
+\lambda^2 =  1 + 2 i kc \Delta t \lambda \; .
 \end{eqnarray}
 
 Defining \(p \equiv kc \Delta t\), the solution becomes:
@@ -207,7 +214,7 @@ p \pm \sqrt{p^2-1} & |p| > 1
 \end{eqnarray} and in the case of \(|p|>1\), we get \(|\lambda| > 1\), and the absolute value of the solution increases exponentially with time. This indicates that the computation is unstable.
 
 In the case of \(|p| \le 1\), however, the calculation is neutral since the value of \(|\lambda| = 1\). However, there are two solutions to \(\lambda\), one of which, when set to
-\(\Delta t \rightarrow 1\), leads to \(\lambda \rightarrow 1\), while the other leads to \(\lambda \rightarrow -1\), which indicates an osscilating solution. This mode is called ``computational mode''
+\(\Delta t \rightarrow 1\), leads to \(\lambda \rightarrow 1\), while the other leads to \(\lambda \rightarrow -1\), which indicates an oscillating solution. This mode is called ``computational mode''
 and is one of the problems of the leap frog method. This mode can be damped by applying a time filter described later.
 
 Given the horizontal grid spacing \(\Delta x\), the maximum value of \(k\) becomes
@@ -255,11 +262,11 @@ X^{\Delta t/2} = X^0 + \Delta t/2 \dot{X}^{\Delta t/4}
 Then, a \(1/2\)-step integration is performed to yield \(X^{\Delta t}\):
 
 \begin{eqnarray}
-X^{\Delta t}   = X^0 + \Delta t \dot{X}^{\Delta t/2}.
+X^{\Delta t} = X^0 + \Delta t \dot{X}^{\Delta t/2}.
 \end{eqnarray}
 
 Finally, in the normal time step, \begin{eqnarray}
-X^{2\Delta t}   = X^0 + 2 \Delta t \dot{X}^{\Delta t}.
+X^{2\Delta t} = X^0 + 2 \Delta t \dot{X}^{\Delta t}.
 \end{eqnarray}
 
 From here on, the leap-frog method is executed in the usual manner.

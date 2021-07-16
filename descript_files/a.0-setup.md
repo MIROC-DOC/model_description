@@ -1,4 +1,4 @@
-Basic Settings
+## Basic Settings
 
 Here we present the basic setup of the model.
 
@@ -40,7 +40,6 @@ $$
 \begin{aligned}
 p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s,\end{aligned}
 $$
-
 where
 $A_{1/2}=A_{K+1/2}=0,\ B_{1/2}=1,\ B_{K+1/2}=0$ and thus
 $p_{1/2}=p_s,\ p_{K+1/2}=0$.
@@ -82,7 +81,7 @@ p_k = \left\{ \frac{1}{1+\kappa}
 $$
 
 Full-level pressure in a 80-level configuration is shown in Fig.
-[1](levels). While lower
+([1](levels)). While lower
 layers follow the terrain, upper layers are isobaric, and the two are
 smoothly connected.
 

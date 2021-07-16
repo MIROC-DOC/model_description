@@ -1,5 +1,4 @@
-Shallow Convection Scheme
--------------------------
+## Shallow Convection Scheme
 
 ### Overview of Shallow Convection
 
@@ -85,8 +84,8 @@ $$
     E =\epsilon M_u \tag{fracE}
 $$
 $$
-    D =\delta M_u. \tag{fracD} $$ Substituting
-$\overline{\psi}$ for grid value and assuming the horizontal mixing term
+D =\delta M_u. \tag{fracD} $$
+Substituting $\overline{\psi}$ for grid value and assuming the horizontal mixing term
 as $X_{\psi}=E \overline{\psi} - D\psi_u$ results in
 
 $$
@@ -95,7 +94,6 @@ $$
 
 $$
 \frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \tag{zprof-psi'}
-
 $$
 In MIROC6, changes in liquid water potential temperature due to
 precipitation and the effect of subgrid pressure gradient on horizontal
@@ -111,23 +109,23 @@ base, vertical profiles of $M_u$ and $\psi_u$ are calculated.
 
 The effect of convective updraft is calculated as follows.
 
--   Liquid water potential temperature $\theta_l$ and total water $q_t$
+- Liquid water potential temperature $\theta_l$ and total water $q_t$
     are diagnosed from input temperature $T$, water vapor mixing ratio
     $q_v$, liquid water mixing ratio $q_l$, ice mixing ratio $q_i$,
 
--   Updraft mass flux at cloud base is diagnosed.
+- Updraft mass flux at cloud base is diagnosed.
 
--   Height of cloud base is diagnosed.
+- Height of cloud base is diagnosed.
 
--   Presence of shallow convection is determined.
+- Presence of shallow convection is determined.
 
--   Vertical profiles of $M_u$, $\theta_l$, $q_t$, horizontal wind
+- Vertical profiles of $M_u$, $\theta_l$, $q_t$, horizontal wind
     components $u$ and $v$ are diagnosed.
 
--   $\theta_l$, $q_t$, $q_i$, $u$, $v$, liquid water temperature $T_l$
+- $\theta_l$, $q_t$, $q_i$, $u$, $v$, liquid water temperature $T_l$
     are predicted.
 
--   $T$, $q_v$, and $q_l$ are diagnosed according to $T_l$ and $q_t$.
+- $T$, $q_v$, and $q_l$ are diagnosed according to $T_l$ and $q_t$.
 
 #### Lower boundary condition: diagnosis of cloud base mass flux {#lower-boundary-condition}
 
@@ -145,8 +143,9 @@ represents drag by entrainment. By assuming no entrainment below LFC and
 integrating ([zprof_wu](zprof-wu)) from cloud base to LFC, The critical value of
 upward velocity for updraft plume to reach LFC, $w_c$, can be determined
 
-$$\tag{wc}
-    w_c = \sqrt{2a(CIN)}.$$ Updrafts that exceed this critical value
+$$
+w_c = \sqrt{2a(CIN)}. \tag{wc}$$
+Updrafts that exceed this critical value
 penetrates from cloud base.
 
 Computation of CIN is based on Appendix C of Bretherton et al.,
@@ -193,7 +192,7 @@ $CIN_{Lo}\le CIN \le CIN_{Hi}$ for a typical value of CIN.
 For each horizontal column, whether shallow convection occurs is
 determined with following criteria.
 
--   If estimated inversion strength (EIS; Wood and Bretherton, 2006)
+- If estimated inversion strength (EIS; Wood and Bretherton, 2006)
     exceeds a certain threshold, the environmental field is judged to be
     dominated by stratocumulus clouds, and shallow convection is not
     generated. This criterion is introduced because the vertical
@@ -206,12 +205,12 @@ determined with following criteria.
     and surface, $\Gamma_m^{850}$ is moist adiabatic lapse rate at
     850hPa, and $z_{700}$ is height of 700hPa.
 
--   If the intensity of cumulus convection diagnosed by
+- If the intensity of cumulus convection diagnosed by
     `SUBROUTINE:[CUMULUS]` exceeds a threshold, the environmental field
     is supposed to be dominated by deep convection and shallow
     convection is not generated.
 
--   If the areal fraction of shallow convection is under a threshold,
+- If the areal fraction of shallow convection is under a threshold,
     computation of shallow convection is omitted.
 
 #### Diagnosing vertical profile of updraft mass flux
@@ -250,8 +249,9 @@ the parcel can travel longer than a certain eddy mixing distance
 $l_c=c_1 H$, where $c_1=0.1$ is an empirical constant, chosen to
 optimize the trade-cumulus case. This criterion corresponds to the
 critical buoyancy value
-$$\tag{buoy-c}
-    B_c = -\frac{1}{2}\frac{w_u^2}{l_c}$$ and otherwise, all the mixed
+$$
+B_c = -\frac{1}{2}\frac{w_u^2}{l_c} \tag{buoy-c}$$
+and otherwise, all the mixed
 air is detrained. Therefore, Once the critical value of the mixing state
 $\chi_c$ is obtained, which allows the updraft to rise a distance $l_c$
 under negative buoyancy, the air in the environmental field entrained

@@ -1,5 +1,4 @@
-Vertical Discretization
------------------------
+## Vertical Discretization
 
 Following Arakawa and Konor (1996) except for using the Lorentz grid,
 the basic equations are discretized vertically by differences. This
@@ -20,7 +19,7 @@ scheme has the following characteristics.
   direction, the hydrostatic pressure equation becomes precisely
   accurate and the barometric gradient force becomes zero.
 
--   Isothermal atmosphere stays permanently isothermal.
+- Isothermal atmosphere stays permanently isothermal.
 
 ### Model Levels
 
@@ -42,8 +41,10 @@ $$
 
 Using a reference pressure $p_0$, the hybrid-normalized pressure $\eta$
 is defined as below:
+
 $$
-\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},  $$ which is
+\eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},  $$
+which is
 a constant at all levels and is used as the vertical coordinate by
 default in MIROC 6.0.
 
@@ -61,16 +62,17 @@ $$
 
 For later use, let us define the following:
 $$
-\begin{aligned}
-  \Delta\sigma_k &\equiv & \sigma_{k-1/2} - \sigma_{k+1/2}, \\
-  \Delta B_k &\equiv & B_{k-1/2} - B_{k+1/2}. \end{aligned} $$
+\Delta\sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2},
+$$
+$$
+  \Delta B_k \equiv B_{k-1/2} - B_{k+1/2}.$$
 
 ### Vertical Discretization
 
 Basic equations vertically discretized at the $\eta$ hybrid coordinates
 are shown below.
 
-1.  Continuity equation and diagnosis of the vertical velocity
+1. Continuity equation and diagnosis of the vertical velocity
 
 $$
   \frac{\partial \pi}{\partial t}
@@ -91,7 +93,7 @@ $$
 $$
   \frac{(m\dot{\eta})_{1/2}}{p_s} = \frac{(m\dot{\eta})_{k+1/2}}{p_s} = 0  $$
 
-1.  Hydrostatic equation
+2. Hydrostatic equation
 
 $$
 \begin{aligned}
@@ -110,48 +112,62 @@ $$
 
 Here,
 $$
-\begin{aligned}
- \alpha_k &\equiv & \left( \frac{ p_{k-1/2} }
-                               { p_k } \right)^{\kappa} -1, \\
- \beta_k &\equiv &  1- \left( \frac{ p_{k+1/2} }
-                               { p_k } \right)^{\kappa} . \end{aligned}$$
+ \alpha_k \equiv \left( \frac{ p_{k-1/2} }
+                               { p_k } \right)^{\kappa} -1,
+$$
+$$
+ \beta_k \equiv 1- \left( \frac{ p_{k+1/2} }
+                               { p_k } \right)^{\kappa} .$$
 
-1.  Equations of motion
+3. Equations of motion
 
 $$
 \begin{aligned}
   \frac{\partial \zeta_k}{\partial t}
-        &=  \frac{1}{a\cos\varphi}
+        = & \frac{1}{a\cos\varphi}
             \frac{\partial (A_v)_k}{\partial \lambda}
-          - \frac{1}{a\cos\varphi}
+          & - \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
-          - {\mathcal D}(\zeta_k) \\
+          & - {\mathcal D}(\zeta_k)
+ \end{aligned}
+$$
+$$
   \frac{\partial D}{\partial t}
-        &=  \frac{1}{a\cos\varphi}
+        =  \frac{1}{a\cos\varphi}
             \frac{\partial (A_u)_k}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
           - \nabla^{2}_{\eta}
            ( \Phi_k + R\bar{T} \pi
              + ({\mathit KE})_k )
-          - {\mathcal D}(D_k) \\
+          - {\mathcal D}(D_k)
+$$
+$$
+\begin{aligned}
   (A_u)_k
-    &= ( \zeta_k + f ) v_k
+    = & ( \zeta_k + f ) v_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{u_{k-1} - u_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \\
-           &- \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
-             + {\mathcal F}_x \\
+           & -  \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+             + {\mathcal F}_x
+\end{aligned}
+$$
+$$
+\begin{aligned}
   (A_v)_k
-    &=  - ( \zeta_k + f ) u_k
+    = & - ( \zeta_k + f ) u_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{v_{k-1} - v_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \\
            &- \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
-             + {\mathcal F}_y \\
+             + {\mathcal F}_y
+\end{aligned}
+$$
+$$
    \hat{\kappa}_k
-    &=\frac{ B_{k-1/2} \alpha_k + B_{k+1/2} \beta_k }
-            { \Delta\sigma_k                                  } \end{aligned}$$
+    =\frac{ B_{k-1/2} \alpha_k + B_{k+1/2} \beta_k }
+            { \Delta\sigma_k                                  } $$
 
-1.  Thermodynamic equation
+4. Thermodynamic equation
 
 $$
   \frac{\partial T_k}{\partial t}
@@ -168,7 +184,7 @@ Here,
 $$
 \begin{aligned}
    H_k
-     &\equiv   T_k' D_k
+     \equiv &  T_k' D_k
               - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \\
         &+ \left\{ \alpha_k
@@ -184,7 +200,7 @@ $$
                     \right]
               \right\}
               \frac{1}{\Delta \sigma_k} T_{v,k}\\
-     &=  T_k' D_k
+     = & T_k' D_k
           - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right] \\
         &+ \hat{\kappa}_k ({\mathbf{v}}_k \cdot \nabla \pi) T_{v,k} \\
@@ -193,32 +209,40 @@ $$
                             \frac{T_{v,k}}{\Delta \sigma_k} \\
         &- \beta_k \sum_{l=k+1}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
-                            \frac{T_{v,k}}{\Delta \sigma_k}, \\
+                            \frac{T_{v,k}}{\Delta \sigma_k},
+\end{aligned}
+$$
+$$
   \hat{T}_{k-1/2}
-   &= a_k T_k + b_{k-1} T_{k-1}, \\
-  a_k  &=  \alpha_k
+   = a_k T_k + b_{k-1} T_{k-1},
+$$
+$$
+  a_k  =  \alpha_k
               \left[ 1- \left( \frac{ p_k }{ p_{k-1} }
-                        \right)^{\kappa} \right]^{-1},  \\
-  b_k  &=  \beta_k
+                        \right)^{\kappa} \right]^{-1},
+$$
+$$
+  b_k  =  \beta_k
               \left[ \left( \frac{ p_k }{ p_{k+1} }
-                     \right)^{\kappa} - 1 \right]^{-1} .  \end{aligned}$$
+                     \right)^{\kappa} - 1 \right]^{-1} .$$
 
-1.  Tracers
+5. Tracers
 
 $$
-\begin{aligned}
   \frac{\partial q_k}{\partial t}
-      &=  - \frac{1}{a\cos\varphi}
+      =  - \frac{1}{a\cos\varphi}
                \frac{\partial u_k q_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} ( v_k q_k\cos\varphi)
           + R_k
           + S_{q,k}
-          - {\mathcal D}(q_k) \\
-R_k  &=  q_k D_k
+          - {\mathcal D}(q_k)
+$$
+$$
+R_k  =  q_k D_k
        - \frac{1}{2}
              \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{q_{k-1} - q_k}{\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]  \end{aligned}$$
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right] $$
 
 ### Differences from the $\sigma$-Coordinate
 
@@ -227,9 +251,6 @@ $\sigma$ coordinate. Thus, differences of discretized equations between
 the $\eta$ and $\sigma$ coordinates are relatively small, which are
 listed below:
 
--   In the $\sigma$ coordinate, $A_{k+1/2}$ is equal to zero at all
-    levels.
+- In the $\sigma$ coordinate, $A_{k+1/2}$ is equal to zero at all levels.
 
--   While $\Delta B_k$ and $\Delta \sigma_k$ are different in the $\eta$
-    coordinates, those are equivalent to each other in the $\sigma$
-    coordinate.
+- While $\Delta B_k$ and $\Delta \sigma_k$ are different in the $\eta$ coordinates, those are equivalent to each other in the $\sigma$ coordinate.

@@ -41,15 +41,15 @@ convection are represented by determining the vertical profiles of unknown value
 \(D\) are rates of entrainment and detrainment, which are described in fractional from \begin{eqnarray}
     E =\epsilon M_u \label{fracE}
 \end{eqnarray} \begin{eqnarray}
-    D =\delta M_u. \label{fracD} \end{eqnarray} Substituting \(\overline{\psi}\) for grid value and assuming the horizontal mixing term as \(X_{\psi}=E \overline{\psi} - D\psi_u\) results in
+D =\delta M_u. \label{fracD} \end{eqnarray} Substituting \(\overline{\psi}\) for grid value and assuming the horizontal mixing term as \(X_{\psi}=E \overline{\psi} - D\psi_u\) results in
 
 \begin{eqnarray}
 \frac{\partial M_u}{\partial z} = M_u (\epsilon - \delta) \label{zprof-Mu'}
 \end{eqnarray}
 
-\$\$ \frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi\emph{u) + S}\{\psi\}. \label{zprof-psi'}
-
-\$\$ In MIROC6, changes in liquid water potential temperature due to precipitation and the effect of subgrid pressure gradient on horizontal momentum are included in \(S_{\psi}\). Consequently,
+\begin{eqnarray}
+\frac{\partial \psi_u}{\partial z} = \epsilon(\overline{\psi} - \psi_u) + S_{\psi}. \label{zprof-psi'}
+\end{eqnarray} In MIROC6, changes in liquid water potential temperature due to precipitation and the effect of subgrid pressure gradient on horizontal momentum are included in \(S_{\psi}\). Consequently,
 equations (\ref{zprof-Mu'}) and (\ref{zprof-psi'}) results in a closure problem of two parameters \(\delta\) and \(\epsilon\). By determining \(\delta\) and \(\epsilon\) by
 the formulation described in section (\ref{diagnosing-vertical-profile-of-updraft-mass-flux}) and solving differential equations along with boundary condition at cloud base, vertical
 profiles of \(M_u\) and \(\psi_u\) are calculated.
@@ -87,8 +87,8 @@ Firstly, the vertical profile of updraft velocity is supposed to fulfill \begin{
 term of the right-hand side of (\ref{zprof-wu}) is acceleration by buoyancy, and the second term represents drag by entrainment. By assuming no entrainment below LFC and integrating
 (\ref{zprof-wu}) from cloud base to LFC, The critical value of upward velocity for updraft plume to reach LFC, \(w_c\), can be determined
 
-\begin{eqnarray}\label{wc}
-    w_c = \sqrt{2a(CIN)}.\end{eqnarray} Updrafts that exceed this critical value penetrates from cloud base.
+\begin{eqnarray}
+w_c = \sqrt{2a(CIN)}. \label{wc}\end{eqnarray} Updrafts that exceed this critical value penetrates from cloud base.
 
 Computation of CIN is based on Appendix C of Bretherton et al., \begin{eqnarray}\begin{aligned}
 \label{def-CIN}
@@ -145,9 +145,9 @@ The occurrence of entrainment is judged as follows. Firstly, if the updraft air 
 (\(\overline{\theta_v}\)) and updraft (\(\theta_{vu}\)), buoyancy force on the parcel is defined: \begin{eqnarray}\label{buoy-u}
     B_u = g\frac{\theta_{vu} - \overline{\theta_{v}}}{ \overline{\theta_v}}\end{eqnarray} and entrainment occurs when the buoyancy on parcel is positive. Furthermore, even when the buoyancy is negative,
 entrainment occurs if the parcel can travel longer than a certain eddy mixing distance \(l_c=c_1 H\), where \(c_1=0.1\) is an empirical constant, chosen to optimize the trade-cumulus case. This
-criterion corresponds to the critical buoyancy value \begin{eqnarray}\label{buoy-c}
-    B_c = -\frac{1}{2}\frac{w_u^2}{l_c}\end{eqnarray} and otherwise, all the mixed air is detrained. Therefore, Once the critical value of the mixing state \(\chi_c\) is obtained, which allows the updraft to rise
-a distance \(l_c\) under negative buoyancy, the air in the environmental field entrained into the cloud and the air in the updraft that is detrained can be determined as follows
+criterion corresponds to the critical buoyancy value \begin{eqnarray}
+B_c = -\frac{1}{2}\frac{w_u^2}{l_c} \label{buoy-c}\end{eqnarray} and otherwise, all the mixed air is detrained. Therefore, Once the critical value of the mixing state \(\chi_c\) is obtained, which allows the
+updraft to rise a distance \(l_c\) under negative buoyancy, the air in the environmental field entrained into the cloud and the air in the updraft that is detrained can be determined as follows
 
 \begin{eqnarray}
 M_u\epsilon=2\epsilon_0 M_u\int_0^{\chi_c}\chi q(\chi) d\chi = \epsilon_0 M_u \chi_c^2 \label{flux-entre}

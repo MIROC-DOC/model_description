@@ -40,12 +40,14 @@ $$
 The inverse of that is ,
 
 $$
+\begin{aligned}
   X_n^m
-         =  \frac{1}{4 \pi}
+         = & \frac{1}{4 \pi}
              \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-               X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \notag\\
-         =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+               X( \lambda, \mu ) Y_n^{m *} ( \lambda, \mu ) \\
+         = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
                X_{ij} {Y_n^{m*}}_{ij} w_j
+\end{aligned}
 $$
 
 
@@ -56,7 +58,7 @@ Using spectral harmonics transformation, the grid point values of the terms cont
 
 $$
         \left(  \frac{\partial X}{\partial \lambda} \right)_{ij}
-     =  
+     =
         {\mathcal Re} \sum_{m=-N}^{N} \sum_{n=|m|}^{N}
        \mathrm{i}m X_n^m {Y_n^m}_{ij}
 $$
@@ -101,39 +103,40 @@ $$
 The derivative appearing in the advection term of the equation is calculated as
 
 $$
+\begin{aligned}
   \left( \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} \right)_n^m
-   =  \frac{1}{4 \pi}
+   =  & \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \notag\\
-   =  \frac{1}{4 \pi}
+          \frac{1}{a\cos\varphi} \frac{\partial{A}}{\partial {\lambda}} Y_n^{m *} \\
+   =  & \frac{1}{4 \pi}
         \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda \,
-          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \notag\\
-   =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \mathrm{i}m A \cos\varphi \frac{1}{a(1-\mu^{2})} Y_n^{m *} \\
+   =  & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \mathrm{i}m A_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
+\end{aligned}
 $$
 
 
 
 
 $$
+\begin{aligned}
   \left( \frac{1}{a\cos\varphi}
          \frac{\partial{}}{\partial {\varphi}} (A\cos\varphi) \right)_n^m
-    =  \frac{1}{4 \pi a}
+    = & \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
-           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \notag\\
-    =  - \frac{1}{4 \pi a}
+           \frac{\partial{}}{\partial {\mu}} (A\cos\varphi) Y_n^{m *}  \\
+    = & - \frac{1}{4 \pi a}
          \int_{-1}^{1} d \mu \int_{0}^{\pi} d \lambda
            A \cos\varphi \frac{\partial }{\partial \mu} Y_n^{m *}
-            \notag\\
-   =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+            \\
+    = & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           A_{ij}  \cos\varphi_j
           (1-\mu_j^2)  \frac{\partial }{\partial \mu}
           {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
+\end{aligned}
 $$
-
-
-
 
 Furthermore,
 
@@ -184,10 +187,12 @@ This horizontal diffusion term damps high frequency component occuring aliasing 
 1. A series of equations
 
 $$
+\begin{aligned}
   \frac{\partial{\pi_m^m}}{\partial {t}}
-  =  - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k  \notag\\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+  =  & - \sum_{k=1}^{K} (D_n^m)_k \Delta  \sigma_k \\
+     & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
                Z_{ij} {Y_n^{m *}}_{ij} w_j  ,
+\end{aligned}
 $$
 
 
@@ -202,44 +207,45 @@ $$
 2. Equation of motion
 
 $$
+\begin{aligned}
   \frac{\partial{\zeta_n^m}}{\partial {t}}
-    =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+    =  & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \mathrm{i}m (A_v)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-         \notag\\
-    +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+         \\
+    & +    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           (A_u)_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-    -   ({\mathcal D}_M)_n^m \zeta_n^m  \; ,
+          \\
+    & -   ({\mathcal D}_M)_n^m \zeta_n^m  \; ,
+\end{aligned}
 $$
 
-
-
-
 $$
+\begin{aligned}
   \frac{\partial{\tilde{D}_n^m}}{\partial {t}}
-   =  \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   = & \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \mathrm{i}m (A_u)_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-    -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \\
+    & -    \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           (A_v)_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-    -   \frac{n(n+1)}{a^{2}}
-         \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \\
+    & -   \frac{n(n+1)}{a^{2}}
+         \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           E_{ij} {Y_n^{m *}}_{ij} w_j
-          \notag\\
-    +   \frac{n(n+1)}{a^{2}}
+          \\
+    & +   \frac{n(n+1)}{a^{2}}
           ( \Phi_n^m + C_{p} \hat{\kappa}_k \bar{T}_k \pi_n^m )
           -  ({\mathcal D}_M)_n^m D_n^m  ,
+\end{aligned}
 $$
 
 
@@ -256,23 +262,25 @@ $$
 3. Thermodynamic equation
 
 $$
+\begin{aligned}
   \frac{\partial{T_n^m}}{\partial {t}}
-   =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   =  & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \mathrm{i}m u_{ij} T'_{ij} \cos\varphi_j
           {Y_n^{m *}}_{ij}
          \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \\
+     & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           v_{ij} T'_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
           \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \\
+     & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \left( H_{ij} + \frac{Q_{ij}+Q_{diff}}{C_{p}} \right)
           {Y_n^{m *}}_{ij} w_j
-          \notag\\
-     - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
+          \\
+     & - (\tilde{\mathcal D}_H)_n^m T_n^m \; ,
+\end{aligned}
 $$
 
  where,
@@ -286,22 +294,21 @@ $$
 4. Water vapor formula
 
 $$
+\begin{aligned}
   \frac{\partial{q_n^m}}{\partial {t}}
-   =  - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+   =  & - \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \mathrm{i}m u_{ij} q_{ij} \cos\varphi_j
-          {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          {Y_n^{m *}}_{ij} \frac{w_j}{a(1-\mu_j^{2})} \\
+    & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           v_{ij} q_{ij} \cos\varphi_j
           (1-\mu_j^2)
           \frac{\partial }{\partial \mu} {Y_n^{m *}}_{ij}
-          \frac{w_j}{a(1-\mu_j^{2})}
-          \notag\\
-     + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}  
+          \frac{w_j}{a(1-\mu_j^{2})}\\
+    & + \frac{1}{I} \sum_{i=1}^{I} \sum_{j=1}^{J}
           \left( \hat{R}_{ij} + S_{q,ij} \right)
-          {Y_n^{m *}}_{ij} w_j
-          \notag\\
-     + ({\mathcal D}_H)_n^m q_n^m
+          {Y_n^{m *}}_{ij} w_j \\
+    & + ({\mathcal D}_H)_n^m q_n^m
+\end{aligned}
 $$
 
 where

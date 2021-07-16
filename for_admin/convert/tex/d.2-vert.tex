@@ -31,7 +31,9 @@ p_{k+1/2} = A_{k+1/2} +B_{k+1/2}\,p_s.  \end{eqnarray}
 Thus, the normalized pressure \(\sigma\equiv p/p_s\) can be written as below: \begin{eqnarray}
 \sigma_{k+1/2} = \frac{A_{k+1/2}}{p_s} +B_{k+1/2}.  \end{eqnarray}
 
-Using a reference pressure \(p_0\), the hybrid-normalized pressure \(\eta\) is defined as below: \begin{eqnarray}
+Using a reference pressure \(p_0\), the hybrid-normalized pressure \(\eta\) is defined as below:
+
+\begin{eqnarray}
 \eta_{k+1/2} = \frac{A_{k+1/2}}{p_0} +B_{k+1/2},  \end{eqnarray} which is a constant at all levels and is used as the vertical coordinate by default in MIROC 6.0.
 
 Pressure at full levels are interpolated from half-level pressure by the following formula:
@@ -46,9 +48,9 @@ p_k = \left\{ \frac{1}{1+\kappa}
 \end{eqnarray}
 
 For later use, let us define the following: \begin{eqnarray}
-\begin{aligned}
-  \Delta\sigma_k &\equiv & \sigma_{k-1/2} - \sigma_{k+1/2}, \\
-  \Delta B_k &\equiv & B_{k-1/2} - B_{k+1/2}. \end{aligned} \end{eqnarray}
+\Delta\sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2},
+\end{eqnarray} \begin{eqnarray}
+  \Delta B_k \equiv B_{k-1/2} - B_{k+1/2}.\end{eqnarray}
 
 \hypertarget{vertical-discretization-1}{%
 \subsubsection{Vertical Discretization}\label{vertical-discretization-1}}
@@ -79,6 +81,7 @@ Thus, the vertical velocity is represented as \(\dot{\sigma}=m\dot{\eta}/p_s\). 
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
 \tightlist
 \item
   Hydrostatic equation
@@ -99,14 +102,15 @@ Thus, the vertical velocity is represented as \(\dot{\sigma}=m\dot{\eta}/p_s\). 
 \end{eqnarray}
 
 Here, \begin{eqnarray}
-\begin{aligned}
- \alpha_k &\equiv & \left( \frac{ p_{k-1/2} }
-                               { p_k } \right)^{\kappa} -1, \\
- \beta_k &\equiv &  1- \left( \frac{ p_{k+1/2} }
-                               { p_k } \right)^{\kappa} . \end{aligned}\end{eqnarray}
+ \alpha_k \equiv \left( \frac{ p_{k-1/2} }
+                               { p_k } \right)^{\kappa} -1,
+\end{eqnarray} \begin{eqnarray}
+ \beta_k \equiv 1- \left( \frac{ p_{k+1/2} }
+                               { p_k } \right)^{\kappa} .\end{eqnarray}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
 \tightlist
 \item
   Equations of motion
@@ -115,38 +119,48 @@ Here, \begin{eqnarray}
 \begin{eqnarray}
 \begin{aligned}
   \frac{\partial \zeta_k}{\partial t}
-        &=  \frac{1}{a\cos\varphi}
+        = & \frac{1}{a\cos\varphi}
             \frac{\partial (A_v)_k}{\partial \lambda}
-          - \frac{1}{a\cos\varphi}
+          & - \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_u \cos\varphi)_k
-          - {\mathcal D}(\zeta_k) \\
+          & - {\mathcal D}(\zeta_k)
+ \end{aligned}
+\end{eqnarray} \begin{eqnarray}
   \frac{\partial D}{\partial t}
-        &=  \frac{1}{a\cos\varphi}
+        =  \frac{1}{a\cos\varphi}
             \frac{\partial (A_u)_k}{\partial \lambda}
           + \frac{1}{a\cos\varphi}
             \frac{\partial }{\partial \varphi} (A_v \cos\varphi)_k
           - \nabla^{2}_{\eta}
            ( \Phi_k + R\bar{T} \pi
              + ({\mathit KE})_k )
-          - {\mathcal D}(D_k) \\
+          - {\mathcal D}(D_k)
+\end{eqnarray} \begin{eqnarray}
+\begin{aligned}
   (A_u)_k
-    &= ( \zeta_k + f ) v_k
+    = & ( \zeta_k + f ) v_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{u_{k-1} - u_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{u_k   - u_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \\
-           &- \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
-             + {\mathcal F}_x \\
+           & -  \frac{1}{a\cos\varphi} \frac{\partial \pi}{\partial \lambda}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
+             + {\mathcal F}_x
+\end{aligned}
+\end{eqnarray} \begin{eqnarray}
+\begin{aligned}
   (A_v)_k
-    &=  - ( \zeta_k + f ) u_k
+    = & - ( \zeta_k + f ) u_k
              - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{v_{k-1} - v_k}{\Delta\sigma_{k-1}+\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{v_k   - v_{k+1}}{\Delta\sigma_{k}+\Delta\sigma_{k+1}} \right] \\
            &- \frac{1}{a} \frac{\partial \pi}{\partial \varphi}(C_p T_{v,k}\hat{\kappa}-R\bar{T})
-             + {\mathcal F}_y \\
+             + {\mathcal F}_y
+\end{aligned}
+\end{eqnarray} \begin{eqnarray}
    \hat{\kappa}_k
-    &=\frac{ B_{k-1/2} \alpha_k + B_{k+1/2} \beta_k }
-            { \Delta\sigma_k                                  } \end{aligned}\end{eqnarray}
+    =\frac{ B_{k-1/2} \alpha_k + B_{k+1/2} \beta_k }
+            { \Delta\sigma_k                                  } \end{eqnarray}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
 \tightlist
 \item
   Thermodynamic equation
@@ -166,7 +180,7 @@ Here, \begin{eqnarray}
 Here, \begin{eqnarray}
 \begin{aligned}
    H_k
-     &\equiv   T_k' D_k
+     \equiv &  T_k' D_k
               - \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta\sigma_k}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta\sigma_k} \right] \\
         &+ \left\{ \alpha_k
@@ -182,7 +196,7 @@ Here, \begin{eqnarray}
                     \right]
               \right\}
               \frac{1}{\Delta \sigma_k} T_{v,k}\\
-     &=  T_k' D_k
+     = & T_k' D_k
           - \left[ \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{\hat{T}_{k-1/2} - T_k}{\Delta \sigma_l}
                + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{T_k - \hat{T}_{k+1/2}}{\Delta \sigma_l} \right] \\
         &+ \hat{\kappa}_k ({\mathbf{v}}_k \cdot \nabla \pi) T_{v,k} \\
@@ -191,37 +205,42 @@ Here, \begin{eqnarray}
                             \frac{T_{v,k}}{\Delta \sigma_k} \\
         &- \beta_k \sum_{l=k+1}^{K}
                            (D_l \Delta \sigma_l + ({\mathbf{v}}_l \cdot \nabla \pi)\Delta B_l)
-                            \frac{T_{v,k}}{\Delta \sigma_k}, \\
+                            \frac{T_{v,k}}{\Delta \sigma_k},
+\end{aligned}
+\end{eqnarray} \begin{eqnarray}
   \hat{T}_{k-1/2}
-   &= a_k T_k + b_{k-1} T_{k-1}, \\
-  a_k  &=  \alpha_k
+   = a_k T_k + b_{k-1} T_{k-1},
+\end{eqnarray} \begin{eqnarray}
+  a_k  =  \alpha_k
               \left[ 1- \left( \frac{ p_k }{ p_{k-1} }
-                        \right)^{\kappa} \right]^{-1},  \\
-  b_k  &=  \beta_k
+                        \right)^{\kappa} \right]^{-1},
+\end{eqnarray} \begin{eqnarray}
+  b_k  =  \beta_k
               \left[ \left( \frac{ p_k }{ p_{k+1} }
-                     \right)^{\kappa} - 1 \right]^{-1} .  \end{aligned}\end{eqnarray}
+                     \right)^{\kappa} - 1 \right]^{-1} .\end{eqnarray}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
 \tightlist
 \item
   Tracers
 \end{enumerate}
 
 \begin{eqnarray}
-\begin{aligned}
   \frac{\partial q_k}{\partial t}
-      &=  - \frac{1}{a\cos\varphi}
+      =  - \frac{1}{a\cos\varphi}
                \frac{\partial u_k q_k}{\partial \lambda}
           - \frac{1}{a\cos\varphi}
                \frac{\partial }{\partial \varphi} ( v_k q_k\cos\varphi)
           + R_k
           + S_{q,k}
-          - {\mathcal D}(q_k) \\
-R_k  &=  q_k D_k
+          - {\mathcal D}(q_k)
+\end{eqnarray} \begin{eqnarray}
+R_k  =  q_k D_k
        - \frac{1}{2}
              \left[   \frac{(m\dot{\eta})_{k-1/2}}{p_s} \frac{q_{k-1} - q_k}{\Delta\sigma_k}
-               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right]  \end{aligned}\end{eqnarray}
+               + \frac{(m\dot{\eta})_{k+1/2}}{p_s} \frac{q_k   - q_{k+1}}{\Delta\sigma_k} \right] \end{eqnarray}
 
 \hypertarget{differences-from-the-sigma-coordinate}{%
 \subsubsection{\texorpdfstring{Differences from the \(\sigma\)-Coordinate}{Differences from the \textbackslash sigma-Coordinate}}\label{differences-from-the-sigma-coordinate}}

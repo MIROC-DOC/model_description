@@ -1,5 +1,4 @@
-Tracer Advection Scheme
------------------------
+## Tracer Advection Scheme
 
 ### Introduction of Tracer Advection Scheme
 
@@ -7,20 +6,15 @@ MIROC6 adopts a spectral method based on Spherical harmonic expansion to
 dynamic core. The spectral method is an excellent method, but it has
 some drawbacks.
 
-1.  Because of Gibbs phenomenon, noisy oscillations are produced when
-    representing a non-smooth field.
+1. Because of Gibbs phenomenon, noisy oscillations are produced when representing a non-smooth field.
 
-2.  Associated with Gibbs phenomenon, negative value may occure on grids
-    where they are not supposed to such as, eg., specific humidity.
+2. Associated with Gibbs phenomenon, negative value may occur on grids where they are not supposed to such as, eg., specific humidity.
 
-3.  Global conservation of conservative quantity is good enough, but
-    local conservation does not always hold.
+3. Global conservation of conservative quantity is good enough, but local conservation does not always hold.
 
-4.  The property that information is transmitted from upstream to
-    downstream is not always satisfied. In spherical model, information
-    travels instantly to the other side of the world.
+4. The property that information is transmitted from upstream to downstream is not always satisfied. In spherical model, information travels instantly to the other side of the world.
 
-Despite of these disadvantages, MIROC has adoptted spectral method as
+Despite of these disadvantages, MIROC has adopted spectral method as
 dynamic core. Gibbs phenomenon usually doesn't cause any problems.
 However, when describing the transport of materials with strong
 discontinuity, the noisy oscillation and unexpected negative values
@@ -35,21 +29,17 @@ spectral method.
 
 Merits of this scheme are described below.
 
-1.  Gibbs phenomenon doesn't occur because it's based on gridpoint
-    method. Therefore, non-smooth fields can be represented with better
-    accuracy.
+1. Gibbs phenomenon doesn't occur because it's based on gridpoint method. Therefore, non-smooth fields can be represented with better accuracy.
 
-2.  Negative values of tracer quantity can be avoided even in unsmooth
-    fields.
+2. Negative values of tracer quantity can be avoided even in unsmooth fields.
 
-3.  No new extreme values are created.
+3. No new extreme values are created.
 
-4.  Information is transmitted from upstream to downstream.
+4. Information is transmitted from upstream to downstream.
 
-5.  Conservation is satisfied locally and globally.
+5. Conservation is satisfied locally and globally.
 
-6.  Problems which is induced by narrow grid range in polar region can
-    be avoided.
+6. Problems which is induced by narrow grid range in polar region can be avoided.
 
 In the next section, the principle of the tracer advection scheme is
 introduced in detail, and in the following section, we describe the
@@ -105,7 +95,7 @@ $x_{i+\frac{1}{2}}-u\Delta t$ by interpolation. Given distribution must
 be satisfied a condition as follows.
 $$q_{i}=\frac{1}{\Delta x_{i}} \int_{x_{i-\frac{1}{2}}}^{x_{i+\frac{1}{2}}} q(x) dx$$
 
-The old editions of MIROC adoptted van Leer method, in which
+The old editions of MIROC adopted van Leer method, in which
 interpolation function is a linear function, but MIROC6 adopts The
 Piecewise Parobolic Method (PPM) scheme (Colella and Woodward 1984) , in
 which interpolation function is a quadrative function
@@ -114,14 +104,15 @@ which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
 
 ![The image of interpolation function in The piecewise parobolic method
 (PPM) scheme. The interpolation function is in the solid line, the grid
-mean value is in the dot line.](../figures/ppm_interpolate.png){#f1 width="5cm"}
+mean value is in the dot line.](../figures/ppm_interpolate.png){:wq
+f1 width="5cm"}
 
 In PPM scheme, the distribution is determined as follows.
 $$
-\begin{array}{c}
-q(x)=q_{L, i}+\xi\left(\Delta q_{i}+q_{6, i}(1-\xi)\right) \\
+q(x)=q_{L, i}+\xi\left(\Delta q_{i}+q_{6, i}(1-\xi)\right)
+$$
+$$
 \xi=\frac{x-x_{i-\frac{1}{2}}}{\Delta x_{i}}, x_{i-\frac{1}{2}} \leq x \leq x_{i+\frac{1}{2}}
-\end{array}
 $$
 
 Here, $q_{L,i}$ is defined as
@@ -133,8 +124,10 @@ $$\Delta q_{i}=q_{R,i}-q_{L,i},\qquad q_{6,i}=6(q_{i}-\frac{1}{2}(q_{L,i})+q_{R,
 
 For calculationg $q_{i+\frac{1}{2}}$ by interpolation, a finite
 integration of $q$ given as follows is introduced.
-$$A(x)= \int^{x} q(x') dx'$$ At boundary of grid,
+$$A(x)= \int^{x} q(x') dx'$$
+At boundary of grid,
 $$A(x_{i+\frac{1}{2}})=A_{i+\frac{1}{2}}=\sum_{k\leq i}q_{k}\Delta x_{k}$$
+
 $q_{i+\frac{1}{2}}$ is calculated by discretization of
 $q_{i+\frac{1}{2}}=dA/dx |_{x_{i+\frac{1}{2}}}$ by using
 $(A_{j+k+\frac{1}{2}},x_{j+k+\frac{1}{2}})$, $k=0,\pm 1, \pm 2$.
@@ -169,7 +162,9 @@ Eq.([a3](a3)) to calculate
 $q_{i+\frac{1}{2}}$.
 
 When $q(x)$ is interpolated as Eq.([a4](a4)), by using Courant number defined as
-$$C=\frac{u_{i+\frac{1}{2}}\Delta t}{\Delta x_{i+1}}$$ flux
+$$
+C=\frac{u_{i+\frac{1}{2}}\Delta t}{\Delta x_{i+1}}$$
+flux
 $F^{x}_{i+\frac{1}{2}}$ is wriiten as follows.
 
 $$
@@ -177,6 +172,8 @@ F^{x}_{i+\frac{1}{2}}=\begin{cases}u_{i+\frac{1}{2}}[q_{R,i}-\frac{C}{2}(\Delta 
   u_{i+\frac{1}{2}}[q_{L,i+1}+\frac{C}{2}(\Delta q_{i+1}+(1-\frac{2}{3}C)q_{6,i+1})] & (u_{i+\frac{1}{2}}\leq0)
   \end{cases}
 $$
+
+#### Devices for Taking Long Time Steps
 
 The above argument is stable only if $C<1$ When the grid
 method is adapted to spherical coordinate, $\Delta x$ is very small in
@@ -201,6 +198,8 @@ $\Delta t$, we can avoid instability of numerical calculation by
 evaluating the flux using the quantity $q_{i'}$ corresponding to each
 grids passed. In actual, these argument is applied only to zonal flux,
 which can break CFL condition.
+
+#### The Treatment of Cross Terms
 
 In the case velocity of the fluid is not only in the x-direction or
 y-direction, only adding the flux contributions in the x- and
@@ -239,7 +238,11 @@ largely based on $\sigma$ coordinate because previous version of MIROC
 adopted $\sigma$ coordinate. Therefore, firstly the procedure under
 $\sigma$ coordinate system is described. After this, the changes in the
 hybrid coordinate system from the $\sigma$ coordinate system is
-described. The transport equation in $\sigma$ coordinate on the sphere
+described.
+
+#### $\sigma$-Coordinate
+
+The transport equation in $\sigma$ coordinate on the sphere
 is expressed as
 $$
 \begin{aligned}
@@ -295,10 +298,10 @@ $\Delta y_{j}=a \Delta \varphi_{j}$.
 The following are the procedure for the calculation of tracer advection
 in the staggering-grided horizontal and vertical wind fields:
 
-1.  Surface pressure $P^{S}(t+\Delta t)$ and horizontal wind
+1. Surface pressure $P^{S}(t+\Delta t)$ and horizontal wind
     $\bf{v}(t+\Delta t)$ are predicted in the spectral model.
 
-2.  The horizontal component of mass flux divergence at time step $t$ is
+2. The horizontal component of mass flux divergence at time step $t$ is
     calculated by using spherical harmonics. The mass fluxes at time
     step $t$ are reconstructed from the values at $t+\Delta t$ and
     $t-\Delta t$ because MIROC applies semi-implicit scheme for the
@@ -306,7 +309,7 @@ in the staggering-grided horizontal and vertical wind fields:
     of mass flux divergence are:
     $$C^{x}=-\frac{1}{a \cos \varphi}\frac{\partial}{\partial \lambda}(P^{s}u),\quad C^{y}=-\frac{1}{a \cos \varphi}\frac{\partial}{\partial \lambda}(P^{s}v \cos \varphi)$$
 
-3.  By using $C_{x}$ and $C_{y}$, $V^{\lambda}, V^{\varphi}, V^{\sigma}$
+3. By using $C_{x}$ and $C_{y}$, $V^{\lambda}, V^{\varphi}, V^{\sigma}$
     are calculated as follows.
     $$V^{\lambda}_{i-\frac{1}{2},j,k}-V^{\lambda}_{i+\frac{1}{2},j,k}=C^{x}_{i,j,k}\Delta D_{j,k}, \quad V^{\lambda}_{i,j-\frac{1}{2},k}-V^{\lambda}_{i,j+\frac{1}{2},k}=C^{y}_{i,j,k}\Delta D_{j,k}$$
     The boundry conditions are $V^{\varphi}=0$ at the North Pole and
@@ -336,14 +339,14 @@ in the staggering-grided horizontal and vertical wind fields:
     (The contents so far are in [TRACEG] of dtrcr.F. The rest of the
     content is in [GTRACE] of dtrcr.F.)
 
-4.  $G^{\lambda}, G^{\varphi}, G^{\sigma}$ are calculated by PPM scheme
+4. $G^{\lambda}, G^{\varphi}, G^{\sigma}$ are calculated by PPM scheme
     from $V^{\lambda}, V^{\varphi}, V^{\sigma}$.
 
-5.  $P^{s}_{i,j,k}q_{i,j,k}$ at time step $t+\Delta t$ is calulated by
+5. $P^{s}_{i,j,k}q_{i,j,k}$ at time step $t+\Delta t$ is calulated by
     integration of Eq.([a1](a1)) by leap frog method from
     $G^{\lambda}, G^{\varphi}, G^{\sigma}$.
 
-6.  $q_{t+\Delta t}$ is calculated by dividing $(P^{s}q)_{t+\Delta t}$
+6. $q_{t+\Delta t}$ is calculated by dividing $(P^{s}q)_{t+\Delta t}$
     by $P^{s}_{t+\Delta t}$. There is small quantity of difference
     between $P^{s}_{t+\Delta t}$ from Eq.([a2](a2)) and
     $P^{s}_{t+\Delta t}$ in the spectral model, because semi-implicit
@@ -352,6 +355,8 @@ in the staggering-grided horizontal and vertical wind fields:
     not strictly satisfied because of the discrepancy between the
     surface pressure in the spectral model and from $P^{s}_{t+\Delta t}$
     Eq. ([a2](a2)).
+
+#### $\sigma - p$ Hybrid Coordinate
 
 The transport equation in $\eta$ coordinate ($\sigma-p$ hybrid
 coordinate) on the sphere is:
@@ -380,11 +385,11 @@ $\sigma$ coordinate.
 In actual source code, combining to dividing by $m$ to calculate $q$ at
 time step $t+\Delta t$, $q$ at point $(i,j,k)$ in time step $t+\Delta t$
 is calculated as follows.
-$$\begin{split}
+$$\begin{aligned}
 q^{t+\Delta t}=&\frac{\Delta A_{k}+\Delta B_{k} P^{S,t-\Delta t}_{i,j,k}}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}q^{t-\Delta t}_{i,j,k}+\frac{2\Delta t}{\Delta D}\\
 &\times [(G^{\prime \lambda,t}_{i-\frac{1}{2},j,k}-G^{\prime \lambda,t}_{i+\frac{1}{2},j,k})+(G^{\prime \varphi,t}_{i,j-\frac{1}{2},k}-G^{\prime \varphi,t}_{i,j+\frac{1}{2},k}))+(G^{\prime \eta,t}_{i,j,k-\frac{1}{2}}-G^{\prime \eta,t}_{i,j,k+\frac{1}{2}})]\\
 &\times \frac{\Delta A_{k}+\Delta B_{k} P^{S,t}_{i,j,k}}{P^{S,t}_{i,j,k}}\frac{1}{\Delta A_{k}+\Delta B_{k} P^{S,t+\Delta t}_{i,j,k}}
-\end{split}
+\end{aligned}
 $$
 Here,$A,B$ is the coefficients for $\eta$ coordinate,
 $\eta_{k+\frac{1}{2}}=A_{k+\frac{1}{2}}/p_{0}+B_{k+\frac{1}{2}}$ and
@@ -392,23 +397,25 @@ $\Delta A_{k}=A_{k-\frac{1}{2}}-A_{k+\frac{1}{2}},\quad \Delta B_{k}=B_{k-\frac{
 And $\Delta A_{k}+\Delta B_{k} P^{S}_{i,j,k}=\Delta p_{i,j,k}$(More
 details in the section of the vertical discretization).
 
+#### The Mass Fluxes into/out of Polar Caps
+
 The mass fluxes into/out of polar caps are calculated by using the
 semi--Lagrangian scheme in the polar stereo projection (cf.
-Fig.([2](f2))). The horizontal
+Fig.[3](#f2). The horizontal
 average at the highest latitude band is assumed to be preserved
 before/after flux calculation for the mass conservation. The sequence of
 calculation is:
 
-1.  Zonal average of $P^{S}q$ at time step $t$ is calculated at the
+1. Zonal average of $P^{S}q$ at time step $t$ is calculated at the
     highest latitude band $(j=j_{N},j_{S})$, and is assumed to equal
     $P^{S}q$ at the pole.
 
-2.  Horizontal wind at the highest latitude bands is projected into the
+2. Horizontal wind at the highest latitude bands is projected into the
     orthogonal coordinate system centering around the pole, and $q$ at
     time step $t + \Delta t$ is estimated by using the value at the
     "departure point".
 
-3.  Zonal anerage of $P^{S}q$ at time step $t+\Delta t$ is fixed to that
+3. Zonal anerage of $P^{S}q$ at time step $t+\Delta t$ is fixed to that
     at $t$.
 
 ![Conceptual figure for the flux on pole-most
