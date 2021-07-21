@@ -1,0 +1,123 @@
+\documentclass[11pt,a4paper,onecolumn]{article}
+%
+\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{ascmac}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{ltablex,booktabs}
+\usepackage[dvipdfm,hidelinks]{hyperref}
+%
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+%
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                    {3.25ex \@plus1ex \@minus.2ex}%
+                                  {1.5ex \@plus .2ex}%
+                                    %{-1em}%
+                                    {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+                                       {3.25ex \@plus1ex \@minus .2ex}%
+                                  {1.5ex \@plus .2ex}%
+                                  %{-1em}%
+                                      {\normalfont\normalsize\bfseries}}
+\newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
+  {1.0\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+  {1.5ex \@plus .2ex}%
+  %{.1\Cvs \@plus.3\Cdp}%
+{\reset@font\sffamily\normalsize}
+}
+\makeatother
+\setcounter{secnumdepth}{4}
+%
+\pagenumbering{arabic}
+%\usepackage{natbib} %全てのbibを表示
+%
+\begin{document}
+  \begin{titlepage} % title page
+    \topskip0pt
+    \vspace*{\fill}
+      \begin{center}
+        {\Huge \textbf{Description of MIROC6 AGCM}}\\
+        \vspace{100mm}
+        {\Large \textbf{MIROC6 AGCM document writing team$^*$}}\\
+        \vspace{30mm}
+        {\Large \textbf{April 13, 2021}}
+      \end{center}
+    \vspace*{\fill}
+    $^*${\bf\textbf{MIROC6 AGCM document writing team}} (in alphabetical order)
+    \input{authors}
+  \end{titlepage}
+%
+  \clearpage
+  \include{remarks}
+  \clearpage
+  \include{acknowledgment}
+  \clearpage
+  \include{history}
+	\tableofcontents
+	\clearpage
+	%
+	\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
+	% please change the line below as your tex file (without ".tex")
+	% agcm の概念と構造
+  \include{summary}
+  \include{a-intro}
+	% 基本設定
+	\include{a.0-setup}
+	% Computational flow of dynamical core
+	\include{d-intro}
+	\include{d.1-basic}
+	\include{d.2-vert}
+	\include{d.3-hori}
+	\include{d.4-time}
+	\include{d.5-tracer}
+	\include{d.6-summ}
+	\include{d.7-routine}
+	% 力学:まとめ
+	\include{d-summ}
+	% 物理過程:イントロ
+	\include{p-intro}
+	% 物理過程:cumulus scheme
+	\include{p-cum}
+	% 物理過程:shallow convection scheme
+	\include{p-shallowconv}
+	% 物理過程:大規模凝結
+	\include{p-mlsc}
+	% 物理過程:雲微物理
+	\include{p-cldphys}
+	% 物理過程:放射
+	\include{p-rad}
+	% 物理過程:拡散フラックス
+	\include{p-dif}
+	% 物理過程:地表フラックス
+	\include{p-sfc}
+	% 物理過程:重力波抵抗
+	\include{p-grav} % 担当者なし
+	% カプラー
+	\include{AO-coupler}
+	\include{Model-Grid}
+	% 参考文献
+	%\include{d-ref}
+	\include{referenc}
+
+
+%	\bibliographystyle{jplain}
+%	\bibliography{referenc}
+
+	%
+	%
+\end{document}
