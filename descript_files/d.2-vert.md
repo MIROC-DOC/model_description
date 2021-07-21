@@ -62,10 +62,9 @@ $$
 
 For later use, let us define the following:
 $$
-\Delta\sigma_k \equiv \sigma_{k-1/2} - \sigma_{k+1/2},
-$$
-$$
-  \Delta B_k \equiv B_{k-1/2} - B_{k+1/2}.$$
+\begin{aligned}
+\Delta\sigma_k &\equiv \sigma_{k-1/2} - \sigma_{k+1/2}, \\
+  \Delta B_k &\equiv B_{k-1/2} - B_{k+1/2}.\end{aligned}$$
 
 ### Vertical Discretization
 

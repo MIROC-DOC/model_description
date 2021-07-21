@@ -47,6 +47,8 @@ actual implementation of the tracer advection scheme.
 
 ### Principle of the Tracer Advection Scheme
 
+#### Transport Equation in Flx Form
+
 The winds and the tracer distributions are staggered in the Arakawa
 C-grid (Mesinger and Arakawa 1976). As example, three dimension
 advection equation in (x,y,p) rectangukar coordinate system is given as
@@ -99,20 +101,19 @@ The old editions of MIROC adopted van Leer method, in which
 interpolation function is a linear function, but MIROC6 adopts The
 Piecewise Parobolic Method (PPM) scheme (Colella and Woodward 1984) , in
 which interpolation function is a quadrative function
-(Fig.([a1](a1)). The FFSL scheme
+(Fig.[2](2))). The FFSL scheme
 which adopts PPM scheme is called FFSL-3 (Lin and Rood 1996).
 
 ![The image of interpolation function in The piecewise parobolic method
 (PPM) scheme. The interpolation function is in the solid line, the grid
-mean value is in the dot line.](../figures/ppm_interpolate.png){:wq
-f1 width="5cm"}
+mean value is in the dot line.](../figures/ppm_interpolate.png)
 
 In PPM scheme, the distribution is determined as follows.
 $$
-q(x)=q_{L, i}+\xi\left(\Delta q_{i}+q_{6, i}(1-\xi)\right)
-$$
-$$
+\begin{aligned}
+q(x)=q_{L, i}+\xi\left(\Delta q_{i}+q_{6, i}(1-\xi)\right) \\
 \xi=\frac{x-x_{i-\frac{1}{2}}}{\Delta x_{i}}, x_{i-\frac{1}{2}} \leq x \leq x_{i+\frac{1}{2}}
+\end{aligned}
 $$
 
 Here, $q_{L,i}$ is defined as

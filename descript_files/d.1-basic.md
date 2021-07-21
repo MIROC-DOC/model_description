@@ -148,13 +148,14 @@ $$
 $$
 
 $$
-  nabla^{2}_{\eta}
+  \nabla^{2}_{\eta}
   \equiv
   \frac{1}{a^{2}\cos^2\varphi}
   \frac{\partial^{2} }{\partial \lambda^{2}}
     + \frac{1}{a^{2}\cos\varphi}
   \frac{\partial }{\partial \varphi}
-  \left[ \cos\varphi
+  \le:wq
+  t[ \cos\varphi
   \frac{\partial }{\partial \varphi} \right].
 $$
 
