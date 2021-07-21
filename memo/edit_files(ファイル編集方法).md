@@ -1,4 +1,4 @@
-# 開発の手引き
+# 編集の手引き
 
 ## 目標
 
@@ -9,7 +9,7 @@
 ## 使用フォーマット
 
   - 基本的に Markdown で執筆
-  - 形式で迷ったら、[原稿](../descript/)を参照
+  - 形式で迷ったら、[原稿](../descript_files/)を参照
 
 ### 数式
 
@@ -25,7 +25,7 @@
 
   - 最終的には英語。日本語で原稿を作成・DeepL Proなどの力を借りて英訳してOK。
 
-## 開発フロー（簡易版）
+## 編集フロー（簡易版）
 
 ブラウザ版GitHubのDevelopブランチを直接編集する。
 
@@ -35,11 +35,11 @@
 
 <img src="./210712_MIROC_GitHub_develop.key-1.png" width=800x>
   
-## 開発フロー（詳細版。新しくファイルを作る場合・複数ファイルを編集する場合など）
+## 編集フロー（詳細版。新しくファイルを作る場合・複数ファイルを編集する場合など）
 
   - 1)[issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
-  - 2)ローカルの資料を最新のdevelopに `git pull origin develop`
-  - 3)執筆担当の人は issue に基づいて develop ブランチを元に featureE(章の名前など、各自で特徴的な名前を設定) ブランチを作成する(./git.md)`git checkout -b feature develop`。すでにあるリモートブランチを変更する場合、`git checkout -b feature feature`
+  - 2)ローカルの資料を最新のdevelopブランチに `git pull origin develop`
+  - 3)執筆担当の人は issue に基づいて develop ブランチを元に feature(章の名前など、各自で特徴的な名前を設定) ブランチを作成する`git checkout -b feature develop`。すでにあるリモートブランチを変更する場合、`git checkout -b feature feature`
   - 今いるブランチを確認する。`git branch`
   - 4)feature ブランチで執筆する。
     - a)ファイル変更が一段落するたびに、コミットする
@@ -54,5 +54,5 @@
     - コンフリクトが発生している場合、管理者が解消する
   - feature ブランチを削除する。issueをcloseする。
 
-Gitについてはブランチを切る&コミットログを残す、ができれば細かい操作は自由。エディタのGUIを使うと楽。
+Gitについてはブランチを切る&コミットログを残す、ができれば細かい操作は自由。[Gitの手引き](../git.md)。エディタのGUIを使うと楽[おすすめ環境](../setting.md)。
 ローカルのファイル削除などしない限り、Gitの操作は大体取り返しがつく。

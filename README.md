@@ -10,9 +10,15 @@ Compiled PDF file "Model Description for MIROC6-AGCM".
 
 Markdown files. These are part of Model Description for MIROC6-AGCM.
 
+[Chrome Extension](https://chrome.google.com/webstore/detail/mathjax-3-plugin-for-gith/peoghobgdhejhcmgoppjpjcidngdfkod) enables LaTeX equations previews on Github.
+
 ### [for_admin](./for_admin)
 
+Files for the administrators.
+
 ### [memo](./memo)
+
+Useful information to edit files.
 
 ## Help us with updating [Model Description for MIROC6-AGCM](https://github.com/MIROC-DOC/model_description/blob/master/current_document/agcm.pdf)
 
