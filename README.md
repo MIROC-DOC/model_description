@@ -4,7 +4,7 @@
 
 ### [current_document](./current_document)
 
-Compiled PDF file "Model Description for MIROC6-AGCM".
+Compiled single PDF file "Model Description for MIROC6-AGCM".
 
 ### [descript_files](./descript_files)
 
