@@ -46,7 +46,7 @@ If the content of your email is not relevant to the case, we may not respond.
 3. Physics 物理過程
 - 3.1 [Overview of Physical Parameterizations](descript_files/p-intro.md)
 - 3.2 [Cumulus Scheme (積雲対流)](descript_files/p-cum.md)
-- 3.3 [Shallow Convection Scheme (浅い対流)](descript_files/p-shallowconv.tex)
+- 3.3 [Shallow Convection Scheme (浅い対流)](descript_files/p-shallowconv.md)
 - 3.4 [Large Scale Condensation (大規模凝結)](descript_files/p-mlsc.md)
 - 3.5 [Cloud Microphysics (雲微物理)](descript_files/p-cldphys.md)
 - 3.6 [Radiation Scheme (放射)](descript_files/p-rad.md)
