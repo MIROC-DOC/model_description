@@ -41,6 +41,7 @@
   - 1) [issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
   - 2) 執筆用のブランチをローカルに作る
     - ローカルにGitHubのデータを持ってくる `git clone git@github.com:MIROC-DOC/model_description.git`
+    - `git branch` すると master ブランチにいる。編集作業を develop ブランチで行うため `git checkout develop` する。
     - ローカルの資料を最新のdevelopブランチに `git pull origin develop`
     - 執筆担当の人は issue に基づいて develop ブランチを元に feature(章の名前など、各自で特徴的な名前を設定) ブランチを作成する`git checkout -b feature develop`。develop以外のリモートブランチを変更する場合、`git checkout -b feature feature`
     - 今いるブランチを確認する。`git branch`
@@ -49,8 +50,8 @@
       - コミットするファイルを選択（ステージング）`git add hogehoge`
       - 変更箇所についてコメントと共にコミット`git commit -m "add hogehoge subsection"`
       - コミット状況を確認`git status`
-    - b) ローカルのファイル変更をリモートのdevelop ブランチへ反映する`git push origin develop`
-  - 5) 執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)からdevelopブランチへプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
+    - b) ローカルのファイル変更をリモートの feature ブランチへ反映する`git push origin develop`
+  - 5) 執筆が完了したら[ブラウザ版GitHub](https://github.com/MIROC-DOC/model_description)で feature ブランチから develop ブランチへプル・リクエストを投げる。[やり方](https://docs.github.com/ja/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request)
   - review が行われ、問題があれば執筆者が再度修正する
     - プルリクエストの一覧は[ここ](https://github.com/pulls)から見れる
   - review で問題が無ければ管理者がマージする
