@@ -1,5 +1,8 @@
 # Git ことはじめ
 
+**NEW**
+2021年度の気候系Git/GitHub講習会の資料を[プライベートリポジトリ](https://github.com/MIROC-DOC/Sandbox/tree/master/Git_Tutorial)に配置しました。ご活用ください。
+
 ## 用語
 
 - バージョン管理システム
