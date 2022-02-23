@@ -688,14 +688,12 @@ class LexerBase:
         if self.ftree is None:
             self.ftree = FileTree(file)
         else:
-            # print('before', self.ftree.file)
+            #print('before', self.ftree.file)
             self.ftree = self.ftree.add(file)
-            # print('after', self.ftree.file)
-
+            #print('after', self.ftree.file)
         cf = self.ftree
         results = self.lex.parseFile(file, *args, **kw)
         cf.lex = results
-        # print('PARSE:', file, cf.file)
         if cf.parent:
             self.ftree = cf.parent
         if self.include < 3 or cf.parent is None:
@@ -740,7 +738,6 @@ class LexerBase:
 
     def post_parse(self, orig=None):
         """Postproccess after parser."""
-
         for k in sorted(self.report.keys()):
             sys.stderr.write('%s\n' % self.report[k])
 

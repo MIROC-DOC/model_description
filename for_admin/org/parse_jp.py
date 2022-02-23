@@ -176,7 +176,7 @@ class ParserMirocDoc(psitex.ParserStd):
         return(toks)
 
     def post_parse(self, orig=None, *args, **kw):
-        """Batch replacement of special macros."""
+        """Batch replacement of special macros."""        
         super().post_parse(orig=orig, *args, **kw)
         if self.math:
             self.rep_imath(tree=orig)
@@ -587,6 +587,7 @@ def main(args, run):
         outdir = False
     else:
         outdir = outdir or '.'
+
     if outf and len(args) > 1:
         sys.stderr.write('Argument -o FILE conflicts with multiple files.\n')
         sys.exit(1)

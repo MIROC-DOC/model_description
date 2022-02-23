@@ -107,16 +107,22 @@
 \BOOKMARK [3][-]{subsubsection.3.8.3}{Radiation Flux Calculation}{subsection.3.8}% 107
 \BOOKMARK [3][-]{subsubsection.3.8.4}{Solving Heat Balance}{subsection.3.8}% 108
 \BOOKMARK [2][-]{subsection.3.9}{Gravity Waves}{section.3}% 109
-\BOOKMARK [3][-]{subsubsection.3.9.1}{Overview of a Gravity Wave Drag Parameterization}{subsection.3.9}% 110
-\BOOKMARK [3][-]{subsubsection.3.9.2}{Relationship between Local FroudeNnumber and Momentum Flux}{subsection.3.9}% 111
+\BOOKMARK [3][-]{subsubsection.3.9.1}{Overview of a Orographic Gravity Wave Drag Parameterization}{subsection.3.9}% 110
+\BOOKMARK [3][-]{subsubsection.3.9.2}{Relationship between Local Froude Number and Momentum Flux}{subsection.3.9}% 111
 \BOOKMARK [3][-]{subsubsection.3.9.3}{Momentum Fluxes at the Surface}{subsection.3.9}% 112
 \BOOKMARK [3][-]{subsubsection.3.9.4}{Momentum Fluxes in the Upper Levels}{subsection.3.9}% 113
 \BOOKMARK [3][-]{subsubsection.3.9.5}{The Magnitude of the Time Variation of Horizontal Wind due to Momentum Convergence}{subsection.3.9}% 114
 \BOOKMARK [3][-]{subsubsection.3.9.6}{Other Notes}{subsection.3.9}% 115
-\BOOKMARK [1][-]{section.4}{Miscellaneous}{}% 116
-\BOOKMARK [2][-]{subsection.4.1}{Coupler}{section.4}% 117
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Fluxes to Atmospheric Models}{subsection.4.1}% 118
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Fluxes between Land Surface Model and River Model}{subsection.4.1}% 119
-\BOOKMARK [3][-]{subsubsection.4.1.3}{Fluxes to the Ocean Model}{subsection.4.1}% 120
-\BOOKMARK [2][-]{subsection.4.2}{Definition of Land-Sea Distribution}{section.4}% 121
-\BOOKMARK [1][-]{section.5}{References}{}% 122
+\BOOKMARK [3][-]{subsubsection.3.9.7}{Overview of a Non-orographic Gravity Wave Drag Parameterization}{subsection.3.9}% 116
+\BOOKMARK [3][-]{subsubsection.3.9.8}{Introduction to the Doppler-spread Theory}{subsection.3.9}% 117
+\BOOKMARK [3][-]{subsubsection.3.9.9}{The Essence of Hines's Doppler-spread Parameterization \204 How to Calculate the Vertical Profile of m\137j}{subsection.3.9}% 118
+\BOOKMARK [3][-]{subsubsection.3.9.10}{Vertical Profiles of the Horizontal Momentum Flux and the Momentum Deposition}{subsection.3.9}% 119
+\BOOKMARK [3][-]{subsubsection.3.9.11}{Method for Determining Non-orographic Gravity Wave Sources \(Watanabe 2008\)}{subsection.3.9}% 120
+\BOOKMARK [3][-]{subsubsection.3.9.12}{Implementation and Calculation Procedure in MIROC6}{subsection.3.9}% 121
+\BOOKMARK [1][-]{section.4}{Miscellaneous}{}% 122
+\BOOKMARK [2][-]{subsection.4.1}{Coupler}{section.4}% 123
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Fluxes to Atmospheric Models}{subsection.4.1}% 124
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Fluxes between Land Surface Model and River Model}{subsection.4.1}% 125
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Fluxes to the Ocean Model}{subsection.4.1}% 126
+\BOOKMARK [2][-]{subsection.4.2}{Definition of Land-Sea Distribution}{section.4}% 127
+\BOOKMARK [1][-]{section.5}{References}{}% 128
