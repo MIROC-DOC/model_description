@@ -14,6 +14,7 @@
 \usepackage{ltablex,booktabs}
 \usepackage[dvipdfm,hidelinks]{hyperref}
 \usepackage{textcomp}
+\usepackage{colortbl}
 %
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}

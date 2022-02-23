@@ -38,7 +38,7 @@ Major subroutines used to calculate the radiation flux in \texttt{SUBROUTINE:{[}
 
 \begin{figure}
 \centering
-\includegraphics{../figures/Prad_Fig1.pdf}
+\includegraphics{../figures/Prad_Fig1.png}
 \caption{Flowchart of \texttt{SUBROUTINE:{[}DTRN31{]}}}
 \end{figure}
 
@@ -389,7 +389,7 @@ b_{2}=2({~B}(\tau)-{B}(0)-2{~B}(\tau / 2)) / \tau^{2}
 
 \begin{figure}
 \centering
-\includegraphics{../figures/Prad_Fig2.pdf}
+\includegraphics{../figures/Prad_Fig2.png}
 \caption{Second-order expansion using the optical thickness of the plank function}
 \end{figure}
 
@@ -778,7 +778,7 @@ calculated.
 
 \begin{figure}
 \centering
-\includegraphics{../figures/Prad_Fig3.pdf}
+\includegraphics{../figures/Prad_Fig3.png}
 \caption{Schematic illustration of the adding method}
 \end{figure}
 

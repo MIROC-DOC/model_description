@@ -281,7 +281,7 @@ The parameterization begins at the launch level of non-orographic gravity waves 
 
 \begin{figure}
 \centering
-\includegraphics{../figures/flowchart_hines.pdf}
+\includegraphics[width=5cm,height=\textheight]{../figures/flowchart_hines.png}
 \caption{A simplified flowchart for Hines's non-orographic gravity wave drag parameterization scheme in MIROC6.}
 \end{figure}
 

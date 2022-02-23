@@ -81,7 +81,7 @@ which interpolation function is a quadrative function (Fig.\url{2})). The FFSL s
 
 \begin{figure}
 \centering
-\includegraphics{../figures/ppm_interpolate.pdf}
+\includegraphics{../figures/ppm_interpolate.png}
 \caption{The image of interpolation function in The piecewise parobolic method (PPM) scheme. The interpolation function is in the solid line, the grid mean value is in the dot line.}
 \end{figure}
 
@@ -291,7 +291,7 @@ latitude band is assumed to be preserved before/after flux calculation for the m
 \begin{figure}
 \hypertarget{f2}{%
 \centering
-\includegraphics[width=5cm,height=\textheight]{../figures/polar_tracer_advection.pdf}
+\includegraphics[width=5cm,height=\textheight]{../figures/polar_tracer_advection.png}
 \caption{Conceptual figure for the flux on pole-most grids.}\label{f2}
 }
 \end{figure}

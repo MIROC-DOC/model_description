@@ -30,8 +30,7 @@ postandformato=2andcantidad=1andexpresion=mfn=004222}
 \item Hasumi, H. (2015). CCSR ocean component model (COCO) (Version 4.0) (p. 68). Atmosphere and Ocean Research Institute, The University of Tokyo. Retrieved from \\
 \texttt{https://ccsr.aori.u-tokyo.ac.jp/~hasumi/COCO/coco4.pdf}
 \item Helfand, H. M., and Labraga, J. C. (1988). Design of a Nonsingular Level 2.5 Second-Order Closure Model for the Prediction of Atmospheric Turbulence. Journal of the Atmospheric Sciences, 45(2), 113–132.
-\item Hines, C. O. (1997) Doppler-spread parameterization of gravity wave momentum deposition in the middle atmosphere, Part 1: Basic formulation. Journal of Atmosphere Sol.-Terr. Physics, 59, 371–386.
-\item Hines, C. O. (1997) Doppler-spread parameterization of gravity wave momentum deposition in the middle atmosphere, Part 2: Broad and quasi monochromatic spectra, and implementation. Journal of Atmosphere Sol.-Terr. Physics, 59, 387–400.
+\item Hines, C. O. (1997) Doppler-spread parameterization of gravity wave momentum deposition in the middle atmosphere, Part 2: Broad and quasi monochromatic spectra, and implementation, Journal of Atmosphere Sol.-Terr. Physics, 59, 387–400.
 \item Holtslag, A. A. M., and Boville, B. A. (1993). Local Versus Nonlocal Boundary-Layer Diffusion in a Global Climate Model. Journal of Climate, 6(10), 1825–1842.
 \item K-1 model developers (2004). K-1 coupled GCM (MIROC) description, K-1 Tech. Rep., 1, edited by: Hasumi, H. and Emori, S., Center for Climate System Research, the Univ. of Tokyo, Tokyo, 34 pp.
 \item Kain, J. S., and Michael Fritsch, J. (1990). A One-Dimensional Entraining/Detraining Plume Model and Its Application in Convective Parameterization. Journal of the Atmospheric Sciences, 47(23), 2784–2802.
@@ -64,7 +63,7 @@ postandformato=2andcantidad=1andexpresion=mfn=004222}
 \item Randall, D. A., and Pan, D.-M. (1993). Implementation of the Arakawa-Schubert Cumulus Parameterization with a Prognostic Closure. In K. A. Emanuel and D. J. Raymond (Eds.), The Representation of Cumulus Convection in Numerical Models (pp. 137–144). Boston, MA: American Meteorological Society.
 \item Randall, D. A., , D-M. Pan, , P. Ding, , and D. G. Cripe, (1997). Quasi-equilibrium. The Physics and Parameterization of Moist Atmospheric Convection, R. K. Smith, Ed., Kluwer Academic, 359–386.
 \item Sekiguchi, M., and Nakajima, T. (2008). A k-distribution-based radiation code and its computational optimization for an atmospheric general circulation model. Journal of Quantitative Spectroscopy and Radiative Transfer, 109(17), 2779–2793.
-\item Smith, R. K. (2013). The Physics and Parameterization of Moist Atmospheric Convection. Springer Science and Business Media.
+vSmith, R. K. (2013). The Physics and Parameterization of Moist Atmospheric Convection. Springer Science and Business Media.
 \item Sommeria, G., and Deardorff, J. W. (1977). Subgrid-Scale Condensation in Models of Nonprecipitating Clouds. Journal of the Atmospheric Sciences, 34(2), 344–355.
 \item Stevens, B. (2005). ATMOSPHERIC MOIST CONVECTION. Annual Review of Earth and Planetary Sciences, 33(1), 605–643.
 \item Suzuki, T., Saito, F., Nishimura, T., and Ogochi, K. (2009). Coupling procedures of heat and freshwater fluxes in the MIROC (Model for Interdisciplinary Research on Climate) version 4. JAMSTEC report of research and development
@@ -78,7 +77,7 @@ postandformato=2andcantidad=1andexpresion=mfn=004222}
 \item Tompkins, A. M. (2002). A prognostic parameterization for the subgrid-scale variability of water vapor and clouds in large-scale models and its use to diagnose cloud cover. Journal of the Atmospheric Sciences, 59(12), 1917–1942.
 \item Watanabe, M., Emori, S., Satoh, M., and Miura, H. (2009). A PDF-based hybrid prognostic cloud scheme for general circulation models. Climate Dynamics, 33(6), 795–816.
 \item Watanabe, S. (2008). Constraints on a Non-orographic Gravity Wave Drag Parameterization Using a Gravity Wave Resolving General Circulation Model, SOLA, 4, 61-64.
-\item Watanabe, S., Hajima, T., Sudo, K., Nagashima, T., Takemura, T., Okajima, H., Nozawa, T., Kawase, H., Abe, M., Yokohata, T., Ise, T., Sato, H., Kato, E., Takata, K., Emori, S., and Kawamiya, M. (2011) MIROC-ESM 2010: model description and basic results of CMIP5-20c3m experiments, Geoscience Model Development, 4, 845-872.
+   Watanabe, S., Hajima, T., Sudo, K., Nagashima, T., Takemura, T., Okajima, H., Nozawa, T., Kawase, H., Abe, M., Yokohata, T., Ise, T., Sato, H., Kato, E., Takata, K., Emori, S., and Kawamiya, M. (2011) MIROC-ESM 2010: model description and basic results of CMIP5-20c3m experiments, Geoscience Model Development, 4, 845-872.
 \item Williams, P. D. (2009). A Proposed Modification to the Robert–Asselin Time Filter. Monthly Weather Review, 137(8), 2538–2546.
 \item Wilson, D. R., and Ballard, S. P. (1999). A microphysically based precipitation scheme for the UK meteorological office unified model. Quarterly Journal of the Royal Meteorological Society, 125(557), 1607-1636.
 \item Wood, R., and Bretherton, C. S. (2006). On the relationship between stratiform low cloud cover and lower-tropospheric stability. Journal of Climate, 19(24), 6425-6432.

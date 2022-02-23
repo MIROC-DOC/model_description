@@ -1,0 +1,152 @@
+﻿
+\subsection{重力波抵抗}
+
+\subsubsection{重力波抵抗スキームの概要}
+
+重力波抵抗スキームは,
+サブグリッドスケールの地形によって励起される
+重力波の上方への運動量フラックスを表現し,
+その収束に伴う水平風の減速を計算する.
+主な入力データは, 東西風 $u$, 南北風 $v$, 気温 $T$, であり,
+出力データは東西風と南北風の時間変化率,
+$\partial u/\partial t, \partial v/\partial t$, である.
+
+計算手順の概略は以下の通りである.
+%
+\begin{enumerate}
+\item 地表面での運動量フラックスを
+      地表高度の分散, 
+      最下層での水平風速, 成層安定度などから求める.
+\item 運動量フラックスを持つ重力波の上方への伝播を考える.
+      運動量フラックスが臨界フルード数から決まる
+      臨界フラックスを越える場合には,
+      砕波が起こってフラックスはその臨界値となるとする.
+\item 運動量フラックスの各層での収束に応じた
+      水平風の時間変化を計算する.
+\end{enumerate}
+
+\subsubsection{局所フルード数と運動量フラックスの関係}
+
+地表起源の重力波による
+水平運動量の鉛直フラックスを考えると,
+ある高度でのフラックス $\tau$ と
+局所フルード数 $F_L = NH/U$ との間には,
+\begin{equation}
+   F_L = \left(
+            \frac{\tau N}{E_f \rho U^3}
+           \right)^{1/2} \; ,
+  \label{p-grav:tau-fl}
+\end{equation}
+の関係が成り立つ.
+ここで, $N = g/\theta \partial \theta/\partial z$ は
+ブラントバイサラ振動数, 
+$\rho$ は大気の密度, 
+$U$ は風速, $E_f$ は地表高度の波打ちの水平スケールに対応する
+比例定数である.
+これから,
+\begin{equation}
+  \tau = \frac{E_f F_L^2 \rho U^3}{N}
+\label{p-grav:fl-tau}
+\end{equation}
+
+局所フルード数 $F_L$ は,
+ある値, 臨界フルード数 $F_{c}$ を越えることができないとする.
+(\ref{p-grav:tau-fl}) から計算される
+局所フルード数が臨界フルード数 $F_{c}$ を越える場合には
+重力波は過飽和となり,
+臨界フルード数に対応する運動量フラックスまで
+フラックスは減少する.
+
+\subsubsection{地表での運動量フラックス}
+
+地表面で励起される重力波による
+水平運動量の鉛直フラックスの大きさ $\tau_{1/2}$ は,
+ただし, 地表での局所フルード数 
+$(F_L)_{1/2} = N_1 h/U_1$ を
+(\ref{p-grav:fl-tau}) に代入することにより,
+%
+\begin{equation}
+  \tau_{1/2} = E_f h^2 \rho_1 N_1 U_1 \; ,
+\end{equation}
+%
+と見積られる.
+ここで, 
+$U_1 = |\mbox{\boldmath v}_1| = (u_1^2 + v_1^2)^{1/2}$ は地表風速,
+$N_1, \rho_1$ はそれぞれ地表付近の大気の
+安定度と密度である.
+$h$ はサブグリッドの地表高度変化の指標であり,
+地表高度の標準偏差 $Z_{SD}$ に等しいとする.
+
+ここで, 地表での局所フルード数 
+$(F_L)_{1/2} = N_1 Z_{SD}/U_1$ が 臨界フルード数
+$F_c$ を越えるときは, 
+運動量フラックスは $F_c$ を(\ref{p-grav:fl-tau}) に代入した値に
+抑えられるとする.
+すなわち,
+\begin{equation}
+  \tau_{1/2} = \min \left(
+                   E_f Z_{SD}^{2} \rho_1 N_1 U_1, \; 
+                  \frac{E_f F_c^{2} \rho_1 U_1^3}{N_1}
+               \right)
+\end{equation}
+
+\subsubsection{上層での運動量フラックス}
+
+レベル $k-1/2$ での運動量フラックス $\tau_{k-1/2}$ が
+求められているとする.
+$\tau_{k+1/2}$ は, 飽和が起こらないときには
+$\tau_{k-1/2}$ に等しい.
+この運動量フラックス $\tau_{k-1/2}$ が,
+$k+1/2$ レベルでの臨界フルード数から計算される運動量フラックス
+を上回るときには, $k$ 層内で砕波が起こり,
+運動量フラックスは臨界に対応するフラックスまで減少する.
+
+\begin{equation}
+  \tau_{k+1/2} = \min \left( 
+               \tau_{k-1/2}, \;
+               \frac{E_f F_c^2 \rho_{k+1/2} U_{k+1/2}^3}{N_{k+1/2}}
+                      \right),
+\end{equation}
+
+ただし $U_{k+1/2}$ は,
+各層での風速ベクトルの,
+最下層の水平風の方向に対する射影成分の大きさであり,
+\begin{equation}
+  U_{k+1/2} = \frac{\mbox{\boldmath v}_{k+1/2} 
+                      \cdot \mbox{\boldmath v}_{1}}
+                   {|\mbox{\boldmath v}_{1}|       }
+\end{equation}
+
+\subsubsection{運動量収束による水平風の時間変化の大きさ}
+
+水平風の射影成分 $U_{k}$ の時間変化率は,
+\begin{equation}
+  \frac{\partial U}{\partial t} 
+        = - \frac{1}{\rho} \frac{\partial \tau}{\partial z}
+        = g  \frac{\partial \tau}{\partial p}
+\end{equation}
+%
+によって求められる.すなわち,
+%
+\begin{equation}
+  \frac{\partial U_{k}}{\partial t} 
+        =  g  \frac{\tau_{k+1/2} - \tau{k-1/2}}{\Delta p}.
+\end{equation}
+%
+これを用いて,
+東西風と南北風の時間変化率は以下のように計算される.
+\begin{eqnarray}
+  \frac{\partial u_{k}}{\partial t} & = &
+           \frac{\partial U_{k}}{\partial t} \frac{u_{1}}{U_{1}} \\
+  \frac{\partial v_{k}}{\partial t} & = &
+           \frac{\partial U_{k}}{\partial t} \frac{v_{1}}{U_{1}}
+\end{eqnarray}
+
+\subsubsection{その他の留意点}
+
+\begin{enumerate}
+\item 最下層の風速が小さく $U_{1} \le v_{min}$ のとき,また,
+      地表の起伏が小さく $Z_{SD} \le (Z_{SD})_{min}$ のときは, 
+      地表で重力波が励起されないと仮定する.
+\end{enumerate}
+
