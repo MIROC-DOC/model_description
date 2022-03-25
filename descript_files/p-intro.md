@@ -25,7 +25,7 @@ In terms of time integration of predictors, we can classify the physical Paramet
 
 2. Radiation, turbulence and surface fluxes
 
-3. Gravitational wave drag
+3. Gravity wave drag
 
 For cumulus convection, shallow convection, large-scale condensation, and cloud microphysics, the values are updated by the usual Euler difference as follows.
 
@@ -52,7 +52,7 @@ $$
 $$
 
 
-That would be the gravitational wave drag, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
+That would be the gravity wave drag, mass modulation, and dry convection modulation are the same as those for cumulus convection and large-scale condensation.
 
 $$
   \hat{T}^{t+\Delta t,(4)} = \hat{T}^{t+\Delta t,(3)}

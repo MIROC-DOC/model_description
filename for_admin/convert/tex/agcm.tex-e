@@ -14,6 +14,7 @@
 \usepackage{ltablex,booktabs}
 \usepackage[dvipdfm,hidelinks]{hyperref}
 \usepackage{textcomp}
+\usepackage{colortbl}
 %
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -56,7 +57,7 @@
         \vspace{100mm}
         {\Large \textbf{MIROC6 AGCM document writing team$^*$}}\\
         \vspace{30mm}
-        {\Large \textbf{July 15, 2021}}
+        {\Large \textbf{April 13, 2021}}
       \end{center}
     \vspace*{\fill}
     $^*${\bf\textbf{MIROC6 AGCM document writing team}} (in alphabetical order)
