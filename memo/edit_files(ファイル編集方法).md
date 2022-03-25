@@ -24,7 +24,7 @@
 
 ## 使用言語
 
-  - 最終的には英語。日本語で原稿を作成・DeepL Proなどの力を借りて英訳してOK。
+  - 最終的には英語。日本語で原稿を作成・DeepLなどの力を借りて英訳してOK。
 
 ## 編集フロー（簡易版）
 
@@ -35,7 +35,7 @@
   - 5) "Commit changes"を押す。
 
 <img src="./210712_MIROC_GitHub_develop.key-1.png" width=800x>
-  
+
 ## 編集フロー（詳細版。新しくファイルを作る場合・複数ファイルを編集する場合など）
 
   - 1) [issue に執筆目標を書く](https://github.com/MIROC-DOC/model_description/issues)
